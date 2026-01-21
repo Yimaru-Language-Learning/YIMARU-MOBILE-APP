@@ -29,6 +29,7 @@ import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/views/welcome/welcome_view.dart';
 import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
+import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -55,6 +56,7 @@ import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
     MaterialRoute(page: LearnModuleView),
     MaterialRoute(page: WelcomeView),
     MaterialRoute(page: AssessmentView),
+    MaterialRoute(page: LearnLessonView),
 // @stacked-route
   ],
   dependencies: [

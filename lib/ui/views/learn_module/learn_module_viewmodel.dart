@@ -1,5 +1,6 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/app/app.router.dart';
 
 import '../../../app/app.locator.dart';
 import '../../common/enmus.dart';
@@ -35,4 +36,6 @@ class LearnModuleViewModel extends BaseViewModel {
   List<Map<String, dynamic>> get modules => _modules;
 
   void pop() => _navigationService.back();
+
+  Future<void> navigateToLearnLesson() async=> await _navigationService.navigateToLearnLessonView();
 }

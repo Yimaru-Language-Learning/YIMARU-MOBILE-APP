@@ -29,12 +29,11 @@ class MotivationCard extends StatelessWidget {
 
   Widget _buildIcon() => Image.asset('assets/images/deer.png');
 
-
   Widget _buildText() => Expanded(
-    child: Text(
+        child: Text(
           'Let’s keep going — you’re more than halfway there!',
           maxLines: 2,
           style: style14DG400,
         ),
-  );
+      );
 }

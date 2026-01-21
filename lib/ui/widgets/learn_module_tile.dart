@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/learn_module/learn_module_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
+import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
 import '../common/app_colors.dart';
 import '../common/enmus.dart';
@@ -35,27 +36,45 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
     }
   }
 
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        backgroundColor: kcTransparent,
+        builder: (_) => _buildSheet(viewModel),
+      );
+
   @override
   Widget build(BuildContext context, LearnModuleViewModel viewModel) =>
-      _buildExpansionTileCard(viewModel);
+      _buildExpansionTileCard(context: context, viewModel: viewModel);
 
-  Widget _buildExpansionTileCard(LearnModuleViewModel viewModel) => Container(
+  Widget _buildExpansionTileCard(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      Container(
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           border: Border.all(color: kcVeryLightGrey),
         ),
-        child: _buildTileStack(viewModel),
+        child: _buildTileStack(context: context, viewModel: viewModel),
       );
 
-  Widget _buildTileStack(LearnModuleViewModel viewModel) => Stack(
+  Widget _buildTileStack(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      Stack(
         children: [
-          _buildExpansionTile(viewModel),
-          _buildContainerShaderWrapper()
+          _buildExpansionTile(context: context, viewModel: viewModel),
+          _buildContainerShaderState()
         ],
       );
 
-  Widget _buildExpansionTile(LearnModuleViewModel viewModel) => ExpansionTile(
+  Widget _buildExpansionTile(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      ExpansionTile(
         textColor: kcDarkGrey,
         title: _buildTitle(),
         subtitle: _buildContent(),
@@ -73,7 +92,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         childrenPadding: const EdgeInsets.fromLTRB(70, 15, 15, 15),
         showTrailingIcon: status != ProgressStatuses.pending ? true : false,
         initiallyExpanded: status == ProgressStatuses.started ? true : false,
-        children: _buildExpansionTileChildren(viewModel),
+        children:
+            _buildExpansionTileChildren(context: context, viewModel: viewModel),
       );
 
   Widget _buildIconWrapper() => CircleAvatar(
@@ -102,21 +122,28 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         ),
       );
 
-  List<Widget> _buildExpansionTileChildren(LearnModuleViewModel viewModel) =>
-      [_buildExpansionTileItem(viewModel)];
+  List<Widget> _buildExpansionTileChildren(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      [_buildExpansionTileItem(context: context, viewModel: viewModel)];
 
-  Widget _buildExpansionTileItem(LearnModuleViewModel viewModel) => Column(
+  Widget _buildExpansionTileItem(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildExpansionTileItemChildren(viewModel),
+        children: _buildExpansionTileItemChildren(
+            context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildExpansionTileItemChildren(
-          LearnModuleViewModel viewModel) =>
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
       [
         _buildProgressRow(),
         verticalSpaceSmall,
-        _buildActionButtonWrapper(viewModel)
+        _buildActionButtonWrapper(context: context, viewModel: viewModel)
       ];
 
   Widget _buildProgressRow() => Row(
@@ -141,16 +168,22 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         style: TextStyle(color: kcDarkGrey),
       );
 
-  Widget _buildActionButtonWrapper(LearnModuleViewModel viewModel) => SizedBox(
+  Widget _buildActionButtonWrapper(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      SizedBox(
         height: 40,
-        child: _buildActionButtons(viewModel),
+        child: _buildActionButtons(context: context, viewModel: viewModel),
       );
 
-  Widget _buildActionButtons(LearnModuleViewModel viewModel) => Row(
+  Widget _buildActionButtons(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      Row(
         children: [
           _buildLessonButtonWrapper(viewModel),
           horizontalSpaceSmall,
-          _buildPracticeButtonWrapper(viewModel)
+          _buildPracticeButtonWrapper(context: context, viewModel: viewModel)
         ],
       );
 
@@ -159,30 +192,43 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       );
 
   Widget _buildLessonButton(LearnModuleViewModel viewModel) =>
-      const CustomElevatedButton(
+       CustomElevatedButton(
         height: 15,
         borderRadius: 12,
         text: 'View Lessons',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        //onTap: () async => await viewModel.navigateToLearnModule(),
+        onTap: () async => await viewModel.navigateToLearnLesson(),
       );
 
-  Widget _buildPracticeButtonWrapper(LearnModuleViewModel viewModel) =>
+  Widget _buildPracticeButtonWrapper(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
       Expanded(
-        child: _buildPracticeButton(viewModel),
+        child: _buildPracticeButton(context: context, viewModel: viewModel),
       );
 
-  Widget _buildPracticeButton(LearnModuleViewModel viewModel) =>
-      const CustomElevatedButton(
+  Widget _buildPracticeButton(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      CustomElevatedButton(
         height: 15,
         borderRadius: 12,
         text: 'View Practices',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
-        // onTap: () async => await viewModel.navigateToLearnLevel(),
+        onTap: () async =>
+            await _showSheet(context: context, viewModel: viewModel),
       );
+
+  Widget _buildSheet(LearnModuleViewModel viewModel) => FinishPracticeSheet(
+        onTap: viewModel.pop,
+      );
+
+  Widget _buildContainerShaderState() => status == ProgressStatuses.pending
+      ? _buildContainerShaderWrapper()
+      : Container();
 
   Widget _buildContainerShaderWrapper() => Positioned.fill(
         child: _buildContainerShader(),
@@ -190,8 +236,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
 
   Widget _buildContainerShader() => Container(
         decoration: BoxDecoration(
+          color: kcWhite.withOpacity(0.5),
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: kcWhite.withOpacity(0.75)),
         ),
       );
 }

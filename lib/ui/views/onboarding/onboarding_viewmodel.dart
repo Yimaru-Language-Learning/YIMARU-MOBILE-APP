@@ -83,8 +83,8 @@ class OnboardingViewModel extends FormViewModel {
 
   String get selectedRegion => _selectedRegion;
 
-  Future<List<String>> getRegions(String country) async =>
-      [ 'Afar',
+  Future<List<String>> getRegions(String country) async => [
+        'Afar',
         'SNNPR',
         'Amhara',
         'Harari',
@@ -98,7 +98,6 @@ class OnboardingViewModel extends FormViewModel {
         'Central Ethiopia',
         'Benishangul-Gumuz',
         'South West Ethiopia',
-
       ];
 
   // Learning goal

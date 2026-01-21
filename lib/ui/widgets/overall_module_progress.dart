@@ -40,12 +40,12 @@ class OverallModuleProgress extends StatelessWidget {
   List<Widget> _buildProgressInfoChildren() =>
       [_buildProgressInfo(), _buildProgress()];
 
-  Widget _buildProgressInfo() =>  Text(
+  Widget _buildProgressInfo() => Text(
         'Overall Progress',
         style: style16DG600,
       );
 
-  Widget _buildProgress() =>  Text(
+  Widget _buildProgress() => Text(
         '35%',
         style: style14P400,
       );

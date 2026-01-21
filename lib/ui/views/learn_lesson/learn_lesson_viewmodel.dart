@@ -19,7 +19,6 @@ class LearnLessonViewModel extends BaseViewModel {
       'status': ProgressStatuses.completed,
       'thumbnail': 'assets/images/image_1.png',
       'title': '1.2 Talking About Your Surroundings',
-
     },
     {
       'status': ProgressStatuses.pending,
@@ -29,7 +28,6 @@ class LearnLessonViewModel extends BaseViewModel {
   ];
 
   List<Map<String, dynamic>> get lessons => _lessons;
-
 
   // Navigation
   void pop() => _navigationService.back();

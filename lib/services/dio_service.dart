@@ -130,13 +130,13 @@ class DioService {
     if (user.refreshToken == null) return false;
 
     try {
-      Map<String,dynamic> data =  {
+      Map<String, dynamic> data = {
         'role': 'STUDENT',
         'user_id': user.userId,
         'access_token': user.accessToken,
         'refresh_token': user.refreshToken
       };
-print(data);
+      print(data);
       final response = await _refreshDio.post(
         '$baseUrl/$kRefreshTokenUrl',
         data: data,
