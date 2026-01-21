@@ -1,0 +1,80 @@
+import 'package:yimaru_app/ui/bottom_sheets/notice/notice_sheet.dart';
+import 'package:yimaru_app/ui/dialogs/info_alert/info_alert_dialog.dart';
+import 'package:yimaru_app/ui/views/home/home_view.dart';
+import 'package:stacked/stacked_annotations.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/ui/views/onboarding/onboarding_view.dart';
+import 'package:yimaru_app/ui/views/startup/startup_view.dart';
+import 'package:yimaru_app/ui/views/profile/profile_view.dart';
+import 'package:yimaru_app/ui/views/profile_detail/profile_detail_view.dart';
+import 'package:yimaru_app/ui/views/downloads/downloads_view.dart';
+import 'package:yimaru_app/ui/views/progress/progress_view.dart';
+import 'package:yimaru_app/ui/views/ongoing_progress/ongoing_progress_view.dart';
+import 'package:yimaru_app/ui/views/account_privacy/account_privacy_view.dart';
+import 'package:yimaru_app/ui/views/support/support_view.dart';
+import 'package:yimaru_app/ui/views/telegram_support/telegram_support_view.dart';
+import 'package:yimaru_app/ui/views/call_support/call_support_view.dart';
+import 'package:yimaru_app/ui/views/language/language_view.dart';
+import 'package:yimaru_app/ui/views/privacy_policy/privacy_policy_view.dart';
+import 'package:yimaru_app/ui/views/terms_and_conditions/terms_and_conditions_view.dart';
+import 'package:yimaru_app/ui/views/register/register_view.dart';
+import 'package:yimaru_app/ui/views/login/login_view.dart';
+import 'package:yimaru_app/ui/views/learn/learn_view.dart';
+import 'package:yimaru_app/ui/views/learn_level/learn_level_view.dart';
+import 'package:yimaru_app/ui/views/learn_module/learn_module_view.dart';
+import 'package:yimaru_app/services/authentication_service.dart';
+import 'package:yimaru_app/services/api_service.dart';
+import 'package:yimaru_app/services/secure_storage_service.dart';
+import 'package:yimaru_app/services/dio_service.dart';
+import 'package:yimaru_app/services/status_checker_service.dart';
+import 'package:yimaru_app/ui/views/welcome/welcome_view.dart';
+import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
+// @stacked-import
+
+@StackedApp(
+  routes: [
+    MaterialRoute(page: HomeView),
+    MaterialRoute(page: OnboardingView),
+    MaterialRoute(page: StartupView),
+    MaterialRoute(page: ProfileView),
+    MaterialRoute(page: ProfileDetailView),
+    MaterialRoute(page: DownloadsView),
+    MaterialRoute(page: ProgressView),
+    MaterialRoute(page: OngoingProgressView),
+    MaterialRoute(page: AccountPrivacyView),
+    MaterialRoute(page: SupportView),
+    MaterialRoute(page: TelegramSupportView),
+    MaterialRoute(page: CallSupportView),
+    MaterialRoute(page: LanguageView),
+    MaterialRoute(page: PrivacyPolicyView),
+    MaterialRoute(page: TermsAndConditionsView),
+    MaterialRoute(page: RegisterView),
+    MaterialRoute(page: LoginView),
+    MaterialRoute(page: LearnView),
+    MaterialRoute(page: LearnLevelView),
+    MaterialRoute(page: LearnModuleView),
+    MaterialRoute(page: WelcomeView),
+    MaterialRoute(page: AssessmentView),
+// @stacked-route
+  ],
+  dependencies: [
+    LazySingleton(classType: BottomSheetService),
+    LazySingleton(classType: DialogService),
+    LazySingleton(classType: NavigationService),
+    LazySingleton(classType: AuthenticationService),
+    LazySingleton(classType: ApiService),
+    LazySingleton(classType: SecureStorageService),
+    LazySingleton(classType: DioService),
+    LazySingleton(classType: StatusCheckerService),
+// @stacked-service
+  ],
+  bottomsheets: [
+    StackedBottomsheet(classType: NoticeSheet),
+    // @stacked-bottom-sheet
+  ],
+  dialogs: [
+    StackedDialog(classType: InfoAlertDialog),
+    // @stacked-dialog
+  ],
+)
+class App {}
