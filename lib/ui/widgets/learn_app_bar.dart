@@ -1,10 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../common/app_colors.dart';
 
 class LearnAppBar extends StatelessWidget {
-  const LearnAppBar({super.key});
+  final String? name;
+  final String? profileImage;
+
+  const LearnAppBar(
+      {super.key, required this.name, required this.profileImage});
 
   @override
   Widget build(BuildContext context) => _buildStack();
@@ -30,9 +35,22 @@ class LearnAppBar extends StatelessWidget {
   List<Widget> _buildProfileRowChildren() =>
       [_buildProfileImage(), horizontalSpaceSmall, _buildGreetingTextColumn()];
 
-  Widget _buildProfileImage() => const CircleAvatar(
+  Widget _buildProfileImage() => CircleAvatar(
         radius: 25,
-        backgroundImage: AssetImage('assets/images/profile.png'),
+        backgroundColor: kcPrimaryColor,
+        backgroundImage: profileImage != null
+            ? CachedNetworkImageProvider(profileImage!)
+            : null,
+        child: _buildImageBuilder(),
+      );
+
+  Widget? _buildImageBuilder() =>
+      profileImage == null ? _buildPersonIcon() : null;
+
+  Widget _buildPersonIcon() => const Icon(
+        Icons.person,
+        size: 30,
+        color: kcWhite,
       );
 
   Widget _buildGreetingTextColumn() => Column(
@@ -44,28 +62,19 @@ class LearnAppBar extends StatelessWidget {
   List<Widget> _buildGreetingChildren() =>
       [_buildGreetingTitle(), _buildSubTitle()];
 
-  Widget _buildGreetingTitle() => const Text.rich(
-        TextSpan(
-            text: 'Hello,',
-            style: TextStyle(
-              color: kcDarkGrey,
-              fontWeight: FontWeight.w600,
-            ),
-            children: [
-              TextSpan(
-                text: ' Bisrat!',
-                style: TextStyle(
-                  color: kcPrimaryColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            ]),
+  Widget _buildGreetingTitle() => Text.rich(
+        TextSpan(text: 'Hello,', style: style14DG600, children: [
+          TextSpan(
+            text: ' $name!',
+            style: style14P600,
+          )
+        ]),
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubTitle() => Text(
         'Ready to keep learning English today?',
         textAlign: TextAlign.center,
-        style: TextStyle(color: kcMediumGrey),
+        style: style14DG400,
       );
 
   Widget _buildNotificationIconWrapper() =>

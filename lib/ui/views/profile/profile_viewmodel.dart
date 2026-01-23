@@ -3,12 +3,17 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../models/user_model.dart';
 import '../../../services/authentication_service.dart';
 
 class ProfileViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
 
   final _authenticationService = locator<AuthenticationService>();
+
+  late final UserModel? _user = _authenticationService.user;
+
+  UserModel? get user => _user;
 
   Future<void> logOut() async {
     await _authenticationService.logOut();

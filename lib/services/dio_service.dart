@@ -125,18 +125,17 @@ class DioService {
   }
 
   Future<bool> _refreshToken() async {
-    final UserModel user = await _authenticationService.getUser();
+    final UserModel? user = await _authenticationService.getUser();
 
-    if (user.refreshToken == null) return false;
+    if (user?.refreshToken == null) return false;
 
     try {
       Map<String, dynamic> data = {
         'role': 'STUDENT',
-        'user_id': user.userId,
-        'access_token': user.accessToken,
-        'refresh_token': user.refreshToken
+        'user_id': user?.userId,
+        'access_token': user?.accessToken,
+        'refresh_token': user?.refreshToken
       };
-      print(data);
       final response = await _refreshDio.post(
         '$baseUrl/$kRefreshTokenUrl',
         data: data,
@@ -150,8 +149,6 @@ class DioService {
         ),
       );
 
-      print('Refresh response');
-      print(response.data);
       await _authenticationService.saveTokens(
         access: response.data['access_token'],
         refresh: response.data['refresh_token'],
@@ -159,10 +156,8 @@ class DioService {
 
       return true;
     } catch (e) {
-      print('Refresh response exception');
-      print(e.toString());
-      // await _authenticationService.logOut();
-      // await _navigationService.replaceWithLoginView();
+      await _authenticationService.logOut();
+      await _navigationService.replaceWithLoginView();
       return false;
     }
   }

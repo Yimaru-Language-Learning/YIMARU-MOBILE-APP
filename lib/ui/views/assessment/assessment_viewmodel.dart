@@ -5,16 +5,20 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
+import '../../../app/app.dialogs.dart';
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
 import '../../../models/assessment.dart';
 import '../../../models/user_model.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
+import '../../common/app_colors.dart';
+import '../../common/ui_helpers.dart';
 import '../home/home_view.dart';
 
 class AssessmentViewModel extends BaseViewModel {
   final _apiService = locator<ApiService>();
+  final _dialogService = locator<DialogService>();
   final _navigationService = locator<NavigationService>();
   final _authenticationService = locator<AuthenticationService>();
 
@@ -73,9 +77,6 @@ class AssessmentViewModel extends BaseViewModel {
     if (_currentQuestion == 5) {
       // A1
       final correctCount = countCorrectAnswersUntil(5);
-      print('All : $_selectedAnswers');
-      print('Question page : $_currentQuestion');
-      print('Correct A1: $correctCount');
 
       if (correctCount > 3) {
         return {'continue': true, 'level': ProficiencyLevels.a1};
@@ -86,9 +87,6 @@ class AssessmentViewModel extends BaseViewModel {
       // A2
 
       final correctCount = countCorrectAnswersUntil(10);
-      print('All : $_selectedAnswers');
-      print('Question page : $_currentQuestion');
-      print('Correct A2: $correctCount');
 
       if (correctCount > 3) {
         return {'continue': true, 'level': ProficiencyLevels.a2};
@@ -98,9 +96,6 @@ class AssessmentViewModel extends BaseViewModel {
     } else if (_currentQuestion == 16) {
       // B1
       final correctCount = countCorrectAnswersUntil(16);
-      print('All : $_selectedAnswers');
-      print('Question page : $_currentQuestion');
-      print('Correct B1: $correctCount');
 
       if (correctCount > 4) {
         return {'continue': true, 'level': ProficiencyLevels.b1};
@@ -109,9 +104,6 @@ class AssessmentViewModel extends BaseViewModel {
       }
     } else if (_currentQuestion == 22) {
       final correctCount = countCorrectAnswersUntil(16);
-      print('All : $_selectedAnswers');
-      print('Question page : $_currentQuestion');
-      print('Correct B2: $correctCount');
 
       if (correctCount > 4) {
         return {'continue': true, 'level': ProficiencyLevels.b2};
@@ -178,17 +170,26 @@ class AssessmentViewModel extends BaseViewModel {
   }
 
   // Complete profile
-  Future<void> completeProfile() async {
-    Map<String, dynamic> response =
-        await runBusyFuture<Map<String, dynamic>>(_completeProfile());
+
+  Future<void> saveProfileCompleted() async {
+    Map<String, dynamic> data = {'firstName': _userData['firstName']};
+    await _authenticationService.saveFullName(data);
   }
 
+  Future<void> completeProfile() async =>
+      await runBusyFuture<Map<String, dynamic>>(_completeProfile());
+
   Future<Map<String, dynamic>> _completeProfile() async {
-    print(_userData);
-    UserModel user = await _authenticationService.getUser();
+    UserModel? user = await _authenticationService.getUser();
     Map<String, dynamic> response =
         await _apiService.updateProfile(data: _userData, user: user);
-
+    if (response['status'] == ResponseStatus.success) {
+      showSuccessToast(response['message']);
+      await saveProfileCompleted();
+      await replaceWithHome();
+    } else {
+      showErrorToast(response['message']);
+    }
     return response;
   }
 
@@ -203,8 +204,7 @@ class AssessmentViewModel extends BaseViewModel {
     } else {
       if (response['continue']) {
         _pageController.jumpToPage(_currentQuestion);
-      }
-      {
+      } else {
         _proficiencyLevel = response['level'];
         next();
       }
@@ -218,8 +218,6 @@ class AssessmentViewModel extends BaseViewModel {
       _pageController.previousPage(
           duration: const Duration(microseconds: 100), curve: Curves.linear);
       rebuildUi();
-    } else {
-      _navigationService.back();
     }
   }
 
@@ -238,9 +236,31 @@ class AssessmentViewModel extends BaseViewModel {
   }
 
   void pop() {
-    if (_currentPage != 0) {
+    if (_currentPage == 3 /*7*/) {
+      _navigationService.back();
+    } else if (_currentPage != 0 && _currentPage != 3) {
       _currentPage--;
       rebuildUi();
+    }
+  }
+
+  Future<bool?> showAbortDialog() async {
+    DialogResponse? response = await _dialogService.showDialog(
+      cancelTitle: 'No',
+      buttonTitle: 'Yes',
+      barrierDismissible: true,
+      title: 'Abort Assessment',
+      cancelTitleColor: kcDarkGrey,
+      buttonTitleColor: kcPrimaryColor,
+      description: 'Are you sure to abort the assessment ?',
+    );
+    return response?.confirmed;
+  }
+
+  Future<void> abort() async {
+    bool? response = await showAbortDialog();
+    if (response != null && response) {
+      next(page: 3);
     }
   }
 

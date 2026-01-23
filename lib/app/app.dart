@@ -30,6 +30,8 @@ import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/views/welcome/welcome_view.dart';
 import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
 import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_view.dart';
+import 'package:yimaru_app/ui/views/failure/failure_view.dart';
+import 'package:yimaru_app/services/image_picker_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -57,6 +59,7 @@ import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_view.dart';
     MaterialRoute(page: WelcomeView),
     MaterialRoute(page: AssessmentView),
     MaterialRoute(page: LearnLessonView),
+    MaterialRoute(page: FailureView),
 // @stacked-route
   ],
   dependencies: [
@@ -68,6 +71,7 @@ import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_view.dart';
     LazySingleton(classType: SecureStorageService),
     LazySingleton(classType: DioService),
     LazySingleton(classType: StatusCheckerService),
+    LazySingleton(classType: ImagePickerService),
 // @stacked-service
   ],
   bottomsheets: [

@@ -47,7 +47,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
         children: [
           verticalSpaceMedium,
           _buildNotificationIconWrapper(),
-          _buildProfileSection(),
+          _buildProfileSection(viewModel),
           verticalSpaceSmall,
           _buildViewProfileButton(viewModel),
           verticalSpaceLarge,
@@ -66,27 +66,25 @@ class ProfileView extends StackedView<ProfileViewModel> {
         color: kcDarkGrey,
       );
 
-  Widget _buildProfileSection() => Column(
+  Widget _buildProfileSection(ProfileViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: _buildProfileSectionChildren(),
+        children: _buildProfileSectionChildren(viewModel),
       );
 
-  List<Widget> _buildProfileSectionChildren() => [
-        _buildProfileImage(),
+  List<Widget> _buildProfileSectionChildren(ProfileViewModel viewModel) => [
+        _buildProfileImage(viewModel),
         verticalSpaceSmall,
-        _buildProfileName(),
+        _buildProfileName(viewModel),
       ];
 
-  Widget _buildProfileImage() => const ProfileImage();
+  Widget _buildProfileImage(ProfileViewModel viewModel) => ProfileImage(
+        profileImage: viewModel.user?.profileImage,
+      );
 
-  Widget _buildProfileName() => const Text(
-        'Hi, Bisrat 👋',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+  Widget _buildProfileName(ProfileViewModel viewModel) => Text(
+        'Hi, ${viewModel.user?.firstName ?? ''} 👋',
+        style: style25DG600,
       );
 
   Widget _buildViewProfileButton(ProfileViewModel viewModel) =>

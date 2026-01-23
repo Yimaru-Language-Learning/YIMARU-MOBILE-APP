@@ -246,7 +246,7 @@ class RegisterViewModel extends FormViewModel {
       //   'refreshToken': 'refreshToken'
       // }
 
-      await _authenticationService.saveUserData(data);
+      await _authenticationService.saveBasicUserData(data);
       showSuccessToast(response['message']);
     } else {
       showErrorToast(response['message']);

@@ -171,15 +171,9 @@ PinTheme errorPinTheme = defaultPin.copyBorderWith(
   border: Border.all(color: Colors.red),
 );
 
-TextStyle validationStyle = const TextStyle(
-  fontSize: 12,
-  color: Colors.red,
-  fontWeight: FontWeight.w700,
-);
-
-TextStyle style25DG600 = const TextStyle(
-  fontSize: 25,
-  color: kcDarkGrey,
+TextStyle style18P600 = const TextStyle(
+  fontSize: 18,
+  color: kcPrimaryColor,
   fontWeight: FontWeight.w600,
 );
 
@@ -187,6 +181,21 @@ TextStyle style12R700 = const TextStyle(
   fontSize: 12,
   color: Colors.red,
   fontWeight: FontWeight.w700,
+);
+
+TextStyle style14P400 = const TextStyle(
+  color: kcPrimaryColor,
+);
+
+TextStyle style14P600 = const TextStyle(
+  color: kcPrimaryColor,
+  fontWeight: FontWeight.w600,
+);
+
+TextStyle style25DG600 = const TextStyle(
+  fontSize: 25,
+  color: kcDarkGrey,
+  fontWeight: FontWeight.w600,
 );
 
 TextStyle style16DG600 = const TextStyle(
@@ -210,13 +219,15 @@ TextStyle style14DG400 = const TextStyle(
   color: kcDarkGrey,
 );
 
-TextStyle style14P400 = const TextStyle(
-  color: kcPrimaryColor,
+TextStyle style14DG600 = const TextStyle(
+  color: kcDarkGrey,
+  fontWeight: FontWeight.w600,
 );
 
-TextStyle style14P600 = const TextStyle(
-  color: kcPrimaryColor,
-  fontWeight: FontWeight.w600,
+TextStyle validationStyle = const TextStyle(
+  fontSize: 12,
+  color: Colors.red,
+  fontWeight: FontWeight.w700,
 );
 
 Style htmlDefaultStyle = Style(color: kcDarkGrey, fontSize: FontSize(16));

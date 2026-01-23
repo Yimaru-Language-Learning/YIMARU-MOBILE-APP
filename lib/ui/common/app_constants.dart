@@ -1,7 +1,9 @@
 String baseUrl = 'http://195.35.29.82:8080';
 //String baseUrl = 'https://api.yimaru.yaltopia.com';
 
-String userUrl = 'api/v1/user';
+String kGetUserUrl = 'single';
+
+String kUserUrl = 'api/v1/user';
 
 String kRegisterUrl = 'register';
 

@@ -45,9 +45,10 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
       [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
 
   Widget _buildAppBar(AssessmentViewModel viewModel) => LargeAppBar(
-        showBackButton: true,
+        onClose: viewModel.abort,
         showLanguageSelection: false,
         onPop: viewModel.previousQuestion,
+        showBackButton: viewModel.currentQuestion == 0 ? false : true,
       );
 
   Widget _buildExpandedBody(AssessmentViewModel viewModel) =>

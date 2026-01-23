@@ -5,6 +5,10 @@ import 'package:yimaru_app/services/secure_storage_service.dart';
 class AuthenticationService {
   final _secureService = locator<SecureStorageService>();
 
+  UserModel? _user;
+
+  UserModel? get user => _user;
+
   Future<bool> userLoggedIn() async {
     if (await _secureService.getString('userId') != null) {
       return true;
@@ -28,14 +32,56 @@ class AuthenticationService {
     await _secureService.setString('refreshToken', refresh);
   }
 
-  Future<void> saveUserData(Map<String, dynamic> data) async {
+  Future<void> saveUserName(Map<String, dynamic> data) async {
+    await _secureService.setString('firstName', data['firstName']);
+    _user = UserModel(
+        firstName: await _secureService.getString('firstName'),
+        userId: _user?.userId,
+        accessToken: _user?.accessToken,
+        refreshToken: _user?.refreshToken,
+        profileCompleted: _user?.profileCompleted);
+  }
+
+  Future<void> saveBasicUserData(Map<String, dynamic> data) async {
     await _secureService.setInt('userId', data['userId']);
     await _secureService.setString('accessToken', data['accessToken']);
     await _secureService.setString('refreshToken', data['refreshToken']);
+
+    _user = UserModel(
+      firstName: _user?.firstName,
+      profileImage: _user?.profileImage,
+      profileCompleted: _user?.profileCompleted,
+      userId: await _secureService.getInt('userId'),
+      accessToken: await _secureService.getString('accessToken'),
+      refreshToken: await _secureService.getString('refreshToken'),
+    );
   }
 
-  Future<void> saveProfileCompleted(bool value) async {
+  Future<void> saveProfileStatus(bool value) async {
     await _secureService.setBool('profileCompleted', value);
+
+    _user = UserModel(
+        userId: _user?.userId,
+        firstName: _user?.firstName,
+        accessToken: _user?.accessToken,
+        refreshToken: _user?.refreshToken,
+        profileImage: _user?.profileImage,
+        profileCompleted: await _secureService.getBool('profileCompleted'));
+  }
+
+  Future<void> saveProfileImage() async {}
+
+  Future<void> saveFullName(Map<String, dynamic> data) async {
+    await _secureService.setBool('profileCompleted', true);
+    await _secureService.setString('firstName', data['firstName']);
+    _user = UserModel(
+      userId: _user?.userId,
+      accessToken: _user?.accessToken,
+      refreshToken: _user?.refreshToken,
+      profileImage: _user?.profileImage,
+      firstName: await _secureService.getString('firstName'),
+      profileCompleted: await _secureService.getBool('profileCompleted'),
+    );
   }
 
   Future<bool> isFirstTimeInstall() async =>
@@ -45,14 +91,16 @@ class AuthenticationService {
     await _secureService.setBool('firstTimeInstall', value);
   }
 
-  Future<UserModel> getUser() async {
-    UserModel user = UserModel(
+  Future<UserModel?> getUser() async {
+    _user = UserModel(
       userId: await _secureService.getInt('userId'),
+      firstName: await _secureService.getString('firstName'),
       accessToken: await _secureService.getString('accessToken'),
       refreshToken: await _secureService.getString('refreshToken'),
+      profileImage: await _secureService.getString('profileImage'),
       profileCompleted: await _secureService.getBool('profileCompleted'),
     );
-    return user;
+    return _user;
   }
 
   Future<void> logOut() async {

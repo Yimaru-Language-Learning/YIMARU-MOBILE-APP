@@ -14,6 +14,7 @@ import 'package:stacked_shared/stacked_shared.dart';
 import '../services/api_service.dart';
 import '../services/authentication_service.dart';
 import '../services/dio_service.dart';
+import '../services/image_picker_service.dart';
 import '../services/secure_storage_service.dart';
 import '../services/status_checker_service.dart';
 
@@ -36,4 +37,5 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => SecureStorageService());
   locator.registerLazySingleton(() => DioService());
   locator.registerLazySingleton(() => StatusCheckerService());
+  locator.registerLazySingleton(() => ImagePickerService());
 }

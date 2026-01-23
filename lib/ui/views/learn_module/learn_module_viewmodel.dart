@@ -37,5 +37,6 @@ class LearnModuleViewModel extends BaseViewModel {
 
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnLesson() async=> await _navigationService.navigateToLearnLessonView();
+  Future<void> navigateToLearnLesson() async =>
+      await _navigationService.navigateToLearnLessonView();
 }

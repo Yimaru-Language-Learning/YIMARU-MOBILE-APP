@@ -17,6 +17,8 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     Map<String, dynamic> data = {
+      'profile_completed': true,
+      'preferred_language': 'en',
       'favoutite_topic': viewModel.selectedTopic ?? topicController.text,
     };
     viewModel.addUserData(data);

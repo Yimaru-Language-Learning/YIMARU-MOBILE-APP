@@ -7,6 +7,7 @@ import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
 import '../../../common/enmus.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../assessment_viewmodel.dart';
 
 class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
@@ -15,13 +16,11 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
   Future<void> _start(AssessmentViewModel viewModel) async {
     if (viewModel.proficiencyLevel != ProficiencyLevels.none) {
       Map<String, dynamic> data = {
-        'preferred_language': 'en',
         'knowledge_level': viewModel.proficiencyLevel.name.toUpperCase()
       };
 
       viewModel.addUserData(data);
     }
-
     await viewModel.completeProfile();
   }
 
@@ -31,8 +30,11 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildScaffoldWrapper(AssessmentViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldStack(viewModel),
       );
+
+  Widget _buildScaffoldStack(AssessmentViewModel viewModel) =>
+      Stack(children: [_buildScaffold(viewModel), _buildState(viewModel)]);
 
   Widget _buildScaffold(AssessmentViewModel viewModel) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,11 +42,12 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) =>
-      [_buildAppBar(), _buildExpandedBody(viewModel)];
+      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
 
-  Widget _buildAppBar() => const LargeAppBar(
-        showBackButton: false,
-        showLanguageSelection: false,
+  Widget _buildAppBar(AssessmentViewModel viewModel) => LargeAppBar(
+        showBackButton: true,
+        onPop: viewModel.pop,
+        showLanguageSelection: true,
       );
 
   Widget _buildExpandedBody(AssessmentViewModel viewModel) =>
@@ -114,10 +117,13 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
   Widget _buildContinueButton(AssessmentViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        text: 'Finish',
         borderRadius: 12,
-        text: 'Go to My Lessons',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _start(viewModel),
       );
+
+  Widget _buildState(AssessmentViewModel viewModel) =>
+      viewModel.isBusy ? const PageLoadingIndicator() : Container();
 }

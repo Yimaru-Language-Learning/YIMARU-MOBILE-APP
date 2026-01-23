@@ -54,10 +54,13 @@ class OnboardingViewModel extends FormViewModel {
 
   // Age group
   final List<String> _ageGroups = [
-    '8-14',
-    '15-18',
-    '19-26',
-    '26+',
+    'UNDER_13',
+    '13_17',
+    '18_24',
+    '25_34',
+    '35_44',
+    '45_54',
+    '55_PLUS'
   ];
 
   List<String> get ageGroups => _ageGroups;
@@ -352,7 +355,6 @@ class OnboardingViewModel extends FormViewModel {
   // Add user data
   void addUserData(Map<String, dynamic> data) {
     _userData.addAll(data);
-    print('User data : $_userData');
   }
 
   void clearUserData() {
@@ -385,7 +387,7 @@ class OnboardingViewModel extends FormViewModel {
   }
 
   void pop() {
-    if (_currentPage == 8) {
+    if (_currentPage == 0) {
       _navigationService.back();
     } else {
       _currentPage--;

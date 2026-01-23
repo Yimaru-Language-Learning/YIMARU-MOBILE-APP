@@ -15,8 +15,9 @@ class HomeView extends StackedView<HomeViewModel> {
   HomeViewModel viewModelBuilder(BuildContext context) => HomeViewModel();
 
   @override
-  void onViewModelReady(HomeViewModel viewModel) {
-    viewModel.getProfileStatus();
+  void onViewModelReady(HomeViewModel viewModel) async {
+    await viewModel.getProfileStatus();
+    await viewModel.getProfileData();
     super.onViewModelReady(viewModel);
   }
 

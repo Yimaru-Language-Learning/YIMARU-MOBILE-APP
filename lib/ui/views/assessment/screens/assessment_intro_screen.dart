@@ -58,7 +58,8 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
       ];
 
   Widget _buildAppBar(AssessmentViewModel viewModel) => LargeAppBar(
-        showBackButton: false,
+        showBackButton: true,
+        onPop: viewModel.pop,
         showLanguageSelection: true,
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );

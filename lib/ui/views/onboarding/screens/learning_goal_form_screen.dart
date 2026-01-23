@@ -93,13 +93,16 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
-  Widget _buildTitle(OnboardingViewModel viewModel) => Text(
-        'Hi ${viewModel.userData['first_name']}, Choose your learning goal.',
-        style: const TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+  Widget _buildTitle(OnboardingViewModel viewModel) => Text.rich(
+        TextSpan(
+            text: 'Hi ${viewModel.userData['first_name']},',
+            style: style18P600.copyWith(fontSize: 22),
+            children: [
+              TextSpan(
+                text: ' Choose your learning goal.',
+                style: style16DG600.copyWith(fontSize: 22),
+              )
+            ]),
       );
 
   Widget _buildLearningGoals(OnboardingViewModel viewModel) => ListView.builder(

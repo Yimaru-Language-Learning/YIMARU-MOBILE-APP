@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 
 class ProfileImage extends StatelessWidget {
-  const ProfileImage({super.key});
+  final String? profileImage;
+  const ProfileImage({super.key, required this.profileImage});
 
   @override
   Widget build(BuildContext context) => _buildSizedBox();
@@ -22,9 +24,22 @@ class ProfileImage extends StatelessWidget {
         child: _buildProfileImage(),
       );
 
-  Widget _buildProfileImage() => const CircleAvatar(
+  Widget _buildProfileImage() => CircleAvatar(
         radius: 50,
-        backgroundImage: AssetImage('assets/images/profile.png'),
+        backgroundColor: kcPrimaryColor,
+        backgroundImage: profileImage != null
+            ? CachedNetworkImageProvider(profileImage!)
+            : null,
+        child: _buildImageBuilder(),
+      );
+
+  Widget? _buildImageBuilder() =>
+      profileImage == null ? _buildPersonIcon() : null;
+
+  Widget _buildPersonIcon() => const Icon(
+        Icons.person,
+        size: 50,
+        color: kcWhite,
       );
 
   Widget _buildCameraButtonWrapper() => Align(

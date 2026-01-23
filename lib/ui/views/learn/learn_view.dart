@@ -38,12 +38,15 @@ class LearnView extends StackedView<LearnViewModel> {
   Widget _buildColumn(LearnViewModel viewModel) => Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(),
+          _buildAppBar(viewModel),
           _buildLevelsColumnWrapper(viewModel)
         ],
       );
 
-  Widget _buildAppBar() => const LearnAppBar();
+  Widget _buildAppBar(LearnViewModel viewModel) => LearnAppBar(
+        name: viewModel.user?.firstName,
+        profileImage: viewModel.user?.profileImage,
+      );
 
   Widget _buildLevelsColumnWrapper(LearnViewModel viewModel) =>
       Expanded(child: _buildLevelsColumnScrollView(viewModel));

@@ -101,7 +101,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   List<Widget> _buildColumnChildren(ProfileDetailViewModel viewModel) => [
         verticalSpaceMedium,
-        _buildProfileImage(),
+        _buildProfileImageWrapper(viewModel),
         verticalSpaceMedium,
         _buildNameFormSection(viewModel),
         verticalSpaceMedium,
@@ -120,9 +120,12 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         _buildLowerColumn(viewModel)
       ];
 
-  Widget _buildProfileImage() =>
-      const Align(alignment: Alignment.center, child: ProfileImage());
+  Widget _buildProfileImageWrapper(ProfileDetailViewModel viewModel) =>
+      Align(alignment: Alignment.center, child: _buildProfileImage(viewModel));
 
+  Widget _buildProfileImage(ProfileDetailViewModel viewModel) => ProfileImage(
+        profileImage: viewModel.user?.profileImage,
+      );
   Widget _buildNameFormSection(ProfileDetailViewModel viewModel) => Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildNameFormChildren(viewModel),

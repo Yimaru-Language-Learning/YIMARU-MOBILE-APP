@@ -57,7 +57,7 @@ class OnboardingView extends StackedView<OnboardingViewModel>
 
   Widget _buildOnboardingScreensWrapper(OnboardingViewModel viewModel) =>
       PopScope(
-          canPop: false,
+          canPop: viewModel.currentPage == 0 ? true : false,
           onPopInvokedWithResult: (value, data) => viewModel.pop(),
           child: _buildOnboardingScreens(viewModel));
 

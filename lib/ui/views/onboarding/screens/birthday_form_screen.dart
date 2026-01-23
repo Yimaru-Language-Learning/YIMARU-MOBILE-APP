@@ -15,11 +15,7 @@ class BirthdayFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    Map<String, dynamic> data = {
-      'birth_day': DateFormat('yyyy-MM-dd')
-          .parseUTC(viewModel.selectedBirthday ?? DateTime.now().toString())
-          .toIso8601String()
-    };
+    Map<String, dynamic> data = {'birth_day': viewModel.selectedBirthday};
     viewModel.addUserData(data);
     viewModel.next();
   }

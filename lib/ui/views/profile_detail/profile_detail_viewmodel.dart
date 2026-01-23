@@ -2,9 +2,18 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../models/user_model.dart';
+import '../../../services/authentication_service.dart';
 
 class ProfileDetailViewModel extends FormViewModel {
   final _navigationService = locator<NavigationService>();
+
+  final _authenticationService = locator<AuthenticationService>();
+
+  late final UserModel? _user = _authenticationService.user;
+
+  UserModel? get user => _user;
+
   // First name
   bool _focusFirstName = false;
 

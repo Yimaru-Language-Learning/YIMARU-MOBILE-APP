@@ -126,7 +126,7 @@ class LoginViewModel extends FormViewModel {
         'refreshToken': user.refreshToken
       };
 
-      await _authenticationService.saveUserData(data);
+      await _authenticationService.saveBasicUserData(data);
       showSuccessToast(response['message']);
     } else {
       showErrorToast(response['message']);

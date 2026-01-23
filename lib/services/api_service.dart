@@ -14,7 +14,7 @@ class ApiService {
   Future<Map<String, dynamic>> register(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$userUrl/$kRegisterUrl',
+        '$baseUrl/$kUserUrl/$kRegisterUrl',
         data: data,
       );
 
@@ -69,7 +69,7 @@ class ApiService {
   Future<Map<String, dynamic>> verifyOtp(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$userUrl/$kVerifyOtpUrl',
+        '$baseUrl/$kUserUrl/$kVerifyOtpUrl',
         data: data,
       );
       if (response.statusCode == 200) {
@@ -96,7 +96,7 @@ class ApiService {
   Future<Map<String, dynamic>> resendOtp(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$userUrl/$kResendOtpUrl',
+        '$baseUrl/$kUserUrl/$kResendOtpUrl',
         data: data,
       );
 
@@ -123,7 +123,7 @@ class ApiService {
   Future<Map<String, dynamic>> getProfileStatus(UserModel? user) async {
     try {
       Response response = await _service.dio.get(
-        '$baseUrl/$userUrl/${user?.userId}/$kProfileStatusUrl',
+        '$baseUrl/$kUserUrl/${user?.userId}/$kProfileStatusUrl',
       );
 
       if (response.statusCode == 200) {
@@ -146,17 +146,41 @@ class ApiService {
     }
   }
 
+  // Get profile
+  Future<Map<String, dynamic>> getProfileData(int? userId) async {
+    try {
+      Response response = await _service.dio.get(
+        '$baseUrl/$kUserUrl/$kGetUserUrl/$userId',
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'data': response.data['data'],
+          'status': ResponseStatus.success,
+          'message': 'Profile fetched successfully'
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } catch (e) {
+      return {
+        'message': e.toString(),
+        'status': ResponseStatus.failure,
+      };
+    }
+  }
+
   // Update profile
   Future<Map<String, dynamic>> updateProfile(
       {required UserModel? user, required Map<String, dynamic> data}) async {
     try {
       Response response = await _service.dio.put(
-        '$baseUrl/$userUrl',
+        '$baseUrl/$kUserUrl',
         data: data,
       );
-
-      print(response.statusCode);
-      print(response.data);
 
       if (response.statusCode == 200) {
         return {
@@ -170,7 +194,6 @@ class ApiService {
         };
       }
     } catch (e) {
-      print('Exception ${e.toString()}');
       return {
         'message': e.toString(),
         'status': ResponseStatus.failure,
