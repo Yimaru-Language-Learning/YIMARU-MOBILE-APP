@@ -27,9 +27,7 @@ class HomeView extends StackedView<HomeViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(HomeViewModel viewModel) => viewModel.isBusy
-      ? const StartupView(
-          label: 'Checking user info',
-        )
+      ? const StartupView(label: 'Checking user info')
       : _buildScaffold(viewModel);
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(

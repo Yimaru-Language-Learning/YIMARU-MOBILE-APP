@@ -171,11 +171,6 @@ class AssessmentViewModel extends BaseViewModel {
 
   // Complete profile
 
-  Future<void> saveProfileCompleted() async {
-    Map<String, dynamic> data = {'firstName': _userData['firstName']};
-    await _authenticationService.saveFullName(data);
-  }
-
   Future<void> completeProfile() async =>
       await runBusyFuture<Map<String, dynamic>>(_completeProfile());
 
@@ -185,7 +180,6 @@ class AssessmentViewModel extends BaseViewModel {
         await _apiService.updateProfile(data: _userData, user: user);
     if (response['status'] == ResponseStatus.success) {
       showSuccessToast(response['message']);
-      await saveProfileCompleted();
       await replaceWithHome();
     } else {
       showErrorToast(response['message']);

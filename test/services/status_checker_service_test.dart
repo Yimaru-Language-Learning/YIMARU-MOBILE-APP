@@ -4,7 +4,7 @@ import 'package:yimaru_app/app/app.locator.dart';
 import '../helpers/test_helpers.dart';
 
 void main() {
-  group('FailureViewModel Tests -', () {
+  group('StatusCheckerServiceTest -', () {
     setUp(() => registerServices());
     tearDown(() => locator.reset());
   });

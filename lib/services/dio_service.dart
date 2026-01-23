@@ -139,14 +139,6 @@ class DioService {
       final response = await _refreshDio.post(
         '$baseUrl/$kRefreshTokenUrl',
         data: data,
-        options: Options(
-          followRedirects: false,
-          validateStatus: (status) => true,
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-        ),
       );
 
       await _authenticationService.saveTokens(
@@ -156,8 +148,9 @@ class DioService {
 
       return true;
     } catch (e) {
-      await _authenticationService.logOut();
-      await _navigationService.replaceWithLoginView();
+      print('Token refresh exception ${e.toString()}');
+      // await _authenticationService.logOut();
+      // await _navigationService.replaceWithLoginView();
       return false;
     }
   }

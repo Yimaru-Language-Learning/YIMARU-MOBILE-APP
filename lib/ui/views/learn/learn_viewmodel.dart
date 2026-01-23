@@ -7,13 +7,16 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 
-class LearnViewModel extends BaseViewModel {
+class LearnViewModel extends ReactiveViewModel {
   final _navigationService = locator<NavigationService>();
   final _authenticationService = locator<AuthenticationService>();
 
-  late final UserModel? _user = _authenticationService.user;
+  @override
+  List<ListenableServiceMixin> get listenableServices =>
+      [_authenticationService];
 
-  UserModel? get user => _user;
+  // Current user
+  UserModel? get user => _authenticationService.user;
 
   final List<Map<String, dynamic>> _learnLevels = [
     {

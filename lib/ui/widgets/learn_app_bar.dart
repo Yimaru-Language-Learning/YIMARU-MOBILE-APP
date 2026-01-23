@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
@@ -39,7 +41,9 @@ class LearnAppBar extends StatelessWidget {
         radius: 25,
         backgroundColor: kcPrimaryColor,
         backgroundImage: profileImage != null
-            ? CachedNetworkImageProvider(profileImage!)
+            ? FileImage(
+                File(profileImage!),
+              )
             : null,
         child: _buildImageBuilder(),
       );

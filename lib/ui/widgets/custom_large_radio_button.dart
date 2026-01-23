@@ -82,5 +82,5 @@ class CustomLargeRadioButton extends StatelessWidget {
   Widget _buildSelectedCheckBox() => Checkbox(
       value: selected,
       activeColor: kcPrimaryColor,
-      onChanged: (value) => onTap);
+      onChanged: onTap != null ? (value) => onTap!() : null);
 }

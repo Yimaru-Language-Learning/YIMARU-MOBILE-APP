@@ -1,17 +1,26 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 
 class ProfileImage extends StatelessWidget {
+  final bool loading;
   final String? profileImage;
-  const ProfileImage({super.key, required this.profileImage});
+  final GestureTapCallback? onTap;
+
+  const ProfileImage(
+      {super.key,
+      this.onTap,
+      this.loading = false,
+      required this.profileImage});
 
   @override
   Widget build(BuildContext context) => _buildSizedBox();
 
   Widget _buildSizedBox() => SizedBox(
-        height: 125,
         width: 125,
+        height: 125,
         child: _buildStack(),
       );
 
@@ -27,14 +36,21 @@ class ProfileImage extends StatelessWidget {
   Widget _buildProfileImage() => CircleAvatar(
         radius: 50,
         backgroundColor: kcPrimaryColor,
-        backgroundImage: profileImage != null
-            ? CachedNetworkImageProvider(profileImage!)
-            : null,
+        backgroundImage: loading
+            ? null
+            : profileImage != null
+                ? FileImage(
+                    File(profileImage!),
+                  )
+                : null,
         child: _buildImageBuilder(),
       );
 
-  Widget? _buildImageBuilder() =>
-      profileImage == null ? _buildPersonIcon() : null;
+  Widget? _buildImageBuilder() => loading
+      ? null
+      : profileImage == null
+          ? _buildPersonIcon()
+          : null;
 
   Widget _buildPersonIcon() => const Icon(
         Icons.person,
@@ -44,6 +60,11 @@ class ProfileImage extends StatelessWidget {
 
   Widget _buildCameraButtonWrapper() => Align(
         alignment: Alignment.bottomCenter,
+        child: _buildCameraTapDetector(),
+      );
+
+  Widget _buildCameraTapDetector() => GestureDetector(
+        onTap: onTap,
         child: _buildCameraButton(),
       );
 

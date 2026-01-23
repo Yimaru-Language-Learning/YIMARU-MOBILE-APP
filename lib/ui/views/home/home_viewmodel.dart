@@ -93,18 +93,10 @@ class HomeViewModel extends BaseViewModel {
     return response;
   }
 
-  Future<void> getProfileStatus() async {
-    Map<String, dynamic> response =
-        await runBusyFuture<Map<String, dynamic>>(_getProfileStatus());
-    if (response['status'] == ResponseStatus.success && !response['data']) {
-      await replaceWithOnboarding();
-    } else if (response['status'] == ResponseStatus.success &&
-        response['data']) {
-      await saveProfileStatus(response['data']);
-    }
-  }
+  Future<void> getProfileStatus() async =>
+      await runBusyFuture(_getProfileStatus());
 
-  Future<Map<String, dynamic>> _getProfileStatus() async {
+  Future<void> _getProfileStatus() async {
     Map<String, dynamic> response = {};
 
     UserModel? user = await _authenticationService.getUser();
@@ -118,6 +110,11 @@ class HomeViewModel extends BaseViewModel {
       response = {'data': true, 'status': ResponseStatus.success};
     }
 
-    return response;
+    if (response['status'] == ResponseStatus.success && !response['data']) {
+      await replaceWithOnboarding();
+    } else if (response['status'] == ResponseStatus.success &&
+        response['data']) {
+      await saveProfileStatus(response['data']);
+    }
   }
 }

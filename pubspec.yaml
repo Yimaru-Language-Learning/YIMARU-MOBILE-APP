@@ -16,6 +16,7 @@ dependencies:
   iconsax: ^0.0.8
   flutter_svg: ^2.2.3
   stacked_shared: any
+  image_picker: ^1.2.1
   battery_plus: ^7.0.0
   storage_info: ^1.0.0
   flutter_html: ^3.0.0
@@ -27,6 +28,7 @@ dependencies:
   stacked_services: ^1.1.0
   omni_datetime_picker: any
   json_serializable: ^6.8.0
+  permission_handler: ^12.0.1
   cached_network_image: ^3.4.1
   flutter_secure_storage: ^10.0.0
   flutter_timer_countdown: ^1.0.7

@@ -1,9 +1,14 @@
+import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/models/user_model.dart';
 import 'package:yimaru_app/services/secure_storage_service.dart';
 
-class AuthenticationService {
+class AuthenticationService with ListenableServiceMixin {
   final _secureService = locator<SecureStorageService>();
+
+  AuthenticationService() {
+    listenToReactiveValues([_user]);
+  }
 
   UserModel? _user;
 
@@ -35,11 +40,12 @@ class AuthenticationService {
   Future<void> saveUserName(Map<String, dynamic> data) async {
     await _secureService.setString('firstName', data['firstName']);
     _user = UserModel(
-        firstName: await _secureService.getString('firstName'),
-        userId: _user?.userId,
-        accessToken: _user?.accessToken,
-        refreshToken: _user?.refreshToken,
-        profileCompleted: _user?.profileCompleted);
+      userId: _user?.userId,
+      accessToken: _user?.accessToken,
+      refreshToken: _user?.refreshToken,
+      profileCompleted: _user?.profileCompleted,
+      firstName: await _secureService.getString('firstName'),
+    );
   }
 
   Future<void> saveBasicUserData(Map<String, dynamic> data) async {
@@ -69,7 +75,19 @@ class AuthenticationService {
         profileCompleted: await _secureService.getBool('profileCompleted'));
   }
 
-  Future<void> saveProfileImage() async {}
+  Future<void> saveProfileImage(String image) async {
+    await _secureService.setString('profileImage', image);
+    _user = UserModel(
+      userId: _user?.userId,
+      firstName: _user?.firstName,
+      accessToken: _user?.accessToken,
+      refreshToken: _user?.refreshToken,
+      profileCompleted: _user?.profileCompleted,
+      profileImage: await _secureService.getString('profileImage'),
+    );
+
+    notifyListeners();
+  }
 
   Future<void> saveFullName(Map<String, dynamic> data) async {
     await _secureService.setBool('profileCompleted', true);

@@ -31,6 +31,7 @@ import 'package:yimaru_app/ui/views/welcome/welcome_view.dart';
 import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
 import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_view.dart';
 import 'package:yimaru_app/ui/views/failure/failure_view.dart';
+import 'package:yimaru_app/services/permission_handler_service.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
 // @stacked-import
 
@@ -71,6 +72,7 @@ import 'package:yimaru_app/services/image_picker_service.dart';
     LazySingleton(classType: SecureStorageService),
     LazySingleton(classType: DioService),
     LazySingleton(classType: StatusCheckerService),
+    LazySingleton(classType: PermissionHandlerService),
     LazySingleton(classType: ImagePickerService),
 // @stacked-service
   ],

@@ -177,6 +177,12 @@ TextStyle style18P600 = const TextStyle(
   fontWeight: FontWeight.w600,
 );
 
+TextStyle style18W600 = const TextStyle(
+  fontSize: 18,
+  color: kcWhite,
+  fontWeight: FontWeight.w600,
+);
+
 TextStyle style12R700 = const TextStyle(
   fontSize: 12,
   color: Colors.red,
