@@ -3,7 +3,6 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/profile_card.dart';
 import 'package:yimaru_app/ui/widgets/profile_image.dart';
 import 'package:yimaru_app/ui/widgets/view_profile_button.dart';
@@ -120,13 +119,12 @@ class ProfileView extends StackedView<ProfileViewModel> {
         _buildProfileName(viewModel),
       ];
 
-
   Widget _buildProfileImage(
           {required BuildContext context,
           required ProfileViewModel viewModel}) =>
       ProfileImage(
-        profileImage: viewModel.user?.profileImage,
-        loading:  viewModel.busy(StateObjects.profileImage) ? true:false,
+        profileImage: viewModel.user?.profilePicture,
+        loading: viewModel.busy(StateObjects.profileImage) ? true : false,
         onTap: () async =>
             await _showImagePicker(context: context, viewModel: viewModel),
       );
@@ -196,7 +194,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
         text: 'Log Out',
         borderRadius: 12,
         foregroundColor: kcRed,
-        onTap: () async => await viewModel.logOut(),
         backgroundColor: kcRed.withOpacity(0.25),
+        onTap: () async => await viewModel.logOut(),
       );
 }

@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:yimaru_app/ui/widgets/progress_status.dart';
 
 import '../common/app_colors.dart';
 import '../common/enmus.dart';

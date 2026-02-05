@@ -12,18 +12,21 @@ import 'assessment_loading_screen.dart';
 class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
   const AssessmentFormScreen({super.key});
 
-  //final PageController _pageController = PageController();
-
   @override
   Widget build(BuildContext context, AssessmentViewModel viewModel) =>
       _buildAssessmentScreens(viewModel);
 
   Widget _buildAssessmentScreens(AssessmentViewModel viewModel) =>
-      viewModel.isBusy
-          ? _buildPageLoadingIndicator()
+      viewModel.isBusy || viewModel.assessments.isEmpty
+          ? _buildPageLoadingIndicator(viewModel)
           : _buildAssessmentScreensWrapper(viewModel);
 
-  Widget _buildPageLoadingIndicator() => const AssessmentLoadingScreen();
+  Widget _buildPageLoadingIndicator(AssessmentViewModel viewModel) =>
+      AssessmentLoadingScreen(
+        isLoading: viewModel.isBusy,
+        isEmpty: viewModel.assessments.isEmpty,
+        onTap: () async => await viewModel.getAssessments(),
+      );
 
   Widget _buildAssessmentScreensWrapper(AssessmentViewModel viewModel) =>
       PopScope(
@@ -60,10 +63,11 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   Widget _buildAssessment(AssessmentViewModel viewModel) => PageView.builder(
-      controller: viewModel.pageController,
-      itemCount: viewModel.assessments.length,
-      itemBuilder: (cotext, index) =>
-          _buildBody(index: index, viewModel: viewModel));
+        controller: viewModel.pageController,
+        itemCount: viewModel.assessments.length,
+        itemBuilder: (cotext, index) =>
+            _buildBody(index: index, viewModel: viewModel),
+      );
 
   Widget _buildBody(
           {required int index, required AssessmentViewModel viewModel}) =>
@@ -106,7 +110,7 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
   Widget _buildTitle(
           {required int index, required AssessmentViewModel viewModel}) =>
       Text(
-        'Q${index + 1}. ${viewModel.assessments[index].question?.title} ',
+        'Q${index + 1}. ${viewModel.assessments[index].questionText} ',
         style: style16DG600,
       );
 
@@ -124,8 +128,7 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
                   ''),
           onTap: () => viewModel.setSelectedAnswer(
               question: index + 1,
-              option: viewModel.assessments[index].options?[inner].optionText ??
-                  ''),
+              option: viewModel.assessments[index].options?[inner]),
         ),
       );
 
@@ -160,11 +163,7 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
                 ? kcPrimaryColor
                 : kcPrimaryColor.withOpacity(0.1),
         onTap: viewModel.selectedAnswers.containsKey(question.toString())
-            ?
-            // viewModel.currentQuestion == viewModel.assessments.length - 1
-            //         ? () => viewModel.next()
-            //    :
-            () => viewModel.nextQuestion()
+            ? () => viewModel.nextQuestion()
             : null,
       );
 }

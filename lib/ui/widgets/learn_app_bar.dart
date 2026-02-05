@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
@@ -40,16 +39,19 @@ class LearnAppBar extends StatelessWidget {
   Widget _buildProfileImage() => CircleAvatar(
         radius: 25,
         backgroundColor: kcPrimaryColor,
-        backgroundImage: profileImage != null
-            ? FileImage(
-                File(profileImage!),
-              )
-            : null,
+        backgroundImage:
+            profileImage != null || (profileImage?.contains('.') ?? false)
+                ? FileImage(
+                    File(profileImage!),
+                  )
+                : null,
         child: _buildImageBuilder(),
       );
 
   Widget? _buildImageBuilder() =>
-      profileImage == null ? _buildPersonIcon() : null;
+      profileImage == null || !(profileImage?.contains('.') ?? false)
+          ? _buildPersonIcon()
+          : null;
 
   Widget _buildPersonIcon() => const Icon(
         Icons.person,

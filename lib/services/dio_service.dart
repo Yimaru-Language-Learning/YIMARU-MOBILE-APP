@@ -4,7 +4,6 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/user_model.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
-import 'package:yimaru_app/services/secure_storage_service.dart';
 
 import '../app/app.locator.dart';
 import '../ui/common/app_constants.dart';
@@ -21,7 +20,7 @@ class DioService {
 
   DioService() {
     _dio.options
-      ..baseUrl = baseUrl
+      ..baseUrl = kBaseUrl
       ..connectTimeout = const Duration(seconds: 30)
       ..receiveTimeout = const Duration(seconds: 30);
 
@@ -50,10 +49,11 @@ class DioService {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final token = await _authenticationService.getAccessToken();
+    final access = await _authenticationService.getAccessToken();
+    final refresh = await _authenticationService.getRefreshToken();
 
-    if (token != null) {
-      options.headers['Authorization'] = 'Bearer $token';
+    if (access != null) {
+      options.headers['Authorization'] = 'Bearer $access';
     }
 
     options.headers['Accept'] = 'application/json';
@@ -61,6 +61,7 @@ class DioService {
 
     debugPrint('️️➡️➡️➡️➡️INITIALIZING REQUEST➡️➡️➡️➡️');
     debugPrint('➡️ ${options.method} ${options.uri}');
+    debugPrint('➡️ REFRESH: $refresh');
     debugPrint('➡️ HEADERS: ${options.headers}');
     debugPrint('➡️ DATA: ${options.data}');
     debugPrint('️️➡️➡️➡️➡️FINALIZING REQUEST➡️➡️➡️➡️');
@@ -131,13 +132,13 @@ class DioService {
 
     try {
       Map<String, dynamic> data = {
-        'role': 'STUDENT',
+        'role': 'USER',
         'user_id': user?.userId,
         'access_token': user?.accessToken,
         'refresh_token': user?.refreshToken
       };
       final response = await _refreshDio.post(
-        '$baseUrl/$kRefreshTokenUrl',
+        '$kBaseUrl/$kRefreshTokenUrl',
         data: data,
       );
 
@@ -148,9 +149,8 @@ class DioService {
 
       return true;
     } catch (e) {
-      print('Token refresh exception ${e.toString()}');
-      // await _authenticationService.logOut();
-      // await _navigationService.replaceWithLoginView();
+      await _authenticationService.logOut();
+      await _navigationService.replaceWithLoginView();
       return false;
     }
   }

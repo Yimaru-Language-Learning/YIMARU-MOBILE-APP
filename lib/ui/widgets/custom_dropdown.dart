@@ -24,7 +24,7 @@ class CustomDropdownPicker extends StatelessWidget {
   Widget build(BuildContext context) => _buildDropDownSearchWrapper();
 
   Widget _buildDropDownSearchWrapper() => Theme(
-        data: ThemeData().copyWith(cardColor: kcBackgroundColor),
+        data: ThemeData().copyWith(cardColor: const Color(0xfff5e9f4)),
         child: _buildDropDownSearch(),
       );
 
@@ -41,7 +41,6 @@ class CustomDropdownPicker extends StatelessWidget {
         showSearchBox: true,
         showSelectedItems: true,
         searchFieldProps: _searchFieldProps(),
-        menuProps: const MenuProps(color: kcBackgroundColor),
         itemBuilder: (context, value, isSelected, isPicked) =>
             _buildPopupProsBuilderWrapper(value),
       );
@@ -49,10 +48,7 @@ class CustomDropdownPicker extends StatelessWidget {
   TextFieldProps _searchFieldProps() => TextFieldProps(
         maxLines: 1,
         autofocus: true,
-        style: const TextStyle(
-          fontSize: 14,
-          color: kcLightGrey,
-        ),
+        style: style14DG400,
         padding: EdgeInsets.zero,
         cursorColor: kcLightGrey,
         decoration: _popUpDecoration(),
@@ -60,18 +56,15 @@ class CustomDropdownPicker extends StatelessWidget {
 
   InputDecoration _popUpDecoration() => InputDecoration(
         filled: true,
+        hintStyle: style14DG400,
+        fillColor: kcTransparent,
         errorBorder: searchBorder,
         focusedBorder: searchBorder,
         enabledBorder: searchBorder,
         disabledBorder: searchBorder,
         focusedErrorBorder: searchBorder,
-        hintStyle: const TextStyle(
-          fontSize: 14,
-          color: kcLightGrey,
-        ),
-        fillColor: kcPrimaryColor.withOpacity(0.1),
-        prefix: icon != null ? _buildPrefixIcon() : null,
-        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+        contentPadding: const EdgeInsets.only(top: 12),
+        prefixIcon: icon != null ? _buildPrefixIcon() : null,
       );
 
   Widget _buildPopupProsBuilderWrapper(String value) => Padding(
@@ -98,30 +91,20 @@ class CustomDropdownPicker extends StatelessWidget {
         focusedBorder: border,
         enabledBorder: border,
         disabledBorder: border,
-        focusedErrorBorder: border,
-        hintStyle: const TextStyle(
-          fontSize: 14,
-          color: kcLightGrey,
-        ),
+        hintStyle: style14LG400,
         fillColor: kcPrimaryColor.withOpacity(0.1),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       );
 
-  Widget _buildPrefixIcon() => Container(
-        width: 30,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(border: rightBorder),
-        margin: const EdgeInsets.only(right: 25, bottom: 7.5, left: 5),
+  Widget _buildPrefixIcon() => Padding(
+        padding: const EdgeInsets.only(right: 10, left: 5),
         child: icon,
       );
 
   Widget _buildDropdownBuilder(String? value) => Text(
         value ?? hint,
         maxLines: 1,
-        style: const TextStyle(
-          fontSize: 14,
-          color: kcDarkGrey,
-        ),
+        style: style14DG400,
       );
 }

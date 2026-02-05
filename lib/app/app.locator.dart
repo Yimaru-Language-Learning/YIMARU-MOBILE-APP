@@ -14,6 +14,8 @@ import 'package:stacked_shared/stacked_shared.dart';
 import '../services/api_service.dart';
 import '../services/authentication_service.dart';
 import '../services/dio_service.dart';
+import '../services/google_auth_service.dart';
+import '../services/image_downloader_service.dart';
 import '../services/image_picker_service.dart';
 import '../services/permission_handler_service.dart';
 import '../services/secure_storage_service.dart';
@@ -40,4 +42,6 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => StatusCheckerService());
   locator.registerLazySingleton(() => PermissionHandlerService());
   locator.registerLazySingleton(() => ImagePickerService());
+  locator.registerLazySingleton(() => GoogleAuthService());
+  locator.registerLazySingleton(() => ImageDownloaderService());
 }

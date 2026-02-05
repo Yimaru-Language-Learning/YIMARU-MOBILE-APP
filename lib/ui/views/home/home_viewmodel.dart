@@ -7,22 +7,30 @@ import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/common/app_strings.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/failure/failure_view.dart';
-import 'package:yimaru_app/ui/views/login/login_view.dart';
-import 'package:yimaru_app/ui/views/startup/startup_view.dart';
 
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/image_downloader_service.dart';
 import '../../common/enmus.dart';
 
-class HomeViewModel extends BaseViewModel {
+class HomeViewModel extends ReactiveViewModel {
   final _apiService = locator<ApiService>();
   final _dialogService = locator<DialogService>();
   final _statusChecker = locator<StatusCheckerService>();
   final _navigationService = locator<NavigationService>();
   final _bottomSheetService = locator<BottomSheetService>();
   final _authenticationService = locator<AuthenticationService>();
+  final _imageDownloaderService = locator<ImageDownloaderService>();
+
+  @override
+  List<ListenableServiceMixin> get listenableServices =>
+      [_authenticationService];
+
+  // Current user
+  UserModel? get _user => _authenticationService.user;
+
+  UserModel? get user => _user;
 
   // Bottom navigation
   int _currentIndex = 0;
@@ -50,13 +58,6 @@ class HomeViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> saveFullName(String name) async {
-    Map<String, dynamic> data = {
-      'firstName': name,
-    };
-    await _authenticationService.saveFullName(data);
-  }
-
   Future<void> saveProfileStatus(bool value) async =>
       await _authenticationService.saveProfileStatus(value);
 
@@ -70,51 +71,58 @@ class HomeViewModel extends BaseViewModel {
       await _navigationService.replaceWithOnboardingView();
 
   // Remote api calls
-  Future<void> getProfileData() async =>
-      await runBusyFuture<Map<String, dynamic>>(_getProfileData());
 
-  Future<Map<String, dynamic>> _getProfileData() async {
-    Map<String, dynamic> response = {};
+  // Profile data
+  Future<void> getProfileData() async => await runBusyFuture(_getProfileData());
 
-    UserModel? user = await _authenticationService.getUser();
+  Future<void> _getProfileData() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response = {};
 
-    if (user?.profileCompleted != null) {
-      if (await _statusChecker.checkConnection()) {
-        response = await _apiService.getProfileData(user?.userId);
-        if (response['status'] == ResponseStatus.success) {
-          Map<String, dynamic> data = {
-            'firstName': response['data']['first_name']
-          };
-          await _authenticationService.saveFullName(data);
+      if (_user?.profileCompleted != null &&
+          (_user?.profileCompleted ?? false)) {
+        if (await _statusChecker.checkConnection()) {
+          response = await _apiService.getProfileData(_user?.userId);
+
+          if (response['status'] == ResponseStatus.success) {
+            UserModel user = response['data'] as UserModel;
+
+            String image =
+                await _imageDownloaderService.downloader(user.profilePicture);
+
+            await _authenticationService.saveUserData(image: image, data: user);
+          }
         }
       }
     }
-
-    return response;
   }
 
+  // Profile status
   Future<void> getProfileStatus() async =>
       await runBusyFuture(_getProfileStatus());
 
   Future<void> _getProfileStatus() async {
-    Map<String, dynamic> response = {};
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response = {};
 
-    UserModel? user = await _authenticationService.getUser();
-    if (user?.profileCompleted == null) {
-      if (await _statusChecker.checkConnection()) {
-        response = await _apiService.getProfileStatus(user);
+      if (_user?.profileCompleted == null) {
+        if (await _statusChecker.checkConnection()) {
+          response = await _apiService.getProfileStatus(_user);
+        } else {
+          await replaceWithFailure();
+        }
+      } else if (!(_user?.profileCompleted ?? false)) {
+        response = {'data': false, 'status': ResponseStatus.success};
       } else {
-        await replaceWithFailure();
+        response = {'data': true, 'status': ResponseStatus.success};
       }
-    } else {
-      response = {'data': true, 'status': ResponseStatus.success};
-    }
 
-    if (response['status'] == ResponseStatus.success && !response['data']) {
-      await replaceWithOnboarding();
-    } else if (response['status'] == ResponseStatus.success &&
-        response['data']) {
-      await saveProfileStatus(response['data']);
+      if (response['status'] == ResponseStatus.success && !response['data']) {
+        await replaceWithOnboarding();
+      } else if (response['status'] == ResponseStatus.success &&
+          response['data']) {
+        await saveProfileStatus(response['data']);
+      }
     }
   }
 }

@@ -104,7 +104,7 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
       CustomDropdownPicker(
           hint: 'Select country',
           icon: _buildSearchIcon(),
-          selectedItem: 'Ethiopia',
+          selectedItem: viewModel.selectedCountry,
           items: (value, props) => viewModel.getCountries(),
           onChanged: (value) =>
               viewModel.setSelectedCountry(value ?? 'Ethiopia'));
@@ -113,10 +113,11 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
       CustomDropdownPicker(
         hint: 'Select region',
         icon: _buildSearchIcon(),
-        selectedItem: 'Addis Ababa',
+        selectedItem: viewModel.selectedRegion,
+        items: (value, props) =>
+            viewModel.getRegions(viewModel.selectedCountry),
         onChanged: (value) =>
             viewModel.setSelectedRegion(value ?? 'Addis Ababa'),
-        items: (value, props) => viewModel.getRegions('Addis Ababa'),
       );
 
   Icon _buildSearchIcon() => const Icon(

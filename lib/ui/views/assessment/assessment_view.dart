@@ -17,9 +17,9 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
   const AssessmentView({Key? key, required this.data}) : super(key: key);
 
   @override
-  void onViewModelReady(AssessmentViewModel viewModel) {
-    viewModel.getAssessments();
+  void onViewModelReady(AssessmentViewModel viewModel) async {
     viewModel.initUserData(data);
+    await viewModel.getAssessments();
     super.onViewModelReady(viewModel);
   }
 
@@ -39,10 +39,12 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
   List<Widget> _buildScreens() => [
         _buildAssessmentIntro(),
         _buildAssessment(),
-        // _buildAssessmentFailure(),
-        // _buildRetakeAssessment(),
-        // _buildResultAnalysis(),
-        // _buildAssessmentCompletion(),
+        /*
+         _buildAssessmentFailure(),
+         _buildRetakeAssessment(),
+         _buildResultAnalysis(),
+         _buildAssessmentCompletion(),
+         */
         _buildAssessmentResult(),
         _buildStartLesson(),
       ];

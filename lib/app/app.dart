@@ -33,6 +33,8 @@ import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_view.dart';
 import 'package:yimaru_app/ui/views/failure/failure_view.dart';
 import 'package:yimaru_app/services/permission_handler_service.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
+import 'package:yimaru_app/services/google_auth_service.dart';
+import 'package:yimaru_app/services/image_downloader_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -74,6 +76,8 @@ import 'package:yimaru_app/services/image_picker_service.dart';
     LazySingleton(classType: StatusCheckerService),
     LazySingleton(classType: PermissionHandlerService),
     LazySingleton(classType: ImagePickerService),
+    LazySingleton(classType: GoogleAuthService),
+    LazySingleton(classType: ImageDownloaderService),
 // @stacked-service
   ],
   bottomsheets: [

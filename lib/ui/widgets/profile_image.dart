@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 
@@ -38,7 +37,7 @@ class ProfileImage extends StatelessWidget {
         backgroundColor: kcPrimaryColor,
         backgroundImage: loading
             ? null
-            : profileImage != null
+            : profileImage != null || (profileImage?.contains('.') ?? false)
                 ? FileImage(
                     File(profileImage!),
                   )
@@ -48,7 +47,7 @@ class ProfileImage extends StatelessWidget {
 
   Widget? _buildImageBuilder() => loading
       ? null
-      : profileImage == null
+      : profileImage == null || !(profileImage?.contains('.') ?? false)
           ? _buildPersonIcon()
           : null;
 

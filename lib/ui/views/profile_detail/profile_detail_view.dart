@@ -8,10 +8,13 @@ import 'package:yimaru_app/ui/widgets/custom_form_label.dart';
 import 'package:yimaru_app/ui/widgets/small_app_bar.dart';
 
 import '../../common/app_colors.dart';
+import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 import '../../common/validators/form_validator.dart';
 import '../../widgets/custom_dropdown.dart';
 import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/image_picker_option.dart';
+import '../../widgets/page_loading_indicator.dart';
 import '../../widgets/profile_image.dart';
 import 'profile_detail_viewmodel.dart';
 
@@ -23,21 +26,62 @@ import 'profile_detail_view.form.dart';
       name: 'phoneNumber', validator: FormValidator.validatePhoneNumber),
   FormTextField(name: 'lastName', validator: FormValidator.validateForm),
   FormTextField(name: 'firstName', validator: FormValidator.validateForm),
+  FormTextField(name: 'occupation', validator: FormValidator.validateForm),
 ])
 class ProfileDetailView extends StackedView<ProfileDetailViewModel>
     with $ProfileDetailView {
   const ProfileDetailView({Key? key}) : super(key: key);
 
-  void _onModelReady() {
-    firstNameController.text = 'Abel';
-    lastNameController.text = 'Abebe';
+  Future<void> _update(ProfileDetailViewModel viewModel) async {
+    Map<String, dynamic> data = {
+      'region': viewModel.selectedRegion,
+      'gender': viewModel.selectedGender,
+      'last_name': lastNameController.text,
+      'country': viewModel.selectedCountry,
+      'first_name': firstNameController.text,
+      'occupation': occupationController.text,
+      'birth_day': viewModel.selectedBirthday,
+    };
+
+    viewModel.addUserData(data);
+
+    await viewModel.updateProfile();
+  }
+
+  Future<void> _showImagePicker(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) async =>
+      await showDialog(
+        context: context,
+        builder: (context) =>
+            _showImagePickerDialog(context: context, viewModel: viewModel),
+      );
+
+  AlertDialog _showImagePickerDialog(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      AlertDialog(
+        backgroundColor: Colors.transparent,
+        content: _buildImagePicker(context: context, viewModel: viewModel),
+      );
+
+  void _onModelReady(ProfileDetailViewModel viewModel) {
     phoneNumberController.text = '251900000000';
-    emailController.text = 'email@test.com';
+    emailController.text = viewModel.user?.email ?? '';
+    lastNameController.text = viewModel.user?.lastName ?? '';
+    firstNameController.text = viewModel.user?.firstName ?? '';
+    occupationController.text = viewModel.user?.occupation ?? '';
+    viewModel.clearUserData();
+    viewModel.setGender(viewModel.user?.gender ?? '');
+    viewModel.setSelectedCountry(viewModel.user?.country ?? 'Ethiopia');
+    viewModel.setSelectedRegion(viewModel.user?.region ?? 'Addis Ababa');
+    viewModel.setBirthday(viewModel.user?.birthday ??
+        DateFormat('d MMM, yyyy').format(DateTime.now()));
   }
 
   @override
   void onViewModelReady(ProfileDetailViewModel viewModel) {
-    _onModelReady();
+    _onModelReady(viewModel);
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
   }
@@ -52,32 +96,55 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
     ProfileDetailViewModel viewModel,
     Widget? child,
   ) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(ProfileDetailViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold(ProfileDetailViewModel viewModel) =>
-      SafeArea(child: _buildBodyWrapper(viewModel));
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      Stack(children: [
+        _buildScaffold(context: context, viewModel: viewModel),
+        _buildState(viewModel)
+      ]);
 
-  Widget _buildBodyWrapper(ProfileDetailViewModel viewModel) => Padding(
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      SafeArea(
+          child: _buildBodyWrapper(context: context, viewModel: viewModel));
+
+  Widget _buildBodyWrapper(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBody(viewModel),
+        child: _buildBody(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBody(ProfileDetailViewModel viewModel) => Column(
+  Widget _buildBody(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildBodyChildren(viewModel),
+        children: _buildBodyChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyChildren(ProfileDetailViewModel viewModel) => [
+  List<Widget> _buildBodyChildren(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
         _buildAppbar(viewModel),
         verticalSpaceSmall,
-        _buildColumnWrapper(viewModel)
+        _buildColumnWrapper(context: context, viewModel: viewModel)
       ];
 
   Widget _buildAppbar(ProfileDetailViewModel viewModel) => SmallAppBar(
@@ -85,23 +152,33 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         onTap: viewModel.pop,
       );
 
-  Widget _buildColumnWrapper(ProfileDetailViewModel viewModel) =>
-      Expanded(child: _buildBodyColumn(viewModel));
+  Widget _buildColumnWrapper(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      Expanded(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
-  Widget _buildBodyColumn(ProfileDetailViewModel viewModel) =>
+  Widget _buildBodyColumn(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildColumn(viewModel),
+        child: _buildColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildColumn(ProfileDetailViewModel viewModel) => Column(
+  Widget _buildColumn(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildColumnChildren(viewModel),
+        children: _buildColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildColumnChildren(ProfileDetailViewModel viewModel) => [
+  List<Widget> _buildColumnChildren(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
-        _buildProfileImageWrapper(viewModel),
+        _buildProfileImageWrapper(context: context, viewModel: viewModel),
         verticalSpaceMedium,
         _buildNameFormSection(viewModel),
         verticalSpaceMedium,
@@ -120,12 +197,31 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         _buildLowerColumn(viewModel)
       ];
 
-  Widget _buildProfileImageWrapper(ProfileDetailViewModel viewModel) =>
-      Align(alignment: Alignment.center, child: _buildProfileImage(viewModel));
+  Widget _buildProfileImageWrapper(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      Align(
+          alignment: Alignment.center,
+          child: _buildProfileImage(context: context, viewModel: viewModel));
 
-  Widget _buildProfileImage(ProfileDetailViewModel viewModel) => ProfileImage(
-        profileImage: viewModel.user?.profileImage,
+  Widget _buildProfileImage(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      ProfileImage(
+        profileImage: viewModel.user?.profilePicture,
+        loading: viewModel.busy(StateObjects.profileImage) ? true : false,
+        onTap: () async =>
+            await _showImagePicker(context: context, viewModel: viewModel),
       );
+
+  Widget _buildImagePicker(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      ImagePickerOption(
+        onCameraTap: () async => await viewModel.openCamera(),
+        onGalleryTap: () async => await viewModel.openGallery(),
+      );
+
   Widget _buildNameFormSection(ProfileDetailViewModel viewModel) => Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildNameFormChildren(viewModel),
@@ -371,6 +467,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   Widget _buildPhoneNumberFormField(ProfileDetailViewModel viewModel) =>
       TextFormField(
         maxLength: 12,
+        enabled: false,
         keyboardType: TextInputType.phone,
         controller: phoneNumberController,
         onTap: viewModel.setPhoneNumberFocus,
@@ -416,6 +513,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   Widget _buildEmailFormField(ProfileDetailViewModel viewModel) =>
       TextFormField(
+        enabled: false,
         controller: emailController,
         onTap: viewModel.setPhoneNumberFocus,
         keyboardType: TextInputType.emailAddress,
@@ -474,10 +572,10 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   Widget _buildCountryDropdown(ProfileDetailViewModel viewModel) =>
       CustomDropdownPicker(
-        onChanged: (value) {},
         hint: 'Select country',
-        selectedItem: 'Ethiopia',
+        selectedItem: viewModel.selectedCountry,
         items: (value, props) => viewModel.getCountries(),
+        onChanged: (value) => viewModel.setSelectedCountry(value ?? 'Ethiopia'),
       );
 
   Widget _buildRegionDropdownColumnWrapper(ProfileDetailViewModel viewModel) =>
@@ -507,9 +605,11 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   Widget _buildRegionDropdown(ProfileDetailViewModel viewModel) =>
       CustomDropdownPicker(
         hint: 'Select region',
-        onChanged: (value) {},
-        selectedItem: 'Addis Ababa',
-        items: (value, props) => viewModel.getRegions('Addis Ababa'),
+        selectedItem: viewModel.selectedRegion,
+        items: (value, props) =>
+            viewModel.getRegions(viewModel.selectedCountry),
+        onChanged: (value) =>
+            viewModel.setSelectedRegion(value ?? 'Addis Ababa'),
       );
 
   Widget _buildOccupationDropdownWrapper(ProfileDetailViewModel viewModel) =>
@@ -525,7 +625,13 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       [
         _buildOccupationDropdownLabel(),
         verticalSpaceSmall,
-        _buildOccupationDropdown(viewModel)
+        _buildOccupationFormField(viewModel),
+        if (viewModel.hasOccupationValidationMessage &&
+            viewModel.focusOccupation)
+          verticalSpaceTiny,
+        if (viewModel.hasOccupationValidationMessage &&
+            viewModel.focusOccupation)
+          _buildOccupationValidatorWrapper(viewModel)
       ];
 
   Widget _buildOccupationDropdownLabel() => CustomFormLabel(
@@ -533,14 +639,29 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         style: style16DG600,
       );
 
-  Widget _buildOccupationDropdown(ProfileDetailViewModel viewModel) =>
-      CustomDropdownPicker(
-        hint: 'Select occupation',
-        onChanged: (value) {},
-        selectedItem: 'Student',
-        items: (value, props) => viewModel.getOccupations('Student'),
+  Widget _buildOccupationFormField(ProfileDetailViewModel viewModel) =>
+      TextFormField(
+        controller: occupationController,
+        onTap: viewModel.setOccupationFocus,
+        decoration: inputDecoration(
+            hint: 'Enter Your Occupation',
+            focus: viewModel.focusOccupation,
+            filled: occupationController.text.isNotEmpty),
       );
 
+  Widget _buildOccupationValidatorWrapper(ProfileDetailViewModel viewModel) =>
+      viewModel.hasOccupationValidationMessage
+          ? _buildOccupationValidator(viewModel)
+          : Container();
+
+  Widget _buildOccupationValidator(ProfileDetailViewModel viewModel) => Text(
+        viewModel.occupationValidationMessage!,
+        style: const TextStyle(
+          fontSize: 12,
+          color: Colors.red,
+          fontWeight: FontWeight.w700,
+        ),
+      );
   Widget _buildLowerColumn(ProfileDetailViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         children: _buildLowerColumnChildren(viewModel),
@@ -548,17 +669,18 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   List<Widget> _buildLowerColumnChildren(ProfileDetailViewModel viewModel) => [
         _buildSaveButton(viewModel),
-        verticalSpaceSmall,
+        verticalSpaceMedium,
         _buildCancelButtonWrapper(viewModel)
       ];
 
   Widget _buildSaveButton(ProfileDetailViewModel viewModel) =>
-      const CustomElevatedButton(
+      CustomElevatedButton(
         height: 55,
         borderRadius: 12,
         text: 'Save Changes',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
+        onTap: () async => await _update(viewModel),
       );
 
   Widget _buildCancelButtonWrapper(ProfileDetailViewModel viewModel) => Padding(
@@ -567,12 +689,16 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       );
 
   Widget _buildCancelButton(ProfileDetailViewModel viewModel) =>
-      const CustomElevatedButton(
+      CustomElevatedButton(
         height: 55,
         text: 'Cancel',
         borderRadius: 12,
-        borderColor: kcPrimaryColor,
+        onTap: viewModel.pop,
         backgroundColor: kcWhite,
+        borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
       );
+
+  Widget _buildState(ProfileDetailViewModel viewModel) =>
+      viewModel.isBusy ? const PageLoadingIndicator() : Container();
 }

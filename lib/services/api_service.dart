@@ -14,7 +14,7 @@ class ApiService {
   Future<Map<String, dynamic>> register(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$kUserUrl/$kRegisterUrl',
+        '$kBaseUrl/$kUserUrl/$kRegisterUrl',
         data: data,
       );
 
@@ -38,10 +38,38 @@ class ApiService {
   }
 
   // Login
-  Future<Map<String, dynamic>> login(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> emailLogin(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$kLoginUrl',
+        '$kBaseUrl/$kLoginUrl',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Logged in successfully',
+          'data': UserModel.fromJson(response.data['data']),
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': '${response.data['message']}, ${response.data['error']}'
+        };
+      }
+    } catch (e) {
+      return {
+        'message': e.toString(),
+        'status': ResponseStatus.failure,
+      };
+    }
+  }
+
+  // Google login
+  Future<Map<String, dynamic>> googleLogin(Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kGoogleLoginUrl',
         data: data,
       );
 
@@ -69,14 +97,14 @@ class ApiService {
   Future<Map<String, dynamic>> verifyOtp(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$kUserUrl/$kVerifyOtpUrl',
+        '$kBaseUrl/$kUserUrl/$kVerifyOtpUrl',
         data: data,
       );
       if (response.statusCode == 200) {
         return {
           'status': ResponseStatus.success,
           'message': 'Otp verified successfully',
-          //'data': UserModel.fromJson(response.data['data']),
+          'data': UserModel.fromJson(response.data['data']),
         };
       } else {
         return {
@@ -96,7 +124,7 @@ class ApiService {
   Future<Map<String, dynamic>> resendOtp(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$kUserUrl/$kResendOtpUrl',
+        '$kBaseUrl/$kUserUrl/$kResendOtpUrl',
         data: data,
       );
 
@@ -123,7 +151,7 @@ class ApiService {
   Future<Map<String, dynamic>> getProfileStatus(UserModel? user) async {
     try {
       Response response = await _service.dio.get(
-        '$baseUrl/$kUserUrl/${user?.userId}/$kProfileStatusUrl',
+        '$kBaseUrl/$kUserUrl/${user?.userId}/$kProfileStatusUrl',
       );
 
       if (response.statusCode == 200) {
@@ -150,14 +178,14 @@ class ApiService {
   Future<Map<String, dynamic>> getProfileData(int? userId) async {
     try {
       Response response = await _service.dio.get(
-        '$baseUrl/$kUserUrl/$kGetUserUrl/$userId',
+        '$kBaseUrl/$kUserUrl/$kGetUserUrl/$userId',
       );
 
       if (response.statusCode == 200) {
         return {
-          'data': response.data['data'],
           'status': ResponseStatus.success,
-          'message': 'Profile fetched successfully'
+          'message': 'Profile fetched successfully',
+          'data': UserModel.fromJson(response.data['data']),
         };
       } else {
         return {
@@ -173,12 +201,12 @@ class ApiService {
     }
   }
 
-  // Update profile
-  Future<Map<String, dynamic>> updateProfile(
-      {required UserModel? user, required Map<String, dynamic> data}) async {
+  // Complete profile
+  Future<Map<String, dynamic>> completeProfile(
+      Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.put(
-        '$baseUrl/$kUserUrl',
+        '$kBaseUrl/$kUserUrl',
         data: data,
       );
 
@@ -201,13 +229,156 @@ class ApiService {
     }
   }
 
+  // Update profile image
+  Future<Map<String, dynamic>> updateProfileImage(
+      {required int? userId, required Map<String, dynamic> data}) async {
+    try {
+      late FormData formData;
+      if (data['profile_picture_url']
+          .toString()
+          .contains('com.example.yimaru_app/')) {
+        formData = FormData.fromMap({
+          'file': data['profile_picture_url'].toString().isNotEmpty
+              ? MultipartFile.fromFileSync(
+                  data['profile_picture_url'],
+                  filename:
+                      data['profile_picture_url'].toString().split('/').last,
+                )
+              : null,
+        });
+      } else {
+        formData = FormData.fromMap({
+          'file': data['profile_picture_url'].toString().isNotEmpty
+              ? MultipartFile.fromFileSync(
+                  data['profile_picture_url'],
+                  filename:
+                      data['profile_picture_url'].toString().split('/').last,
+                )
+              : null,
+        });
+      }
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kUserUrl/$userId/$kUpdateProfileImage',
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Profile updated successfully'
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } catch (e) {
+      return {
+        'message': e.toString(),
+        'status': ResponseStatus.failure,
+      };
+    }
+  }
+
+  //
+  // // Update profile
+  // Future<Map<String, dynamic>> updateProfile(
+  //     Map<String, dynamic> data) async {
+  //   try {
+  //     late FormData formData;
+  //
+  //     if (data['profile_picture_url']
+  //         .toString()
+  //         .contains('com.ke.wede.customer.app/')) {
+  //       formData = FormData.fromMap({
+  //         'gender': data['gender'],
+  //         'region': data['region'],
+  //         'country': data['country'],
+  //         'last_name': data['last_name'],
+  //         'nick_name': data['nick_name'],
+  //         'birth_day': data['birth_day'],
+  //         'age_group': data['age_group'],
+  //         'occupation': data['occupation'],
+  //         'first_name': data['first_name'],
+  //         'learning_goal': data['learning_goal'],
+  //         'language_goal': data['language_goal'],
+  //         'education_level': data['education_level'],
+  //         'favoutite_topic': data['favoutite_topic'],
+  //         'knowledge_level': data['knowledge_level'],
+  //         'profile_completed': data['profile_completed'],
+  //         'preferred_language': data['preferred_language'],
+  //         'language_challange': data['language_challange'],
+  //         'profile_picture_url': data['profile_picture_url']
+  //             .toString()
+  //             .isNotEmpty
+  //             ? MultipartFile.fromFileSync(
+  //           data['profile_picture_url'],
+  //           filename:
+  //           data['profile_picture_url'].toString().split('/').last,
+  //         )
+  //             : null,
+  //       });
+  //     } else {
+  //       formData = FormData.fromMap({
+  //         'gender': data['gender'],
+  //         'region': data['region'],
+  //         'country': data['country'],
+  //         'last_name': data['last_name'],
+  //         'nick_name': data['nick_name'],
+  //         'birth_day': data['birth_day'],
+  //         'age_group': data['age_group'],
+  //         'occupation': data['occupation'],
+  //         'first_name': data['first_name'],
+  //         'learning_goal': data['learning_goal'],
+  //         'language_goal': data['language_goal'],
+  //         'education_level': data['education_level'],
+  //         'favoutite_topic': data['favoutite_topic'],
+  //         'knowledge_level': data['knowledge_level'],
+  //         'profile_completed': data['profile_completed'],
+  //         'preferred_language': data['preferred_language'],
+  //         'language_challange': data['language_challange'],
+  //         'profile_picture_url': data['profile_picture_url']
+  //             .toString()
+  //             .isNotEmpty
+  //             ? MultipartFile.fromFileSync(
+  //           data['profile_picture_url'],
+  //           filename:
+  //           data['profile_picture_url'].toString().split('/').last,
+  //         )
+  //             : null,
+  //       });
+  //     }
+  //     Response response = await _service.dio.put(
+  //       '$baseUrl/$kUserUrl',
+  //       data: formData,
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       return {
+  //         'status': ResponseStatus.success,
+  //         'message': 'Profile updated successfully'
+  //       };
+  //     } else {
+  //       return {
+  //         'status': ResponseStatus.failure,
+  //         'message': 'Unknown Error Occurred'
+  //       };
+  //     }
+  //   } catch (e) {
+  //     return {
+  //       'message': e.toString(),
+  //       'status': ResponseStatus.failure,
+  //     };
+  //   }
+  // }
   // Assessments
   Future<List<Assessment>> getAssessments() async {
     try {
       List<Assessment> assessments = [];
 
       final Response response =
-          await _service.dio.get('$baseUrl/$kAssessmentsUrl');
+          await _service.dio.get('$kBaseUrl/$kAssessmentsUrl');
 
       if (response.statusCode == 200) {
         var data = response.data;

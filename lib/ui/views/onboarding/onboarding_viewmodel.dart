@@ -79,29 +79,10 @@ class OnboardingViewModel extends FormViewModel {
 
   String get selectedCountry => _selectedCountry;
 
-  Future<List<String>> getCountries() async => ['Ethiopia'];
-
   // Country
   String _selectedRegion = 'Addis Ababa';
 
   String get selectedRegion => _selectedRegion;
-
-  Future<List<String>> getRegions(String country) async => [
-        'Afar',
-        'SNNPR',
-        'Amhara',
-        'Harari',
-        'Oromia',
-        'Sidama',
-        'Somali',
-        'Tigray',
-        'Gambela',
-        'Dire Dawa',
-        'Addis Ababa',
-        'Central Ethiopia',
-        'Benishangul-Gumuz',
-        'South West Ethiopia',
-      ];
 
   // Learning goal
   String? _selectedLearningGoal;
@@ -261,12 +242,42 @@ class OnboardingViewModel extends FormViewModel {
   }
 
   // Country
+  List<String> getCountries() => ['Ethiopia', 'Other'];
+
   void setSelectedCountry(String value) {
     _selectedCountry = value;
+    if (selectedCountry != 'Ethiopia') {
+      _selectedRegion = 'Other';
+    } else {
+      _selectedRegion = 'Addis Ababa';
+    }
     rebuildUi();
   }
 
   // Region
+  List<String> getRegions(String country) {
+    if (country == 'Ethiopia') {
+      return [
+        'Afar',
+        'SNNPR',
+        'Amhara',
+        'Harari',
+        'Oromia',
+        'Sidama',
+        'Somali',
+        'Tigray',
+        'Gambela',
+        'Dire Dawa',
+        'Addis Ababa',
+        'Central Ethiopia',
+        'Benishangul-Gumuz',
+        'South West Ethiopia',
+      ];
+    } else {
+      return ['Other'];
+    }
+  }
+
   void setSelectedRegion(String value) {
     _selectedRegion = value;
     rebuildUi();
@@ -362,7 +373,6 @@ class OnboardingViewModel extends FormViewModel {
   }
 
   // Navigation
-
   Future<void> navigateToLanguage() async =>
       await _navigationService.navigateToLanguageView();
 

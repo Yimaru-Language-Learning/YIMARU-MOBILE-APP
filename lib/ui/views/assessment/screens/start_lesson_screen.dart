@@ -21,6 +21,7 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
 
       viewModel.addUserData(data);
     }
+
     await viewModel.completeProfile();
   }
 
@@ -85,28 +86,17 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
   Widget _buildIcon() => SvgPicture.asset('assets/icons/mascot.svg');
 
   Widget _buildTitle(AssessmentViewModel viewModel) => Text.rich(
-        TextSpan(
-            text: 'Welcome aboard',
-            style: const TextStyle(
-              fontSize: 25,
-              color: kcDarkGrey,
-              fontWeight: FontWeight.w600,
-            ),
-            children: [
-              TextSpan(
-                text: ', ${viewModel.userData['first_name']}!',
-                style: const TextStyle(
-                  fontSize: 25,
-                  color: kcPrimaryColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            ]),
+        TextSpan(text: 'Welcome aboard', style: style25DG600, children: [
+          TextSpan(
+            text: ', ${viewModel.userData['first_name']}!',
+            style: style25DG600,
+          )
+        ]),
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubTitle() => Text(
         'You’re ready to explore your personalized lessons.',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildContinueButtonWrapper(AssessmentViewModel viewModel) => Padding(

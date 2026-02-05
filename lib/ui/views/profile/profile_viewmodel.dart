@@ -6,9 +6,18 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/user_model.dart';
+import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/status_checker_service.dart';
+import '../../common/app_colors.dart';
 
 class ProfileViewModel extends ReactiveViewModel {
+  final _apiService = locator<ApiService>();
+
+  final _dialogService = locator<DialogService>();
+
+  final _statusChecker = locator<StatusCheckerService>();
+
   final _navigationService = locator<NavigationService>();
 
   final _imagePickerService = locator<ImagePickerService>();
@@ -20,34 +29,60 @@ class ProfileViewModel extends ReactiveViewModel {
       [_authenticationService];
 
   // Current user
-  UserModel? get user =>  _authenticationService.user;
+  UserModel? get _user => _authenticationService.user;
+
+  UserModel? get user => _user;
 
   // Image picker
-  Future<void> openCamera() async => runBusyFuture(_openCamera(),busyObject: StateObjects.profileImage);
+  Future<void> openCamera() async =>
+      runBusyFuture(_openCamera(), busyObject: StateObjects.profileImage);
 
-  Future<void> _openCamera()async{
+  Future<void> _openCamera() async {
     String? image = await _imagePickerService.camera();
+    pop();
     if (image != null) {
+      await updateProfilePicture(image);
       await _authenticationService.saveProfileImage(image);
     }
-    pop();
   }
 
-  Future<void> openGallery() async => runBusyFuture(_openGallery(),busyObject: StateObjects.profileImage);
-
+  Future<void> openGallery() async =>
+      runBusyFuture(_openGallery(), busyObject: StateObjects.profileImage);
 
   Future<void> _openGallery() async {
     String? image = await _imagePickerService.gallery();
+    pop();
     if (image != null) {
+      await updateProfilePicture(image);
       await _authenticationService.saveProfileImage(image);
     }
-    pop();
   }
 
   // Logout
-  Future<void> logOut() async {
+  Future<void> _logOut() async {
     await _authenticationService.logOut();
     await _navigationService.replaceWithLoginView();
+  }
+
+  // Dialog
+  Future<bool?> showAbortDialog() async {
+    DialogResponse? response = await _dialogService.showDialog(
+      title: 'Logout',
+      cancelTitle: 'No',
+      buttonTitle: 'Yes',
+      barrierDismissible: true,
+      cancelTitleColor: kcDarkGrey,
+      buttonTitleColor: kcPrimaryColor,
+      description: 'Are you sure you want to quit?',
+    );
+    return response?.confirmed;
+  }
+
+  Future<void> logOut() async {
+    bool? response = await showAbortDialog();
+    if (response != null && response) {
+      await _logOut();
+    }
   }
 
   // Navigation
@@ -67,4 +102,19 @@ class ProfileViewModel extends ReactiveViewModel {
 
   Future<void> navigateToSupport() async =>
       await _navigationService.navigateToSupportView();
+
+  // Remote api call
+
+  // Update profile
+  Future<void> updateProfilePicture(String image) async =>
+      await runBusyFuture(_updateProfilePicture(image));
+
+  Future<void> _updateProfilePicture(String image) async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> data = {
+        'profile_picture_url': image,
+      };
+      await _apiService.updateProfileImage(data: data, userId: _user?.userId);
+    }
+  }
 }

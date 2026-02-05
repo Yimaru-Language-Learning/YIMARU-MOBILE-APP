@@ -9,6 +9,8 @@ import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/services/permission_handler_service.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
+import 'package:yimaru_app/services/google_auth_service.dart';
+import 'package:yimaru_app/services/image_downloader_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -27,6 +29,9 @@ import 'test_helpers.mocks.dart';
     MockSpec<PermissionHandlerService>(
         onMissingStub: OnMissingStub.returnDefault),
     MockSpec<ImagePickerService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<GoogleAuthService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<ImageDownloaderService>(
+        onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
   ],
 )
@@ -41,6 +46,8 @@ void registerServices() {
   getAndRegisterStatusCheckerService();
   getAndRegisterPermissionHandlerService();
   getAndRegisterImagePickerService();
+  getAndRegisterGoogleAuthService();
+  getAndRegisterImageDownloaderService();
 // @stacked-mock-register
 }
 
@@ -144,6 +151,20 @@ MockImagePickerService getAndRegisterImagePickerService() {
   _removeRegistrationIfExists<ImagePickerService>();
   final service = MockImagePickerService();
   locator.registerSingleton<ImagePickerService>(service);
+  return service;
+}
+
+MockGoogleAuthService getAndRegisterGoogleAuthService() {
+  _removeRegistrationIfExists<GoogleAuthService>();
+  final service = MockGoogleAuthService();
+  locator.registerSingleton<GoogleAuthService>(service);
+  return service;
+}
+
+MockImageDownloaderService getAndRegisterImageDownloaderService() {
+  _removeRegistrationIfExists<ImageDownloaderService>();
+  final service = MockImageDownloaderService();
+  locator.registerSingleton<ImageDownloaderService>(service);
   return service;
 }
 // @stacked-mock-create

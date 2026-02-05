@@ -7,19 +7,33 @@ part of 'user_model.dart';
 // **************************************************************************
 
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
+      email: json['email'] as String?,
+      region: json['region'] as String?,
+      gender: json['gender'] as String?,
       userId: (json['user_id'] as num?)?.toInt(),
-      firstName: json['firstName'] as String?,
+      country: json['country'] as String?,
+      lastName: json['last_name'] as String?,
+      birthday: json['birth_day'] as String?,
+      firstName: json['first_name'] as String?,
+      occupation: json['occupation'] as String?,
       accessToken: json['access_token'] as String?,
-      profileImage: json['profileImage'] as String?,
       refreshToken: json['refresh_token'] as String?,
-      profileCompleted: json['profileCompleted'] as bool?,
+      profilePicture: json['profile_picture_url'] as String?,
+      profileCompleted: json['profile_completed'] as bool?,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
-      'firstName': instance.firstName,
       'user_id': instance.userId,
-      'profileImage': instance.profileImage,
-      'profileCompleted': instance.profileCompleted,
+      'last_name': instance.lastName,
+      'birth_day': instance.birthday,
+      'first_name': instance.firstName,
       'access_token': instance.accessToken,
       'refresh_token': instance.refreshToken,
+      'profile_completed': instance.profileCompleted,
+      'profile_picture_url': instance.profilePicture,
+      'email': instance.email,
+      'gender': instance.gender,
+      'region': instance.region,
+      'country': instance.country,
+      'occupation': instance.occupation,
     };

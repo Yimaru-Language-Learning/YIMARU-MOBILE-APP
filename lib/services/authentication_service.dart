@@ -40,23 +40,28 @@ class AuthenticationService with ListenableServiceMixin {
   Future<void> saveUserName(Map<String, dynamic> data) async {
     await _secureService.setString('firstName', data['firstName']);
     _user = UserModel(
+      email: _user?.email,
+      gender: _user?.gender,
+      region: _user?.region,
       userId: _user?.userId,
+      country: _user?.country,
+      lastName: _user?.lastName,
+      birthday: _user?.birthday,
+      occupation: _user?.occupation,
       accessToken: _user?.accessToken,
       refreshToken: _user?.refreshToken,
+      profilePicture: _user?.profilePicture,
       profileCompleted: _user?.profileCompleted,
       firstName: await _secureService.getString('firstName'),
     );
   }
 
-  Future<void> saveBasicUserData(Map<String, dynamic> data) async {
+  Future<void> saveUserCredential(Map<String, dynamic> data) async {
     await _secureService.setInt('userId', data['userId']);
     await _secureService.setString('accessToken', data['accessToken']);
     await _secureService.setString('refreshToken', data['refreshToken']);
 
     _user = UserModel(
-      firstName: _user?.firstName,
-      profileImage: _user?.profileImage,
-      profileCompleted: _user?.profileCompleted,
       userId: await _secureService.getInt('userId'),
       accessToken: await _secureService.getString('accessToken'),
       refreshToken: await _secureService.getString('refreshToken'),
@@ -67,39 +72,101 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setBool('profileCompleted', value);
 
     _user = UserModel(
+        email: _user?.email,
+        gender: _user?.gender,
+        region: _user?.region,
         userId: _user?.userId,
+        country: _user?.country,
+        lastName: _user?.lastName,
+        birthday: _user?.birthday,
         firstName: _user?.firstName,
+        occupation: _user?.occupation,
         accessToken: _user?.accessToken,
         refreshToken: _user?.refreshToken,
-        profileImage: _user?.profileImage,
+        profilePicture: _user?.profilePicture,
         profileCompleted: await _secureService.getBool('profileCompleted'));
+    notifyListeners();
   }
 
   Future<void> saveProfileImage(String image) async {
     await _secureService.setString('profileImage', image);
     _user = UserModel(
+      email: _user?.email,
+      gender: _user?.gender,
+      region: _user?.region,
       userId: _user?.userId,
+      country: _user?.country,
+      lastName: _user?.lastName,
+      birthday: _user?.birthday,
       firstName: _user?.firstName,
+      occupation: _user?.occupation,
       accessToken: _user?.accessToken,
       refreshToken: _user?.refreshToken,
       profileCompleted: _user?.profileCompleted,
-      profileImage: await _secureService.getString('profileImage'),
+      profilePicture: await _secureService.getString('profileImage'),
     );
 
     notifyListeners();
   }
 
-  Future<void> saveFullName(Map<String, dynamic> data) async {
-    await _secureService.setBool('profileCompleted', true);
-    await _secureService.setString('firstName', data['firstName']);
+  Future<void> saveUserData(
+      {required String image, required UserModel data}) async {
+    await _secureService.setBool(
+        'profileCompleted', data.profileCompleted ?? false);
+    await _secureService.setString('profilePicture', image);
+    await _secureService.setString('email', data.email ?? '');
+    await _secureService.setString('region', data.region ?? '');
+    await _secureService.setString('gender', data.gender ?? '');
+    await _secureService.setString('country', data.country ?? '');
+    await _secureService.setString('birthday', data.birthday ?? '');
+    await _secureService.setString('lastName', data.lastName ?? '');
+    await _secureService.setString('firstName', data.firstName ?? '');
+    await _secureService.setString('occupation', data.occupation ?? '');
+
     _user = UserModel(
+      email: data.email,
+      gender: data.gender,
+      region: data.region,
+      profilePicture: image,
+      userId: _user?.userId,
+      country: data.country,
+      lastName: data.lastName,
+      birthday: data.birthday,
+      firstName: data.firstName,
+      occupation: data.occupation,
+      accessToken: _user?.accessToken,
+      refreshToken: _user?.refreshToken,
+      profileCompleted: data.profileCompleted,
+    );
+
+    notifyListeners();
+  }
+
+  Future<void> updateUserData(Map<String, dynamic> data) async {
+    await _secureService.setString('region', data['region']);
+    await _secureService.setString('gender', data['gender']);
+    await _secureService.setString('country', data['country']);
+    await _secureService.setString('lastName', data['last_name']);
+    await _secureService.setString('birthday', data['birth_day']);
+    await _secureService.setString('firstName', data['first_name']);
+    await _secureService.setString('occupation', data['occupation']);
+
+    _user = UserModel(
+      email: _user?.email,
       userId: _user?.userId,
       accessToken: _user?.accessToken,
       refreshToken: _user?.refreshToken,
-      profileImage: _user?.profileImage,
+      profilePicture: _user?.profilePicture,
+      profileCompleted: _user?.profileCompleted,
+      region: await _secureService.getString('region'),
+      gender: await _secureService.getString('gender'),
+      country: await _secureService.getString('country'),
+      lastName: await _secureService.getString('lastName'),
+      birthday: await _secureService.getString('birthday'),
       firstName: await _secureService.getString('firstName'),
-      profileCompleted: await _secureService.getBool('profileCompleted'),
+      occupation: await _secureService.getString('occupation'),
     );
+    notifyListeners();
   }
 
   Future<bool> isFirstTimeInstall() async =>
@@ -112,10 +179,17 @@ class AuthenticationService with ListenableServiceMixin {
   Future<UserModel?> getUser() async {
     _user = UserModel(
       userId: await _secureService.getInt('userId'),
+      email: await _secureService.getString('email'),
+      region: await _secureService.getString('region'),
+      gender: await _secureService.getString('gender'),
+      country: await _secureService.getString('country'),
+      lastName: await _secureService.getString('lastName'),
+      birthday: await _secureService.getString('birthday'),
       firstName: await _secureService.getString('firstName'),
+      occupation: await _secureService.getString('occupation'),
       accessToken: await _secureService.getString('accessToken'),
       refreshToken: await _secureService.getString('refreshToken'),
-      profileImage: await _secureService.getString('profileImage'),
+      profilePicture: await _secureService.getString('profileImage'),
       profileCompleted: await _secureService.getBool('profileCompleted'),
     );
     return _user;
@@ -123,6 +197,7 @@ class AuthenticationService with ListenableServiceMixin {
 
   Future<void> logOut() async {
     bool firstTimeInstall = await isFirstTimeInstall();
+    _user = null;
     await _secureService.clear();
     await setFirstTimeInstall(firstTimeInstall);
   }

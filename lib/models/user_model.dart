@@ -4,14 +4,27 @@ part 'user_model.g.dart';
 
 @JsonSerializable()
 class UserModel {
-  final String? firstName;
+  final String? email;
+
+  final String? gender;
+
+  final String? region;
+
+  final String? country;
+
+  final String? occupation;
 
   @JsonKey(name: 'user_id')
   final int? userId;
 
-  final String? profileImage;
+  @JsonKey(name: 'last_name')
+  final String? lastName;
 
-  final bool? profileCompleted;
+  @JsonKey(name: 'birth_day')
+  final String? birthday;
+
+  @JsonKey(name: 'first_name')
+  final String? firstName;
 
   @JsonKey(name: 'access_token')
   final String? accessToken;
@@ -19,12 +32,27 @@ class UserModel {
   @JsonKey(name: 'refresh_token')
   final String? refreshToken;
 
+  @JsonKey(name: 'profile_completed')
+  final bool? profileCompleted;
+
+  @JsonKey(name: 'profile_picture_url')
+  final String? profilePicture;
+
+
+
   const UserModel({
+    this.email,
+    this.region,
+    this.gender,
     this.userId,
+    this.country,
+    this.lastName,
+    this.birthday,
     this.firstName,
+    this.occupation,
     this.accessToken,
-    this.profileImage,
     this.refreshToken,
+    this.profilePicture,
     this.profileCompleted,
   });
 

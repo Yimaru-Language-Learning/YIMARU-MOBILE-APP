@@ -45,7 +45,7 @@ class LearnView extends StackedView<LearnViewModel> {
 
   Widget _buildAppBar(LearnViewModel viewModel) => LearnAppBar(
         name: viewModel.user?.firstName,
-        profileImage: viewModel.user?.profileImage,
+        profileImage: viewModel.user?.profilePicture,
       );
 
   Widget _buildLevelsColumnWrapper(LearnViewModel viewModel) =>

@@ -10,10 +10,15 @@ import 'package:yimaru_app/ui/views/home/home_view.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/user_model.dart';
+import '../../../services/status_checker_service.dart';
 
 class RegisterViewModel extends FormViewModel {
   final _apiService = locator<ApiService>();
+
+  final _statusChecker = locator<StatusCheckerService>();
+
   final _navigationService = locator<NavigationService>();
+
   final _authenticationService = locator<AuthenticationService>();
 
   // Navigation
@@ -208,67 +213,7 @@ class RegisterViewModel extends FormViewModel {
     _userData.clear();
   }
 
-  // Remote api calls
-  Future<void> register() async {
-    Map<String, dynamic> response = await runBusyFuture<Map<String, dynamic>>(
-        _apiService.register(_userData));
-
-    if (response['status'] == ResponseStatus.success) {
-      goTo(page: 3);
-      showSuccessToast(response['message']);
-    } else {
-      showErrorToast(response['message']);
-    }
-  }
-
-  Future<void> verifyOtp() async {
-    Map<String, dynamic> response =
-        await runBusyFuture<Map<String, dynamic>>(_verifyOtp());
-
-    if (response['status'] == ResponseStatus.success) {
-      await replaceWithHome();
-    }
-  }
-
-  Future<Map<String, dynamic>> _verifyOtp() async {
-    Map<String, dynamic> response = await _apiService.verifyOtp(_userData);
-    if (response['status'] == ResponseStatus.success) {
-      UserModel user = response['data'] as UserModel;
-      Map<String, dynamic> data = {
-        'userId': user.userId,
-        'accessToken': user.accessToken,
-        'refreshToken': user.refreshToken
-      };
-
-      //     {
-      //       'userId': 10,
-      //   'accessToken': 'accessToken',
-      //   'refreshToken': 'refreshToken'
-      // }
-
-      await _authenticationService.saveBasicUserData(data);
-      showSuccessToast(response['message']);
-    } else {
-      showErrorToast(response['message']);
-    }
-
-    return response;
-  }
-
-  Future<void> resendOtp() async {
-    resetButton();
-
-    Map<String, dynamic> response = await runBusyFuture<Map<String, dynamic>>(
-        _apiService.resendOtp(_userData));
-
-    if (response['status'] == ResponseStatus.success) {
-      showSuccessToast(response['message']);
-    } else {
-      showErrorToast(response['message']);
-    }
-  }
-
-  // Navigation
+  // In-app navigation
   void goTo({required int page, RegistrationType? type}) {
     _currentIndex = page;
     if (type != null) {
@@ -297,6 +242,7 @@ class RegisterViewModel extends FormViewModel {
     }
   }
 
+  // Navigation
   Future<void> navigateToTermsAndConditions() async =>
       await _navigationService.navigateToTermsAndConditionsView();
 
@@ -308,4 +254,61 @@ class RegisterViewModel extends FormViewModel {
 
   Future<void> replaceWithHome() async =>
       await _navigationService.clearStackAndShowView(const HomeView());
+
+  // Remote api calls
+
+  // Register
+  Future<void> register() async => await runBusyFuture(_register());
+
+  Future<void> _register() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response = await _apiService.register(_userData);
+
+      if (response['status'] == ResponseStatus.success) {
+        goTo(page: 3);
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  Future<void> verifyOtp() async => await runBusyFuture(_verifyOtp());
+
+  Future<void> _verifyOtp() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response = await _apiService.verifyOtp(_userData);
+      if (response['status'] == ResponseStatus.success) {
+        UserModel user = response['data'] as UserModel;
+        Map<String, dynamic> data = {
+          'userId': user.userId,
+          'accessToken': user.accessToken,
+          'refreshToken': user.refreshToken
+        };
+
+        await _authenticationService.saveUserCredential(data);
+        await replaceWithHome();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  // Resend otp
+  Future<void> resendOtp() async => await runBusyFuture(_resendOtp());
+
+  Future<void> _resendOtp() async {
+    if (await _statusChecker.checkConnection()) {
+      resetButton();
+
+      Map<String, dynamic> response = await _apiService.resendOtp(_userData);
+
+      if (response['status'] == ResponseStatus.success) {
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
 }

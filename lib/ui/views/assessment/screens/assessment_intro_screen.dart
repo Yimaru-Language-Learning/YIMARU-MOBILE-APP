@@ -64,18 +64,14 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Want a quick assessment to know your English level?',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubTitle() => Text(
         'Answer a few quick questions to help us understand your English proficiency.',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildLowerColumn(AssessmentViewModel viewModel) => Column(
@@ -95,8 +91,8 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
         safe: false,
         text: 'Continue',
         borderRadius: 12,
-        onTap: () => viewModel.next(),
         foregroundColor: kcWhite,
+        onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,
       );
 

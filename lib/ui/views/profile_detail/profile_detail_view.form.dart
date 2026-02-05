@@ -16,6 +16,7 @@ const String EmailValueKey = 'email';
 const String PhoneNumberValueKey = 'phoneNumber';
 const String LastNameValueKey = 'lastName';
 const String FirstNameValueKey = 'firstName';
+const String OccupationValueKey = 'occupation';
 
 final Map<String, TextEditingController>
     _ProfileDetailViewTextEditingControllers = {};
@@ -28,6 +29,7 @@ final Map<String, String? Function(String?)?>
   PhoneNumberValueKey: FormValidator.validatePhoneNumber,
   LastNameValueKey: FormValidator.validateForm,
   FirstNameValueKey: FormValidator.validateForm,
+  OccupationValueKey: FormValidator.validateForm,
 };
 
 mixin $ProfileDetailView {
@@ -39,11 +41,14 @@ mixin $ProfileDetailView {
       _getFormTextEditingController(LastNameValueKey);
   TextEditingController get firstNameController =>
       _getFormTextEditingController(FirstNameValueKey);
+  TextEditingController get occupationController =>
+      _getFormTextEditingController(OccupationValueKey);
 
   FocusNode get emailFocusNode => _getFormFocusNode(EmailValueKey);
   FocusNode get phoneNumberFocusNode => _getFormFocusNode(PhoneNumberValueKey);
   FocusNode get lastNameFocusNode => _getFormFocusNode(LastNameValueKey);
   FocusNode get firstNameFocusNode => _getFormFocusNode(FirstNameValueKey);
+  FocusNode get occupationFocusNode => _getFormFocusNode(OccupationValueKey);
 
   TextEditingController _getFormTextEditingController(
     String key, {
@@ -73,6 +78,7 @@ mixin $ProfileDetailView {
     phoneNumberController.addListener(() => _updateFormData(model));
     lastNameController.addListener(() => _updateFormData(model));
     firstNameController.addListener(() => _updateFormData(model));
+    occupationController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -88,6 +94,7 @@ mixin $ProfileDetailView {
     phoneNumberController.addListener(() => _updateFormData(model));
     lastNameController.addListener(() => _updateFormData(model));
     firstNameController.addListener(() => _updateFormData(model));
+    occupationController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -101,6 +108,7 @@ mixin $ProfileDetailView {
           PhoneNumberValueKey: phoneNumberController.text,
           LastNameValueKey: lastNameController.text,
           FirstNameValueKey: firstNameController.text,
+          OccupationValueKey: occupationController.text,
         }),
     );
 
@@ -147,6 +155,8 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap[PhoneNumberValueKey] as String?;
   String? get lastNameValue => this.formValueMap[LastNameValueKey] as String?;
   String? get firstNameValue => this.formValueMap[FirstNameValueKey] as String?;
+  String? get occupationValue =>
+      this.formValueMap[OccupationValueKey] as String?;
 
   set emailValue(String? value) {
     this.setData(
@@ -195,6 +205,18 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
+  set occupationValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({OccupationValueKey: value}),
+    );
+
+    if (_ProfileDetailViewTextEditingControllers.containsKey(
+        OccupationValueKey)) {
+      _ProfileDetailViewTextEditingControllers[OccupationValueKey]?.text =
+          value ?? '';
+    }
+  }
+
   bool get hasEmail =>
       this.formValueMap.containsKey(EmailValueKey) &&
       (emailValue?.isNotEmpty ?? false);
@@ -207,6 +229,9 @@ extension ValueProperties on FormStateHelper {
   bool get hasFirstName =>
       this.formValueMap.containsKey(FirstNameValueKey) &&
       (firstNameValue?.isNotEmpty ?? false);
+  bool get hasOccupation =>
+      this.formValueMap.containsKey(OccupationValueKey) &&
+      (occupationValue?.isNotEmpty ?? false);
 
   bool get hasEmailValidationMessage =>
       this.fieldsValidationMessages[EmailValueKey]?.isNotEmpty ?? false;
@@ -216,6 +241,8 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[LastNameValueKey]?.isNotEmpty ?? false;
   bool get hasFirstNameValidationMessage =>
       this.fieldsValidationMessages[FirstNameValueKey]?.isNotEmpty ?? false;
+  bool get hasOccupationValidationMessage =>
+      this.fieldsValidationMessages[OccupationValueKey]?.isNotEmpty ?? false;
 
   String? get emailValidationMessage =>
       this.fieldsValidationMessages[EmailValueKey];
@@ -225,6 +252,8 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[LastNameValueKey];
   String? get firstNameValidationMessage =>
       this.fieldsValidationMessages[FirstNameValueKey];
+  String? get occupationValidationMessage =>
+      this.fieldsValidationMessages[OccupationValueKey];
 }
 
 extension Methods on FormStateHelper {
@@ -236,6 +265,8 @@ extension Methods on FormStateHelper {
       this.fieldsValidationMessages[LastNameValueKey] = validationMessage;
   setFirstNameValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[FirstNameValueKey] = validationMessage;
+  setOccupationValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[OccupationValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
   void clearForm() {
@@ -243,6 +274,7 @@ extension Methods on FormStateHelper {
     phoneNumberValue = '';
     lastNameValue = '';
     firstNameValue = '';
+    occupationValue = '';
   }
 
   /// Validates text input fields on the Form
@@ -252,6 +284,7 @@ extension Methods on FormStateHelper {
       PhoneNumberValueKey: getValidationMessage(PhoneNumberValueKey),
       LastNameValueKey: getValidationMessage(LastNameValueKey),
       FirstNameValueKey: getValidationMessage(FirstNameValueKey),
+      OccupationValueKey: getValidationMessage(OccupationValueKey),
     });
   }
 }
@@ -275,4 +308,5 @@ void updateValidationData(FormStateHelper model) =>
       PhoneNumberValueKey: getValidationMessage(PhoneNumberValueKey),
       LastNameValueKey: getValidationMessage(LastNameValueKey),
       FirstNameValueKey: getValidationMessage(FirstNameValueKey),
+      OccupationValueKey: getValidationMessage(OccupationValueKey),
     });

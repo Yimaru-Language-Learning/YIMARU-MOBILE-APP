@@ -4,7 +4,6 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/learn_lesson_tile.dart';
 import 'package:yimaru_app/ui/widgets/module_progress.dart';
 import 'package:yimaru_app/ui/widgets/motivation_card.dart';
-import 'package:yimaru_app/ui/widgets/overall_module_progress.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';

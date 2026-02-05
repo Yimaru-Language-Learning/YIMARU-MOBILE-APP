@@ -28,7 +28,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
     };
     viewModel.addUserData(data);
 
-    await viewModel.login();
+    await viewModel.emailLogin();
   }
 
   @override
@@ -164,13 +164,15 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
 
   List<Widget> _buildLowerColumnChildren(LoginViewModel viewModel) => [
         _buildContinueButton(viewModel),
+        _buildLoginWithGoogleButton(viewModel),
         _buildOptionTextDivider(),
-        _buildLoginWithEmailButton(viewModel),
+        _buildLoginWithPhoneButton(viewModel),
         verticalSpaceMedium
       ];
 
   Widget _buildContinueButton(LoginViewModel viewModel) => CustomElevatedButton(
         height: 55,
+        safe: false,
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
@@ -184,9 +186,21 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
             : kcPrimaryColor.withOpacity(0.1),
       );
 
+  Widget _buildLoginWithGoogleButton(LoginViewModel viewModel) =>
+      CustomElevatedButton(
+        height: 55,
+        borderRadius: 12,
+        backgroundColor: kcWhite,
+        text: 'Login with Google',
+        borderColor: kcPrimaryColor,
+        foregroundColor: kcPrimaryColor,
+        leadingImage: 'assets/icons/google.png',
+        onTap: () async => await viewModel.googleLogin(),
+      );
+
   Widget _buildOptionTextDivider() => const OptionTextDivider();
 
-  Widget _buildLoginWithEmailButton(LoginViewModel viewModel) =>
+  Widget _buildLoginWithPhoneButton(LoginViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,

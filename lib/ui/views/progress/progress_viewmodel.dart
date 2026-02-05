@@ -14,7 +14,7 @@ class ProgressViewModel extends BaseViewModel {
       'title': 'Beginner',
       'isCompleted': true,
       'status': 'Completed',
-      'icon': 'assets/icons/b1.svg',
+      'icon': 'assets/icons/b_1.svg',
       'subTitle': 'You’ve mastered everyday English basics!',
     },
     {
@@ -22,7 +22,7 @@ class ProgressViewModel extends BaseViewModel {
       'isCompleted': false,
       'status': 'In Progress',
       'color': kcPrimaryColor,
-      'icon': 'assets/icons/b1.svg',
+      'icon': 'assets/icons/b_1.svg',
       'subTitle': 'Continue improving your conversations and fluency.',
     },
     {
@@ -30,7 +30,7 @@ class ProgressViewModel extends BaseViewModel {
       'isCompleted': true,
       'status': 'In Progress',
       'color': kcPrimaryColor,
-      'icon': 'assets/icons/b1.svg',
+      'icon': 'assets/icons/b_1.svg',
       'subTitle': 'You’ve mastered everyday English basics!',
     },
   ];

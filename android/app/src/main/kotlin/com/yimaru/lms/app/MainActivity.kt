@@ -1,4 +1,4 @@
-package com.example.yimaru_app
+package com.yimaru.lms.app
 
 import io.flutter.embedding.android.FlutterActivity
 
