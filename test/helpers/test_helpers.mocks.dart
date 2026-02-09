@@ -1017,6 +1017,33 @@ class MockApiService extends _i1.Mock implements _i12.ApiService {
       ) as _i8.Future<Map<String, dynamic>>);
 
   @override
+  _i8.Future<Map<String, dynamic>> requestResetCode(
+          Map<String, dynamic>? data) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #requestResetCode,
+          [data],
+        ),
+        returnValue:
+            _i8.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+        returnValueForMissingStub:
+            _i8.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i8.Future<Map<String, dynamic>>);
+
+  @override
+  _i8.Future<Map<String, dynamic>> resetPassword(Map<String, dynamic>? data) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #resetPassword,
+          [data],
+        ),
+        returnValue:
+            _i8.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+        returnValueForMissingStub:
+            _i8.Future<Map<String, dynamic>>.value(<String, dynamic>{}),
+      ) as _i8.Future<Map<String, dynamic>>);
+
+  @override
   _i8.Future<Map<String, dynamic>> getProfileStatus(_i11.UserModel? user) =>
       (super.noSuchMethod(
         Invocation.method(

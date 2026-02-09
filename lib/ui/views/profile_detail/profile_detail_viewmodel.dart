@@ -220,7 +220,8 @@ class ProfileDetailViewModel extends ReactiveViewModel
   }
 
   // Update  profile
-  Future<void> updateProfile() async => await runBusyFuture(_updateProfile());
+  Future<void> updateProfile() async => await runBusyFuture(_updateProfile(),
+      busyObject: StateObjects.profileUpdate);
 
   Future<void> _updateProfile() async {
     if (await _statusChecker.checkConnection()) {
@@ -228,8 +229,8 @@ class ProfileDetailViewModel extends ReactiveViewModel
           await _apiService.completeProfile(_userData);
       if (response['status'] == ResponseStatus.success) {
         await _authenticationService.updateUserData(_userData);
-        showSuccessToast(response['message']);
         pop();
+        showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);
       }

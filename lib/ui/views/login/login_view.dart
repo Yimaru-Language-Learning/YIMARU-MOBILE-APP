@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/login/screens/login_otp_screen.dart';
 import 'package:yimaru_app/ui/views/login/screens/login_with_email_screen.dart';
 import 'package:yimaru_app/ui/views/login/screens/login_with_phone_number_screen.dart';
@@ -24,8 +25,16 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
 
   @override
   void onViewModelReady(LoginViewModel viewModel) {
+    _clearData();
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
+  }
+
+  void _clearData() {
+    otpController.clear();
+    emailController.clear();
+    passwordController.clear();
+    phoneNumberController.clear();
   }
 
   @override
@@ -52,8 +61,11 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
         body: _buildScaffoldStack(viewModel),
       );
 
-  Widget _buildScaffoldStack(LoginViewModel viewModel) =>
-      Stack(children: [_buildScaffold(viewModel), _buildBusyLogin(viewModel)]);
+  Widget _buildScaffoldStack(LoginViewModel viewModel) => Stack(children: [
+        _buildScaffold(viewModel),
+        _buildLoginWithEmailState(viewModel),
+        _buildLoginWithGoogleState(viewModel)
+      ]);
 
   Widget _buildScaffold(LoginViewModel viewModel) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,6 +106,13 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
       otpController: otpController,
       phoneNumberController: phoneNumberController);
 
-  Widget _buildBusyLogin(LoginViewModel viewModel) =>
-      viewModel.isBusy ? const PageLoadingIndicator() : Container();
+  Widget _buildLoginWithEmailState(LoginViewModel viewModel) =>
+      viewModel.busy(StateObjects.loginWithEmail)
+          ? const PageLoadingIndicator()
+          : Container();
+
+  Widget _buildLoginWithGoogleState(LoginViewModel viewModel) =>
+      viewModel.busy(StateObjects.loginWithGoogle)
+          ? const PageLoadingIndicator()
+          : Container();
 }

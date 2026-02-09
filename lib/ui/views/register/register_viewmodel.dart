@@ -22,9 +22,9 @@ class RegisterViewModel extends FormViewModel {
   final _authenticationService = locator<AuthenticationService>();
 
   // Navigation
-  int _currentIndex = 0;
+  int _currentPage = 0;
 
-  int get currentIndex => _currentIndex;
+  int get currentPage => _currentPage;
 
   // Email
   bool _focusEmail = false;
@@ -213,9 +213,35 @@ class RegisterViewModel extends FormViewModel {
     _userData.clear();
   }
 
+  // Form reset
+
+  // Reset register with email screen
+  void resetRegisterWithEmailScreen() {
+    _focusEmail = false;
+    rebuildUi();
+  }
+
+  // Reset create password screen
+  void resetCreatePasswordScreen() {
+    _agree = false;
+    _length = false;
+    _number = false;
+    _specialChar = false;
+    _passwordMatch = false;
+    _focusPassword = false;
+    _focusConfirmPassword = false;
+    rebuildUi();
+  }
+
+  // Reset registration otp screen
+  void resetRegistrationOtpScreen() {
+    _focusOtp = false;
+    rebuildUi();
+  }
+
   // In-app navigation
   void goTo({required int page, RegistrationType? type}) {
-    _currentIndex = page;
+    _currentPage = page;
     if (type != null) {
       _registrationType = type;
     }
@@ -223,17 +249,17 @@ class RegisterViewModel extends FormViewModel {
   }
 
   void goBack() {
-    if (_currentIndex == 1) {
-      _currentIndex = 0;
+    if (_currentPage == 1) {
+      _currentPage = 0;
       rebuildUi();
-    } else if (_currentIndex == 2) {
-      _currentIndex = 0;
+    } else if (_currentPage == 2) {
+      _currentPage = 0;
       rebuildUi();
-    } else if (_currentIndex == 3) {
+    } else if (_currentPage == 3) {
       if (_registrationType == RegistrationType.phone) {
-        _currentIndex = 1;
+        _currentPage = 1;
       } else {
-        _currentIndex = 2;
+        _currentPage = 2;
       }
 
       rebuildUi();
@@ -258,7 +284,8 @@ class RegisterViewModel extends FormViewModel {
   // Remote api calls
 
   // Register
-  Future<void> register() async => await runBusyFuture(_register());
+  Future<void> register() async =>
+      await runBusyFuture(_register(), busyObject: StateObjects.registration);
 
   Future<void> _register() async {
     if (await _statusChecker.checkConnection()) {
@@ -273,7 +300,8 @@ class RegisterViewModel extends FormViewModel {
     }
   }
 
-  Future<void> verifyOtp() async => await runBusyFuture(_verifyOtp());
+  Future<void> verifyOtp() async =>
+      await runBusyFuture(_verifyOtp(), busyObject: StateObjects.verifyOtp);
 
   Future<void> _verifyOtp() async {
     if (await _statusChecker.checkConnection()) {
@@ -296,7 +324,8 @@ class RegisterViewModel extends FormViewModel {
   }
 
   // Resend otp
-  Future<void> resendOtp() async => await runBusyFuture(_resendOtp());
+  Future<void> resendOtp() async =>
+      await runBusyFuture(_resendOtp(), busyObject: StateObjects.resendOtp);
 
   Future<void> _resendOtp() async {
     if (await _statusChecker.checkConnection()) {

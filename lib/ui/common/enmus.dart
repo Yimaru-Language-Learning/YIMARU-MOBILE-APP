@@ -10,4 +10,15 @@ enum ProgressStatuses { pending, started, completed }
 enum ProficiencyLevels { a1, a2, b1, b2, none }
 
 // State object
-enum StateObjects { profileImage }
+enum StateObjects {
+  verifyOtp,
+  resendOtp,
+  profileImage,
+  registration,
+  profileUpdate,
+  resetPassword,
+  loginWithEmail,
+  loginWithGoogle,
+  requestResetCode,
+  profileCompletion,
+}

@@ -117,6 +117,7 @@ class HomeViewModel extends ReactiveViewModel {
         response = {'data': true, 'status': ResponseStatus.success};
       }
 
+
       if (response['status'] == ResponseStatus.success && !response['data']) {
         await replaceWithOnboarding();
       } else if (response['status'] == ResponseStatus.success &&

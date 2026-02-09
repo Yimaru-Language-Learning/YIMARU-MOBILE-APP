@@ -66,7 +66,7 @@ class LearnAppBar extends StatelessWidget {
       );
 
   List<Widget> _buildGreetingChildren() =>
-      [_buildGreetingTitle(), _buildSubTitle()];
+      [_buildGreetingTitle(), _buildSubtitle()];
 
   Widget _buildGreetingTitle() => Text.rich(
         TextSpan(text: 'Hello,', style: style14DG600, children: [
@@ -77,7 +77,7 @@ class LearnAppBar extends StatelessWidget {
         ]),
       );
 
-  Widget _buildSubTitle() => Text(
+  Widget _buildSubtitle() => Text(
         'Ready to keep learning English today?',
         textAlign: TextAlign.center,
         style: style14DG400,

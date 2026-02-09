@@ -55,7 +55,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
   List<Widget> _buildUpperColumnChildren(RegisterViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(),
-        _buildSubTitleWrapper(viewModel),
+        _buildSubtitleWrapper(viewModel),
         verticalSpaceLarge,
         _buildEmailFormField(viewModel),
         if (viewModel.hasEmailValidationMessage && viewModel.focusEmail)
@@ -73,7 +73,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         ),
       );
 
-  Widget _buildSubTitleWrapper(RegisterViewModel viewModel) => LoginAccount(
+  Widget _buildSubtitleWrapper(RegisterViewModel viewModel) => LoginAccount(
         onTap: () async => await viewModel.replaceToLogin(),
       );
 

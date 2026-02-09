@@ -38,8 +38,6 @@ class UserModel {
   @JsonKey(name: 'profile_picture_url')
   final String? profilePicture;
 
-
-
   const UserModel({
     this.email,
     this.region,

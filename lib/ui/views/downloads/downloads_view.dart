@@ -178,7 +178,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
         verticalSpaceMedium,
         _buildEmptyTitle(),
         verticalSpaceSmall,
-        _buildEmptySubTitle(),
+        _buildEmptySubtitle(),
       ];
 
   Widget _buildEmptyIcon() => const Icon(
@@ -197,7 +197,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
         ),
       );
 
-  Widget _buildEmptySubTitle() => const Text(
+  Widget _buildEmptySubtitle() => const Text(
         'Start by exploring your learning materials and save them for offline access.',
         textAlign: TextAlign.center,
         style: TextStyle(color: kcMediumGrey),

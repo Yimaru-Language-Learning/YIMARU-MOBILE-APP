@@ -107,11 +107,7 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
 
   Widget _buildHeader(String title) => Text(
         title,
-        style: const TextStyle(
-          fontSize: 18,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style18DG600,
       );
 
   Widget _buildLanguageMenu(AccountPrivacyViewModel viewModel) =>

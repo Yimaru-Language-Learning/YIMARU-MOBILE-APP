@@ -19,7 +19,6 @@ import 'onboarding_viewmodel.dart';
 import 'onboarding_view.form.dart';
 
 @FormView(fields: [
-  FormTextField(name: 'answer', validator: FormValidator.validateForm),
   FormTextField(name: 'fullName', validator: FormValidator.validateForm),
   FormTextField(name: 'challenge', validator: FormValidator.validateForm),
   FormTextField(name: 'occupation', validator: FormValidator.validateForm),
@@ -30,13 +29,55 @@ class OnboardingView extends StackedView<OnboardingViewModel>
     with $OnboardingView {
   const OnboardingView({Key? key}) : super(key: key);
 
-  void _initFormFields() {
-    answerController.text = 'Book';
+  void _initClearData() {
+    topicController.clear();
+    fullNameController.clear();
+    challengeController.clear();
+    occupationController.clear();
+    languageGoalController.clear();
+  }
+
+  void _clearDataOnNavigation(OnboardingViewModel viewModel) {
+    if (viewModel.currentPage == 0) {
+      fullNameController.clear();
+      viewModel.resetFullNameFormScreen();
+    } else if (viewModel.currentPage == 1) {
+      viewModel.resetGenderFormScreen();
+    } else if (viewModel.currentPage == 2) {
+      viewModel.resetBirthdayFormScreen();
+    } else if (viewModel.currentPage == 3) {
+      viewModel.resetAgeGroupFormScreen();
+    } else if (viewModel.currentPage == 4) {
+      viewModel.resetEducationalBackgroundFormScreen();
+    } else if (viewModel.currentPage == 5) {
+      occupationController.clear();
+      viewModel.resetOccupationFormScreen();
+    } else if (viewModel.currentPage == 6) {
+      viewModel.resetCountryRegionFormScreen();
+    } else if (viewModel.currentPage == 7) {
+      viewModel.resetLearningGoalFormScreen();
+    } else if (viewModel.currentPage == 8) {
+      languageGoalController.clear();
+      viewModel.resetLanguageGoalFormScreen();
+    } else if (viewModel.currentPage == 9) {
+      challengeController.clear();
+      viewModel.resetChallengeFormScreen();
+    } else if (viewModel.currentPage == 10) {
+      topicController.clear();
+      viewModel.resetTopicFormScreen();
+    }
+  }
+
+  void _pop(OnboardingViewModel viewModel) {
+    {
+      _clearDataOnNavigation(viewModel);
+      viewModel.goBack();
+    }
   }
 
   @override
   void onViewModelReady(OnboardingViewModel viewModel) {
-    _initFormFields();
+    _initClearData();
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
   }
@@ -58,7 +99,7 @@ class OnboardingView extends StackedView<OnboardingViewModel>
   Widget _buildOnboardingScreensWrapper(OnboardingViewModel viewModel) =>
       PopScope(
           canPop: viewModel.currentPage == 0 ? true : false,
-          onPopInvokedWithResult: (value, data) => viewModel.pop(),
+          onPopInvokedWithResult: (value, data) => _pop(viewModel),
           child: _buildOnboardingScreens(viewModel));
 
   Widget _buildOnboardingScreens(OnboardingViewModel viewModel) => IndexedStack(

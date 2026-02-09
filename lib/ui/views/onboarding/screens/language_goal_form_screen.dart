@@ -14,6 +14,12 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
   const LanguageGoalFormScreen(
       {super.key, required this.languageGoalController});
 
+  void _pop(OnboardingViewModel viewModel) {
+    languageGoalController.clear();
+    viewModel.resetLanguageGoalFormScreen();
+    viewModel.goBack();
+  }
+
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -75,7 +81,7 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildReasons(viewModel),
         if (viewModel.showLanguageGoalTextBox) _buildReasonFormField(viewModel),
@@ -91,26 +97,20 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
       ];
 
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
-        onPop: viewModel.pop,
         showBackButton: true,
         showLanguageSelection: true,
+        onPop: () => _pop(viewModel),
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'What’s your main goal for improving your English?',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'Your goal helps us tailor your learning journey.',
-        style: TextStyle(
-          color: kcMediumGrey,
-        ),
+        style: style14MG400,
       );
 
   Widget _buildReasons(OnboardingViewModel viewModel) => ListView.builder(
@@ -154,11 +154,7 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildReasonValidator(OnboardingViewModel viewModel) => Text(
         viewModel.languageGoalValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
   Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(

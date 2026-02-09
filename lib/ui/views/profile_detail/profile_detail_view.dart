@@ -700,5 +700,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       );
 
   Widget _buildState(ProfileDetailViewModel viewModel) =>
-      viewModel.isBusy ? const PageLoadingIndicator() : Container();
+      viewModel.busy(StateObjects.profileUpdate)
+          ? const PageLoadingIndicator()
+          : Container();
 }

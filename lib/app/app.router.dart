@@ -5,10 +5,10 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i26;
+import 'package:flutter/material.dart' as _i27;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i27;
+import 'package:stacked_services/stacked_services.dart' as _i28;
 import 'package:yimaru_app/ui/views/account_privacy/account_privacy_view.dart'
     as _i10;
 import 'package:yimaru_app/ui/views/assessment/assessment_view.dart' as _i23;
@@ -16,6 +16,8 @@ import 'package:yimaru_app/ui/views/call_support/call_support_view.dart'
     as _i13;
 import 'package:yimaru_app/ui/views/downloads/downloads_view.dart' as _i7;
 import 'package:yimaru_app/ui/views/failure/failure_view.dart' as _i25;
+import 'package:yimaru_app/ui/views/forget_password/forget_password_view.dart'
+    as _i26;
 import 'package:yimaru_app/ui/views/home/home_view.dart' as _i2;
 import 'package:yimaru_app/ui/views/language/language_view.dart' as _i14;
 import 'package:yimaru_app/ui/views/learn/learn_view.dart' as _i19;
@@ -92,6 +94,8 @@ class Routes {
 
   static const failureView = '/failure-view';
 
+  static const forgetPasswordView = '/forget-password-view';
+
   static const all = <String>{
     homeView,
     onboardingView,
@@ -117,6 +121,7 @@ class Routes {
     assessmentView,
     learnLessonView,
     failureView,
+    forgetPasswordView,
   };
 }
 
@@ -218,17 +223,21 @@ class StackedRouter extends _i1.RouterBase {
       Routes.failureView,
       page: _i25.FailureView,
     ),
+    _i1.RouteDef(
+      Routes.forgetPasswordView,
+      page: _i26.ForgetPasswordView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.HomeView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.HomeView(),
         settings: data,
       );
     },
     _i3.OnboardingView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.OnboardingView(),
         settings: data,
       );
@@ -237,138 +246,144 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<StartupViewArguments>(
         orElse: () => const StartupViewArguments(),
       );
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => _i4.StartupView(key: args.key, label: args.label),
         settings: data,
       );
     },
     _i5.ProfileView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.ProfileView(),
         settings: data,
       );
     },
     _i6.ProfileDetailView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i6.ProfileDetailView(),
         settings: data,
       );
     },
     _i7.DownloadsView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i7.DownloadsView(),
         settings: data,
       );
     },
     _i8.ProgressView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.ProgressView(),
         settings: data,
       );
     },
     _i9.OngoingProgressView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i9.OngoingProgressView(),
         settings: data,
       );
     },
     _i10.AccountPrivacyView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i10.AccountPrivacyView(),
         settings: data,
       );
     },
     _i11.SupportView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i11.SupportView(),
         settings: data,
       );
     },
     _i12.TelegramSupportView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i12.TelegramSupportView(),
         settings: data,
       );
     },
     _i13.CallSupportView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i13.CallSupportView(),
         settings: data,
       );
     },
     _i14.LanguageView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i14.LanguageView(),
         settings: data,
       );
     },
     _i15.PrivacyPolicyView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i15.PrivacyPolicyView(),
         settings: data,
       );
     },
     _i16.TermsAndConditionsView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i16.TermsAndConditionsView(),
         settings: data,
       );
     },
     _i17.RegisterView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i17.RegisterView(),
         settings: data,
       );
     },
     _i18.LoginView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i18.LoginView(),
         settings: data,
       );
     },
     _i19.LearnView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i19.LearnView(),
         settings: data,
       );
     },
     _i20.LearnLevelView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i20.LearnLevelView(),
         settings: data,
       );
     },
     _i21.LearnModuleView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i21.LearnModuleView(),
         settings: data,
       );
     },
     _i22.WelcomeView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i22.WelcomeView(),
         settings: data,
       );
     },
     _i23.AssessmentView: (data) {
       final args = data.getArgs<AssessmentViewArguments>(nullOk: false);
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i23.AssessmentView(key: args.key, data: args.data),
         settings: data,
       );
     },
     _i24.LearnLessonView: (data) {
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) => const _i24.LearnLessonView(),
         settings: data,
       );
     },
     _i25.FailureView: (data) {
       final args = data.getArgs<FailureViewArguments>(nullOk: false);
-      return _i26.MaterialPageRoute<dynamic>(
+      return _i27.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i25.FailureView(key: args.key, label: args.label),
+        settings: data,
+      );
+    },
+    _i26.ForgetPasswordView: (data) {
+      return _i27.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i26.ForgetPasswordView(),
         settings: data,
       );
     },
@@ -387,7 +402,7 @@ class StartupViewArguments {
     this.label = 'Loading',
   });
 
-  final _i26.Key? key;
+  final _i27.Key? key;
 
   final String label;
 
@@ -414,7 +429,7 @@ class AssessmentViewArguments {
     required this.data,
   });
 
-  final _i26.Key? key;
+  final _i27.Key? key;
 
   final Map<String, dynamic> data;
 
@@ -441,7 +456,7 @@ class FailureViewArguments {
     required this.label,
   });
 
-  final _i26.Key? key;
+  final _i27.Key? key;
 
   final String label;
 
@@ -462,7 +477,7 @@ class FailureViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i27.NavigationService {
+extension NavigatorStateExtension on _i28.NavigationService {
   Future<dynamic> navigateToHomeView([
     int? routerId,
     bool preventDuplicates = true,
@@ -492,7 +507,7 @@ extension NavigatorStateExtension on _i27.NavigationService {
   }
 
   Future<dynamic> navigateToStartupView({
-    _i26.Key? key,
+    _i27.Key? key,
     String label = 'Loading',
     int? routerId,
     bool preventDuplicates = true,
@@ -761,7 +776,7 @@ extension NavigatorStateExtension on _i27.NavigationService {
   }
 
   Future<dynamic> navigateToAssessmentView({
-    _i26.Key? key,
+    _i27.Key? key,
     required Map<String, dynamic> data,
     int? routerId,
     bool preventDuplicates = true,
@@ -792,7 +807,7 @@ extension NavigatorStateExtension on _i27.NavigationService {
   }
 
   Future<dynamic> navigateToFailureView({
-    _i26.Key? key,
+    _i27.Key? key,
     required String label,
     int? routerId,
     bool preventDuplicates = true,
@@ -802,6 +817,20 @@ extension NavigatorStateExtension on _i27.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.failureView,
         arguments: FailureViewArguments(key: key, label: label),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToForgetPasswordView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.forgetPasswordView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -837,7 +866,7 @@ extension NavigatorStateExtension on _i27.NavigationService {
   }
 
   Future<dynamic> replaceWithStartupView({
-    _i26.Key? key,
+    _i27.Key? key,
     String label = 'Loading',
     int? routerId,
     bool preventDuplicates = true,
@@ -1106,7 +1135,7 @@ extension NavigatorStateExtension on _i27.NavigationService {
   }
 
   Future<dynamic> replaceWithAssessmentView({
-    _i26.Key? key,
+    _i27.Key? key,
     required Map<String, dynamic> data,
     int? routerId,
     bool preventDuplicates = true,
@@ -1137,7 +1166,7 @@ extension NavigatorStateExtension on _i27.NavigationService {
   }
 
   Future<dynamic> replaceWithFailureView({
-    _i26.Key? key,
+    _i27.Key? key,
     required String label,
     int? routerId,
     bool preventDuplicates = true,
@@ -1147,6 +1176,20 @@ extension NavigatorStateExtension on _i27.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.failureView,
         arguments: FailureViewArguments(key: key, label: label),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithForgetPasswordView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.forgetPasswordView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

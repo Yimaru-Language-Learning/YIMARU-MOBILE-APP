@@ -126,6 +126,8 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildResendButton(RegisterViewModel viewModel) => TextButton(
       onPressed: () async => await viewModel.resendOtp(),
+      style:
+          const ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
       child: _buildResendText());
 
   Widget _buildResendText() => Text(

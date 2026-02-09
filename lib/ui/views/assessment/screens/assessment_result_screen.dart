@@ -63,11 +63,11 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         verticalSpaceLarge,
         _buildTitle(viewModel),
         verticalSpaceSmall,
-        _buildPrimarySubTitle(),
+        _buildPrimarySubtitle(),
         verticalSpaceMedium,
         _buildIconWrapper(viewModel),
         verticalSpaceMedium,
-        _buildSecondarySubTitle()
+        _buildSecondarySubtitle()
       ];
 
   Widget _buildTitle(AssessmentViewModel viewModel) => Text(
@@ -76,10 +76,10 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         textAlign: TextAlign.center,
       );
 
-  Widget _buildPrimarySubTitle() => const Text(
+  Widget _buildPrimarySubtitle() => Text(
         'Great Job! Here’s your next step to keep improving.',
         textAlign: TextAlign.center,
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildIconWrapper(AssessmentViewModel viewModel) =>
@@ -90,7 +90,7 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
   Widget _buildIcon(AssessmentViewModel viewModel) => SvgPicture.asset(
       'assets/icons/${viewModel.proficiencyLevel.name.substring(0, 1)}_${viewModel.proficiencyLevel.name.substring(1)}.svg');
 
-  Widget _buildSecondarySubTitle() => Text(
+  Widget _buildSecondarySubtitle() => Text(
         'Let\'s start your practice',
         style: style14DG400,
         textAlign: TextAlign.center,
@@ -113,8 +113,8 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         safe: false,
         text: 'Continue',
         borderRadius: 12,
-        onTap: () => viewModel.next(),
         foregroundColor: kcWhite,
+        onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,
       );
 
@@ -127,10 +127,10 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
+        backgroundColor: kcWhite,
         text: 'Practice Speaking',
         borderColor: kcPrimaryColor,
         onTap: () => viewModel.next(),
-        backgroundColor: kcWhite,
         foregroundColor: kcPrimaryColor,
       );
 }

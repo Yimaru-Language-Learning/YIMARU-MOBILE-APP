@@ -12,12 +12,20 @@ class ImageDownloaderService {
   final _service = locator<DioService>();
 
   Future<String> downloader(String? networkImage) async {
-    final Directory appDir = await getApplicationDocumentsDirectory();
-
     late File image;
 
+    late String profileImage;
+
+    final Directory appDir = await getApplicationDocumentsDirectory();
+
+    if (networkImage != null) {
+      profileImage = networkImage.contains('https://lh3.googleusercontent.com')
+          ? networkImage
+          : '$kBaseUrl$networkImage';
+    }
+
     final Response profileImageResponse = await _service.dio.get(
-      '$kBaseUrl$networkImage',
+      profileImage,
       options: Options(
         followRedirects: false,
         responseType: ResponseType.bytes,

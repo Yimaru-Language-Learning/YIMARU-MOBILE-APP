@@ -11,6 +11,10 @@ String kVerifyOtpUrl = 'verify-otp';
 
 String kResendOtpUrl = 'resend-otp';
 
+String kResetPassword = 'resetPassword';
+
+String kRequestResetCode = 'sendResetCode';
+
 String kUpdateProfileImage = 'profile-picture';
 
 String kRefreshTokenUrl = 'api/v1/auth/refresh';

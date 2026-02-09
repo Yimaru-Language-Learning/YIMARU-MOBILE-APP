@@ -164,28 +164,28 @@ class ProfileView extends StackedView<ProfileViewModel> {
   Widget _buildDownloadsCard(ProfileViewModel viewModel) => ProfileCard(
         icon: Icons.download,
         title: 'My Downloads',
-        subTitle: 'Access offline lessons and saved videos',
+        subtitle: 'Access offline lessons and saved videos',
         onTap: () async => await viewModel.navigateToDownloads(),
       );
 
   Widget _buildProgressCard(ProfileViewModel viewModel) => ProfileCard(
         title: 'My Progress',
         icon: Icons.stacked_bar_chart,
-        subTitle: 'Track your achievements and learning streak',
+        subtitle: 'Track your achievements and learning streak',
         onTap: () async => await viewModel.navigateToProgress(),
       );
 
   Widget _buildAccountCard(ProfileViewModel viewModel) => ProfileCard(
         title: 'Account & Privacy',
         icon: Icons.privacy_tip_outlined,
-        subTitle: 'Manage setting and app preference',
+        subtitle: 'Manage setting and app preference',
         onTap: () async => await viewModel.navigateToAccountPrivacy(),
       );
 
   Widget _buildSupportCard(ProfileViewModel viewModel) => ProfileCard(
         title: 'Support',
         icon: Icons.headphones,
-        subTitle: 'Get help through phone or Telegram',
+        subtitle: 'Get help through phone or Telegram',
         onTap: () async => await viewModel.navigateToSupport(),
       );
 

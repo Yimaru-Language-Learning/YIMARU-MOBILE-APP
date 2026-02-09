@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 class CustomLargeRadioButton extends StatelessWidget {
   final String title;
@@ -49,7 +50,7 @@ class CustomLargeRadioButton extends StatelessWidget {
       );
 
   List<Widget> _buildButtonRowChildren() =>
-      [_buildIconSectionWrapper(), _buildTitle(), _buildSubTitle()];
+      [_buildIconSectionWrapper(), _buildTitle(), _buildSubtitle()];
 
   Widget _buildIconSectionWrapper() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,14 +68,10 @@ class CustomLargeRadioButton extends StatelessWidget {
 
   Widget _buildTitle() => Text(
         title,
-        style: const TextStyle(
-          fontSize: 18,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w500,
-        ),
+        style: style18DG600,
       );
 
-  Widget _buildSubTitle() => Text(
+  Widget _buildSubtitle() => Text(
         subtitle,
         style: const TextStyle(color: kcMediumGrey),
       );

@@ -92,14 +92,10 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
   Widget _buildIcon() =>
       const CircularIcon(icon: Icons.call, size: 50, color: kcPrimaryColor);
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Call our support team between 9 AM - 6 PM',
+        style: style25DG600,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
       );
 
   Widget _buildSubTitle(String title) => Text(

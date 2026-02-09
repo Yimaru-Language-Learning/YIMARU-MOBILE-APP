@@ -44,7 +44,7 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
   List<Widget> _buildUpperColumnChildren(LoginViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(),
-        _buildSubTitleWrapper(viewModel),
+        _buildSubtitleWrapper(viewModel),
         verticalSpaceMedium,
         _buildSubtitle(),
         verticalSpaceMedium,
@@ -57,22 +57,18 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
           _buildPhoneNumberValidatorWrapper(viewModel),
       ];
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Welcome Back',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitleWrapper(LoginViewModel viewModel) => RegisterForAccount(
+  Widget _buildSubtitleWrapper(LoginViewModel viewModel) => RegisterForAccount(
         onTap: () async => await viewModel.navigateToRegister(),
       );
 
-  Widget _buildSubtitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'Enter your phone number. We will send you a confirmation code there',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildPhoneNumberWrapper(LoginViewModel viewModel) => Row(

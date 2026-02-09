@@ -13,6 +13,12 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   const TopicFormScreen({super.key, required this.topicController});
 
+  void _pop(OnboardingViewModel viewModel) {
+    topicController.clear();
+    viewModel.resetTopicFormScreen();
+    viewModel.goBack();
+  }
+
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -45,8 +51,8 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
         showBackButton: true,
-        onPop: viewModel.pop,
         showLanguageSelection: true,
+        onPop: () => _pop(viewModel),
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
@@ -82,7 +88,7 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildTopics(viewModel),
         if (viewModel.showTopicTextBox) _buildTopicFormField(viewModel),
@@ -97,18 +103,14 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
       ];
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Which topics interest you most?',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'Your favorite topics help us create fun, relatable lessons.',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildTopics(OnboardingViewModel viewModel) => ListView.builder(
@@ -150,11 +152,7 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildTopicValidator(OnboardingViewModel viewModel) => Text(
         viewModel.topicValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
   Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(

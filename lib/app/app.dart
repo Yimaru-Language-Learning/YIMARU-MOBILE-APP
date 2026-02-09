@@ -35,6 +35,7 @@ import 'package:yimaru_app/services/permission_handler_service.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
 import 'package:yimaru_app/services/google_auth_service.dart';
 import 'package:yimaru_app/services/image_downloader_service.dart';
+import 'package:yimaru_app/ui/views/forget_password/forget_password_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -63,6 +64,7 @@ import 'package:yimaru_app/services/image_downloader_service.dart';
     MaterialRoute(page: AssessmentView),
     MaterialRoute(page: LearnLessonView),
     MaterialRoute(page: FailureView),
+    MaterialRoute(page: ForgetPasswordView),
 // @stacked-route
   ],
   dependencies: [

@@ -12,6 +12,12 @@ import '../../../widgets/birthday_selector.dart';
 class BirthdayFormScreen extends ViewModelWidget<OnboardingViewModel> {
   const BirthdayFormScreen({super.key});
 
+  void _pop(OnboardingViewModel viewModel) {
+    viewModel.resetBirthdayFormScreen();
+
+    viewModel.goBack();
+  }
+
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -64,30 +70,26 @@ class BirthdayFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildBirthdayFormField(viewModel)
       ];
 
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
-        onPop: viewModel.pop,
         showBackButton: true,
         showLanguageSelection: true,
+        onPop: () => _pop(viewModel),
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Pick your birthday?',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'We’ll personalize your learning experience based on your birthday.',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildBirthdayFormField(OnboardingViewModel viewModel) =>

@@ -216,6 +216,12 @@ TextStyle style16DG600 = const TextStyle(
   fontWeight: FontWeight.w600,
 );
 
+TextStyle style18DG500 = const TextStyle(
+  fontSize: 18,
+  color: kcDarkGrey,
+  fontWeight: FontWeight.w500,
+);
+
 TextStyle style18DG600 = const TextStyle(
   fontSize: 18,
   color: kcDarkGrey,
@@ -234,6 +240,8 @@ TextStyle style14LG400 = const TextStyle(
 TextStyle style14MG400 = const TextStyle(
   color: kcMediumGrey,
 );
+TextStyle style14DG500 =
+    const TextStyle(color: kcDarkGrey, fontWeight: FontWeight.w500);
 
 TextStyle style14DG400 = const TextStyle(
   color: kcDarkGrey,
@@ -274,24 +282,27 @@ Map<String, Style> htmlStyle = {
 Widget buildToastDescription(String message) => Text(
       message,
       maxLines: 4,
-      style: const TextStyle(color: kcWhite, fontWeight: FontWeight.w500),
+      style: const TextStyle(color: kcDarkGrey, fontWeight: FontWeight.w500),
     );
 
 void showErrorToast(String message) {
   toastification.show(
     showIcon: true,
     dragToClose: true,
-    primaryColor: kcRed,
     showProgressBar: false,
     applyBlurEffect: false,
-    icon: const Icon(Icons.check),
+    alignment: Alignment.topCenter,
+    primaryColor: kcBackgroundColor,
     type: ToastificationType.success,
-    alignment: Alignment.bottomCenter,
     style: ToastificationStyle.fillColored,
     description: buildToastDescription(message),
-    borderSide: const BorderSide(color: kcWhite),
-    autoCloseDuration: const Duration(seconds: 5),
+    autoCloseDuration: const Duration(seconds: 3),
     margin: const EdgeInsets.symmetric(horizontal: 15),
+    borderSide: const BorderSide(color: kcPrimaryColor),
+    icon: const Icon(
+      Icons.close,
+      color: kcPrimaryColor,
+    ),
   );
 }
 
@@ -301,14 +312,17 @@ void showSuccessToast(String message) {
     dragToClose: true,
     showProgressBar: false,
     applyBlurEffect: false,
-    icon: const Icon(Icons.check),
-    primaryColor: kcPrimaryColor,
+    alignment: Alignment.topCenter,
+    primaryColor: kcBackgroundColor,
     type: ToastificationType.success,
-    alignment: Alignment.bottomCenter,
     style: ToastificationStyle.fillColored,
     description: buildToastDescription(message),
-    borderSide: const BorderSide(color: kcWhite),
-    autoCloseDuration: const Duration(seconds: 5),
+    autoCloseDuration: const Duration(seconds: 3),
     margin: const EdgeInsets.symmetric(horizontal: 15),
+    borderSide: const BorderSide(color: kcPrimaryColor),
+    icon: const Icon(
+      Icons.check,
+      color: kcPrimaryColor,
+    ),
   );
 }

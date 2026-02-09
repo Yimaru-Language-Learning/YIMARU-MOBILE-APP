@@ -58,7 +58,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
   List<Widget> _buildUpperColumnChildren(LoginViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(),
-        _buildSubTitleWrapper(viewModel),
+        _buildSubtitleWrapper(viewModel),
         verticalSpaceLarge,
         _buildEmailFormField(viewModel),
         if (viewModel.hasEmailValidationMessage && viewModel.focusEmail)
@@ -71,19 +71,15 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
           verticalSpaceTiny,
         if (viewModel.hasPasswordValidationMessage && viewModel.focusPassword)
           _buildPasswordValidationWrapper(viewModel),
-        _buildForgetPasswordTextButtonWrapper(),
+        _buildForgetPasswordTextButtonWrapper(viewModel),
       ];
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Welcome Back',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitleWrapper(LoginViewModel viewModel) => RegisterForAccount(
+  Widget _buildSubtitleWrapper(LoginViewModel viewModel) => RegisterForAccount(
         onTap: () async => await viewModel.navigateToRegister(),
       );
 
@@ -104,11 +100,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
 
   Widget _buildEmailValidator(LoginViewModel viewModel) => Text(
         viewModel.emailValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
   Widget _buildPasswordFormField(LoginViewModel viewModel) => TextFormField(
@@ -135,26 +127,23 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
 
   Widget _buildPasswordValidator(LoginViewModel viewModel) => Text(
         viewModel.passwordValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
-  Widget _buildForgetPasswordTextButtonWrapper() => Align(
+  Widget _buildForgetPasswordTextButtonWrapper(LoginViewModel viewModel) =>
+      Align(
         alignment: Alignment.centerRight,
-        child: _buildForgetPasswordTextButton(),
+        child: _buildForgetPasswordTextButton(viewModel),
       );
 
-  Widget _buildForgetPasswordTextButton() => TextButton(
-        onPressed: () {},
+  Widget _buildForgetPasswordTextButton(LoginViewModel viewModel) => TextButton(
+        onPressed: () async => await viewModel.navigateToForgetPassword(),
         child: _buildForgetPasswordText(),
       );
 
-  Widget _buildForgetPasswordText() => const Text(
+  Widget _buildForgetPasswordText() => Text(
         'Forget Password?',
-        style: TextStyle(color: kcPrimaryColor),
+        style: style14P400,
       );
 
   Widget _buildLowerColumn(LoginViewModel viewModel) => Column(
@@ -207,8 +196,8 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         backgroundColor: kcWhite,
         leadingIcon: Icons.phone,
         borderColor: kcPrimaryColor,
+        onTap: () => viewModel.goTo(1),
         foregroundColor: kcPrimaryColor,
         text: 'Login with Phone Number',
-        onTap: () => viewModel.goTo(1),
       );
 }

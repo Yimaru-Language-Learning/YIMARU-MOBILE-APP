@@ -5,7 +5,7 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 class ProfileCard extends StatelessWidget {
   final String title;
   final IconData icon;
-  final String subTitle;
+  final String subtitle;
   final GestureTapCallback? onTap;
 
   const ProfileCard(
@@ -13,7 +13,7 @@ class ProfileCard extends StatelessWidget {
       this.onTap,
       required this.icon,
       required this.title,
-      required this.subTitle});
+      required this.subtitle});
 
   @override
   Widget build(BuildContext context) => _buildContainerWrapper();
@@ -43,7 +43,7 @@ class ProfileCard extends StatelessWidget {
         verticalSpaceSmall,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle()
+        _buildSubtitle()
       ];
 
   Widget _buildIcon() => Icon(
@@ -54,15 +54,11 @@ class ProfileCard extends StatelessWidget {
 
   Widget _buildTitle() => Text(
         title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style16DG600,
       );
 
-  Widget _buildSubTitle() => Text(
-        subTitle,
-        style: const TextStyle(color: kcMediumGrey),
+  Widget _buildSubtitle() => Text(
+        subtitle,
+        style: style14MG400,
       );
 }

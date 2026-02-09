@@ -54,7 +54,7 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
       ];
 
   Widget _buildAppBar(AssessmentViewModel viewModel) => LargeAppBar(
@@ -69,7 +69,7 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
         style: style25DG600,
       );
 
-  Widget _buildSubTitle() => Text(
+  Widget _buildSubtitle() => Text(
         'Answer a few quick questions to help us understand your English proficiency.',
         style: style14MG400,
       );

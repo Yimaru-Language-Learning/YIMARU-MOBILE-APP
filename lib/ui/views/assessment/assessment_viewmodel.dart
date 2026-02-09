@@ -21,6 +21,7 @@ class AssessmentViewModel extends BaseViewModel {
   final _statusChecker = locator<StatusCheckerService>();
   final _navigationService = locator<NavigationService>();
 
+  // In-app navigation
   int _currentPage = 0;
 
   int get currentPage => _currentPage;
@@ -255,16 +256,17 @@ class AssessmentViewModel extends BaseViewModel {
 
   // Complete profile
   Future<void> completeProfile() async =>
-      await runBusyFuture(_completeProfile());
+      await runBusyFuture(_completeProfile(),
+          busyObject: StateObjects.profileCompletion);
 
   Future<void> _completeProfile() async {
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> response =
           await _apiService.completeProfile(_userData);
       if (response['status'] == ResponseStatus.success) {
-        showSuccessToast(response['message']);
         clearUserData();
         await replaceWithHome();
+        showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);
       }

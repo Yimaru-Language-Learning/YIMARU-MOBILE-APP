@@ -29,15 +29,15 @@ class ApiService {
           'message': 'Unknown Error Occurred'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
 
-  // Login
+  // Email Login
   Future<Map<String, dynamic>> emailLogin(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
@@ -57,10 +57,10 @@ class ApiService {
           'message': '${response.data['message']}, ${response.data['error']}'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -85,10 +85,10 @@ class ApiService {
           'message': '${response.data['message']}, ${response.data['error']}'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -112,10 +112,10 @@ class ApiService {
           'message': '${response.data['message']}, ${response.data['error']}'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -139,10 +139,65 @@ class ApiService {
           'message': 'Unknown Error Occurred'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
+  // Request reset code
+  Future<Map<String, dynamic>> requestResetCode(
+      Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kUserUrl/$kRequestResetCode',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Reset code sent successfully',
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': '${response.data['message']}, ${response.data['error']}'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
+  // Reset password
+  Future<Map<String, dynamic>> resetPassword(Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kUserUrl/$kResetPassword',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Password reset successfully',
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': '${response.data['message']}, ${response.data['error']}'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -166,10 +221,10 @@ class ApiService {
           'message': '${response.data['message']}, ${response.data['error']}'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -193,10 +248,10 @@ class ApiService {
           'message': 'Unknown Error Occurred'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -221,10 +276,10 @@ class ApiService {
           'message': 'Unknown Error Occurred'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -273,105 +328,14 @@ class ApiService {
           'message': 'Unknown Error Occurred'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
 
-  //
-  // // Update profile
-  // Future<Map<String, dynamic>> updateProfile(
-  //     Map<String, dynamic> data) async {
-  //   try {
-  //     late FormData formData;
-  //
-  //     if (data['profile_picture_url']
-  //         .toString()
-  //         .contains('com.ke.wede.customer.app/')) {
-  //       formData = FormData.fromMap({
-  //         'gender': data['gender'],
-  //         'region': data['region'],
-  //         'country': data['country'],
-  //         'last_name': data['last_name'],
-  //         'nick_name': data['nick_name'],
-  //         'birth_day': data['birth_day'],
-  //         'age_group': data['age_group'],
-  //         'occupation': data['occupation'],
-  //         'first_name': data['first_name'],
-  //         'learning_goal': data['learning_goal'],
-  //         'language_goal': data['language_goal'],
-  //         'education_level': data['education_level'],
-  //         'favoutite_topic': data['favoutite_topic'],
-  //         'knowledge_level': data['knowledge_level'],
-  //         'profile_completed': data['profile_completed'],
-  //         'preferred_language': data['preferred_language'],
-  //         'language_challange': data['language_challange'],
-  //         'profile_picture_url': data['profile_picture_url']
-  //             .toString()
-  //             .isNotEmpty
-  //             ? MultipartFile.fromFileSync(
-  //           data['profile_picture_url'],
-  //           filename:
-  //           data['profile_picture_url'].toString().split('/').last,
-  //         )
-  //             : null,
-  //       });
-  //     } else {
-  //       formData = FormData.fromMap({
-  //         'gender': data['gender'],
-  //         'region': data['region'],
-  //         'country': data['country'],
-  //         'last_name': data['last_name'],
-  //         'nick_name': data['nick_name'],
-  //         'birth_day': data['birth_day'],
-  //         'age_group': data['age_group'],
-  //         'occupation': data['occupation'],
-  //         'first_name': data['first_name'],
-  //         'learning_goal': data['learning_goal'],
-  //         'language_goal': data['language_goal'],
-  //         'education_level': data['education_level'],
-  //         'favoutite_topic': data['favoutite_topic'],
-  //         'knowledge_level': data['knowledge_level'],
-  //         'profile_completed': data['profile_completed'],
-  //         'preferred_language': data['preferred_language'],
-  //         'language_challange': data['language_challange'],
-  //         'profile_picture_url': data['profile_picture_url']
-  //             .toString()
-  //             .isNotEmpty
-  //             ? MultipartFile.fromFileSync(
-  //           data['profile_picture_url'],
-  //           filename:
-  //           data['profile_picture_url'].toString().split('/').last,
-  //         )
-  //             : null,
-  //       });
-  //     }
-  //     Response response = await _service.dio.put(
-  //       '$baseUrl/$kUserUrl',
-  //       data: formData,
-  //     );
-  //
-  //     if (response.statusCode == 200) {
-  //       return {
-  //         'status': ResponseStatus.success,
-  //         'message': 'Profile updated successfully'
-  //       };
-  //     } else {
-  //       return {
-  //         'status': ResponseStatus.failure,
-  //         'message': 'Unknown Error Occurred'
-  //       };
-  //     }
-  //   } catch (e) {
-  //     return {
-  //       'message': e.toString(),
-  //       'status': ResponseStatus.failure,
-  //     };
-  //   }
-  // }
   // Assessments
   Future<List<Assessment>> getAssessments() async {
     try {

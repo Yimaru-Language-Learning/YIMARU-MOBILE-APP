@@ -44,7 +44,5 @@ class AssessmentLoadingScreen extends StatelessWidget {
 
   Widget _buildPageIndicator() => const PageLoadingIndicator();
 
-  Widget _buildRefreshButton() => RefreshButton(
-        onTap: onTap,
-      );
+  Widget _buildRefreshButton() => RefreshButton(onTap: onTap);
 }

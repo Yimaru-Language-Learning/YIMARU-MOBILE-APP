@@ -372,16 +372,83 @@ class OnboardingViewModel extends FormViewModel {
     _userData.clear();
   }
 
-  // Navigation
-  Future<void> navigateToLanguage() async =>
-      await _navigationService.navigateToLanguageView();
+  // Form reset
 
-  Future<void> navigateToAssessment() async =>
-      await _navigationService.navigateToAssessmentView(data: _userData);
+  // Reset full name form screen
+  void resetFullNameFormScreen() {
+    _focusFullName = false;
+    rebuildUi();
+  }
 
-  Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShowView(const HomeView());
+  // Reset gender form screen
+  void resetGenderFormScreen() {
+    _selectedGender = null;
+    rebuildUi();
+  }
 
+  // Reset birthday form screen
+  void resetBirthdayFormScreen() {
+    _selectedBirthday = null;
+    rebuildUi();
+  }
+
+  // Reset age group form screen
+  void resetAgeGroupFormScreen() {
+    _selectedAgeGroup = null;
+    rebuildUi();
+  }
+
+  // Reset educational background form screen
+  void resetEducationalBackgroundFormScreen() {
+    _selectedEducationalBackground = null;
+    rebuildUi();
+  }
+
+  // Reset occupation form screen
+  void resetOccupationFormScreen() {
+    _focusOccupation = false;
+    rebuildUi();
+  }
+
+  // Reset country region form screen
+  void resetCountryRegionFormScreen() {
+    _selectedCountry = 'Ethiopia';
+    _selectedRegion = 'Addis Ababa';
+    rebuildUi();
+  }
+
+  // Reset learning goal form screen
+  void resetLearningGoalFormScreen() {
+    _selectedLearningGoal = null;
+    rebuildUi();
+  }
+
+  // Reset language goal form screen
+  void resetLanguageGoalFormScreen() {
+    _focusLanguageGoal = false;
+    _selectedLanguageGoal = null;
+    _showLanguageGoalTextBox = false;
+    rebuildUi();
+  }
+
+  // Reset challenge form screen
+  void resetChallengeFormScreen() {
+    _focusChallenge = false;
+    _selectedChallenge = null;
+    _showChallengeTextBox = false;
+
+    rebuildUi();
+  }
+
+  // Reset topic form screen
+  void resetTopicFormScreen() {
+    _focusTopic = false;
+    _selectedTopic = null;
+    _showTopicTextBox = false;
+    rebuildUi();
+  }
+
+  // In-app navigation
   void next({int? page}) async {
     if (page == null) {
       if (_previousPage != 0) {
@@ -396,7 +463,7 @@ class OnboardingViewModel extends FormViewModel {
     rebuildUi();
   }
 
-  void pop() {
+  void goBack() {
     if (_currentPage == 0) {
       _navigationService.back();
     } else {
@@ -405,4 +472,14 @@ class OnboardingViewModel extends FormViewModel {
       rebuildUi();
     }
   }
+
+  // Navigation
+  Future<void> navigateToLanguage() async =>
+      await _navigationService.navigateToLanguageView();
+
+  Future<void> navigateToAssessment() async =>
+      await _navigationService.navigateToAssessmentView(data: _userData);
+
+  Future<void> replaceWithHome() async =>
+      await _navigationService.clearStackAndShowView(const HomeView());
 }

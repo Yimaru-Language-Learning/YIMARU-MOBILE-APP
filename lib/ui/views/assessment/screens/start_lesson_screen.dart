@@ -80,21 +80,25 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
         verticalSpaceMedium,
         _buildTitle(viewModel),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
       ];
 
   Widget _buildIcon() => SvgPicture.asset('assets/icons/mascot.svg');
 
   Widget _buildTitle(AssessmentViewModel viewModel) => Text.rich(
-        TextSpan(text: 'Welcome aboard', style: style25DG600, children: [
-          TextSpan(
-            text: ', ${viewModel.userData['first_name']}!',
-            style: style25DG600,
-          )
-        ]),
+        TextSpan(
+          text: 'Welcome aboard',
+          style: style25DG600,
+          children: [
+            TextSpan(
+              style: style25DG600,
+              text: ', ${viewModel.userData['first_name']}!',
+            ),
+          ],
+        ),
       );
 
-  Widget _buildSubTitle() => Text(
+  Widget _buildSubtitle() => Text(
         'You’re ready to explore your personalized lessons.',
         style: style14MG400,
       );
@@ -115,5 +119,7 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   Widget _buildState(AssessmentViewModel viewModel) =>
-      viewModel.isBusy ? const PageLoadingIndicator() : Container();
+      viewModel.busy(StateObjects.profileCompletion)
+          ? const PageLoadingIndicator()
+          : Container();
 }

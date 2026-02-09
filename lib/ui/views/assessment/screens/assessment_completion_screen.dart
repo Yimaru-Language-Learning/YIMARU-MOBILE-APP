@@ -61,27 +61,23 @@ class AssessmentCompletionScreen extends ViewModelWidget<AssessmentViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
       ];
 
   Widget _buildIcon() => SvgPicture.asset(
         'assets/icons/complete.svg',
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Assessment complete!',
+        style: style25DG600,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'We’re now analyzing your speaking skills',
         textAlign: TextAlign.center,
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildContinueButtonWrapper(AssessmentViewModel viewModel) => Padding(
@@ -94,8 +90,8 @@ class AssessmentCompletionScreen extends ViewModelWidget<AssessmentViewModel> {
         height: 55,
         borderRadius: 12,
         text: 'View My Results',
-        onTap: () => viewModel.next(),
         foregroundColor: kcWhite,
+        onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,
       );
 }

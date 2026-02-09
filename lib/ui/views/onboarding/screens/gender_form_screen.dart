@@ -10,6 +10,11 @@ import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 class GenderFormScreen extends ViewModelWidget<OnboardingViewModel> {
   const GenderFormScreen({super.key});
 
+  void _pop(OnboardingViewModel viewModel) {
+    viewModel.resetGenderFormScreen();
+    viewModel.goBack();
+  }
+
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -63,30 +68,26 @@ class GenderFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildAgeGroups(viewModel)
       ];
 
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
-        onPop: viewModel.pop,
         showBackButton: true,
         showLanguageSelection: true,
+        onPop: () => _pop(viewModel),
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Choose your gender?',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'We’ll personalize your learning experience based on your gender.',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildAgeGroups(OnboardingViewModel viewModel) => ListView.builder(

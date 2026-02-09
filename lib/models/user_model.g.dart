@@ -23,6 +23,11 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
+      'email': instance.email,
+      'gender': instance.gender,
+      'region': instance.region,
+      'country': instance.country,
+      'occupation': instance.occupation,
       'user_id': instance.userId,
       'last_name': instance.lastName,
       'birth_day': instance.birthday,
@@ -31,9 +36,4 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'refresh_token': instance.refreshToken,
       'profile_completed': instance.profileCompleted,
       'profile_picture_url': instance.profilePicture,
-      'email': instance.email,
-      'gender': instance.gender,
-      'region': instance.region,
-      'country': instance.country,
-      'occupation': instance.occupation,
     };
