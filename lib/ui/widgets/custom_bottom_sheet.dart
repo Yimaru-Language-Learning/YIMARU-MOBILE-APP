@@ -3,15 +3,17 @@ import 'package:yimaru_app/ui/common/app_colors.dart';
 
 class CustomBottomSheet extends StatelessWidget {
   final Widget child;
+  final double height;
   final GestureTapCallback? onTap;
 
-  const CustomBottomSheet({super.key, this.onTap, required this.child});
+  const CustomBottomSheet(
+      {super.key, this.onTap, required this.child, required this.height});
 
   @override
   Widget build(BuildContext context) => _buildStackWrapper();
 
   Widget _buildStackWrapper() => Container(
-        height: 400,
+        height: height,
         color: kcTransparent,
         width: double.maxFinite,
         child: _buildStack(),
@@ -49,8 +51,8 @@ class CustomBottomSheet extends StatelessWidget {
       );
 
   Widget _buildSheetWrapper() => Container(
-        height: double.maxFinite,
         width: double.maxFinite,
+        height: double.maxFinite,
         decoration: const BoxDecoration(
           color: kcBackgroundColor,
           borderRadius: BorderRadius.only(

@@ -4,9 +4,12 @@ import 'package:yimaru_app/ui/views/login/login_view.form.dart';
 import 'package:yimaru_app/ui/widgets/obscure_password.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/option_text_divider.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/register_for_account.dart';
 import '../login_viewmodel.dart';
 
@@ -18,6 +21,12 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
       {super.key,
       required this.emailController,
       required this.passwordController});
+
+
+  Widget getPadding(context){
+    double half = screenHeight(context)/2;
+    return SizedBox(height: half + 25  - half,);
+  }
 
   Future<void> _login(LoginViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -33,21 +42,57 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
 
   @override
   Widget build(BuildContext context, LoginViewModel viewModel) =>
-      _buildBody(viewModel);
+      _buildScaffoldWrapper(context: context,viewModel: viewModel);
 
-  Widget _buildBody(LoginViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyChildren(viewModel),
-      );
+  Widget _buildScaffoldWrapper({required BuildContext context,required LoginViewModel viewModel}) => Scaffold(
+    backgroundColor: kcBackgroundColor,
+    body: _buildScaffoldStack(context: context,viewModel: viewModel),
+  );
 
-  List<Widget> _buildBodyChildren(LoginViewModel viewModel) =>
-      [_buildColumnScroller(viewModel), _buildLowerColumn(viewModel)];
+ Widget _buildScaffoldStack({required BuildContext context,required LoginViewModel viewModel}) => Stack(children: [
+   _buildScaffold(context: context,viewModel: viewModel),
+  _buildLoginWithEmailState(viewModel),
+  _buildLoginWithGoogleState(viewModel)
+  ]);
 
-  Widget _buildColumnScroller(LoginViewModel viewModel) =>
+  Widget _buildScaffold({required BuildContext context,required LoginViewModel viewModel}) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: _buildScaffoldChildren(context: context,viewModel: viewModel),
+  );
+
+  List<Widget> _buildScaffoldChildren({required BuildContext context,required LoginViewModel viewModel}) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(context: context,viewModel: viewModel)];
+
+  Widget _buildAppBar(LoginViewModel viewModel) => const LargeAppBar(
+    showBackButton: false,
+    showLanguageSelection: true,
+  );
+
+  Widget _buildExpandedBody({required BuildContext context,required LoginViewModel viewModel}) =>
+      Expanded(child: _buildColumnScroller(context: context,viewModel: viewModel));
+
+  Widget _buildColumnScroller({required BuildContext context,required LoginViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildUpperColumn(viewModel),
+        child: _buildBodyWrapper(context: context,viewModel: viewModel),
       );
+
+  Widget _buildBodyWrapper({required BuildContext context,required LoginViewModel viewModel}) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 15),
+    child: _buildBody(context: context,viewModel: viewModel),
+  );
+
+  Widget _buildBody({required BuildContext context,required LoginViewModel viewModel}) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+    children: _buildBodyChildren(context: context,viewModel: viewModel),
+      );
+
+
+
+
+  List<Widget> _buildBodyChildren({required BuildContext context,required LoginViewModel viewModel}) =>
+      [_buildUpperColumn(viewModel),getPadding(context), _buildLowerColumn(viewModel)];
+
+
 
   Widget _buildUpperColumn(LoginViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -184,7 +229,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
         leadingImage: 'assets/icons/google.png',
-        onTap: () async => await viewModel.googleLogin(),
+        onTap: () async => await viewModel.signInWithGoogle(),
       );
 
   Widget _buildOptionTextDivider() => const OptionTextDivider();
@@ -200,4 +245,15 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         foregroundColor: kcPrimaryColor,
         text: 'Login with Phone Number',
       );
+
+
+  Widget _buildLoginWithEmailState(LoginViewModel viewModel) =>
+      viewModel.busy(StateObjects.loginWithEmail)
+          ? const PageLoadingIndicator()
+          : Container();
+
+  Widget _buildLoginWithGoogleState(LoginViewModel viewModel) =>
+      viewModel.busy(StateObjects.loginWithGoogle)
+          ? const PageLoadingIndicator()
+          : Container();
 }

@@ -8,6 +8,7 @@ import 'package:yimaru_app/ui/widgets/custom_cursor.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/large_app_bar.dart';
 import '../login_viewmodel.dart';
 import '../login_view.form.dart';
 
@@ -20,29 +21,68 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
       required this.otpController,
       required this.phoneNumberController});
 
+  Widget getPadding(context){
+    double half = screenHeight(context)/2;
+    return SizedBox(height: half + 325  - half,);
+  }
+
   @override
   Widget build(BuildContext context, LoginViewModel viewModel) =>
-      _buildBody(viewModel);
+      _buildScaffoldWrapper(context: context,viewModel: viewModel);
 
-  Widget _buildBody(LoginViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyChildren(viewModel),
-      );
+  Widget _buildScaffoldWrapper({required BuildContext context,required LoginViewModel viewModel}) => Scaffold(
+    backgroundColor: kcBackgroundColor,
+    body: _buildScaffold(context: context,viewModel: viewModel),
+  );
 
-  List<Widget> _buildBodyChildren(LoginViewModel viewModel) =>
-      [_buildColumnScroller(viewModel), _buildContinueButtonWrapper(viewModel)];
 
-  Widget _buildColumnScroller(LoginViewModel viewModel) =>
+
+  Widget _buildScaffold({required BuildContext context,required LoginViewModel viewModel}) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: _buildScaffoldChildren(context: context,viewModel: viewModel),
+  );
+
+  List<Widget> _buildScaffoldChildren({required BuildContext context,required LoginViewModel viewModel}) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(context: context,viewModel: viewModel)];
+
+  Widget _buildAppBar(LoginViewModel viewModel) => const LargeAppBar(
+    showBackButton: false,
+    showLanguageSelection: true,
+  );
+
+  Widget _buildExpandedBody({required BuildContext context,required LoginViewModel viewModel}) =>
+      Expanded(child: _buildColumnScroller(context: context,viewModel: viewModel));
+
+  Widget _buildColumnScroller({required BuildContext context,required LoginViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildUpperColumn(viewModel),
+        child: _buildBodyWrapper(context: context,viewModel: viewModel),
       );
+
+  Widget _buildBodyWrapper({required BuildContext context,required LoginViewModel viewModel}) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 15),
+    child: _buildBody(context: context,viewModel: viewModel),
+  );
+
+  Widget _buildBody({required BuildContext context,required LoginViewModel viewModel}) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: _buildBodyChildren(context: context,viewModel: viewModel),
+  );
+
+
+
+
+  List<Widget> _buildBodyChildren({required BuildContext context,required LoginViewModel viewModel}) =>
+      [_buildUpperColumn(viewModel),getPadding(context), _buildContinueButton(viewModel)];
+
+
 
   Widget _buildUpperColumn(LoginViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildUpperColumnChildren(viewModel),
-      );
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: _buildUpperColumnChildren(viewModel),
+  );
+
 
   List<Widget> _buildUpperColumnChildren(LoginViewModel viewModel) => [
         verticalSpaceMedium,

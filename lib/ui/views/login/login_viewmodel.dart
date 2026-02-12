@@ -26,7 +26,7 @@ class LoginViewModel extends FormViewModel {
 
   final _authenticationService = locator<AuthenticationService>();
 
-  // Navigation
+  // In-app navigation
   int _currentIndex = 0;
 
   int get currentIndex => _currentIndex;
@@ -171,18 +171,18 @@ class LoginViewModel extends FormViewModel {
     }
   }
 
-  Future<void> googleLogin() async => await runBusyFuture(_googleLogin(),
+  Future<void> signInWithGoogle() async => await runBusyFuture(_signInWithGoogle(),
       busyObject: StateObjects.loginWithGoogle);
 
-  Future<void> _googleLogin() async {
+  Future<void> _signInWithGoogle() async {
     if (await _statusChecker.checkConnection()) {
-      GoogleSignInAccount? googleUser = await _googleAuthService.googleSignIn();
+      GoogleSignInAccount? googleUser = await _googleAuthService.googleAuth();
 
       Map<String, dynamic> data = {
         'id_token': googleUser?.authentication.idToken ?? '',
       };
 
-      Map<String, dynamic> response = await _apiService.googleLogin(data);
+      Map<String, dynamic> response = await _apiService.googleAuth(data);
 
       if (response['status'] == ResponseStatus.success) {
         UserModel user = response['data'] as UserModel;

@@ -952,7 +952,7 @@ class MockAuthenticationService extends _i1.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockApiService extends _i1.Mock implements _i12.ApiService {
   @override
-  _i8.Future<Map<String, dynamic>> register(Map<String, dynamic>? data) =>
+  _i8.Future<Map<String, dynamic>> registerWithEmail(Map<String, dynamic>? data) =>
       (super.noSuchMethod(
         Invocation.method(
           #register,
@@ -978,7 +978,7 @@ class MockApiService extends _i1.Mock implements _i12.ApiService {
       ) as _i8.Future<Map<String, dynamic>>);
 
   @override
-  _i8.Future<Map<String, dynamic>> googleLogin(Map<String, dynamic>? data) =>
+  _i8.Future<Map<String, dynamic>> googleAuth(Map<String, dynamic>? data) =>
       (super.noSuchMethod(
         Invocation.method(
           #googleLogin,
@@ -1384,7 +1384,7 @@ class MockGoogleAuthService extends _i1.Mock implements _i19.GoogleAuthService {
       ) as _i4.GoogleSignIn);
 
   @override
-  _i8.Future<_i4.GoogleSignInAccount?> googleSignIn() => (super.noSuchMethod(
+  _i8.Future<_i4.GoogleSignInAccount?> googleAuth() => (super.noSuchMethod(
         Invocation.method(
           #googleSignIn,
           [],

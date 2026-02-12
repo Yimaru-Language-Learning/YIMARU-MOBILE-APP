@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
@@ -10,6 +11,7 @@ import 'package:yimaru_app/ui/views/home/home_view.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/user_model.dart';
+import '../../../services/google_auth_service.dart';
 import '../../../services/status_checker_service.dart';
 
 class RegisterViewModel extends FormViewModel {
@@ -18,6 +20,9 @@ class RegisterViewModel extends FormViewModel {
   final _statusChecker = locator<StatusCheckerService>();
 
   final _navigationService = locator<NavigationService>();
+
+  final _googleAuthService = locator<GoogleAuthService>();
+
 
   final _authenticationService = locator<AuthenticationService>();
 
@@ -284,15 +289,47 @@ class RegisterViewModel extends FormViewModel {
   // Remote api calls
 
   // Register
-  Future<void> register() async =>
-      await runBusyFuture(_register(), busyObject: StateObjects.registration);
+  Future<void> registerWithEmail() async =>
+      await runBusyFuture(_register(), busyObject: StateObjects.registerWithEmail);
 
   Future<void> _register() async {
     if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response = await _apiService.register(_userData);
+      Map<String, dynamic> response = await _apiService.registerWithEmail(_userData);
 
       if (response['status'] == ResponseStatus.success) {
         goTo(page: 3);
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  // Register with google
+
+  Future<void> registerWithGoogle() async => await runBusyFuture(_googleLogin(),
+      busyObject: StateObjects.registerWithGoogle);
+
+  Future<void> _googleLogin() async {
+    if (await _statusChecker.checkConnection()) {
+      GoogleSignInAccount? googleUser = await _googleAuthService.googleAuth();
+
+      Map<String, dynamic> data = {
+        'id_token': googleUser?.authentication.idToken ?? '',
+      };
+
+      Map<String, dynamic> response = await _apiService.googleAuth(data);
+
+      if (response['status'] == ResponseStatus.success) {
+        UserModel user = response['data'] as UserModel;
+        Map<String, dynamic> data = {
+          'userId': user.userId,
+          'accessToken': user.accessToken,
+          'refreshToken': user.refreshToken
+        };
+        await _authenticationService.saveUserCredential(data);
+        clearUserData();
+        await replaceWithHome();
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);

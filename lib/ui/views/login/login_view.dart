@@ -54,38 +54,11 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
         if (!value) return;
         WidgetsBinding.instance.addPostFrameCallback((_) => viewModel.goBack());
       },
-      child: _buildScaffoldWrapper(viewModel));
+      child: _buildBody(viewModel));
 
-  Widget _buildScaffoldWrapper(LoginViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(viewModel),
-      );
 
-  Widget _buildScaffoldStack(LoginViewModel viewModel) => Stack(children: [
-        _buildScaffold(viewModel),
-        _buildLoginWithEmailState(viewModel),
-        _buildLoginWithGoogleState(viewModel)
-      ]);
 
-  Widget _buildScaffold(LoginViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildScaffoldChildren(viewModel),
-      );
 
-  List<Widget> _buildScaffoldChildren(LoginViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
-
-  Widget _buildAppBar(LoginViewModel viewModel) => const LargeAppBar(
-        showBackButton: false,
-        showLanguageSelection: true,
-      );
-  Widget _buildExpandedBody(LoginViewModel viewModel) =>
-      Expanded(child: _buildBodyWrapper(viewModel));
-
-  Widget _buildBodyWrapper(LoginViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBody(viewModel),
-      );
 
   Widget _buildBody(LoginViewModel viewModel) =>
       IndexedStack(index: viewModel.currentIndex, children: _buildScreens());
@@ -106,13 +79,4 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
       otpController: otpController,
       phoneNumberController: phoneNumberController);
 
-  Widget _buildLoginWithEmailState(LoginViewModel viewModel) =>
-      viewModel.busy(StateObjects.loginWithEmail)
-          ? const PageLoadingIndicator()
-          : Container();
-
-  Widget _buildLoginWithGoogleState(LoginViewModel viewModel) =>
-      viewModel.busy(StateObjects.loginWithGoogle)
-          ? const PageLoadingIndicator()
-          : Container();
 }

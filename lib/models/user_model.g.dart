@@ -20,6 +20,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       refreshToken: json['refresh_token'] as String?,
       profilePicture: json['profile_picture_url'] as String?,
       profileCompleted: json['profile_completed'] as bool?,
+      userInfoLoaded: json['userInfoLoaded'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -28,6 +29,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'region': instance.region,
       'country': instance.country,
       'occupation': instance.occupation,
+      'userInfoLoaded': instance.userInfoLoaded,
       'user_id': instance.userId,
       'last_name': instance.lastName,
       'birth_day': instance.birthday,

@@ -85,40 +85,9 @@ class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
       canPop: false,
       onPopInvokedWithResult: (value, data) =>
           _pop(value: value, viewModel: viewModel),
-      child: _buildScaffoldWrapper(viewModel));
+      child: _buildBody(viewModel));
 
-  Widget _buildScaffoldWrapper(RegisterViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(viewModel),
-      );
 
-  Widget _buildScaffoldStack(RegisterViewModel viewModel) => Stack(children: [
-        _buildScaffold(viewModel),
-        _buildRegistrationState(viewModel),
-        _buildVerityOtpState(viewModel)
-      ]);
-
-  Widget _buildScaffold(RegisterViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildScaffoldChildren(viewModel),
-      );
-
-  List<Widget> _buildScaffoldChildren(RegisterViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
-
-  Widget _buildAppBar(RegisterViewModel viewModel) => LargeAppBar(
-        showBackButton: true,
-        showLanguageSelection: true,
-        onPop: () => _inAppPop(viewModel),
-      );
-
-  Widget _buildExpandedBody(RegisterViewModel viewModel) =>
-      Expanded(child: _buildBodyWrapper(viewModel));
-
-  Widget _buildBodyWrapper(RegisterViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBody(viewModel),
-      );
 
   Widget _buildBody(RegisterViewModel viewModel) =>
       IndexedStack(index: viewModel.currentPage, children: _buildScreens());
@@ -146,13 +115,4 @@ class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
       passwordController: passwordController,
       confirmPasswordController: confirmPasswordController);
 
-  Widget _buildRegistrationState(RegisterViewModel viewModel) =>
-      viewModel.busy(StateObjects.registration)
-          ? const PageLoadingIndicator()
-          : Container();
-
-  Widget _buildVerityOtpState(RegisterViewModel viewModel) =>
-      viewModel.busy(StateObjects.verifyOtp)
-          ? const PageLoadingIndicator()
-          : Container();
 }

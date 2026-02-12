@@ -11,7 +11,7 @@ class ApiService {
   final _service = locator<DioService>();
 
   // Register
-  Future<Map<String, dynamic>> register(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> registerWithEmail(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
         '$kBaseUrl/$kUserUrl/$kRegisterUrl',
@@ -66,10 +66,10 @@ class ApiService {
   }
 
   // Google login
-  Future<Map<String, dynamic>> googleLogin(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> googleAuth(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$kBaseUrl/$kGoogleLoginUrl',
+        '$kBaseUrl/$kGoogleAuthUrl',
         data: data,
       );
 

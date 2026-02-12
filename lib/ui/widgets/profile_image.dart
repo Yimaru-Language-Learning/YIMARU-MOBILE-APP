@@ -34,7 +34,7 @@ class ProfileImage extends StatelessWidget {
 
   Widget _buildProfileImage() => CircleAvatar(
         radius: 50,
-        backgroundColor: kcPrimaryColor,
+        backgroundColor: kcViolet,
         backgroundImage: loading
             ? null
             : profileImage != null || (profileImage?.contains('.') ?? false)

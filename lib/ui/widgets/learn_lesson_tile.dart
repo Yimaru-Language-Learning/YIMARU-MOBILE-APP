@@ -12,9 +12,11 @@ class LearnLessonTile extends StatelessWidget {
   final String title;
   final String thumbnail;
   final ProgressStatuses status;
+  final GestureTapCallback? onLessonTap;
 
   const LearnLessonTile({
     super.key,
+    this.onLessonTap,
     required this.title,
     required this.status,
     required this.thumbnail,
@@ -46,7 +48,6 @@ class LearnLessonTile extends StatelessWidget {
         collapsedIconColor: kcDarkGrey,
         collapsedTextColor: kcDarkGrey,
         leading: _buildLeadingWrapper(),
-
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
         enabled: status != ProgressStatuses.pending,
@@ -180,7 +181,7 @@ class LearnLessonTile extends StatelessWidget {
         _buildLessonButton(),
       ];
 
-  Widget _buildLessonButton() => const CustomElevatedButton(
+  Widget _buildPracticeButton() => const CustomElevatedButton(
         height: 15,
         width: 135,
         text: 'Practice',
@@ -191,10 +192,11 @@ class LearnLessonTile extends StatelessWidget {
         foregroundColor: kcPrimaryColor,
       );
 
-  Widget _buildPracticeButton() => CustomElevatedButton(
+  Widget _buildLessonButton() => CustomElevatedButton(
         height: 15,
         width: 135,
         borderRadius: 12,
+        onTap: onLessonTap,
         foregroundColor: kcWhite,
         trailingIcon: Icons.play_arrow,
         backgroundColor: kcPrimaryColor,

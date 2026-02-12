@@ -4,7 +4,7 @@ import 'package:yimaru_app/ui/common/app_constants.dart';
 class GoogleAuthService {
   final GoogleSignIn signIn = GoogleSignIn.instance;
 
-  Future<GoogleSignInAccount?> googleSignIn() async {
+  Future<GoogleSignInAccount?> googleAuth() async {
     try {
       GoogleSignInAccount? googleUser;
       await signIn.initialize(serverClientId: kServerClientId).then((_) async {

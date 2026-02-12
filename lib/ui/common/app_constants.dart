@@ -23,9 +23,12 @@ String kLoginUrl = 'api/v1/auth/customer-login';
 
 String kProfileStatusUrl = 'is-profile-completed';
 
-String kGoogleLoginUrl = 'api/v1/auth/google/android';
+String kGoogleAuthUrl = 'api/v1/auth/google/android';
 
 String kAssessmentsUrl = 'api/v1/assessment/questions';
 
 String kServerClientId =
     '574860813475-n5o17gpprdqmhcml99tiqhafb17rob0r.apps.googleusercontent.com';
+
+String kSampleVideoUrl =
+    'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';

@@ -76,21 +76,27 @@ class HomeViewModel extends ReactiveViewModel {
   Future<void> getProfileData() async => await runBusyFuture(_getProfileData());
 
   Future<void> _getProfileData() async {
-    if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response = {};
+    print('RESPONSE FOR USER DATA ${_user?.firstName}');
 
-      if (_user?.profileCompleted != null &&
-          (_user?.profileCompleted ?? false)) {
-        if (await _statusChecker.checkConnection()) {
-          response = await _apiService.getProfileData(_user?.userId);
+    if (!(_user?.userInfoLoaded ?? false)) {
+      print('RESPONSE FOR USER DATA 1');
+      if (await _statusChecker.checkConnection()) {
+        Map<String, dynamic> response = {};
 
-          if (response['status'] == ResponseStatus.success) {
-            UserModel user = response['data'] as UserModel;
+        if (_user?.profileCompleted != null &&
+            (_user?.profileCompleted ?? false)) {
+          if (await _statusChecker.checkConnection()) {
+            response = await _apiService.getProfileData(_user?.userId);
 
-            String image =
-                await _imageDownloaderService.downloader(user.profilePicture);
+            if (response['status'] == ResponseStatus.success) {
+              UserModel user = response['data'] as UserModel;
 
-            await _authenticationService.saveUserData(image: image, data: user);
+              String image =
+                  await _imageDownloaderService.downloader(user.profilePicture);
+
+              await _authenticationService.saveUserData(
+                  image: image, data: user);
+            }
           }
         }
       }
@@ -116,7 +122,6 @@ class HomeViewModel extends ReactiveViewModel {
       } else {
         response = {'data': true, 'status': ResponseStatus.success};
       }
-
 
       if (response['status'] == ResponseStatus.success && !response['data']) {
         await replaceWithOnboarding();

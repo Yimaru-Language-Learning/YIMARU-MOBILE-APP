@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_form_label.dart';
 import '../../../widgets/custom_linear_progress_indicator.dart';
+import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/obscure_password.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/validator_list_tile.dart';
 import '../forget_password_viewmodel.dart';
 import '../forget_password_view.form.dart';
@@ -22,6 +25,20 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
       required this.passwordController,
       required this.confirmPasswordController});
 
+  void _inAppPop(ForgetPasswordViewModel viewModel) {
+    _clearDataOnNavigation(viewModel);
+    viewModel.goBack();
+  }
+
+  void _clearDataOnNavigation(ForgetPasswordViewModel viewModel) {
+
+      passwordController.clear();
+      resetCodeController.clear();
+      confirmPasswordController.clear();
+      viewModel.resetResetPasswordScreen();
+
+  }
+
   Future<void> _reset(ForgetPasswordViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -36,18 +53,58 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
 
   @override
   Widget build(BuildContext context, ForgetPasswordViewModel viewModel) =>
-      _buildBodyChildren(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildBodyChildren(ForgetPasswordViewModel viewModel) =>
+  Widget _buildScaffoldWrapper(     {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) => Scaffold(
+    backgroundColor: kcBackgroundColor,
+    body: _buildScaffoldStack(context: context, viewModel: viewModel),
+  );
+
+  Widget _buildScaffoldStack(  {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) => Stack(
+    children: [
+      _buildScaffold(viewModel),
+      _buildResetPasswordState(viewModel),
+    ],
+  );
+
+  Widget _buildScaffold(   ForgetPasswordViewModel viewModel) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: _buildScaffoldChildren(viewModel),
+  );
+
+  List<Widget> _buildScaffoldChildren(  ForgetPasswordViewModel viewModel) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
+
+  Widget _buildAppBar(ForgetPasswordViewModel viewModel) =>  LargeAppBar(
+    showBackButton: true,
+    showLanguageSelection: true,
+    onPop: () => _inAppPop(viewModel),
+  );
+
+  Widget _buildExpandedBody(   ForgetPasswordViewModel viewModel) =>
+      Expanded(child: _buildColumnScroller(viewModel));
+
+  Widget _buildColumnScroller(  ForgetPasswordViewModel viewModel) =>
       SingleChildScrollView(
-        child: _buildBodyColumn(viewModel),
+        child: _buildBodyWrapper(viewModel),
       );
 
-  Widget _buildBodyColumn(ForgetPasswordViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildBodyColumnChildren(viewModel),
-      );
+  Widget _buildBodyWrapper(   ForgetPasswordViewModel viewModel) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 15),
+    child: _buildBody(viewModel),
+  );
+
+  Widget _buildBody(ForgetPasswordViewModel viewModel) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: _buildBodyColumnChildren(viewModel),
+  );
+
+
+
+
 
   List<Widget> _buildBodyColumnChildren(ForgetPasswordViewModel viewModel) => [
         verticalSpaceMedium,
@@ -241,4 +298,9 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
             ? kcPrimaryColor
             : kcPrimaryColor.withOpacity(0.1),
       );
+
+  Widget _buildResetPasswordState(ForgetPasswordViewModel viewModel) =>
+      viewModel.busy(StateObjects.resetPassword)
+          ? const PageLoadingIndicator()
+          : Container();
 }

@@ -7,7 +7,9 @@ import 'package:yimaru_app/ui/widgets/login_account.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/option_text_divider.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../forget_password_view.form.dart';
 
 class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
@@ -17,6 +19,23 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
     super.key,
     required this.emailController,
   });
+
+
+  Widget getPadding(context){
+    double half = screenHeight(context)/2;
+    return SizedBox(height: half + 375  - half,);
+  }
+
+  void _inAppPop(ForgetPasswordViewModel viewModel) {
+    _clearDataOnNavigation(viewModel);
+    viewModel.goBack();
+  }
+
+  void _clearDataOnNavigation(ForgetPasswordViewModel viewModel) {
+      emailController.clear();
+      viewModel.resetRequestResetCodeScreen();
+
+  }
 
   Future<void> _addUserData(ForgetPasswordViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -29,23 +48,69 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
     await viewModel.requestResetCode();
   }
 
+
   @override
   Widget build(BuildContext context, ForgetPasswordViewModel viewModel) =>
-      _buildBody(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildBody(ForgetPasswordViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyChildren(viewModel),
-      );
+  Widget _buildScaffoldWrapper(     {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) => Scaffold(
+    backgroundColor: kcBackgroundColor,
+    body: _buildScaffoldStack(context: context, viewModel: viewModel),
+  );
 
-  List<Widget> _buildBodyChildren(ForgetPasswordViewModel viewModel) =>
-      [_buildColumnScroller(viewModel), _buildContinueButtonWrapper(viewModel)];
+  Widget _buildScaffoldStack(  {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) => Stack(
+    children: [
+      _buildScaffold(context: context,viewModel: viewModel),
+      _buildRequestResetCodeState(viewModel),
+    ],
+  );
 
-  Widget _buildColumnScroller(ForgetPasswordViewModel viewModel) =>
+  Widget _buildScaffold(     {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: _buildScaffoldChildren(context: context, viewModel: viewModel),
+  );
+
+  List<Widget> _buildScaffoldChildren(     {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(context: context, viewModel: viewModel)];
+
+  Widget _buildAppBar(ForgetPasswordViewModel viewModel) =>  LargeAppBar(
+    showBackButton: true,
+    showLanguageSelection: true,
+    onPop: () => _inAppPop(viewModel),
+  );
+
+  Widget _buildExpandedBody(     {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) =>
+      Expanded(child: _buildColumnScroller(context: context, viewModel: viewModel));
+
+  Widget _buildColumnScroller(     {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildUpperColumn(viewModel),
+        child: _buildBodyWrapper(context: context, viewModel: viewModel),
       );
+
+  Widget _buildBodyWrapper(     {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 15),
+    child: _buildBody(context: context, viewModel: viewModel),
+  );
+
+  Widget _buildBody(     {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: _buildBodyChildren(context: context, viewModel: viewModel),
+  );
+
+  List<Widget> _buildBodyChildren(     {required BuildContext context,
+    required ForgetPasswordViewModel viewModel}) =>
+      [_buildUpperColumn(viewModel),getPadding(context), _buildContinueButtonWrapper(viewModel)];
+
+
 
   Widget _buildUpperColumn(ForgetPasswordViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -117,4 +182,9 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
             ? kcPrimaryColor
             : kcPrimaryColor.withOpacity(0.1),
       );
+
+  Widget _buildRequestResetCodeState(ForgetPasswordViewModel viewModel) =>
+      viewModel.busy(StateObjects.requestResetCode)
+          ? const PageLoadingIndicator()
+          : Container();
 }

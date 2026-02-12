@@ -8,6 +8,7 @@ import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/phone_number_prefix.dart';
 import '../register_viewmodel.dart';
 import '../register_view.form.dart';
@@ -17,23 +18,83 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
   const RegisterWithPhoneNumberScreen(
       {super.key, required this.phoneNumberController});
 
+  Widget getPadding(context) {
+    double half = screenHeight(context) / 2;
+    return SizedBox(height: half + 170 - half);
+  }
+
   @override
   Widget build(BuildContext context, RegisterViewModel viewModel) =>
-      _buildBody(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildBody(RegisterViewModel viewModel) => Column(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Scaffold(
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffold(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:
+            _buildScaffoldChildren(context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildScaffoldChildren(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      [
+        _buildAppBar(viewModel),
+        _buildExpandedBody(context: context, viewModel: viewModel)
+      ];
+
+  Widget _buildAppBar(RegisterViewModel viewModel) => const LargeAppBar(
+        showBackButton: false,
+        showLanguageSelection: true,
+      );
+
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Expanded(
+          child: _buildColumnScroller(context: context, viewModel: viewModel));
+
+  Widget _buildColumnScroller(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      SingleChildScrollView(
+        child: _buildBodyWrapper(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildBodyWrapper(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildBody(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildBody(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyChildren(viewModel),
+        children: _buildBodyChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyChildren(RegisterViewModel viewModel) =>
-      [_buildColumnScroller(viewModel), _buildLowerColumn(viewModel)];
-
-  Widget _buildColumnScroller(RegisterViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildUpperColumn(viewModel),
-      );
+  List<Widget> _buildBodyChildren(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      [
+        _buildUpperColumn(viewModel),
+        getPadding(context),
+        _buildLowerColumn(viewModel)
+      ];
 
   Widget _buildUpperColumn(RegisterViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,

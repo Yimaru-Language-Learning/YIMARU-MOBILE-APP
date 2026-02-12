@@ -37,24 +37,6 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('refreshToken', refresh);
   }
 
-  Future<void> saveUserName(Map<String, dynamic> data) async {
-    await _secureService.setString('firstName', data['firstName']);
-    _user = UserModel(
-      email: _user?.email,
-      gender: _user?.gender,
-      region: _user?.region,
-      userId: _user?.userId,
-      country: _user?.country,
-      lastName: _user?.lastName,
-      birthday: _user?.birthday,
-      occupation: _user?.occupation,
-      accessToken: _user?.accessToken,
-      refreshToken: _user?.refreshToken,
-      profilePicture: _user?.profilePicture,
-      profileCompleted: _user?.profileCompleted,
-      firstName: await _secureService.getString('firstName'),
-    );
-  }
 
   Future<void> saveUserCredential(Map<String, dynamic> data) async {
     await _secureService.setInt('userId', data['userId']);
@@ -84,6 +66,7 @@ class AuthenticationService with ListenableServiceMixin {
         accessToken: _user?.accessToken,
         refreshToken: _user?.refreshToken,
         profilePicture: _user?.profilePicture,
+        userInfoLoaded: _user?.userInfoLoaded ?? false,
         profileCompleted: await _secureService.getBool('profileCompleted'));
     notifyListeners();
   }
@@ -103,6 +86,7 @@ class AuthenticationService with ListenableServiceMixin {
       accessToken: _user?.accessToken,
       refreshToken: _user?.refreshToken,
       profileCompleted: _user?.profileCompleted,
+      userInfoLoaded: _user?.userInfoLoaded ?? false,
       profilePicture: await _secureService.getString('profileImage'),
     );
 
@@ -111,6 +95,7 @@ class AuthenticationService with ListenableServiceMixin {
 
   Future<void> saveUserData(
       {required String image, required UserModel data}) async {
+    await _secureService.setBool('userInfoLoaded', true);
     await _secureService.setBool(
         'profileCompleted', data.profileCompleted ?? false);
     await _secureService.setString('profilePicture', image);
@@ -127,6 +112,7 @@ class AuthenticationService with ListenableServiceMixin {
       email: data.email,
       gender: data.gender,
       region: data.region,
+      userInfoLoaded: true,
       profilePicture: image,
       userId: _user?.userId,
       country: data.country,
@@ -190,6 +176,7 @@ class AuthenticationService with ListenableServiceMixin {
       accessToken: await _secureService.getString('accessToken'),
       refreshToken: await _secureService.getString('refreshToken'),
       profilePicture: await _secureService.getString('profileImage'),
+      userInfoLoaded: await _secureService.getBool('userInfoLoaded'),
       profileCompleted: await _secureService.getBool('profileCompleted'),
     );
     return _user;

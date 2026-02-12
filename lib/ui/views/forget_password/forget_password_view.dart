@@ -29,10 +29,7 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel>
     confirmPasswordController.clear();
   }
 
-  void _inAppPop(ForgetPasswordViewModel viewModel) {
-    _clearDataOnNavigation(viewModel);
-    viewModel.goBack();
-  }
+
 
   void _clearDataOnNavigation(ForgetPasswordViewModel viewModel) {
     if (viewModel.currentPage == 0) {
@@ -78,41 +75,11 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel>
           canPop: true,
           onPopInvokedWithResult: (value, data) =>
               _pop(value: value, viewModel: viewModel),
-          child: _buildScaffoldWrapper(viewModel));
+          child: _buildBody(viewModel));
 
-  Widget _buildScaffoldWrapper(ForgetPasswordViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(viewModel),
-      );
 
-  Widget _buildScaffoldStack(ForgetPasswordViewModel viewModel) =>
-      Stack(children: [
-        _buildScaffold(viewModel),
-        _buildRequestResetCodeState(viewModel),
-        _buildResetPasswordState(viewModel)
-      ]);
 
-  Widget _buildScaffold(ForgetPasswordViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildScaffoldChildren(viewModel),
-      );
 
-  List<Widget> _buildScaffoldChildren(ForgetPasswordViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
-
-  Widget _buildAppBar(ForgetPasswordViewModel viewModel) => LargeAppBar(
-        showBackButton: true,
-        showLanguageSelection: true,
-        onPop: () => _inAppPop(viewModel),
-      );
-
-  Widget _buildExpandedBody(ForgetPasswordViewModel viewModel) =>
-      Expanded(child: _buildBodyWrapper(viewModel));
-
-  Widget _buildBodyWrapper(ForgetPasswordViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBody(viewModel),
-      );
 
   Widget _buildBody(ForgetPasswordViewModel viewModel) =>
       IndexedStack(index: viewModel.currentPage, children: _buildScreens());
@@ -130,13 +97,5 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel>
       resetCodeController: resetCodeController,
       confirmPasswordController: confirmPasswordController);
 
-  Widget _buildRequestResetCodeState(ForgetPasswordViewModel viewModel) =>
-      viewModel.busy(StateObjects.requestResetCode)
-          ? const PageLoadingIndicator()
-          : Container();
 
-  Widget _buildResetPasswordState(ForgetPasswordViewModel viewModel) =>
-      viewModel.busy(StateObjects.resetPassword)
-          ? const PageLoadingIndicator()
-          : Container();
 }

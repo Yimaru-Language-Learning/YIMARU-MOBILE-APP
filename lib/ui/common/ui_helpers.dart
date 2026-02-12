@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:chewie/chewie.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -183,6 +184,13 @@ TextStyle style18W600 = const TextStyle(
   fontWeight: FontWeight.w600,
 );
 
+TextStyle style25W600 = const TextStyle(
+  fontSize: 25,
+  color: kcWhite,
+  fontWeight: FontWeight.w600,
+);
+
+
 TextStyle style12R700 = const TextStyle(
   fontSize: 12,
   color: Colors.red,
@@ -198,7 +206,7 @@ TextStyle style14P600 = const TextStyle(
   fontWeight: FontWeight.w600,
 );
 
-TextStyle style25K600 = const TextStyle(
+TextStyle style25P600 = const TextStyle(
   fontSize: 25,
   color: kcPrimaryColor,
   fontWeight: FontWeight.w600,
@@ -278,6 +286,12 @@ Map<String, Style> htmlStyle = {
     verticalAlign: VerticalAlign.baseline,
   ),
 };
+
+ChewieProgressColors buildChewieProgressIndicator = ChewieProgressColors(
+  bufferedColor: kcIndigo,
+  playedColor: kcPrimaryColor,
+  backgroundColor: kcBackgroundColor,
+);
 
 Widget buildToastDescription(String message) => Text(
       message,
