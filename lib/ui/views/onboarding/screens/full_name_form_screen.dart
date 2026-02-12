@@ -72,7 +72,7 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceLarge,
         _buildFullNameFormField(viewModel),
         if (viewModel.hasFullNameValidationMessage && viewModel.focusFullName)
@@ -96,7 +96,7 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
         ),
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => const Text(
         'We’ll use your name to personalize your learning journey.',
         style: TextStyle(color: kcMediumGrey),
       );

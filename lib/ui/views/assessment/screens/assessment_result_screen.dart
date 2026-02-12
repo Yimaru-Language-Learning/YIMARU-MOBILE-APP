@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
@@ -62,35 +63,37 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         verticalSpaceLarge,
         _buildTitle(viewModel),
         verticalSpaceSmall,
-        _buildPrimarySubTitle(),
+        _buildPrimarySubtitle(),
         verticalSpaceMedium,
-        _buildIcon(),
+        _buildIconWrapper(viewModel),
         verticalSpaceMedium,
-        _buildSecondarySubTitle()
+        _buildSecondarySubtitle()
       ];
 
   Widget _buildTitle(AssessmentViewModel viewModel) => Text(
         'You’re likely a ${viewModel.proficiencyLevel.name.toUpperCase()} speaker!',
+        style: style25DG600,
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 25,
-          color: kcPrimaryColor,
-          fontWeight: FontWeight.w600,
-        ),
       );
 
-  Widget _buildPrimarySubTitle() => const Text(
+  Widget _buildPrimarySubtitle() => Text(
         'Great Job! Here’s your next step to keep improving.',
         textAlign: TextAlign.center,
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
-  Widget _buildIcon() => SvgPicture.asset('assets/icons/b1.svg');
+  Widget _buildIconWrapper(AssessmentViewModel viewModel) =>
+      viewModel.proficiencyLevel != ProficiencyLevels.none
+          ? _buildIcon(viewModel)
+          : Container();
 
-  Widget _buildSecondarySubTitle() => const Text(
+  Widget _buildIcon(AssessmentViewModel viewModel) => SvgPicture.asset(
+      'assets/icons/${viewModel.proficiencyLevel.name.substring(0, 1)}_${viewModel.proficiencyLevel.name.substring(1)}.svg');
+
+  Widget _buildSecondarySubtitle() => Text(
         'Let\'s start your practice',
+        style: style14DG400,
         textAlign: TextAlign.center,
-        style: TextStyle(color: kcMediumGrey),
       );
 
   Widget _buildLowerColumn(AssessmentViewModel viewModel) => Column(
@@ -110,8 +113,8 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         safe: false,
         text: 'Continue',
         borderRadius: 12,
-        onTap: () => viewModel.next(),
         foregroundColor: kcWhite,
+        onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,
       );
 
@@ -124,10 +127,10 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
+        backgroundColor: kcWhite,
         text: 'Practice Speaking',
         borderColor: kcPrimaryColor,
         onTap: () => viewModel.next(),
-        backgroundColor: kcWhite,
         foregroundColor: kcPrimaryColor,
       );
 }

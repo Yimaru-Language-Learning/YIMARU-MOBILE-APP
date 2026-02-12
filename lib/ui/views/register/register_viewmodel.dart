@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
@@ -10,16 +11,25 @@ import 'package:yimaru_app/ui/views/home/home_view.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/user_model.dart';
+import '../../../services/google_auth_service.dart';
+import '../../../services/status_checker_service.dart';
 
 class RegisterViewModel extends FormViewModel {
   final _apiService = locator<ApiService>();
+
+  final _statusChecker = locator<StatusCheckerService>();
+
   final _navigationService = locator<NavigationService>();
+
+  final _googleAuthService = locator<GoogleAuthService>();
+
+
   final _authenticationService = locator<AuthenticationService>();
 
   // Navigation
-  int _currentIndex = 0;
+  int _currentPage = 0;
 
-  int get currentIndex => _currentIndex;
+  int get currentPage => _currentPage;
 
   // Email
   bool _focusEmail = false;
@@ -208,69 +218,35 @@ class RegisterViewModel extends FormViewModel {
     _userData.clear();
   }
 
-  // Remote api calls
-  Future<void> register() async {
-    Map<String, dynamic> response = await runBusyFuture<Map<String, dynamic>>(
-        _apiService.register(_userData));
+  // Form reset
 
-    if (response['status'] == ResponseStatus.success) {
-      goTo(page: 3);
-      showSuccessToast(response['message']);
-    } else {
-      showErrorToast(response['message']);
-    }
+  // Reset register with email screen
+  void resetRegisterWithEmailScreen() {
+    _focusEmail = false;
+    rebuildUi();
   }
 
-  Future<void> verifyOtp() async {
-    Map<String, dynamic> response =
-        await runBusyFuture<Map<String, dynamic>>(_verifyOtp());
-
-    if (response['status'] == ResponseStatus.success) {
-      await replaceWithHome();
-    }
+  // Reset create password screen
+  void resetCreatePasswordScreen() {
+    _agree = false;
+    _length = false;
+    _number = false;
+    _specialChar = false;
+    _passwordMatch = false;
+    _focusPassword = false;
+    _focusConfirmPassword = false;
+    rebuildUi();
   }
 
-  Future<Map<String, dynamic>> _verifyOtp() async {
-    Map<String, dynamic> response = await _apiService.verifyOtp(_userData);
-    if (response['status'] == ResponseStatus.success) {
-      UserModel user = response['data'] as UserModel;
-      Map<String, dynamic> data = {
-        'userId': user.userId,
-        'accessToken': user.accessToken,
-        'refreshToken': user.refreshToken
-      };
-
-      //     {
-      //       'userId': 10,
-      //   'accessToken': 'accessToken',
-      //   'refreshToken': 'refreshToken'
-      // }
-
-      await _authenticationService.saveUserData(data);
-      showSuccessToast(response['message']);
-    } else {
-      showErrorToast(response['message']);
-    }
-
-    return response;
+  // Reset registration otp screen
+  void resetRegistrationOtpScreen() {
+    _focusOtp = false;
+    rebuildUi();
   }
 
-  Future<void> resendOtp() async {
-    resetButton();
-
-    Map<String, dynamic> response = await runBusyFuture<Map<String, dynamic>>(
-        _apiService.resendOtp(_userData));
-
-    if (response['status'] == ResponseStatus.success) {
-      showSuccessToast(response['message']);
-    } else {
-      showErrorToast(response['message']);
-    }
-  }
-
-  // Navigation
+  // In-app navigation
   void goTo({required int page, RegistrationType? type}) {
-    _currentIndex = page;
+    _currentPage = page;
     if (type != null) {
       _registrationType = type;
     }
@@ -278,17 +254,17 @@ class RegisterViewModel extends FormViewModel {
   }
 
   void goBack() {
-    if (_currentIndex == 1) {
-      _currentIndex = 0;
+    if (_currentPage == 1) {
+      _currentPage = 0;
       rebuildUi();
-    } else if (_currentIndex == 2) {
-      _currentIndex = 0;
+    } else if (_currentPage == 2) {
+      _currentPage = 0;
       rebuildUi();
-    } else if (_currentIndex == 3) {
+    } else if (_currentPage == 3) {
       if (_registrationType == RegistrationType.phone) {
-        _currentIndex = 1;
+        _currentPage = 1;
       } else {
-        _currentIndex = 2;
+        _currentPage = 2;
       }
 
       rebuildUi();
@@ -297,6 +273,7 @@ class RegisterViewModel extends FormViewModel {
     }
   }
 
+  // Navigation
   Future<void> navigateToTermsAndConditions() async =>
       await _navigationService.navigateToTermsAndConditionsView();
 
@@ -308,4 +285,96 @@ class RegisterViewModel extends FormViewModel {
 
   Future<void> replaceWithHome() async =>
       await _navigationService.clearStackAndShowView(const HomeView());
+
+  // Remote api calls
+
+  // Register
+  Future<void> registerWithEmail() async =>
+      await runBusyFuture(_register(), busyObject: StateObjects.registerWithEmail);
+
+  Future<void> _register() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response = await _apiService.registerWithEmail(_userData);
+
+      if (response['status'] == ResponseStatus.success) {
+        goTo(page: 3);
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  // Register with google
+
+  Future<void> registerWithGoogle() async => await runBusyFuture(_googleLogin(),
+      busyObject: StateObjects.registerWithGoogle);
+
+  Future<void> _googleLogin() async {
+    if (await _statusChecker.checkConnection()) {
+      GoogleSignInAccount? googleUser = await _googleAuthService.googleAuth();
+
+      Map<String, dynamic> data = {
+        'id_token': googleUser?.authentication.idToken ?? '',
+      };
+
+      Map<String, dynamic> response = await _apiService.googleAuth(data);
+
+      if (response['status'] == ResponseStatus.success) {
+        UserModel user = response['data'] as UserModel;
+        Map<String, dynamic> data = {
+          'userId': user.userId,
+          'accessToken': user.accessToken,
+          'refreshToken': user.refreshToken
+        };
+        await _authenticationService.saveUserCredential(data);
+        clearUserData();
+        await replaceWithHome();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  Future<void> verifyOtp() async =>
+      await runBusyFuture(_verifyOtp(), busyObject: StateObjects.verifyOtp);
+
+  Future<void> _verifyOtp() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response = await _apiService.verifyOtp(_userData);
+      if (response['status'] == ResponseStatus.success) {
+        UserModel user = response['data'] as UserModel;
+        Map<String, dynamic> data = {
+          'userId': user.userId,
+          'accessToken': user.accessToken,
+          'refreshToken': user.refreshToken
+        };
+
+        await _authenticationService.saveUserCredential(data);
+        await replaceWithHome();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  // Resend otp
+  Future<void> resendOtp() async =>
+      await runBusyFuture(_resendOtp(), busyObject: StateObjects.resendOtp);
+
+  Future<void> _resendOtp() async {
+    if (await _statusChecker.checkConnection()) {
+      resetButton();
+
+      Map<String, dynamic> response = await _apiService.resendOtp(_userData);
+
+      if (response['status'] == ResponseStatus.success) {
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
 }

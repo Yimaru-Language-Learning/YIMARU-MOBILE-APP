@@ -13,6 +13,12 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   const ChallengeFormScreen({super.key, required this.challengeController});
 
+  void _pop(OnboardingViewModel viewModel) {
+    challengeController.clear();
+    viewModel.resetChallengeFormScreen();
+    viewModel.goBack();
+  }
+
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -74,7 +80,7 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildChallenges(viewModel),
         if (viewModel.showChallengeTextBox) _buildChallengeFormField(viewModel),
@@ -90,24 +96,20 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
       ];
 
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
-        onPop: viewModel.pop,
         showBackButton: true,
         showLanguageSelection: true,
+        onPop: () => _pop(viewModel),
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'What challenge do you face most with English?',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'Everyone has struggles, let’s start fixing yours 😊',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildChallenges(OnboardingViewModel viewModel) => ListView.builder(
@@ -151,11 +153,7 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildChallengeValidator(OnboardingViewModel viewModel) => Text(
         viewModel.challengeValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
   Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(

@@ -13,8 +13,8 @@ class FinishPracticeSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _buildSheetWrapper();
 
-  Widget _buildSheetWrapper() =>
-      CustomBottomSheet(onTap: onTap, child: _buildColumnWrapper());
+  Widget _buildSheetWrapper() => CustomBottomSheet(
+      height: 400, onTap: onTap, child: _buildColumnWrapper());
 
   Widget _buildColumnWrapper() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

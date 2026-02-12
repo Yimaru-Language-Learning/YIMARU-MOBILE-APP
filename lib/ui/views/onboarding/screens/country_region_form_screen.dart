@@ -10,6 +10,11 @@ import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
   const CountryRegionFormScreen({super.key});
 
+  void _pop(OnboardingViewModel viewModel) {
+    viewModel.resetCountryRegionFormScreen();
+    viewModel.goBack();
+  }
+
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -71,7 +76,7 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildCountryDropDown(viewModel),
         verticalSpaceMedium,
@@ -80,31 +85,27 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
       ];
 
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
-        onPop: viewModel.pop,
         showBackButton: true,
         showLanguageSelection: true,
+        onPop: () => _pop(viewModel),
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Where are you from?',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'Select your country and region from the dropdown',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildCountryDropDown(OnboardingViewModel viewModel) =>
       CustomDropdownPicker(
           hint: 'Select country',
           icon: _buildSearchIcon(),
-          selectedItem: 'Ethiopia',
+          selectedItem: viewModel.selectedCountry,
           items: (value, props) => viewModel.getCountries(),
           onChanged: (value) =>
               viewModel.setSelectedCountry(value ?? 'Ethiopia'));
@@ -113,10 +114,11 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
       CustomDropdownPicker(
         hint: 'Select region',
         icon: _buildSearchIcon(),
-        selectedItem: 'Addis Ababa',
+        selectedItem: viewModel.selectedRegion,
+        items: (value, props) =>
+            viewModel.getRegions(viewModel.selectedCountry),
         onChanged: (value) =>
             viewModel.setSelectedRegion(value ?? 'Addis Ababa'),
-        items: (value, props) => viewModel.getRegions('Addis Ababa'),
       );
 
   Icon _buildSearchIcon() => const Icon(

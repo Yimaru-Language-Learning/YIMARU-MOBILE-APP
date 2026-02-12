@@ -61,7 +61,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildLanguages(viewModel)
       ];
@@ -72,22 +72,18 @@ class LanguageView extends StackedView<LanguageViewModel> {
       );
 
   Widget _buildAppbar(LanguageViewModel viewModel) => SmallAppBar(
-        title: 'Language Preference',
         onTap: viewModel.pop,
+        title: 'Language Preference',
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Choose your language',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'You can switch languages anytime',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildLanguages(LanguageViewModel viewModel) => ListView.builder(

@@ -8,6 +8,7 @@ import 'package:yimaru_app/ui/widgets/register_for_account.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/phone_number_prefix.dart';
 import '../login_view.form.dart';
 
@@ -17,34 +18,75 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
   const LoginWithPhoneNumberScreen(
       {super.key, required this.phoneNumberController});
 
+  Widget getPadding(context){
+    double half = screenHeight(context)/2;
+   return SizedBox(height: half + 175  - half,);
+  }
+
   @override
   Widget build(BuildContext context, LoginViewModel viewModel) =>
-      _buildBody(viewModel);
 
-  Widget _buildBody(LoginViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyChildren(viewModel),
-      );
+     _buildScaffoldWrapper(context: context,viewModel: viewModel);
 
-  List<Widget> _buildBodyChildren(LoginViewModel viewModel) =>
-      [_buildColumnScroller(viewModel), _buildLowerColumn(viewModel)];
 
-  Widget _buildColumnScroller(LoginViewModel viewModel) =>
+
+  Widget _buildScaffoldWrapper({required BuildContext context,required LoginViewModel viewModel}) => Scaffold(
+    backgroundColor: kcBackgroundColor,
+    body: _buildScaffold(context: context,viewModel: viewModel),
+  );
+
+
+
+  Widget _buildScaffold({required BuildContext context,required LoginViewModel viewModel}) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: _buildScaffoldChildren(context: context,viewModel: viewModel),
+  );
+
+  List<Widget> _buildScaffoldChildren({required BuildContext context,required LoginViewModel viewModel}) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(context: context,viewModel: viewModel)];
+
+  Widget _buildAppBar(LoginViewModel viewModel) => const LargeAppBar(
+    showBackButton: false,
+    showLanguageSelection: true,
+  );
+
+  Widget _buildExpandedBody({required BuildContext context,required LoginViewModel viewModel}) =>
+      Expanded(child: _buildColumnScroller(context: context,viewModel: viewModel));
+
+  Widget _buildColumnScroller({required BuildContext context,required LoginViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildUpperColumn(viewModel),
+        child: _buildBodyWrapper(context: context,viewModel: viewModel),
       );
+
+  Widget _buildBodyWrapper({required BuildContext context,required LoginViewModel viewModel}) => Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 15),
+    child: _buildBody(context: context,viewModel: viewModel),
+  );
+
+  Widget _buildBody({required BuildContext context,required LoginViewModel viewModel}) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: _buildBodyChildren(context: context,viewModel: viewModel),
+  );
+
+
+
+
+  List<Widget> _buildBodyChildren({required BuildContext context,required LoginViewModel viewModel}) =>
+      [_buildUpperColumn(viewModel),getPadding(context), _buildLowerColumn(viewModel)];
+
+
 
   Widget _buildUpperColumn(LoginViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildUpperColumnChildren(viewModel),
-      );
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: _buildUpperColumnChildren(viewModel),
+  );
+
 
   List<Widget> _buildUpperColumnChildren(LoginViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(),
-        _buildSubTitleWrapper(viewModel),
+        _buildSubtitleWrapper(viewModel),
         verticalSpaceMedium,
         _buildSubtitle(),
         verticalSpaceMedium,
@@ -57,22 +99,18 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
           _buildPhoneNumberValidatorWrapper(viewModel),
       ];
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Welcome Back',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitleWrapper(LoginViewModel viewModel) => RegisterForAccount(
+  Widget _buildSubtitleWrapper(LoginViewModel viewModel) => RegisterForAccount(
         onTap: () async => await viewModel.navigateToRegister(),
       );
 
-  Widget _buildSubtitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'Enter your phone number. We will send you a confirmation code there',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildPhoneNumberWrapper(LoginViewModel viewModel) => Row(

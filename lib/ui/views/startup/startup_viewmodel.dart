@@ -15,12 +15,13 @@ class StartupViewModel extends BaseViewModel {
     final firstTimeInstall = await _authenticationService.isFirstTimeInstall();
 
     if (firstTimeInstall) {
-      _navigationService.replaceWithWelcomeView();
+      await _navigationService.replaceWithWelcomeView();
     } else {
       if (loggedIn) {
-        _navigationService.replaceWithHomeView();
+        await _authenticationService.getUser();
+        await _navigationService.replaceWithHomeView();
       } else {
-        _navigationService.replaceWithLoginView();
+        await _navigationService.replaceWithLoginView();
       }
     }
   }

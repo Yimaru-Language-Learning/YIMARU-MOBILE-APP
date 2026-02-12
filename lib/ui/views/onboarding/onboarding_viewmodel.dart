@@ -54,10 +54,13 @@ class OnboardingViewModel extends FormViewModel {
 
   // Age group
   final List<String> _ageGroups = [
-    '8-14',
-    '15-18',
-    '19-26',
-    '26+',
+    'UNDER_13',
+    '13_17',
+    '18_24',
+    '25_34',
+    '35_44',
+    '45_54',
+    '55_PLUS'
   ];
 
   List<String> get ageGroups => _ageGroups;
@@ -76,29 +79,10 @@ class OnboardingViewModel extends FormViewModel {
 
   String get selectedCountry => _selectedCountry;
 
-  Future<List<String>> getCountries() async => ['Ethiopia'];
-
   // Country
   String _selectedRegion = 'Addis Ababa';
 
   String get selectedRegion => _selectedRegion;
-
-  Future<List<String>> getRegions(String country) async => [
-        'Afar',
-        'SNNPR',
-        'Amhara',
-        'Harari',
-        'Oromia',
-        'Sidama',
-        'Somali',
-        'Tigray',
-        'Gambela',
-        'Dire Dawa',
-        'Addis Ababa',
-        'Central Ethiopia',
-        'Benishangul-Gumuz',
-        'South West Ethiopia',
-      ];
 
   // Learning goal
   String? _selectedLearningGoal;
@@ -258,12 +242,42 @@ class OnboardingViewModel extends FormViewModel {
   }
 
   // Country
+  List<String> getCountries() => ['Ethiopia', 'Other'];
+
   void setSelectedCountry(String value) {
     _selectedCountry = value;
+    if (selectedCountry != 'Ethiopia') {
+      _selectedRegion = 'Other';
+    } else {
+      _selectedRegion = 'Addis Ababa';
+    }
     rebuildUi();
   }
 
   // Region
+  List<String> getRegions(String country) {
+    if (country == 'Ethiopia') {
+      return [
+        'Afar',
+        'SNNPR',
+        'Amhara',
+        'Harari',
+        'Oromia',
+        'Sidama',
+        'Somali',
+        'Tigray',
+        'Gambela',
+        'Dire Dawa',
+        'Addis Ababa',
+        'Central Ethiopia',
+        'Benishangul-Gumuz',
+        'South West Ethiopia',
+      ];
+    } else {
+      return ['Other'];
+    }
+  }
+
   void setSelectedRegion(String value) {
     _selectedRegion = value;
     rebuildUi();
@@ -352,24 +366,89 @@ class OnboardingViewModel extends FormViewModel {
   // Add user data
   void addUserData(Map<String, dynamic> data) {
     _userData.addAll(data);
-    print('User data : $_userData');
   }
 
   void clearUserData() {
     _userData.clear();
   }
 
-  // Navigation
+  // Form reset
 
-  Future<void> navigateToLanguage() async =>
-      await _navigationService.navigateToLanguageView();
+  // Reset full name form screen
+  void resetFullNameFormScreen() {
+    _focusFullName = false;
+    rebuildUi();
+  }
 
-  Future<void> navigateToAssessment() async =>
-      await _navigationService.navigateToAssessmentView(data: _userData);
+  // Reset gender form screen
+  void resetGenderFormScreen() {
+    _selectedGender = null;
+    rebuildUi();
+  }
 
-  Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShowView(const HomeView());
+  // Reset birthday form screen
+  void resetBirthdayFormScreen() {
+    _selectedBirthday = null;
+    rebuildUi();
+  }
 
+  // Reset age group form screen
+  void resetAgeGroupFormScreen() {
+    _selectedAgeGroup = null;
+    rebuildUi();
+  }
+
+  // Reset educational background form screen
+  void resetEducationalBackgroundFormScreen() {
+    _selectedEducationalBackground = null;
+    rebuildUi();
+  }
+
+  // Reset occupation form screen
+  void resetOccupationFormScreen() {
+    _focusOccupation = false;
+    rebuildUi();
+  }
+
+  // Reset country region form screen
+  void resetCountryRegionFormScreen() {
+    _selectedCountry = 'Ethiopia';
+    _selectedRegion = 'Addis Ababa';
+    rebuildUi();
+  }
+
+  // Reset learning goal form screen
+  void resetLearningGoalFormScreen() {
+    _selectedLearningGoal = null;
+    rebuildUi();
+  }
+
+  // Reset language goal form screen
+  void resetLanguageGoalFormScreen() {
+    _focusLanguageGoal = false;
+    _selectedLanguageGoal = null;
+    _showLanguageGoalTextBox = false;
+    rebuildUi();
+  }
+
+  // Reset challenge form screen
+  void resetChallengeFormScreen() {
+    _focusChallenge = false;
+    _selectedChallenge = null;
+    _showChallengeTextBox = false;
+
+    rebuildUi();
+  }
+
+  // Reset topic form screen
+  void resetTopicFormScreen() {
+    _focusTopic = false;
+    _selectedTopic = null;
+    _showTopicTextBox = false;
+    rebuildUi();
+  }
+
+  // In-app navigation
   void next({int? page}) async {
     if (page == null) {
       if (_previousPage != 0) {
@@ -384,8 +463,8 @@ class OnboardingViewModel extends FormViewModel {
     rebuildUi();
   }
 
-  void pop() {
-    if (_currentPage == 8) {
+  void goBack() {
+    if (_currentPage == 0) {
       _navigationService.back();
     } else {
       _currentPage--;
@@ -393,4 +472,14 @@ class OnboardingViewModel extends FormViewModel {
       rebuildUi();
     }
   }
+
+  // Navigation
+  Future<void> navigateToLanguage() async =>
+      await _navigationService.navigateToLanguageView();
+
+  Future<void> navigateToAssessment() async =>
+      await _navigationService.navigateToAssessmentView(data: _userData);
+
+  Future<void> replaceWithHome() async =>
+      await _navigationService.clearStackAndShowView(const HomeView());
 }

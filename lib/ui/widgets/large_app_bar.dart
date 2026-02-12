@@ -6,11 +6,13 @@ class LargeAppBar extends StatelessWidget {
   final bool showBackButton;
   final GestureTapCallback? onPop;
   final bool showLanguageSelection;
+  final GestureTapCallback? onClose;
   final GestureTapCallback? onLanguage;
 
   const LargeAppBar(
       {super.key,
       this.onPop,
+      this.onClose,
       this.onLanguage,
       required this.showBackButton,
       required this.showLanguageSelection});
@@ -53,9 +55,9 @@ class LargeAppBar extends StatelessWidget {
 
   Widget _buildRightButton() => Align(
       alignment: Alignment.bottomRight,
-      child: showLanguageSelection ? _buildLanguageSelector() : Container()
-      //  _buildCloseButton()
-      );
+      child: showLanguageSelection
+          ? _buildLanguageSelector()
+          : _buildCloseButton());
 
   Widget _buildLanguageSelector() => LanguageButton(
         language: 'EN',
@@ -63,8 +65,9 @@ class LargeAppBar extends StatelessWidget {
       );
 
   Widget _buildCloseButton() => IconButton(
-        onPressed: () {},
+        onPressed: onClose,
         icon: _buildCloseIcon(),
+        padding: const EdgeInsets.only(top: 5),
       );
 
   Widget _buildCloseIcon() => const Icon(

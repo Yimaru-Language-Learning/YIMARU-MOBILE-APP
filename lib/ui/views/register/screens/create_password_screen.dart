@@ -7,9 +7,12 @@ import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/validator_list_tile.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/obscure_password.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../register_view.form.dart';
 
 class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
@@ -31,21 +34,54 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
     };
     viewModel.addUserData(data);
 
-    await viewModel.register();
+    await viewModel.registerWithEmail();
   }
 
   @override
   Widget build(BuildContext context, RegisterViewModel viewModel) =>
-      _buildBodyChildren(viewModel);
+      _buildScaffoldWrapper(viewModel);
 
-  Widget _buildBodyChildren(RegisterViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildBodyColumn(viewModel),
+  Widget _buildScaffoldWrapper(RegisterViewModel viewModel) => Scaffold(
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffoldStack(viewModel),
       );
 
-  Widget _buildBodyColumn(RegisterViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
+  Widget _buildScaffoldStack(RegisterViewModel viewModel) => Stack(
+        children: [
+          _buildScaffold(viewModel),
+          _buildRegistrationState(viewModel),
+        ],
+      );
+
+  Widget _buildScaffold(RegisterViewModel viewModel) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        children: _buildScaffoldChildren(viewModel),
+      );
+
+  List<Widget> _buildScaffoldChildren(RegisterViewModel viewModel) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
+
+  Widget _buildAppBar(RegisterViewModel viewModel) => const LargeAppBar(
+        showBackButton: false,
+        showLanguageSelection: true,
+      );
+
+  Widget _buildExpandedBody(RegisterViewModel viewModel) =>
+      Expanded(child: _buildColumnScroller(viewModel));
+
+  Widget _buildColumnScroller(RegisterViewModel viewModel) =>
+      SingleChildScrollView(
+        child: _buildBodyWrapper(viewModel),
+      );
+
+  Widget _buildBodyWrapper(RegisterViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildBody(viewModel),
+      );
+
+  Widget _buildBody(RegisterViewModel viewModel) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _buildBodyColumnChildren(viewModel),
       );
 
@@ -248,4 +284,9 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
             ? kcPrimaryColor
             : kcPrimaryColor.withOpacity(0.1),
       );
+
+  Widget _buildRegistrationState(RegisterViewModel viewModel) =>
+      viewModel.busy(StateObjects.registerWithEmail)
+          ? const PageLoadingIndicator()
+          : Container();
 }

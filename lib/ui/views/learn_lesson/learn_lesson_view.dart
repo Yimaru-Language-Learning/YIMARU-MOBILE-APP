@@ -4,7 +4,6 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/learn_lesson_tile.dart';
 import 'package:yimaru_app/ui/widgets/module_progress.dart';
 import 'package:yimaru_app/ui/widgets/motivation_card.dart';
-import 'package:yimaru_app/ui/widgets/overall_module_progress.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
@@ -118,19 +117,24 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         itemCount: viewModel.lessons.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
-            title: viewModel.lessons[index]['title'],
-            status: viewModel.lessons[index]['status'],
-            thumbnail: viewModel.lessons[index]['thumbnail']),
+          title: viewModel.lessons[index]['title'],
+          status: viewModel.lessons[index]['status'],
+          thumbnail: viewModel.lessons[index]['thumbnail'],
+          onLessonTap: () async =>
+              await viewModel.navigateToLearnLessonDetail(),
+        ),
       );
 
   Widget _buildTile({
     required String title,
     required String thumbnail,
+    GestureTapCallback? onLessonTap,
     required ProgressStatuses status,
   }) =>
       LearnLessonTile(
         title: title,
         status: status,
         thumbnail: thumbnail,
+        onLessonTap: onLessonTap,
       );
 }

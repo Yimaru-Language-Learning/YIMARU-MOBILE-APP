@@ -192,7 +192,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       );
 
   Widget _buildLessonButton(LearnModuleViewModel viewModel) =>
-       CustomElevatedButton(
+      CustomElevatedButton(
         height: 15,
         borderRadius: 12,
         text: 'View Lessons',

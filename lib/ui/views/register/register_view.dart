@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/register/screens/create_password_screen.dart';
 import 'package:yimaru_app/ui/views/register/screens/register_with_email_screen.dart';
 import 'package:yimaru_app/ui/views/register/screens/register_with_phone_number_screen.dart';
@@ -24,8 +25,46 @@ import 'register_view.form.dart';
 class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
   const RegisterView({Key? key}) : super(key: key);
 
+  void _initClearData() {
+    otpController.clear();
+    emailController.clear();
+    passwordController.clear();
+    phoneNumberController.clear();
+    confirmPasswordController.clear();
+  }
+
+  void _inAppPop(RegisterViewModel viewModel) {
+    print('OnPop');
+    print(viewModel.currentPage);
+    _clearDataOnNavigation(viewModel);
+    viewModel.goBack();
+  }
+
+  void _clearDataOnNavigation(RegisterViewModel viewModel) {
+    if (viewModel.currentPage == 0) {
+      emailController.clear();
+      viewModel.resetRegisterWithEmailScreen();
+    } else if (viewModel.currentPage == 2) {
+      passwordController.clear();
+      confirmPasswordController.clear();
+      viewModel.resetCreatePasswordScreen();
+    } else if (viewModel.currentPage == 3) {
+      otpController.clear();
+      viewModel.resetRegistrationOtpScreen();
+    }
+  }
+
+  void _pop({required bool value, required RegisterViewModel viewModel}) {
+    {
+      if (!value) return;
+      _clearDataOnNavigation(viewModel);
+      WidgetsBinding.instance.addPostFrameCallback((_) => viewModel.goBack());
+    }
+  }
+
   @override
   void onViewModelReady(RegisterViewModel viewModel) {
+    _initClearData();
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
   }
@@ -44,44 +83,14 @@ class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
 
   Widget _buildRegisterScreensWrapper(RegisterViewModel viewModel) => PopScope(
       canPop: false,
-      onPopInvokedWithResult: (value, data) {
-        if (value) return;
-        WidgetsBinding.instance.addPostFrameCallback((_) => viewModel.goBack());
-      },
-      child: _buildScaffoldWrapper(viewModel));
+      onPopInvokedWithResult: (value, data) =>
+          _pop(value: value, viewModel: viewModel),
+      child: _buildBody(viewModel));
 
-  Widget _buildScaffoldWrapper(RegisterViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(viewModel),
-      );
 
-  Widget _buildScaffoldStack(RegisterViewModel viewModel) => Stack(
-      children: [_buildScaffold(viewModel), _buildBusyRegistration(viewModel)]);
-
-  Widget _buildScaffold(RegisterViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildScaffoldChildren(viewModel),
-      );
-
-  List<Widget> _buildScaffoldChildren(RegisterViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
-
-  Widget _buildAppBar(RegisterViewModel viewModel) => LargeAppBar(
-        showBackButton: true,
-        onPop: viewModel.goBack,
-        showLanguageSelection: true,
-      );
-
-  Widget _buildExpandedBody(RegisterViewModel viewModel) =>
-      Expanded(child: _buildBodyWrapper(viewModel));
-
-  Widget _buildBodyWrapper(RegisterViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBody(viewModel),
-      );
 
   Widget _buildBody(RegisterViewModel viewModel) =>
-      IndexedStack(index: viewModel.currentIndex, children: _buildScreens());
+      IndexedStack(index: viewModel.currentPage, children: _buildScreens());
 
   List<Widget> _buildScreens() => [
         _buildRegisterWithEmailScreen(),
@@ -106,6 +115,4 @@ class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
       passwordController: passwordController,
       confirmPasswordController: confirmPasswordController);
 
-  Widget _buildBusyRegistration(RegisterViewModel viewModel) =>
-      viewModel.isBusy ? const PageLoadingIndicator() : Container();
 }

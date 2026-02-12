@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/login/screens/login_otp_screen.dart';
 import 'package:yimaru_app/ui/views/login/screens/login_with_email_screen.dart';
 import 'package:yimaru_app/ui/views/login/screens/login_with_phone_number_screen.dart';
@@ -24,8 +25,16 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
 
   @override
   void onViewModelReady(LoginViewModel viewModel) {
+    _clearData();
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
+  }
+
+  void _clearData() {
+    otpController.clear();
+    emailController.clear();
+    passwordController.clear();
+    phoneNumberController.clear();
   }
 
   @override
@@ -45,35 +54,11 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
         if (!value) return;
         WidgetsBinding.instance.addPostFrameCallback((_) => viewModel.goBack());
       },
-      child: _buildScaffoldWrapper(viewModel));
+      child: _buildBody(viewModel));
 
-  Widget _buildScaffoldWrapper(LoginViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(viewModel),
-      );
 
-  Widget _buildScaffoldStack(LoginViewModel viewModel) =>
-      Stack(children: [_buildScaffold(viewModel), _buildBusyLogin(viewModel)]);
 
-  Widget _buildScaffold(LoginViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildScaffoldChildren(viewModel),
-      );
 
-  List<Widget> _buildScaffoldChildren(LoginViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
-
-  Widget _buildAppBar(LoginViewModel viewModel) => const LargeAppBar(
-        showBackButton: false,
-        showLanguageSelection: true,
-      );
-  Widget _buildExpandedBody(LoginViewModel viewModel) =>
-      Expanded(child: _buildBodyWrapper(viewModel));
-
-  Widget _buildBodyWrapper(LoginViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBody(viewModel),
-      );
 
   Widget _buildBody(LoginViewModel viewModel) =>
       IndexedStack(index: viewModel.currentIndex, children: _buildScreens());
@@ -94,6 +79,4 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
       otpController: otpController,
       phoneNumberController: phoneNumberController);
 
-  Widget _buildBusyLogin(LoginViewModel viewModel) =>
-      viewModel.isBusy ? const PageLoadingIndicator() : Container();
 }

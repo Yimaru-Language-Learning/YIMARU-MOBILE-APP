@@ -3,13 +3,15 @@ part 'option.g.dart';
 
 @JsonSerializable()
 class Option {
-  @JsonKey(name: 'question_id')
-  final int? questionId;
+  final int? id;
 
   @JsonKey(name: 'option_text')
   final String? optionText;
 
-  const Option({this.optionText, this.questionId});
+  @JsonKey(name: 'is_correct')
+  final bool? isCorrect;
+
+  const Option({this.id, this.optionText, this.isCorrect});
 
   factory Option.fromJson(Map<String, dynamic> json) => _$OptionFromJson(json);
 

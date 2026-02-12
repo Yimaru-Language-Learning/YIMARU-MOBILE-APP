@@ -11,6 +11,11 @@ class EducationalBackgroundFormScreen
     extends ViewModelWidget<OnboardingViewModel> {
   const EducationalBackgroundFormScreen({super.key});
 
+  void _pop(OnboardingViewModel viewModel) {
+    viewModel.resetEducationalBackgroundFormScreen();
+    viewModel.goBack();
+  }
+
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -77,9 +82,9 @@ class EducationalBackgroundFormScreen
       ];
 
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
-        onPop: viewModel.pop,
         showBackButton: true,
         showLanguageSelection: true,
+        onPop: () => _pop(viewModel),
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 

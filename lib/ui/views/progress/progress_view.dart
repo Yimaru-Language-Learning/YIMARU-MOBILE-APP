@@ -101,7 +101,7 @@ class ProgressView extends StackedView<ProgressViewModel> {
           title: viewModel.progresses[index]['title'],
           color: viewModel.progresses[index]['color'],
           status: viewModel.progresses[index]['status'],
-          subTitle: viewModel.progresses[index]['subTitle'],
+          subtitle: viewModel.progresses[index]['subtitle'],
           isCompleted: viewModel.progresses[index]['isCompleted'],
         ),
       );
@@ -111,7 +111,7 @@ class ProgressView extends StackedView<ProgressViewModel> {
           required String title,
           required String icon,
           required String status,
-          required String subTitle,
+          required String subtitle,
           required bool isCompleted,
           required ProgressViewModel viewModel}) =>
       CourseLevelCard(
@@ -119,7 +119,7 @@ class ProgressView extends StackedView<ProgressViewModel> {
         title: title,
         color: color,
         status: status,
-        subTitle: subTitle,
+        subtitle: subtitle,
         isCompleted: isCompleted,
         onTap: viewModel.navigateToOngoingProgress,
       );

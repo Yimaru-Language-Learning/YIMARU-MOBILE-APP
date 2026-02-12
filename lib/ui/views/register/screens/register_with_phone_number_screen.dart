@@ -8,6 +8,7 @@ import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/phone_number_prefix.dart';
 import '../register_viewmodel.dart';
 import '../register_view.form.dart';
@@ -17,23 +18,83 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
   const RegisterWithPhoneNumberScreen(
       {super.key, required this.phoneNumberController});
 
+  Widget getPadding(context) {
+    double half = screenHeight(context) / 2;
+    return SizedBox(height: half + 170 - half);
+  }
+
   @override
   Widget build(BuildContext context, RegisterViewModel viewModel) =>
-      _buildBody(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildBody(RegisterViewModel viewModel) => Column(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Scaffold(
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffold(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:
+            _buildScaffoldChildren(context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildScaffoldChildren(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      [
+        _buildAppBar(viewModel),
+        _buildExpandedBody(context: context, viewModel: viewModel)
+      ];
+
+  Widget _buildAppBar(RegisterViewModel viewModel) => const LargeAppBar(
+        showBackButton: false,
+        showLanguageSelection: true,
+      );
+
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Expanded(
+          child: _buildColumnScroller(context: context, viewModel: viewModel));
+
+  Widget _buildColumnScroller(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      SingleChildScrollView(
+        child: _buildBodyWrapper(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildBodyWrapper(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildBody(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildBody(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyChildren(viewModel),
+        children: _buildBodyChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyChildren(RegisterViewModel viewModel) =>
-      [_buildColumnScroller(viewModel), _buildLowerColumn(viewModel)];
-
-  Widget _buildColumnScroller(RegisterViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildUpperColumn(viewModel),
-      );
+  List<Widget> _buildBodyChildren(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      [
+        _buildUpperColumn(viewModel),
+        getPadding(context),
+        _buildLowerColumn(viewModel)
+      ];
 
   Widget _buildUpperColumn(RegisterViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -44,7 +105,7 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
   List<Widget> _buildUpperColumnChildren(RegisterViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(),
-        _buildSubTitleWrapper(viewModel),
+        _buildSubtitleWrapper(viewModel),
         verticalSpaceMedium,
         _buildSubtitle(),
         verticalSpaceMedium,
@@ -57,22 +118,18 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
           _buildPhoneNumberValidatorWrapper(viewModel),
       ];
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Create an Account',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style25DG600,
       );
 
-  Widget _buildSubTitleWrapper(RegisterViewModel viewModel) => LoginAccount(
+  Widget _buildSubtitleWrapper(RegisterViewModel viewModel) => LoginAccount(
         onTap: () async => await viewModel.replaceToLogin(),
       );
 
-  Widget _buildSubtitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'Enter your phone number. We will send you a confirmation code there',
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildPhoneNumberWrapper(RegisterViewModel viewModel) => Row(

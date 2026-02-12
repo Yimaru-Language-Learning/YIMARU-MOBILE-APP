@@ -15,8 +15,9 @@ class HomeView extends StackedView<HomeViewModel> {
   HomeViewModel viewModelBuilder(BuildContext context) => HomeViewModel();
 
   @override
-  void onViewModelReady(HomeViewModel viewModel) {
-    viewModel.getProfileStatus();
+  void onViewModelReady(HomeViewModel viewModel) async {
+    await viewModel.getProfileStatus();
+    await viewModel.getProfileData();
     super.onViewModelReady(viewModel);
   }
 
@@ -26,9 +27,7 @@ class HomeView extends StackedView<HomeViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(HomeViewModel viewModel) => viewModel.isBusy
-      ? const StartupView(
-          label: 'Checking user info',
-        )
+      ? const StartupView(label: 'Checking user info')
       : _buildScaffold(viewModel);
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(

@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/profile_card.dart';
 import 'package:yimaru_app/ui/widgets/profile_image.dart';
 import 'package:yimaru_app/ui/widgets/view_profile_button.dart';
 
 import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/image_picker_option.dart';
 import 'profile_viewmodel.dart';
 
 class ProfileView extends StackedView<ProfileViewModel> {
   const ProfileView({Key? key}) : super(key: key);
+
+  Future<void> _showImagePicker(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) async =>
+      await showDialog(
+        context: context,
+        builder: (context) =>
+            _showImagePickerDialog(context: context, viewModel: viewModel),
+      );
+
+  AlertDialog _showImagePickerDialog(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) =>
+      AlertDialog(
+        backgroundColor: Colors.transparent,
+        content: _buildImagePicker(context: context, viewModel: viewModel),
+      );
 
   @override
   ProfileViewModel viewModelBuilder(
@@ -24,30 +43,45 @@ class ProfileView extends StackedView<ProfileViewModel> {
     ProfileViewModel viewModel,
     Widget? child,
   ) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(ProfileViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold(ProfileViewModel viewModel) =>
-      SafeArea(child: _buildBodyWrapper(viewModel));
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) =>
+      SafeArea(
+          child: _buildBodyWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildBodyWrapper(ProfileViewModel viewModel) => SingleChildScrollView(
-        child: _buildBody(viewModel),
+  Widget _buildBodyWrapper(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) =>
+      SingleChildScrollView(
+        child: _buildBody(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBody(ProfileViewModel viewModel) => Padding(
+  Widget _buildBody(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(viewModel),
+        child: _buildColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildColumn(ProfileViewModel viewModel) => Column(
+  Widget _buildColumn(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) =>
+      Column(
         children: [
           verticalSpaceMedium,
           _buildNotificationIconWrapper(),
-          _buildProfileSection(),
+          _buildProfileSection(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildViewProfileButton(viewModel),
           verticalSpaceLarge,
@@ -66,27 +100,46 @@ class ProfileView extends StackedView<ProfileViewModel> {
         color: kcDarkGrey,
       );
 
-  Widget _buildProfileSection() => Column(
+  Widget _buildProfileSection(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: _buildProfileSectionChildren(),
+        children: _buildProfileSectionChildren(
+            context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildProfileSectionChildren() => [
-        _buildProfileImage(),
+  List<Widget> _buildProfileSectionChildren(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) =>
+      [
+        _buildProfileImage(context: context, viewModel: viewModel),
         verticalSpaceSmall,
-        _buildProfileName(),
+        _buildProfileName(viewModel),
       ];
 
-  Widget _buildProfileImage() => const ProfileImage();
+  Widget _buildProfileImage(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) =>
+      ProfileImage(
+        profileImage: viewModel.user?.profilePicture,
+        loading: viewModel.busy(StateObjects.profileImage) ? true : false,
+        onTap: () async =>
+            await _showImagePicker(context: context, viewModel: viewModel),
+      );
 
-  Widget _buildProfileName() => const Text(
-        'Hi, Bisrat 👋',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+  Widget _buildImagePicker(
+          {required BuildContext context,
+          required ProfileViewModel viewModel}) =>
+      ImagePickerOption(
+        onCameraTap: () async => await viewModel.openCamera(),
+        onGalleryTap: () async => await viewModel.openGallery(),
+      );
+
+  Widget _buildProfileName(ProfileViewModel viewModel) => Text(
+        'Hi, ${viewModel.user?.firstName ?? ''} 👋',
+        style: style25DG600,
       );
 
   Widget _buildViewProfileButton(ProfileViewModel viewModel) =>
@@ -111,28 +164,28 @@ class ProfileView extends StackedView<ProfileViewModel> {
   Widget _buildDownloadsCard(ProfileViewModel viewModel) => ProfileCard(
         icon: Icons.download,
         title: 'My Downloads',
-        subTitle: 'Access offline lessons and saved videos',
+        subtitle: 'Access offline lessons and saved videos',
         onTap: () async => await viewModel.navigateToDownloads(),
       );
 
   Widget _buildProgressCard(ProfileViewModel viewModel) => ProfileCard(
         title: 'My Progress',
         icon: Icons.stacked_bar_chart,
-        subTitle: 'Track your achievements and learning streak',
+        subtitle: 'Track your achievements and learning streak',
         onTap: () async => await viewModel.navigateToProgress(),
       );
 
   Widget _buildAccountCard(ProfileViewModel viewModel) => ProfileCard(
         title: 'Account & Privacy',
         icon: Icons.privacy_tip_outlined,
-        subTitle: 'Manage setting and app preference',
+        subtitle: 'Manage setting and app preference',
         onTap: () async => await viewModel.navigateToAccountPrivacy(),
       );
 
   Widget _buildSupportCard(ProfileViewModel viewModel) => ProfileCard(
         title: 'Support',
         icon: Icons.headphones,
-        subTitle: 'Get help through phone or Telegram',
+        subtitle: 'Get help through phone or Telegram',
         onTap: () async => await viewModel.navigateToSupport(),
       );
 
@@ -141,7 +194,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
         text: 'Log Out',
         borderRadius: 12,
         foregroundColor: kcRed,
-        onTap: () async => await viewModel.logOut(),
         backgroundColor: kcRed.withOpacity(0.25),
+        onTap: () async => await viewModel.logOut(),
       );
 }

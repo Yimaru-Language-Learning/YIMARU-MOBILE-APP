@@ -11,10 +11,10 @@ class ApiService {
   final _service = locator<DioService>();
 
   // Register
-  Future<Map<String, dynamic>> register(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> registerWithEmail(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$userUrl/$kRegisterUrl',
+        '$kBaseUrl/$kUserUrl/$kRegisterUrl',
         data: data,
       );
 
@@ -29,19 +29,19 @@ class ApiService {
           'message': 'Unknown Error Occurred'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
 
-  // Login
-  Future<Map<String, dynamic>> login(Map<String, dynamic> data) async {
+  // Email Login
+  Future<Map<String, dynamic>> emailLogin(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$kLoginUrl',
+        '$kBaseUrl/$kLoginUrl',
         data: data,
       );
 
@@ -57,10 +57,38 @@ class ApiService {
           'message': '${response.data['message']}, ${response.data['error']}'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
+  // Google login
+  Future<Map<String, dynamic>> googleAuth(Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kGoogleAuthUrl',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Logged in successfully',
+          'data': UserModel.fromJson(response.data['data']),
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': '${response.data['message']}, ${response.data['error']}'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -69,14 +97,14 @@ class ApiService {
   Future<Map<String, dynamic>> verifyOtp(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$userUrl/$kVerifyOtpUrl',
+        '$kBaseUrl/$kUserUrl/$kVerifyOtpUrl',
         data: data,
       );
       if (response.statusCode == 200) {
         return {
           'status': ResponseStatus.success,
           'message': 'Otp verified successfully',
-          //'data': UserModel.fromJson(response.data['data']),
+          'data': UserModel.fromJson(response.data['data']),
         };
       } else {
         return {
@@ -84,10 +112,10 @@ class ApiService {
           'message': '${response.data['message']}, ${response.data['error']}'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -96,7 +124,7 @@ class ApiService {
   Future<Map<String, dynamic>> resendOtp(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
-        '$baseUrl/$userUrl/$kResendOtpUrl',
+        '$kBaseUrl/$kUserUrl/$kResendOtpUrl',
         data: data,
       );
 
@@ -111,10 +139,65 @@ class ApiService {
           'message': 'Unknown Error Occurred'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
+  // Request reset code
+  Future<Map<String, dynamic>> requestResetCode(
+      Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kUserUrl/$kRequestResetCode',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Reset code sent successfully',
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': '${response.data['message']}, ${response.data['error']}'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
+  // Reset password
+  Future<Map<String, dynamic>> resetPassword(Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kUserUrl/$kResetPassword',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Password reset successfully',
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': '${response.data['message']}, ${response.data['error']}'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -123,7 +206,7 @@ class ApiService {
   Future<Map<String, dynamic>> getProfileStatus(UserModel? user) async {
     try {
       Response response = await _service.dio.get(
-        '$baseUrl/$userUrl/${user?.userId}/$kProfileStatusUrl',
+        '$kBaseUrl/$kUserUrl/${user?.userId}/$kProfileStatusUrl',
       );
 
       if (response.statusCode == 200) {
@@ -138,25 +221,49 @@ class ApiService {
           'message': '${response.data['message']}, ${response.data['error']}'
         };
       }
-    } catch (e) {
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
 
-  // Update profile
-  Future<Map<String, dynamic>> updateProfile(
-      {required UserModel? user, required Map<String, dynamic> data}) async {
+  // Get profile
+  Future<Map<String, dynamic>> getProfileData(int? userId) async {
     try {
-      Response response = await _service.dio.put(
-        '$baseUrl/$userUrl',
-        data: data,
+      Response response = await _service.dio.get(
+        '$kBaseUrl/$kUserUrl/$kGetUserUrl/$userId',
       );
 
-      print(response.statusCode);
-      print(response.data);
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Profile fetched successfully',
+          'data': UserModel.fromJson(response.data['data']),
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
+  // Complete profile
+  Future<Map<String, dynamic>> completeProfile(
+      Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.put(
+        '$kBaseUrl/$kUserUrl',
+        data: data,
+      );
 
       if (response.statusCode == 200) {
         return {
@@ -169,11 +276,62 @@ class ApiService {
           'message': 'Unknown Error Occurred'
         };
       }
-    } catch (e) {
-      print('Exception ${e.toString()}');
+    } on DioException catch (e) {
       return {
-        'message': e.toString(),
         'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
+  // Update profile image
+  Future<Map<String, dynamic>> updateProfileImage(
+      {required int? userId, required Map<String, dynamic> data}) async {
+    try {
+      late FormData formData;
+      if (data['profile_picture_url']
+          .toString()
+          .contains('com.example.yimaru_app/')) {
+        formData = FormData.fromMap({
+          'file': data['profile_picture_url'].toString().isNotEmpty
+              ? MultipartFile.fromFileSync(
+                  data['profile_picture_url'],
+                  filename:
+                      data['profile_picture_url'].toString().split('/').last,
+                )
+              : null,
+        });
+      } else {
+        formData = FormData.fromMap({
+          'file': data['profile_picture_url'].toString().isNotEmpty
+              ? MultipartFile.fromFileSync(
+                  data['profile_picture_url'],
+                  filename:
+                      data['profile_picture_url'].toString().split('/').last,
+                )
+              : null,
+        });
+      }
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kUserUrl/$userId/$kUpdateProfileImage',
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Profile updated successfully'
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }
@@ -184,7 +342,7 @@ class ApiService {
       List<Assessment> assessments = [];
 
       final Response response =
-          await _service.dio.get('$baseUrl/$kAssessmentsUrl');
+          await _service.dio.get('$kBaseUrl/$kAssessmentsUrl');
 
       if (response.statusCode == 200) {
         var data = response.data;

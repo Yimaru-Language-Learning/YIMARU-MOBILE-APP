@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.locator.dart';
@@ -7,16 +8,25 @@ import 'package:yimaru_app/models/user_model.dart';
 
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/google_auth_service.dart';
+import '../../../services/image_downloader_service.dart';
+import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 import '../home/home_view.dart';
 
 class LoginViewModel extends FormViewModel {
   final _apiService = locator<ApiService>();
+
+  final _statusChecker = locator<StatusCheckerService>();
+
   final _navigationService = locator<NavigationService>();
+
+  final _googleAuthService = locator<GoogleAuthService>();
+
   final _authenticationService = locator<AuthenticationService>();
 
-  // Navigation
+  // In-app navigation
   int _currentIndex = 0;
 
   int get currentIndex => _currentIndex;
@@ -106,36 +116,7 @@ class LoginViewModel extends FormViewModel {
     _userData.clear();
   }
 
-  // Remote api calls
-  Future<void> login() async {
-    Map<String, dynamic> response =
-        await runBusyFuture<Map<String, dynamic>>(_login());
-
-    if (response['status'] == ResponseStatus.success) {
-      await replaceWithHome();
-    }
-  }
-
-  Future<Map<String, dynamic>> _login() async {
-    Map<String, dynamic> response = await _apiService.login(_userData);
-    if (response['status'] == ResponseStatus.success) {
-      UserModel user = response['data'] as UserModel;
-      Map<String, dynamic> data = {
-        'userId': user.userId,
-        'accessToken': user.accessToken,
-        'refreshToken': user.refreshToken
-      };
-
-      await _authenticationService.saveUserData(data);
-      showSuccessToast(response['message']);
-    } else {
-      showErrorToast(response['message']);
-    }
-
-    return response;
-  }
-
-  // Navigation
+  // In app navigation
   void goTo(int page) {
     _currentIndex = page;
     rebuildUi();
@@ -153,9 +134,70 @@ class LoginViewModel extends FormViewModel {
     }
   }
 
+  // Navigation
   Future<void> navigateToRegister() async =>
       await _navigationService.navigateToRegisterView();
 
+  Future<void> navigateToForgetPassword() async =>
+      await _navigationService.navigateToForgetPasswordView();
+
   Future<void> replaceWithHome() async =>
       await _navigationService.clearStackAndShowView(const HomeView());
+
+  // Remote api calls
+
+  // Login with email
+  Future<void> emailLogin() async => await runBusyFuture(_emailLogin(),
+      busyObject: StateObjects.loginWithEmail);
+
+  Future<void> _emailLogin() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response = await _apiService.emailLogin(_userData);
+      if (response['status'] == ResponseStatus.success) {
+        UserModel user = response['data'] as UserModel;
+        Map<String, dynamic> data = {
+          'userId': user.userId,
+          'accessToken': user.accessToken,
+          'refreshToken': user.refreshToken
+        };
+
+        await _authenticationService.saveUserCredential(data);
+        clearUserData();
+        await replaceWithHome();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  Future<void> signInWithGoogle() async => await runBusyFuture(_signInWithGoogle(),
+      busyObject: StateObjects.loginWithGoogle);
+
+  Future<void> _signInWithGoogle() async {
+    if (await _statusChecker.checkConnection()) {
+      GoogleSignInAccount? googleUser = await _googleAuthService.googleAuth();
+
+      Map<String, dynamic> data = {
+        'id_token': googleUser?.authentication.idToken ?? '',
+      };
+
+      Map<String, dynamic> response = await _apiService.googleAuth(data);
+
+      if (response['status'] == ResponseStatus.success) {
+        UserModel user = response['data'] as UserModel;
+        Map<String, dynamic> data = {
+          'userId': user.userId,
+          'accessToken': user.accessToken,
+          'refreshToken': user.refreshToken
+        };
+        await _authenticationService.saveUserCredential(data);
+        clearUserData();
+        await replaceWithHome();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
 }

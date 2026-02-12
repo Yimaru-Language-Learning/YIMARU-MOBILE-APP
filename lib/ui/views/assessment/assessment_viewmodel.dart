@@ -3,21 +3,25 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/models/option.dart';
+import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
 import '../../../models/assessment.dart';
-import '../../../models/user_model.dart';
 import '../../../services/api_service.dart';
-import '../../../services/authentication_service.dart';
+import '../../common/app_colors.dart';
+import '../../common/ui_helpers.dart';
 import '../home/home_view.dart';
 
 class AssessmentViewModel extends BaseViewModel {
   final _apiService = locator<ApiService>();
+  final _dialogService = locator<DialogService>();
+  final _statusChecker = locator<StatusCheckerService>();
   final _navigationService = locator<NavigationService>();
-  final _authenticationService = locator<AuthenticationService>();
 
+  // In-app navigation
   int _currentPage = 0;
 
   int get currentPage => _currentPage;
@@ -31,7 +35,6 @@ class AssessmentViewModel extends BaseViewModel {
   int get previousPage => _previousPage;
 
   // Assessment
-
   int _currentQuestion = 0;
 
   int get currentQuestion => _currentQuestion;
@@ -54,7 +57,6 @@ class AssessmentViewModel extends BaseViewModel {
   Map<String, dynamic> get userData => _userData;
 
   //  Assessment
-
   int countCorrectAnswersUntil(int untilQuestion) {
     int count = 0;
 
@@ -73,9 +75,6 @@ class AssessmentViewModel extends BaseViewModel {
     if (_currentQuestion == 5) {
       // A1
       final correctCount = countCorrectAnswersUntil(5);
-      print('All : $_selectedAnswers');
-      print('Question page : $_currentQuestion');
-      print('Correct A1: $correctCount');
 
       if (correctCount > 3) {
         return {'continue': true, 'level': ProficiencyLevels.a1};
@@ -86,9 +85,6 @@ class AssessmentViewModel extends BaseViewModel {
       // A2
 
       final correctCount = countCorrectAnswersUntil(10);
-      print('All : $_selectedAnswers');
-      print('Question page : $_currentQuestion');
-      print('Correct A2: $correctCount');
 
       if (correctCount > 3) {
         return {'continue': true, 'level': ProficiencyLevels.a2};
@@ -98,9 +94,6 @@ class AssessmentViewModel extends BaseViewModel {
     } else if (_currentQuestion == 16) {
       // B1
       final correctCount = countCorrectAnswersUntil(16);
-      print('All : $_selectedAnswers');
-      print('Question page : $_currentQuestion');
-      print('Correct B1: $correctCount');
 
       if (correctCount > 4) {
         return {'continue': true, 'level': ProficiencyLevels.b1};
@@ -109,12 +102,9 @@ class AssessmentViewModel extends BaseViewModel {
       }
     } else if (_currentQuestion == 22) {
       final correctCount = countCorrectAnswersUntil(16);
-      print('All : $_selectedAnswers');
-      print('Question page : $_currentQuestion');
-      print('Correct B2: $correctCount');
 
       if (correctCount > 4) {
-        return {'continue': true, 'level': ProficiencyLevels.b2};
+        return {'continue': false, 'level': ProficiencyLevels.b2};
       } else {
         return {'continue': false, 'level': ProficiencyLevels.b2};
       }
@@ -123,18 +113,20 @@ class AssessmentViewModel extends BaseViewModel {
     }
   }
 
-  void setSelectedAnswer({required int question, required String option}) {
+  void setSelectedAnswer({required int question, required Option? option}) {
     bool correct = false;
-    final generator = Random();
-    int random = generator.nextInt(4);
-    if (option == _assessments[question - 1].options?[random].optionText) {
+    if (option?.isCorrect ?? false) {
       correct = true;
     }
+
     final data = {
       question.toString(): {
-        'option': option,
         'correct': correct,
-        'answer': _assessments[question - 1].options?[random].optionText
+        'option': option?.optionText,
+        'answer': _assessments[question - 1]
+            .options
+            ?.firstWhere((e) => e.isCorrect ?? false)
+            .optionText
       }
     };
 
@@ -145,22 +137,6 @@ class AssessmentViewModel extends BaseViewModel {
 
   bool isSelectedAnswer({required int question, required String answer}) {
     return _selectedAnswers[question.toString()]?['option'] == answer;
-  }
-
-  Future<void> getAssessments() async {
-    _assessments = await runBusyFuture<List<Assessment>>(_getAssessments());
-  }
-
-  Future<List<Assessment>> _getAssessments() async {
-    List<Assessment> response = await _apiService.getAssessments();
-
-    for (int i = 0; i < 6; i++) {
-      final generator = Random();
-      int random = generator.nextInt(15);
-      response.add(response[random]);
-    }
-
-    return response;
   }
 
   // Add user data
@@ -177,38 +153,48 @@ class AssessmentViewModel extends BaseViewModel {
     _userData.clear();
   }
 
-  // Complete profile
-  Future<void> completeProfile() async {
-    Map<String, dynamic> response =
-        await runBusyFuture<Map<String, dynamic>>(_completeProfile());
+  // Dialog
+  Future<bool?> showAbortDialog() async {
+    DialogResponse? response = await _dialogService.showDialog(
+      cancelTitle: 'No',
+      buttonTitle: 'Yes',
+      barrierDismissible: true,
+      title: 'Abort Assessment',
+      cancelTitleColor: kcDarkGrey,
+      buttonTitleColor: kcPrimaryColor,
+      description: 'Are you sure to abort the assessment ?',
+    );
+    return response?.confirmed;
   }
 
-  Future<Map<String, dynamic>> _completeProfile() async {
-    print(_userData);
-    UserModel user = await _authenticationService.getUser();
-    Map<String, dynamic> response =
-        await _apiService.updateProfile(data: _userData, user: user);
-
-    return response;
+  Future<void> abort() async {
+    bool? response = await showAbortDialog();
+    if (response != null && response) {
+      next(page: 3);
+    }
   }
 
-  // Navigation
-
+  // Question navigation
   void nextQuestion() {
     _currentQuestion++;
     Map<String, dynamic> response = evaluateAssessment();
 
-    if (response['level'] == ProficiencyLevels.none) {
-      _pageController.jumpToPage(_currentQuestion);
+    if (_currentQuestion == _assessments.length) {
+      _proficiencyLevel = response['level'];
+      next();
     } else {
-      if (response['continue']) {
+      if (response['level'] == ProficiencyLevels.none) {
         _pageController.jumpToPage(_currentQuestion);
-      }
-      {
-        _proficiencyLevel = response['level'];
-        next();
+      } else {
+        if (response['continue']) {
+          _pageController.jumpToPage(_currentQuestion);
+        } else {
+          _proficiencyLevel = response['level'];
+          next();
+        }
       }
     }
+
     rebuildUi();
   }
 
@@ -218,8 +204,6 @@ class AssessmentViewModel extends BaseViewModel {
       _pageController.previousPage(
           duration: const Duration(microseconds: 100), curve: Curves.linear);
       rebuildUi();
-    } else {
-      _navigationService.back();
     }
   }
 
@@ -238,15 +222,54 @@ class AssessmentViewModel extends BaseViewModel {
   }
 
   void pop() {
-    if (_currentPage != 0) {
+    if (_currentPage == 0 || _currentPage == 3 /*7*/) {
+      _navigationService.back();
+    } else if (_currentPage != 0 && _currentPage != 3) {
       _currentPage--;
       rebuildUi();
     }
   }
 
+  // Navigation
   Future<void> navigateToLanguage() async =>
       await _navigationService.navigateToLanguageView();
 
   Future<void> replaceWithHome() async =>
       await _navigationService.clearStackAndShowView(const HomeView());
+
+  // Remote api call
+  Future<void> getAssessments() async => await runBusyFuture(_getAssessments());
+
+  Future<void> _getAssessments() async {
+    if (await _statusChecker.checkConnection()) {
+      List<Assessment> response = await _apiService.getAssessments();
+      /*
+      for (int i = 0; i < 6; i++) {
+        final generator = Random();
+        int random = generator.nextInt(15);
+        response.add(response[random]);
+      }
+      */
+      _assessments = response;
+    }
+  }
+
+  // Complete profile
+  Future<void> completeProfile() async =>
+      await runBusyFuture(_completeProfile(),
+          busyObject: StateObjects.profileCompletion);
+
+  Future<void> _completeProfile() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response =
+          await _apiService.completeProfile(_userData);
+      if (response['status'] == ResponseStatus.success) {
+        clearUserData();
+        await replaceWithHome();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
 }

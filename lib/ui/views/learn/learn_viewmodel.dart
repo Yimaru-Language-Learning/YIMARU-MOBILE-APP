@@ -1,12 +1,22 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
+import 'package:yimaru_app/models/user_model.dart';
+import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 
-class LearnViewModel extends BaseViewModel {
+class LearnViewModel extends ReactiveViewModel {
   final _navigationService = locator<NavigationService>();
+  final _authenticationService = locator<AuthenticationService>();
+
+  @override
+  List<ListenableServiceMixin> get listenableServices =>
+      [_authenticationService];
+
+  // Current user
+  UserModel? get user => _authenticationService.user;
 
   final List<Map<String, dynamic>> _learnLevels = [
     {

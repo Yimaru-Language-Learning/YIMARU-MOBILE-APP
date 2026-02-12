@@ -6,7 +6,9 @@ import 'package:yimaru_app/ui/widgets/login_account.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/option_text_divider.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../register_viewmodel.dart';
 import '../register_view.form.dart';
 
@@ -28,23 +30,95 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
     viewModel.goTo(page: 2, type: RegistrationType.email);
   }
 
+  Widget getPadding(context) {
+    double half = screenHeight(context) / 2;
+    return SizedBox(
+      height: half + 155 - half,
+    );
+  }
+
   @override
   Widget build(BuildContext context, RegisterViewModel viewModel) =>
-      _buildBody(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildBody(RegisterViewModel viewModel) => Column(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Scaffold(
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildRegisterWithGoogleState(viewModel)
+        ],
+      );
+
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:
+            _buildScaffoldChildren(context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildScaffoldChildren(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      [
+        _buildAppBar(viewModel),
+        _buildExpandedBody(context: context, viewModel: viewModel)
+      ];
+
+  Widget _buildAppBar(RegisterViewModel viewModel) => const LargeAppBar(
+        showBackButton: false,
+        showLanguageSelection: true,
+      );
+
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Expanded(
+          child: _buildColumnScroller(context: context, viewModel: viewModel));
+
+  Widget _buildColumnScroller(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      SingleChildScrollView(
+        child: _buildBodyWrapper(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildBodyWrapper(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildBody(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildBody(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyChildren(viewModel),
+        children: _buildBodyChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyChildren(RegisterViewModel viewModel) =>
-      [_buildColumnScroller(viewModel), _buildLowerColumn(viewModel)];
-
-  Widget _buildColumnScroller(RegisterViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildUpperColumn(viewModel),
-      );
+  List<Widget> _buildBodyChildren(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      [
+        _buildUpperColumn(viewModel),
+        getPadding(context),
+        _buildLowerColumn(viewModel)
+      ];
 
   Widget _buildUpperColumn(RegisterViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -55,7 +129,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
   List<Widget> _buildUpperColumnChildren(RegisterViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(),
-        _buildSubTitleWrapper(viewModel),
+        _buildSubtitleWrapper(viewModel),
         verticalSpaceLarge,
         _buildEmailFormField(viewModel),
         if (viewModel.hasEmailValidationMessage && viewModel.focusEmail)
@@ -73,7 +147,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         ),
       );
 
-  Widget _buildSubTitleWrapper(RegisterViewModel viewModel) => LoginAccount(
+  Widget _buildSubtitleWrapper(RegisterViewModel viewModel) => LoginAccount(
         onTap: () async => await viewModel.replaceToLogin(),
       );
 
@@ -108,6 +182,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
 
   List<Widget> _buildLowerColumnChildren(RegisterViewModel viewModel) => [
         _buildContinueButton(viewModel),
+        _buildRegisterWithGoogleButton(viewModel),
         _buildOptionTextDivider(),
         _buildRegisterWithEmailButton(viewModel),
         verticalSpaceMedium
@@ -116,6 +191,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
   Widget _buildContinueButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        safe: false,
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
@@ -127,6 +203,18 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
                 !viewModel.hasEmailValidationMessage
             ? kcPrimaryColor
             : kcPrimaryColor.withOpacity(0.1),
+      );
+
+  Widget _buildRegisterWithGoogleButton(RegisterViewModel viewModel) =>
+      CustomElevatedButton(
+        height: 55,
+        borderRadius: 12,
+        backgroundColor: kcWhite,
+        text: 'Login with Google',
+        borderColor: kcPrimaryColor,
+        foregroundColor: kcPrimaryColor,
+        leadingImage: 'assets/icons/google.png',
+        onTap: () async => await viewModel.registerWithGoogle(),
       );
 
   Widget _buildOptionTextDivider() => const OptionTextDivider();
@@ -142,4 +230,11 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         text: 'Register with Phone Number',
         onTap: () => viewModel.goTo(page: 1),
       );
+
+
+
+  Widget _buildRegisterWithGoogleState(RegisterViewModel viewModel) =>
+      viewModel.busy(StateObjects.registerWithEmail)
+          ? const PageLoadingIndicator()
+          : Container();
 }

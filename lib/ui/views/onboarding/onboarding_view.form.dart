@@ -12,7 +12,6 @@ import 'package:yimaru_app/ui/common/validators/form_validator.dart';
 
 const bool _autoTextFieldValidation = true;
 
-const String AnswerValueKey = 'answer';
 const String FullNameValueKey = 'fullName';
 const String ChallengeValueKey = 'challenge';
 const String OccupationValueKey = 'occupation';
@@ -25,7 +24,6 @@ final Map<String, TextEditingController> _OnboardingViewTextEditingControllers =
 final Map<String, FocusNode> _OnboardingViewFocusNodes = {};
 
 final Map<String, String? Function(String?)?> _OnboardingViewTextValidations = {
-  AnswerValueKey: FormValidator.validateForm,
   FullNameValueKey: FormValidator.validateForm,
   ChallengeValueKey: FormValidator.validateForm,
   OccupationValueKey: FormValidator.validateForm,
@@ -34,8 +32,6 @@ final Map<String, String? Function(String?)?> _OnboardingViewTextValidations = {
 };
 
 mixin $OnboardingView {
-  TextEditingController get answerController =>
-      _getFormTextEditingController(AnswerValueKey);
   TextEditingController get fullNameController =>
       _getFormTextEditingController(FullNameValueKey);
   TextEditingController get challengeController =>
@@ -47,7 +43,6 @@ mixin $OnboardingView {
   TextEditingController get topicController =>
       _getFormTextEditingController(TopicValueKey);
 
-  FocusNode get answerFocusNode => _getFormFocusNode(AnswerValueKey);
   FocusNode get fullNameFocusNode => _getFormFocusNode(FullNameValueKey);
   FocusNode get challengeFocusNode => _getFormFocusNode(ChallengeValueKey);
   FocusNode get occupationFocusNode => _getFormFocusNode(OccupationValueKey);
@@ -79,7 +74,6 @@ mixin $OnboardingView {
   /// Registers a listener on every generated controller that calls [model.setData()]
   /// with the latest textController values
   void syncFormWithViewModel(FormStateHelper model) {
-    answerController.addListener(() => _updateFormData(model));
     fullNameController.addListener(() => _updateFormData(model));
     challengeController.addListener(() => _updateFormData(model));
     occupationController.addListener(() => _updateFormData(model));
@@ -96,7 +90,6 @@ mixin $OnboardingView {
     'This feature was deprecated after 3.1.0.',
   )
   void listenToFormUpdated(FormViewModel model) {
-    answerController.addListener(() => _updateFormData(model));
     fullNameController.addListener(() => _updateFormData(model));
     challengeController.addListener(() => _updateFormData(model));
     occupationController.addListener(() => _updateFormData(model));
@@ -111,7 +104,6 @@ mixin $OnboardingView {
     model.setData(
       model.formValueMap
         ..addAll({
-          AnswerValueKey: answerController.text,
           FullNameValueKey: fullNameController.text,
           ChallengeValueKey: challengeController.text,
           OccupationValueKey: occupationController.text,
@@ -158,7 +150,6 @@ extension ValueProperties on FormStateHelper {
     return !hasAnyValidationMessage;
   }
 
-  String? get answerValue => this.formValueMap[AnswerValueKey] as String?;
   String? get fullNameValue => this.formValueMap[FullNameValueKey] as String?;
   String? get challengeValue => this.formValueMap[ChallengeValueKey] as String?;
   String? get occupationValue =>
@@ -166,16 +157,6 @@ extension ValueProperties on FormStateHelper {
   String? get languageGoalValue =>
       this.formValueMap[LanguageGoalValueKey] as String?;
   String? get topicValue => this.formValueMap[TopicValueKey] as String?;
-
-  set answerValue(String? value) {
-    this.setData(
-      this.formValueMap..addAll({AnswerValueKey: value}),
-    );
-
-    if (_OnboardingViewTextEditingControllers.containsKey(AnswerValueKey)) {
-      _OnboardingViewTextEditingControllers[AnswerValueKey]?.text = value ?? '';
-    }
-  }
 
   set fullNameValue(String? value) {
     this.setData(
@@ -232,9 +213,6 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
-  bool get hasAnswer =>
-      this.formValueMap.containsKey(AnswerValueKey) &&
-      (answerValue?.isNotEmpty ?? false);
   bool get hasFullName =>
       this.formValueMap.containsKey(FullNameValueKey) &&
       (fullNameValue?.isNotEmpty ?? false);
@@ -251,8 +229,6 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap.containsKey(TopicValueKey) &&
       (topicValue?.isNotEmpty ?? false);
 
-  bool get hasAnswerValidationMessage =>
-      this.fieldsValidationMessages[AnswerValueKey]?.isNotEmpty ?? false;
   bool get hasFullNameValidationMessage =>
       this.fieldsValidationMessages[FullNameValueKey]?.isNotEmpty ?? false;
   bool get hasChallengeValidationMessage =>
@@ -264,8 +240,6 @@ extension ValueProperties on FormStateHelper {
   bool get hasTopicValidationMessage =>
       this.fieldsValidationMessages[TopicValueKey]?.isNotEmpty ?? false;
 
-  String? get answerValidationMessage =>
-      this.fieldsValidationMessages[AnswerValueKey];
   String? get fullNameValidationMessage =>
       this.fieldsValidationMessages[FullNameValueKey];
   String? get challengeValidationMessage =>
@@ -279,8 +253,6 @@ extension ValueProperties on FormStateHelper {
 }
 
 extension Methods on FormStateHelper {
-  setAnswerValidationMessage(String? validationMessage) =>
-      this.fieldsValidationMessages[AnswerValueKey] = validationMessage;
   setFullNameValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[FullNameValueKey] = validationMessage;
   setChallengeValidationMessage(String? validationMessage) =>
@@ -294,7 +266,6 @@ extension Methods on FormStateHelper {
 
   /// Clears text input fields on the Form
   void clearForm() {
-    answerValue = '';
     fullNameValue = '';
     challengeValue = '';
     occupationValue = '';
@@ -305,7 +276,6 @@ extension Methods on FormStateHelper {
   /// Validates text input fields on the Form
   void validateForm() {
     this.setValidationMessages({
-      AnswerValueKey: getValidationMessage(AnswerValueKey),
       FullNameValueKey: getValidationMessage(FullNameValueKey),
       ChallengeValueKey: getValidationMessage(ChallengeValueKey),
       OccupationValueKey: getValidationMessage(OccupationValueKey),
@@ -330,7 +300,6 @@ String? getValidationMessage(String key) {
 /// Updates the fieldsValidationMessages on the FormViewModel
 void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
-      AnswerValueKey: getValidationMessage(AnswerValueKey),
       FullNameValueKey: getValidationMessage(FullNameValueKey),
       ChallengeValueKey: getValidationMessage(ChallengeValueKey),
       OccupationValueKey: getValidationMessage(OccupationValueKey),

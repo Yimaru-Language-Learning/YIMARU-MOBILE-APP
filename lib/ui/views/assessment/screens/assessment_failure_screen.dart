@@ -64,25 +64,21 @@ class AssessmentFailureScreen extends ViewModelWidget<AssessmentViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
       ];
 
   Widget _buildIcon() => SvgPicture.asset('assets/icons/alert.svg');
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'We didn’t get enough from your assessment',
+        style: style25DG600,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'Your assessment wasn’t long enough for us to analyze your speaking level. You can retake the call to get accurate results ',
         textAlign: TextAlign.center,
-        style: TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 
   Widget _buildLowerColumn(AssessmentViewModel viewModel) => Column(
@@ -117,9 +113,9 @@ class AssessmentFailureScreen extends ViewModelWidget<AssessmentViewModel> {
         height: 55,
         text: 'Skip',
         borderRadius: 12,
+        backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         onTap: () => viewModel.next(),
-        backgroundColor: kcWhite,
         foregroundColor: kcPrimaryColor,
       );
 }

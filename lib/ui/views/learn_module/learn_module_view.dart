@@ -73,20 +73,14 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         _buildListView(viewModel)
       ];
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'A1 - Beginner',
-        style: TextStyle(
-          fontSize: 18,
-          color: kcPrimaryColor,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style18P600,
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubTitle() => Text(
         'Your Current Level',
-        style: TextStyle(
-          color: kcDarkGrey,
-        ),
+        style: style14DG400,
       );
 
   Widget _buildOverallProgress() => const OverallLearnProgress();

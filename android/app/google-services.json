@@ -1,0 +1,51 @@
+{
+  "project_info": {
+    "project_number": "574860813475",
+    "project_id": "yimaru-lms-e834e",
+    "storage_bucket": "yimaru-lms-e834e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574860813475:android:cd7fa6cf3a0527d97acb16",
+        "android_client_info": {
+          "package_name": "com.yimaru.lms.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574860813475-01gh5tk0bu5bgj68r02sgh5pk5greoku.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yimaru.lms.app",
+            "certificate_hash": "fc91f52846d27c62bba3e16bc98982fb9953eca1"
+          }
+        },
+        {
+          "client_id": "574860813475-631s3mo8ha2qc2jeb5e2aosn0967niik.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yimaru.lms.app",
+            "certificate_hash": "928ead08b5e39d6a861a55ae7cceb8c402d1ee7a"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7QlhcuSNte49CERnRKPrQbyLbwErIRmk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574860813475-n5o17gpprdqmhcml99tiqhafb17rob0r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -11,7 +11,7 @@ class CourseLevelCard extends StatelessWidget {
   final String icon;
   final String title;
   final String status;
-  final String subTitle;
+  final String subtitle;
   final bool isCompleted;
   final GestureTapCallback? onTap;
 
@@ -22,7 +22,7 @@ class CourseLevelCard extends StatelessWidget {
     required this.title,
     required this.color,
     required this.status,
-    required this.subTitle,
+    required this.subtitle,
     required this.isCompleted,
   });
 
@@ -91,7 +91,7 @@ class CourseLevelCard extends StatelessWidget {
 
   Widget _buildSubTitle() => Expanded(
         child: Text(
-          subTitle,
+          subtitle,
           maxLines: 3,
           style: const TextStyle(color: kcMediumGrey),
         ),

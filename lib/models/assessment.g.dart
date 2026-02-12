@@ -7,16 +7,24 @@ part of 'assessment.dart';
 // **************************************************************************
 
 Assessment _$AssessmentFromJson(Map<String, dynamic> json) => Assessment(
-      options: (json['Options'] as List<dynamic>?)
+      id: (json['id'] as num?)?.toInt(),
+      points: (json['points'] as num?)?.toInt(),
+      status: json['status'] as String?,
+      options: (json['options'] as List<dynamic>?)
           ?.map((e) => Option.fromJson(e as Map<String, dynamic>))
           .toList(),
-      question: json['Question'] == null
-          ? null
-          : Question.fromJson(json['Question'] as Map<String, dynamic>),
+      questionText: json['question_text'] as String?,
+      questionType: json['question_type'] as String?,
+      difficultyLevel: json['difficulty_level'] as String?,
     );
 
 Map<String, dynamic> _$AssessmentToJson(Assessment instance) =>
     <String, dynamic>{
-      'Question': instance.question,
-      'Options': instance.options,
+      'id': instance.id,
+      'points': instance.points,
+      'status': instance.status,
+      'question_type': instance.questionType,
+      'question_text': instance.questionText,
+      'difficulty_level': instance.difficultyLevel,
+      'options': instance.options,
     };

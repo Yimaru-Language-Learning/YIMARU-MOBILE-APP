@@ -48,7 +48,7 @@ class ResultAnalysisScreen extends ViewModelWidget<AssessmentViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
       ];
 
   Widget _buildAppBar(AssessmentViewModel viewModel) => LargeAppBar(
@@ -61,19 +61,15 @@ class ResultAnalysisScreen extends ViewModelWidget<AssessmentViewModel> {
         'assets/icons/progress_indicator.svg',
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Analyzing your results…',
+        style: style25DG600,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'We’re now analyzing your speaking skills',
+        style: style14MG400,
         textAlign: TextAlign.center,
-        style: TextStyle(color: kcMediumGrey),
       );
 }

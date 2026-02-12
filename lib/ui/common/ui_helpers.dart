@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:chewie/chewie.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -171,10 +172,44 @@ PinTheme errorPinTheme = defaultPin.copyBorderWith(
   border: Border.all(color: Colors.red),
 );
 
-TextStyle validationStyle = const TextStyle(
+TextStyle style18P600 = const TextStyle(
+  fontSize: 18,
+  color: kcPrimaryColor,
+  fontWeight: FontWeight.w600,
+);
+
+TextStyle style18W600 = const TextStyle(
+  fontSize: 18,
+  color: kcWhite,
+  fontWeight: FontWeight.w600,
+);
+
+TextStyle style25W600 = const TextStyle(
+  fontSize: 25,
+  color: kcWhite,
+  fontWeight: FontWeight.w600,
+);
+
+
+TextStyle style12R700 = const TextStyle(
   fontSize: 12,
   color: Colors.red,
   fontWeight: FontWeight.w700,
+);
+
+TextStyle style14P400 = const TextStyle(
+  color: kcPrimaryColor,
+);
+
+TextStyle style14P600 = const TextStyle(
+  color: kcPrimaryColor,
+  fontWeight: FontWeight.w600,
+);
+
+TextStyle style25P600 = const TextStyle(
+  fontSize: 25,
+  color: kcPrimaryColor,
+  fontWeight: FontWeight.w600,
 );
 
 TextStyle style25DG600 = const TextStyle(
@@ -183,16 +218,16 @@ TextStyle style25DG600 = const TextStyle(
   fontWeight: FontWeight.w600,
 );
 
-TextStyle style12R700 = const TextStyle(
-  fontSize: 12,
-  color: Colors.red,
-  fontWeight: FontWeight.w700,
-);
-
 TextStyle style16DG600 = const TextStyle(
   fontSize: 16,
   color: kcDarkGrey,
   fontWeight: FontWeight.w600,
+);
+
+TextStyle style18DG500 = const TextStyle(
+  fontSize: 18,
+  color: kcDarkGrey,
+  fontWeight: FontWeight.w500,
 );
 
 TextStyle style18DG600 = const TextStyle(
@@ -206,17 +241,29 @@ TextStyle style16DG400 = const TextStyle(
   color: kcDarkGrey,
 );
 
+TextStyle style14LG400 = const TextStyle(
+  color: kcLightGrey,
+);
+
+TextStyle style14MG400 = const TextStyle(
+  color: kcMediumGrey,
+);
+TextStyle style14DG500 =
+    const TextStyle(color: kcDarkGrey, fontWeight: FontWeight.w500);
+
 TextStyle style14DG400 = const TextStyle(
   color: kcDarkGrey,
 );
 
-TextStyle style14P400 = const TextStyle(
-  color: kcPrimaryColor,
+TextStyle style14DG600 = const TextStyle(
+  color: kcDarkGrey,
+  fontWeight: FontWeight.w600,
 );
 
-TextStyle style14P600 = const TextStyle(
-  color: kcPrimaryColor,
-  fontWeight: FontWeight.w600,
+TextStyle validationStyle = const TextStyle(
+  fontSize: 12,
+  color: Colors.red,
+  fontWeight: FontWeight.w700,
 );
 
 Style htmlDefaultStyle = Style(color: kcDarkGrey, fontSize: FontSize(16));
@@ -240,27 +287,36 @@ Map<String, Style> htmlStyle = {
   ),
 };
 
+ChewieProgressColors buildChewieProgressIndicator = ChewieProgressColors(
+  bufferedColor: kcIndigo,
+  playedColor: kcPrimaryColor,
+  backgroundColor: kcBackgroundColor,
+);
+
 Widget buildToastDescription(String message) => Text(
       message,
       maxLines: 4,
-      style: const TextStyle(color: kcWhite, fontWeight: FontWeight.w500),
+      style: const TextStyle(color: kcDarkGrey, fontWeight: FontWeight.w500),
     );
 
 void showErrorToast(String message) {
   toastification.show(
     showIcon: true,
     dragToClose: true,
-    primaryColor: kcRed,
     showProgressBar: false,
     applyBlurEffect: false,
-    icon: const Icon(Icons.check),
+    alignment: Alignment.topCenter,
+    primaryColor: kcBackgroundColor,
     type: ToastificationType.success,
-    alignment: Alignment.bottomCenter,
     style: ToastificationStyle.fillColored,
     description: buildToastDescription(message),
-    borderSide: const BorderSide(color: kcWhite),
-    autoCloseDuration: const Duration(seconds: 5),
+    autoCloseDuration: const Duration(seconds: 3),
     margin: const EdgeInsets.symmetric(horizontal: 15),
+    borderSide: const BorderSide(color: kcPrimaryColor),
+    icon: const Icon(
+      Icons.close,
+      color: kcPrimaryColor,
+    ),
   );
 }
 
@@ -270,14 +326,17 @@ void showSuccessToast(String message) {
     dragToClose: true,
     showProgressBar: false,
     applyBlurEffect: false,
-    icon: const Icon(Icons.check),
-    primaryColor: kcPrimaryColor,
+    alignment: Alignment.topCenter,
+    primaryColor: kcBackgroundColor,
     type: ToastificationType.success,
-    alignment: Alignment.bottomCenter,
     style: ToastificationStyle.fillColored,
     description: buildToastDescription(message),
-    borderSide: const BorderSide(color: kcWhite),
-    autoCloseDuration: const Duration(seconds: 5),
+    autoCloseDuration: const Duration(seconds: 3),
     margin: const EdgeInsets.symmetric(horizontal: 15),
+    borderSide: const BorderSide(color: kcPrimaryColor),
+    icon: const Icon(
+      Icons.check,
+      color: kcPrimaryColor,
+    ),
   );
 }

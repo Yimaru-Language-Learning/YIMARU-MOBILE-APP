@@ -2,6 +2,15 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/services/authentication_service.dart';
+import 'package:yimaru_app/services/api_service.dart';
+import 'package:yimaru_app/services/secure_storage_service.dart';
+import 'package:yimaru_app/services/dio_service.dart';
+import 'package:yimaru_app/services/status_checker_service.dart';
+import 'package:yimaru_app/services/permission_handler_service.dart';
+import 'package:yimaru_app/services/image_picker_service.dart';
+import 'package:yimaru_app/services/google_auth_service.dart';
+import 'package:yimaru_app/services/image_downloader_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -12,14 +21,34 @@ import 'test_helpers.mocks.dart';
     MockSpec<NavigationService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<BottomSheetService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<DialogService>(onMissingStub: OnMissingStub.returnDefault),
-    // @stacked-mock-spec
+    MockSpec<AuthenticationService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<ApiService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<SecureStorageService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<DioService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<StatusCheckerService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<PermissionHandlerService>(
+        onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<ImagePickerService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<GoogleAuthService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<ImageDownloaderService>(
+        onMissingStub: OnMissingStub.returnDefault),
+// @stacked-mock-spec
   ],
 )
 void registerServices() {
   getAndRegisterNavigationService();
   getAndRegisterBottomSheetService();
   getAndRegisterDialogService();
-  // @stacked-mock-register
+  getAndRegisterAuthenticationService();
+  getAndRegisterApiService();
+  getAndRegisterSecureStorageService();
+  getAndRegisterDioService();
+  getAndRegisterStatusCheckerService();
+  getAndRegisterPermissionHandlerService();
+  getAndRegisterImagePickerService();
+  getAndRegisterGoogleAuthService();
+  getAndRegisterImageDownloaderService();
+// @stacked-mock-register
 }
 
 MockNavigationService getAndRegisterNavigationService() {
@@ -76,6 +105,68 @@ MockDialogService getAndRegisterDialogService() {
   return service;
 }
 
+MockAuthenticationService getAndRegisterAuthenticationService() {
+  _removeRegistrationIfExists<AuthenticationService>();
+  final service = MockAuthenticationService();
+  locator.registerSingleton<AuthenticationService>(service);
+  return service;
+}
+
+MockApiService getAndRegisterApiService() {
+  _removeRegistrationIfExists<ApiService>();
+  final service = MockApiService();
+  locator.registerSingleton<ApiService>(service);
+  return service;
+}
+
+MockSecureStorageService getAndRegisterSecureStorageService() {
+  _removeRegistrationIfExists<SecureStorageService>();
+  final service = MockSecureStorageService();
+  locator.registerSingleton<SecureStorageService>(service);
+  return service;
+}
+
+MockDioService getAndRegisterDioService() {
+  _removeRegistrationIfExists<DioService>();
+  final service = MockDioService();
+  locator.registerSingleton<DioService>(service);
+  return service;
+}
+
+MockStatusCheckerService getAndRegisterStatusCheckerService() {
+  _removeRegistrationIfExists<StatusCheckerService>();
+  final service = MockStatusCheckerService();
+  locator.registerSingleton<StatusCheckerService>(service);
+  return service;
+}
+
+MockPermissionHandlerService getAndRegisterPermissionHandlerService() {
+  _removeRegistrationIfExists<PermissionHandlerService>();
+  final service = MockPermissionHandlerService();
+  locator.registerSingleton<PermissionHandlerService>(service);
+  return service;
+}
+
+MockImagePickerService getAndRegisterImagePickerService() {
+  _removeRegistrationIfExists<ImagePickerService>();
+  final service = MockImagePickerService();
+  locator.registerSingleton<ImagePickerService>(service);
+  return service;
+}
+
+MockGoogleAuthService getAndRegisterGoogleAuthService() {
+  _removeRegistrationIfExists<GoogleAuthService>();
+  final service = MockGoogleAuthService();
+  locator.registerSingleton<GoogleAuthService>(service);
+  return service;
+}
+
+MockImageDownloaderService getAndRegisterImageDownloaderService() {
+  _removeRegistrationIfExists<ImageDownloaderService>();
+  final service = MockImageDownloaderService();
+  locator.registerSingleton<ImageDownloaderService>(service);
+  return service;
+}
 // @stacked-mock-create
 
 void _removeRegistrationIfExists<T extends Object>() {

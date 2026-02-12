@@ -7,11 +7,13 @@ part of 'option.dart';
 // **************************************************************************
 
 Option _$OptionFromJson(Map<String, dynamic> json) => Option(
+      id: (json['id'] as num?)?.toInt(),
       optionText: json['option_text'] as String?,
-      questionId: (json['question_id'] as num?)?.toInt(),
+      isCorrect: json['is_correct'] as bool?,
     );
 
 Map<String, dynamic> _$OptionToJson(Option instance) => <String, dynamic>{
-      'question_id': instance.questionId,
+      'id': instance.id,
       'option_text': instance.optionText,
+      'is_correct': instance.isCorrect,
     };

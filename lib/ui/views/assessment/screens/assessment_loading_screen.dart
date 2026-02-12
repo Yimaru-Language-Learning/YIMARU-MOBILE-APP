@@ -3,9 +3,14 @@ import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../widgets/large_app_bar.dart';
+import '../../../widgets/refresh_button.dart';
 
 class AssessmentLoadingScreen extends StatelessWidget {
-  const AssessmentLoadingScreen({super.key});
+  final bool isEmpty;
+  final bool isLoading;
+  final GestureTapCallback? onTap;
+  const AssessmentLoadingScreen(
+      {super.key, this.onTap, required this.isEmpty, required this.isLoading});
 
   @override
   Widget build(BuildContext context) => _buildScaffoldWrapper();
@@ -16,7 +21,11 @@ class AssessmentLoadingScreen extends StatelessWidget {
       );
 
   Widget _buildScaffold() => Stack(
-        children: [_buildColumn(), _buildPageIndicator()],
+        children: [
+          _buildColumn(),
+          if (isEmpty) _buildRefreshButton(),
+          if (isLoading) _buildPageIndicator()
+        ],
       );
 
   Widget _buildColumn() => Column(
@@ -34,4 +43,6 @@ class AssessmentLoadingScreen extends StatelessWidget {
   Widget _buildBody() => Expanded(child: Container());
 
   Widget _buildPageIndicator() => const PageLoadingIndicator();
+
+  Widget _buildRefreshButton() => RefreshButton(onTap: onTap);
 }
