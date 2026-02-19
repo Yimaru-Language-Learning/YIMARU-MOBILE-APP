@@ -37,8 +37,7 @@ class CancelLearnPracticeSheet extends StatelessWidget {
         verticalSpaceLarge,
         _buildContinueButton(),
         _buildEndButton(),
-
-  ];
+      ];
 
   Widget _buildImage() => const SpeakingPartnerImage(
         radius: 45,

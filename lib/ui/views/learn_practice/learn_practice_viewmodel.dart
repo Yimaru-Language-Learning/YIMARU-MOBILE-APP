@@ -11,24 +11,30 @@ class LearnPracticeViewModel extends BaseViewModel {
 
   int get currentIndex => _currentIndex;
 
+  // Practice results
+  final List<Map<String, dynamic>> _practiceResults = [
+    {'question': 'What is your name?'},
+    {'question': 'Where are you from?'},
+    {'question': 'Where are you from?'}
+  ];
+
+  List<Map<String, dynamic>> get practiceResults => _practiceResults;
+
   // In-app navigation
   void goTo(int page) {
-
     _currentIndex = page;
     rebuildUi();
   }
 
   void goBack() {
-    if(_currentIndex == 0){
+    if (_currentIndex == 0) {
       pop();
-    }else{
+    } else {
       _currentIndex--;
       rebuildUi();
     }
-
   }
 
   // Navigation
   void pop() => _navigationService.back();
-
 }

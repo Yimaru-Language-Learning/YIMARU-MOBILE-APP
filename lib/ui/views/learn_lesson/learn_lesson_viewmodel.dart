@@ -34,4 +34,12 @@ class LearnLessonViewModel extends BaseViewModel {
 
   Future<void> navigateToLearnLessonDetail() async =>
       await _navigationService.navigateToLearnLessonDetailView();
+
+  Future<void> navigateToLearnPractice() async =>
+      await _navigationService.navigateToLearnPracticeView(
+        buttonLabel: 'Start Practice',
+        title: 'Let \'s practice what you just learnt!',
+        subtitle:
+        'I’ll ask you a few questions, and you can respond naturally.',
+      );
 }

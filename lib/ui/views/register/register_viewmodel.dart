@@ -23,7 +23,6 @@ class RegisterViewModel extends FormViewModel {
 
   final _googleAuthService = locator<GoogleAuthService>();
 
-
   final _authenticationService = locator<AuthenticationService>();
 
   // Navigation
@@ -284,17 +283,18 @@ class RegisterViewModel extends FormViewModel {
       await _navigationService.replaceWithLoginView();
 
   Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShowView(const HomeView());
+      await _navigationService.clearStackAndShow(Routes.homeView);
 
   // Remote api calls
 
   // Register
-  Future<void> registerWithEmail() async =>
-      await runBusyFuture(_register(), busyObject: StateObjects.registerWithEmail);
+  Future<void> registerWithEmail() async => await runBusyFuture(_register(),
+      busyObject: StateObjects.registerWithEmail);
 
   Future<void> _register() async {
     if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response = await _apiService.registerWithEmail(_userData);
+      Map<String, dynamic> response =
+          await _apiService.registerWithEmail(_userData);
 
       if (response['status'] == ResponseStatus.success) {
         goTo(page: 3);

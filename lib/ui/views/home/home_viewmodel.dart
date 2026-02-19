@@ -37,6 +37,7 @@ class HomeViewModel extends ReactiveViewModel {
 
   int get currentIndex => _currentIndex;
 
+  // Bottom navigation
   void setCurrentIndex(int index) {
     _currentIndex = index;
     rebuildUi();
@@ -63,71 +64,75 @@ class HomeViewModel extends ReactiveViewModel {
 
   // Navigation
   Future<void> replaceWithFailure() async =>
-      await _navigationService.clearStackAndShowView(
-        const FailureView(label: 'Check your internet connection to proceed'),
-      );
+      await _navigationService.clearStackAndShow(Routes.failureView,
+          arguments: 'Check your internet connection to proceed');
 
   Future<void> replaceWithOnboarding() async =>
       await _navigationService.replaceWithOnboardingView();
 
   // Remote api calls
 
-  // Profile data
-  Future<void> getProfileData() async => await runBusyFuture(_getProfileData());
+  // Initialize user data
+  Future<void> initialize() async =>
+      await runBusyFuture(_initialize(), busyObject: StateObjects.homeView);
 
-  Future<void> _getProfileData() async {
-    print('RESPONSE FOR USER DATA ${_user?.firstName}');
-
-    if (!(_user?.userInfoLoaded ?? false)) {
-      print('RESPONSE FOR USER DATA 1');
-      if (await _statusChecker.checkConnection()) {
-        Map<String, dynamic> response = {};
-
-        if (_user?.profileCompleted != null &&
-            (_user?.profileCompleted ?? false)) {
-          if (await _statusChecker.checkConnection()) {
-            response = await _apiService.getProfileData(_user?.userId);
-
-            if (response['status'] == ResponseStatus.success) {
-              UserModel user = response['data'] as UserModel;
-
-              String image =
-                  await _imageDownloaderService.downloader(user.profilePicture);
-
-              await _authenticationService.saveUserData(
-                  image: image, data: user);
-            }
-          }
-        }
-      }
-    }
+  Future<void> _initialize() async {
+    await _getProfileStatus();
+    await _getProfileData();
   }
 
   // Profile status
-  Future<void> getProfileStatus() async =>
-      await runBusyFuture(_getProfileStatus());
-
   Future<void> _getProfileStatus() async {
-    if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response = {};
-
-      if (_user?.profileCompleted == null) {
-        if (await _statusChecker.checkConnection()) {
-          response = await _apiService.getProfileStatus(_user);
-        } else {
-          await replaceWithFailure();
-        }
-      } else if (!(_user?.profileCompleted ?? false)) {
-        response = {'data': false, 'status': ResponseStatus.success};
+    Map<String, dynamic> response = {};
+    if (_user?.profileCompleted == null) {
+      if (await _statusChecker.checkConnection()) {
+        print('BREAK-POINT 1');
+        response = await _apiService.getProfileStatus(_user);
       } else {
-        response = {'data': true, 'status': ResponseStatus.success};
+        print('BREAK-POINT 2');
+        await replaceWithFailure();
       }
+    } else if (!(_user?.profileCompleted ?? false)) {
+      print('BREAK-POINT 3');
+      response = {'data': false, 'status': ResponseStatus.success};
+    } else {
+      print('BREAK-POINT 4');
+      response = {'data': true, 'status': ResponseStatus.success};
+    }
 
-      if (response['status'] == ResponseStatus.success && !response['data']) {
-        await replaceWithOnboarding();
-      } else if (response['status'] == ResponseStatus.success &&
-          response['data']) {
-        await saveProfileStatus(response['data']);
+    if (response['status'] == ResponseStatus.success && !response['data']) {
+      print('BREAK-POINT 5');
+      await replaceWithOnboarding();
+    } else if (response['status'] == ResponseStatus.success &&
+        response['data']) {
+      print('BREAK-POINT 6');
+      await saveProfileStatus(response['data']);
+    }
+  }
+
+  // Profile data
+
+  Future<void> _getProfileData() async {
+    if (!(_user?.userInfoLoaded ?? false)) {
+      Map<String, dynamic> response = {};
+      print('BREAK-POINT: Profile-Completed ${_user?.profileCompleted}');
+
+      if (_user?.profileCompleted != null &&
+          (_user?.profileCompleted ?? false)) {
+        if (await _statusChecker.checkConnection()) {
+          response = await _apiService.getProfileData(_user?.userId);
+
+          if (response['status'] == ResponseStatus.success) {
+            print('BREAK-POINT 8');
+
+            UserModel user = response['data'] as UserModel;
+
+            String image =
+                await _imageDownloaderService.downloader(user.profilePicture);
+
+            await _authenticationService.saveUserData(image: image, data: user);
+          }
+        }
       }
     }
   }

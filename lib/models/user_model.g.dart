@@ -19,8 +19,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       accessToken: json['access_token'] as String?,
       refreshToken: json['refresh_token'] as String?,
       profilePicture: json['profile_picture_url'] as String?,
+      userInfoLoaded: json['userInfoLoaded'] as bool?,
       profileCompleted: json['profile_completed'] as bool?,
-      userInfoLoaded: json['userInfoLoaded'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{

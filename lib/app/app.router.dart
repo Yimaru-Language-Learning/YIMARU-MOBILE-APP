@@ -412,8 +412,13 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i28.LearnPracticeView: (data) {
+      final args = data.getArgs<LearnPracticeViewArguments>(nullOk: false);
       return _i29.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i28.LearnPracticeView(),
+        builder: (context) => _i28.LearnPracticeView(
+            key: args.key,
+            title: args.title,
+            subtitle: args.subtitle,
+            buttonLabel: args.buttonLabel),
         settings: data,
       );
     },
@@ -504,6 +509,45 @@ class FailureViewArguments {
   @override
   int get hashCode {
     return key.hashCode ^ label.hashCode;
+  }
+}
+
+class LearnPracticeViewArguments {
+  const LearnPracticeViewArguments({
+    this.key,
+    required this.title,
+    required this.subtitle,
+    required this.buttonLabel,
+  });
+
+  final _i29.Key? key;
+
+  final String title;
+
+  final String subtitle;
+
+  final String buttonLabel;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "title": "$title", "subtitle": "$subtitle", "buttonLabel": "$buttonLabel"}';
+  }
+
+  @override
+  bool operator ==(covariant LearnPracticeViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key &&
+        other.title == title &&
+        other.subtitle == subtitle &&
+        other.buttonLabel == buttonLabel;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^
+        title.hashCode ^
+        subtitle.hashCode ^
+        buttonLabel.hashCode;
   }
 }
 
@@ -881,14 +925,23 @@ extension NavigatorStateExtension on _i30.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToLearnPracticeView([
+  Future<dynamic> navigateToLearnPracticeView({
+    _i29.Key? key,
+    required String title,
+    required String subtitle,
+    required String buttonLabel,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.learnPracticeView,
+        arguments: LearnPracticeViewArguments(
+            key: key,
+            title: title,
+            subtitle: subtitle,
+            buttonLabel: buttonLabel),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1268,14 +1321,23 @@ extension NavigatorStateExtension on _i30.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithLearnPracticeView([
+  Future<dynamic> replaceWithLearnPracticeView({
+    _i29.Key? key,
+    required String title,
+    required String subtitle,
+    required String buttonLabel,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.learnPracticeView,
+        arguments: LearnPracticeViewArguments(
+            key: key,
+            title: title,
+            subtitle: subtitle,
+            buttonLabel: buttonLabel),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

@@ -9,6 +9,6 @@ class CustomCircularProgressIndicator extends StatelessWidget {
 
   Widget _buildIndicator() => CircularProgressIndicator(
         color: color,
-        strokeWidth: 6,
+        strokeWidth: 5,
       );
 }

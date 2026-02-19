@@ -142,7 +142,7 @@ class LoginViewModel extends FormViewModel {
       await _navigationService.navigateToForgetPasswordView();
 
   Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShowView(const HomeView());
+      await _navigationService.clearStackAndShow(Routes.homeView);
 
   // Remote api calls
 
@@ -171,8 +171,9 @@ class LoginViewModel extends FormViewModel {
     }
   }
 
-  Future<void> signInWithGoogle() async => await runBusyFuture(_signInWithGoogle(),
-      busyObject: StateObjects.loginWithGoogle);
+  Future<void> signInWithGoogle() async =>
+      await runBusyFuture(_signInWithGoogle(),
+          busyObject: StateObjects.loginWithGoogle);
 
   Future<void> _signInWithGoogle() async {
     if (await _statusChecker.checkConnection()) {

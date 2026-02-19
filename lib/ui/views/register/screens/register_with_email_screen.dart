@@ -231,8 +231,6 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         onTap: () => viewModel.goTo(page: 1),
       );
 
-
-
   Widget _buildRegisterWithGoogleState(RegisterViewModel viewModel) =>
       viewModel.busy(StateObjects.registerWithEmail)
           ? const PageLoadingIndicator()

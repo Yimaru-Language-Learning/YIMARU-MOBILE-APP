@@ -59,14 +59,10 @@ class FirstWelcomeScreen extends ViewModelWidget<WelcomeViewModel> {
         height: 50,
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Small daily practice. Big lifelong results.',
+        style: style25W600,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 30,
-          color: kcWhite,
-          fontWeight: FontWeight.w600,
-        ),
       );
 
   Widget _buildContinueButtonWrapper(WelcomeViewModel viewModel) => Align(
@@ -85,8 +81,8 @@ class FirstWelcomeScreen extends ViewModelWidget<WelcomeViewModel> {
         borderRadius: 12,
         text: 'Start Learning',
         backgroundColor: kcWhite,
-        trailingIcon: Icons.arrow_forward,
         onTap: () => viewModel.next(),
         foregroundColor: kcPrimaryColor,
+        trailingIcon: Icons.arrow_forward,
       );
 }

@@ -22,8 +22,17 @@ class LearnLevelViewModel extends BaseViewModel {
 
   List<Map<String, dynamic>> get learnSubLevels => _learnSubLevels;
 
+  // Navigation
+  void pop() => _navigationService.back();
+
   Future<void> navigateToLearnModule() async =>
       _navigationService.navigateToLearnModuleView();
 
-  void pop() => _navigationService.back();
+  Future<void> navigateToLearnPractice() async =>
+      await _navigationService.navigateToLearnPracticeView(
+        title: 'Let’s Practice Level 1',
+        buttonLabel: 'Begin Level Practice',
+        subtitle:
+        'Let’s quickly review what you’ve learned in this level! ',
+      );
 }

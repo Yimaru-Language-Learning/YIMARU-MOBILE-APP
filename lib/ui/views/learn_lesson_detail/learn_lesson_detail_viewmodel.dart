@@ -53,7 +53,7 @@ class LearnLessonDetailViewModel extends BaseViewModel {
     //  rebuildUi();
   }
 
-  Future<void> pause()async{
+  Future<void> pause() async {
     await _chewieController?.pause();
   }
 
@@ -67,6 +67,11 @@ class LearnLessonDetailViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnPractice() async=>await _navigationService.navigateToLearnPracticeView();
-
+  Future<void> navigateToLearnPractice() async =>
+      await _navigationService.navigateToLearnPracticeView(
+        buttonLabel: 'Start Practice',
+        title: 'Let \'s practice what you just learnt!',
+        subtitle:
+            'I’ll ask you a few questions, and you can respond naturally.',
+      );
 }

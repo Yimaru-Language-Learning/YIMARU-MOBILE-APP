@@ -52,6 +52,7 @@ class SupportView extends StackedView<SupportViewModel> {
 
   Widget _buildAppbar(SupportViewModel viewModel) => SmallAppBar(
         title: 'Need Help?',
+        showBackButton: true,
         onTap: viewModel.pop,
       );
 

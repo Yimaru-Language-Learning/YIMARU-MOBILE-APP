@@ -20,10 +20,11 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
     required this.emailController,
   });
 
-
-  Widget getPadding(context){
-    double half = screenHeight(context)/2;
-    return SizedBox(height: half + 375  - half,);
+  Widget getPadding(context) {
+    double half = screenHeight(context) / 2;
+    return SizedBox(
+      height: half + 375 - half,
+    );
   }
 
   void _inAppPop(ForgetPasswordViewModel viewModel) {
@@ -32,9 +33,8 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
   }
 
   void _clearDataOnNavigation(ForgetPasswordViewModel viewModel) {
-      emailController.clear();
-      viewModel.resetRequestResetCodeScreen();
-
+    emailController.clear();
+    viewModel.resetRequestResetCodeScreen();
   }
 
   Future<void> _addUserData(ForgetPasswordViewModel viewModel) async {
@@ -48,69 +48,89 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
     await viewModel.requestResetCode();
   }
 
-
   @override
   Widget build(BuildContext context, ForgetPasswordViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(     {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) => Scaffold(
-    backgroundColor: kcBackgroundColor,
-    body: _buildScaffoldStack(context: context, viewModel: viewModel),
-  );
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      Scaffold(
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
 
-  Widget _buildScaffoldStack(  {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) => Stack(
-    children: [
-      _buildScaffold(context: context,viewModel: viewModel),
-      _buildRequestResetCodeState(viewModel),
-    ],
-  );
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildRequestResetCodeState(viewModel),
+        ],
+      );
 
-  Widget _buildScaffold(     {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: _buildScaffoldChildren(context: context, viewModel: viewModel),
-  );
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:
+            _buildScaffoldChildren(context: context, viewModel: viewModel),
+      );
 
-  List<Widget> _buildScaffoldChildren(     {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(context: context, viewModel: viewModel)];
+  List<Widget> _buildScaffoldChildren(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      [
+        _buildAppBar(viewModel),
+        _buildExpandedBody(context: context, viewModel: viewModel)
+      ];
 
-  Widget _buildAppBar(ForgetPasswordViewModel viewModel) =>  LargeAppBar(
-    showBackButton: true,
-    showLanguageSelection: true,
-    onPop: () => _inAppPop(viewModel),
-  );
+  Widget _buildAppBar(ForgetPasswordViewModel viewModel) => LargeAppBar(
+        showBackButton: true,
+        showLanguageSelection: true,
+        onPop: () => _inAppPop(viewModel),
+      );
 
-  Widget _buildExpandedBody(     {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) =>
-      Expanded(child: _buildColumnScroller(context: context, viewModel: viewModel));
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      Expanded(
+          child: _buildColumnScroller(context: context, viewModel: viewModel));
 
-  Widget _buildColumnScroller(     {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) =>
+  Widget _buildColumnScroller(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
       SingleChildScrollView(
         child: _buildBodyWrapper(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBodyWrapper(     {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildBody(context: context, viewModel: viewModel),
-  );
+  Widget _buildBodyWrapper(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildBody(context: context, viewModel: viewModel),
+      );
 
-  Widget _buildBody(     {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: _buildBodyChildren(context: context, viewModel: viewModel),
-  );
+  Widget _buildBody(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: _buildBodyChildren(context: context, viewModel: viewModel),
+      );
 
-  List<Widget> _buildBodyChildren(     {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) =>
-      [_buildUpperColumn(viewModel),getPadding(context), _buildContinueButtonWrapper(viewModel)];
-
-
+  List<Widget> _buildBodyChildren(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      [
+        _buildUpperColumn(viewModel),
+        getPadding(context),
+        _buildContinueButtonWrapper(viewModel)
+      ];
 
   Widget _buildUpperColumn(ForgetPasswordViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,

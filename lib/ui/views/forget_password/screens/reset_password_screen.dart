@@ -31,12 +31,10 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
   }
 
   void _clearDataOnNavigation(ForgetPasswordViewModel viewModel) {
-
-      passwordController.clear();
-      resetCodeController.clear();
-      confirmPasswordController.clear();
-      viewModel.resetResetPasswordScreen();
-
+    passwordController.clear();
+    resetCodeController.clear();
+    confirmPasswordController.clear();
+    viewModel.resetResetPasswordScreen();
   }
 
   Future<void> _reset(ForgetPasswordViewModel viewModel) async {
@@ -55,56 +53,56 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
   Widget build(BuildContext context, ForgetPasswordViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(     {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) => Scaffold(
-    backgroundColor: kcBackgroundColor,
-    body: _buildScaffoldStack(context: context, viewModel: viewModel),
-  );
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      Scaffold(
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
 
-  Widget _buildScaffoldStack(  {required BuildContext context,
-    required ForgetPasswordViewModel viewModel}) => Stack(
-    children: [
-      _buildScaffold(viewModel),
-      _buildResetPasswordState(viewModel),
-    ],
-  );
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(viewModel),
+          _buildResetPasswordState(viewModel),
+        ],
+      );
 
-  Widget _buildScaffold(   ForgetPasswordViewModel viewModel) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: _buildScaffoldChildren(viewModel),
-  );
+  Widget _buildScaffold(ForgetPasswordViewModel viewModel) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _buildScaffoldChildren(viewModel),
+      );
 
-  List<Widget> _buildScaffoldChildren(  ForgetPasswordViewModel viewModel) =>
+  List<Widget> _buildScaffoldChildren(ForgetPasswordViewModel viewModel) =>
       [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
 
-  Widget _buildAppBar(ForgetPasswordViewModel viewModel) =>  LargeAppBar(
-    showBackButton: true,
-    showLanguageSelection: true,
-    onPop: () => _inAppPop(viewModel),
-  );
+  Widget _buildAppBar(ForgetPasswordViewModel viewModel) => LargeAppBar(
+        showBackButton: true,
+        showLanguageSelection: true,
+        onPop: () => _inAppPop(viewModel),
+      );
 
-  Widget _buildExpandedBody(   ForgetPasswordViewModel viewModel) =>
+  Widget _buildExpandedBody(ForgetPasswordViewModel viewModel) =>
       Expanded(child: _buildColumnScroller(viewModel));
 
-  Widget _buildColumnScroller(  ForgetPasswordViewModel viewModel) =>
+  Widget _buildColumnScroller(ForgetPasswordViewModel viewModel) =>
       SingleChildScrollView(
         child: _buildBodyWrapper(viewModel),
       );
 
-  Widget _buildBodyWrapper(   ForgetPasswordViewModel viewModel) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildBody(viewModel),
-  );
+  Widget _buildBodyWrapper(ForgetPasswordViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildBody(viewModel),
+      );
 
   Widget _buildBody(ForgetPasswordViewModel viewModel) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: _buildBodyColumnChildren(viewModel),
-  );
-
-
-
-
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: _buildBodyColumnChildren(viewModel),
+      );
 
   List<Widget> _buildBodyColumnChildren(ForgetPasswordViewModel viewModel) => [
         verticalSpaceMedium,

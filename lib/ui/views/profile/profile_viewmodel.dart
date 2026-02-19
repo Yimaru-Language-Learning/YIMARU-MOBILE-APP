@@ -42,7 +42,7 @@ class ProfileViewModel extends ReactiveViewModel {
     pop();
     if (image != null) {
       await updateProfilePicture(image);
-      await _authenticationService.saveProfileImage(image);
+      await _authenticationService.saveProfilePicture(image);
     }
   }
 
@@ -54,7 +54,7 @@ class ProfileViewModel extends ReactiveViewModel {
     pop();
     if (image != null) {
       await updateProfilePicture(image);
-      await _authenticationService.saveProfileImage(image);
+      await _authenticationService.saveProfilePicture(image);
     }
   }
 

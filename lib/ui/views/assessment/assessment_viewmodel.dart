@@ -235,7 +235,7 @@ class AssessmentViewModel extends BaseViewModel {
       await _navigationService.navigateToLanguageView();
 
   Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShowView(const HomeView());
+      await _navigationService.clearStackAndShow(Routes.homeView);
 
   // Remote api call
   Future<void> getAssessments() async => await runBusyFuture(_getAssessments());

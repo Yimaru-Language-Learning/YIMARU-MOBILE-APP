@@ -13,10 +13,12 @@ class LearnLessonTile extends StatelessWidget {
   final String thumbnail;
   final ProgressStatuses status;
   final GestureTapCallback? onLessonTap;
+  final GestureTapCallback? onPracticeTap;
 
   const LearnLessonTile({
     super.key,
     this.onLessonTap,
+    this.onPracticeTap,
     required this.title,
     required this.status,
     required this.thumbnail,
@@ -181,11 +183,12 @@ class LearnLessonTile extends StatelessWidget {
         _buildLessonButton(),
       ];
 
-  Widget _buildPracticeButton() => const CustomElevatedButton(
+  Widget _buildPracticeButton() =>  CustomElevatedButton(
         height: 15,
         width: 135,
         text: 'Practice',
         borderRadius: 12,
+        onTap: onPracticeTap,
         trailingIcon: Icons.mic,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,

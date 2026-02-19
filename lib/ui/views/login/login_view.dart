@@ -56,10 +56,6 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
       },
       child: _buildBody(viewModel));
 
-
-
-
-
   Widget _buildBody(LoginViewModel viewModel) =>
       IndexedStack(index: viewModel.currentIndex, children: _buildScreens());
 
@@ -78,5 +74,4 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
   Widget _buildLoginOtpScreen() => LoginOtpScreen(
       otpController: otpController,
       phoneNumberController: phoneNumberController);
-
 }

@@ -37,7 +37,6 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('refreshToken', refresh);
   }
 
-
   Future<void> saveUserCredential(Map<String, dynamic> data) async {
     await _secureService.setInt('userId', data['userId']);
     await _secureService.setString('accessToken', data['accessToken']);
@@ -71,8 +70,8 @@ class AuthenticationService with ListenableServiceMixin {
     notifyListeners();
   }
 
-  Future<void> saveProfileImage(String image) async {
-    await _secureService.setString('profileImage', image);
+  Future<void> saveProfilePicture(String image) async {
+    await _secureService.setString('profilePicture', image);
     _user = UserModel(
       email: _user?.email,
       gender: _user?.gender,
@@ -87,7 +86,7 @@ class AuthenticationService with ListenableServiceMixin {
       refreshToken: _user?.refreshToken,
       profileCompleted: _user?.profileCompleted,
       userInfoLoaded: _user?.userInfoLoaded ?? false,
-      profilePicture: await _secureService.getString('profileImage'),
+      profilePicture: await _secureService.getString('profilePicture'),
     );
 
     notifyListeners();
@@ -175,8 +174,8 @@ class AuthenticationService with ListenableServiceMixin {
       occupation: await _secureService.getString('occupation'),
       accessToken: await _secureService.getString('accessToken'),
       refreshToken: await _secureService.getString('refreshToken'),
-      profilePicture: await _secureService.getString('profileImage'),
       userInfoLoaded: await _secureService.getBool('userInfoLoaded'),
+      profilePicture: await _secureService.getString('profilePicture'),
       profileCompleted: await _secureService.getBool('profileCompleted'),
     );
     return _user;

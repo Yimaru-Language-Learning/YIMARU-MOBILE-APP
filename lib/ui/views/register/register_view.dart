@@ -87,8 +87,6 @@ class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
           _pop(value: value, viewModel: viewModel),
       child: _buildBody(viewModel));
 
-
-
   Widget _buildBody(RegisterViewModel viewModel) =>
       IndexedStack(index: viewModel.currentPage, children: _buildScreens());
 
@@ -114,5 +112,4 @@ class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
   Widget _buildCreatePasswordScreen() => CreatePasswordScreen(
       passwordController: passwordController,
       confirmPasswordController: confirmPasswordController);
-
 }

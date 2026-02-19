@@ -11,6 +11,7 @@ enum ProficiencyLevels { a1, a2, b1, b2, none }
 
 // State object
 enum StateObjects {
+  homeView,
   verifyOtp,
   resendOtp,
   profileImage,

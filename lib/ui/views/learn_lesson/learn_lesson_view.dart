@@ -51,6 +51,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
 
   Widget _buildAppBar(LearnLessonViewModel viewModel) => SmallAppBar(
         onTap: viewModel.pop,
+        showBackButton: true,
       );
 
   Widget _buildLevelsColumnWrapper(LearnLessonViewModel viewModel) =>
@@ -122,6 +123,8 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
           thumbnail: viewModel.lessons[index]['thumbnail'],
           onLessonTap: () async =>
               await viewModel.navigateToLearnLessonDetail(),
+          onPracticeTap: () async => await viewModel.navigateToLearnPractice(),
+
         ),
       );
 
@@ -130,11 +133,13 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
     required String thumbnail,
     GestureTapCallback? onLessonTap,
     required ProgressStatuses status,
+    GestureTapCallback? onPracticeTap,
   }) =>
       LearnLessonTile(
         title: title,
         status: status,
         thumbnail: thumbnail,
         onLessonTap: onLessonTap,
+        onPracticeTap: onPracticeTap,
       );
 }

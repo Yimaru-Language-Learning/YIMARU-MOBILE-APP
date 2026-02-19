@@ -70,8 +70,7 @@ class StartupView extends StackedView<StartupViewModel> {
         _buildIndicatorWrapper(),
       ];
 
-  Widget _buildLoadingText() =>
-      Text('$label ...', style: const TextStyle(color: kcWhite, fontSize: 16));
+  Widget _buildLoadingText() => Text('$label ...', style: style16W600);
 
   Widget _buildIndicatorWrapper() => SizedBox(
         width: 16,
@@ -83,7 +82,7 @@ class StartupView extends StackedView<StartupViewModel> {
       const CustomCircularProgressIndicator(color: kcWhite);
 
   Widget _buildIconWrapper() => Padding(
-        padding: const EdgeInsets.only(top: 100),
+        padding: const EdgeInsets.only(top: 120),
         child: _buildIcon(),
       );
 

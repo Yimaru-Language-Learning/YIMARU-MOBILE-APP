@@ -22,10 +22,11 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
       required this.emailController,
       required this.passwordController});
 
-
-  Widget getPadding(context){
-    double half = screenHeight(context)/2;
-    return SizedBox(height: half + 25  - half,);
+  Widget getPadding(context) {
+    double half = screenHeight(context) / 2;
+    return SizedBox(
+      height: half + 25 - half,
+    );
   }
 
   Future<void> _login(LoginViewModel viewModel) async {
@@ -42,57 +43,75 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
 
   @override
   Widget build(BuildContext context, LoginViewModel viewModel) =>
-      _buildScaffoldWrapper(context: context,viewModel: viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper({required BuildContext context,required LoginViewModel viewModel}) => Scaffold(
-    backgroundColor: kcBackgroundColor,
-    body: _buildScaffoldStack(context: context,viewModel: viewModel),
-  );
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Scaffold(
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
 
- Widget _buildScaffoldStack({required BuildContext context,required LoginViewModel viewModel}) => Stack(children: [
-   _buildScaffold(context: context,viewModel: viewModel),
-  _buildLoginWithEmailState(viewModel),
-  _buildLoginWithGoogleState(viewModel)
-  ]);
+  Widget _buildScaffoldStack(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Stack(children: [
+        _buildScaffold(context: context, viewModel: viewModel),
+        _buildLoginWithEmailState(viewModel),
+        _buildLoginWithGoogleState(viewModel)
+      ]);
 
-  Widget _buildScaffold({required BuildContext context,required LoginViewModel viewModel}) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: _buildScaffoldChildren(context: context,viewModel: viewModel),
-  );
+  Widget _buildScaffold(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:
+            _buildScaffoldChildren(context: context, viewModel: viewModel),
+      );
 
-  List<Widget> _buildScaffoldChildren({required BuildContext context,required LoginViewModel viewModel}) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(context: context,viewModel: viewModel)];
+  List<Widget> _buildScaffoldChildren(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      [
+        _buildAppBar(viewModel),
+        _buildExpandedBody(context: context, viewModel: viewModel)
+      ];
 
   Widget _buildAppBar(LoginViewModel viewModel) => const LargeAppBar(
-    showBackButton: false,
-    showLanguageSelection: true,
-  );
+        showBackButton: false,
+        showLanguageSelection: true,
+      );
 
-  Widget _buildExpandedBody({required BuildContext context,required LoginViewModel viewModel}) =>
-      Expanded(child: _buildColumnScroller(context: context,viewModel: viewModel));
+  Widget _buildExpandedBody(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Expanded(
+          child: _buildColumnScroller(context: context, viewModel: viewModel));
 
-  Widget _buildColumnScroller({required BuildContext context,required LoginViewModel viewModel}) =>
+  Widget _buildColumnScroller(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildBodyWrapper(context: context,viewModel: viewModel),
+        child: _buildBodyWrapper(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBodyWrapper({required BuildContext context,required LoginViewModel viewModel}) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildBody(context: context,viewModel: viewModel),
-  );
+  Widget _buildBodyWrapper(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildBody(context: context, viewModel: viewModel),
+      );
 
-  Widget _buildBody({required BuildContext context,required LoginViewModel viewModel}) => Column(
+  Widget _buildBody(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-    children: _buildBodyChildren(context: context,viewModel: viewModel),
+        children: _buildBodyChildren(context: context, viewModel: viewModel),
       );
 
-
-
-
-  List<Widget> _buildBodyChildren({required BuildContext context,required LoginViewModel viewModel}) =>
-      [_buildUpperColumn(viewModel),getPadding(context), _buildLowerColumn(viewModel)];
-
-
+  List<Widget> _buildBodyChildren(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      [
+        _buildUpperColumn(viewModel),
+        getPadding(context),
+        _buildLowerColumn(viewModel)
+      ];
 
   Widget _buildUpperColumn(LoginViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -245,7 +264,6 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         foregroundColor: kcPrimaryColor,
         text: 'Login with Phone Number',
       );
-
 
   Widget _buildLoginWithEmailState(LoginViewModel viewModel) =>
       viewModel.busy(StateObjects.loginWithEmail)

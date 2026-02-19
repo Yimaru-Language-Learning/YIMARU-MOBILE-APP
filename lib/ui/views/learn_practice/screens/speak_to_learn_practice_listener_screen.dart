@@ -10,8 +10,9 @@ import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_column_button.dart';
 import '../../../widgets/small_app_bar.dart';
 
-class ListenSpeakerScreen extends ViewModelWidget<LearnPracticeViewModel> {
-  const ListenSpeakerScreen({super.key});
+class SpeakToLearnPracticeListenerScreen
+    extends ViewModelWidget<LearnPracticeViewModel> {
+  const SpeakToLearnPracticeListenerScreen({super.key});
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -87,6 +88,7 @@ class ListenSpeakerScreen extends ViewModelWidget<LearnPracticeViewModel> {
 
   Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
         onTap: viewModel.goBack,
+        showBackButton: true,
         title: 'Practice Speaking',
       );
 
@@ -101,41 +103,19 @@ class ListenSpeakerScreen extends ViewModelWidget<LearnPracticeViewModel> {
       [_buildSpeakerLabel(), verticalSpaceMedium, _buildSpeakingIndicator()];
 
   Widget _buildSpeakerLabel() => Text(
-        'Daniel is speaking...',
+        'You are speaking...',
         style: style14P400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSpeakingIndicator() => Container(
-        height: 200,
+        height: 100,
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            radius: 0.7,
-            stops: const [
-              0.2,
-              0.25,
-              0.45,
-              0.75,
-              1,
-            ],
-            center: Alignment.center,
-            colors: [
-              kcPrimaryColor.withOpacity(0.4),
-              kcPrimaryColor.withOpacity(0.4),
-              kcPrimaryColor.withOpacity(0.15),
-              kcPrimaryColor.withOpacity(0.1),
-              kcPrimaryColor.withOpacity(0.05),
-            ],
-            // quarterly spread
-          ),
-        ),
         child: _buildSpinner(),
       );
 
   Widget _buildSpinner() => const SpinKitWave(
-        size: 20,
+        size: 75,
         color: kcPrimaryColor,
         type: SpinKitWaveType.center,
       );
@@ -189,31 +169,29 @@ class ListenSpeakerScreen extends ViewModelWidget<LearnPracticeViewModel> {
           {required BuildContext context,
           required LearnPracticeViewModel viewModel}) =>
       [
-        _buildReplyButtonWrapper(),
-        _buildMicButtonWrapper(),
+        _buildEmptySpace(),
+        _buildCheckButtonWrapper(viewModel),
         _buildCancelButtonWrapper(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildReplyButtonWrapper() => Expanded(child: _buildReplyButton());
+  Widget _buildEmptySpace() => Expanded(child: Container());
 
-  Widget _buildReplyButton() => const CustomColumnButton(
-      icon: Icons.replay, label: 'Reply', color: kcPrimaryColor);
+  Widget _buildCheckButtonWrapper(LearnPracticeViewModel viewModel) =>
+      Expanded(child: _buildCheckButton(viewModel));
 
-  Widget _buildMicButtonWrapper() => Expanded(child: _buildMicButton());
-
-  Widget _buildMicButton() => ElevatedButton(
-        onPressed: () {},
+  Widget _buildCheckButton(LearnPracticeViewModel viewModel) => ElevatedButton(
+        onPressed: () => viewModel.goTo(4),
         style: const ButtonStyle(
           shape: WidgetStatePropertyAll(CircleBorder()),
           padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
           shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
           backgroundColor: WidgetStatePropertyAll(kcPrimaryColor),
         ),
-        child: _buildMicIcon(),
+        child: _buildCheckIcon(),
       );
 
-  Widget _buildMicIcon() => const Icon(
-        Icons.mic,
+  Widget _buildCheckIcon() => const Icon(
+        Icons.check,
         size: 35,
         color: kcWhite,
       );

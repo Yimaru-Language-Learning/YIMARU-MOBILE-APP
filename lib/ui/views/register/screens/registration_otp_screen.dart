@@ -26,10 +26,11 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
       required this.emailController,
       required this.phoneNumberController});
 
-
-  Widget getPadding(context){
-    double half = screenHeight(context)/2;
-    return SizedBox(height: half + 325  - half,);
+  Widget getPadding(context) {
+    double half = screenHeight(context) / 2;
+    return SizedBox(
+      height: half + 325 - half,
+    );
   }
 
   Future<void> _verifyOtp(RegisterViewModel viewModel) async {
@@ -45,20 +46,21 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
     await viewModel.verifyOtp();
   }
 
-
   @override
   Widget build(BuildContext context, RegisterViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(     {required BuildContext context,
-    required RegisterViewModel viewModel}) => Scaffold(
-    backgroundColor: kcBackgroundColor,
-    body: _buildScaffoldStack(context: context, viewModel: viewModel),
-  );
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Scaffold(
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
 
   Widget _buildScaffoldStack(
-      {required BuildContext context,
-        required RegisterViewModel viewModel}) =>
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
@@ -66,49 +68,66 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
         ],
       );
 
-  Widget _buildScaffold(     {required BuildContext context,
-    required RegisterViewModel viewModel}) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: _buildScaffoldChildren(context: context, viewModel: viewModel),
-  );
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children:
+            _buildScaffoldChildren(context: context, viewModel: viewModel),
+      );
 
-  List<Widget> _buildScaffoldChildren(     {required BuildContext context,
-    required RegisterViewModel viewModel}) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(context: context, viewModel: viewModel)];
+  List<Widget> _buildScaffoldChildren(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      [
+        _buildAppBar(viewModel),
+        _buildExpandedBody(context: context, viewModel: viewModel)
+      ];
 
   Widget _buildAppBar(RegisterViewModel viewModel) => const LargeAppBar(
-    showBackButton: false,
-    showLanguageSelection: true,
-  );
+        showBackButton: false,
+        showLanguageSelection: true,
+      );
 
-  Widget _buildExpandedBody(     {required BuildContext context,
-    required RegisterViewModel viewModel}) =>
-      Expanded(child: _buildColumnScroller(context: context, viewModel: viewModel));
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Expanded(
+          child: _buildColumnScroller(context: context, viewModel: viewModel));
 
-  Widget _buildColumnScroller(     {required BuildContext context,
-    required RegisterViewModel viewModel}) =>
+  Widget _buildColumnScroller(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
       SingleChildScrollView(
         child: _buildBodyWrapper(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBodyWrapper(     {required BuildContext context,
-    required RegisterViewModel viewModel}) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildBody(context: context, viewModel: viewModel),
-  );
+  Widget _buildBodyWrapper(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildBody(context: context, viewModel: viewModel),
+      );
 
-  Widget _buildBody(     {required BuildContext context,
-    required RegisterViewModel viewModel}) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: _buildBodyChildren(context: context, viewModel: viewModel),
-  );
+  Widget _buildBody(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: _buildBodyChildren(context: context, viewModel: viewModel),
+      );
 
-  List<Widget> _buildBodyChildren(     {required BuildContext context,
-    required RegisterViewModel viewModel}) =>
-      [_buildUpperColumn(viewModel),getPadding(context), _buildContinueButtonWrapper(viewModel)];
-
-
+  List<Widget> _buildBodyChildren(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      [
+        _buildUpperColumn(viewModel),
+        getPadding(context),
+        _buildContinueButtonWrapper(viewModel)
+      ];
 
   Widget _buildUpperColumn(RegisterViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,

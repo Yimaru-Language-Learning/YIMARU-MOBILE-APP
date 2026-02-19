@@ -11,7 +11,8 @@ class ApiService {
   final _service = locator<DioService>();
 
   // Register
-  Future<Map<String, dynamic>> registerWithEmail(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> registerWithEmail(
+      Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
         '$kBaseUrl/$kUserUrl/$kRegisterUrl',

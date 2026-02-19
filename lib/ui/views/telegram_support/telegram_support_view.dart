@@ -49,8 +49,9 @@ class TelegramSupportView extends StackedView<TelegramSupportViewModel> {
       );
 
   Widget _buildAppbar(TelegramSupportViewModel viewModel) => SmallAppBar(
-        title: 'Telegram Support',
         onTap: viewModel.pop,
+        showBackButton: true,
+        title: 'Telegram Support',
       );
 
   Widget _buildExpandedColumn(TelegramSupportViewModel viewModel) =>

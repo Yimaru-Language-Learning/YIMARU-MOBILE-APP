@@ -15,12 +15,10 @@ import 'learn_lesson_detail_viewmodel.dart';
 class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   const LearnLessonDetailView({Key? key}) : super(key: key);
 
-
-  Future<void> _navigate(LearnLessonDetailViewModel viewModel)async{
+  Future<void> _navigate(LearnLessonDetailViewModel viewModel) async {
     await viewModel.pause();
     await viewModel.navigateToLearnPractice();
   }
-
 
   // @override
   // void onDispose(LearnLessonDetailViewModel viewModel) {
@@ -70,6 +68,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
 
   Widget _buildAppBar(LearnLessonDetailViewModel viewModel) => SmallAppBar(
         onTap: viewModel.pop,
+        showBackButton: true,
       );
 
   Widget _buildBodyColumnWrapper(LearnLessonDetailViewModel viewModel) =>
@@ -173,6 +172,6 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: ()async => await _navigate(viewModel),
+        onTap: () async => await _navigate(viewModel),
       );
 }

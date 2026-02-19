@@ -148,8 +148,9 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       ];
 
   Widget _buildAppbar(ProfileDetailViewModel viewModel) => SmallAppBar(
-        title: 'Edit Profile',
         onTap: viewModel.pop,
+        showBackButton: true,
+        title: 'Edit Profile',
       );
 
   Widget _buildColumnWrapper(

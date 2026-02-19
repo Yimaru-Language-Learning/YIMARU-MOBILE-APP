@@ -29,8 +29,6 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel>
     confirmPasswordController.clear();
   }
 
-
-
   void _clearDataOnNavigation(ForgetPasswordViewModel viewModel) {
     if (viewModel.currentPage == 0) {
       emailController.clear();
@@ -77,10 +75,6 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel>
               _pop(value: value, viewModel: viewModel),
           child: _buildBody(viewModel));
 
-
-
-
-
   Widget _buildBody(ForgetPasswordViewModel viewModel) =>
       IndexedStack(index: viewModel.currentPage, children: _buildScreens());
 
@@ -96,6 +90,4 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel>
       passwordController: passwordController,
       resetCodeController: resetCodeController,
       confirmPasswordController: confirmPasswordController);
-
-
 }

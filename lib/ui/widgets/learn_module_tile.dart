@@ -218,8 +218,9 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
-        onTap: () async =>
-            await _showSheet(context: context, viewModel: viewModel),
+        onTap: () async => status == ProgressStatuses.completed
+            ? await viewModel.navigateToLearnPractice()
+            : await _showSheet(context: context, viewModel: viewModel),
       );
 
   Widget _buildSheet(LearnModuleViewModel viewModel) => FinishPracticeSheet(

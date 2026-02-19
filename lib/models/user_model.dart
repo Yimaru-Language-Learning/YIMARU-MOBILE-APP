@@ -12,11 +12,9 @@ class UserModel {
 
   final String? country;
 
-
   final String? occupation;
 
   final bool? userInfoLoaded;
-
 
   @JsonKey(name: 'user_id')
   final int? userId;
@@ -55,7 +53,7 @@ class UserModel {
     this.accessToken,
     this.refreshToken,
     this.profilePicture,
-    this.userInfoLoaded ,
+    this.userInfoLoaded,
     this.profileCompleted,
   });
 

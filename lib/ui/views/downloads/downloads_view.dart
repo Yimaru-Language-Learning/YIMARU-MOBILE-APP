@@ -54,8 +54,9 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
       ];
 
   Widget _buildAppbar(DownloadsViewModel viewModel) => SmallAppBar(
-        title: 'Offline Downloads',
         onTap: viewModel.pop,
+        showBackButton: true,
+        title: 'Offline Downloads',
       );
 
   Widget _buildContentWrapper(DownloadsViewModel viewModel) =>

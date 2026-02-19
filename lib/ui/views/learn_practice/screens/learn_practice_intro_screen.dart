@@ -9,53 +9,61 @@ import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/small_app_bar.dart';
 import '../../../widgets/speaking_partner_image.dart';
 
-class PracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
-  const PracticeIntroScreen({super.key});
+class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
+  final String title;
+  final String subtitle;
+  final String buttonLabel;
+
+  const LearnPracticeIntroScreen(
+      {super.key,
+      required this.title,
+      required this.subtitle,
+      required this.buttonLabel});
 
   @override
-  Widget build(BuildContext context,LearnPracticeViewModel viewModel) => _buildScaffoldWrapper(viewModel);
-
-
+  Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
+      _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(LearnPracticeViewModel viewModel) => Scaffold(
-    backgroundColor: kcBackgroundColor,
-    body: _buildScaffold(viewModel),
-  );
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffold(viewModel),
+      );
 
   Widget _buildScaffold(LearnPracticeViewModel viewModel) =>
       SafeArea(child: _buildColumnWrapper(viewModel));
 
   Widget _buildColumnWrapper(LearnPracticeViewModel viewModel) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildColumn(viewModel),
-  );
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildColumn(viewModel),
+      );
 
   Widget _buildColumn(LearnPracticeViewModel viewModel) => Column(
-    children: [
-      verticalSpaceMedium,
-      _buildAppBar(viewModel),
-      _buildBodyColumnWrapper(viewModel),
-    ],
-  );
+        children: [
+          verticalSpaceMedium,
+          _buildAppBar(viewModel),
+          _buildBodyColumnWrapper(viewModel),
+        ],
+      );
 
   Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
-    onTap: viewModel.goBack,
-    title: 'Practice Speaking',
-  );
+        showBackButton: true,
+        onTap: viewModel.goBack,
+        title: 'Practice Speaking',
+      );
 
   Widget _buildBodyColumnWrapper(LearnPracticeViewModel viewModel) => Expanded(
-    child: _buildBodyColumn(viewModel),
-  );
+        child: _buildBodyColumn(viewModel),
+      );
 
   Widget _buildBodyColumn(LearnPracticeViewModel viewModel) => Column(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: _buildBodyColumnChildren(viewModel),
-  );
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: _buildBodyColumnChildren(viewModel),
+      );
 
   List<Widget> _buildBodyColumnChildren(LearnPracticeViewModel viewModel) => [
-    _buildPracticeColumnWrapper(viewModel),
-    _buildContinueButtonWrapper(viewModel)
-  ];
+        _buildPracticeColumnWrapper(viewModel),
+        _buildContinueButtonWrapper(viewModel)
+      ];
 
   Widget _buildPracticeColumnWrapper(LearnPracticeViewModel viewModel) =>
       Expanded(child: _buildPracticeColumnScrollView(viewModel));
@@ -66,10 +74,10 @@ class PracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildPracticeColumn(LearnPracticeViewModel viewModel) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: _buildPracticeColumnChildren(viewModel),
-  );
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: _buildPracticeColumnChildren(viewModel),
+      );
 
   List<Widget> _buildPracticeColumnChildren(LearnPracticeViewModel viewModel) =>
       [
@@ -83,28 +91,30 @@ class PracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
         _buildSubtitle()
       ];
 
-  Widget _buildImage() => const SpeakingPartnerImage(radius: 75,);
+  Widget _buildImage() => const SpeakingPartnerImage(
+        radius: 75,
+      );
 
   Widget _buildPartnerName() => Text.rich(
-    TextSpan(text: 'Daniel', style: style14DG600, children: [
-      TextSpan(
-        text: ' - Your Speaking Partner',
-        style: style14MG400,
-      )
-    ]),
-  );
+        TextSpan(text: 'Daniel', style: style14DG600, children: [
+          TextSpan(
+            text: ' - Your Speaking Partner',
+            style: style14MG400,
+          )
+        ]),
+      );
 
   Widget _buildTitle() => Text(
-    'Let \'s practice what you just learnt!',
-    style: style25DG600,
-    textAlign: TextAlign.center,
-  );
+       title,
+        style: style25DG600,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildSubtitle() => Text(
-    'I’ll ask you a few questions, and you can respond naturally.',
-    style: style14DG400,
-    textAlign: TextAlign.center,
-  );
+      subtitle,
+        style: style14DG400,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildContinueButtonWrapper(LearnPracticeViewModel viewModel) =>
       Padding(
@@ -116,9 +126,9 @@ class PracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Start Practice',
+        text: buttonLabel,
         foregroundColor: kcWhite,
-        onTap: ()=> viewModel.goTo(1),
+        onTap: () => viewModel.goTo(1),
         backgroundColor: kcPrimaryColor,
       );
 }

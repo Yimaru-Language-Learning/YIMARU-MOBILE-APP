@@ -481,5 +481,5 @@ class OnboardingViewModel extends FormViewModel {
       await _navigationService.navigateToAssessmentView(data: _userData);
 
   Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShowView(const HomeView());
+      await _navigationService.clearStackAndShow(Routes.homeView);
 }

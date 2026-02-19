@@ -7,8 +7,8 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/small_app_bar.dart';
 
-class StartPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
-  const StartPracticeScreen({super.key});
+class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
+  const StartLearnPracticeScreen({super.key});
 
   @override
   Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
@@ -47,6 +47,7 @@ class StartPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
 
   Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
         onTap: viewModel.goBack,
+        showBackButton: true,
         title: 'Practice Speaking',
       );
 
@@ -122,7 +123,7 @@ class StartPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
       [
         _buildActionLabel(),
         verticalSpaceMedium,
-        _buildButtonsRowWrapper(),
+        _buildButtonsRowWrapper(viewModel),
         verticalSpaceMedium,
       ];
 
@@ -132,15 +133,15 @@ class StartPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
         textAlign: TextAlign.center,
       );
 
-  Widget _buildButtonsRowWrapper() => Row(
+  Widget _buildButtonsRowWrapper(LearnPracticeViewModel viewModel) => Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildButtonsRowChildren(),
+        children: _buildButtonsRowChildren(viewModel),
       );
 
-  List<Widget> _buildButtonsRowChildren() => [
+  List<Widget> _buildButtonsRowChildren(LearnPracticeViewModel viewModel) => [
         _buildReplyButtonWrapper(),
-        _buildMicButtonWrapper(),
+        _buildMicButtonWrapper(viewModel),
         _buildEmptySpace()
       ];
 
@@ -149,10 +150,11 @@ class StartPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
   Widget _buildReplyButton() => const CustomColumnButton(
       icon: Icons.replay, label: 'Reply', color: kcPrimaryColor);
 
-  Widget _buildMicButtonWrapper() => Expanded(child: _buildMicButton());
+  Widget _buildMicButtonWrapper(LearnPracticeViewModel viewModel) =>
+      Expanded(child: _buildMicButton(viewModel));
 
-  Widget _buildMicButton() => ElevatedButton(
-        onPressed: () {},
+  Widget _buildMicButton(LearnPracticeViewModel viewModel) => ElevatedButton(
+        onPressed: () => viewModel.goTo(2),
         style: const ButtonStyle(
           shape: WidgetStatePropertyAll(CircleBorder()),
           padding: WidgetStatePropertyAll(EdgeInsets.all(15)),

@@ -10,13 +10,13 @@ class LearnModuleViewModel extends BaseViewModel {
 
   final List<Map<String, dynamic>> _modules = [
     {
-      'status': ProgressStatuses.started,
+      'status': ProgressStatuses.completed,
       'title': 'Module 1: Greetings & Introductions',
       'subtitle':
           'Learn how to introduce yourself, talk about your surroundings, and start simple conversations.',
     },
     {
-      'status': ProgressStatuses.pending,
+      'status': ProgressStatuses.started,
       'title': 'Module 2: Everyday Basics',
       'subtitle': 'Learn numbers, colors, and common objects.',
     },
@@ -39,4 +39,12 @@ class LearnModuleViewModel extends BaseViewModel {
 
   Future<void> navigateToLearnLesson() async =>
       await _navigationService.navigateToLearnLessonView();
+
+  Future<void> navigateToLearnPractice() async =>
+      await _navigationService.navigateToLearnPracticeView(
+        title: 'Let’s Practice Module 1',
+        buttonLabel: 'Begin Module Practice',
+        subtitle:
+        'Let’s quickly review what you’ve learned in this module! ',
+      );
 }
