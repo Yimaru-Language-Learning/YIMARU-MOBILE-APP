@@ -1,3 +1,5 @@
+
+// Split full name
 Map<String, String> splitFullName(String fullName) {
   final parts = fullName.trim().split(RegExp(r'\s+'));
 

@@ -22,10 +22,7 @@ class PracticeResponseCard extends StatelessWidget {
       );
 
   Widget _buildRow() => Row(
-        children: [
-          _buildPlayButton(),
-          _buildColumnWrapper()
-        ],
+        children: [_buildPlayButton(), _buildColumnWrapper()],
       );
 
   Widget _buildPlayButton() => ElevatedButton(

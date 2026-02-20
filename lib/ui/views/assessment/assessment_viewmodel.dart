@@ -16,6 +16,7 @@ import '../../common/ui_helpers.dart';
 import '../home/home_view.dart';
 
 class AssessmentViewModel extends BaseViewModel {
+  // Dependency injection
   final _apiService = locator<ApiService>();
   final _dialogService = locator<DialogService>();
   final _statusChecker = locator<StatusCheckerService>();
@@ -207,6 +208,7 @@ class AssessmentViewModel extends BaseViewModel {
     }
   }
 
+  // In-app navigation
   void next({int? page}) async {
     if (page == null) {
       if (_previousPage != 0) {

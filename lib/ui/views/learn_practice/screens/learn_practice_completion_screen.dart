@@ -8,7 +8,8 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 
-class LearnPracticeCompletionScreen extends ViewModelWidget<LearnPracticeViewModel> {
+class LearnPracticeCompletionScreen
+    extends ViewModelWidget<LearnPracticeViewModel> {
   const LearnPracticeCompletionScreen({super.key});
 
   @override
@@ -16,61 +17,60 @@ class LearnPracticeCompletionScreen extends ViewModelWidget<LearnPracticeViewMod
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(LearnPracticeViewModel viewModel) => Scaffold(
-    backgroundColor: kcBackgroundColor,
-    body: _buildBodyWrapper(viewModel),
-  );
-
-
+        backgroundColor: kcBackgroundColor,
+        body: _buildBodyWrapper(viewModel),
+      );
 
   Widget _buildBodyWrapper(LearnPracticeViewModel viewModel) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildBody(viewModel),
-  );
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildBody(viewModel),
+      );
 
   Widget _buildBody(LearnPracticeViewModel viewModel) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: _buildBodyChildren(viewModel),
-  );
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: _buildBodyChildren(viewModel),
+      );
 
   List<Widget> _buildBodyChildren(LearnPracticeViewModel viewModel) =>
       [_buildUpperColumn(viewModel), _buildContinueButtonWrapper(viewModel)];
 
   Widget _buildUpperColumn(LearnPracticeViewModel viewModel) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: _buildUpperColumnChildren(viewModel),
-  );
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: _buildUpperColumnChildren(viewModel),
+      );
 
   List<Widget> _buildUpperColumnChildren(LearnPracticeViewModel viewModel) => [
-    verticalSpaceMassive,
-    _buildIcon(),
-    verticalSpaceMedium,
-    _buildTitle(),
-    verticalSpaceSmall,
-    _buildSubtitle(),
-  ];
+        verticalSpaceMassive,
+        _buildIcon(),
+        verticalSpaceMedium,
+        _buildTitle(),
+        verticalSpaceSmall,
+        _buildSubtitle(),
+      ];
 
   Widget _buildIcon() => SvgPicture.asset(
-    'assets/icons/complete.svg',
-  );
+        'assets/icons/complete.svg',
+      );
 
   Widget _buildTitle() => Text(
-    'Yay, you’ve completed A1 ',
-    style: style25DG600,
-    textAlign: TextAlign.center,
-  );
+        'Yay, you’ve completed A1 ',
+        style: style25DG600,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildSubtitle() => Text(
-    'We’re now analyzing your speaking skills',
-    textAlign: TextAlign.center,
-    style: style14MG400,
-  );
+        'We’re now analyzing your speaking skills',
+        textAlign: TextAlign.center,
+        style: style14MG400,
+      );
 
-  Widget _buildContinueButtonWrapper(LearnPracticeViewModel viewModel) => Padding(
-    padding: const EdgeInsets.only(bottom: 50),
-    child: _buildContinueButton(viewModel),
-  );
+  Widget _buildContinueButtonWrapper(LearnPracticeViewModel viewModel) =>
+      Padding(
+        padding: const EdgeInsets.only(bottom: 50),
+        child: _buildContinueButton(viewModel),
+      );
 
   Widget _buildContinueButton(LearnPracticeViewModel viewModel) =>
       CustomElevatedButton(

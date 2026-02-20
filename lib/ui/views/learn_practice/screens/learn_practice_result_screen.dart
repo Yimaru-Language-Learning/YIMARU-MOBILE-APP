@@ -95,7 +95,8 @@ class LearnPracticeResultScreen
         verticalSpaceMedium,
       ];
 
-  Widget _buildContinueButton(LearnPracticeViewModel viewModel) => CustomElevatedButton(
+  Widget _buildContinueButton(LearnPracticeViewModel viewModel) =>
+      CustomElevatedButton(
         height: 55,
         text: 'Continue',
         borderRadius: 12,

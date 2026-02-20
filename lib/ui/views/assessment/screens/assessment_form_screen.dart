@@ -155,9 +155,6 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
         height: 55,
         borderRadius: 12,
         foregroundColor: kcWhite,
-        text: viewModel.currentQuestion == viewModel.assessments.length - 1
-            ? 'Finish'
-            : 'Continue',
         backgroundColor:
             viewModel.selectedAnswers.containsKey(question.toString())
                 ? kcPrimaryColor
@@ -165,5 +162,8 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
         onTap: viewModel.selectedAnswers.containsKey(question.toString())
             ? () => viewModel.nextQuestion()
             : null,
+        text: viewModel.currentQuestion == viewModel.assessments.length - 1
+            ? 'Finish'
+            : 'Continue',
       );
 }

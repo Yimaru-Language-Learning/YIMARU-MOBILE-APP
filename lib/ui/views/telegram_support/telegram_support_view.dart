@@ -85,7 +85,7 @@ class TelegramSupportView extends StackedView<TelegramSupportViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
       ];
 
   Widget _buildIcon() =>
@@ -101,7 +101,7 @@ class TelegramSupportView extends StackedView<TelegramSupportViewModel> {
         ),
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => const Text(
         'Connect with our support team instantly on Telegram for quick assistance and community updates',
         textAlign: TextAlign.center,
         style: TextStyle(color: kcMediumGrey),

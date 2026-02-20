@@ -105,13 +105,13 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildTitle() => Text(
-       title,
+        title,
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle() => Text(
-      subtitle,
+        subtitle,
         style: style14DG400,
         textAlign: TextAlign.center,
       );

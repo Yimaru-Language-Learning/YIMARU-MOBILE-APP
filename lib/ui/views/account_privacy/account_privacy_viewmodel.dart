@@ -5,6 +5,7 @@ import 'package:yimaru_app/app/app.router.dart';
 import '../../../app/app.locator.dart';
 
 class AccountPrivacyViewModel extends BaseViewModel {
+  // Dependency injection
   final _navigationService = locator<NavigationService>();
 
   // Navigation

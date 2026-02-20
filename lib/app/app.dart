@@ -38,6 +38,10 @@ import 'package:yimaru_app/services/image_downloader_service.dart';
 import 'package:yimaru_app/ui/views/forget_password/forget_password_view.dart';
 import 'package:yimaru_app/ui/views/learn_lesson_detail/learn_lesson_detail_view.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_view.dart';
+import 'package:yimaru_app/ui/views/course/course_view.dart';
+import 'package:yimaru_app/ui/views/course_module/course_module_view.dart';
+import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
+import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -69,6 +73,10 @@ import 'package:yimaru_app/ui/views/learn_practice/learn_practice_view.dart';
     MaterialRoute(page: ForgetPasswordView),
     MaterialRoute(page: LearnLessonDetailView),
     MaterialRoute(page: LearnPracticeView),
+    MaterialRoute(page: CourseView),
+    MaterialRoute(page: CourseModuleView),
+    MaterialRoute(page: CoursePracticeView),
+    MaterialRoute(page: CoursePaymentView),
 // @stacked-route
   ],
   dependencies: [

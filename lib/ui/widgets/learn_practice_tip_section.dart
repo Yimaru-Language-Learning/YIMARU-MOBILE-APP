@@ -27,24 +27,19 @@ class LearnPracticeTipSection extends StatelessWidget {
   List<Widget> _buildColumnChildren() =>
       [_buildTitleWrapper(), verticalSpaceTiny, _buildContent()];
 
-  Widget _buildTitleWrapper() =>
-      Row(
-        children: [
-          _buildLeading(),horizontalSpaceSmall,_buildTitle()
-        ],
+  Widget _buildTitleWrapper() => Row(
+        children: [_buildLeading(), horizontalSpaceSmall, _buildTitle()],
       );
 
-
   Widget _buildLeading() => const Icon(
-    Icons.lightbulb_outline_rounded,
-    color: kcBlue,
-  );
+        Icons.lightbulb_outline_rounded,
+        color: kcBlue,
+      );
 
   Widget _buildTitle() => Text(
-    'Quick Tip',
-    style: style16B600,
-  );
-
+        'Quick Tip',
+        style: style16B600,
+      );
 
   Widget _buildContent() => Text(
         "You can always do better!\nSpeak in full sentences instead of short phrases.\nMaintain a steady pace, not too fast, not too slow.\nUse varied vocabulary to make your answers richer.\nPause naturally instead of using fillers like “um” or “uh”.",

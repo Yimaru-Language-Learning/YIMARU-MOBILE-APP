@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 
 class FormValidator {
+  // Form validator
   static String? validateForm(String? value) {
     if (value == null) {
       return null;
@@ -12,6 +13,37 @@ class FormValidator {
     return null;
   }
 
+
+  // Email validator
+  static String? validateEmail(String? value) {
+    if (value == null) {
+      return null;
+    }
+
+    if (value.isEmpty) {
+      return 'The field is required';
+    }
+
+    if (!EmailValidator.validate(value)) {
+      return 'Invalid email format';
+    }
+
+    return null;
+  }
+
+  // Password validator
+  static String? validatePassword(String? value) {
+    if (value == null) {
+      return null;
+    }
+
+    if (value.isEmpty) {
+      return 'The field is required';
+    }
+    return null;
+  }
+
+  // Phone number validator
   static String? validatePhoneNumber(String? value) {
     if (value == null) {
       return null;
@@ -35,30 +67,4 @@ class FormValidator {
     return null;
   }
 
-  static String? validateEmail(String? value) {
-    if (value == null) {
-      return null;
-    }
-
-    if (value.isEmpty) {
-      return 'The field is required';
-    }
-
-    if (!EmailValidator.validate(value)) {
-      return 'Invalid email format';
-    }
-
-    return null;
-  }
-
-  static String? validatePassword(String? value) {
-    if (value == null) {
-      return null;
-    }
-
-    if (value.isEmpty) {
-      return 'The field is required';
-    }
-    return null;
-  }
 }

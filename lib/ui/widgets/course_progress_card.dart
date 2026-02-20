@@ -6,7 +6,7 @@ import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
-class CourseLevelCard extends StatelessWidget {
+class CourseProgressCard extends StatelessWidget {
   final Color color;
   final String icon;
   final String title;
@@ -15,7 +15,7 @@ class CourseLevelCard extends StatelessWidget {
   final bool isCompleted;
   final GestureTapCallback? onTap;
 
-  const CourseLevelCard({
+  const CourseProgressCard({
     super.key,
     this.onTap,
     required this.icon,
@@ -56,7 +56,7 @@ class CourseLevelCard extends StatelessWidget {
         verticalSpaceSmall,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceSmall,
         _buildActionButton()
       ];
@@ -89,7 +89,7 @@ class CourseLevelCard extends StatelessWidget {
         ),
       );
 
-  Widget _buildSubTitle() => Expanded(
+  Widget _buildSubtitle() => Expanded(
         child: Text(
           subtitle,
           maxLines: 3,

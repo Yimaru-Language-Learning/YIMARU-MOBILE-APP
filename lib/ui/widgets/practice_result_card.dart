@@ -11,7 +11,11 @@ class PracticeResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _buildColumnWrapper();
 
-  Widget _buildColumnWrapper() => SizedBox(height: 100,width: double.maxFinite,child: _buildColumn(),);
+  Widget _buildColumnWrapper() => SizedBox(
+        height: 100,
+        width: double.maxFinite,
+        child: _buildColumn(),
+      );
 
   Widget _buildColumn() => Column(
         mainAxisSize: MainAxisSize.min,
@@ -19,7 +23,8 @@ class PracticeResultCard extends StatelessWidget {
         children: _buildColumnChildren(),
       );
 
-  List<Widget> _buildColumnChildren() => [_buildQuestion(),verticalSpaceSmall, _buildRow()];
+  List<Widget> _buildColumnChildren() =>
+      [_buildQuestion(), verticalSpaceSmall, _buildRow()];
 
   Widget _buildQuestion() => Text(
         '$index. ${data['question']}',
@@ -30,8 +35,11 @@ class PracticeResultCard extends StatelessWidget {
         children: _buildRowChildren(),
       );
 
-  List<Widget> _buildRowChildren() =>
-      [_buildSampleResponseWrapper(),horizontalSpaceSmall, _buildActualResponseWrapper()];
+  List<Widget> _buildRowChildren() => [
+        _buildSampleResponseWrapper(),
+        horizontalSpaceSmall,
+        _buildActualResponseWrapper()
+      ];
 
   Widget _buildSampleResponseWrapper() =>
       Expanded(child: _buildSampleResponse());

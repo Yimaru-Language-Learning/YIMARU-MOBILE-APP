@@ -9,8 +9,10 @@ import '../ui/common/app_constants.dart';
 import 'dio_service.dart';
 
 class ImageDownloaderService {
+  // Dependency injection
   final _service = locator<DioService>();
 
+  // Image downloader
   Future<String> downloader(String? networkImage) async {
     late File image;
 

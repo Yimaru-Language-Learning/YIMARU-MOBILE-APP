@@ -8,6 +8,7 @@ import '../../common/enmus.dart';
 class LearnModuleViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
 
+  // Modules
   final List<Map<String, dynamic>> _modules = [
     {
       'status': ProgressStatuses.completed,
@@ -35,6 +36,7 @@ class LearnModuleViewModel extends BaseViewModel {
 
   List<Map<String, dynamic>> get modules => _modules;
 
+  // Navigation
   void pop() => _navigationService.back();
 
   Future<void> navigateToLearnLesson() async =>
@@ -44,7 +46,6 @@ class LearnModuleViewModel extends BaseViewModel {
       await _navigationService.navigateToLearnPracticeView(
         title: 'Let’s Practice Module 1',
         buttonLabel: 'Begin Module Practice',
-        subtitle:
-        'Let’s quickly review what you’ve learned in this module! ',
+        subtitle: 'Let’s quickly review what you’ve learned in this module! ',
       );
 }

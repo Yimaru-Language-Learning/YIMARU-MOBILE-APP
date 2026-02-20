@@ -44,7 +44,7 @@ class CancelLearnPracticeSheet extends StatelessWidget {
       );
 
   Widget _buildMessage() => Text.rich(
-        TextSpan(text: 'You’re almost there,', style: style18DG600, children: [
+        TextSpan(text: 'You’re almost there,', style: style18DG700, children: [
           TextSpan(
             text: '  Johnny!',
             style: style18P600,

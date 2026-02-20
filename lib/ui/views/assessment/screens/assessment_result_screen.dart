@@ -78,8 +78,8 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildPrimarySubtitle() => Text(
         'Great Job! Here’s your next step to keep improving.',
-        textAlign: TextAlign.center,
         style: style14MG400,
+        textAlign: TextAlign.center,
       );
 
   Widget _buildIconWrapper(AssessmentViewModel viewModel) =>

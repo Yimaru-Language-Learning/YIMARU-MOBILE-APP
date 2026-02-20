@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/views/course/course_view.dart';
 import 'package:yimaru_app/ui/views/learn/learn_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
 import 'package:yimaru_app/ui/views/startup/startup_view.dart';
@@ -76,7 +77,7 @@ Widget getViewForIndex(int index) {
     case 0:
       return const LearnView();
     case 1:
-      return const ComingSoon();
+      return const CourseView();
 
     default:
       return const ProfileView();

@@ -76,8 +76,8 @@ class AssessmentCompletionScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildSubtitle() => Text(
         'We’re now analyzing your speaking skills',
-        textAlign: TextAlign.center,
         style: style14MG400,
+        textAlign: TextAlign.center,
       );
 
   Widget _buildContinueButtonWrapper(AssessmentViewModel viewModel) => Padding(

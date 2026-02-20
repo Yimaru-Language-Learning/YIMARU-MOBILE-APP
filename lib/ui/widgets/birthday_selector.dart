@@ -25,6 +25,7 @@ class BirthdaySelector extends StatelessWidget {
       context: context,
       is24HourMode: false,
       isShowSeconds: false,
+      title: _buildTitle(),
       lastDate: DateTime.now(),
       firstDate: DateTime(1900),
       barrierDismissible: true,
@@ -34,7 +35,6 @@ class BirthdaySelector extends StatelessWidget {
       type: OmniDateTimePickerType.date,
       borderRadius: const BorderRadius.all(Radius.circular(15)),
       insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
-      title: const Text('Birthday', style: TextStyle(fontSize: 16)),
       theme: ThemeData(
         colorScheme:
             const ColorScheme.light().copyWith(primary: kcPrimaryColor),
@@ -71,6 +71,8 @@ class BirthdaySelector extends StatelessWidget {
         ),
         child: _buildContainer(),
       );
+
+  Widget _buildTitle() => Text('Birthday', style: style16DG600);
 
   Widget _buildContainer() => Container(
         decoration: BoxDecoration(

@@ -183,7 +183,7 @@ class LearnLessonTile extends StatelessWidget {
         _buildLessonButton(),
       ];
 
-  Widget _buildPracticeButton() =>  CustomElevatedButton(
+  Widget _buildPracticeButton() => CustomElevatedButton(
         height: 15,
         width: 135,
         text: 'Practice',

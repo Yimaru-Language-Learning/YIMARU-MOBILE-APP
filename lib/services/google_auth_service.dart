@@ -2,8 +2,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 
 class GoogleAuthService {
+  // Initialization
   final GoogleSignIn signIn = GoogleSignIn.instance;
 
+  // Google authentication
   Future<GoogleSignInAccount?> googleAuth() async {
     try {
       GoogleSignInAccount? googleUser;

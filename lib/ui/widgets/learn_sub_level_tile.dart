@@ -123,14 +123,14 @@ class LearnSubLevelTile extends ViewModelWidget<LearnLevelViewModel> {
       );
 
   Widget _buildPracticeButton(LearnLevelViewModel viewModel) =>
-       CustomElevatedButton(
-        height: 15,
-        text: 'Practice',
-        borderRadius: 12,
-        backgroundColor: kcWhite,
-        borderColor: kcPrimaryColor,
-        foregroundColor: kcPrimaryColor,
-         onTap: () async =>  await viewModel.navigateToLearnPractice()
-        // onTap: () async => await viewModel.navigateToLearnLevel(),
-      );
+      CustomElevatedButton(
+          height: 15,
+          text: 'Practice',
+          borderRadius: 12,
+          backgroundColor: kcWhite,
+          borderColor: kcPrimaryColor,
+          foregroundColor: kcPrimaryColor,
+          onTap: () async => await viewModel.navigateToLearnPractice()
+          // onTap: () async => await viewModel.navigateToLearnLevel(),
+          );
 }

@@ -100,9 +100,9 @@ class RetakeAssessmentScreen extends ViewModelWidget<AssessmentViewModel> {
         height: 55,
         safe: false,
         borderRadius: 12,
+        foregroundColor: kcWhite,
         text: 'Retake Assessment',
         onTap: () => viewModel.next(),
-        foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );
 
@@ -116,9 +116,9 @@ class RetakeAssessmentScreen extends ViewModelWidget<AssessmentViewModel> {
         height: 55,
         text: 'Skip',
         borderRadius: 12,
+        backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         onTap: () => viewModel.next(),
-        backgroundColor: kcWhite,
         foregroundColor: kcPrimaryColor,
       );
 }

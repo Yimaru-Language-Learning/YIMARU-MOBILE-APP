@@ -67,7 +67,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
   List<Widget> _buildLevelsColumnChildren(LearnModuleViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(),
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildOverallProgress(),
         verticalSpaceMedium,
@@ -79,7 +79,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         style: style18P600,
       );
 
-  Widget _buildSubTitle() => Text(
+  Widget _buildSubtitle() => Text(
         'Your Current Level',
         style: style14DG400,
       );

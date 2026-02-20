@@ -74,7 +74,7 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildAgeGroups(viewModel)
       ];
@@ -91,7 +91,7 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
         style: style25DG600,
       );
 
-  Widget _buildSubTitle() => Text(
+  Widget _buildSubtitle() => Text(
         'We’ll personalize your learning experience based on your age.',
         style: style14DG400,
       );

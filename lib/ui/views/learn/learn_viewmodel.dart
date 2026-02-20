@@ -16,7 +16,9 @@ class LearnViewModel extends ReactiveViewModel {
       [_authenticationService];
 
   // Current user
-  UserModel? get user => _authenticationService.user;
+  UserModel? get _user => _authenticationService.user;
+
+  UserModel? get user => _user;
 
   final List<Map<String, dynamic>> _learnLevels = [
     {

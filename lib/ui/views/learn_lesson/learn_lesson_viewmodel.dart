@@ -40,6 +40,6 @@ class LearnLessonViewModel extends BaseViewModel {
         buttonLabel: 'Start Practice',
         title: 'Let \'s practice what you just learnt!',
         subtitle:
-        'I’ll ask you a few questions, and you can respond naturally.',
+            'I’ll ask you a few questions, and you can respond naturally.',
       );
 }

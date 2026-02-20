@@ -24,6 +24,9 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
   }
 
   @override
+  AssessmentViewModel viewModelBuilder(BuildContext context) => AssessmentViewModel();
+
+  @override
   Widget builder(
     BuildContext context,
     AssessmentViewModel viewModel,
@@ -65,9 +68,5 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
 
   Widget _buildStartLesson() => const StartLessonScreen();
 
-  @override
-  AssessmentViewModel viewModelBuilder(
-    BuildContext context,
-  ) =>
-      AssessmentViewModel();
+
 }

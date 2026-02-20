@@ -68,7 +68,7 @@ class CustomLargeRadioButton extends StatelessWidget {
 
   Widget _buildTitle() => Text(
         title,
-        style: style18DG600,
+        style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(

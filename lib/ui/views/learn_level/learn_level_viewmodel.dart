@@ -32,7 +32,6 @@ class LearnLevelViewModel extends BaseViewModel {
       await _navigationService.navigateToLearnPracticeView(
         title: 'Let’s Practice Level 1',
         buttonLabel: 'Begin Level Practice',
-        subtitle:
-        'Let’s quickly review what you’ve learned in this level! ',
+        subtitle: 'Let’s quickly review what you’ve learned in this level! ',
       );
 }

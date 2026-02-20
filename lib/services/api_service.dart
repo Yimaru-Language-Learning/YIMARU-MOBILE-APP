@@ -8,6 +8,7 @@ import '../app/app.locator.dart';
 import '../ui/common/enmus.dart';
 
 class ApiService {
+  // Dependency injection
   final _service = locator<DioService>();
 
   // Register
@@ -38,7 +39,7 @@ class ApiService {
     }
   }
 
-  // Email Login
+  // Email login
   Future<Map<String, dynamic>> emailLogin(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(

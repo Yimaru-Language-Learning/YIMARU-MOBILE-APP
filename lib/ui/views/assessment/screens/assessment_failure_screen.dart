@@ -77,9 +77,10 @@ class AssessmentFailureScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildSubtitle() => Text(
         'Your assessment wasn’t long enough for us to analyze your speaking level. You can retake the call to get accurate results ',
-        textAlign: TextAlign.center,
         style: style14MG400,
-      );
+    textAlign: TextAlign.center,
+
+  );
 
   Widget _buildLowerColumn(AssessmentViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -97,9 +98,9 @@ class AssessmentFailureScreen extends ViewModelWidget<AssessmentViewModel> {
         height: 55,
         safe: false,
         borderRadius: 12,
+        foregroundColor: kcWhite,
         text: 'Continue Assessment',
         onTap: () => viewModel.next(),
-        foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );
 

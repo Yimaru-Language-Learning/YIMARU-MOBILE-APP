@@ -110,7 +110,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
 
   Widget _buildHeader() => Text(
         'Module 1: Greetings & Introductions',
-        style: style18DG600,
+        style: style18DG700,
       );
 
   Widget _buildListView(LearnLessonViewModel viewModel) => ListView.builder(
@@ -124,7 +124,6 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
           onLessonTap: () async =>
               await viewModel.navigateToLearnLessonDetail(),
           onPracticeTap: () async => await viewModel.navigateToLearnPractice(),
-
         ),
       );
 

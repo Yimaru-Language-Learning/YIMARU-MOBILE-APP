@@ -72,7 +72,7 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
         _buildSpeakToLearnPracticeListenerScreen(),
         _buildFinishLearnPracticeScreen(),
         _buildLearnPracticeResultScreen(),
-    _buildLearnPracticeCompletionScreen()
+        _buildLearnPracticeCompletionScreen()
       ];
 
   Widget _buildLearnPracticeIntroScreen() => LearnPracticeIntroScreen(
@@ -93,6 +93,6 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
 
   Widget _buildLearnPracticeResultScreen() => const LearnPracticeResultScreen();
 
-  Widget _buildLearnPracticeCompletionScreen() => const LearnPracticeCompletionScreen();
-
+  Widget _buildLearnPracticeCompletionScreen() =>
+      const LearnPracticeCompletionScreen();
 }

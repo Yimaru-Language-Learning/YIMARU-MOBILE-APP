@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/course_level_card.dart';
+import 'package:yimaru_app/ui/widgets/course_progress_card.dart';
 import 'package:yimaru_app/ui/widgets/skill_progress.dart';
 import 'package:yimaru_app/ui/widgets/suggestion_card.dart';
 
@@ -115,7 +115,7 @@ class ProgressView extends StackedView<ProgressViewModel> {
           required String subtitle,
           required bool isCompleted,
           required ProgressViewModel viewModel}) =>
-      CourseLevelCard(
+      CourseProgressCard(
         icon: icon,
         title: title,
         color: color,
