@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/views/ongoing_progress/ongoing_progress_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
+import '../views/progress/progress_viewmodel.dart';
 import 'custom_column.dart';
 import 'custom_elevated_button.dart';
 
-class CourseProgressSection extends ViewModelWidget<OngoingProgressViewModel> {
+class CourseProgressSection extends ViewModelWidget<ProgressViewModel> {
   const CourseProgressSection({super.key});
 
   @override
-  Widget build(BuildContext context, OngoingProgressViewModel viewModel) =>
+  Widget build(BuildContext context, ProgressViewModel viewModel) =>
       _buildContainer(viewModel);
 
-  Widget _buildContainer(OngoingProgressViewModel viewModel) => Container(
+  Widget _buildContainer(ProgressViewModel viewModel) => Container(
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -24,13 +24,13 @@ class CourseProgressSection extends ViewModelWidget<OngoingProgressViewModel> {
         child: _buildColumn(viewModel),
       );
 
-  Widget _buildColumn(OngoingProgressViewModel viewModel) => Column(
+  Widget _buildColumn(ProgressViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildColumnChildren(viewModel),
       );
 
-  List<Widget> _buildColumnChildren(OngoingProgressViewModel viewModel) => [
+  List<Widget> _buildColumnChildren(ProgressViewModel viewModel) => [
         _buildIcon(),
         verticalSpaceSmall,
         _buildTitle('Course'),
@@ -44,8 +44,7 @@ class CourseProgressSection extends ViewModelWidget<OngoingProgressViewModel> {
         color: kcPrimaryColor,
       );
 
-  Widget _buildExpansionTileWrapper(OngoingProgressViewModel viewModel) =>
-      Column(
+  Widget _buildExpansionTileWrapper(ProgressViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         children: viewModel.courses
             .map(
@@ -60,11 +59,11 @@ class CourseProgressSection extends ViewModelWidget<OngoingProgressViewModel> {
       );
 
   Widget _buildExpansionTile(String title) => ExpansionTile(
+        iconColor: kcDarkGrey,
+        textColor: kcDarkGrey,
         showTrailingIcon: true,
         initiallyExpanded: true,
         title: _buildTitle(title),
-        iconColor: kcDarkGrey,
-        textColor: kcDarkGrey,
         collapsedIconColor: kcDarkGrey,
         collapsedTextColor: kcDarkGrey,
         subtitle: _buildProgressIndicator(),
@@ -81,11 +80,7 @@ class CourseProgressSection extends ViewModelWidget<OngoingProgressViewModel> {
 
   Widget _buildTitle(String title) => Text(
         title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style16DG600,
       );
 
   Widget _buildTileWrapper() => Column(

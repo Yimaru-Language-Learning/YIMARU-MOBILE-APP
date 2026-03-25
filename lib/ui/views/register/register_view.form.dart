@@ -25,7 +25,7 @@ final Map<String, FocusNode> _RegisterViewFocusNodes = {};
 
 final Map<String, String? Function(String?)?> _RegisterViewTextValidations = {
   OtpValueKey: FormValidator.validateForm,
-  EmailValueKey: FormValidator.validateEmail,
+  EmailValueKey: FormValidator.validateEmailForm,
   PasswordValueKey: FormValidator.validateForm,
   PhoneNumberValueKey: FormValidator.validateForm,
   ConfirmPasswordValueKey: FormValidator.validateForm,

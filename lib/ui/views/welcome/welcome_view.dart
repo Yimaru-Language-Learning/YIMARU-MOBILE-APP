@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:stacked/stacked.dart';
 
 import 'screens/first_welcome_screen.dart';
@@ -20,9 +21,19 @@ class WelcomeView extends StackedView<WelcomeViewModel> {
   ) =>
       _buildWelcomeScreens(viewModel);
 
-  Widget _buildWelcomeScreens(WelcomeViewModel viewModel) => IndexedStack(
-        index: viewModel.currentPage,
-        children: _buildScreens(),
+  Widget _buildWelcomeScreens(WelcomeViewModel viewModel) => FlutterCarousel(
+        options: FlutterCarouselOptions(
+          autoPlay: true,
+          viewportFraction: 1,
+          showIndicator: true,
+          indicatorMargin: 40,
+          height: double.maxFinite,
+          slideIndicator: CircularSlideIndicator(
+            slideIndicatorOptions:
+                const SlideIndicatorOptions(indicatorRadius: 2.5),
+          ),
+        ),
+        items: _buildScreens(),
       );
 
   List<Widget> _buildScreens() =>

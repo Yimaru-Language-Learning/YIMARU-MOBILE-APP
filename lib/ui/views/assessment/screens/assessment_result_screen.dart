@@ -26,11 +26,15 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
+  List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) => [
+        _buildAppBar(viewModel),
+        verticalSpaceMedium,
+        _buildExpandedBody(viewModel)
+      ];
 
   Widget _buildAppBar(AssessmentViewModel viewModel) => LargeAppBar(
-        showBackButton: false,
+        showBackButton: true,
+        onPop: viewModel.goBack,
         showLanguageSelection: true,
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
@@ -50,7 +54,7 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   List<Widget> _buildBodyChildren(AssessmentViewModel viewModel) =>
-      [_buildUpperColumn(viewModel), _buildLowerColumn(viewModel)];
+      [_buildUpperColumn(viewModel), _buildContinueButtonWrapper(viewModel)];
 
   Widget _buildUpperColumn(AssessmentViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -96,41 +100,18 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         textAlign: TextAlign.center,
       );
 
-  Widget _buildLowerColumn(AssessmentViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: _buildLowerColumnChildren(viewModel),
+  Widget _buildContinueButtonWrapper(AssessmentViewModel viewModel) => Padding(
+        padding: const EdgeInsets.only(bottom: 50),
+        child: _buildContinueButton(viewModel),
       );
-
-  List<Widget> _buildLowerColumnChildren(AssessmentViewModel viewModel) => [
-        _buildContinueButton(viewModel),
-        verticalSpaceSmall,
-        _buildSkipButtonWrapper(viewModel)
-      ];
 
   Widget _buildContinueButton(AssessmentViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        safe: false,
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,
-      );
-
-  Widget _buildSkipButtonWrapper(AssessmentViewModel viewModel) => Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: _buildSkipButton(viewModel),
-      );
-
-  Widget _buildSkipButton(AssessmentViewModel viewModel) =>
-      CustomElevatedButton(
-        height: 55,
-        borderRadius: 12,
-        backgroundColor: kcWhite,
-        text: 'Practice Speaking',
-        borderColor: kcPrimaryColor,
-        onTap: () => viewModel.next(),
-        foregroundColor: kcPrimaryColor,
       );
 }

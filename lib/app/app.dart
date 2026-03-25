@@ -9,7 +9,6 @@ import 'package:yimaru_app/ui/views/profile/profile_view.dart';
 import 'package:yimaru_app/ui/views/profile_detail/profile_detail_view.dart';
 import 'package:yimaru_app/ui/views/downloads/downloads_view.dart';
 import 'package:yimaru_app/ui/views/progress/progress_view.dart';
-import 'package:yimaru_app/ui/views/ongoing_progress/ongoing_progress_view.dart';
 import 'package:yimaru_app/ui/views/account_privacy/account_privacy_view.dart';
 import 'package:yimaru_app/ui/views/support/support_view.dart';
 import 'package:yimaru_app/ui/views/telegram_support/telegram_support_view.dart';
@@ -30,7 +29,6 @@ import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/views/welcome/welcome_view.dart';
 import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
 import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_view.dart';
-import 'package:yimaru_app/ui/views/failure/failure_view.dart';
 import 'package:yimaru_app/services/permission_handler_service.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
 import 'package:yimaru_app/services/google_auth_service.dart';
@@ -38,10 +36,18 @@ import 'package:yimaru_app/services/image_downloader_service.dart';
 import 'package:yimaru_app/ui/views/forget_password/forget_password_view.dart';
 import 'package:yimaru_app/ui/views/learn_lesson_detail/learn_lesson_detail_view.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_view.dart';
-import 'package:yimaru_app/ui/views/course/course_view.dart';
-import 'package:yimaru_app/ui/views/course_module/course_module_view.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
 import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart';
+import 'package:yimaru_app/ui/views/course_category/course_category_view.dart';
+import 'package:yimaru_app/ui/views/failure/failure_view.dart';
+import 'package:yimaru_app/ui/views/course_lesson/course_lesson_view.dart';
+import 'package:yimaru_app/ui/views/course_lesson_detail/course_lesson_detail_view.dart';
+import 'package:yimaru_app/services/notification_service.dart';
+import 'package:yimaru_app/ui/views/duolingo/duolingo_view.dart';
+import 'package:yimaru_app/services/smart_auth_service.dart';
+import 'package:yimaru_app/services/course_service.dart';
+import 'package:yimaru_app/ui/views/course_subcategory/course_subcategory_view.dart';
+import 'package:yimaru_app/ui/views/course/course_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -53,7 +59,6 @@ import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart';
     MaterialRoute(page: ProfileDetailView),
     MaterialRoute(page: DownloadsView),
     MaterialRoute(page: ProgressView),
-    MaterialRoute(page: OngoingProgressView),
     MaterialRoute(page: AccountPrivacyView),
     MaterialRoute(page: SupportView),
     MaterialRoute(page: TelegramSupportView),
@@ -69,14 +74,18 @@ import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart';
     MaterialRoute(page: WelcomeView),
     MaterialRoute(page: AssessmentView),
     MaterialRoute(page: LearnLessonView),
-    MaterialRoute(page: FailureView),
     MaterialRoute(page: ForgetPasswordView),
     MaterialRoute(page: LearnLessonDetailView),
     MaterialRoute(page: LearnPracticeView),
-    MaterialRoute(page: CourseView),
-    MaterialRoute(page: CourseModuleView),
     MaterialRoute(page: CoursePracticeView),
     MaterialRoute(page: CoursePaymentView),
+    MaterialRoute(page: CourseCategoryView),
+    MaterialRoute(page: FailureView),
+    MaterialRoute(page: CourseLessonView),
+    MaterialRoute(page: CourseLessonDetailView),
+    MaterialRoute(page: DuolingoView),
+    MaterialRoute(page: CourseSubcategoryView),
+    MaterialRoute(page: CourseView),
 // @stacked-route
   ],
   dependencies: [
@@ -92,6 +101,9 @@ import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart';
     LazySingleton(classType: ImagePickerService),
     LazySingleton(classType: GoogleAuthService),
     LazySingleton(classType: ImageDownloaderService),
+    LazySingleton(classType: NotificationService),
+    LazySingleton(classType: SmartAuthService),
+    LazySingleton(classType: CourseService),
 // @stacked-service
   ],
   bottomsheets: [

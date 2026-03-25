@@ -12,7 +12,6 @@ class Assessment {
 
   final List<Option>? options;
 
-
   @JsonKey(name: 'question_type')
   final String? questionType;
 
@@ -21,7 +20,6 @@ class Assessment {
 
   @JsonKey(name: 'difficulty_level')
   final String? difficultyLevel;
-
 
   const Assessment({
     this.id,

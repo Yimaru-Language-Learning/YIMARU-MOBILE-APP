@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/assessment/screens/Assessment_form_screen.dart';
-import 'package:yimaru_app/ui/views/assessment/screens/assessment_completion_screen.dart';
-import 'package:yimaru_app/ui/views/assessment/screens/assessment_failure_screen.dart';
 import 'package:yimaru_app/ui/views/assessment/screens/assessment_intro_screen.dart';
 import 'package:yimaru_app/ui/views/assessment/screens/assessment_result_screen.dart';
-import 'package:yimaru_app/ui/views/assessment/screens/result_analysis_screen.dart';
-import 'package:yimaru_app/ui/views/assessment/screens/retake_assessment_screen.dart';
 import 'package:yimaru_app/ui/views/assessment/screens/start_lesson_screen.dart';
 
 import 'assessment_viewmodel.dart';
@@ -24,7 +20,8 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
   }
 
   @override
-  AssessmentViewModel viewModelBuilder(BuildContext context) => AssessmentViewModel();
+  AssessmentViewModel viewModelBuilder(BuildContext context) =>
+      AssessmentViewModel();
 
   @override
   Widget builder(
@@ -32,7 +29,13 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
     AssessmentViewModel viewModel,
     Widget? child,
   ) =>
-      _buildAssessmentScreens(viewModel);
+      _buildAssessmentScreensWrapper(viewModel);
+
+  Widget _buildAssessmentScreensWrapper(AssessmentViewModel viewModel) =>
+      PopScope(
+          canPop: viewModel.currentPage == 0 ? true : false,
+          onPopInvokedWithResult: (value, data) => viewModel.goBack(),
+          child: _buildAssessmentScreens(viewModel));
 
   Widget _buildAssessmentScreens(AssessmentViewModel viewModel) => IndexedStack(
         index: viewModel.currentPage,
@@ -56,17 +59,7 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
 
   Widget _buildAssessment() => const AssessmentFormScreen();
 
-  Widget _buildAssessmentFailure() => const AssessmentFailureScreen();
-
-  Widget _buildRetakeAssessment() => const RetakeAssessmentScreen();
-
-  Widget _buildResultAnalysis() => const ResultAnalysisScreen();
-
-  Widget _buildAssessmentCompletion() => const AssessmentCompletionScreen();
-
   Widget _buildAssessmentResult() => const AssessmentResultScreen();
 
   Widget _buildStartLesson() => const StartLessonScreen();
-
-
 }

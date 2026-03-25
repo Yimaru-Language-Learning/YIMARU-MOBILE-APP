@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/widgets/custom_list_tile.dart';
 
 class LearnPracticeTipSection extends StatelessWidget {
   const LearnPracticeTipSection({super.key});

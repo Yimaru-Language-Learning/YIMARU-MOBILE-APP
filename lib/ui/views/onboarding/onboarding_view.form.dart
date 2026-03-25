@@ -12,11 +12,11 @@ import 'package:yimaru_app/ui/common/validators/form_validator.dart';
 
 const bool _autoTextFieldValidation = true;
 
+const String TopicValueKey = 'topic';
 const String FullNameValueKey = 'fullName';
 const String ChallengeValueKey = 'challenge';
 const String OccupationValueKey = 'occupation';
 const String LanguageGoalValueKey = 'languageGoal';
-const String TopicValueKey = 'topic';
 
 final Map<String, TextEditingController> _OnboardingViewTextEditingControllers =
     {};
@@ -24,14 +24,16 @@ final Map<String, TextEditingController> _OnboardingViewTextEditingControllers =
 final Map<String, FocusNode> _OnboardingViewFocusNodes = {};
 
 final Map<String, String? Function(String?)?> _OnboardingViewTextValidations = {
-  FullNameValueKey: FormValidator.validateForm,
+  TopicValueKey: FormValidator.validateForm,
+  FullNameValueKey: FormValidator.validateFullNameForm,
   ChallengeValueKey: FormValidator.validateForm,
   OccupationValueKey: FormValidator.validateForm,
   LanguageGoalValueKey: FormValidator.validateForm,
-  TopicValueKey: FormValidator.validateForm,
 };
 
 mixin $OnboardingView {
+  TextEditingController get topicController =>
+      _getFormTextEditingController(TopicValueKey);
   TextEditingController get fullNameController =>
       _getFormTextEditingController(FullNameValueKey);
   TextEditingController get challengeController =>
@@ -40,15 +42,13 @@ mixin $OnboardingView {
       _getFormTextEditingController(OccupationValueKey);
   TextEditingController get languageGoalController =>
       _getFormTextEditingController(LanguageGoalValueKey);
-  TextEditingController get topicController =>
-      _getFormTextEditingController(TopicValueKey);
 
+  FocusNode get topicFocusNode => _getFormFocusNode(TopicValueKey);
   FocusNode get fullNameFocusNode => _getFormFocusNode(FullNameValueKey);
   FocusNode get challengeFocusNode => _getFormFocusNode(ChallengeValueKey);
   FocusNode get occupationFocusNode => _getFormFocusNode(OccupationValueKey);
   FocusNode get languageGoalFocusNode =>
       _getFormFocusNode(LanguageGoalValueKey);
-  FocusNode get topicFocusNode => _getFormFocusNode(TopicValueKey);
 
   TextEditingController _getFormTextEditingController(
     String key, {
@@ -74,11 +74,11 @@ mixin $OnboardingView {
   /// Registers a listener on every generated controller that calls [model.setData()]
   /// with the latest textController values
   void syncFormWithViewModel(FormStateHelper model) {
+    topicController.addListener(() => _updateFormData(model));
     fullNameController.addListener(() => _updateFormData(model));
     challengeController.addListener(() => _updateFormData(model));
     occupationController.addListener(() => _updateFormData(model));
     languageGoalController.addListener(() => _updateFormData(model));
-    topicController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -90,11 +90,11 @@ mixin $OnboardingView {
     'This feature was deprecated after 3.1.0.',
   )
   void listenToFormUpdated(FormViewModel model) {
+    topicController.addListener(() => _updateFormData(model));
     fullNameController.addListener(() => _updateFormData(model));
     challengeController.addListener(() => _updateFormData(model));
     occupationController.addListener(() => _updateFormData(model));
     languageGoalController.addListener(() => _updateFormData(model));
-    topicController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -104,11 +104,11 @@ mixin $OnboardingView {
     model.setData(
       model.formValueMap
         ..addAll({
+          TopicValueKey: topicController.text,
           FullNameValueKey: fullNameController.text,
           ChallengeValueKey: challengeController.text,
           OccupationValueKey: occupationController.text,
           LanguageGoalValueKey: languageGoalController.text,
-          TopicValueKey: topicController.text,
         }),
     );
 
@@ -150,13 +150,23 @@ extension ValueProperties on FormStateHelper {
     return !hasAnyValidationMessage;
   }
 
+  String? get topicValue => this.formValueMap[TopicValueKey] as String?;
   String? get fullNameValue => this.formValueMap[FullNameValueKey] as String?;
   String? get challengeValue => this.formValueMap[ChallengeValueKey] as String?;
   String? get occupationValue =>
       this.formValueMap[OccupationValueKey] as String?;
   String? get languageGoalValue =>
       this.formValueMap[LanguageGoalValueKey] as String?;
-  String? get topicValue => this.formValueMap[TopicValueKey] as String?;
+
+  set topicValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({TopicValueKey: value}),
+    );
+
+    if (_OnboardingViewTextEditingControllers.containsKey(TopicValueKey)) {
+      _OnboardingViewTextEditingControllers[TopicValueKey]?.text = value ?? '';
+    }
+  }
 
   set fullNameValue(String? value) {
     this.setData(
@@ -203,16 +213,9 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
-  set topicValue(String? value) {
-    this.setData(
-      this.formValueMap..addAll({TopicValueKey: value}),
-    );
-
-    if (_OnboardingViewTextEditingControllers.containsKey(TopicValueKey)) {
-      _OnboardingViewTextEditingControllers[TopicValueKey]?.text = value ?? '';
-    }
-  }
-
+  bool get hasTopic =>
+      this.formValueMap.containsKey(TopicValueKey) &&
+      (topicValue?.isNotEmpty ?? false);
   bool get hasFullName =>
       this.formValueMap.containsKey(FullNameValueKey) &&
       (fullNameValue?.isNotEmpty ?? false);
@@ -225,10 +228,9 @@ extension ValueProperties on FormStateHelper {
   bool get hasLanguageGoal =>
       this.formValueMap.containsKey(LanguageGoalValueKey) &&
       (languageGoalValue?.isNotEmpty ?? false);
-  bool get hasTopic =>
-      this.formValueMap.containsKey(TopicValueKey) &&
-      (topicValue?.isNotEmpty ?? false);
 
+  bool get hasTopicValidationMessage =>
+      this.fieldsValidationMessages[TopicValueKey]?.isNotEmpty ?? false;
   bool get hasFullNameValidationMessage =>
       this.fieldsValidationMessages[FullNameValueKey]?.isNotEmpty ?? false;
   bool get hasChallengeValidationMessage =>
@@ -237,9 +239,9 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[OccupationValueKey]?.isNotEmpty ?? false;
   bool get hasLanguageGoalValidationMessage =>
       this.fieldsValidationMessages[LanguageGoalValueKey]?.isNotEmpty ?? false;
-  bool get hasTopicValidationMessage =>
-      this.fieldsValidationMessages[TopicValueKey]?.isNotEmpty ?? false;
 
+  String? get topicValidationMessage =>
+      this.fieldsValidationMessages[TopicValueKey];
   String? get fullNameValidationMessage =>
       this.fieldsValidationMessages[FullNameValueKey];
   String? get challengeValidationMessage =>
@@ -248,11 +250,11 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[OccupationValueKey];
   String? get languageGoalValidationMessage =>
       this.fieldsValidationMessages[LanguageGoalValueKey];
-  String? get topicValidationMessage =>
-      this.fieldsValidationMessages[TopicValueKey];
 }
 
 extension Methods on FormStateHelper {
+  setTopicValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[TopicValueKey] = validationMessage;
   setFullNameValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[FullNameValueKey] = validationMessage;
   setChallengeValidationMessage(String? validationMessage) =>
@@ -261,26 +263,24 @@ extension Methods on FormStateHelper {
       this.fieldsValidationMessages[OccupationValueKey] = validationMessage;
   setLanguageGoalValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[LanguageGoalValueKey] = validationMessage;
-  setTopicValidationMessage(String? validationMessage) =>
-      this.fieldsValidationMessages[TopicValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
   void clearForm() {
+    topicValue = '';
     fullNameValue = '';
     challengeValue = '';
     occupationValue = '';
     languageGoalValue = '';
-    topicValue = '';
   }
 
   /// Validates text input fields on the Form
   void validateForm() {
     this.setValidationMessages({
+      TopicValueKey: getValidationMessage(TopicValueKey),
       FullNameValueKey: getValidationMessage(FullNameValueKey),
       ChallengeValueKey: getValidationMessage(ChallengeValueKey),
       OccupationValueKey: getValidationMessage(OccupationValueKey),
       LanguageGoalValueKey: getValidationMessage(LanguageGoalValueKey),
-      TopicValueKey: getValidationMessage(TopicValueKey),
     });
   }
 }
@@ -300,9 +300,9 @@ String? getValidationMessage(String key) {
 /// Updates the fieldsValidationMessages on the FormViewModel
 void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
+      TopicValueKey: getValidationMessage(TopicValueKey),
       FullNameValueKey: getValidationMessage(FullNameValueKey),
       ChallengeValueKey: getValidationMessage(ChallengeValueKey),
       OccupationValueKey: getValidationMessage(OccupationValueKey),
       LanguageGoalValueKey: getValidationMessage(LanguageGoalValueKey),
-      TopicValueKey: getValidationMessage(TopicValueKey),
     });

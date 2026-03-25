@@ -9,14 +9,31 @@ import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/large_app_bar.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/phone_number_prefix.dart';
-import '../register_viewmodel.dart';
 import '../register_view.form.dart';
+import '../register_viewmodel.dart';
 
 class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
   final TextEditingController phoneNumberController;
+
   const RegisterWithPhoneNumberScreen(
       {super.key, required this.phoneNumberController});
+
+  Future<void> _addUserData(RegisterViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    Map<String, dynamic> data = {
+      "role": "STUDENT",
+      "otp_medium": "sms",
+      'phone_number': '251${phoneNumberController.text}',
+    };
+    viewModel.clearUserData();
+    viewModel.addUserData(data);
+    await viewModel.registerWithEmail(SignUpMethod.phone);
+
+    //viewModel.goTo(page: 3, type: RegistrationType.phone);
+  }
 
   Widget getPadding(context) {
     double half = screenHeight(context) / 2;
@@ -32,7 +49,17 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
           required RegisterViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildRegisterWithPhoneState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -49,11 +76,13 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
           required RegisterViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
+        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildAppBar(RegisterViewModel viewModel) => const LargeAppBar(
-        showBackButton: false,
+  Widget _buildAppBar(RegisterViewModel viewModel) => LargeAppBar(
+        showBackButton: true,
+        onPop: viewModel.goBack,
         showLanguageSelection: true,
       );
 
@@ -168,11 +197,7 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildPhoneNumberValidator(RegisterViewModel viewModel) => Text(
         viewModel.phoneNumberValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
   Widget _buildLowerColumn(RegisterViewModel viewModel) => Column(
@@ -196,7 +221,7 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: phoneNumberController.text.isNotEmpty
-            ? () => viewModel.goTo(page: 3, type: RegistrationType.phone)
+            ? () async => await _addUserData(viewModel)
             : null,
         backgroundColor: phoneNumberController.text.isNotEmpty
             ? kcPrimaryColor
@@ -214,4 +239,9 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
         foregroundColor: kcPrimaryColor,
         onTap: () => viewModel.goTo(page: 0),
       );
+
+  Widget _buildRegisterWithPhoneState(RegisterViewModel viewModel) =>
+      viewModel.busy(StateObjects.register)
+          ? const PageLoadingIndicator()
+          : Container();
 }

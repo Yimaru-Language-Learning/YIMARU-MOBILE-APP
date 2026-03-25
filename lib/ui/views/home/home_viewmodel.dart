@@ -7,12 +7,12 @@ import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/common/app_strings.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/ui/views/failure/failure_view.dart';
 
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/image_downloader_service.dart';
 import '../../common/enmus.dart';
+import '../../common/ui_helpers.dart';
 
 class HomeViewModel extends ReactiveViewModel {
   final _apiService = locator<ApiService>();
@@ -63,9 +63,8 @@ class HomeViewModel extends ReactiveViewModel {
       await _authenticationService.saveProfileStatus(value);
 
   // Navigation
-  Future<void> replaceWithFailure() async =>
-      await _navigationService.clearStackAndShow(Routes.failureView,
-          arguments: 'Check your internet connection to proceed');
+  Future<void> replaceWithFailure() async => await _navigationService
+      .replaceWithFailureView(label: 'Check you internet connection');
 
   Future<void> replaceWithOnboarding() async =>
       await _navigationService.replaceWithOnboardingView();
@@ -86,26 +85,20 @@ class HomeViewModel extends ReactiveViewModel {
     Map<String, dynamic> response = {};
     if (_user?.profileCompleted == null) {
       if (await _statusChecker.checkConnection()) {
-        print('BREAK-POINT 1');
         response = await _apiService.getProfileStatus(_user);
       } else {
-        print('BREAK-POINT 2');
+        await Future.delayed(kDuration);
         await replaceWithFailure();
       }
     } else if (!(_user?.profileCompleted ?? false)) {
-      print('BREAK-POINT 3');
       response = {'data': false, 'status': ResponseStatus.success};
     } else {
-      print('BREAK-POINT 4');
       response = {'data': true, 'status': ResponseStatus.success};
     }
-
     if (response['status'] == ResponseStatus.success && !response['data']) {
-      print('BREAK-POINT 5');
       await replaceWithOnboarding();
     } else if (response['status'] == ResponseStatus.success &&
         response['data']) {
-      print('BREAK-POINT 6');
       await saveProfileStatus(response['data']);
     }
   }
@@ -115,7 +108,6 @@ class HomeViewModel extends ReactiveViewModel {
   Future<void> _getProfileData() async {
     if (!(_user?.userInfoLoaded ?? false)) {
       Map<String, dynamic> response = {};
-      print('BREAK-POINT: Profile-Completed ${_user?.profileCompleted}');
 
       if (_user?.profileCompleted != null &&
           (_user?.profileCompleted ?? false)) {
@@ -123,15 +115,17 @@ class HomeViewModel extends ReactiveViewModel {
           response = await _apiService.getProfileData(_user?.userId);
 
           if (response['status'] == ResponseStatus.success) {
-            print('BREAK-POINT 8');
-
             UserModel user = response['data'] as UserModel;
+
+            await _authenticationService.saveUserData(user);
 
             String image =
                 await _imageDownloaderService.downloader(user.profilePicture);
 
-            await _authenticationService.saveUserData(image: image, data: user);
+            await _authenticationService.saveProfilePicture(image);
           }
+        } else {
+          await replaceWithFailure();
         }
       }
     }

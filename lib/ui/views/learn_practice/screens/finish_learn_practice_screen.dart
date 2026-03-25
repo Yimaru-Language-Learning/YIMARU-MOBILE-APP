@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/cancel_learn_practice_sheet.dart';
-import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
-import '../../../widgets/custom_column_button.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/small_app_bar.dart';
 
@@ -48,6 +44,7 @@ class FinishLearnPracticeScreen
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
         ],
       );
 

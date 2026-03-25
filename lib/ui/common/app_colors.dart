@@ -11,6 +11,7 @@ const Color kcIndigo = Color(0xff6A1B9A);
 const Color kcOrange = Color(0xFFF79400);
 const Color kcSkyBlue = Color(0xFF28B4CD);
 const Color kcDarkGrey = Color(0xFF1A1B1E);
+const Color kcDeepGreen = Color(0xFF078E37);
 const Color kcMediumGrey = Color(0xFF474A54);
 const Color kcAquamarine = Color(0xFF1DE9B6);
 const Color kcTransparent = Colors.transparent;

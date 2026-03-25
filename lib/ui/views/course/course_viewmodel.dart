@@ -1,42 +1,50 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/app/app.router.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../models/user_model.dart';
-import '../../../services/authentication_service.dart';
+import '../../../app/app.router.dart';
+import '../../../models/course.dart';
+import '../../../models/course_detail.dart';
+import '../../../services/course_service.dart';
+import '../../../services/status_checker_service.dart';
+import '../../common/enmus.dart';
 
-class CourseViewModel extends ReactiveViewModel {
+class CourseViewModel extends BaseViewModel {
   // Dependency injection
+
+  final _courseService = locator<CourseService>();
+
+  final _statusChecker = locator<StatusCheckerService>();
+
   final _navigationService = locator<NavigationService>();
-  final _authenticationService = locator<AuthenticationService>();
 
-  @override
-  List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService];
+  // Subcourse with progress
+  List<CourseDetail> _courseDetail = [];
 
-  // Current user
-  UserModel? get _user => _authenticationService.user;
-
-  UserModel? get user => _user;
-
-  // Courses
-  final List<Map<String, dynamic>> _courses = [
-    {
-      'title': 'English Proficiency Exams',
-      'subtitle':
-          'Prepare for IELTS, TOEFL, or Duolingo with structured practice.',
-    },
-    {
-      'title': 'Skill-Based Courses',
-      'subtitle':
-          'Learn English for the workplace, travel, and real-life communication.',
-    },
-  ];
-
-  List<Map<String, dynamic>> get courses => _courses;
+  List<CourseDetail> get courseDetail => _courseDetail;
 
   // Navigation
-  Future<void> navigateToCourseModule() async =>
-      _navigationService.navigateToCourseModuleView();
+  void pop() => _navigationService.back();
+
+  Future<void> navigateToCoursePayment(Course course) async =>
+      _navigationService.navigateToCoursePaymentView(course: course);
+
+  Future<void> navigateToCoursePractice(int id) =>
+      _navigationService.navigateToCoursePracticeView(id: id);
+
+  // Remote api call
+
+  // Sub course
+  Future<void> getCourseDetails(int id) async =>
+      await runBusyFuture(_getCourseDetails(id),
+          busyObject: StateObjects.courses);
+
+  Future<void> _getCourseDetails(int id) async {
+    if (await _statusChecker.checkConnection()) {
+      _courseDetail = await _courseService.getCoursesDetail(id);
+      _courseDetail.sort((a, b) =>
+          (a.course?.displayOrder ?? 0).compareTo(b.course?.displayOrder ?? 0));
+      rebuildUi();
+    }
+  }
 }

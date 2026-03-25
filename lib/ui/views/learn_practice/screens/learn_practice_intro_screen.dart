@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/views/learn_practice/learn_practice_view.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
 import '../../../common/app_colors.dart';
@@ -41,6 +40,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
           _buildBodyColumnWrapper(viewModel),
         ],
       );

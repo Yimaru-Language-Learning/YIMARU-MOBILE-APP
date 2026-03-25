@@ -1,12 +1,28 @@
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import '../../../app/app.locator.dart';
-import '../home/home_view.dart';
+import '../../../services/google_auth_service.dart';
 
-class OnboardingViewModel extends FormViewModel {
+class OnboardingViewModel extends ReactiveViewModel
+    with FormStateHelper
+    implements FormViewModel {
+  // Dependency injection
+
   final _navigationService = locator<NavigationService>();
 
+  final _googleAuthService = locator<GoogleAuthService>();
+
+  @override
+  List<ListenableServiceMixin> get listenableServices => [_googleAuthService];
+
+  // Google user
+  GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
+
+  GoogleSignInAccount? get googleUser => _googleUser;
+
+  // Navigation
   int _currentPage = 0;
 
   int get currentPage => _currentPage;
@@ -53,21 +69,31 @@ class OnboardingViewModel extends FormViewModel {
   String? get selectedBirthday => _selectedBirthday;
 
   // Age group
-  final List<String> _ageGroups = [
-    'UNDER_13',
-    '13_17',
-    '18_24',
-    '25_34',
-    '35_44',
-    '45_54',
-    '55_PLUS'
+  final List<Map<String, dynamic>> _ageGroups = [
+    {
+      'Under 13': 'UNDER_13',
+    },
+    {'13-17': '13_17'},
+    {
+      '18-24': '18_24',
+    },
+    {
+      '25-34': '25_34',
+    },
+    {
+      '35-44': '35_44',
+    },
+    {
+      '45-54': '45_54',
+    },
+    {'55-Plus': '55_PLUS'},
   ];
 
-  List<String> get ageGroups => _ageGroups;
+  List<Map<String, dynamic>> get ageGroups => _ageGroups;
 
-  String? _selectedAgeGroup;
+  Map<String, dynamic>? _selectedAgeGroup;
 
-  String? get selectedAgeGroup => _selectedAgeGroup;
+  Map<String, dynamic>? get selectedAgeGroup => _selectedAgeGroup;
 
   // Occupation
   bool _focusOccupation = false;
@@ -228,12 +254,14 @@ class OnboardingViewModel extends FormViewModel {
   }
 
   // Age group
-  void setSelectedAgeGroup(String value) {
+  void setSelectedAgeGroup(Map<String, dynamic> value) {
     _selectedAgeGroup = value;
+
     rebuildUi();
   }
 
-  bool isSelectedAgeGroup(String value) => _selectedAgeGroup == value;
+  bool isSelectedAgeGroup(Map<String, dynamic> value) =>
+      _selectedAgeGroup == value;
 
   // Occupation
   void setOccupationFocus() {

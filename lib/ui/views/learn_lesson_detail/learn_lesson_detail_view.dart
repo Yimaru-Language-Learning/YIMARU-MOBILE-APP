@@ -1,8 +1,6 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/empty_video_player.dart';
 
 import '../../common/app_colors.dart';

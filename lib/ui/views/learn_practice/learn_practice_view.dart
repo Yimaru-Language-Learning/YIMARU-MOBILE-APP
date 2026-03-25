@@ -7,13 +7,8 @@ import 'package:yimaru_app/ui/views/learn_practice/screens/listen_learn_practice
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_intro_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/speak_to_learn_practice_listener_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/start_learn_practice_screen.dart';
-import 'package:yimaru_app/ui/widgets/profile_image.dart';
-import 'package:yimaru_app/ui/widgets/speaking_partner_image.dart';
 
 import '../../common/app_colors.dart';
-import '../../common/ui_helpers.dart';
-import '../../widgets/custom_elevated_button.dart';
-import '../../widgets/small_app_bar.dart';
 import 'learn_practice_viewmodel.dart';
 
 class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
@@ -52,15 +47,8 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
 
   Widget _buildScaffoldWrapper(LearnPracticeViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(viewModel),
+        body: _buildBody(viewModel),
       );
-
-  Widget _buildScaffoldStack(LearnPracticeViewModel viewModel) =>
-      Stack(children: [
-        _buildBody(viewModel),
-        //_buildLoginWithEmailState(viewModel),
-        //_buildLoginWithGoogleState(viewModel)
-      ]);
 
   Widget _buildBody(LearnPracticeViewModel viewModel) =>
       IndexedStack(index: viewModel.currentIndex, children: _buildScreens());

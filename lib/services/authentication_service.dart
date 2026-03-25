@@ -113,12 +113,10 @@ class AuthenticationService with ListenableServiceMixin {
     notifyListeners();
   }
 
-  Future<void> saveUserData(
-      {required String image, required UserModel data}) async {
+  Future<void> saveUserData(UserModel data) async {
     await _secureService.setBool('userInfoLoaded', true);
     await _secureService.setBool(
         'profileCompleted', data.profileCompleted ?? false);
-    await _secureService.setString('profilePicture', image);
     await _secureService.setString('email', data.email ?? '');
     await _secureService.setString('region', data.region ?? '');
     await _secureService.setString('gender', data.gender ?? '');
@@ -133,7 +131,6 @@ class AuthenticationService with ListenableServiceMixin {
       gender: data.gender,
       region: data.region,
       userInfoLoaded: true,
-      profilePicture: image,
       userId: _user?.userId,
       country: data.country,
       lastName: data.lastName,
@@ -212,7 +209,7 @@ class AuthenticationService with ListenableServiceMixin {
     return _user;
   }
 
-  Future<void> logOut() async {
+  Future<void> logout() async {
     bool firstTimeInstall = await isFirstTimeInstall();
     _user = null;
     await _secureService.clear();

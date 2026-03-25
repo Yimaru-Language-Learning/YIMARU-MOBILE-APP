@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 
+import '../common/app_constants.dart';
+
 class ProfileImage extends StatelessWidget {
   final bool loading;
   final String? profileImage;
@@ -37,7 +39,9 @@ class ProfileImage extends StatelessWidget {
         backgroundColor: kcViolet,
         backgroundImage: loading
             ? null
-            : profileImage != null || (profileImage?.contains('.') ?? false)
+            : profileImage != null ||
+                    (profileImage?.contains('.') ?? false) ||
+                    profileImage == kEmptyImagePath
                 ? FileImage(
                     File(profileImage!),
                   )
@@ -47,14 +51,16 @@ class ProfileImage extends StatelessWidget {
 
   Widget? _buildImageBuilder() => loading
       ? null
-      : profileImage == null || !(profileImage?.contains('.') ?? false)
+      : profileImage == null ||
+              !(profileImage?.contains('.') ?? false) ||
+              profileImage == kEmptyImagePath
           ? _buildPersonIcon()
           : null;
 
   Widget _buildPersonIcon() => const Icon(
         Icons.person,
         size: 50,
-        color: kcWhite,
+        color: kcPrimaryColor,
       );
 
   Widget _buildCameraButtonWrapper() => Align(

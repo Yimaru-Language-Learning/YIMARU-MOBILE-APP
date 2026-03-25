@@ -41,6 +41,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
           _buildLevelsColumnWrapper(viewModel),
         ],
       );

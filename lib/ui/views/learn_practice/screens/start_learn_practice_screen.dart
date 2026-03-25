@@ -42,6 +42,7 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
         ],
       );
 

@@ -8,7 +8,15 @@ import '../../widgets/small_app_bar.dart';
 import 'course_practice_viewmodel.dart';
 
 class CoursePracticeView extends StackedView<CoursePracticeViewModel> {
-  const CoursePracticeView({Key? key}) : super(key: key);
+  final int id;
+
+  const CoursePracticeView({Key? key, required this.id}) : super(key: key);
+
+  @override
+  void onViewModelReady(CoursePracticeViewModel viewModel) async {
+    await viewModel.getCoursePractice(id);
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   CoursePracticeViewModel viewModelBuilder(BuildContext context) =>
@@ -39,6 +47,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> {
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
           _buildPracticeColumnWrapper(viewModel),
         ],
       );
@@ -73,12 +82,12 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Duolingo Mock Tests',
-        style: style20DG700,
+        'Course Practices',
+        style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(
-        'Select your target exam and start preparing',
+        'Select a practice test your progress',
         style: style14DG400,
       );
 
@@ -87,7 +96,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) =>
-            _buildCard(title: viewModel.practices[index]['title']),
+            _buildCard(title: viewModel.coursePractices[index].title ?? ''),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 15,
@@ -96,8 +105,6 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> {
         ),
       );
 
-  Widget _buildCard({
-    required String title,
-  }) =>
+  Widget _buildCard({required String title}) =>
       CoursePracticeCard(title: title);
 }

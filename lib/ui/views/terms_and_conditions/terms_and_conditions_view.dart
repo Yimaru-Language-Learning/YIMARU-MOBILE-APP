@@ -85,7 +85,7 @@ class TermsAndConditionsView extends StackedView<TermsAndConditionsViewModel> {
   List<Widget> _buildContentColumnChildren() => [
         _buildContent(),
         verticalSpaceMedium,
-        _buildDownloadButtonWrapper(),
+        //  _buildDownloadButtonWrapper(),
       ];
 
   Widget _buildContent() => Html(

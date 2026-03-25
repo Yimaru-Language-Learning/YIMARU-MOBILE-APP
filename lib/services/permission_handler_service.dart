@@ -3,7 +3,6 @@ import 'package:permission_handler/permission_handler.dart';
 import '../ui/common/ui_helpers.dart';
 
 class PermissionHandlerService {
-
   // Check permission category
   Future<PermissionStatus> requestPermission(
       Permission requestedPermission) async {

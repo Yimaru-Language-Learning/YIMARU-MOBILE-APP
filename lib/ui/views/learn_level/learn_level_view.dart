@@ -39,6 +39,7 @@ class LearnLevelView extends StackedView<LearnLevelViewModel> {
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
           _buildLevelsColumnWrapper(viewModel)
         ],
       );

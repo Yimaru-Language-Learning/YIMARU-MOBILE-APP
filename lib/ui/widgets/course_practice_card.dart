@@ -42,7 +42,7 @@ class CoursePracticeCard extends StatelessWidget {
         child: _buildStartButton(),
       );
 
-  Widget _buildStartButton() => CustomElevatedButton(
+  Widget _buildStartButton() => const CustomElevatedButton(
         height: 50,
         width: 200,
         borderRadius: 8,

@@ -4,6 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/cancel_learn_practice_sheet.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
+import 'package:yimaru_app/ui/widgets/wave_wrapper.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
@@ -83,6 +84,7 @@ class ListenLearnPracticeSpeakerScreen
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
         ],
       );
 
@@ -108,33 +110,8 @@ class ListenLearnPracticeSpeakerScreen
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSpeakingIndicator() => Container(
-        height: 200,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            radius: 0.7,
-            stops: const [
-              0.2,
-              0.25,
-              0.45,
-              0.75,
-              1,
-            ],
-            center: Alignment.center,
-            colors: [
-              kcPrimaryColor.withOpacity(0.4),
-              kcPrimaryColor.withOpacity(0.4),
-              kcPrimaryColor.withOpacity(0.15),
-              kcPrimaryColor.withOpacity(0.1),
-              kcPrimaryColor.withOpacity(0.05),
-            ],
-            // quarterly spread
-          ),
-        ),
-        child: _buildSpinner(),
-      );
+  Widget _buildSpeakingIndicator() =>
+      WaveWrapper(height: 200, child: _buildSpinner());
 
   Widget _buildSpinner() => const SpinKitWave(
         size: 20,

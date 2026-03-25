@@ -6,9 +6,11 @@ import 'package:yimaru_app/ui/widgets/option_text_divider.dart';
 import 'package:yimaru_app/ui/widgets/register_for_account.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/large_app_bar.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/phone_number_prefix.dart';
 import '../login_view.form.dart';
 
@@ -17,6 +19,17 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
 
   const LoginWithPhoneNumberScreen(
       {super.key, required this.phoneNumberController});
+
+  Future<void> _login(LoginViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    Map<String, dynamic> data = {
+      'phone_number': '251${phoneNumberController.text}',
+    };
+    viewModel.addUserData(data);
+
+    await viewModel.loginWithPhoneNumber();
+  }
 
   Widget getPadding(context) {
     double half = screenHeight(context) / 2;
@@ -33,8 +46,15 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
           {required BuildContext context, required LoginViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
+
+  Widget _buildScaffoldStack(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Stack(children: [
+        _buildScaffold(context: context, viewModel: viewModel),
+        _buildLoginWithPhoneNumber(viewModel),
+      ]);
 
   Widget _buildScaffold(
           {required BuildContext context, required LoginViewModel viewModel}) =>
@@ -48,12 +68,14 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
           {required BuildContext context, required LoginViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
+        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildAppBar(LoginViewModel viewModel) => const LargeAppBar(
-        showBackButton: false,
+  Widget _buildAppBar(LoginViewModel viewModel) => LargeAppBar(
+        showBackButton: true,
         showLanguageSelection: true,
+        onPop: () => viewModel.goTo(0),
       );
 
   Widget _buildExpandedBody(
@@ -160,11 +182,7 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
 
   Widget _buildPhoneNumberValidator(LoginViewModel viewModel) => Text(
         viewModel.phoneNumberValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
   Widget _buildLowerColumn(LoginViewModel viewModel) => Column(
@@ -187,7 +205,7 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: phoneNumberController.text.isNotEmpty
-            ? () => viewModel.goTo(2)
+            ? () async => await _login(viewModel)
             : null,
         backgroundColor: phoneNumberController.text.isNotEmpty
             ? kcPrimaryColor
@@ -205,4 +223,9 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
         foregroundColor: kcPrimaryColor,
         onTap: () => viewModel.goTo(0),
       );
+
+  Widget _buildLoginWithPhoneNumber(LoginViewModel viewModel) =>
+      viewModel.busy(StateObjects.loginWithPhoneNumber)
+          ? const PageLoadingIndicator()
+          : Container();
 }

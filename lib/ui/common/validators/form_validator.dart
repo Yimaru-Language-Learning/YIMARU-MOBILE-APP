@@ -10,12 +10,29 @@ class FormValidator {
     if (value.isEmpty) {
       return 'The field is required';
     }
+
     return null;
   }
 
+  // Form validator
+  static String? validateFullNameForm(String? value) {
+    if (value == null) {
+      return null;
+    }
+
+    if (value.isEmpty) {
+      return 'The field is required';
+    }
+    final regex = RegExp(r'^\S+\s+\S+.*$');
+
+    if (!regex.hasMatch(value.trim())) {
+      return "Enter your full name";
+    }
+    return null;
+  }
 
   // Email validator
-  static String? validateEmail(String? value) {
+  static String? validateEmailForm(String? value) {
     if (value == null) {
       return null;
     }
@@ -32,7 +49,7 @@ class FormValidator {
   }
 
   // Password validator
-  static String? validatePassword(String? value) {
+  static String? validatePasswordForm(String? value) {
     if (value == null) {
       return null;
     }
@@ -44,7 +61,7 @@ class FormValidator {
   }
 
   // Phone number validator
-  static String? validatePhoneNumber(String? value) {
+  static String? validatePhoneNumberForm(String? value) {
     if (value == null) {
       return null;
     }
@@ -66,5 +83,4 @@ class FormValidator {
     }
     return null;
   }
-
 }

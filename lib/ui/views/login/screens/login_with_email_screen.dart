@@ -22,13 +22,6 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
       required this.emailController,
       required this.passwordController});
 
-  Widget getPadding(context) {
-    double half = screenHeight(context) / 2;
-    return SizedBox(
-      height: half + 25 - half,
-    );
-  }
-
   Future<void> _login(LoginViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
@@ -38,7 +31,14 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
     };
     viewModel.addUserData(data);
 
-    await viewModel.emailLogin();
+    await viewModel.loginWithEmail();
+  }
+
+  Widget getPadding(context) {
+    double half = screenHeight(context) / 2;
+    return SizedBox(
+      height: half + 25 - half,
+    );
   }
 
   @override
@@ -72,6 +72,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
           {required BuildContext context, required LoginViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
+        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
@@ -206,7 +207,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
       );
 
   Widget _buildForgetPasswordText() => Text(
-        'Forget Password?',
+        'Forgot Password?',
         style: style14P400,
       );
 

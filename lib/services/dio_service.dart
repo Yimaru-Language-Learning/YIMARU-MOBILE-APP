@@ -158,7 +158,7 @@ class DioService {
 
       return true;
     } catch (e) {
-      await _authenticationService.logOut();
+      await _authenticationService.logout();
       await _navigationService.replaceWithLoginView();
       return false;
     }

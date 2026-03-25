@@ -26,7 +26,7 @@ final Map<String, FocusNode> _ProfileDetailViewFocusNodes = {};
 final Map<String, String? Function(String?)?>
     _ProfileDetailViewTextValidations = {
   EmailValueKey: FormValidator.validateForm,
-  PhoneNumberValueKey: FormValidator.validatePhoneNumber,
+  PhoneNumberValueKey: FormValidator.validatePhoneNumberForm,
   LastNameValueKey: FormValidator.validateForm,
   FirstNameValueKey: FormValidator.validateForm,
   OccupationValueKey: FormValidator.validateForm,

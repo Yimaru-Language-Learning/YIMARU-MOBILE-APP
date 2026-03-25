@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -13,7 +11,6 @@ import '../../../models/assessment.dart';
 import '../../../services/api_service.dart';
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
-import '../home/home_view.dart';
 
 class AssessmentViewModel extends BaseViewModel {
   // Dependency injection
@@ -223,11 +220,18 @@ class AssessmentViewModel extends BaseViewModel {
     rebuildUi();
   }
 
-  void pop() {
-    if (_currentPage == 0 || _currentPage == 3 /*7*/) {
+  void goBack() {
+    if (_currentPage == 0) {
       _navigationService.back();
-    } else if (_currentPage != 0 && _currentPage != 3) {
-      _currentPage--;
+    } else if (_currentPage == 2) {
+      _currentPage = 0;
+      rebuildUi();
+    } else if (_currentPage == 3) {
+      if (_proficiencyLevel != ProficiencyLevels.none) {
+        _currentPage--;
+      } else {
+        _currentPage = 0;
+      }
       rebuildUi();
     }
   }
@@ -244,7 +248,7 @@ class AssessmentViewModel extends BaseViewModel {
 
   Future<void> _getAssessments() async {
     if (await _statusChecker.checkConnection()) {
-      List<Assessment> response = await _apiService.getAssessments();
+      _assessments = await _apiService.getAssessments();
       /*
       for (int i = 0; i < 6; i++) {
         final generator = Random();
@@ -252,7 +256,6 @@ class AssessmentViewModel extends BaseViewModel {
         response.add(response[random]);
       }
       */
-      _assessments = response;
     }
   }
 

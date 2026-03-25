@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:yimaru_app/ui/widgets/speaking_partner_image.dart';
 
 import '../common/app_colors.dart';

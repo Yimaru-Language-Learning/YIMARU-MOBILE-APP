@@ -18,6 +18,7 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     Map<String, dynamic> data = splitFullName(fullNameController.text);
+
     viewModel.addUserData(data);
 
     viewModel.next();
@@ -37,8 +38,11 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
+  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) => [
+        _buildAppBar(viewModel),
+        verticalSpaceMedium,
+        _buildExpandedBody(viewModel)
+      ];
 
   Widget _buildExpandedBody(OnboardingViewModel viewModel) =>
       Expanded(child: _buildBodyWrapper(viewModel));

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:pinput/pinput.dart';
 import 'package:stacked/stacked.dart';
-
 import 'package:yimaru_app/ui/views/register/register_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_cursor.dart';
 
+import '../../../../app/app.locator.dart';
+import '../../../../services/smart_auth_service.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
-
 import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/page_loading_indicator.dart';
 import '../register_view.form.dart';
@@ -28,18 +28,23 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget getPadding(context) {
     double half = screenHeight(context) / 2;
-    return SizedBox(
-      height: half + 325 - half,
-    );
+    return SizedBox(height: half + 325 - half);
   }
 
   Future<void> _verifyOtp(RegisterViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
-
-    Map<String, dynamic> data = {
-      'otp': otpController.text,
-      'email': emailController.text,
-    };
+    Map<String, dynamic> data = {};
+    if (viewModel.signUpMethod == SignUpMethod.email) {
+      data = {
+        'otp': otpController.text,
+        'email': emailController.text,
+      };
+    } else {
+      data = {
+        'otp': otpController.text,
+        'phone_number': '251${phoneNumberController.text}',
+      };
+    }
     viewModel.clearUserData();
     viewModel.addUserData(data);
 
@@ -82,11 +87,13 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
           required RegisterViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
+        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildAppBar(RegisterViewModel viewModel) => const LargeAppBar(
-        showBackButton: false,
+  Widget _buildAppBar(RegisterViewModel viewModel) => LargeAppBar(
+        showBackButton: true,
+        onPop: viewModel.goBack,
         showLanguageSelection: true,
       );
 
@@ -139,7 +146,7 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceMedium,
-        _buildSubtitleWrapper(),
+        _buildSubtitleWrapper(viewModel),
         verticalSpaceMedium,
         _buildPinPutWrapper(viewModel),
         if (viewModel.hasOtpValidationMessage && viewModel.focusOtp)
@@ -155,11 +162,27 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
         style: style25DG600,
       );
 
-  Widget _buildSubtitleWrapper() =>
-      phoneNumberController.text.length == 9 ? _buildSubtitle() : Container();
+  Widget _buildSubtitleWrapper(RegisterViewModel viewModel) =>
+      viewModel.signUpMethod == SignUpMethod.email
+          ? _buildEmailSubtitleWrapper()
+          : _buildPhoneSubtitleWrapper();
 
-  Widget _buildSubtitle() => Text(
+  Widget _buildPhoneSubtitleWrapper() => phoneNumberController.text.length == 9
+      ? _buildPhoneSubtitle()
+      : Container();
+
+  Widget _buildPhoneSubtitle() => Text(
         'Code sent to your number +251${phoneNumberController.text.substring(0, 5)}****',
+        softWrap: false,
+        style: style14DG400,
+      );
+
+  Widget _buildEmailSubtitleWrapper() =>
+      emailController.text.isNotEmpty ? _buildEmailSubtitle() : Container();
+
+  Widget _buildEmailSubtitle() => Text(
+        'Code sent to your number email ${emailController.text.substring(0, 3)}****${emailController.text.split('@').last}',
+        softWrap: false,
         style: style14DG400,
       );
 
@@ -176,11 +199,11 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
         onTap: viewModel.setOtpFocus,
         focusNode: viewModel.focusNode,
         errorTextStyle: validationStyle,
-        //smsRetriever: locator<KewedeSmsRetriever>(),
         focusedPinTheme: focusedThemePin,
         submittedPinTheme: submittedThemePin,
+        smsRetriever: locator<SmartAuthService>(),
+        separatorBuilder: (index) => horizontalSpaceSmall,
         hapticFeedbackType: HapticFeedbackType.heavyImpact,
-        separatorBuilder: (index) => const SizedBox(width: 10),
         onCompleted: (otp) async => await _verifyOtp(viewModel),
       );
 
@@ -199,10 +222,8 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
           ? _buildTimerSection(viewModel)
           : _buildResendButton(viewModel);
 
-  Widget _buildResendButton(RegisterViewModel viewModel) => TextButton(
-      onPressed: () async => await viewModel.resendOtp(),
-      style:
-          const ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
+  Widget _buildResendButton(RegisterViewModel viewModel) => GestureDetector(
+      onTap: () async => await viewModel.resendOtp(),
       child: _buildResendText());
 
   Widget _buildResendText() => Text(
@@ -223,10 +244,10 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
   Widget _buildTimer(RegisterViewModel viewModel) => TimerCountdown(
         enableDescriptions: false,
         timeTextStyle: style14P600,
+        colonsTextStyle: style14P400,
         endTime: viewModel.resendTime,
         onEnd: viewModel.setResendButton,
         format: CountDownTimerFormat.minutesSeconds,
-        colonsTextStyle: const TextStyle(color: kcPrimaryColor),
       );
 
   Widget _buildContinueButtonWrapper(RegisterViewModel viewModel) => Padding(

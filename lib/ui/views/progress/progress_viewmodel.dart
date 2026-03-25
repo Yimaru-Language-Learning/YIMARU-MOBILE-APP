@@ -1,65 +1,24 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/app/app.router.dart';
-import 'package:yimaru_app/ui/common/app_colors.dart';
 
 import '../../../app/app.locator.dart';
 
 class ProgressViewModel extends BaseViewModel {
+  // Dependency injection
   final _navigationService = locator<NavigationService>();
 
-  final List<Map<String, dynamic>> _progresses = [
+  // Courses
+  final List<Map<String, dynamic>> _courses = [
     {
-      'color': kcGreen,
-      'title': 'Beginner',
-      'isCompleted': true,
-      'status': 'Completed',
-      'icon': 'assets/icons/b_1.svg',
-      'subtitle': 'You’ve mastered everyday English basics!',
+      'title': 'IELTS Preparation',
     },
     {
-      'title': 'Elementary',
-      'isCompleted': false,
-      'status': 'In Progress',
-      'color': kcPrimaryColor,
-      'icon': 'assets/icons/b_1.svg',
-      'subtitle': 'Continue improving your conversations and fluency.',
-    },
-    {
-      'title': 'Beginner',
-      'isCompleted': true,
-      'status': 'In Progress',
-      'color': kcPrimaryColor,
-      'icon': 'assets/icons/b_1.svg',
-      'subtitle': 'You’ve mastered everyday English basics!',
+      'title': 'Duolingo English Test',
     },
   ];
 
-  List<Map<String, dynamic>> get progresses => _progresses;
+  List<Map<String, dynamic>> get courses => _courses;
 
-  final List<Map<String, dynamic>> _skillsLevel = [
-    {
-      'progress': 0.8,
-      'skill': 'Speaking',
-    },
-    {
-      'progress': 0.95,
-      'skill': 'Listening',
-    },
-    {
-      'progress': 0.75,
-      'skill': 'Writing',
-    },
-    {
-      'progress': 0.8,
-      'skill': 'Reading',
-    },
-  ];
-
-  List<Map<String, dynamic>> get skillsLevel => _skillsLevel;
-
-  Future<void> navigateToOngoingProgress() async =>
-      await _navigationService.navigateToOngoingProgressView();
-
+  // Navigation
   void pop() => _navigationService.back();
 }

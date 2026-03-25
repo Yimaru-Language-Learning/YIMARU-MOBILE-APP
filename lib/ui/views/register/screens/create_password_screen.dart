@@ -34,7 +34,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
     };
     viewModel.addUserData(data);
 
-    await viewModel.registerWithEmail();
+    await viewModel.registerWithEmail(SignUpMethod.email);
   }
 
   @override
@@ -58,11 +58,15 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(RegisterViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
+  List<Widget> _buildScaffoldChildren(RegisterViewModel viewModel) => [
+        _buildAppBar(viewModel),
+        verticalSpaceMedium,
+        _buildExpandedBody(viewModel)
+      ];
 
-  Widget _buildAppBar(RegisterViewModel viewModel) => const LargeAppBar(
-        showBackButton: false,
+  Widget _buildAppBar(RegisterViewModel viewModel) => LargeAppBar(
+        showBackButton: true,
+        onPop: viewModel.goBack,
         showLanguageSelection: true,
       );
 
@@ -196,11 +200,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildConfirmPasswordValidator(RegisterViewModel viewModel) => Text(
         viewModel.confirmPasswordValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
   Widget _buildLinearProgressIndicator(RegisterViewModel viewModel) =>
@@ -286,7 +286,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
       );
 
   Widget _buildRegistrationState(RegisterViewModel viewModel) =>
-      viewModel.busy(StateObjects.registerWithEmail)
+      viewModel.busy(StateObjects.register)
           ? const PageLoadingIndicator()
           : Container();
 }

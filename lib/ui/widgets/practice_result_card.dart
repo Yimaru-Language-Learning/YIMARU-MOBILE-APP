@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/widgets/practice_response_card.dart';
+import 'package:yimaru_app/ui/widgets/custom_response_card.dart';
 
 class PracticeResultCard extends StatelessWidget {
   final int index;
@@ -45,11 +45,11 @@ class PracticeResultCard extends StatelessWidget {
       Expanded(child: _buildSampleResponse());
 
   Widget _buildSampleResponse() =>
-      const PracticeResponseCard(title: 'Sample Answer', subtitle: '0:54');
+      const CustomResponseCard(title: 'Sample Answer', subtitle: '0:54');
 
   Widget _buildActualResponseWrapper() =>
       Expanded(child: _buildActualResponse());
 
   Widget _buildActualResponse() =>
-      const PracticeResponseCard(title: 'Sample Answer', subtitle: '0:54');
+      const CustomResponseCard(title: 'Sample Answer', subtitle: '0:54');
 }

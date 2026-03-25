@@ -48,6 +48,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
   List<Widget> _buildColumnChildren(DownloadsViewModel viewModel) => [
         verticalSpaceMedium,
         _buildAppbar(viewModel),
+        verticalSpaceMedium,
         _buildContentWrapper(viewModel)
       ];
 

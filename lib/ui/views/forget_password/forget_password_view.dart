@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/forget_password/forget_password_view.form.dart';
 import 'package:yimaru_app/ui/views/forget_password/screens/request_reset_code_screen.dart';
 import 'package:yimaru_app/ui/views/forget_password/screens/reset_password_screen.dart';
 
-import '../../common/app_colors.dart';
 import '../../common/validators/form_validator.dart';
-import '../../widgets/large_app_bar.dart';
-import '../../widgets/page_loading_indicator.dart';
 import 'forget_password_viewmodel.dart';
 
 @FormView(fields: [
-  FormTextField(name: 'email', validator: FormValidator.validateEmail),
+  FormTextField(name: 'email', validator: FormValidator.validateEmailForm),
   FormTextField(name: 'resetCode', validator: FormValidator.validateForm),
   FormTextField(name: 'password', validator: FormValidator.validateForm),
   FormTextField(name: 'confirmPassword', validator: FormValidator.validateForm)
@@ -43,7 +39,7 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel>
 
   void _pop({required bool value, required ForgetPasswordViewModel viewModel}) {
     {
-      if (!value) return;
+      // if (!value) return;
       _clearDataOnNavigation(viewModel);
       WidgetsBinding.instance.addPostFrameCallback((_) => viewModel.goBack());
     }
@@ -70,7 +66,7 @@ class ForgetPasswordView extends StackedView<ForgetPasswordViewModel>
 
   Widget _buildLoginScreensWrapper(ForgetPasswordViewModel viewModel) =>
       PopScope(
-          canPop: true,
+          canPop: viewModel.currentPage == 0 ? true : false,
           onPopInvokedWithResult: (value, data) =>
               _pop(value: value, viewModel: viewModel),
           child: _buildBody(viewModel));

@@ -1,8 +1,9 @@
 import 'dart:math';
+
 import 'package:chewie/chewie.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:toastification/toastification.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
@@ -208,6 +209,11 @@ TextStyle style12R700 = const TextStyle(
   fontWeight: FontWeight.w700,
 );
 
+TextStyle style12P400 = const TextStyle(
+  fontSize: 12,
+  color: kcPrimaryColor,
+);
+
 TextStyle style12DG400 = const TextStyle(
   fontSize: 12,
   color: kcDarkGrey,
@@ -267,6 +273,18 @@ TextStyle style18DG500 = const TextStyle(
   fontWeight: FontWeight.w500,
 );
 
+TextStyle style18DG600 = const TextStyle(
+  fontSize: 18,
+  color: kcDarkGrey,
+  fontWeight: FontWeight.w600,
+);
+
+TextStyle style18G700 = const TextStyle(
+  fontSize: 18,
+  color: kcDeepGreen,
+  fontWeight: FontWeight.w700,
+);
+
 TextStyle style18DG700 = const TextStyle(
   fontSize: 18,
   color: kcDarkGrey,
@@ -309,6 +327,8 @@ TextStyle validationStyle = const TextStyle(
   fontWeight: FontWeight.w700,
 );
 
+Duration kDuration = const Duration(seconds: 1);
+
 Style htmlDefaultStyle = Style(color: kcDarkGrey, fontSize: FontSize(16));
 
 Map<String, Style> htmlStyle = {
@@ -339,13 +359,19 @@ ChewieProgressColors buildChewieProgressIndicator = ChewieProgressColors(
 Widget buildToastDescription(String message) => Text(
       message,
       maxLines: 4,
-      style: const TextStyle(color: kcDarkGrey, fontWeight: FontWeight.w500),
+      style: style14DG500,
+    );
+
+Icon buildCloseIcon() => const Icon(
+      Icons.close,
+      color: kcPrimaryColor,
     );
 
 void showErrorToast(String message) {
   toastification.show(
     showIcon: true,
     dragToClose: true,
+    icon: buildCloseIcon(),
     showProgressBar: false,
     applyBlurEffect: false,
     alignment: Alignment.topCenter,
@@ -356,12 +382,13 @@ void showErrorToast(String message) {
     autoCloseDuration: const Duration(seconds: 3),
     margin: const EdgeInsets.symmetric(horizontal: 15),
     borderSide: const BorderSide(color: kcPrimaryColor),
-    icon: const Icon(
-      Icons.close,
-      color: kcPrimaryColor,
-    ),
   );
 }
+
+Icon buildCheckIcon() => const Icon(
+      Icons.check,
+      color: kcPrimaryColor,
+    );
 
 void showSuccessToast(String message) {
   toastification.show(
@@ -369,6 +396,7 @@ void showSuccessToast(String message) {
     dragToClose: true,
     showProgressBar: false,
     applyBlurEffect: false,
+    icon: buildCheckIcon(),
     alignment: Alignment.topCenter,
     primaryColor: kcBackgroundColor,
     type: ToastificationType.success,
@@ -377,9 +405,5 @@ void showSuccessToast(String message) {
     autoCloseDuration: const Duration(seconds: 3),
     margin: const EdgeInsets.symmetric(horizontal: 15),
     borderSide: const BorderSide(color: kcPrimaryColor),
-    icon: const Icon(
-      Icons.check,
-      color: kcPrimaryColor,
-    ),
   );
 }

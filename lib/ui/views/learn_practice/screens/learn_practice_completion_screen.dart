@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/small_app_bar.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';

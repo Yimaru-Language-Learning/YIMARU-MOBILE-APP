@@ -8,6 +8,7 @@ import '../../../app/app.locator.dart';
 import '../../../models/user_model.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/google_auth_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/app_colors.dart';
 
@@ -19,6 +20,8 @@ class ProfileViewModel extends ReactiveViewModel {
   final _statusChecker = locator<StatusCheckerService>();
 
   final _navigationService = locator<NavigationService>();
+
+  final _googleAuthService = locator<GoogleAuthService>();
 
   final _imagePickerService = locator<ImagePickerService>();
 
@@ -59,8 +62,9 @@ class ProfileViewModel extends ReactiveViewModel {
   }
 
   // Logout
-  Future<void> _logOut() async {
-    await _authenticationService.logOut();
+  Future<void> _logout() async {
+    await _googleAuthService.logout();
+    await _authenticationService.logout();
     await _navigationService.replaceWithLoginView();
   }
 
@@ -78,10 +82,10 @@ class ProfileViewModel extends ReactiveViewModel {
     return response?.confirmed;
   }
 
-  Future<void> logOut() async {
+  Future<void> logout() async {
     bool? response = await showAbortDialog();
     if (response != null && response) {
-      await _logOut();
+      await _logout();
     }
   }
 

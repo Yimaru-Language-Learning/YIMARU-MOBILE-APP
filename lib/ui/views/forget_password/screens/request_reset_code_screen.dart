@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/forget_password/forget_password_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/login_account.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/large_app_bar.dart';
-import '../../../widgets/option_text_divider.dart';
 import '../../../widgets/page_loading_indicator.dart';
 import '../forget_password_view.form.dart';
 
@@ -84,6 +82,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           required ForgetPasswordViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
+        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 

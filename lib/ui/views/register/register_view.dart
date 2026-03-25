@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/register/screens/create_password_screen.dart';
 import 'package:yimaru_app/ui/views/register/screens/register_with_email_screen.dart';
 import 'package:yimaru_app/ui/views/register/screens/register_with_phone_number_screen.dart';
 import 'package:yimaru_app/ui/views/register/screens/registration_otp_screen.dart';
-import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
-import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
-import '../../common/app_colors.dart';
 import '../../common/validators/form_validator.dart';
-import 'register_viewmodel.dart';
-
 import 'register_view.form.dart';
+import 'register_viewmodel.dart';
 
 @FormView(fields: [
   FormTextField(name: 'otp', validator: FormValidator.validateForm),
-  FormTextField(name: 'email', validator: FormValidator.validateEmail),
+  FormTextField(name: 'email', validator: FormValidator.validateEmailForm),
   FormTextField(name: 'password', validator: FormValidator.validateForm),
   FormTextField(name: 'phoneNumber', validator: FormValidator.validateForm),
   FormTextField(name: 'confirmPassword', validator: FormValidator.validateForm),
@@ -34,8 +29,6 @@ class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
   }
 
   void _inAppPop(RegisterViewModel viewModel) {
-    print('OnPop');
-    print(viewModel.currentPage);
     _clearDataOnNavigation(viewModel);
     viewModel.goBack();
   }
@@ -56,7 +49,6 @@ class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
 
   void _pop({required bool value, required RegisterViewModel viewModel}) {
     {
-      if (!value) return;
       _clearDataOnNavigation(viewModel);
       WidgetsBinding.instance.addPostFrameCallback((_) => viewModel.goBack());
     }
@@ -82,9 +74,9 @@ class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
       _buildRegisterScreensWrapper(viewModel);
 
   Widget _buildRegisterScreensWrapper(RegisterViewModel viewModel) => PopScope(
-      canPop: false,
       onPopInvokedWithResult: (value, data) =>
           _pop(value: value, viewModel: viewModel),
+      canPop: viewModel.currentPage == 0 ? true : false,
       child: _buildBody(viewModel));
 
   Widget _buildBody(RegisterViewModel viewModel) =>

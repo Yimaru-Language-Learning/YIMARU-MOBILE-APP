@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/views/course/course_view.dart';
+import 'package:yimaru_app/ui/views/course_category/course_category_view.dart';
 import 'package:yimaru_app/ui/views/learn/learn_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
 import 'package:yimaru_app/ui/views/startup/startup_view.dart';
-import 'package:yimaru_app/ui/widgets/coming_soon.dart';
 
 import 'home_viewmodel.dart';
 
@@ -33,8 +31,10 @@ class HomeView extends StackedView<HomeViewModel> {
 
   Widget _buildScaffoldWrapper(HomeViewModel viewModel) =>
       viewModel.busy(StateObjects.homeView)
-          ? const StartupView(label: 'Checking user info')
+          ? _buildStartUpView()
           : _buildScaffold(viewModel);
+
+  Widget _buildStartUpView() => const StartupView(label: 'Checking user info');
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(
         body: getViewForIndex(viewModel.currentIndex),
@@ -42,8 +42,8 @@ class HomeView extends StackedView<HomeViewModel> {
       );
 
   Widget _buildBottomNav(HomeViewModel viewModel) => BottomNavigationBar(
-        onTap: viewModel.setCurrentIndex,
         items: _buildNavBarItems(),
+        onTap: viewModel.setCurrentIndex,
         selectedItemColor: kcPrimaryColor,
         backgroundColor: kcBackgroundColor,
         type: BottomNavigationBarType.fixed,
@@ -56,28 +56,34 @@ class HomeView extends StackedView<HomeViewModel> {
         _buildProfileItem(),
       ];
 
-  BottomNavigationBarItem _buildLearnItem() => const BottomNavigationBarItem(
+  BottomNavigationBarItem _buildLearnItem() => BottomNavigationBarItem(
         label: 'Learn',
-        icon: Icon(Icons.school),
+        icon: _buildLearnIcon(),
       );
 
-  BottomNavigationBarItem _buildCourseItem() => const BottomNavigationBarItem(
+  BottomNavigationBarItem _buildCourseItem() => BottomNavigationBarItem(
         label: 'Course',
-        icon: Icon(Icons.book),
+        icon: _buildCourseIcon(),
       );
 
-  BottomNavigationBarItem _buildProfileItem() => const BottomNavigationBarItem(
+  BottomNavigationBarItem _buildProfileItem() => BottomNavigationBarItem(
         label: 'Profile',
-        icon: Icon(Icons.person),
+        icon: _buildProfileIcon(),
       );
 }
+
+Widget _buildLearnIcon() => const Icon(Icons.school);
+
+Widget _buildCourseIcon() => const Icon(Icons.book);
+
+Widget _buildProfileIcon() => const Icon(Icons.person);
 
 Widget getViewForIndex(int index) {
   switch (index) {
     case 0:
       return const LearnView();
     case 1:
-      return const CourseView();
+      return const CourseCategoryView();
 
     default:
       return const ProfileView();

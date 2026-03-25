@@ -24,7 +24,7 @@ class CoursePaymentCard extends StatelessWidget {
         tileColor: kcPrimaryColor.withValues(alpha: 0.1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side:  BorderSide(color: kcPrimaryColor.withValues(alpha: 0.25)),
+          side: BorderSide(color: kcPrimaryColor.withValues(alpha: 0.25)),
         ),
       );
 
@@ -39,7 +39,7 @@ class CoursePaymentCard extends StatelessWidget {
       );
 
   Widget _buildLeading() => CircleAvatar(
-    radius: 25,
+        radius: 25,
         backgroundColor: kcPrimaryColor.withValues(alpha: 0.25),
         child: _buildIcon(),
       );

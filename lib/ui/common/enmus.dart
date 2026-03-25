@@ -1,5 +1,8 @@
-// Registration type
-enum RegistrationType { phone, email }
+// Login method
+enum LoginMethod { phone, email, google }
+
+// Sign-up method
+enum SignUpMethod { phone, email, google }
 
 // Response status
 enum ResponseStatus { success, failure }
@@ -10,19 +13,29 @@ enum ProficiencyLevels { a1, a2, b1, b2, none }
 // Progress status
 enum ProgressStatuses { pending, started, completed }
 
+// Duolingo assessment types
+enum DuolingoAssessmentType { speaking, reading, writing, listening }
+
 // State object
 enum StateObjects {
+  courses,
   homeView,
+  register,
   verifyOtp,
   resendOtp,
   profileImage,
+  courseLessons,
   profileUpdate,
   resetPassword,
+  subcategories,
   loginWithEmail,
+  coursePractice,
   loginWithGoogle,
   loadLessonVideo,
+  loadCourseVideo,
   requestResetCode,
-  registerWithEmail,
+  courseCategories,
   profileCompletion,
   registerWithGoogle,
+  loginWithPhoneNumber,
 }

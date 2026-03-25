@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:pinput/pinput.dart';
 import 'package:stacked/stacked.dart';
-
+import 'package:yimaru_app/app/app.locator.dart';
+import 'package:yimaru_app/services/smart_auth_service.dart';
 import 'package:yimaru_app/ui/widgets/custom_cursor.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/large_app_bar.dart';
-import '../login_viewmodel.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../login_view.form.dart';
+import '../login_viewmodel.dart';
 
 class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
   final TextEditingController otpController;
@@ -28,6 +31,19 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
     );
   }
 
+  Future<void> _verifyOtp(LoginViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    Map<String, dynamic> data = {
+      'otp': otpController.text,
+      'phone_number': '251${phoneNumberController.text}',
+    };
+
+    viewModel.clearUserData();
+    viewModel.addUserData(data);
+
+    await viewModel.verifyOtp();
+  }
+
   @override
   Widget build(BuildContext context, LoginViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);
@@ -36,7 +52,16 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
           {required BuildContext context, required LoginViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildVerifyOtpState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -51,6 +76,7 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
           {required BuildContext context, required LoginViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
+        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
@@ -90,7 +116,7 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
       [
         _buildUpperColumn(viewModel),
         getPadding(context),
-        _buildContinueButton(viewModel)
+        _buildContinueButtonWrapper(viewModel)
       ];
 
   Widget _buildUpperColumn(LoginViewModel viewModel) => Column(
@@ -132,6 +158,7 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
       );
 
   Widget _buildPinPut(LoginViewModel viewModel) => Pinput(
+        length: 6,
         controller: otpController,
         defaultPinTheme: defaultPin,
         cursor: const CustomCursor(),
@@ -139,12 +166,12 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
         onTap: viewModel.setOtpFocus,
         focusNode: viewModel.focusNode,
         errorTextStyle: validationStyle,
-        //smsRetriever: locator<KewedeSmsRetriever>(),
         focusedPinTheme: focusedThemePin,
         submittedPinTheme: submittedThemePin,
+        smsRetriever: locator<SmartAuthService>(),
+        separatorBuilder: (index) => horizontalSpaceSmall,
         hapticFeedbackType: HapticFeedbackType.heavyImpact,
-        separatorBuilder: (index) => const SizedBox(width: 25),
-        onCompleted: (otp) async => await viewModel.validateOtp(otp),
+        onCompleted: (otp) async => await _verifyOtp(viewModel),
       );
 
   Widget _buildOtpValidatorWrapper(LoginViewModel viewModel) =>
@@ -159,10 +186,13 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
 
   Widget _buildTimerWrapper(LoginViewModel viewModel) => !viewModel.buttonActive
       ? _buildTimerSection(viewModel)
-      : _buildResendButton();
+      : _buildResendButton(viewModel);
 
-  Widget _buildResendButton() =>
-      TextButton(onPressed: () {}, child: _buildResendText());
+  Widget _buildResendButton(LoginViewModel viewModel) => TextButton(
+      onPressed: () async => await viewModel.resendOtp(),
+      style:
+          const ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.zero)),
+      child: _buildResendText());
 
   Widget _buildResendText() => Text(
         'Resend code',
@@ -182,10 +212,10 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
   Widget _buildTimer(LoginViewModel viewModel) => TimerCountdown(
         enableDescriptions: false,
         timeTextStyle: style14P600,
-        endTime: DateTime.now().add(const Duration(minutes: 3, seconds: 0)),
+        colonsTextStyle: style14P400,
+        endTime: viewModel.resendTime,
         onEnd: viewModel.setResendButton,
         format: CountDownTimerFormat.minutesSeconds,
-        colonsTextStyle: const TextStyle(color: kcPrimaryColor),
       );
 
   Widget _buildContinueButtonWrapper(LoginViewModel viewModel) => Padding(
@@ -198,15 +228,18 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor: viewModel.focusOtp &&
-                otpController.text.length == 4 &&
-                !viewModel.hasOtpValidationMessage
-            ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
-        onTap: viewModel.focusOtp &&
-                otpController.text.length == 4 &&
-                !viewModel.hasOtpValidationMessage
-            ? () => viewModel.replaceWithHome()
-            : null,
+        backgroundColor:
+            otpController.text.length == 6 && !viewModel.hasOtpValidationMessage
+                ? kcPrimaryColor
+                : kcPrimaryColor.withOpacity(0.1),
+        onTap:
+            otpController.text.length == 6 && !viewModel.hasOtpValidationMessage
+                ? () async => await _verifyOtp(viewModel)
+                : null,
       );
+
+  Widget _buildVerifyOtpState(LoginViewModel viewModel) =>
+      viewModel.busy(StateObjects.verifyOtp)
+          ? const PageLoadingIndicator()
+          : Container();
 }

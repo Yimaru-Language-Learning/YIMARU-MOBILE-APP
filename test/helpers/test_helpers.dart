@@ -11,6 +11,9 @@ import 'package:yimaru_app/services/permission_handler_service.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
 import 'package:yimaru_app/services/google_auth_service.dart';
 import 'package:yimaru_app/services/image_downloader_service.dart';
+import 'package:yimaru_app/services/notification_service.dart';
+import 'package:yimaru_app/services/smart_auth_service.dart';
+import 'package:yimaru_app/services/course_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -32,6 +35,9 @@ import 'test_helpers.mocks.dart';
     MockSpec<GoogleAuthService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<ImageDownloaderService>(
         onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<NotificationService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<SmartAuthService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<CourseService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
   ],
 )
@@ -48,6 +54,9 @@ void registerServices() {
   getAndRegisterImagePickerService();
   getAndRegisterGoogleAuthService();
   getAndRegisterImageDownloaderService();
+  getAndRegisterNotificationService();
+  getAndRegisterSmartAuthService();
+  getAndRegisterCourseService();
 // @stacked-mock-register
 }
 
@@ -165,6 +174,27 @@ MockImageDownloaderService getAndRegisterImageDownloaderService() {
   _removeRegistrationIfExists<ImageDownloaderService>();
   final service = MockImageDownloaderService();
   locator.registerSingleton<ImageDownloaderService>(service);
+  return service;
+}
+
+MockNotificationService getAndRegisterNotificationService() {
+  _removeRegistrationIfExists<NotificationService>();
+  final service = MockNotificationService();
+  locator.registerSingleton<NotificationService>(service);
+  return service;
+}
+
+MockSmartAuthService getAndRegisterSmartAuthService() {
+  _removeRegistrationIfExists<SmartAuthService>();
+  final service = MockSmartAuthService();
+  locator.registerSingleton<SmartAuthService>(service);
+  return service;
+}
+
+MockCourseService getAndRegisterCourseService() {
+  _removeRegistrationIfExists<CourseService>();
+  final service = MockCourseService();
+  locator.registerSingleton<CourseService>(service);
   return service;
 }
 // @stacked-mock-create

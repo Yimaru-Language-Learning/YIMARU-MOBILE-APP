@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:yimaru_app/ui/widgets/mini_thumbnail.dart';
 
 import '../common/app_colors.dart';
 import '../common/enmus.dart';
@@ -67,59 +66,7 @@ class LearnLessonTile extends StatelessWidget {
         children: _buildExpansionTileChildren(),
       );
 
-  Widget _buildLeadingWrapper() => SizedBox(
-        width: 75,
-        height: double.maxFinite,
-        child: _buildLeadingClipper(),
-      );
-
-  Widget _buildLeadingClipper() => ClipRRect(
-        borderRadius: BorderRadius.circular(5),
-        child: _buildLeadingStack(),
-      );
-
-  Widget _buildLeadingStack() => Stack(
-        alignment: Alignment.center,
-        children: _buildLeadingChildren(),
-      );
-
-  List<Widget> _buildLeadingChildren() =>
-      [_buildImageWrapper(), _buildPlayButtonWrapper()];
-
-  Widget _buildImageWrapper() =>
-      Align(alignment: Alignment.center, child: _buildImage());
-
-  Widget _buildImage() => Image.asset(
-        thumbnail,
-        fit: BoxFit.fill,
-        width: double.maxFinite,
-      );
-
-  Widget _buildPlayButtonWrapper() => Align(
-        alignment: Alignment.center,
-        child: _buildPlayButton(),
-      );
-
-  Widget _buildPlayButton() => CircleAvatar(
-        radius: 14,
-        backgroundColor: kcTransparent,
-        child: _buildPlayIconClipper(),
-      );
-
-  Widget _buildPlayIconClipper() => ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: _buildPlayIconBlender(),
-      );
-
-  Widget _buildPlayIconBlender() => BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-        child: _buildPlayIcon(),
-      );
-
-  Widget _buildPlayIcon() => const Icon(
-        Icons.play_arrow,
-        color: kcWhite,
-      );
+  Widget _buildLeadingWrapper() => MiniThumbnail(thumbnail: thumbnail);
 
   Widget _buildTitle() => Text(
         title,

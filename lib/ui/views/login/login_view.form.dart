@@ -23,7 +23,7 @@ final Map<String, FocusNode> _LoginViewFocusNodes = {};
 
 final Map<String, String? Function(String?)?> _LoginViewTextValidations = {
   OtpValueKey: FormValidator.validateForm,
-  EmailValueKey: FormValidator.validateEmail,
+  EmailValueKey: FormValidator.validateEmailForm,
   PasswordValueKey: FormValidator.validateForm,
   PhoneNumberValueKey: FormValidator.validateForm,
 };

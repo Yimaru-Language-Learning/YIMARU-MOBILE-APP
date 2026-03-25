@@ -83,6 +83,7 @@ class SpeakToLearnPracticeListenerScreen
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
         ],
       );
 
