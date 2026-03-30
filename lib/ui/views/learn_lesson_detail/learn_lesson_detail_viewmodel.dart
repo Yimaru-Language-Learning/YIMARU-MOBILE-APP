@@ -3,7 +3,6 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:yimaru_app/app/app.router.dart';
-import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
@@ -37,7 +36,6 @@ class LearnLessonDetailViewModel extends BaseViewModel {
     await _videoPlayerController?.initialize();
 
     if (_videoPlayerController != null) {
-      print('Initialized');
       _chewieController = ChewieController(
           looping: true,
           autoPlay: true,
@@ -53,20 +51,25 @@ class LearnLessonDetailViewModel extends BaseViewModel {
     //  rebuildUi();
   }
 
-  Future<void> pause()async{
+  Future<void> pause() async {
     await _chewieController?.pause();
   }
 
-  @override
-  void dispose() {
+  void close() {
     _videoPlayerController?.dispose();
     _chewieController?.dispose();
-    super.dispose();
   }
 
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnPractice() async=>await _navigationService.navigateToLearnPracticeView();
-
+  Future<void> navigateToLearnPractice(
+          List<Map<String, dynamic>> practices) async =>
+      await _navigationService.navigateToLearnPracticeView(
+        practices: practices,
+        buttonLabel: 'Start Practice',
+        title: 'Let \'s practice what you just learnt!',
+        subtitle:
+            'I’ll ask you a few questions, and you can respond naturally.',
+      );
 }

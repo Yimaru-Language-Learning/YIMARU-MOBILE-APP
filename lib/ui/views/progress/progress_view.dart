@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/course_level_card.dart';
-import 'package:yimaru_app/ui/widgets/skill_progress.dart';
-import 'package:yimaru_app/ui/widgets/suggestion_card.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
+import '../../widgets/course_progress_section.dart';
+import '../../widgets/learning_progress_card.dart';
 import '../../widgets/small_app_bar.dart';
 import 'progress_viewmodel.dart';
 
@@ -35,35 +34,38 @@ class ProgressView extends StackedView<ProgressViewModel> {
   Widget _buildBodyWrapper(ProgressViewModel viewModel) =>
       _buildBody(viewModel);
 
-  Widget _buildBody(ProgressViewModel viewModel) => _buildColumn(viewModel);
+  Widget _buildBody(ProgressViewModel viewModel) =>
+      _buildNestedScrollView(viewModel);
 
-  Widget _buildColumn(ProgressViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildColumnChildren(viewModel),
-      );
+  Widget _buildNestedScrollView(ProgressViewModel viewModel) =>
+      NestedScrollView(
+          scrollDirection: Axis.vertical,
+          headerSliverBuilder:
+              (BuildContext context, bool innerBoxIsScrolled) =>
+                  [_buildSliverAppbarWrapper(viewModel)],
+          body: _buildContentScrollViewWrapper(viewModel));
 
-  List<Widget> _buildColumnChildren(ProgressViewModel viewModel) => [
-        verticalSpaceMedium,
-        _buildAppBarWrapper(viewModel),
-        verticalSpaceSmall,
-        _buildContentWrapper(viewModel)
-      ];
-
-  Widget _buildAppBarWrapper(ProgressViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildAppbar(viewModel),
+  Widget _buildSliverAppbarWrapper(ProgressViewModel viewModel) => SliverAppBar(
+        pinned: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: kcBackgroundColor,
+        surfaceTintColor: kcBackgroundColor,
+        title: _buildAppbar(viewModel),
       );
 
   Widget _buildAppbar(ProgressViewModel viewModel) => SmallAppBar(
         title: 'My Progress',
+        showBackButton: true,
         onTap: viewModel.pop,
       );
 
-  Widget _buildContentWrapper(ProgressViewModel viewModel) =>
-      Expanded(child: _buildContentScrollView(viewModel));
-
-  Widget _buildContentScrollView(ProgressViewModel viewModel) =>
+  Widget _buildContentScrollViewWrapper(ProgressViewModel viewModel) =>
       SingleChildScrollView(
+        child: _buildContentWrapper(viewModel),
+      );
+
+  Widget _buildContentWrapper(ProgressViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildContentColumn(viewModel),
       );
 
@@ -75,92 +77,19 @@ class ProgressView extends StackedView<ProgressViewModel> {
 
   List<Widget> _buildContentChildren(ProgressViewModel viewModel) => [
         verticalSpaceMedium,
-        _buildCourseProgressSection(viewModel),
+        _buildText(),
         verticalSpaceMedium,
-        _buildSkillTitleWrapper(),
+        _buildLearningProgressCard(),
         verticalSpaceMedium,
-        _buildSkillsWrapper(viewModel),
-        verticalSpaceLarge,
-        _buildSuggestionCard(),
-        verticalSpaceMassive
+        _buildCourseProgressSection()
       ];
 
-  Widget _buildCourseProgressSection(ProgressViewModel viewModel) => SizedBox(
-        height: 250,
-        width: double.maxFinite,
-        child: _buildListView(viewModel),
+  Widget _buildText() => const Text(
+        'Track your learning journey and see your growth over time.',
+        style: TextStyle(color: kcDarkGrey),
       );
 
-  Widget _buildListView(ProgressViewModel viewModel) => ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: viewModel.progresses.length,
-        controller: PageController(viewportFraction: 0.9),
-        itemBuilder: (context, index) => _buildCourseLeveCard(
-          viewModel: viewModel,
-          icon: viewModel.progresses[index]['icon'],
-          title: viewModel.progresses[index]['title'],
-          color: viewModel.progresses[index]['color'],
-          status: viewModel.progresses[index]['status'],
-          subtitle: viewModel.progresses[index]['subtitle'],
-          isCompleted: viewModel.progresses[index]['isCompleted'],
-        ),
-      );
+  Widget _buildLearningProgressCard() => const LearningProgressCard();
 
-  Widget _buildCourseLeveCard(
-          {required Color color,
-          required String title,
-          required String icon,
-          required String status,
-          required String subtitle,
-          required bool isCompleted,
-          required ProgressViewModel viewModel}) =>
-      CourseLevelCard(
-        icon: icon,
-        title: title,
-        color: color,
-        status: status,
-        subtitle: subtitle,
-        isCompleted: isCompleted,
-        onTap: viewModel.navigateToOngoingProgress,
-      );
-
-  Widget _buildSkillTitleWrapper() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildSkillTitle(),
-      );
-
-  Widget _buildSkillTitle() => const Text(
-        'Skill Proficiency',
-        style: TextStyle(
-          fontSize: 18,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
-      );
-
-  Widget _buildSkillsWrapper(ProgressViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildSkills(viewModel),
-      );
-
-  Widget _buildSkills(ProgressViewModel viewModel) => ListView.builder(
-        shrinkWrap: true,
-        itemCount: viewModel.skillsLevel.length,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => _buildSkill(
-          skill: viewModel.skillsLevel[index]['skill'],
-          progress: viewModel.skillsLevel[index]['progress'],
-        ),
-      );
-
-  Widget _buildSkill({
-    required String skill,
-    required double progress,
-  }) =>
-      SkillProgress(
-        skill: skill,
-        progress: progress,
-      );
-
-  Widget _buildSuggestionCard() => const SuggestionCard();
+  Widget _buildCourseProgressSection() => const CourseProgressSection();
 }

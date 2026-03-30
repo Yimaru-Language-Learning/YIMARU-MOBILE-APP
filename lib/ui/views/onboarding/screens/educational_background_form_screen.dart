@@ -41,8 +41,11 @@ class EducationalBackgroundFormScreen
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
+  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) => [
+        _buildAppBar(viewModel),
+        verticalSpaceMedium,
+        _buildExpandedBody(viewModel)
+      ];
 
   Widget _buildExpandedBody(OnboardingViewModel viewModel) =>
       Expanded(child: _buildColumnScroller(viewModel));
@@ -76,7 +79,7 @@ class EducationalBackgroundFormScreen
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildEducationalLevels(viewModel)
       ];
@@ -97,7 +100,7 @@ class EducationalBackgroundFormScreen
         ),
       );
 
-  Widget _buildSubTitle() => const Text(
+  Widget _buildSubtitle() => const Text(
         'This helps us tailor your lessons to your experience.',
         style: TextStyle(color: kcMediumGrey),
       );

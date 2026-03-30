@@ -39,12 +39,14 @@ class LearnLevelView extends StackedView<LearnLevelViewModel> {
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
           _buildLevelsColumnWrapper(viewModel)
         ],
       );
 
   Widget _buildAppBar(LearnLevelViewModel viewModel) => SmallAppBar(
         onTap: viewModel.pop,
+        showBackButton: true,
       );
 
   Widget _buildLevelsColumnWrapper(LearnLevelViewModel viewModel) =>

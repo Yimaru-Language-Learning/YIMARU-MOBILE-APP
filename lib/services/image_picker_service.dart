@@ -6,10 +6,13 @@ import '../app/app.locator.dart';
 import '../ui/common/ui_helpers.dart';
 
 class ImagePickerService {
+  // Dependency injection
   final _permissionHandler = locator<PermissionHandlerService>();
 
+  // Initialization
   final ImagePicker _picker = ImagePicker();
 
+  // Pick image from gallery
   Future<String?> gallery() async {
     try {
       PermissionStatus status =
@@ -32,6 +35,7 @@ class ImagePickerService {
     }
   }
 
+  // Pick image from camera
   Future<String?> camera() async {
     try {
       PermissionStatus status =

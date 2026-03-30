@@ -9,15 +9,21 @@ import '../app/app.locator.dart';
 import '../ui/common/app_constants.dart';
 
 class DioService {
+  // Dependency injection
   final _navigationService = locator<NavigationService>();
   final _authenticationService = locator<AuthenticationService>();
 
+  // Initialization
   final Dio _dio = Dio();
+
+  Dio get dio => _dio;
+
   final Dio _refreshDio = Dio(); // separate instance
 
   bool _isRefreshing = false;
   final List<void Function()> _retryQueue = [];
 
+  // Initialization
   DioService() {
     _dio.options
       ..baseUrl = kBaseUrl
@@ -33,6 +39,7 @@ class DioService {
     );
   }
 
+  // Response logger
   void _onResponse(
     Response response,
     ResponseInterceptorHandler handler,
@@ -69,6 +76,7 @@ class DioService {
     handler.next(options);
   }
 
+  // Error logger
   Future<void> _onError(
     DioException error,
     ErrorInterceptorHandler handler,
@@ -125,6 +133,7 @@ class DioService {
     }
   }
 
+  // Refresh token
   Future<bool> _refreshToken() async {
     final UserModel? user = await _authenticationService.getUser();
 
@@ -149,15 +158,14 @@ class DioService {
 
       return true;
     } catch (e) {
-      await _authenticationService.logOut();
+      await _authenticationService.logout();
       await _navigationService.replaceWithLoginView();
       return false;
     }
   }
 
+  // Check request if immediately after token refreshed
   bool _isRefreshRequest(RequestOptions options) {
     return options.path.contains(kRefreshTokenUrl);
   }
-
-  Dio get dio => _dio;
 }

@@ -9,6 +9,7 @@ import 'failure_viewmodel.dart';
 
 class FailureView extends StackedView<FailureViewModel> {
   final String label;
+
   const FailureView({Key? key, required this.label}) : super(key: key);
 
   @override
@@ -89,8 +90,5 @@ class FailureView extends StackedView<FailureViewModel> {
         child: _buildIcon(),
       );
 
-  Widget _buildIcon() => SvgPicture.asset(
-        'assets/icons/logo.svg',
-        height: 50,
-      );
+  Widget _buildIcon() => SvgPicture.asset('assets/icons/logo.svg', height: 50);
 }

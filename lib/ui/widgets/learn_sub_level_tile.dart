@@ -72,11 +72,7 @@ class LearnSubLevelTile extends ViewModelWidget<LearnLevelViewModel> {
 
   Widget _buildTitle() => Text(
         title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: kcPrimaryColor,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style16P600,
       );
 
   Widget _buildProgressStatus() => const ProgressStatus(
@@ -86,9 +82,7 @@ class LearnSubLevelTile extends ViewModelWidget<LearnLevelViewModel> {
 
   Widget _buildContent() => Text(
         subtitle,
-        style: const TextStyle(
-          color: kcDarkGrey,
-        ),
+        style: style14DG400,
       );
 
   Widget _buildActionButtonWrapper(LearnLevelViewModel viewModel) => SizedBox(
@@ -119,18 +113,17 @@ class LearnSubLevelTile extends ViewModelWidget<LearnLevelViewModel> {
       );
 
   Widget _buildPracticeButtonWrapper(LearnLevelViewModel viewModel) => Expanded(
-        child: _buildPracticeButton(viewModel),
+        child: Container(),
       );
 
   Widget _buildPracticeButton(LearnLevelViewModel viewModel) =>
       const CustomElevatedButton(
-        height: 15,
-        text: 'Practice',
-        borderRadius: 12,
-        backgroundColor: kcWhite,
-        borderColor: kcPrimaryColor,
-        foregroundColor: kcPrimaryColor,
-
-        // onTap: () async => await viewModel.navigateToLearnLevel(),
-      );
+          height: 15,
+          text: 'Practice',
+          borderRadius: 12,
+          backgroundColor: kcWhite,
+          borderColor: kcPrimaryColor,
+          foregroundColor: kcPrimaryColor
+          // onTap: () async => await viewModel.navigateToLearnPractice()
+          );
 }

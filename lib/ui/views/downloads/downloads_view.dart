@@ -13,9 +13,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
   const DownloadsView({Key? key}) : super(key: key);
 
   @override
-  DownloadsViewModel viewModelBuilder(
-    BuildContext context,
-  ) =>
+  DownloadsViewModel viewModelBuilder(BuildContext context) =>
       DownloadsViewModel();
 
   @override
@@ -50,12 +48,14 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
   List<Widget> _buildColumnChildren(DownloadsViewModel viewModel) => [
         verticalSpaceMedium,
         _buildAppbar(viewModel),
+        verticalSpaceMedium,
         _buildContentWrapper(viewModel)
       ];
 
   Widget _buildAppbar(DownloadsViewModel viewModel) => SmallAppBar(
-        title: 'Offline Downloads',
         onTap: viewModel.pop,
+        showBackButton: true,
+        title: 'Offline Downloads',
       );
 
   Widget _buildContentWrapper(DownloadsViewModel viewModel) =>
@@ -94,33 +94,21 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
   List<Widget> _buildStorageInfoChildren(DownloadsViewModel viewModel) =>
       [_buildStorageInfo(), _buildManageButton(viewModel)];
 
-  Widget _buildStorageInfo() => const Text.rich(
-        TextSpan(
-            text: '1.2GB',
-            style: TextStyle(
-              color: kcPrimaryColor,
-              fontWeight: FontWeight.w600,
-            ),
-            children: [
-              TextSpan(
-                text: ' used of 2GB',
-                style: TextStyle(
-                  color: kcDarkGrey,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            ]),
+  Widget _buildStorageInfo() => Text.rich(
+        TextSpan(text: '1.2GB', style: style14P600, children: [
+          TextSpan(
+            text: ' used of 2GB',
+            style: style14DG600,
+          )
+        ]),
       );
 
   Widget _buildManageButton(DownloadsViewModel viewModel) => TextButton(
       onPressed: viewModel.setShowDownload, child: _buildManageText());
 
-  Widget _buildManageText() => const Text(
+  Widget _buildManageText() => Text(
         'Manage Storage',
-        style: TextStyle(
-          color: kcPrimaryColor,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style14P600,
       );
 
   Widget _buildStorageIndicator() => const CustomLinearProgressIndicator(
@@ -187,20 +175,16 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
         color: kcPrimaryColor,
       );
 
-  Widget _buildEmptyTitle() => const Text(
+  Widget _buildEmptyTitle() => Text(
         'Looking for something to download?',
+        style: style25DG600,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
       );
 
-  Widget _buildEmptySubtitle() => const Text(
+  Widget _buildEmptySubtitle() => Text(
         'Start by exploring your learning materials and save them for offline access.',
+        style: style14MG400,
         textAlign: TextAlign.center,
-        style: TextStyle(color: kcMediumGrey),
       );
 
   Widget _buildGoButtonWrapper(DownloadsViewModel viewModel) => Padding(
@@ -210,9 +194,9 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
   Widget _buildGoButton(DownloadsViewModel viewModel) => CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Go to Learn Section',
-        onTap: viewModel.setShowDownload,
         foregroundColor: kcWhite,
+        text: 'Go to Learn Section',
         backgroundColor: kcPrimaryColor,
+        onTap: viewModel.setShowDownload,
       );
 }

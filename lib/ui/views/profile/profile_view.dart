@@ -195,6 +195,6 @@ class ProfileView extends StackedView<ProfileViewModel> {
         borderRadius: 12,
         foregroundColor: kcRed,
         backgroundColor: kcRed.withOpacity(0.25),
-        onTap: () async => await viewModel.logOut(),
+        onTap: () async => await viewModel.logout(),
       );
 }

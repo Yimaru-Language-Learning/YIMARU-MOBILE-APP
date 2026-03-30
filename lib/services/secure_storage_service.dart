@@ -15,8 +15,7 @@ extension BoolParsing on String {
 }
 
 class SecureStorageService {
-  // Create storage
-
+  // Initialization
   late final FlutterSecureStorage _storage;
 
   SecureStorageService() {
@@ -31,33 +30,40 @@ class SecureStorageService {
           );
   }
 
+  // Clear storage data
   Future<void> clear() async {
     _storage.deleteAll();
   }
 
+  // Get boolean data from storage
   Future<bool?> getBool(String key) async {
     String? result = await _storage.read(key: key);
     return result?.parseBool();
   }
 
+  // Get string data from storage
   Future<String?> getString(String key) async {
     return await _storage.read(key: key);
   }
 
+  // Get integer data from storage
   Future<int?> getInt(String key) async {
     return await _storage.read(key: key) == null
         ? null
         : int.parse(await _storage.read(key: key) ?? '0');
   }
 
+  // Save string data to storage
   Future<void> setString(String key, String value) async {
     await _storage.write(key: key, value: value);
   }
 
+  // Save integer data to storage
   Future<void> setInt(String key, int value) async {
     await _storage.write(key: key, value: value.toString());
   }
 
+  // Save boolean data to storage
   Future<void> setBool(String key, bool value) async {
     await _storage.write(key: key, value: value.toString());
   }

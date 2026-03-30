@@ -10,7 +10,7 @@ class EmptyVideoPlayer extends StatelessWidget {
   Widget build(BuildContext context) => _buildContainer();
 
   Widget _buildContainer() => Container(
-        decoration: const BoxDecoration(color: kcLightGrey),
+        decoration: const BoxDecoration(color: kcBlack),
         child: _buildStack(),
       );
 

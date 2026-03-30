@@ -19,15 +19,21 @@ import 'onboarding_viewmodel.dart';
 import 'onboarding_view.form.dart';
 
 @FormView(fields: [
-  FormTextField(name: 'fullName', validator: FormValidator.validateForm),
+  FormTextField(name: 'topic', validator: FormValidator.validateForm),
+  FormTextField(
+      name: 'fullName', validator: FormValidator.validateFullNameForm),
   FormTextField(name: 'challenge', validator: FormValidator.validateForm),
   FormTextField(name: 'occupation', validator: FormValidator.validateForm),
   FormTextField(name: 'languageGoal', validator: FormValidator.validateForm),
-  FormTextField(name: 'topic', validator: FormValidator.validateForm),
 ])
 class OnboardingView extends StackedView<OnboardingViewModel>
     with $OnboardingView {
   const OnboardingView({Key? key}) : super(key: key);
+
+  void _initUserData(OnboardingViewModel viewModel) {
+    fullNameController.text = viewModel.googleUser?.displayName ?? '';
+    print('Full-NAME: ${fullNameController.text}');
+  }
 
   void _initClearData() {
     topicController.clear();
@@ -78,6 +84,7 @@ class OnboardingView extends StackedView<OnboardingViewModel>
   @override
   void onViewModelReady(OnboardingViewModel viewModel) {
     _initClearData();
+    _initUserData(viewModel);
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
   }

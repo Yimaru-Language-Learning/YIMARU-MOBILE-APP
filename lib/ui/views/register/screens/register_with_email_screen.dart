@@ -9,8 +9,8 @@ import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/option_text_divider.dart';
 import '../../../widgets/page_loading_indicator.dart';
-import '../register_viewmodel.dart';
 import '../register_view.form.dart';
+import '../register_viewmodel.dart';
 
 class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
   final TextEditingController emailController;
@@ -22,12 +22,12 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
 
   void _addUserData(RegisterViewModel viewModel) {
     FocusManager.instance.primaryFocus?.unfocus();
-
     Map<String, dynamic> data = {
       'email': emailController.text,
     };
+    viewModel.clearUserData();
     viewModel.addUserData(data);
-    viewModel.goTo(page: 2, type: RegistrationType.email);
+    viewModel.goTo(page: 2, type: SignUpMethod.email);
   }
 
   Widget getPadding(context) {
@@ -55,7 +55,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
-          _buildRegisterWithGoogleState(viewModel)
+          _buildRegisterWithEmailState(viewModel)
         ],
       );
 
@@ -73,11 +73,13 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
           required RegisterViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
+        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildAppBar(RegisterViewModel viewModel) => const LargeAppBar(
-        showBackButton: false,
+  Widget _buildAppBar(RegisterViewModel viewModel) => LargeAppBar(
+        showBackButton: true,
+        onPop: viewModel.goBack,
         showLanguageSelection: true,
       );
 
@@ -231,10 +233,8 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         onTap: () => viewModel.goTo(page: 1),
       );
 
-
-
-  Widget _buildRegisterWithGoogleState(RegisterViewModel viewModel) =>
-      viewModel.busy(StateObjects.registerWithEmail)
+  Widget _buildRegisterWithEmailState(RegisterViewModel viewModel) =>
+      viewModel.busy(StateObjects.register)
           ? const PageLoadingIndicator()
           : Container();
 }

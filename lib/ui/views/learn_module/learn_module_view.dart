@@ -41,12 +41,14 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
           _buildLevelsColumnWrapper(viewModel),
         ],
       );
 
   Widget _buildAppBar(LearnModuleViewModel viewModel) => SmallAppBar(
         onTap: viewModel.pop,
+        showBackButton: true,
       );
 
   Widget _buildLevelsColumnWrapper(LearnModuleViewModel viewModel) =>
@@ -66,7 +68,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
   List<Widget> _buildLevelsColumnChildren(LearnModuleViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(),
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildOverallProgress(),
         verticalSpaceMedium,
@@ -78,7 +80,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         style: style18P600,
       );
 
-  Widget _buildSubTitle() => Text(
+  Widget _buildSubtitle() => Text(
         'Your Current Level',
         style: style14DG400,
       );
@@ -92,17 +94,25 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         itemBuilder: (context, index) => _buildTile(
             title: viewModel.modules[index]['title'],
             status: viewModel.modules[index]['status'],
-            subtitle: viewModel.modules[index]['subtitle']),
+            topics: viewModel.modules[index]['topics'],
+            subtitle: viewModel.modules[index]['subtitle'],
+            practices: viewModel.modules[index]['practices'],
+            description: viewModel.modules[index]['description']),
       );
 
-  Widget _buildTile({
-    required String title,
-    required String subtitle,
-    required ProgressStatuses status,
-  }) =>
+  Widget _buildTile(
+          {required String title,
+          required String topics,
+          required String subtitle,
+          required String description,
+          required ProgressStatuses status,
+          required List<Map<String, dynamic>> practices}) =>
       LearnModuleTile(
         title: title,
         status: status,
+        topics: topics,
         subtitle: subtitle,
+        practices: practices,
+        description: description,
       );
 }

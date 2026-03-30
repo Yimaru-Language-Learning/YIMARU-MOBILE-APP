@@ -1,8 +1,6 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/empty_video_player.dart';
 
 import '../../common/app_colors.dart';
@@ -13,21 +11,28 @@ import '../../widgets/small_app_bar.dart';
 import 'learn_lesson_detail_viewmodel.dart';
 
 class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
-  const LearnLessonDetailView({Key? key}) : super(key: key);
+  final String title;
+  final String description;
+  final List<Map<String, dynamic>> practices;
 
+  const LearnLessonDetailView(
+      {Key? key,
+      required this.title,
+      required this.practices,
+      required this.description})
+      : super(key: key);
 
-  Future<void> _navigate(LearnLessonDetailViewModel viewModel)async{
+  Future<void> _navigate(LearnLessonDetailViewModel viewModel) async {
     await viewModel.pause();
-    await viewModel.navigateToLearnPractice();
+    await viewModel.navigateToLearnPractice(practices);
   }
 
-
-  // @override
-  // void onDispose(LearnLessonDetailViewModel viewModel) {
-  //   print('DISPOSED');
-  //   viewModel.dispose();
-  //   super.onDispose(viewModel);
-  // }
+  @override
+  void onDispose(LearnLessonDetailViewModel viewModel) {
+    print('DISPOSED');
+    viewModel.close();
+    super.onDispose(viewModel);
+  }
 
   @override
   void onViewModelReady(LearnLessonDetailViewModel viewModel) async {
@@ -70,6 +75,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
 
   Widget _buildAppBar(LearnLessonDetailViewModel viewModel) => SmallAppBar(
         onTap: viewModel.pop,
+        showBackButton: true,
       );
 
   Widget _buildBodyColumnWrapper(LearnLessonDetailViewModel viewModel) =>
@@ -119,7 +125,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
       );
 
   Widget _buildTitle() => Text(
-        '1.3 Common Greetings',
+        title,
         style: style16DG600,
       );
 
@@ -152,7 +158,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
       );
 
   Widget _buildDescription() => Text(
-        'In this lesson, you’ll explore how to start simple conversations by greeting others in polite and friendly ways. You’ll practice different greetings for morning, afternoon, and evening, as well as casual and formal situations. By the end, you’ll know how to confidently say hello, ask how someone is, and respond naturally.',
+        description,
         style: style14DG600,
       );
 
@@ -173,6 +179,6 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: ()async => await _navigate(viewModel),
+        onTap: () async => await _navigate(viewModel),
       );
 }

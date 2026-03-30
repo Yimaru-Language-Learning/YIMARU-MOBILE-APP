@@ -3,6 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../ui/common/ui_helpers.dart';
 
 class PermissionHandlerService {
+  // Check permission category
   Future<PermissionStatus> requestPermission(
       Permission requestedPermission) async {
     if (requestedPermission == Permission.camera) {
@@ -17,6 +18,7 @@ class PermissionHandlerService {
     return PermissionStatus.denied;
   }
 
+  // Request permission
   Future<PermissionStatus> request(Permission permission) async {
     if (await permission.isDenied) {
       final PermissionStatus status = await permission.request();

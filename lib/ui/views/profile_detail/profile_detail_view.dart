@@ -23,7 +23,7 @@ import 'profile_detail_view.form.dart';
 @FormView(fields: [
   FormTextField(name: 'email', validator: FormValidator.validateForm),
   FormTextField(
-      name: 'phoneNumber', validator: FormValidator.validatePhoneNumber),
+      name: 'phoneNumber', validator: FormValidator.validatePhoneNumberForm),
   FormTextField(name: 'lastName', validator: FormValidator.validateForm),
   FormTextField(name: 'firstName', validator: FormValidator.validateForm),
   FormTextField(name: 'occupation', validator: FormValidator.validateForm),
@@ -143,13 +143,14 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       [
         verticalSpaceMedium,
         _buildAppbar(viewModel),
-        verticalSpaceSmall,
+        verticalSpaceMedium,
         _buildColumnWrapper(context: context, viewModel: viewModel)
       ];
 
   Widget _buildAppbar(ProfileDetailViewModel viewModel) => SmallAppBar(
-        title: 'Edit Profile',
         onTap: viewModel.pop,
+        showBackButton: true,
+        title: 'Edit Profile',
       );
 
   Widget _buildColumnWrapper(

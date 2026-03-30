@@ -12,9 +12,7 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
   const CallSupportView({Key? key}) : super(key: key);
 
   @override
-  CallSupportViewModel viewModelBuilder(
-    BuildContext context,
-  ) =>
+  CallSupportViewModel viewModelBuilder(BuildContext context) =>
       CallSupportViewModel();
 
   @override
@@ -50,8 +48,9 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
       );
 
   Widget _buildAppbar(CallSupportViewModel viewModel) => SmallAppBar(
-        title: 'Call Support',
+        showBackButton: true,
         onTap: viewModel.pop,
+        title: 'Call Support',
       );
 
   Widget _buildExpandedColumn(CallSupportViewModel viewModel) =>
@@ -84,9 +83,9 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceMedium,
-        _buildSubTitle('+2519012345678'),
+        _buildSubtitle('+2519012345678'),
         verticalSpaceSmall,
-        _buildSubTitle('+2519012345678'),
+        _buildSubtitle('+2519012345678'),
       ];
 
   Widget _buildIcon() =>
@@ -98,10 +97,10 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSubTitle(String title) => Text(
+  Widget _buildSubtitle(String title) => Text(
         title,
+        style: style14P400,
         textAlign: TextAlign.center,
-        style: const TextStyle(color: kcPrimaryColor),
       );
 
   Widget _buildContinueButtonWrapper(CallSupportViewModel viewModel) => Padding(

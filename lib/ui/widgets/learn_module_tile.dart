@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/learn_module/learn_module_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
@@ -12,29 +11,20 @@ import 'custom_elevated_button.dart';
 
 class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
   final String title;
+  final String topics;
   final String subtitle;
+  final String description;
   final ProgressStatuses status;
+  final List<Map<String, dynamic>> practices;
 
-  const LearnModuleTile({
-    super.key,
-    required this.title,
-    required this.status,
-    required this.subtitle,
-  });
-
-  IconData _getIcon() {
-    if (title.contains('Module 1')) {
-      return Iconsax.cake;
-    } else if (title.contains('Module 2')) {
-      return Icons.all_inbox;
-    } else if (title.contains('Module 3')) {
-      return Icons.lightbulb_outline;
-    } else if (title.contains('Module 4')) {
-      return Icons.search;
-    } else {
-      return Iconsax.pen_add;
-    }
-  }
+  const LearnModuleTile(
+      {super.key,
+      required this.title,
+      required this.topics,
+      required this.status,
+      required this.subtitle,
+      required this.practices,
+      required this.description});
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -101,25 +91,19 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         child: _buildIcon(),
       );
 
-  Widget _buildIcon() => Icon(
-        _getIcon(),
+  Widget _buildIcon() => const Icon(
+        Icons.lightbulb_outline,
         color: kcPrimaryColor,
       );
 
   Widget _buildTitle() => Text(
         title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: kcPrimaryColor,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style16P600,
       );
 
   Widget _buildContent() => Text(
         subtitle,
-        style: const TextStyle(
-          color: kcDarkGrey,
-        ),
+        style: style14DG400,
       );
 
   List<Widget> _buildExpansionTileChildren(
@@ -141,8 +125,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>
       [
-        _buildProgressRow(),
-        verticalSpaceSmall,
+        // _buildProgressRow(),
+        // verticalSpaceSmall,
         _buildActionButtonWrapper(context: context, viewModel: viewModel)
       ];
 
@@ -198,7 +182,12 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         text: 'View Lessons',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.navigateToLearnLesson(),
+        onTap: () async => await viewModel.navigateToLearnLesson(
+            title: title,
+            topics: topics,
+            subtitle: subtitle,
+            practices: practices,
+            description: description),
       );
 
   Widget _buildPracticeButtonWrapper(
@@ -218,8 +207,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
-        onTap: () async =>
-            await _showSheet(context: context, viewModel: viewModel),
+        onTap: () async => await viewModel.navigateToLearnPractice(practices),
       );
 
   Widget _buildSheet(LearnModuleViewModel viewModel) => FinishPracticeSheet(

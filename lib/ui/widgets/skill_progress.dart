@@ -60,13 +60,7 @@ class SkillProgress extends StatelessWidget {
       [_buildSkillRow(), _buildProgress()];
 
   Widget _buildSkillRow() => Row(
-        children: [
-          _buildIcon(),
-          const SizedBox(
-            width: 5,
-          ),
-          _buildSkill()
-        ],
+        children: [_buildIcon(), horizontalSpaceTiny, _buildSkill()],
       );
 
   Widget _buildIcon() => Icon(
@@ -76,20 +70,12 @@ class SkillProgress extends StatelessWidget {
 
   Widget _buildSkill() => Text(
         skill,
-        style: const TextStyle(
-          fontSize: 18,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style18DG600,
       );
 
   Widget _buildProgress() => Text(
         '${(progress * 100).toInt()}%',
-        style: const TextStyle(
-          fontSize: 16,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style16DG600,
       );
 
   Widget _buildProgressIndicator() => CustomLinearProgressIndicator(

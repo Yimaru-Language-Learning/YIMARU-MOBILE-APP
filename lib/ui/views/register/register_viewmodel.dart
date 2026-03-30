@@ -7,15 +7,19 @@ import 'package:yimaru_app/services/api_service.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/views/home/home_view.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/user_model.dart';
 import '../../../services/google_auth_service.dart';
+import '../../../services/smart_auth_service.dart';
 import '../../../services/status_checker_service.dart';
 
-class RegisterViewModel extends FormViewModel {
+class RegisterViewModel extends ReactiveViewModel
+    with FormStateHelper
+    implements FormViewModel {
   final _apiService = locator<ApiService>();
+
+  final _smartAuthService = locator<SmartAuthService>();
 
   final _statusChecker = locator<StatusCheckerService>();
 
@@ -23,8 +27,15 @@ class RegisterViewModel extends FormViewModel {
 
   final _googleAuthService = locator<GoogleAuthService>();
 
-
   final _authenticationService = locator<AuthenticationService>();
+
+  @override
+  List<ListenableServiceMixin> get listenableServices => [_googleAuthService];
+
+  // Google user
+  GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
+
+  GoogleSignInAccount? get googleUser => _googleUser;
 
   // Navigation
   int _currentPage = 0;
@@ -91,9 +102,9 @@ class RegisterViewModel extends FormViewModel {
   FocusNode get focusNode => _focusNode;
 
   // Registration type
-  RegistrationType? _registrationType;
+  SignUpMethod? _signUpMethod;
 
-  RegistrationType? get registrationType => _registrationType;
+  SignUpMethod? get signUpMethod => _signUpMethod;
 
   // Resend button state
   bool _buttonActive = false;
@@ -245,10 +256,10 @@ class RegisterViewModel extends FormViewModel {
   }
 
   // In-app navigation
-  void goTo({required int page, RegistrationType? type}) {
+  void goTo({required int page, SignUpMethod? type}) {
     _currentPage = page;
     if (type != null) {
-      _registrationType = type;
+      _signUpMethod = type;
     }
     rebuildUi();
   }
@@ -261,7 +272,7 @@ class RegisterViewModel extends FormViewModel {
       _currentPage = 0;
       rebuildUi();
     } else if (_currentPage == 3) {
-      if (_registrationType == RegistrationType.phone) {
+      if (_signUpMethod == SignUpMethod.phone) {
         _currentPage = 1;
       } else {
         _currentPage = 2;
@@ -274,6 +285,9 @@ class RegisterViewModel extends FormViewModel {
   }
 
   // Navigation
+
+  void pop() => _navigationService.back();
+
   Future<void> navigateToTermsAndConditions() async =>
       await _navigationService.navigateToTermsAndConditionsView();
 
@@ -284,20 +298,21 @@ class RegisterViewModel extends FormViewModel {
       await _navigationService.replaceWithLoginView();
 
   Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShowView(const HomeView());
+      await _navigationService.clearStackAndShow(Routes.homeView);
 
   // Remote api calls
 
   // Register
-  Future<void> registerWithEmail() async =>
-      await runBusyFuture(_register(), busyObject: StateObjects.registerWithEmail);
+  Future<void> registerWithEmail(SignUpMethod type) async =>
+      await runBusyFuture(_register(type), busyObject: StateObjects.register);
 
-  Future<void> _register() async {
+  Future<void> _register(SignUpMethod type) async {
     if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response = await _apiService.registerWithEmail(_userData);
+      Map<String, dynamic> response =
+          await _apiService.registerWithEmail(_userData);
 
       if (response['status'] == ResponseStatus.success) {
-        goTo(page: 3);
+        goTo(page: 3, type: type);
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);
@@ -312,10 +327,10 @@ class RegisterViewModel extends FormViewModel {
 
   Future<void> _googleLogin() async {
     if (await _statusChecker.checkConnection()) {
-      GoogleSignInAccount? googleUser = await _googleAuthService.googleAuth();
+      await _googleAuthService.googleAuth();
 
       Map<String, dynamic> data = {
-        'id_token': googleUser?.authentication.idToken ?? '',
+        'id_token': _googleUser?.authentication.idToken ?? '',
       };
 
       Map<String, dynamic> response = await _apiService.googleAuth(data);

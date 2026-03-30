@@ -1,7 +1,55 @@
 import 'package:email_validator/email_validator.dart';
 
 class FormValidator {
+  // Form validator
   static String? validateForm(String? value) {
+    if (value == null) {
+      return null;
+    }
+
+    if (value.isEmpty) {
+      return 'The field is required';
+    }
+
+    return null;
+  }
+
+  // Form validator
+  static String? validateFullNameForm(String? value) {
+    if (value == null) {
+      return null;
+    }
+
+    if (value.isEmpty) {
+      return 'The field is required';
+    }
+    final regex = RegExp(r'^\S+\s+\S+.*$');
+
+    if (!regex.hasMatch(value.trim())) {
+      return "Enter your full name";
+    }
+    return null;
+  }
+
+  // Email validator
+  static String? validateEmailForm(String? value) {
+    if (value == null) {
+      return null;
+    }
+
+    if (value.isEmpty) {
+      return 'The field is required';
+    }
+
+    if (!EmailValidator.validate(value)) {
+      return 'Invalid email format';
+    }
+
+    return null;
+  }
+
+  // Password validator
+  static String? validatePasswordForm(String? value) {
     if (value == null) {
       return null;
     }
@@ -12,7 +60,8 @@ class FormValidator {
     return null;
   }
 
-  static String? validatePhoneNumber(String? value) {
+  // Phone number validator
+  static String? validatePhoneNumberForm(String? value) {
     if (value == null) {
       return null;
     }
@@ -31,33 +80,6 @@ class FormValidator {
     // Length check first (optional but recommended)
     if (value.length != 12) {
       return 'Phone number must be 12 digits';
-    }
-    return null;
-  }
-
-  static String? validateEmail(String? value) {
-    if (value == null) {
-      return null;
-    }
-
-    if (value.isEmpty) {
-      return 'The field is required';
-    }
-
-    if (!EmailValidator.validate(value)) {
-      return 'Invalid email format';
-    }
-
-    return null;
-  }
-
-  static String? validatePassword(String? value) {
-    if (value == null) {
-      return null;
-    }
-
-    if (value.isEmpty) {
-      return 'The field is required';
     }
     return null;
   }

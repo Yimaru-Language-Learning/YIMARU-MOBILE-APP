@@ -1,21 +1,39 @@
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 
-class GoogleAuthService {
-  final GoogleSignIn signIn = GoogleSignIn.instance;
+class GoogleAuthService with ListenableServiceMixin {
+  // Initialization
+  final GoogleSignIn _signIn = GoogleSignIn.instance;
 
-  Future<GoogleSignInAccount?> googleAuth() async {
+  GoogleSignInAccount? _googleUser;
+
+  GoogleSignInAccount? get googleUser => _googleUser;
+
+  // Initialization
+  GoogleAuthService() {
+    listenToReactiveValues([_googleUser]);
+  }
+
+  // Google logout
+  Future<void> logout() async {
+    await _signIn.signOut();
+    _googleUser = null;
+    notifyListeners();
+  }
+
+  // Google authentication
+  Future<void> googleAuth() async {
     try {
-      GoogleSignInAccount? googleUser;
-      await signIn.initialize(serverClientId: kServerClientId).then((_) async {
-        googleUser = await signIn.attemptLightweightAuthentication();
+      await _signIn.initialize(serverClientId: kServerClientId).then((_) async {
+        _googleUser = await _signIn.attemptLightweightAuthentication();
 
-        googleUser ??=
-            await signIn.authenticate(scopeHint: ['email', 'profile']);
+        _googleUser ??=
+            await _signIn.authenticate(scopeHint: ['email', 'profile']);
       });
-      return googleUser;
+      notifyListeners();
     } catch (e) {
-      return null;
+      rethrow;
     }
   }
 }

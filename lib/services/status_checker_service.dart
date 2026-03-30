@@ -8,34 +8,28 @@ import 'package:yimaru_app/services/secure_storage_service.dart';
 import '../app/app.locator.dart';
 
 class StatusCheckerService {
+  // Dependency injection
   final storage = locator<SecureStorageService>();
 
+  // Initialization
   bool _previousConnection = true;
 
   bool get previousConnection => _previousConnection;
 
+  // Get phone battery level
   Future<int> getBatteryLevel() async {
     final battery = Battery();
     final batteryLevel = await battery.batteryLevel;
     return batteryLevel;
   }
 
-  Future<bool> userAuthenticated() async {
-    await checkAndUpdate();
-
-    if (await storage.getString('authenticated') != null) {
-      return true;
-    }
-    return false;
-  }
-
+  // Check internet connection
   Future<bool> checkConnection() async {
     if (await InternetConnection().hasInternetAccess) {
       _previousConnection = true;
       return true;
     } else {
       if (_previousConnection) {
-        // showErrorToast('Check your internet connection');
         _previousConnection = false;
       }
 
@@ -43,6 +37,7 @@ class StatusCheckerService {
     }
   }
 
+  // Check phone available storage
   Future<int> getAvailableStorage() async {
     try {
       final availableStorage =
@@ -53,6 +48,7 @@ class StatusCheckerService {
     }
   }
 
+  // Check for latest update
   Future<void> checkAndUpdate() async {
     const requiredStorage = 500 * 1024 * 1024;
 
@@ -62,16 +58,12 @@ class StatusCheckerService {
         await getAvailableStorage(); // Implement getAvailableStorage
     if (batteryLevel < 20 || storageAvailable < requiredStorage) {
       if (batteryLevel < 20 || storageAvailable < requiredStorage) {
-        // KewedeConst().showErrorToast(
         //     'Unable to update app, please charge your phone & free up space.');
       } else if (batteryLevel < 20) {
-        // KewedeConst()
         //     .showErrorToast('Unable to update app, please charge your phone.');
       } else if (storageAvailable < requiredStorage) {
-        // KewedeConst()
         //     .showErrorToast('Unable to update app, please free up space.');
       }
-      // Show user-friendly message explaining why update failed and suggesting solutions (e.g., charge device, free up space)
       return; // Prevent update from starting
     }
     try {

@@ -12,11 +12,9 @@ class UserModel {
 
   final String? country;
 
-
   final String? occupation;
 
   final bool? userInfoLoaded;
-
 
   @JsonKey(name: 'user_id')
   final int? userId;
@@ -55,9 +53,40 @@ class UserModel {
     this.accessToken,
     this.refreshToken,
     this.profilePicture,
-    this.userInfoLoaded ,
+    this.userInfoLoaded,
     this.profileCompleted,
   });
+
+  UserModel copyWith(
+          {int? userId,
+          String? email,
+          String? gender,
+          String? region,
+          String? country,
+          String? lastName,
+          String? birthday,
+          String? firstName,
+          String? occupation,
+          String? accessToken,
+          String? refreshToken,
+          bool? userInfoLoaded,
+          bool? profileCompleted,
+          String? profilePicture}) =>
+      UserModel(
+          email: email ?? this.email,
+          userId: userId ?? this.userId,
+          gender: gender ?? this.gender,
+          region: region ?? this.region,
+          country: country ?? this.country,
+          lastName: lastName ?? this.lastName,
+          birthday: birthday ?? this.birthday,
+          firstName: firstName ?? this.firstName,
+          occupation: occupation ?? this.occupation,
+          accessToken: accessToken ?? this.accessToken,
+          refreshToken: refreshToken ?? this.refreshToken,
+          userInfoLoaded: userInfoLoaded ?? this.userInfoLoaded,
+          profilePicture: profilePicture ?? this.profilePicture,
+          profileCompleted: profileCompleted ?? this.profileCompleted);
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

@@ -29,22 +29,25 @@ class CustomColumnButton extends StatelessWidget {
         children: _buildColumnChildren(),
       );
 
-  List<Widget> _buildColumnChildren() => [
-    _buildIconWrapper(),
-    _buildLabel()
-  ];
+  List<Widget> _buildColumnChildren() => [_buildIconWrapper(), _buildLabel()];
 
   Widget _buildIconWrapper() => Container(
-    padding:const EdgeInsets.all(5),
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: color.withOpacity(0.1),
-      border: Border.all(color: color.withOpacity(0.75))
-    ),
-    child: _buildIcon(),
-  );
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: color.withOpacity(0.1),
+            border: Border.all(color: color.withOpacity(0.75))),
+        child: _buildIcon(),
+      );
 
-  Widget _buildLabel()=> Text(label,style: style14LG400.copyWith(color: color),);
+  Widget _buildLabel() => Text(
+        label,
+        style: style14LG400.copyWith(color: color),
+      );
 
-  Widget _buildIcon()=> Icon(icon,size: 14,color: color,);
+  Widget _buildIcon() => Icon(
+        icon,
+        size: 14,
+        color: color,
+      );
 }

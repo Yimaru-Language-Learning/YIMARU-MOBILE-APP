@@ -7,12 +7,12 @@ import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/common/app_strings.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/ui/views/failure/failure_view.dart';
 
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/image_downloader_service.dart';
 import '../../common/enmus.dart';
+import '../../common/ui_helpers.dart';
 
 class HomeViewModel extends ReactiveViewModel {
   final _apiService = locator<ApiService>();
@@ -33,12 +33,13 @@ class HomeViewModel extends ReactiveViewModel {
   UserModel? get user => _user;
 
   // Bottom navigation
-  int _currentIndex = 0;
+  int _currentPage = 0;
 
-  int get currentIndex => _currentIndex;
+  int get currentPage => _currentPage;
 
+  // Bottom navigation
   void setCurrentIndex(int index) {
-    _currentIndex = index;
+    _currentPage = index;
     rebuildUi();
   }
 
@@ -62,72 +63,70 @@ class HomeViewModel extends ReactiveViewModel {
       await _authenticationService.saveProfileStatus(value);
 
   // Navigation
-  Future<void> replaceWithFailure() async =>
-      await _navigationService.clearStackAndShowView(
-        const FailureView(label: 'Check your internet connection to proceed'),
-      );
+  Future<void> replaceWithFailure() async => await _navigationService
+      .replaceWithFailureView(label: 'Check you internet connection');
 
   Future<void> replaceWithOnboarding() async =>
       await _navigationService.replaceWithOnboardingView();
 
   // Remote api calls
 
-  // Profile data
-  Future<void> getProfileData() async => await runBusyFuture(_getProfileData());
+  // Initialize user data
+  Future<void> initialize() async =>
+      await runBusyFuture(_initialize(), busyObject: StateObjects.homeView);
 
-  Future<void> _getProfileData() async {
-    print('RESPONSE FOR USER DATA ${_user?.firstName}');
-
-    if (!(_user?.userInfoLoaded ?? false)) {
-      print('RESPONSE FOR USER DATA 1');
-      if (await _statusChecker.checkConnection()) {
-        Map<String, dynamic> response = {};
-
-        if (_user?.profileCompleted != null &&
-            (_user?.profileCompleted ?? false)) {
-          if (await _statusChecker.checkConnection()) {
-            response = await _apiService.getProfileData(_user?.userId);
-
-            if (response['status'] == ResponseStatus.success) {
-              UserModel user = response['data'] as UserModel;
-
-              String image =
-                  await _imageDownloaderService.downloader(user.profilePicture);
-
-              await _authenticationService.saveUserData(
-                  image: image, data: user);
-            }
-          }
-        }
-      }
-    }
+  Future<void> _initialize() async {
+    await _getProfileStatus();
+    await _getProfileData();
   }
 
   // Profile status
-  Future<void> getProfileStatus() async =>
-      await runBusyFuture(_getProfileStatus());
-
   Future<void> _getProfileStatus() async {
-    if (await _statusChecker.checkConnection()) {
+    Map<String, dynamic> response = {};
+    if (_user?.profileCompleted == null) {
+      if (await _statusChecker.checkConnection()) {
+        response = await _apiService.getProfileStatus(_user);
+      } else {
+        await Future.delayed(kDuration);
+        await replaceWithFailure();
+      }
+    } else if (!(_user?.profileCompleted ?? false)) {
+      response = {'data': false, 'status': ResponseStatus.success};
+    } else {
+      response = {'data': true, 'status': ResponseStatus.success};
+    }
+    if (response['status'] == ResponseStatus.success && !response['data']) {
+      await replaceWithOnboarding();
+    } else if (response['status'] == ResponseStatus.success &&
+        response['data']) {
+      await saveProfileStatus(response['data']);
+    }
+  }
+
+  // Profile data
+
+  Future<void> _getProfileData() async {
+    if (!(_user?.userInfoLoaded ?? false)) {
       Map<String, dynamic> response = {};
 
-      if (_user?.profileCompleted == null) {
+      if (_user?.profileCompleted != null &&
+          (_user?.profileCompleted ?? false)) {
         if (await _statusChecker.checkConnection()) {
-          response = await _apiService.getProfileStatus(_user);
+          response = await _apiService.getProfileData(_user?.userId);
+
+          if (response['status'] == ResponseStatus.success) {
+            UserModel user = response['data'] as UserModel;
+
+            await _authenticationService.saveUserData(user);
+
+            String image =
+                await _imageDownloaderService.downloader(user.profilePicture);
+
+            await _authenticationService.saveProfilePicture(image);
+          }
         } else {
           await replaceWithFailure();
         }
-      } else if (!(_user?.profileCompleted ?? false)) {
-        response = {'data': false, 'status': ResponseStatus.success};
-      } else {
-        response = {'data': true, 'status': ResponseStatus.success};
-      }
-
-      if (response['status'] == ResponseStatus.success && !response['data']) {
-        await replaceWithOnboarding();
-      } else if (response['status'] == ResponseStatus.success &&
-          response['data']) {
-        await saveProfileStatus(response['data']);
       }
     }
   }

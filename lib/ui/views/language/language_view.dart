@@ -72,6 +72,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
       );
 
   Widget _buildAppbar(LanguageViewModel viewModel) => SmallAppBar(
+        showBackButton: true,
         onTap: viewModel.pop,
         title: 'Language Preference',
       );

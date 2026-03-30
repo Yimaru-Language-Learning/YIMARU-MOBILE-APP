@@ -23,8 +23,8 @@ Map<String, dynamic> _$AssessmentToJson(Assessment instance) =>
       'id': instance.id,
       'points': instance.points,
       'status': instance.status,
+      'options': instance.options,
       'question_type': instance.questionType,
       'question_text': instance.questionText,
       'difficulty_level': instance.difficultyLevel,
-      'options': instance.options,
     };

@@ -24,8 +24,11 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
+  List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) => [
+        _buildAppBar(viewModel),
+        verticalSpaceMedium,
+        _buildExpandedBody(viewModel)
+      ];
 
   Widget _buildExpandedBody(AssessmentViewModel viewModel) =>
       Expanded(child: _buildBodyWrapper(viewModel));
@@ -59,7 +62,7 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildAppBar(AssessmentViewModel viewModel) => LargeAppBar(
         showBackButton: true,
-        onPop: viewModel.pop,
+        onPop: viewModel.goBack,
         showLanguageSelection: true,
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );

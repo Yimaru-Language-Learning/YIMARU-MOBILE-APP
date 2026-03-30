@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 class CustomColumn extends StatelessWidget {
@@ -21,16 +20,12 @@ class CustomColumn extends StatelessWidget {
 
   Widget _buildTitle() => Text(
         title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: kcPrimaryColor,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style16P600,
       );
   Widget _buildSubtitle() => Text(
         subtitle,
         maxLines: 1,
         softWrap: false,
-        style: const TextStyle(color: kcMediumGrey),
+        style: style14MG400,
       );
 }

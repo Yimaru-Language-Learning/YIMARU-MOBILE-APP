@@ -8,9 +8,14 @@ import '../../../widgets/refresh_button.dart';
 class AssessmentLoadingScreen extends StatelessWidget {
   final bool isEmpty;
   final bool isLoading;
+  final GestureTapCallback? onPop;
   final GestureTapCallback? onTap;
   const AssessmentLoadingScreen(
-      {super.key, this.onTap, required this.isEmpty, required this.isLoading});
+      {super.key,
+      this.onTap,
+      this.onPop,
+      required this.isEmpty,
+      required this.isLoading});
 
   @override
   Widget build(BuildContext context) => _buildScaffoldWrapper();
@@ -35,7 +40,8 @@ class AssessmentLoadingScreen extends StatelessWidget {
 
   List<Widget> _buildColumnChildren() => [_buildAppBar(), _buildBody()];
 
-  Widget _buildAppBar() => const LargeAppBar(
+  Widget _buildAppBar() => LargeAppBar(
+        onPop: onPop,
         showBackButton: true,
         showLanguageSelection: true,
       );

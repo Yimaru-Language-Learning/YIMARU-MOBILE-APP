@@ -1,8 +1,8 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/ui/views/login/login_view.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../app/app.router.dart';
 import '../../../services/api_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
@@ -190,7 +190,7 @@ class ForgetPasswordViewModel extends FormViewModel {
   void pop() => _navigationService.back();
 
   Future<void> replaceWithLogin() async =>
-      await _navigationService.clearStackAndShowView(const LoginView());
+      await _navigationService.clearStackAndShow(Routes.loginView);
 
   // Remote api calls
 

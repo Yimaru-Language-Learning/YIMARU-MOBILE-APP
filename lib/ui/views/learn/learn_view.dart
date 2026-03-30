@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/learn_app_bar.dart';
+import 'package:yimaru_app/ui/widgets/profile_app_bar.dart';
 import 'package:yimaru_app/ui/widgets/learn_level_tile.dart';
 
 import '../../common/app_colors.dart';
@@ -39,11 +39,12 @@ class LearnView extends StackedView<LearnViewModel> {
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
+          verticalSpaceMedium,
           _buildLevelsColumnWrapper(viewModel)
         ],
       );
 
-  Widget _buildAppBar(LearnViewModel viewModel) => LearnAppBar(
+  Widget _buildAppBar(LearnViewModel viewModel) => ProfileAppBar(
         name: viewModel.user?.firstName,
         profileImage: viewModel.user?.profilePicture,
       );

@@ -57,10 +57,7 @@ class CustomListTile extends StatelessWidget {
 
   Widget _buildTrailingText() => Text(
         language ?? '',
-        style: const TextStyle(
-          fontSize: 12,
-          color: kcDarkGrey,
-        ),
+        style: style12DG400,
       );
 
   Widget _buildTrailingIcon() => const Icon(

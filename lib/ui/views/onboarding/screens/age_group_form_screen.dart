@@ -19,7 +19,9 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    Map<String, dynamic> data = {'age_group': viewModel.selectedAgeGroup};
+    Map<String, dynamic> data = {
+      'age_group': viewModel.selectedAgeGroup?.values.first
+    };
     viewModel.addUserData(data);
 
     viewModel.next();
@@ -39,8 +41,11 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
+  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) => [
+        _buildAppBar(viewModel),
+        verticalSpaceMedium,
+        _buildExpandedBody(viewModel)
+      ];
 
   Widget _buildExpandedBody(OnboardingViewModel viewModel) =>
       Expanded(child: _buildColumnScroller(viewModel));
@@ -74,7 +79,7 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildSubTitle(),
+        _buildSubtitle(),
         verticalSpaceMedium,
         _buildAgeGroups(viewModel)
       ];
@@ -91,7 +96,7 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
         style: style25DG600,
       );
 
-  Widget _buildSubTitle() => Text(
+  Widget _buildSubtitle() => Text(
         'We’ll personalize your learning experience based on your age.',
         style: style14DG400,
       );
@@ -101,7 +106,7 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
         itemCount: viewModel.ageGroups.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildAgeGroup(
-          title: viewModel.ageGroups[index],
+          title: viewModel.ageGroups[index].keys.first,
           selected: viewModel.isSelectedAgeGroup(viewModel.ageGroups[index]),
           onTap: () =>
               viewModel.setSelectedAgeGroup(viewModel.ageGroups[index]),

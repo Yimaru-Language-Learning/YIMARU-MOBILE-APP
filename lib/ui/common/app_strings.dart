@@ -1,10 +1,16 @@
+const String ksHomeBottomSheetTitle = 'Build Great Apps!';
+
 const String ksSuggestion =
     "15 minutes a day can make you 3x more fluent in 3 month";
-const String ksHomeBottomSheetTitle = 'Build Great Apps!';
-const String ksPrivacyPolicy =
-    'A brief, simple overview of Yimaru’s commitment to user privacy. Our goal is to be transparent about the data we collect and how we use it to enhance your learning experience.';
+
 const String ksHomeBottomSheetDescription =
     'Stacked is built to help you build better apps. Give us a chance and we\'ll prove it to you. Check out stacked.filledstacks.com to learn more';
+
+const String ksPrivacyPolicy =
+    'A brief, simple overview of Yimaru’s commitment to user privacy. Our goal is to be transparent about the data we collect and how we use it to enhance your learning experience.';
+
+const String ksCategorySubtitle =
+    'Watch expert-led videos and reinforce your knowledge through guided practice activities.';
 
 const String ksTerms = """
 <p style="color:#9C2C91;font-size:13px;">

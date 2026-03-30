@@ -9,13 +9,13 @@ import 'package:yimaru_app/models/user_model.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/google_auth_service.dart';
-import '../../../services/image_downloader_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
-import '../home/home_view.dart';
 
-class LoginViewModel extends FormViewModel {
+class LoginViewModel extends ReactiveViewModel
+    with FormStateHelper
+    implements FormViewModel {
   final _apiService = locator<ApiService>();
 
   final _statusChecker = locator<StatusCheckerService>();
@@ -26,10 +26,20 @@ class LoginViewModel extends FormViewModel {
 
   final _authenticationService = locator<AuthenticationService>();
 
-  // In-app navigation
-  int _currentIndex = 0;
+  @override
+  List<ListenableServiceMixin> get listenableServices => [_googleAuthService];
 
-  int get currentIndex => _currentIndex;
+  // Sms
+
+  // Google user
+  GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
+
+  GoogleSignInAccount? get googleUser => _googleUser;
+
+  // In-app navigation
+  int _currentPage = 0;
+
+  int get currentPage => _currentPage;
 
   // Email
   bool _focusEmail = false;
@@ -64,6 +74,11 @@ class LoginViewModel extends FormViewModel {
   bool _buttonActive = false;
 
   bool get buttonActive => _buttonActive;
+
+  DateTime _resendTime =
+      DateTime.now().add(const Duration(minutes: 3, seconds: 0));
+
+  DateTime get resendTime => _resendTime;
 
   // User data
   final Map<String, dynamic> _userData = {};
@@ -107,6 +122,12 @@ class LoginViewModel extends FormViewModel {
     rebuildUi();
   }
 
+  void resetButton() {
+    _buttonActive = false;
+
+    _resendTime = DateTime.now().add(const Duration(minutes: 3, seconds: 0));
+  }
+
   // Add user data
   void addUserData(Map<String, dynamic> data) {
     _userData.addAll(data);
@@ -118,16 +139,16 @@ class LoginViewModel extends FormViewModel {
 
   // In app navigation
   void goTo(int page) {
-    _currentIndex = page;
+    _currentPage = page;
     rebuildUi();
   }
 
   void goBack() {
-    if (_currentIndex == 1) {
-      _currentIndex = 0;
+    if (_currentPage == 1) {
+      _currentPage = 0;
       rebuildUi();
-    } else if (_currentIndex == 2) {
-      _currentIndex = 1;
+    } else if (_currentPage == 2) {
+      _currentPage = 1;
       rebuildUi();
     } else {
       _navigationService.back();
@@ -142,17 +163,17 @@ class LoginViewModel extends FormViewModel {
       await _navigationService.navigateToForgetPasswordView();
 
   Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShowView(const HomeView());
+      await _navigationService.clearStackAndShow(Routes.homeView);
 
   // Remote api calls
 
   // Login with email
-  Future<void> emailLogin() async => await runBusyFuture(_emailLogin(),
+  Future<void> loginWithEmail() async => await runBusyFuture(_loginWithEmail(),
       busyObject: StateObjects.loginWithEmail);
 
-  Future<void> _emailLogin() async {
+  Future<void> _loginWithEmail() async {
     if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response = await _apiService.emailLogin(_userData);
+      Map<String, dynamic> response = await _apiService.login(_userData);
       if (response['status'] == ResponseStatus.success) {
         UserModel user = response['data'] as UserModel;
         Map<String, dynamic> data = {
@@ -171,15 +192,33 @@ class LoginViewModel extends FormViewModel {
     }
   }
 
-  Future<void> signInWithGoogle() async => await runBusyFuture(_signInWithGoogle(),
+  // Login with phone
+  Future<void> loginWithPhoneNumber() async =>
+      await runBusyFuture(_loginWithPhoneNumber(),
+          busyObject: StateObjects.loginWithPhoneNumber);
+
+  Future<void> _loginWithPhoneNumber() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response = await _apiService.resendOtp(_userData);
+      if (response['status'] == ResponseStatus.success) {
+        goTo(2);
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  // Sign-in with google
+  Future<void> signInWithGoogle() async => await runBusyFuture(_googleAuth(),
       busyObject: StateObjects.loginWithGoogle);
 
-  Future<void> _signInWithGoogle() async {
+  Future<void> _googleAuth() async {
     if (await _statusChecker.checkConnection()) {
-      GoogleSignInAccount? googleUser = await _googleAuthService.googleAuth();
+      await _googleAuthService.googleAuth();
 
       Map<String, dynamic> data = {
-        'id_token': googleUser?.authentication.idToken ?? '',
+        'id_token': _googleUser?.authentication.idToken ?? '',
       };
 
       Map<String, dynamic> response = await _apiService.googleAuth(data);
@@ -194,6 +233,48 @@ class LoginViewModel extends FormViewModel {
         await _authenticationService.saveUserCredential(data);
         clearUserData();
         await replaceWithHome();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  // Verify otp
+  Future<void> verifyOtp() async =>
+      await runBusyFuture(_verifyOtp(), busyObject: StateObjects.verifyOtp);
+
+  Future<void> _verifyOtp() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response = await _apiService.verifyOtp(_userData);
+      if (response['status'] == ResponseStatus.success) {
+        UserModel user = response['data'] as UserModel;
+        Map<String, dynamic> data = {
+          'userId': user.userId,
+          'accessToken': user.accessToken,
+          'refreshToken': user.refreshToken
+        };
+
+        await _authenticationService.saveUserCredential(data);
+        await replaceWithHome();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  // Resend otp
+  Future<void> resendOtp() async =>
+      await runBusyFuture(_resendOtp(), busyObject: StateObjects.resendOtp);
+
+  Future<void> _resendOtp() async {
+    if (await _statusChecker.checkConnection()) {
+      resetButton();
+
+      Map<String, dynamic> response = await _apiService.resendOtp(_userData);
+
+      if (response['status'] == ResponseStatus.success) {
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);

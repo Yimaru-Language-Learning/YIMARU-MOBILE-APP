@@ -24,7 +24,7 @@ final Map<String, FocusNode> _ForgetPasswordViewFocusNodes = {};
 
 final Map<String, String? Function(String?)?>
     _ForgetPasswordViewTextValidations = {
-  EmailValueKey: FormValidator.validateEmail,
+  EmailValueKey: FormValidator.validateEmailForm,
   ResetCodeValueKey: FormValidator.validateForm,
   PasswordValueKey: FormValidator.validateForm,
   ConfirmPasswordValueKey: FormValidator.validateForm,

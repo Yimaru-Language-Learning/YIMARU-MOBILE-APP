@@ -40,25 +40,18 @@ class OverallLearnProgress extends StatelessWidget {
   List<Widget> _buildProgressInfoChildren() =>
       [_buildProgressInfo(), _buildProgress()];
 
-  Widget _buildProgressInfo() => const Text(
+  Widget _buildProgressInfo() => Text(
         'Overall Progress',
-        style: TextStyle(
-          fontSize: 16,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style16DG600,
       );
 
-  Widget _buildProgress() => const Text(
-        '35%',
-        style: TextStyle(
-          color: kcPrimaryColor,
-          fontWeight: FontWeight.w600,
-        ),
+  Widget _buildProgress() => Text(
+        '0%',
+        style: style14P400,
       );
 
   Widget _buildProgressIndicator() => const CustomLinearProgressIndicator(
-        progress: 0.75,
+        progress: 0.0,
         activeColor: kcPrimaryColor,
         backgroundColor: kcVeryLightGrey,
       );

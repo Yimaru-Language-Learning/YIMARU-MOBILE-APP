@@ -16,24 +16,26 @@ class LearnViewModel extends ReactiveViewModel {
       [_authenticationService];
 
   // Current user
-  UserModel? get user => _authenticationService.user;
+  UserModel? get _user => _authenticationService.user;
+
+  UserModel? get user => _user;
 
   final List<Map<String, dynamic>> _learnLevels = [
     {
       'title': 'Beginner',
-      'status': ProgressStatuses.completed,
+      'status': ProgressStatuses.started,
       'subtitle': 'Start your journey with the basics of English.',
     },
-    {
-      'title': 'Intermediate',
-      'status': ProgressStatuses.started,
-      'subtitle': 'Practice real conversations and expand vocabulary.',
-    },
-    {
-      'title': 'Advanced',
-      'status': ProgressStatuses.pending,
-      'subtitle': 'Achieve fluency and master complex topics.',
-    },
+    // {
+    //   'title': 'Intermediate',
+    //   'status': ProgressStatuses.started,
+    //   'subtitle': 'Practice real conversations and expand vocabulary.',
+    // },
+    // {
+    //   'title': 'Advanced',
+    //   'status': ProgressStatuses.pending,
+    //   'subtitle': 'Achieve fluency and master complex topics.',
+    // },
   ];
 
   List<Map<String, dynamic>> get learnLevels => _learnLevels;

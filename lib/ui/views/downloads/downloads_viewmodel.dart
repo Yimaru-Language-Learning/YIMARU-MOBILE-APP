@@ -4,11 +4,14 @@ import 'package:stacked_services/stacked_services.dart';
 import '../../../app/app.locator.dart';
 
 class DownloadsViewModel extends BaseViewModel {
+  // Dependency injection
   final _navigationService = locator<NavigationService>();
 
+  // Show download
   bool _showDownload = false;
 
   bool get showDownload => _showDownload;
+
   // Downloads
   final List<Map<String, dynamic>> _downloads = [
     {
@@ -33,10 +36,12 @@ class DownloadsViewModel extends BaseViewModel {
 
   List<Map<String, dynamic>> get downloads => _downloads;
 
+  // Show download
   void setShowDownload() {
     _showDownload = !_showDownload;
     rebuildUi();
   }
 
+  // Navigation
   void pop() => _navigationService.back();
 }

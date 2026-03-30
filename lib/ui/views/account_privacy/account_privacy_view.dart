@@ -12,9 +12,7 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
   const AccountPrivacyView({Key? key}) : super(key: key);
 
   @override
-  AccountPrivacyViewModel viewModelBuilder(
-    BuildContext context,
-  ) =>
+  AccountPrivacyViewModel viewModelBuilder(BuildContext context) =>
       AccountPrivacyViewModel();
 
   @override
@@ -57,8 +55,9 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
       );
 
   Widget _buildAppbar(AccountPrivacyViewModel viewModel) => SmallAppBar(
-        title: 'Account Privacy',
+        showBackButton: true,
         onTap: viewModel.pop,
+        title: 'Account Privacy',
       );
 
   Widget _buildContentWrapper(AccountPrivacyViewModel viewModel) =>
@@ -107,7 +106,7 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
 
   Widget _buildHeader(String title) => Text(
         title,
-        style: style18DG600,
+        style: style18DG700,
       );
 
   Widget _buildLanguageMenu(AccountPrivacyViewModel viewModel) =>
@@ -146,8 +145,8 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
       );
   Widget _buildDeleteButton() => CustomElevatedButton(
         height: 55,
-        text: 'Delete Account',
         borderRadius: 12,
+        text: 'Delete Account',
         foregroundColor: kcRed,
         backgroundColor: kcRed.withOpacity(0.25),
       );

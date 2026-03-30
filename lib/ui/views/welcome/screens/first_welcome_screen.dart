@@ -5,6 +5,7 @@ import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 
+import '../../../widgets/custom_circular_progress_indicator.dart';
 import '../welcome_viewmodel.dart';
 
 class FirstWelcomeScreen extends ViewModelWidget<WelcomeViewModel> {
@@ -23,11 +24,8 @@ class FirstWelcomeScreen extends ViewModelWidget<WelcomeViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(WelcomeViewModel viewModel) => [
-        _buildBackground(),
-        _buildColumnWrapper(),
-        _buildContinueButtonWrapper(viewModel)
-      ];
+  List<Widget> _buildScaffoldChildren(WelcomeViewModel viewModel) =>
+      [_buildBackground(), _buildColumnWrapper(), _buildSafeWrapper(viewModel)];
 
   Widget _buildBackground() => Image.asset(
         'assets/images/onboarding_1.png',
@@ -59,15 +57,14 @@ class FirstWelcomeScreen extends ViewModelWidget<WelcomeViewModel> {
         height: 50,
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Small daily practice. Big lifelong results.',
+        style: style25W600,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 30,
-          color: kcWhite,
-          fontWeight: FontWeight.w600,
-        ),
       );
+
+  Widget _buildSafeWrapper(WelcomeViewModel viewModel) =>
+      SafeArea(child: _buildContinueButtonWrapper(viewModel));
 
   Widget _buildContinueButtonWrapper(WelcomeViewModel viewModel) => Align(
         alignment: Alignment.bottomCenter,
@@ -75,9 +72,15 @@ class FirstWelcomeScreen extends ViewModelWidget<WelcomeViewModel> {
       );
 
   Widget _buildButtonContainer(WelcomeViewModel viewModel) => Padding(
-        padding: const EdgeInsets.only(bottom: 50, right: 50, left: 50),
-        child: _buildContinueButton(viewModel),
+        padding: const EdgeInsets.only(bottom: 60, right: 50, left: 50),
+        child: _buildContinueButtonState(viewModel),
       );
+
+  Widget _buildContinueButtonState(WelcomeViewModel viewModel) =>
+      viewModel.isBusy ? _buildIndicator() : _buildContinueButton(viewModel);
+
+  Widget _buildIndicator() =>
+      const CustomCircularProgressIndicator(color: kcWhite);
 
   Widget _buildContinueButton(WelcomeViewModel viewModel) =>
       CustomElevatedButton(
@@ -85,8 +88,8 @@ class FirstWelcomeScreen extends ViewModelWidget<WelcomeViewModel> {
         borderRadius: 12,
         text: 'Start Learning',
         backgroundColor: kcWhite,
-        trailingIcon: Icons.arrow_forward,
-        onTap: () => viewModel.next(),
         foregroundColor: kcPrimaryColor,
+        trailingIcon: Icons.arrow_forward,
+        onTap: () async => await viewModel.setFirstTimeInstall(),
       );
 }

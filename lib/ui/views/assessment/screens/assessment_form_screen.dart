@@ -26,6 +26,7 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
         isLoading: viewModel.isBusy,
         isEmpty: viewModel.assessments.isEmpty,
         onTap: () async => await viewModel.getAssessments(),
+        onPop: viewModel.assessments.isEmpty ? viewModel.pop : null,
       );
 
   Widget _buildAssessmentScreensWrapper(AssessmentViewModel viewModel) =>
@@ -65,46 +66,33 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
   Widget _buildAssessment(AssessmentViewModel viewModel) => PageView.builder(
         controller: viewModel.pageController,
         itemCount: viewModel.assessments.length,
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (cotext, index) =>
-            _buildBody(index: index, viewModel: viewModel),
+            _buildBodyScroller(index: index, viewModel: viewModel),
+      );
+
+  Widget _buildBodyScroller(
+          {required int index, required AssessmentViewModel viewModel}) =>
+      SingleChildScrollView(
+        child: _buildBody(index: index, viewModel: viewModel),
       );
 
   Widget _buildBody(
           {required int index, required AssessmentViewModel viewModel}) =>
       Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _buildBodyChildren(viewModel: viewModel, index: index),
       );
 
   List<Widget> _buildBodyChildren(
           {required int index, required AssessmentViewModel viewModel}) =>
       [
-        _buildUpperColumnWrapper(viewModel: viewModel, index: index),
-        _buildContinueButtonWrapper(viewModel: viewModel, question: index + 1)
-      ];
-
-  Widget _buildUpperColumnWrapper(
-          {required int index, required AssessmentViewModel viewModel}) =>
-      Expanded(
-        child: _buildUpperColumn(index: index, viewModel: viewModel),
-      );
-
-  Widget _buildUpperColumn(
-          {required int index, required AssessmentViewModel viewModel}) =>
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildUpperColumnChildren(index: index, viewModel: viewModel),
-      );
-
-  List<Widget> _buildUpperColumnChildren(
-          {required int index, required AssessmentViewModel viewModel}) =>
-      [
         verticalSpaceMedium,
         _buildTitle(index: index, viewModel: viewModel),
         verticalSpaceMedium,
-        _buildAnswers(index: index, viewModel: viewModel)
+        _buildAnswers(index: index, viewModel: viewModel),
+        _buildContinueButtonWrapper(viewModel: viewModel, question: index + 1)
       ];
 
   Widget _buildTitle(
@@ -155,9 +143,6 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
         height: 55,
         borderRadius: 12,
         foregroundColor: kcWhite,
-        text: viewModel.currentQuestion == viewModel.assessments.length - 1
-            ? 'Finish'
-            : 'Continue',
         backgroundColor:
             viewModel.selectedAnswers.containsKey(question.toString())
                 ? kcPrimaryColor
@@ -165,5 +150,8 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
         onTap: viewModel.selectedAnswers.containsKey(question.toString())
             ? () => viewModel.nextQuestion()
             : null,
+        text: viewModel.currentQuestion == viewModel.assessments.length - 1
+            ? 'Finish'
+            : 'Continue',
       );
 }

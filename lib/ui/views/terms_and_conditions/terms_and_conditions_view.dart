@@ -57,8 +57,9 @@ class TermsAndConditionsView extends StackedView<TermsAndConditionsViewModel> {
       );
 
   Widget _buildAppbar(TermsAndConditionsViewModel viewModel) => SmallAppBar(
-        title: 'Terms and Conditions',
         onTap: viewModel.pop,
+        showBackButton: true,
+        title: 'Terms and Conditions',
       );
 
   Widget _buildContentWrapper(TermsAndConditionsViewModel viewModel) =>
@@ -84,7 +85,7 @@ class TermsAndConditionsView extends StackedView<TermsAndConditionsViewModel> {
   List<Widget> _buildContentColumnChildren() => [
         _buildContent(),
         verticalSpaceMedium,
-        _buildDownloadButtonWrapper(),
+        //  _buildDownloadButtonWrapper(),
       ];
 
   Widget _buildContent() => Html(

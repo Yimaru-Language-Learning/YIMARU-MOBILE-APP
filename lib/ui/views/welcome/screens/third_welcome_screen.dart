@@ -24,11 +24,8 @@ class ThirdWelcomeScreen extends ViewModelWidget<WelcomeViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(WelcomeViewModel viewModel) => [
-        _buildBackground(),
-        _buildColumnWrapper(),
-        _buildContinueButtonWrapper(viewModel)
-      ];
+  List<Widget> _buildScaffoldChildren(WelcomeViewModel viewModel) =>
+      [_buildBackground(), _buildColumnWrapper(), _buildSafeWrapper(viewModel)];
 
   Widget _buildBackground() => Image.asset(
         'assets/images/onboarding_3.png',
@@ -70,13 +67,16 @@ class ThirdWelcomeScreen extends ViewModelWidget<WelcomeViewModel> {
         ),
       );
 
+  Widget _buildSafeWrapper(WelcomeViewModel viewModel) =>
+      SafeArea(child: _buildContinueButtonWrapper(viewModel));
+
   Widget _buildContinueButtonWrapper(WelcomeViewModel viewModel) => Align(
         alignment: Alignment.bottomCenter,
         child: _buildButtonContainer(viewModel),
       );
 
   Widget _buildButtonContainer(WelcomeViewModel viewModel) => Padding(
-        padding: const EdgeInsets.only(bottom: 50, right: 50, left: 50),
+        padding: const EdgeInsets.only(bottom: 60, right: 50, left: 50),
         child: _buildContinueButtonState(viewModel),
       );
 
