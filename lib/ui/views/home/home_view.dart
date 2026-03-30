@@ -17,6 +17,7 @@ class HomeView extends StackedView<HomeViewModel> {
 
   @override
   void onViewModelReady(HomeViewModel viewModel) async {
+    // Removable
     await _init(viewModel);
     super.onViewModelReady(viewModel);
   }
@@ -37,7 +38,7 @@ class HomeView extends StackedView<HomeViewModel> {
   Widget _buildStartUpView() => const StartupView(label: 'Checking user info');
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(
-        body: getViewForIndex(viewModel.currentIndex),
+        body: getViewForIndex(viewModel.currentPage),
         bottomNavigationBar: _buildBottomNav(viewModel),
       );
 
@@ -47,7 +48,7 @@ class HomeView extends StackedView<HomeViewModel> {
         selectedItemColor: kcPrimaryColor,
         backgroundColor: kcBackgroundColor,
         type: BottomNavigationBarType.fixed,
-        currentIndex: viewModel.currentIndex,
+        currentIndex: viewModel.currentPage,
       );
 
   List<BottomNavigationBarItem> _buildNavBarItems() => [

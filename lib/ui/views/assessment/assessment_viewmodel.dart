@@ -237,6 +237,8 @@ class AssessmentViewModel extends BaseViewModel {
   }
 
   // Navigation
+  void pop() => _navigationService.back();
+
   Future<void> navigateToLanguage() async =>
       await _navigationService.navigateToLanguageView();
 

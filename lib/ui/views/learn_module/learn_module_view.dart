@@ -94,17 +94,25 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         itemBuilder: (context, index) => _buildTile(
             title: viewModel.modules[index]['title'],
             status: viewModel.modules[index]['status'],
-            subtitle: viewModel.modules[index]['subtitle']),
+            topics: viewModel.modules[index]['topics'],
+            subtitle: viewModel.modules[index]['subtitle'],
+            practices: viewModel.modules[index]['practices'],
+            description: viewModel.modules[index]['description']),
       );
 
-  Widget _buildTile({
-    required String title,
-    required String subtitle,
-    required ProgressStatuses status,
-  }) =>
+  Widget _buildTile(
+          {required String title,
+          required String topics,
+          required String subtitle,
+          required String description,
+          required ProgressStatuses status,
+          required List<Map<String, dynamic>> practices}) =>
       LearnModuleTile(
         title: title,
         status: status,
+        topics: topics,
         subtitle: subtitle,
+        practices: practices,
+        description: description,
       );
 }

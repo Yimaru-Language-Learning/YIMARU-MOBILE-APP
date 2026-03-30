@@ -48,6 +48,8 @@ import 'package:yimaru_app/services/smart_auth_service.dart';
 import 'package:yimaru_app/services/course_service.dart';
 import 'package:yimaru_app/ui/views/course_subcategory/course_subcategory_view.dart';
 import 'package:yimaru_app/ui/views/course/course_view.dart';
+import 'package:yimaru_app/services/audio_player_service.dart';
+import 'package:yimaru_app/services/voice_recorder_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -104,6 +106,8 @@ import 'package:yimaru_app/ui/views/course/course_view.dart';
     LazySingleton(classType: NotificationService),
     LazySingleton(classType: SmartAuthService),
     LazySingleton(classType: CourseService),
+    LazySingleton(classType: AudioPlayerService),
+    LazySingleton(classType: VoiceRecorderService),
 // @stacked-service
   ],
   bottomsheets: [

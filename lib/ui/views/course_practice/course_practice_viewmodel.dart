@@ -16,7 +16,7 @@ class CoursePracticeViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
 
   // Course practices
-   List<Practice> _coursePractices = [];
+  List<Practice> _coursePractices = [];
 
   List<Practice> get coursePractices => _coursePractices;
 
@@ -32,14 +32,10 @@ class CoursePracticeViewModel extends BaseViewModel {
 
   Future<void> _getCoursePractice(int id) async {
     if (await _statusChecker.checkConnection()) {
-      Map<String,dynamic> data = {
-        'owner_id':id,
-        'owner_type':'SUB_COURSE'
-      };
+      Map<String, dynamic> data = {'owner_id': id, 'owner_type': 'SUB_COURSE'};
       _coursePractices = await _apiService.getCoursePractices(data);
 
-        rebuildUi();
-
+      rebuildUi();
     }
   }
 }

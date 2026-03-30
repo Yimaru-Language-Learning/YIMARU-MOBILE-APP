@@ -1,11 +1,14 @@
 // Login method
 enum LoginMethod { phone, email, google }
 
+// Response status
+enum ResponseStatus { success, failure }
+
 // Sign-up method
 enum SignUpMethod { phone, email, google }
 
-// Response status
-enum ResponseStatus { success, failure }
+// Voice recording state
+enum VoiceRecordingState { pending, recording }
 
 // Levels
 enum ProficiencyLevels { a1, a2, b1, b2, none }
@@ -18,6 +21,7 @@ enum DuolingoAssessmentType { speaking, reading, writing, listening }
 
 // State object
 enum StateObjects {
+  none,
   courses,
   homeView,
   register,
@@ -37,5 +41,10 @@ enum StateObjects {
   courseCategories,
   profileCompletion,
   registerWithGoogle,
+  learnPracticeSample,
+  learnPracticeAnswer,
   loginWithPhoneNumber,
+  learnPracticeQuestion,
+  recordLearnPracticeAnswer,
+
 }

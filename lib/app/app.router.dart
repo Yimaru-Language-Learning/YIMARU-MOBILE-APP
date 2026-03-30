@@ -445,8 +445,15 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i23.LearnLessonView: (data) {
+      final args = data.getArgs<LearnLessonViewArguments>(nullOk: false);
       return _i36.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i23.LearnLessonView(),
+        builder: (context) => _i23.LearnLessonView(
+            key: args.key,
+            title: args.title,
+            topics: args.topics,
+            subtitle: args.subtitle,
+            practices: args.practices,
+            description: args.description),
         settings: data,
       );
     },
@@ -457,8 +464,13 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i25.LearnLessonDetailView: (data) {
+      final args = data.getArgs<LearnLessonDetailViewArguments>(nullOk: false);
       return _i36.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i25.LearnLessonDetailView(),
+        builder: (context) => _i25.LearnLessonDetailView(
+            key: args.key,
+            title: args.title,
+            practices: args.practices,
+            description: args.description),
         settings: data,
       );
     },
@@ -469,6 +481,7 @@ class StackedRouter extends _i1.RouterBase {
             key: args.key,
             title: args.title,
             subtitle: args.subtitle,
+            practices: args.practices,
             buttonLabel: args.buttonLabel),
         settings: data,
       );
@@ -604,11 +617,100 @@ class AssessmentViewArguments {
   }
 }
 
+class LearnLessonViewArguments {
+  const LearnLessonViewArguments({
+    this.key,
+    required this.title,
+    required this.topics,
+    required this.subtitle,
+    required this.practices,
+    required this.description,
+  });
+
+  final _i36.Key? key;
+
+  final String title;
+
+  final String topics;
+
+  final String subtitle;
+
+  final List<Map<String, dynamic>> practices;
+
+  final String description;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "title": "$title", "topics": "$topics", "subtitle": "$subtitle", "practices": "$practices", "description": "$description"}';
+  }
+
+  @override
+  bool operator ==(covariant LearnLessonViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key &&
+        other.title == title &&
+        other.topics == topics &&
+        other.subtitle == subtitle &&
+        other.practices == practices &&
+        other.description == description;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^
+        title.hashCode ^
+        topics.hashCode ^
+        subtitle.hashCode ^
+        practices.hashCode ^
+        description.hashCode;
+  }
+}
+
+class LearnLessonDetailViewArguments {
+  const LearnLessonDetailViewArguments({
+    this.key,
+    required this.title,
+    required this.practices,
+    required this.description,
+  });
+
+  final _i36.Key? key;
+
+  final String title;
+
+  final List<Map<String, dynamic>> practices;
+
+  final String description;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "title": "$title", "practices": "$practices", "description": "$description"}';
+  }
+
+  @override
+  bool operator ==(covariant LearnLessonDetailViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key &&
+        other.title == title &&
+        other.practices == practices &&
+        other.description == description;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^
+        title.hashCode ^
+        practices.hashCode ^
+        description.hashCode;
+  }
+}
+
 class LearnPracticeViewArguments {
   const LearnPracticeViewArguments({
     this.key,
     required this.title,
     required this.subtitle,
+    required this.practices,
     required this.buttonLabel,
   });
 
@@ -618,11 +720,13 @@ class LearnPracticeViewArguments {
 
   final String subtitle;
 
+  final List<Map<String, dynamic>> practices;
+
   final String buttonLabel;
 
   @override
   String toString() {
-    return '{"key": "$key", "title": "$title", "subtitle": "$subtitle", "buttonLabel": "$buttonLabel"}';
+    return '{"key": "$key", "title": "$title", "subtitle": "$subtitle", "practices": "$practices", "buttonLabel": "$buttonLabel"}';
   }
 
   @override
@@ -631,6 +735,7 @@ class LearnPracticeViewArguments {
     return other.key == key &&
         other.title == title &&
         other.subtitle == subtitle &&
+        other.practices == practices &&
         other.buttonLabel == buttonLabel;
   }
 
@@ -639,6 +744,7 @@ class LearnPracticeViewArguments {
     return key.hashCode ^
         title.hashCode ^
         subtitle.hashCode ^
+        practices.hashCode ^
         buttonLabel.hashCode;
   }
 }
@@ -1133,14 +1239,27 @@ extension NavigatorStateExtension on _i41.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToLearnLessonView([
+  Future<dynamic> navigateToLearnLessonView({
+    _i36.Key? key,
+    required String title,
+    required String topics,
+    required String subtitle,
+    required List<Map<String, dynamic>> practices,
+    required String description,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.learnLessonView,
+        arguments: LearnLessonViewArguments(
+            key: key,
+            title: title,
+            topics: topics,
+            subtitle: subtitle,
+            practices: practices,
+            description: description),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1161,14 +1280,23 @@ extension NavigatorStateExtension on _i41.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToLearnLessonDetailView([
+  Future<dynamic> navigateToLearnLessonDetailView({
+    _i36.Key? key,
+    required String title,
+    required List<Map<String, dynamic>> practices,
+    required String description,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return navigateTo<dynamic>(Routes.learnLessonDetailView,
+        arguments: LearnLessonDetailViewArguments(
+            key: key,
+            title: title,
+            practices: practices,
+            description: description),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1179,6 +1307,7 @@ extension NavigatorStateExtension on _i41.NavigationService {
     _i36.Key? key,
     required String title,
     required String subtitle,
+    required List<Map<String, dynamic>> practices,
     required String buttonLabel,
     int? routerId,
     bool preventDuplicates = true,
@@ -1191,6 +1320,7 @@ extension NavigatorStateExtension on _i41.NavigationService {
             key: key,
             title: title,
             subtitle: subtitle,
+            practices: practices,
             buttonLabel: buttonLabel),
         id: routerId,
         preventDuplicates: preventDuplicates,
@@ -1645,14 +1775,27 @@ extension NavigatorStateExtension on _i41.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithLearnLessonView([
+  Future<dynamic> replaceWithLearnLessonView({
+    _i36.Key? key,
+    required String title,
+    required String topics,
+    required String subtitle,
+    required List<Map<String, dynamic>> practices,
+    required String description,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.learnLessonView,
+        arguments: LearnLessonViewArguments(
+            key: key,
+            title: title,
+            topics: topics,
+            subtitle: subtitle,
+            practices: practices,
+            description: description),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1673,14 +1816,23 @@ extension NavigatorStateExtension on _i41.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithLearnLessonDetailView([
+  Future<dynamic> replaceWithLearnLessonDetailView({
+    _i36.Key? key,
+    required String title,
+    required List<Map<String, dynamic>> practices,
+    required String description,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
-  ]) async {
+  }) async {
     return replaceWith<dynamic>(Routes.learnLessonDetailView,
+        arguments: LearnLessonDetailViewArguments(
+            key: key,
+            title: title,
+            practices: practices,
+            description: description),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1691,6 +1843,7 @@ extension NavigatorStateExtension on _i41.NavigationService {
     _i36.Key? key,
     required String title,
     required String subtitle,
+    required List<Map<String, dynamic>> practices,
     required String buttonLabel,
     int? routerId,
     bool preventDuplicates = true,
@@ -1703,6 +1856,7 @@ extension NavigatorStateExtension on _i41.NavigationService {
             key: key,
             title: title,
             subtitle: subtitle,
+            practices: practices,
             buttonLabel: buttonLabel),
         id: routerId,
         preventDuplicates: preventDuplicates,

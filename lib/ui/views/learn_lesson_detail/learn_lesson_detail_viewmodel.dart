@@ -55,18 +55,18 @@ class LearnLessonDetailViewModel extends BaseViewModel {
     await _chewieController?.pause();
   }
 
-  @override
-  void dispose() {
+  void close() {
     _videoPlayerController?.dispose();
     _chewieController?.dispose();
-    super.dispose();
   }
 
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnPractice() async =>
+  Future<void> navigateToLearnPractice(
+          List<Map<String, dynamic>> practices) async =>
       await _navigationService.navigateToLearnPracticeView(
+        practices: practices,
         buttonLabel: 'Start Practice',
         title: 'Let \'s practice what you just learnt!',
         subtitle:

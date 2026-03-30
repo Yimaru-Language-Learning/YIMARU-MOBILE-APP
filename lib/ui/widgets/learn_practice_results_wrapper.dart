@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/widgets/practice_result_card.dart';
+import 'package:yimaru_app/ui/widgets/learn_practice_result_card.dart';
 
 import '../common/app_colors.dart';
 
-class PracticeResultsWrapper extends StatelessWidget {
-  final List<Map<String, dynamic>> data;
+class LearnPracticeResultsWrapper extends StatelessWidget {
+  final Map<String, dynamic> data;
 
-  const PracticeResultsWrapper({super.key, required this.data});
+  const LearnPracticeResultsWrapper({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) => _buildContainer();
@@ -28,7 +28,7 @@ class PracticeResultsWrapper extends StatelessWidget {
       );
 
   List<Widget> _buildColumnChildren() =>
-      [_buildTitle(), verticalSpaceSmall, _buildResults()];
+      [_buildTitle(), verticalSpaceSmall, if (data.isNotEmpty) _buildResult()];
 
   Widget _buildTitle() => Text(
         'Conversation Review',
@@ -36,15 +36,5 @@ class PracticeResultsWrapper extends StatelessWidget {
         textAlign: TextAlign.center,
       );
 
-  Widget _buildResults() => ListView.separated(
-        shrinkWrap: true,
-        itemCount: data.length,
-        padding: EdgeInsets.zero,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => _buildResult(index),
-        separatorBuilder: (context, index) => verticalSpaceSmall,
-      );
-
-  Widget _buildResult(int index) =>
-      PracticeResultCard(index: index + 1, data: data[index]);
+  Widget _buildResult() => LearnPracticeResultCard(data: data);
 }

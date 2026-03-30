@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/learn_practice_tip_section.dart';
-import 'package:yimaru_app/ui/widgets/practice_results_wrapper.dart';
+import 'package:yimaru_app/ui/widgets/learn_practice_results_wrapper.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
@@ -71,7 +71,7 @@ class LearnPracticeResultScreen
       ];
 
   Widget _buildResultsSection(LearnPracticeViewModel viewModel) =>
-      PracticeResultsWrapper(data: viewModel.practiceResults);
+      LearnPracticeResultsWrapper(data: viewModel.selectedPractice);
 
   Widget _buildLearnPracticeTipSection() => const LearnPracticeTipSection();
 

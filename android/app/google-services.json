@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "574860813475-glgnkruic7dflaomb59el8994b7hhfga.apps.googleusercontent.com",
+          "client_id": "574860813475-3p3k63lkrfd113sn6jscgvdj0aigsg5s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.yimaru.lms.app",
-            "certificate_hash": "378836a3aa9f36958b6c6c69bc67e3195352f68d"
+            "certificate_hash": "928ead08b5e39d6a861a55ae7cceb8c402d1ee7a"
           }
         },
         {

@@ -18,9 +18,9 @@ class DuolingoViewModel extends FormViewModel {
   bool get isSpeaking => _isSpeaking;
 
   // In-app navigation
-  int _currentIndex = 0;
+  int _currentPage = 0;
 
-  int get currentIndex => _currentIndex;
+  int get currentPage => _currentPage;
 
   // Assessments
   Map<String, dynamic> _selectedAssessment = {
@@ -200,15 +200,15 @@ class DuolingoViewModel extends FormViewModel {
 
   // In-app navigation
   void goTo(int page) {
-    _currentIndex = page;
+    _currentPage = page;
     rebuildUi();
   }
 
   void goBack() {
-    if (_currentIndex == 0) {
+    if (_currentPage == 0) {
       pop();
     } else {
-      _currentIndex--;
+      _currentPage--;
       rebuildUi();
     }
   }

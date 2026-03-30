@@ -12,6 +12,7 @@ import 'package:stacked_services/src/navigation/navigation_service.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
 import '../services/api_service.dart';
+import '../services/audio_player_service.dart';
 import '../services/authentication_service.dart';
 import '../services/course_service.dart';
 import '../services/dio_service.dart';
@@ -23,6 +24,7 @@ import '../services/permission_handler_service.dart';
 import '../services/secure_storage_service.dart';
 import '../services/smart_auth_service.dart';
 import '../services/status_checker_service.dart';
+import '../services/voice_recorder_service.dart';
 
 final locator = StackedLocator.instance;
 
@@ -50,4 +52,6 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => NotificationService());
   locator.registerLazySingleton(() => SmartAuthService());
   locator.registerLazySingleton(() => CourseService());
+  locator.registerLazySingleton(() => AudioPlayerService());
+  locator.registerLazySingleton(() => VoiceRecorderService());
 }

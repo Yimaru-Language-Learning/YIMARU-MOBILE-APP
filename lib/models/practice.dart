@@ -25,12 +25,16 @@ class Practice {
   @JsonKey(name: 'shuffle_questions')
   final bool? shuffleQuestions;
 
-
-
-  const Practice({
-    this.id,
-    this.title,this.status,this.setType,this.persona,this.ownerId,this.ownerType,this.description,this.shuffleQuestions
-  });
+  const Practice(
+      {this.id,
+      this.title,
+      this.status,
+      this.setType,
+      this.persona,
+      this.ownerId,
+      this.ownerType,
+      this.description,
+      this.shuffleQuestions});
 
   factory Practice.fromJson(Map<String, dynamic> json) =>
       _$PracticeFromJson(json);

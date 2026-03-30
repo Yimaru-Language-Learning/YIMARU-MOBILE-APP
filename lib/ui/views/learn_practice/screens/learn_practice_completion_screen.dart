@@ -77,7 +77,7 @@ class LearnPracticeCompletionScreen
         borderRadius: 12,
         text: 'Continue',
         foregroundColor: kcWhite,
-        onTap: () => viewModel.pop(),
+        onTap: () => viewModel.goTo(0),
         backgroundColor: kcPrimaryColor,
       );
 }

@@ -146,7 +146,7 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewModel> {
       );
 
   Widget _buildPracticeButton(CourseLessonDetailViewModel viewModel) =>
-       CustomElevatedButton(
+      CustomElevatedButton(
         height: 55,
         text: 'Practice',
         borderRadius: 12,

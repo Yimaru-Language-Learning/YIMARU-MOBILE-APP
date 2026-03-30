@@ -44,13 +44,13 @@ class LoginView extends StackedView<LoginViewModel> with $LoginView {
       _buildLoginScreensWrapper(viewModel);
 
   Widget _buildLoginScreensWrapper(LoginViewModel viewModel) => PopScope(
-      canPop: viewModel.currentIndex == 0 ? true : false,
+      canPop: viewModel.currentPage == 0 ? true : false,
       onPopInvokedWithResult: (value, data) => WidgetsBinding.instance
           .addPostFrameCallback((_) => viewModel.goBack()),
       child: _buildBody(viewModel));
 
   Widget _buildBody(LoginViewModel viewModel) =>
-      IndexedStack(index: viewModel.currentIndex, children: _buildScreens());
+      IndexedStack(index: viewModel.currentPage, children: _buildScreens());
 
   List<Widget> _buildScreens() => [
         _buildLoginWithEmailScreen(),

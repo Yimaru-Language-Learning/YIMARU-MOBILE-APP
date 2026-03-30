@@ -33,13 +33,13 @@ class HomeViewModel extends ReactiveViewModel {
   UserModel? get user => _user;
 
   // Bottom navigation
-  int _currentIndex = 0;
+  int _currentPage = 0;
 
-  int get currentIndex => _currentIndex;
+  int get currentPage => _currentPage;
 
   // Bottom navigation
   void setCurrentIndex(int index) {
-    _currentIndex = index;
+    _currentPage = index;
     rebuildUi();
   }
 

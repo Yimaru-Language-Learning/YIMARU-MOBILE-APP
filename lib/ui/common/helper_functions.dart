@@ -43,3 +43,28 @@ Color getColor() {
     return kcAquamarine.withValues(alpha: 0.2);
   }
 }
+
+String? getPlayableUrl(String url) {
+  try {
+    // Case 1: /file/d/FILE_ID/view
+    final fileIdRegex = RegExp(r'/file/d/([a-zA-Z0-9_-]+)');
+    final match1 = fileIdRegex.firstMatch(url);
+
+    if (match1 != null) {
+      final fileId = match1.group(1);
+      return "https://drive.google.com/uc?export=download&id=$fileId";
+    }
+
+    // Case 2: open?id=FILE_ID
+    final uri = Uri.parse(url);
+    if (uri.queryParameters.containsKey('id')) {
+      final fileId = uri.queryParameters['id'];
+      return "https://drive.google.com/uc?export=download&id=$fileId";
+    }
+
+    // Already converted or normal URL
+    return url;
+  } catch (e) {
+    return null;
+  }
+}

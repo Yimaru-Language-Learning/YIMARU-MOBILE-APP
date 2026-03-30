@@ -19,7 +19,6 @@ String kSubcoursesUrl = 'sub-courses';
 
 String kCompleteLessonUrl = 'complete';
 
-
 String kResetPassword = 'resetPassword';
 
 String kCourseCategoryUrl = 'categories';

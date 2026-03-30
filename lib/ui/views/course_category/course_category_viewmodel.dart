@@ -50,8 +50,7 @@ class CourseCategoryViewModel extends ReactiveViewModel {
       if (await _statusChecker.checkConnection()) {
         _categories = await _apiService.getCourseCategories();
 
-          rebuildUi();
-
+        rebuildUi();
       }
     }
   }

@@ -32,14 +32,19 @@ class LearnLessonViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnLessonDetail() async =>
-      await _navigationService.navigateToLearnLessonDetailView();
+  Future<void> navigateToLearnLessonDetail(
+          {required String title,
+          required List<Map<String, dynamic>> practices,
+          required String description}) async =>
+      await _navigationService.navigateToLearnLessonDetailView(
+          title: title, practices: practices, description: description);
 
-  Future<void> navigateToLearnPractice() async =>
+  Future<void> navigateToLearnPractice(
+          List<Map<String, dynamic>> practices) async =>
       await _navigationService.navigateToLearnPracticeView(
-        buttonLabel: 'Start Practice',
-        title: 'Let \'s practice what you just learnt!',
-        subtitle:
-            'I’ll ask you a few questions, and you can respond naturally.',
+        practices: practices,
+        title: 'Let’s Practice',
+        buttonLabel: 'Begin Lesson Practice',
+        subtitle: 'Let’s quickly review what you’ve learned in this lesson!',
       );
 }

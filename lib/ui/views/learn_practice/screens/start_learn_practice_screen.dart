@@ -10,6 +10,10 @@ import '../../../widgets/small_app_bar.dart';
 class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
   const StartLearnPracticeScreen({super.key});
 
+  void _start(LearnPracticeViewModel viewModel) {
+    viewModel.playQuestionAudio();
+  }
+
   @override
   Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
       _buildScaffoldWrapper(viewModel);
@@ -47,8 +51,8 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
-        onTap: viewModel.goBack,
         showBackButton: true,
+        onTap: viewModel.goBack,
         title: 'Practice Speaking',
       );
 
@@ -56,9 +60,10 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
         child: _buildStartButtonContainer(viewModel),
       );
 
+
   Widget _buildStartButtonContainer(LearnPracticeViewModel viewModel) =>
       GestureDetector(
-        onTap: () => viewModel.goTo(2),
+        onTap: () => _start(viewModel),
         child: _buildStartButton(),
       );
 
@@ -129,7 +134,7 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
       ];
 
   Widget _buildActionLabel() => Text(
-        'Tap the microphone to speak',
+        'Tap the start button to listen',
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -149,27 +154,28 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
   Widget _buildReplyButtonWrapper() => Expanded(child: _buildReplyButton());
 
   Widget _buildReplyButton() => const CustomColumnButton(
-      icon: Icons.replay, label: 'Reply', color: kcPrimaryColor);
+      icon: Icons.replay, label: 'Reply', color: kcLightGrey);
 
   Widget _buildMicButtonWrapper(LearnPracticeViewModel viewModel) =>
       Expanded(child: _buildMicButton(viewModel));
 
   Widget _buildMicButton(LearnPracticeViewModel viewModel) => ElevatedButton(
-        onPressed: () => viewModel.goTo(2),
-        style: const ButtonStyle(
-          shape: WidgetStatePropertyAll(CircleBorder()),
-          padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
-          shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
-          backgroundColor: WidgetStatePropertyAll(kcPrimaryColor),
-        ),
-        child: _buildMicIcon(),
-      );
+    onPressed: null,
+    style: const ButtonStyle(
+      shape: WidgetStatePropertyAll(CircleBorder()),
+      padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
+      shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
+      backgroundColor: WidgetStatePropertyAll(kcVeryLightGrey),
+    ),
+    child: _buildMicIcon(),
+  );
+
 
   Widget _buildMicIcon() => const Icon(
-        Icons.mic,
-        size: 35,
-        color: kcWhite,
-      );
+    Icons.mic,
+    size: 35,
+    color: kcWhite,
+  );
 
   Widget _buildEmptySpace() => Expanded(child: Container());
 }

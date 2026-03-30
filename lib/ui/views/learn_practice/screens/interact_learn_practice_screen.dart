@@ -1,0 +1,358 @@
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:stacked/stacked.dart';
+import 'package:waveform_recorder/waveform_recorder.dart';
+import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
+import 'package:yimaru_app/ui/widgets/cancel_learn_practice_sheet.dart';
+import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
+import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
+import 'package:yimaru_app/ui/widgets/wave_wrapper.dart';
+
+import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
+import '../../../common/ui_helpers.dart';
+import '../../../widgets/custom_column_button.dart';
+import '../../../widgets/small_app_bar.dart';
+
+class InteractLearnPracticeScreen
+    extends ViewModelWidget<LearnPracticeViewModel> {
+  const InteractLearnPracticeScreen({super.key});
+
+  Future<void> _cancel(LearnPracticeViewModel viewModel) async {
+    viewModel.pop();
+    viewModel.goTo(0);
+    viewModel.stopRecording();
+  }
+
+  void _start(LearnPracticeViewModel viewModel) {
+    viewModel.playQuestionAudio();
+  }
+
+  Future<void> _stop(LearnPracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
+    viewModel.goTo(4);
+  }
+
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: kcTransparent,
+        builder: (_) => _buildSheet(viewModel),
+      );
+
+  @override
+  Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
+
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Scaffold(
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffold(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      SafeArea(child: _buildBodyStack(context: context, viewModel: viewModel));
+
+  Widget _buildBodyStack(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildBodyColumnWrapper(context: context, viewModel: viewModel),
+          _buildProgressIndicatorState(viewModel),
+          _buildSpeakerState(context: context, viewModel: viewModel)
+        ],
+      );
+
+  Widget _buildSpeakerState(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      viewModel.busy(StateObjects.learnPracticeQuestion)
+          ? const PageLoadingIndicator()
+          : Container();
+
+  Widget _buildBodyColumnWrapper(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildBodyColumn(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildBodyColumn(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children:
+            _buildBodyColumnChildren(context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildBodyColumnChildren(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      [
+        _buildAppBarWrapper(viewModel),
+        _buildSpeakingIndicatorWrapper(viewModel),
+        _buildLowerButtonsSectionWrapper(context: context, viewModel: viewModel)
+      ];
+
+  Widget _buildAppBarWrapper(LearnPracticeViewModel viewModel) => Column(
+        children: [
+          verticalSpaceMedium,
+          _buildAppBar(viewModel),
+          verticalSpaceMedium,
+        ],
+      );
+
+  Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
+        showBackButton: true,
+        title: 'Practice Speaking',
+        onTap: () async => await _cancel(viewModel),
+      );
+
+  Widget _buildSpeakingIndicatorWrapper(LearnPracticeViewModel viewModel) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: _buildSpeakingIndicatorChildren(viewModel),
+      );
+
+  List<Widget> _buildSpeakingIndicatorChildren(
+          LearnPracticeViewModel viewModel) =>
+      [
+        _buildSpeakerLabelState(viewModel),
+        verticalSpaceMedium,
+        _buildSpeakingIndicator(viewModel)
+      ];
+
+  Widget _buildSpeakerLabelState(LearnPracticeViewModel viewModel) =>
+      viewModel.player.state == PlayerState.playing
+          ? _buildListeningLabel()
+          : VoiceRecordingState.recording == viewModel.recordingState
+              ? _buildSpeakingLabel()
+              : const SizedBox(height: 20);
+
+  Widget _buildListeningLabel() => Text(
+        'Daniel is speaking...',
+        style: style14P400,
+        textAlign: TextAlign.center,
+      );
+
+  Widget _buildSpeakingLabel() => Text(
+        'You\'re is speaking...',
+        style: style14P400,
+        textAlign: TextAlign.center,
+      );
+
+  Widget _buildSpeakingIndicator(LearnPracticeViewModel viewModel) =>
+      WaveWrapper(height: 200, child: _buildSpinnerState(viewModel));
+
+  Widget _buildSpinnerState(LearnPracticeViewModel viewModel) =>
+      viewModel.player.state == PlayerState.playing
+          ? _buildSpinner()
+          : VoiceRecordingState.recording == viewModel.recordingState &&
+                  viewModel.waveController.isRecording
+              ? _buildSpeakingSpinnerColumn(viewModel)
+              : Container();
+
+  Widget _buildSpeakingSpinnerColumn(LearnPracticeViewModel viewModel) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: _buildSpeakingSpinnerColumnChildren(viewModel),
+      );
+
+  List<Widget> _buildSpeakingSpinnerColumnChildren(
+          LearnPracticeViewModel viewModel) =>
+      [_buildSpinner(), _buildSpeakingSpinnerContainer(viewModel)];
+
+  Widget _buildSpeakingSpinnerContainer(LearnPracticeViewModel viewModel) =>
+      SizedBox(
+        width: 65,
+        child: _buildSpeakingSpinner(viewModel),
+      );
+
+  Widget _buildSpeakingSpinner(LearnPracticeViewModel viewModel) =>
+      WaveformRecorder(
+        height: 35,
+        onRecordingStopped: () {},
+        waveColor: kcPrimaryColor,
+        durationTextStyle: style14P600,
+        controller: viewModel.waveController,
+      );
+
+  Widget _buildSpinner() => const SpinKitWave(
+        size: 20,
+        color: kcPrimaryColor,
+        type: SpinKitWaveType.center,
+      );
+
+  Widget _buildLowerButtonsSectionWrapper(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child:
+            _buildLowerButtonsSection(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildLowerButtonsSection(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: _buildLowerButtonsSectionChildren(
+            context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildLowerButtonsSectionChildren(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      [
+        _buildActionLabel(),
+        verticalSpaceMedium,
+        _buildButtonsRowWrapper(context: context, viewModel: viewModel),
+        verticalSpaceMedium,
+      ];
+
+  Widget _buildActionLabel() => Text(
+        'Tap the microphone to speak',
+        style: style14DG400,
+        textAlign: TextAlign.center,
+      );
+
+  Widget _buildButtonsRowWrapper(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children:
+            _buildButtonsRowChildren(context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildButtonsRowChildren(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      [
+        _buildReplyButtonWrapper(viewModel),
+        _buildMicButtonWrapper(viewModel),
+        _buildCancelButtonWrapper(context: context, viewModel: viewModel)
+      ];
+
+  Widget _buildReplyButtonWrapper(LearnPracticeViewModel viewModel) =>
+      Expanded(child: _buildReplyButton(viewModel));
+
+  Widget _buildReplyButton(LearnPracticeViewModel viewModel) =>
+      CustomColumnButton(
+        icon: Icons.replay,
+        label: 'Reply',
+        color: viewModel.recordingState == VoiceRecordingState.pending &&
+                viewModel.player.state != PlayerState.playing
+            ? kcPrimaryColor
+            : kcLightGrey,
+        onTap: viewModel.recordingState == VoiceRecordingState.pending &&
+                viewModel.player.state != PlayerState.playing
+            ? () => _start(viewModel)
+            : null,
+      );
+
+  Widget _buildMicButtonWrapper(LearnPracticeViewModel viewModel) =>
+      Expanded(child: _buildMicButton(viewModel));
+
+  Widget _buildMicButton(LearnPracticeViewModel viewModel) => ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: WidgetStatePropertyAll(
+            viewModel.player.state == PlayerState.playing ||
+                    viewModel.busy(StateObjects.recordLearnPracticeAnswer)
+                ? kcVeryLightGrey
+                : kcPrimaryColor,
+          ),
+          shadowColor: const WidgetStatePropertyAll(kcWhite),
+          shape: const WidgetStatePropertyAll(CircleBorder()),
+          padding: const WidgetStatePropertyAll(EdgeInsets.all(15)),
+        ),
+        onPressed: () async => viewModel.player.state == PlayerState.playing ||
+                viewModel.busy(StateObjects.recordLearnPracticeAnswer)
+            ? null
+            : viewModel.recordingState == VoiceRecordingState.pending
+                ? await viewModel.startRecording()
+                : await _stop(viewModel),
+        child: _buildMicState(viewModel),
+      );
+
+  Widget _buildMicState(LearnPracticeViewModel viewModel) =>
+      viewModel.recordingState == VoiceRecordingState.pending
+          ? _buildMicIcon()
+          : _buildCheckIcon();
+
+  Widget _buildCheckIcon() => const Icon(
+        Icons.check,
+        size: 35,
+        color: kcWhite,
+      );
+
+  Widget _buildMicIcon() => const Icon(
+        Icons.mic,
+        size: 35,
+        color: kcWhite,
+      );
+
+  Widget _buildCancelButtonWrapper(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildCancelButton(context: context, viewModel: viewModel));
+
+  Widget _buildCancelButton(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      CustomColumnButton(
+        color: kcRed,
+        label: 'Cancel',
+        icon: Icons.close,
+        onTap: () async =>
+            await _showSheet(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildSheet(LearnPracticeViewModel viewModel) =>
+      CancelLearnPracticeSheet(
+        onClose: viewModel.pop,
+        onContinue: viewModel.pop,
+        onCancel: () async => await _cancel(viewModel),
+      );
+
+  Widget _buildProgressIndicatorState(LearnPracticeViewModel viewModel) =>
+      viewModel.recordingState == VoiceRecordingState.pending
+          ? _buildProgressIndicatorWrapper(viewModel)
+          : Container();
+
+  Widget _buildProgressIndicatorWrapper(LearnPracticeViewModel viewModel) =>
+      Positioned(
+        top: 75,
+        left: 0,
+        right: 0,
+        child: _buildProgressIndicatorSpacer(viewModel),
+      );
+
+  Widget _buildProgressIndicatorSpacer(LearnPracticeViewModel viewModel) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildProgressIndicator(viewModel),
+      );
+
+  Widget _buildProgressIndicator(LearnPracticeViewModel viewModel) =>
+      CustomLinearProgressIndicator(
+          activeColor: kcPrimaryColor,
+          progress: viewModel.progress,
+          backgroundColor: kcVeryLightGrey);
+}

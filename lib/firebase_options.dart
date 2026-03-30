@@ -64,7 +64,7 @@ class DefaultFirebaseOptions {
     projectId: 'yimaru-lms-e834e',
     storageBucket: 'yimaru-lms-e834e.firebasestorage.app',
     androidClientId:
-        '574860813475-glgnkruic7dflaomb59el8994b7hhfga.apps.googleusercontent.com',
+        '574860813475-3p3k63lkrfd113sn6jscgvdj0aigsg5s.apps.googleusercontent.com',
     iosBundleId: 'com.yimaru.lms.app',
   );
 }

@@ -37,9 +37,9 @@ class LoginViewModel extends ReactiveViewModel
   GoogleSignInAccount? get googleUser => _googleUser;
 
   // In-app navigation
-  int _currentIndex = 0;
+  int _currentPage = 0;
 
-  int get currentIndex => _currentIndex;
+  int get currentPage => _currentPage;
 
   // Email
   bool _focusEmail = false;
@@ -139,16 +139,16 @@ class LoginViewModel extends ReactiveViewModel
 
   // In app navigation
   void goTo(int page) {
-    _currentIndex = page;
+    _currentPage = page;
     rebuildUi();
   }
 
   void goBack() {
-    if (_currentIndex == 1) {
-      _currentIndex = 0;
+    if (_currentPage == 1) {
+      _currentPage = 0;
       rebuildUi();
-    } else if (_currentIndex == 2) {
-      _currentIndex = 1;
+    } else if (_currentPage == 2) {
+      _currentPage = 1;
       rebuildUi();
     } else {
       _navigationService.back();

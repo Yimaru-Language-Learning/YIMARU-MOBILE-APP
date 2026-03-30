@@ -195,7 +195,7 @@ class DuolingoView extends StackedView<DuolingoViewModel> with $DuolingoView {
       );
 
   Widget _buildBody(DuolingoViewModel viewModel) => IndexedStack(
-      index: viewModel.currentIndex, children: _buildScreens(viewModel));
+      index: viewModel.currentPage, children: _buildScreens(viewModel));
 
   List<Widget> _buildScreens(DuolingoViewModel viewModel) => [
         _buildDuolingoAssessmentsScreen(),

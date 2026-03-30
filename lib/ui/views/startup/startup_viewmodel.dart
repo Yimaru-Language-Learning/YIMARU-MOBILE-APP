@@ -21,6 +21,7 @@ class StartupViewModel extends BaseViewModel {
         await _authenticationService.getUser();
         await _navigationService.replaceWithHomeView();
       } else {
+        // Removable
         await _navigationService.replaceWithLoginView();
       }
     }

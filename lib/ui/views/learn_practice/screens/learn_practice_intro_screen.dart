@@ -128,7 +128,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
         borderRadius: 12,
         text: buttonLabel,
         foregroundColor: kcWhite,
-        onTap: () => viewModel.goTo(1),
+        onTap: () => viewModel.goTo(2),
         backgroundColor: kcPrimaryColor,
       );
 }

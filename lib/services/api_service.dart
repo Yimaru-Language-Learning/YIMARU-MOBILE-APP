@@ -512,20 +512,19 @@ class ApiService {
     }
   }
 
-
   // Course practices
-  Future<List<Practice>> getCoursePractices(Map<String,dynamic> data) async {
+  Future<List<Practice>> getCoursePractices(Map<String, dynamic> data) async {
     try {
       List<Practice> coursePractices = [];
 
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/$kPracticeBaseUrl/$kCoursePractice',data: data);
+      final Response response = await _service.dio
+          .get('$kBaseUrl/$kPracticeBaseUrl/$kCoursePractice', data: data);
 
       if (response.statusCode == 200) {
         var data = response.data;
         var decodedData = data['data'] as List;
         coursePractices = decodedData.map(
-              (e) {
+          (e) {
             return Practice.fromJson(e);
           },
         ).toList();
@@ -537,20 +536,19 @@ class ApiService {
     }
   }
 
-
   // Course practic questions
   Future<List<PracticeQuestion>> getCoursePracticeQuestions(int id) async {
     try {
       List<PracticeQuestion> coursePracticeQuestions = [];
 
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/$kPracticeBaseUrl/$id/$kCoursePracticeQuestions');
+      final Response response = await _service.dio
+          .get('$kBaseUrl/$kPracticeBaseUrl/$id/$kCoursePracticeQuestions');
 
       if (response.statusCode == 200) {
         var data = response.data;
         var decodedData = data['data'] as List;
         coursePracticeQuestions = decodedData.map(
-              (e) {
+          (e) {
             return PracticeQuestion.fromJson(e);
           },
         ).toList();

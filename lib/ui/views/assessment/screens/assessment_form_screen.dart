@@ -26,6 +26,7 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
         isLoading: viewModel.isBusy,
         isEmpty: viewModel.assessments.isEmpty,
         onTap: () async => await viewModel.getAssessments(),
+        onPop: viewModel.assessments.isEmpty ? viewModel.pop : null,
       );
 
   Widget _buildAssessmentScreensWrapper(AssessmentViewModel viewModel) =>

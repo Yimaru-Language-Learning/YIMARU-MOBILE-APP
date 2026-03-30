@@ -13,11 +13,11 @@ class LearnLevelViewModel extends BaseViewModel {
       'current': true,
       'subtitle': 'Start your journey with the basics of English.',
     },
-    {
-      'title': 'A2',
-      'current': false,
-      'subtitle': 'Build upon your foundational knowledge.',
-    },
+    // {
+    //   'title': 'A2',
+    //   'current': false,
+    //   'subtitle': 'Build upon your foundational knowledge.',
+    // },
   ];
 
   List<Map<String, dynamic>> get learnSubLevels => _learnSubLevels;
@@ -27,11 +27,4 @@ class LearnLevelViewModel extends BaseViewModel {
 
   Future<void> navigateToLearnModule() async =>
       _navigationService.navigateToLearnModuleView();
-
-  Future<void> navigateToLearnPractice() async =>
-      await _navigationService.navigateToLearnPracticeView(
-        title: 'Let’s Practice Level 1',
-        buttonLabel: 'Begin Level Practice',
-        subtitle: 'Let’s quickly review what you’ve learned in this level! ',
-      );
 }
