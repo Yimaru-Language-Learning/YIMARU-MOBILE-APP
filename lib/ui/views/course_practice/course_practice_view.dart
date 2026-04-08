@@ -92,19 +92,25 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> {
       );
 
   Widget _buildListView(CoursePracticeViewModel viewModel) => GridView.builder(
-        itemCount: 6,
         shrinkWrap: true,
+        itemCount: viewModel.coursePractices.length,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) =>
-            _buildCard(title: viewModel.coursePractices[index].title ?? ''),
+        itemBuilder: (context, index) => _buildCard(
+          title: viewModel.coursePractices[index].title ?? '',
+          onTap: () async =>
+              await viewModel.navigateToCoursePracticeQuestion(viewModel.coursePractices[index].id ?? 0),
+        ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 15,
           crossAxisSpacing: 15,
-          childAspectRatio: 1.45,
+          childAspectRatio: 1.2,
         ),
       );
 
-  Widget _buildCard({required String title}) =>
-      CoursePracticeCard(title: title);
+  Widget _buildCard({
+    required String title,
+    GestureTapCallback? onTap,
+  }) =>
+      CoursePracticeCard(onTap: onTap, title: title);
 }

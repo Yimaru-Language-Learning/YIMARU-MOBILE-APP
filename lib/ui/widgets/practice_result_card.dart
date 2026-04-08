@@ -6,11 +6,11 @@ import 'package:yimaru_app/ui/widgets/custom_response_card.dart';
 
 class PracticeResultCard extends ViewModelWidget<LearnPracticeViewModel> {
   final Map<String, dynamic> data;
-  const PracticeResultCard(
-      {super.key, required this.data});
+  const PracticeResultCard({super.key, required this.data});
 
   @override
-  Widget build(BuildContext context,LearnPracticeViewModel viewModel) => _buildColumnWrapper();
+  Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
+      _buildColumnWrapper();
 
   Widget _buildColumnWrapper() => SizedBox(
         height: 100,
@@ -46,11 +46,11 @@ class PracticeResultCard extends ViewModelWidget<LearnPracticeViewModel> {
       Expanded(child: _buildSampleResponse());
 
   Widget _buildSampleResponse() =>
-       const CustomResponseCard(title: 'Sample Answer', subtitle: '0:54');
+      const CustomResponseCard(title: 'Sample Answer', subtitle: '0:54');
 
   Widget _buildActualResponseWrapper() =>
       Expanded(child: _buildActualResponse());
 
   Widget _buildActualResponse() =>
-       const CustomResponseCard(title: 'Sample Answer', subtitle: '0:54');
+      const CustomResponseCard(title: 'Sample Answer', subtitle: '0:54');
 }

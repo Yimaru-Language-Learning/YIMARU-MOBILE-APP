@@ -1,5 +1,4 @@
 String kBaseUrl = 'https://api.yimaruacademy.com';
-//String baseUrl = 'https://api.yimaru.yaltopia.com';
 
 String kCoursesUrl = 'courses';
 
@@ -40,6 +39,8 @@ String kPracticeBaseUrl = 'api/v1/question-sets';
 String kProfileStatusUrl = 'is-profile-completed';
 
 String kCourseBaseUrl = 'api/v1/course-management';
+
+String kCoursePracticeQuestion = 'api/v1/questions';
 
 String kLessonProgressUrl = 'api/v1/progress/videos';
 

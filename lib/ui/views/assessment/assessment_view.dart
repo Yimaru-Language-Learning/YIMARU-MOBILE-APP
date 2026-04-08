@@ -45,12 +45,6 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
   List<Widget> _buildScreens() => [
         _buildAssessmentIntro(),
         _buildAssessment(),
-        /*
-         _buildAssessmentFailure(),
-         _buildRetakeAssessment(),
-         _buildResultAnalysis(),
-         _buildAssessmentCompletion(),
-         */
         _buildAssessmentResult(),
         _buildStartLesson(),
       ];

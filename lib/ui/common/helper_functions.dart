@@ -1,9 +1,8 @@
-// Split full name
 import 'dart:math';
 import 'dart:ui';
 
 import 'app_colors.dart';
-
+// Split full name
 Map<String, String> splitFullName(String fullName) {
   final parts = fullName.trim().split(RegExp(r'\s+'));
 
@@ -22,6 +21,7 @@ Map<String, String> splitFullName(String fullName) {
   };
 }
 
+// Get random color
 Color getColor() {
   final generator = Random();
   int random = generator.nextInt(8);
@@ -44,6 +44,7 @@ Color getColor() {
   }
 }
 
+// Get playable url
 String? getPlayableUrl(String url) {
   try {
     // Case 1: /file/d/FILE_ID/view

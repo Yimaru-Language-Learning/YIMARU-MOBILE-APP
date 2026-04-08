@@ -4,6 +4,7 @@ import 'package:stacked/stacked.dart';
 import '../ui/common/helper_functions.dart';
 
 class AudioPlayerService with ListenableServiceMixin {
+  // Player initialization
   final AudioPlayer _player = AudioPlayer();
 
   AudioPlayer get player => _player;
@@ -30,8 +31,6 @@ class AudioPlayerService with ListenableServiceMixin {
   }
 
   Future<void> playLocal(String url) async {
-
-
     await _player.play(UrlSource(url));
   }
 

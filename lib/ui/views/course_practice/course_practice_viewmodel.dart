@@ -1,5 +1,6 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/practice.dart';
 
 import '../../../app/app.locator.dart';
@@ -23,19 +24,19 @@ class CoursePracticeViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
+  Future<void> navigateToCoursePracticeQuestion(int id) async =>
+      await _navigationService.navigateToCoursePracticeQuestionView(id: id);
+
   // Remote api call
 
-  // Courses
+  // Course practices
   Future<void> getCoursePractice(int id) async =>
       await runBusyFuture(_getCoursePractice(id),
           busyObject: StateObjects.coursePractice);
 
   Future<void> _getCoursePractice(int id) async {
     if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> data = {'owner_id': id, 'owner_type': 'SUB_COURSE'};
-      _coursePractices = await _apiService.getCoursePractices(data);
-
-      rebuildUi();
+      _coursePractices = await _apiService.getCoursePractices(id);
     }
   }
 }

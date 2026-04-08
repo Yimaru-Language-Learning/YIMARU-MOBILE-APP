@@ -60,7 +60,6 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
         child: _buildStartButtonContainer(viewModel),
       );
 
-
   Widget _buildStartButtonContainer(LearnPracticeViewModel viewModel) =>
       GestureDetector(
         onTap: () => _start(viewModel),
@@ -160,22 +159,21 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
       Expanded(child: _buildMicButton(viewModel));
 
   Widget _buildMicButton(LearnPracticeViewModel viewModel) => ElevatedButton(
-    onPressed: null,
-    style: const ButtonStyle(
-      shape: WidgetStatePropertyAll(CircleBorder()),
-      padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
-      shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
-      backgroundColor: WidgetStatePropertyAll(kcVeryLightGrey),
-    ),
-    child: _buildMicIcon(),
-  );
-
+        onPressed: null,
+        style: const ButtonStyle(
+          shape: WidgetStatePropertyAll(CircleBorder()),
+          padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
+          shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
+          backgroundColor: WidgetStatePropertyAll(kcVeryLightGrey),
+        ),
+        child: _buildMicIcon(),
+      );
 
   Widget _buildMicIcon() => const Icon(
-    Icons.mic,
-    size: 35,
-    color: kcWhite,
-  );
+        Icons.mic,
+        size: 35,
+        color: kcWhite,
+      );
 
   Widget _buildEmptySpace() => Expanded(child: Container());
 }

@@ -67,25 +67,11 @@ class AuthenticationService with ListenableServiceMixin {
       profileCompleted: await _secureService.getBool('profileCompleted'),
     );
 
-    /* UserModel(
-        email: _user?.email,
-        gender: _user?.gender,
-        region: _user?.region,
-        userId: _user?.userId,
-        country: _user?.country,
-        lastName: _user?.lastName,
-        birthday: _user?.birthday,
-        firstName: _user?.firstName,
-        occupation: _user?.occupation,
-        accessToken: _user?.accessToken,
-        refreshToken: _user?.refreshToken,
-        profilePicture: _user?.profilePicture,
-        userInfoLoaded: _user?.userInfoLoaded ?? false,
-        profileCompleted: await _secureService.getBool('profileCompleted'));
-        */
+
     notifyListeners();
   }
 
+  // Save profile picture
   Future<void> saveProfilePicture(String image) async {
     await _secureService.setString('profilePicture', image);
     _user = _user?.copyWith(
@@ -93,26 +79,10 @@ class AuthenticationService with ListenableServiceMixin {
       profilePicture: await _secureService.getString('profilePicture'),
     );
 
-    /*UserModel(
-      email: _user?.email,
-      gender: _user?.gender,
-      region: _user?.region,
-      userId: _user?.userId,
-      country: _user?.country,
-      lastName: _user?.lastName,
-      birthday: _user?.birthday,
-      firstName: _user?.firstName,
-      occupation: _user?.occupation,
-      accessToken: _user?.accessToken,
-      refreshToken: _user?.refreshToken,
-      profileCompleted: _user?.profileCompleted,
-      userInfoLoaded: _user?.userInfoLoaded ?? false,
-      profilePicture: await _secureService.getString('profilePicture'),
-    );
-*/
     notifyListeners();
   }
 
+  // Save user data
   Future<void> saveUserData(UserModel data) async {
     await _secureService.setBool('userInfoLoaded', true);
     await _secureService.setBool(
@@ -145,6 +115,7 @@ class AuthenticationService with ListenableServiceMixin {
     notifyListeners();
   }
 
+  // Update user data
   Future<void> updateUserData(Map<String, dynamic> data) async {
     await _secureService.setString('region', data['region']);
     await _secureService.setString('gender', data['gender']);
@@ -164,31 +135,19 @@ class AuthenticationService with ListenableServiceMixin {
       occupation: await _secureService.getString('occupation'),
     );
 
-    /*UserModel(
-      email: _user?.email,
-      userId: _user?.userId,
-      accessToken: _user?.accessToken,
-      refreshToken: _user?.refreshToken,
-      profilePicture: _user?.profilePicture,
-      profileCompleted: _user?.profileCompleted,
-      region: await _secureService.getString('region'),
-      gender: await _secureService.getString('gender'),
-      country: await _secureService.getString('country'),
-      lastName: await _secureService.getString('lastName'),
-      birthday: await _secureService.getString('birthday'),
-      firstName: await _secureService.getString('firstName'),
-      occupation: await _secureService.getString('occupation'),
-    );*/
     notifyListeners();
   }
 
+  // Check first time install
   Future<bool> isFirstTimeInstall() async =>
       await _secureService.getBool('firstTimeInstall') ?? true;
 
+  // Set first time install
   Future<void> setFirstTimeInstall(bool value) async {
     await _secureService.setBool('firstTimeInstall', value);
   }
 
+  // Get user data
   Future<UserModel?> getUser() async {
     _user = UserModel(
       userId: await _secureService.getInt('userId'),
@@ -209,6 +168,7 @@ class AuthenticationService with ListenableServiceMixin {
     return _user;
   }
 
+  // Logout
   Future<void> logout() async {
     bool firstTimeInstall = await isFirstTimeInstall();
     _user = null;

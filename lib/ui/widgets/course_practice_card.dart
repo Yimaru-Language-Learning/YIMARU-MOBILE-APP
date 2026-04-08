@@ -6,14 +6,15 @@ import 'custom_elevated_button.dart';
 
 class CoursePracticeCard extends StatelessWidget {
   final String title;
+  final GestureTapCallback? onTap;
 
-  const CoursePracticeCard({super.key, required this.title});
+  const CoursePracticeCard({super.key, this.onTap, required this.title});
 
   @override
   Widget build(BuildContext context) => _buildContainer();
 
   Widget _buildContainer() => Container(
-        height: 200,
+        // height: 250,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: kcPrimaryColor.withValues(alpha: 0.25),
@@ -27,14 +28,19 @@ class CoursePracticeCard extends StatelessWidget {
 
   List<Widget> _buildColumnChildren() => [
         verticalSpaceTiny,
-        _buildTitle(),
+        _buildTitleWrapper(),
         verticalSpaceSmall,
-        _buildStartButtonWrapper()
+        _buildStartButtonWrapper(),
+        verticalSpaceSmall,
       ];
+
+  Widget _buildTitleWrapper() => Expanded(child: _buildTitle());
 
   Widget _buildTitle() => Text(
         title,
+        maxLines: 2,
         style: style18DG700,
+        overflow: TextOverflow.fade,
       );
 
   Widget _buildStartButtonWrapper() => SizedBox(
@@ -42,11 +48,12 @@ class CoursePracticeCard extends StatelessWidget {
         child: _buildStartButton(),
       );
 
-  Widget _buildStartButton() => const CustomElevatedButton(
+  Widget _buildStartButton() => CustomElevatedButton(
         height: 50,
         width: 200,
+        onTap: onTap,
         borderRadius: 8,
-        text: 'Start Test',
+        text: 'Start Practice',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );

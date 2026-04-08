@@ -14,7 +14,7 @@ class FormValidator {
     return null;
   }
 
-  // Form validator
+  // Full name validator
   static String? validateFullNameForm(String? value) {
     if (value == null) {
       return null;

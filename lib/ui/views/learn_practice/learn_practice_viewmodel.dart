@@ -21,7 +21,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   final _voiceRecorderService = locator<VoiceRecorderService>();
 
-
   final _authenticationService = locator<AuthenticationService>();
 
   LearnPracticeViewModel() {
@@ -30,7 +29,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_audioPlayerService, _voiceRecorderService,_authenticationService];
+      [_audioPlayerService, _voiceRecorderService, _authenticationService];
 
   // User
   UserModel? get _user => _authenticationService.user;
@@ -68,7 +67,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   VoiceRecordingState get recordingState => _recordingState;
 
-
   // Busy object
   StateObjects _busyObject = StateObjects.none;
 
@@ -84,19 +82,16 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   Map<String, dynamic> get selectedPractice => _selectedPractice;
 
-
-
   // Practice
   void setPractice(Map<String, dynamic> practice) {
     _selectedPractice = practice;
     goTo(1);
   }
 
-
-
   // Play practice audio
-  Future<void> playQuestionAudio() async => await runBusyFuture(_playQuestionAudio(),
-      busyObject: StateObjects.learnPracticeQuestion);
+  Future<void> playQuestionAudio() async =>
+      await runBusyFuture(_playQuestionAudio(),
+          busyObject: StateObjects.learnPracticeQuestion);
 
   Future<void> _playQuestionAudio() async {
     goTo(3);
@@ -115,57 +110,59 @@ class LearnPracticeViewModel extends ReactiveViewModel {
       print('POSITION: $_position');
       rebuildUi();
     });
-
   }
 
   // Set busy object
 
-  void setBusyObject(StateObjects object){
+  void setBusyObject(StateObjects object) {
     _busyObject = object;
     notifyListeners();
   }
 
-
   // Sample audio
-  Future<void> playSampleAudio() async => await runBusyFuture(_playSampleAudio(),
-      busyObject: StateObjects.learnPracticeSample);
+  Future<void> playSampleAudio() async =>
+      await runBusyFuture(_playSampleAudio(),
+          busyObject: StateObjects.learnPracticeSample);
   Future<void> _playSampleAudio() async {
     setBusyObject(StateObjects.learnPracticeSample);
     await _audioPlayerService.playUrl(_selectedPractice['sample_answer']);
   }
-  Future<void> pauseSampleAudio()async=> await runBusyFuture(_pauseSampleAudio(),
-  busyObject: StateObjects.learnPracticeSample);
+
+  Future<void> pauseSampleAudio() async =>
+      await runBusyFuture(_pauseSampleAudio(),
+          busyObject: StateObjects.learnPracticeSample);
 
   Future<void> _pauseSampleAudio() async {
     setBusyObject(StateObjects.learnPracticeSample);
     await _audioPlayerService.pause();
   }
 
-
   // Recorded audio
-  Future<void> playRecordedAudio() async => await runBusyFuture(_playRecordedAudio(),
-      busyObject: StateObjects.learnPracticeAnswer);
+  Future<void> playRecordedAudio() async =>
+      await runBusyFuture(_playRecordedAudio(),
+          busyObject: StateObjects.learnPracticeAnswer);
 
   Future<void> _playRecordedAudio() async {
     setBusyObject(StateObjects.learnPracticeAnswer);
-    await _audioPlayerService.playLocal(await _voiceRecorderService.getRecordedAudio() ?? '');
+    await _audioPlayerService
+        .playLocal(await _voiceRecorderService.getRecordedAudio() ?? '');
   }
 
-  Future<void> pauseRecordedAudio()async=> await runBusyFuture(_pauseRecordedAudio(),
-      busyObject: StateObjects.learnPracticeAnswer);
-
+  Future<void> pauseRecordedAudio() async =>
+      await runBusyFuture(_pauseRecordedAudio(),
+          busyObject: StateObjects.learnPracticeAnswer);
 
   Future<void> _pauseRecordedAudio() async {
     setBusyObject(StateObjects.learnPracticeAnswer);
     await _audioPlayerService.pause();
   }
 
-
   // Voice recorder
-  Future<void> startRecording() async => await runBusyFuture(_startRecording(),busyObject: StateObjects.recordLearnPracticeAnswer );
+  Future<void> startRecording() async => await runBusyFuture(_startRecording(),
+      busyObject: StateObjects.recordLearnPracticeAnswer);
 
-  Future<void> _startRecording() async =>  await _voiceRecorderService.startRecording();
-
+  Future<void> _startRecording() async =>
+      await _voiceRecorderService.startRecording();
 
   Future<void> stopRecording() async =>
       await _voiceRecorderService.stopRecording();
