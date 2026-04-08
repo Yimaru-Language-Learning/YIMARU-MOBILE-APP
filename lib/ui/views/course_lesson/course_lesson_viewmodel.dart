@@ -40,10 +40,6 @@ class CourseLessonViewModel extends BaseViewModel {
   Future<void> _getCourseLessons(int courseId) async {
     if (await _statusChecker.checkConnection()) {
       _courseLessons = await _apiService.getCourseLessons(1);
-
-      if (_courseLessons.isNotEmpty) {
-        rebuildUi();
-      }
     }
   }
 }

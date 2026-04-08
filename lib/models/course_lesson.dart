@@ -23,14 +23,14 @@ class CourseLesson {
   @JsonKey(name: 'video_url')
   String? videoUrl;
 
+  @JsonKey(name: 'vimeo_status')
+  String? vimeoStatus;
+
   @JsonKey(name: 'instructor_id')
   int? instructorId;
 
   @JsonKey(name: 'sub_course_id')
   int? courseId;
-
-  @JsonKey(name: 'vimeo_status')
-  String? vimeoStatus;
 
   @JsonKey(name: 'display_order')
   int? displayOrder;

@@ -41,7 +41,6 @@ class CourseSubcategoryViewModel extends BaseViewModel {
     if (await _statusChecker.checkConnection()) {
       _subcategories = await _apiService.getCourseSubcategories(id);
 
-      rebuildUi();
     }
   }
 }

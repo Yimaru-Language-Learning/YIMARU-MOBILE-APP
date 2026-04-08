@@ -7,7 +7,7 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
-import '../../../models/assessment.dart';
+import '../../../models/question.dart';
 import '../../../services/api_service.dart';
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
@@ -24,13 +24,13 @@ class AssessmentViewModel extends BaseViewModel {
 
   int get currentPage => _currentPage;
 
-  final PageController _pageController = PageController();
-
-  PageController get pageController => _pageController;
-
   int _previousPage = 0;
 
   int get previousPage => _previousPage;
+
+  final PageController _pageController = PageController();
+
+  PageController get pageController => _pageController;
 
   // Assessment
   int _currentQuestion = 0;
@@ -41,9 +41,9 @@ class AssessmentViewModel extends BaseViewModel {
 
   ProficiencyLevels get proficiencyLevel => _proficiencyLevel;
 
-  List<Assessment> _assessments = [];
+  List<Question> _assessments = [];
 
-  List<Assessment> get assessments => _assessments;
+  List<Question> get assessments => _assessments;
 
   final Map<String, dynamic> _selectedAnswers = {};
 
@@ -251,13 +251,6 @@ class AssessmentViewModel extends BaseViewModel {
   Future<void> _getAssessments() async {
     if (await _statusChecker.checkConnection()) {
       _assessments = await _apiService.getAssessments();
-      /*
-      for (int i = 0; i < 6; i++) {
-        final generator = Random();
-        int random = generator.nextInt(15);
-        response.add(response[random]);
-      }
-      */
     }
   }
 

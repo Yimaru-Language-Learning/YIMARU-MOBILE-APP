@@ -50,6 +50,7 @@ import 'package:yimaru_app/ui/views/course_subcategory/course_subcategory_view.d
 import 'package:yimaru_app/ui/views/course/course_view.dart';
 import 'package:yimaru_app/services/audio_player_service.dart';
 import 'package:yimaru_app/services/voice_recorder_service.dart';
+import 'package:yimaru_app/ui/views/course_practice_question/course_practice_question_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -88,6 +89,7 @@ import 'package:yimaru_app/services/voice_recorder_service.dart';
     MaterialRoute(page: DuolingoView),
     MaterialRoute(page: CourseSubcategoryView),
     MaterialRoute(page: CourseView),
+    MaterialRoute(page: CoursePracticeQuestionView),
 // @stacked-route
   ],
   dependencies: [

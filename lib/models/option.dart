@@ -5,11 +5,11 @@ part 'option.g.dart';
 class Option {
   final int? id;
 
-  @JsonKey(name: 'option_text')
-  final String? optionText;
-
   @JsonKey(name: 'is_correct')
   final bool? isCorrect;
+
+  @JsonKey(name: 'option_text')
+  final String? optionText;
 
   const Option({this.id, this.optionText, this.isCorrect});
 

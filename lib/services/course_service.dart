@@ -5,8 +5,10 @@ import 'package:yimaru_app/services/api_service.dart';
 import '../models/course_detail.dart';
 
 class CourseService {
+  // Dependency injection
   final _apiService = locator<ApiService>();
 
+  // Get course detail
   Future<List<CourseDetail>> getCoursesDetail(int id) async {
     final courses = await _apiService.getCourses(id);
     final progress = await _apiService.getCourseProgress(id);

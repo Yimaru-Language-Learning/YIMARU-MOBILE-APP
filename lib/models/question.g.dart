@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'assessment.dart';
+part of 'question.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Assessment _$AssessmentFromJson(Map<String, dynamic> json) => Assessment(
+Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
       id: (json['id'] as num?)?.toInt(),
       points: (json['points'] as num?)?.toInt(),
       status: json['status'] as String?,
@@ -18,8 +18,7 @@ Assessment _$AssessmentFromJson(Map<String, dynamic> json) => Assessment(
       difficultyLevel: json['difficulty_level'] as String?,
     );
 
-Map<String, dynamic> _$AssessmentToJson(Assessment instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
       'id': instance.id,
       'points': instance.points,
       'status': instance.status,

@@ -44,7 +44,6 @@ class CourseViewModel extends BaseViewModel {
       _courseDetail = await _courseService.getCoursesDetail(id);
       _courseDetail.sort((a, b) =>
           (a.course?.displayOrder ?? 0).compareTo(b.course?.displayOrder ?? 0));
-      rebuildUi();
     }
   }
 }

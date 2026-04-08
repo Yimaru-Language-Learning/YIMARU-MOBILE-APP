@@ -1,8 +1,8 @@
-// Login method
-enum LoginMethod { phone, email, google }
-
 // Response status
 enum ResponseStatus { success, failure }
+
+// Login method
+enum LoginMethod { phone, email, google }
 
 // Sign-up method
 enum SignUpMethod { phone, email, google }
@@ -45,6 +45,7 @@ enum StateObjects {
   learnPracticeAnswer,
   loginWithPhoneNumber,
   learnPracticeQuestion,
+  coursePracticeQuestion,
+  coursePracticeQuestions,
   recordLearnPracticeAnswer,
-
 }

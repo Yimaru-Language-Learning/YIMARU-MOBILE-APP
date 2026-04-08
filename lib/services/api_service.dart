@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:yimaru_app/models/assessment.dart';
+import 'package:yimaru_app/models/question.dart';
 import 'package:yimaru_app/models/course_subcategory.dart';
 import 'package:yimaru_app/models/course_category.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
@@ -18,7 +18,7 @@ class ApiService {
   // Dependency injection
   final _service = locator<DioService>();
 
-  // Register
+  // Register with email
   Future<Map<String, dynamic>> registerWithEmail(
       Map<String, dynamic> data) async {
     try {
@@ -46,7 +46,7 @@ class ApiService {
     }
   }
 
-  // Email login
+  // Login
   Future<Map<String, dynamic>> login(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
@@ -74,7 +74,7 @@ class ApiService {
     }
   }
 
-  // Google login
+  // Google auth
   Future<Map<String, dynamic>> googleAuth(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
@@ -211,7 +211,7 @@ class ApiService {
     }
   }
 
-  // Profile completed
+  // GEt profile completion status
   Future<Map<String, dynamic>> getProfileStatus(UserModel? user) async {
     try {
       Response response = await _service.dio.get(
@@ -238,7 +238,7 @@ class ApiService {
     }
   }
 
-  // Get profile
+  // Get profile data
   Future<Map<String, dynamic>> getProfileData(int? userId) async {
     try {
       Response response = await _service.dio.get(
@@ -345,10 +345,10 @@ class ApiService {
     }
   }
 
-  // Assessments
-  Future<List<Assessment>> getAssessments() async {
+  // Get assessments
+  Future<List<Question>> getAssessments() async {
     try {
-      List<Assessment> assessments = [];
+      List<Question> assessments = [];
 
       final Response response =
           await _service.dio.get('$kBaseUrl/$kAssessmentsUrl');
@@ -358,7 +358,7 @@ class ApiService {
         var decodedData = data['data'] as List;
         assessments = decodedData.map(
           (e) {
-            return Assessment.fromJson(e);
+            return Question.fromJson(e);
           },
         ).toList();
         return assessments;
@@ -369,7 +369,7 @@ class ApiService {
     }
   }
 
-  // Course categories
+  // Get course categories
   Future<List<CourseCategory>> getCourseCategories() async {
     try {
       List<CourseCategory> categories = [];
@@ -393,7 +393,7 @@ class ApiService {
     }
   }
 
-  // Course subcategory
+  // Get course subcategory
   Future<List<CourseSubcategory>> getCourseSubcategories(int id) async {
     try {
       List<CourseSubcategory> subcategories = [];
@@ -417,7 +417,7 @@ class ApiService {
     }
   }
 
-  // Sub-courses
+  // Get courses
   Future<List<Course>> getCourses(int id) async {
     try {
       List<Course> courses = [];
@@ -441,7 +441,7 @@ class ApiService {
     }
   }
 
-  // Course progress
+  // Get course progress
   Future<List<CourseProgress>> getCourseProgress(int id) async {
     try {
       List<CourseProgress> courseProgress = [];
@@ -465,7 +465,7 @@ class ApiService {
     }
   }
 
-  // Course videos
+  // Get course lessons
   Future<List<CourseLesson>> getCourseLessons(int id) async {
     try {
       List<CourseLesson> courseLessons = [];
@@ -513,12 +513,12 @@ class ApiService {
   }
 
   // Course practices
-  Future<List<Practice>> getCoursePractices(Map<String, dynamic> data) async {
+  Future<List<Practice>> getCoursePractices(int id) async {
     try {
       List<Practice> coursePractices = [];
 
-      final Response response = await _service.dio
-          .get('$kBaseUrl/$kPracticeBaseUrl/$kCoursePractice', data: data);
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kPracticeBaseUrl/$kCoursePractice?owner_type=SUB_COURSE&owner_id=$id');
 
       if (response.statusCode == 200) {
         var data = response.data;
@@ -536,7 +536,7 @@ class ApiService {
     }
   }
 
-  // Course practic questions
+  // Get course practic questions
   Future<List<PracticeQuestion>> getCoursePracticeQuestions(int id) async {
     try {
       List<PracticeQuestion> coursePracticeQuestions = [];
@@ -557,6 +557,23 @@ class ApiService {
       return [];
     } catch (e) {
       return [];
+    }
+  }
+
+  // Get course practice question
+  Future<Question?> getCoursePracticeQuestion(int id) async {
+    try {
+      final Response response =
+          await _service.dio.get('$kBaseUrl/$kCoursePracticeQuestion/$id');
+
+      if (response.statusCode == 200) {
+        Question question = Question.fromJson(response.data['data']);
+
+        return question;
+      }
+      return null;
+    } catch (e) {
+      return null;
     }
   }
 }
