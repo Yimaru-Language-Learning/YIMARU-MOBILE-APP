@@ -56,11 +56,78 @@ class CoursePracticeQuestionViewModel extends FormViewModel {
 
   Map<String, dynamic> get selectedAnswers => _selectedAnswers;
 
-  // Question
+  // Question navigation
+  void previousQuestion() {
+    if (_currentQuestionIndex != 0) {
+      _currentQuestionIndex--;
+      _pageController.previousPage(
+          duration: const Duration(microseconds: 100), curve: Curves.linear);
+      rebuildUi();
+    }
+  }
+
+  // In-app navigation
+  void goBack() {
+    if (_currentPage == 0) {
+      pop();
+    } else {
+      _currentPage = 0;
+      rebuildUi();
+    }
+  }
+
+  void goTo(int page) {
+    _currentPage = page;
+    rebuildUi();
+  }
+
+  void next({int? page}) async {
+    if (page == null) {
+      if (_previousPage != 0) {
+        _currentPage = _previousPage;
+      } else {
+        _currentPage++;
+      }
+    } else {
+      _previousPage = _currentPage;
+      _currentPage = page;
+    }
+    rebuildUi();
+  }
+
+  // Answer
+  void reset() {
+    _selectedAnswers.clear();
+    rebuildUi();
+  }
 
   void setAnswerFocus() {
     _focusAnswer = true;
     rebuildUi();
+  }
+
+  Future<void> abort() async {
+    bool? response = await showAbortDialog();
+    if (response != null && response) {
+      next(page: 1);
+    }
+  }
+
+  Future<bool?> showAbortDialog() async {
+    DialogResponse? response = await _dialogService.showDialog(
+      cancelTitle: 'No',
+      buttonTitle: 'Yes',
+      title: 'Abort Practice',
+      barrierDismissible: true,
+      cancelTitleColor: kcDarkGrey,
+      buttonTitleColor: kcPrimaryColor,
+      description: 'Are you sure to abort the practice ?',
+    );
+    return response?.confirmed;
+  }
+
+  bool isSelectedAnswer({required int question, required String answer}) {
+    return _selectedAnswers[question.toString()]?['option'] == answer;
   }
 
   void setSelectedAnswer({required int question, required Option? option}) {
@@ -84,80 +151,28 @@ class CoursePracticeQuestionViewModel extends FormViewModel {
     rebuildUi();
   }
 
-  bool isSelectedAnswer({required int question, required String answer}) {
-    return _selectedAnswers[question.toString()]?['option'] == answer;
-  }
-
-  // Dialog
-  Future<bool?> showAbortDialog() async {
-    DialogResponse? response = await _dialogService.showDialog(
-      cancelTitle: 'No',
-      buttonTitle: 'Yes',
-      title: 'Abort Practice',
-      barrierDismissible: true,
-      cancelTitleColor: kcDarkGrey,
-      buttonTitleColor: kcPrimaryColor,
-      description: 'Are you sure to abort the practice ?',
-    );
-    return response?.confirmed;
-  }
-
-  Future<void> abort() async {
-    bool? response = await showAbortDialog();
-    if (response != null && response) {
-      next(page: 1);
-    }
-  }
-
-  // Reset practice
-  void reset() {
-    _selectedAnswers.clear();
-    rebuildUi();
-  }
-
-  // Question navigation
-  void previousQuestion() {
-    if (_currentQuestionIndex != 0) {
-      _currentQuestionIndex--;
-      _pageController.previousPage(
-          duration: const Duration(microseconds: 100), curve: Curves.linear);
-      rebuildUi();
-    }
-  }
-
-  // In-app navigation
-  void goTo(int page) {
-    _currentPage = page;
-    rebuildUi();
-  }
-
-  void next({int? page}) async {
-    if (page == null) {
-      if (_previousPage != 0) {
-        _currentPage = _previousPage;
-      } else {
-        _currentPage++;
-      }
-    } else {
-      _previousPage = _currentPage;
-      _currentPage = page;
-    }
-    rebuildUi();
-  }
-
-  void goBack() {
-    if (_currentPage == 0) {
-      pop();
-    } else {
-      _currentPage = 0;
-      rebuildUi();
-    }
-  }
-
   // Navigation
   void pop() => _navigationService.back();
 
   // Remote api call
+
+  // Question navigation
+  Future<void> _nextQuestion(int id) async {
+    _currentQuestionIndex++;
+
+    if (_currentQuestionIndex == _coursePracticeQuestions.length) {
+      next();
+    } else {
+      if (await _statusChecker.checkConnection()) {
+        _currentQuestion = await _apiService.getCoursePracticeQuestion(id);
+        _pageController.jumpToPage(_currentQuestionIndex);
+      }
+    }
+  }
+
+  Future<void> nextQuestion(int id) async =>
+      await runBusyFuture(_nextQuestion(id),
+          busyObject: StateObjects.coursePractice);
 
   // Course practice questions
   Future<void> getCoursePracticeQuestions(int id) async =>
@@ -185,25 +200,4 @@ class CoursePracticeQuestionViewModel extends FormViewModel {
       _currentQuestion = await _apiService.getCoursePracticeQuestion(id);
     }
   }
-
-  // Question navigation
-  Future<void> nextQuestion(int id) async =>
-      await runBusyFuture(_nextQuestion(id),
-          busyObject: StateObjects.coursePractice);
-
-  Future<void> _nextQuestion(int id)async{
-    _currentQuestionIndex++;
-
-    if (_currentQuestionIndex == _coursePracticeQuestions.length) {
-      next();
-    } else {
-      if (await _statusChecker.checkConnection()) {
-        _currentQuestion = await _apiService.getCoursePracticeQuestion(id);
-        _pageController.jumpToPage(_currentQuestionIndex);
-
-      }
-    }
-  }
-
-
 }

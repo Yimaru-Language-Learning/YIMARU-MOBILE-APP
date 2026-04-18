@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user_model.g.dart';
+part 'user.g.dart';
 
 @JsonSerializable()
-class UserModel {
+class User {
   final String? email;
 
   final String? gender;
@@ -40,7 +40,7 @@ class UserModel {
   @JsonKey(name: 'profile_picture_url')
   final String? profilePicture;
 
-  const UserModel({
+  const User({
     this.email,
     this.region,
     this.gender,
@@ -57,7 +57,7 @@ class UserModel {
     this.profileCompleted,
   });
 
-  UserModel copyWith(
+  User copyWith(
           {int? userId,
           String? email,
           String? gender,
@@ -72,7 +72,7 @@ class UserModel {
           bool? userInfoLoaded,
           bool? profileCompleted,
           String? profilePicture}) =>
-      UserModel(
+      User(
           email: email ?? this.email,
           userId: userId ?? this.userId,
           gender: gender ?? this.gender,
@@ -88,8 +88,7 @@ class UserModel {
           profilePicture: profilePicture ?? this.profilePicture,
           profileCompleted: profileCompleted ?? this.profileCompleted);
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserModelToJson(this);
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

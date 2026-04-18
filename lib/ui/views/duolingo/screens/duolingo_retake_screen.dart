@@ -105,8 +105,8 @@ class DuolingoRetakeScreen extends ViewModelWidget<DuolingoViewModel> {
         height: 55,
         safe: false,
         borderRadius: 12,
-        foregroundColor: kcWhite,
         text: 'Practice Again',
+        foregroundColor: kcWhite,
         onTap: () => viewModel.goTo(0),
         backgroundColor: kcPrimaryColor,
       );

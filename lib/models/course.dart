@@ -6,32 +6,38 @@ part 'course.g.dart';
 class Course {
   final int? id;
 
-  final String? level;
-
   final String? title;
 
   final String? thumbnail;
 
   final String? description;
 
-  @JsonKey(name: 'course_id')
-  final int? courseId;
-
   @JsonKey(name: 'is_active')
   final bool? isActive;
 
-  @JsonKey(name: 'display_order')
-  final int? displayOrder;
+  @JsonKey(name: 'category_id')
+  final int? categoryId;
 
-  const Course(
-      {this.id,
-      this.level,
-      this.title,
-      this.isActive,
-      this.courseId,
-      this.thumbnail,
-      this.description,
-      this.displayOrder});
+  @JsonKey(name: 'total_count')
+  final int? totalCount;
+
+  @JsonKey(name: 'intro_video_url')
+  final String? introVideoUrl;
+
+  @JsonKey(name: 'sub_category_id')
+  final int? subCategoryId;
+
+  const Course({
+    this.id,
+    this.title,
+    this.isActive,
+    this.thumbnail,
+    this.totalCount,
+    this.categoryId,
+    this.description,
+    this.introVideoUrl,
+    this.subCategoryId,
+  });
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
 

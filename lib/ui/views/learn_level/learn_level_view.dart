@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/learn_sub_level_tile.dart';
+import 'package:yimaru_app/ui/widgets/learn_level_tile.dart';
 import 'package:yimaru_app/ui/widgets/small_app_bar.dart';
 
+import '../../../models/level.dart';
 import '../../common/app_colors.dart';
+import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
+import '../../widgets/custom_circular_progress_indicator.dart';
 import 'learn_level_viewmodel.dart';
 
 class LearnLevelView extends StackedView<LearnLevelViewModel> {
-  const LearnLevelView({Key? key}) : super(key: key);
+  final int id;
+  const LearnLevelView({Key? key, required this.id}) : super(key: key);
+
+  @override
+  void onViewModelReady(LearnLevelViewModel viewModel) async {
+    await viewModel.getLevels(id);
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   LearnLevelViewModel viewModelBuilder(BuildContext context) =>
@@ -54,36 +64,35 @@ class LearnLevelView extends StackedView<LearnLevelViewModel> {
 
   Widget _buildLevelsColumnScrollView(LearnLevelViewModel viewModel) =>
       SingleChildScrollView(
-        child: _buildLevelsColumn(viewModel),
+        child: _buildListViewBuilder(viewModel),
       );
 
-  Widget _buildLevelsColumn(LearnLevelViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildLevelsColumnChildren(viewModel),
+  Widget _buildListViewBuilder(LearnLevelViewModel viewModel) =>
+      viewModel.busy(StateObjects.learnLevels)
+          ? _buildProgressIndicator()
+          : _buildListView(viewModel);
+
+  Widget _buildProgressIndicator() => const Center(
+        child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
-  List<Widget> _buildLevelsColumnChildren(LearnLevelViewModel viewModel) =>
-      [verticalSpaceLarge, _buildListView(viewModel)];
-
-  Widget _buildListView(LearnLevelViewModel viewModel) => ListView.builder(
+  Widget _buildListView(LearnLevelViewModel viewModel) => ListView.separated(
         shrinkWrap: true,
-        itemCount: viewModel.learnSubLevels.length,
+        itemCount: viewModel.levels.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
-            title: viewModel.learnSubLevels[index]['title'],
-            current: viewModel.learnSubLevels[index]['current'],
-            subtitle: viewModel.learnSubLevels[index]['subtitle']),
+          level: viewModel.levels[index],
+          onTap: () async => await viewModel.navigateToModule( viewModel.levels[index]),
+        ),
+        separatorBuilder: (context, index) => verticalSpaceSmall,
       );
 
   Widget _buildTile({
-    required String title,
-    required bool current,
-    required String subtitle,
+    required Level level,
+    required GestureTapCallback onTap,
   }) =>
-      LearnSubLevelTile(
-        title: title,
-        current: current,
-        subtitle: subtitle,
+      LearnLevelTile(
+        onTap: onTap,
+        level: level,
       );
 }

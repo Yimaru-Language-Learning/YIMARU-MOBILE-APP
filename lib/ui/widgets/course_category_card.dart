@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yimaru_app/models/course_category.dart';
+import 'package:yimaru_app/models/category.dart';
 import 'package:yimaru_app/ui/common/helper_functions.dart';
 
 import '../common/app_colors.dart';
@@ -8,7 +8,7 @@ import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class CourseCategoryCard extends StatelessWidget {
-  final CourseCategory category;
+  final Category category;
   final GestureTapCallback? onTap;
 
   const CourseCategoryCard({super.key, this.onTap, required this.category});

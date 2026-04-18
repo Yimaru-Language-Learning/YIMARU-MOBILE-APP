@@ -1,46 +1,49 @@
 {
   "project_info": {
-    "project_number": "574860813475",
-    "project_id": "yimaru-lms-e834e",
-    "storage_bucket": "yimaru-lms-e834e.firebasestorage.app"
+    "project_number": "900714037062",
+    "project_id": "yimaru-academy-5e7e2",
+    "storage_bucket": "yimaru-academy-5e7e2.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:574860813475:android:cd7fa6cf3a0527d97acb16",
+        "mobilesdk_app_id": "1:900714037062:android:f11e3b69315b05304e6f47",
         "android_client_info": {
           "package_name": "com.yimaru.lms.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "574860813475-3p3k63lkrfd113sn6jscgvdj0aigsg5s.apps.googleusercontent.com",
+          "client_id": "900714037062-ngc0gc426sfnnjjr494g4vni46ne5uqv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.yimaru.lms.app",
-            "certificate_hash": "928ead08b5e39d6a861a55ae7cceb8c402d1ee7a"
+            "certificate_hash": "139ee56ac9763191d1eee882efc440c10530e6e9"
           }
         },
         {
-          "client_id": "574860813475-m90u87plqaac4tb8oug32k41usossiod.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.yimaru.lms.app",
-            "certificate_hash": "29797902ad6a24212b9d9fad71562907956f6a6c"
-          }
+          "client_id": "900714037062-mtm9rps15br603nnn3a451rr2vllopro.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC7QlhcuSNte49CERnRKPrQbyLbwErIRmk"
+          "current_key": "AIzaSyAi8e4PMFH8QQU11DWftHdNEu8WUP7i2ww"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "574860813475-n5o17gpprdqmhcml99tiqhafb17rob0r.apps.googleusercontent.com",
+              "client_id": "900714037062-24ria5fcfet71o3vde8f6gsvsj1n68ec.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "900714037062-35bg0hsou56hg37mbcbpiar9uti7tcku.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yimaru.lms.app"
+              }
             }
           ]
         }

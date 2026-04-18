@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../models/course_detail.dart';
-import '../../../models/course_subcategory.dart';
+import '../../../models/subcategory.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
@@ -12,7 +12,7 @@ import '../../widgets/small_app_bar.dart';
 import 'course_viewmodel.dart';
 
 class CourseView extends StackedView<CourseViewModel> {
-  final CourseSubcategory subcategory;
+  final Subcategory subcategory;
 
   const CourseView({Key? key, required this.subcategory}) : super(key: key);
 
@@ -83,12 +83,12 @@ class CourseView extends StackedView<CourseViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        '${subcategory.title ?? ''} courses',
+        '${subcategory.name ?? ''} courses',
         style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(
-        'Explore variety of courses on ${subcategory.title ?? ''}.',
+        'Explore variety of courses on ${subcategory.name ?? ''}.',
         style: style14DG400,
       );
 
@@ -105,6 +105,7 @@ class CourseView extends StackedView<CourseViewModel> {
         shrinkWrap: true,
         itemCount: viewModel.courseDetail.length,
         physics: const NeverScrollableScrollPhysics(),
+        separatorBuilder: (context, index) => verticalSpaceSmall,
         itemBuilder: (context, index) => _buildTile(
           courseDetail: viewModel.courseDetail[index],
           onCourseTap: () async => await viewModel
@@ -112,7 +113,6 @@ class CourseView extends StackedView<CourseViewModel> {
           onPracticeTap: () async => await viewModel.navigateToCoursePractice(
               viewModel.courseDetail[index].course?.id ?? 0),
         ),
-        separatorBuilder: (context, index) => verticalSpaceSmall,
       );
 
   Widget _buildTile({

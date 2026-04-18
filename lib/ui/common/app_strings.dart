@@ -12,8 +12,6 @@ const String ksHomeBottomSheetDescription =
 const String ksPrivacyPolicy =
     'A brief, simple overview of Yimaru’s commitment to user privacy. Our goal is to be transparent about the data we collect and how we use it to enhance your learning experience.';
 
-
-
 const String ksTerms = """
 <p style="color:#9C2C91;font-size:13px;">
 Last updated: October 26, 2025

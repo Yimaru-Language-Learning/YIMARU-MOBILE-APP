@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
-import '../../models/course_subcategory.dart';
+import '../../models/subcategory.dart';
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class CourseSubcategoryTile extends StatelessWidget {
-  final CourseSubcategory subcategory;
+  final Subcategory subcategory;
   final GestureTapCallback? onCourseTap;
   final GestureTapCallback? onPracticeTap;
 
@@ -57,9 +57,9 @@ class CourseSubcategoryTile extends StatelessWidget {
       ];
 
   Widget _buildTitle() => Text(
-        (subcategory.title == null || subcategory.title!.isEmpty)
+        (subcategory.name == null || subcategory.name!.isEmpty)
             ? 'Course ${subcategory.id}'
-            : subcategory.title!,
+            : subcategory.name!,
         style: style16P600,
       );
 

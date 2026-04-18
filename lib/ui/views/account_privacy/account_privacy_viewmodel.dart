@@ -11,12 +11,12 @@ class AccountPrivacyViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
+  Future<void> navigateToTerms() async =>
+      await _navigationService.navigateToTermsAndConditionsView();
+
   Future<void> navigateToLanguage() async =>
       await _navigationService.navigateToLanguageView();
 
   Future<void> navigateToPrivacyPolicy() async =>
       await _navigationService.navigateToPrivacyPolicyView();
-
-  Future<void> navigateToTerms() async =>
-      await _navigationService.navigateToTermsAndConditionsView();
 }

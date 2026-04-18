@@ -2,7 +2,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../models/user_model.dart';
+import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/image_picker_service.dart';
@@ -28,9 +28,9 @@ class ProfileDetailViewModel extends ReactiveViewModel
       [_authenticationService];
 
   // Current user
-  UserModel? get _user => _authenticationService.user;
+  User? get _user => _authenticationService.user;
 
-  UserModel? get user => _user;
+  User? get user => _user;
 
   // First name
   bool _focusFirstName = false;

@@ -9,9 +9,9 @@ import '../../common/validators/form_validator.dart';
 import 'forget_password_viewmodel.dart';
 
 @FormView(fields: [
-  FormTextField(name: 'email', validator: FormValidator.validateEmailForm),
-  FormTextField(name: 'resetCode', validator: FormValidator.validateForm),
   FormTextField(name: 'password', validator: FormValidator.validateForm),
+  FormTextField(name: 'resetCode', validator: FormValidator.validateForm),
+  FormTextField(name: 'email', validator: FormValidator.validateEmailForm),
   FormTextField(name: 'confirmPassword', validator: FormValidator.validateForm)
 ])
 class ForgetPasswordView extends StackedView<ForgetPasswordViewModel>

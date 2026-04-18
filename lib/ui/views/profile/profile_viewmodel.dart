@@ -5,7 +5,7 @@ import 'package:yimaru_app/services/image_picker_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../models/user_model.dart';
+import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/google_auth_service.dart';
@@ -32,9 +32,9 @@ class ProfileViewModel extends ReactiveViewModel {
       [_authenticationService];
 
   // Current user
-  UserModel? get _user => _authenticationService.user;
+  User? get _user => _authenticationService.user;
 
-  UserModel? get user => _user;
+  User? get user => _user;
 
   // Image picker
   Future<void> openCamera() async =>

@@ -8,22 +8,24 @@ part of 'course.dart';
 
 Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       id: (json['id'] as num?)?.toInt(),
-      level: json['level'] as String?,
       title: json['title'] as String?,
       isActive: json['is_active'] as bool?,
-      courseId: (json['course_id'] as num?)?.toInt(),
       thumbnail: json['thumbnail'] as String?,
+      totalCount: (json['total_count'] as num?)?.toInt(),
+      categoryId: (json['category_id'] as num?)?.toInt(),
       description: json['description'] as String?,
-      displayOrder: (json['display_order'] as num?)?.toInt(),
+      introVideoUrl: json['intro_video_url'] as String?,
+      subCategoryId: (json['sub_category_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
       'id': instance.id,
-      'level': instance.level,
       'title': instance.title,
       'thumbnail': instance.thumbnail,
       'description': instance.description,
-      'course_id': instance.courseId,
       'is_active': instance.isActive,
-      'display_order': instance.displayOrder,
+      'category_id': instance.categoryId,
+      'total_count': instance.totalCount,
+      'intro_video_url': instance.introVideoUrl,
+      'sub_category_id': instance.subCategoryId,
     };

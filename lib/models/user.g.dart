@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_model.dart';
+part of 'user.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
+User _$UserFromJson(Map<String, dynamic> json) => User(
       email: json['email'] as String?,
       region: json['region'] as String?,
       gender: json['gender'] as String?,
@@ -23,7 +23,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       profileCompleted: json['profile_completed'] as bool?,
     );
 
-Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
+Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
       'gender': instance.gender,
       'region': instance.region,

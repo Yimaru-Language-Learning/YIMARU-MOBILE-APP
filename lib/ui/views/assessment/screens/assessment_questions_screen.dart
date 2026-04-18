@@ -9,8 +9,8 @@ import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 import '../assessment_viewmodel.dart';
 import 'assessment_loading_screen.dart';
 
-class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
-  const AssessmentFormScreen({super.key});
+class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
+  const AssessmentQuestionsScreen({super.key});
 
   @override
   Widget build(BuildContext context, AssessmentViewModel viewModel) =>
@@ -109,14 +109,14 @@ class AssessmentFormScreen extends ViewModelWidget<AssessmentViewModel> {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: viewModel.assessments[index].options?.length,
         itemBuilder: (context, inner) => _buildAnswer(
+          onTap: () => viewModel.setSelectedAnswer(
+              question: index + 1,
+              option: viewModel.assessments[index].options?[inner]),
           title: viewModel.assessments[index].options?[inner].optionText ?? '',
           selected: viewModel.isSelectedAnswer(
               question: index + 1,
               answer: viewModel.assessments[index].options?[inner].optionText ??
                   ''),
-          onTap: () => viewModel.setSelectedAnswer(
-              question: index + 1,
-              option: viewModel.assessments[index].options?[inner]),
         ),
       );
 

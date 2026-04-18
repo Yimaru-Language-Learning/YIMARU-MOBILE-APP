@@ -1,8 +1,7 @@
 import 'package:yimaru_app/app/app.bottomsheets.dart';
-import 'package:yimaru_app/app/app.dialogs.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/app/app.router.dart';
-import 'package:yimaru_app/models/user_model.dart';
+import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/common/app_strings.dart';
 import 'package:stacked/stacked.dart';
@@ -16,7 +15,6 @@ import '../../common/ui_helpers.dart';
 
 class HomeViewModel extends ReactiveViewModel {
   final _apiService = locator<ApiService>();
-  final _dialogService = locator<DialogService>();
   final _statusChecker = locator<StatusCheckerService>();
   final _navigationService = locator<NavigationService>();
   final _bottomSheetService = locator<BottomSheetService>();
@@ -28,9 +26,9 @@ class HomeViewModel extends ReactiveViewModel {
       [_authenticationService];
 
   // Current user
-  UserModel? get _user => _authenticationService.user;
+  User? get _user => _authenticationService.user;
 
-  UserModel? get user => _user;
+  User? get user => _user;
 
   // Bottom navigation
   int _currentPage = 0;
@@ -38,19 +36,6 @@ class HomeViewModel extends ReactiveViewModel {
   int get currentPage => _currentPage;
 
   // Bottom navigation
-  void setCurrentIndex(int index) {
-    _currentPage = index;
-    rebuildUi();
-  }
-
-  void showDialog() {
-    _dialogService.showCustomDialog(
-      title: 'Stacked Rocks!',
-      variant: DialogType.infoAlert,
-      description: 'Give stacked  stars on Github',
-    );
-  }
-
   void showBottomSheet() {
     _bottomSheetService.showCustomSheet(
       title: ksHomeBottomSheetTitle,
@@ -59,6 +44,12 @@ class HomeViewModel extends ReactiveViewModel {
     );
   }
 
+  void setCurrentIndex(int index) {
+    _currentPage = index;
+    rebuildUi();
+  }
+
+  // Save profile status
   Future<void> saveProfileStatus(bool value) async =>
       await _authenticationService.saveProfileStatus(value);
 
@@ -80,7 +71,34 @@ class HomeViewModel extends ReactiveViewModel {
     await _getProfileData();
   }
 
-  // Profile status
+  // Get profile data
+  Future<void> _getProfileData() async {
+    if (!(_user?.userInfoLoaded ?? false)) {
+      Map<String, dynamic> response = {};
+
+      if (_user?.profileCompleted != null &&
+          (_user?.profileCompleted ?? false)) {
+        if (await _statusChecker.checkConnection()) {
+          response = await _apiService.getProfileData(_user?.userId);
+
+          if (response['status'] == ResponseStatus.success) {
+            User user = response['data'] as User;
+
+            await _authenticationService.saveUserData(user);
+
+            String image =
+                await _imageDownloaderService.downloader(user.profilePicture);
+
+            await _authenticationService.saveProfilePicture(image);
+          }
+        } else {
+          await replaceWithFailure();
+        }
+      }
+    }
+  }
+
+  // Get profile status
   Future<void> _getProfileStatus() async {
     Map<String, dynamic> response = {};
     if (_user?.profileCompleted == null) {
@@ -100,34 +118,6 @@ class HomeViewModel extends ReactiveViewModel {
     } else if (response['status'] == ResponseStatus.success &&
         response['data']) {
       await saveProfileStatus(response['data']);
-    }
-  }
-
-  // Profile data
-
-  Future<void> _getProfileData() async {
-    if (!(_user?.userInfoLoaded ?? false)) {
-      Map<String, dynamic> response = {};
-
-      if (_user?.profileCompleted != null &&
-          (_user?.profileCompleted ?? false)) {
-        if (await _statusChecker.checkConnection()) {
-          response = await _apiService.getProfileData(_user?.userId);
-
-          if (response['status'] == ResponseStatus.success) {
-            UserModel user = response['data'] as UserModel;
-
-            await _authenticationService.saveUserData(user);
-
-            String image =
-                await _imageDownloaderService.downloader(user.profilePicture);
-
-            await _authenticationService.saveProfilePicture(image);
-          }
-        } else {
-          await replaceWithFailure();
-        }
-      }
     }
   }
 }

@@ -14,6 +14,6 @@ Option _$OptionFromJson(Map<String, dynamic> json) => Option(
 
 Map<String, dynamic> _$OptionToJson(Option instance) => <String, dynamic>{
       'id': instance.id,
-      'option_text': instance.optionText,
       'is_correct': instance.isCorrect,
+      'option_text': instance.optionText,
     };

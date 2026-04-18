@@ -1,67 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/views/learn/learn_viewmodel.dart';
+import 'package:yimaru_app/ui/views/learn_level/learn_level_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/progress_status.dart';
 
+import '../../models/level.dart';
 import '../common/app_colors.dart';
+import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
-class LearnLevelTile extends ViewModelWidget<LearnViewModel> {
-  final String title;
-  final String subtitle;
-  final ProgressStatuses status;
+class LearnLevelTile extends ViewModelWidget<LearnLevelViewModel> {
+  final Level level;
+  final GestureTapCallback? onTap;
 
   const LearnLevelTile({
     super.key,
-    required this.title,
-    required this.status,
-    required this.subtitle,
+    this.onTap,
+    required this.level,
   });
 
   @override
-  Widget build(BuildContext context, LearnViewModel viewModel) =>
+  Widget build(BuildContext context, LearnLevelViewModel viewModel) =>
       _buildExpansionTileCard(viewModel);
 
-  Widget _buildExpansionTileCard(LearnViewModel viewModel) => Container(
+  Widget _buildExpansionTileCard(LearnLevelViewModel viewModel) => Container(
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
-              color: status == ProgressStatuses.started
-                  ? kcPrimaryColor.withOpacity(0.2)
-                  : kcVeryLightGrey),
+            color: kcPrimaryColor.withOpacity(0.2),
+            // color:
+            //     current ? kcPrimaryColor.withOpacity(0.2) : kcVeryLightGrey,
+          ),
         ),
         child: _buildExpansionTile(viewModel),
       );
 
-  Widget _buildExpansionTile(LearnViewModel viewModel) => ExpansionTile(
+  Widget _buildExpansionTile(LearnLevelViewModel viewModel) => ExpansionTile(
+        enabled: true,
         textColor: kcDarkGrey,
+        showTrailingIcon: true,
         title: _buildTitleRow(),
-        subtitle: _buildContent(),
+        initiallyExpanded: false,
         collapsedIconColor: kcDarkGrey,
         collapsedTextColor: kcDarkGrey,
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
-        childrenPadding: const EdgeInsets.all(15),
+        backgroundColor: kcPrimaryColor.withOpacity(0.1),
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
-        backgroundColor: status != ProgressStatuses.pending
-            ? kcPrimaryColor.withOpacity(0.1)
-            : kcBackgroundColor,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
-        enabled: status != ProgressStatuses.pending ? true : false,
-        collapsedBackgroundColor: status != ProgressStatuses.pending
-            ? kcPrimaryColor.withOpacity(0.1)
-            : kcBackgroundColor,
-        showTrailingIcon: status != ProgressStatuses.pending ? true : false,
-        initiallyExpanded: status == ProgressStatuses.started ? true : false,
+        collapsedBackgroundColor: kcPrimaryColor.withOpacity(0.1),
+        childrenPadding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+
+        //enabled: current,
+        // showTrailingIcon: current,
+        //initiallyExpanded: current,
+        // collapsedBackgroundColor:
+        //     current ? kcPrimaryColor.withOpacity(0.1) : kcBackgroundColor,
+        // backgroundColor:
+        //     current ? kcPrimaryColor.withOpacity(0.1) : kcBackgroundColor,
         children: _buildExpansionTileChildren(viewModel),
       );
 
-  List<Widget> _buildExpansionTileChildren(LearnViewModel viewModel) =>
-      [_buildActionButton(viewModel)];
+  List<Widget> _buildExpansionTileChildren(LearnLevelViewModel viewModel) =>
+      [_buildViewButton(viewModel)];
 
   Widget _buildTitleRow() => Row(
         mainAxisSize: MainAxisSize.min,
@@ -70,42 +72,27 @@ class LearnLevelTile extends ViewModelWidget<LearnViewModel> {
 
   List<Widget> _buildTitleChildren() => [
         _buildTitle(),
-        if (status != ProgressStatuses.pending) horizontalSpaceSmall,
-        if (status != ProgressStatuses.pending) _buildProgressStatus()
+        // if (current) horizontalSpaceSmall,
+        // if (current) _buildProgressStatus()
       ];
 
   Widget _buildTitle() => Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: kcPrimaryColor,
-          fontWeight: FontWeight.w600,
-        ),
+        level.title ?? '',
+        style: style16P600,
       );
 
-  Widget _buildProgressStatus() => ProgressStatus(
-        status: status.name.substring(0, 1).toUpperCase() +
-            status.name.substring(1, status.name.length),
+  Widget _buildProgressStatus() => const ProgressStatus(
         color: kcPrimaryColor,
+        status: 'Current Level',
       );
 
-  Widget _buildContent() => Text(
-        subtitle,
-        style: const TextStyle(
-          color: kcDarkGrey,
-        ),
-      );
-
-  Widget _buildActionButton(LearnViewModel viewModel) => CustomElevatedButton(
+  Widget _buildViewButton(LearnLevelViewModel viewModel) =>
+      CustomElevatedButton(
         height: 15,
+        onTap: onTap,
         borderRadius: 12,
+        text: 'View Level',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        text: status == ProgressStatuses.completed
-            ? 'Review Course'
-            : status == ProgressStatuses.pending
-                ? 'Start Learning'
-                : 'Continue Learning',
-        onTap: () async => await viewModel.navigateToLearnLevel(),
       );
 }

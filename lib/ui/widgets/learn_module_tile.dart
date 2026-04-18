@@ -4,27 +4,19 @@ import 'package:yimaru_app/ui/views/learn_module/learn_module_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
+import '../../models/module.dart';
 import '../common/app_colors.dart';
 import '../common/enmus.dart';
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
-  final String title;
-  final String topics;
-  final String subtitle;
-  final String description;
-  final ProgressStatuses status;
-  final List<Map<String, dynamic>> practices;
+  final Module module;
+  final GestureTapCallback? onLessonTap;
+  final GestureTapCallback? onPracticeTap;
 
   const LearnModuleTile(
-      {super.key,
-      required this.title,
-      required this.topics,
-      required this.status,
-      required this.subtitle,
-      required this.practices,
-      required this.description});
+      {super.key, this.onLessonTap, this.onPracticeTap, required this.module});
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -57,7 +49,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       Stack(
         children: [
           _buildExpansionTile(context: context, viewModel: viewModel),
-          _buildContainerShaderState()
+          // _buildContainerShaderState()
         ],
       );
 
@@ -65,8 +57,11 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>
       ExpansionTile(
-        textColor: kcDarkGrey,
+        enabled: true,
         title: _buildTitle(),
+        textColor: kcDarkGrey,
+        showTrailingIcon: true,
+        initiallyExpanded: true,
         subtitle: _buildContent(),
         leading: _buildIconWrapper(),
         collapsedIconColor: kcDarkGrey,
@@ -75,13 +70,13 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
         collapsedBackgroundColor: kcBackgroundColor,
-        enabled: status != ProgressStatuses.pending,
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
         childrenPadding: const EdgeInsets.fromLTRB(70, 15, 15, 15),
-        showTrailingIcon: status != ProgressStatuses.pending ? true : false,
-        initiallyExpanded: status == ProgressStatuses.started ? true : false,
+        // enabled: status != ProgressStatuses.pending,
+        // showTrailingIcon: status != ProgressStatuses.pending ? true : false,
+        //initiallyExpanded: status == ProgressStatuses.started ? true : false,
         children:
             _buildExpansionTileChildren(context: context, viewModel: viewModel),
       );
@@ -97,13 +92,19 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       );
 
   Widget _buildTitle() => Text(
-        title,
+        module.title ?? '',
+        maxLines: 1,
+        softWrap: false,
         style: style16P600,
+        overflow: TextOverflow.ellipsis,
       );
 
   Widget _buildContent() => Text(
-        subtitle,
+        module.description ?? '',
+        maxLines: 1,
+        softWrap: false,
         style: style14DG400,
+        overflow: TextOverflow.ellipsis,
       );
 
   List<Widget> _buildExpansionTileChildren(
@@ -179,15 +180,16 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       CustomElevatedButton(
         height: 15,
         borderRadius: 12,
-        text: 'View Lessons',
+        onTap: onLessonTap,
+        text: 'View Module',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.navigateToLearnLesson(
-            title: title,
-            topics: topics,
-            subtitle: subtitle,
-            practices: practices,
-            description: description),
+        // onTap: () async => await viewModel.navigateToLearnLesson(
+        //     title: title,
+        //     topics: topics,
+        //     subtitle: subtitle,
+        //     practices: practices,
+        //     description: description),
       );
 
   Widget _buildPracticeButtonWrapper(
@@ -203,20 +205,21 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       CustomElevatedButton(
         height: 15,
         borderRadius: 12,
+        onTap: onPracticeTap,
         text: 'View Practices',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.navigateToLearnPractice(practices),
+        // onTap: () async => await viewModel.navigateToLearnPractice(practices),
       );
 
   Widget _buildSheet(LearnModuleViewModel viewModel) => FinishPracticeSheet(
         onTap: viewModel.pop,
       );
 
-  Widget _buildContainerShaderState() => status == ProgressStatuses.pending
-      ? _buildContainerShaderWrapper()
-      : Container();
+  // Widget _buildContainerShaderState() => status == ProgressStatuses.pending
+  //     ? _buildContainerShaderWrapper()
+  //     : Container();
 
   Widget _buildContainerShaderWrapper() => Positioned.fill(
         child: _buildContainerShader(),

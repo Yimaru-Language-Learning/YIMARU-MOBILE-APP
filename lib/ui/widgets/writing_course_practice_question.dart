@@ -99,7 +99,8 @@ class WritingCoursePracticeQuestion
           ? _buildProgressIndicator()
           : _buildContinueButton(viewModel);
 
-  Widget _buildProgressIndicator()=>const CustomCircularProgressIndicator(color: kcPrimaryColor);
+  Widget _buildProgressIndicator() =>
+      const CustomCircularProgressIndicator(color: kcPrimaryColor);
 
   Widget _buildContinueButton(CoursePracticeQuestionViewModel viewModel) =>
       CustomElevatedButton(
@@ -110,7 +111,7 @@ class WritingCoursePracticeQuestion
             ? kcPrimaryColor
             : kcPrimaryColor.withOpacity(0.1),
         onTap: answerController.text.isNotEmpty
-            ? ()async =>await  viewModel.nextQuestion(
+            ? () async => await viewModel.nextQuestion(
                 index + 1 < viewModel.coursePracticeQuestions.length
                     ? index + 1
                     : index)

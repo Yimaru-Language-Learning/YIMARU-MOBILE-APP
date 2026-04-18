@@ -1,8 +1,18 @@
 String kBaseUrl = 'https://api.yimaruacademy.com';
 
+String kApiUrl = 'api';
+
+String kApiVersionUrl = 'v1';
+
+String kLevelsUrl = 'levels';
+
 String kCoursesUrl = 'courses';
 
+String kModulesUrl = 'modules';
+
 String kRegisterUrl = 'register';
+
+String kCategoryUrl = 'categories';
 
 String kCoursePractice = 'by-owner';
 
@@ -20,9 +30,9 @@ String kCompleteLessonUrl = 'complete';
 
 String kResetPassword = 'resetPassword';
 
-String kCourseCategoryUrl = 'categories';
-
 String kRequestResetCode = 'sendResetCode';
+
+String kSubcategoriesUrl = 'sub-categories';
 
 String kPublishedVideos = 'videos/published';
 
@@ -35,6 +45,8 @@ String kRefreshTokenUrl = 'api/v1/auth/refresh';
 String kLoginUrl = 'api/v1/auth/customer-login';
 
 String kPracticeBaseUrl = 'api/v1/question-sets';
+
+String kCourseManagementUrl = 'course-management';
 
 String kProfileStatusUrl = 'is-profile-completed';
 
@@ -50,10 +62,12 @@ String kCourseProgressUrl = 'api/v1/progress/courses';
 
 String kAssessmentsUrl = 'api/v1/assessment/questions';
 
+String kLearnSubcategoriesUrl = 'human-language/sub-categories';
+
 String kEmptyImagePath = '/data/user/0/com.yimaru.lms.app/app_flutter';
 
 String kSampleVideoUrl =
     'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
 
 String kServerClientId =
-    '574860813475-n5o17gpprdqmhcml99tiqhafb17rob0r.apps.googleusercontent.com';
+    '900714037062-24ria5fcfet71o3vde8f6gsvsj1n68ec.apps.googleusercontent.com';

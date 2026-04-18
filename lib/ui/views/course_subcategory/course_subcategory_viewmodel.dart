@@ -3,7 +3,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
-import '../../../models/course_subcategory.dart';
+import '../../../models/subcategory.dart';
 import '../../../services/api_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
@@ -16,10 +16,10 @@ class CourseSubcategoryViewModel extends BaseViewModel {
 
   final _navigationService = locator<NavigationService>();
 
-  // Courses
-  List<CourseSubcategory> _subcategories = [];
+  // Course subcategories
+  List<Subcategory> _subcategories = [];
 
-  List<CourseSubcategory> get subcategories => _subcategories;
+  List<Subcategory> get subcategories => _subcategories;
 
   // Navigation
   void pop() => _navigationService.back();
@@ -27,20 +27,19 @@ class CourseSubcategoryViewModel extends BaseViewModel {
   Future<void> navigateToCoursePractice(int id) async =>
       _navigationService.navigateToCoursePracticeView(id: id);
 
-  Future<void> navigateToSubcourse(CourseSubcategory subcategory) async =>
+  Future<void> navigateToSubcourse(Subcategory subcategory) async =>
       _navigationService.navigateToCourseView(subcategory: subcategory);
 
   // Remote api call
 
-  // Courses
-  Future<void> getCourseSubcategories(int id) async =>
-      await runBusyFuture(_getCourseSubcategories(id),
+  // Course subcategories
+  Future<void> getSubcategories(int id) async =>
+      await runBusyFuture(_getSubcategories(id),
           busyObject: StateObjects.subcategories);
 
-  Future<void> _getCourseSubcategories(int id) async {
+  Future<void> _getSubcategories(int id) async {
     if (await _statusChecker.checkConnection()) {
-      _subcategories = await _apiService.getCourseSubcategories(id);
-
+      _subcategories = await _apiService.getSubcategories(id);
     }
   }
 }

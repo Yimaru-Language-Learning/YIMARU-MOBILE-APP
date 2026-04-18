@@ -20,7 +20,7 @@ class ForgetPasswordViewModel extends FormViewModel {
 
   Map<String, dynamic> get userData => _userData;
 
-  // Navigation
+  // In-app navigation
   int _currentPage = 0;
 
   int get currentPage => _currentPage;
@@ -69,15 +69,6 @@ class ForgetPasswordViewModel extends FormViewModel {
 
   bool get obscureConfirmPassword => _obscureConfirmPassword;
 
-  // Add user data
-  void addUserData(Map<String, dynamic> data) {
-    _userData.addAll(data);
-  }
-
-  void clearUserData() {
-    _userData.clear();
-  }
-
   // Email
   void setEmailFocus() {
     _focusEmail = true;
@@ -90,10 +81,35 @@ class ForgetPasswordViewModel extends FormViewModel {
     rebuildUi();
   }
 
+  // User data
+  void clearUserData() {
+    _userData.clear();
+  }
+
+  void addUserData(Map<String, dynamic> data) {
+    _userData.addAll(data);
+  }
+
   // Password
   void setPasswordFocus() {
     _focusPassword = true;
     rebuildUi();
+  }
+
+  void setObscurePassword() {
+    _obscurePassword = !_obscurePassword;
+    rebuildUi();
+  }
+
+  double validationProgress() {
+    int completed = 0;
+
+    if (_length) completed++;
+    if (_number) completed++;
+    if (_specialChar) completed++;
+    if (_passwordMatch) completed++;
+
+    return completed / 4; // returns 0.0 → 1.0
   }
 
   void validatePassword(
@@ -121,22 +137,6 @@ class ForgetPasswordViewModel extends FormViewModel {
     } else {
       _passwordMatch = false;
     }
-    rebuildUi();
-  }
-
-  double validationProgress() {
-    int completed = 0;
-
-    if (_length) completed++;
-    if (_number) completed++;
-    if (_specialChar) completed++;
-    if (_passwordMatch) completed++;
-
-    return completed / 4; // returns 0.0 → 1.0
-  }
-
-  void setObscurePassword() {
-    _obscurePassword = !_obscurePassword;
     rebuildUi();
   }
 
@@ -172,11 +172,6 @@ class ForgetPasswordViewModel extends FormViewModel {
   }
 
   // In-app navigation
-  void goTo(int page) {
-    _currentPage = page;
-    rebuildUi();
-  }
-
   void goBack() {
     if (_currentPage == 1) {
       _currentPage = 0;
@@ -186,6 +181,11 @@ class ForgetPasswordViewModel extends FormViewModel {
     }
   }
 
+  void goTo(int page) {
+    _currentPage = page;
+    rebuildUi();
+  }
+
   // Navigation
   void pop() => _navigationService.back();
 
@@ -193,6 +193,23 @@ class ForgetPasswordViewModel extends FormViewModel {
       await _navigationService.clearStackAndShow(Routes.loginView);
 
   // Remote api calls
+
+  // Request reset code
+  Future<void> resetPassword() async => await runBusyFuture(_resetPassword(),
+      busyObject: StateObjects.resetPassword);
+
+  Future<void> _resetPassword() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response =
+          await _apiService.resetPassword(_userData);
+      if (response['status'] == ResponseStatus.success) {
+        showSuccessToast(response['message']);
+        await replaceWithLogin();
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
 
   // Request reset code
   Future<void> requestResetCode() async =>
@@ -206,23 +223,6 @@ class ForgetPasswordViewModel extends FormViewModel {
       if (response['status'] == ResponseStatus.success) {
         goTo(1);
         showSuccessToast(response['message']);
-      } else {
-        showErrorToast(response['message']);
-      }
-    }
-  }
-
-  // Request reset code
-  Future<void> resetPassword() async => await runBusyFuture(_resetPassword(),
-      busyObject: StateObjects.resetPassword);
-
-  Future<void> _resetPassword() async {
-    if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response =
-          await _apiService.resetPassword(_userData);
-      if (response['status'] == ResponseStatus.success) {
-        showSuccessToast(response['message']);
-        await replaceWithLogin();
       } else {
         showErrorToast(response['message']);
       }

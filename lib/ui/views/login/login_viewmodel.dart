@@ -4,7 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/app/app.router.dart';
-import 'package:yimaru_app/models/user_model.dart';
+import 'package:yimaru_app/models/user.dart';
 
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
@@ -28,8 +28,6 @@ class LoginViewModel extends ReactiveViewModel
 
   @override
   List<ListenableServiceMixin> get listenableServices => [_googleAuthService];
-
-  // Sms
 
   // Google user
   GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
@@ -128,21 +126,16 @@ class LoginViewModel extends ReactiveViewModel
     _resendTime = DateTime.now().add(const Duration(minutes: 3, seconds: 0));
   }
 
-  // Add user data
-  void addUserData(Map<String, dynamic> data) {
-    _userData.addAll(data);
-  }
-
+  // User data
   void clearUserData() {
     _userData.clear();
   }
 
-  // In app navigation
-  void goTo(int page) {
-    _currentPage = page;
-    rebuildUi();
+  void addUserData(Map<String, dynamic> data) {
+    _userData.addAll(data);
   }
 
+  // In app navigation
   void goBack() {
     if (_currentPage == 1) {
       _currentPage = 0;
@@ -155,15 +148,20 @@ class LoginViewModel extends ReactiveViewModel
     }
   }
 
+  void goTo(int page) {
+    _currentPage = page;
+    rebuildUi();
+  }
+
   // Navigation
+  Future<void> replaceWithHome() async =>
+      await _navigationService.clearStackAndShow(Routes.homeView);
+
   Future<void> navigateToRegister() async =>
       await _navigationService.navigateToRegisterView();
 
   Future<void> navigateToForgetPassword() async =>
       await _navigationService.navigateToForgetPasswordView();
-
-  Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShow(Routes.homeView);
 
   // Remote api calls
 
@@ -175,7 +173,7 @@ class LoginViewModel extends ReactiveViewModel
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> response = await _apiService.login(_userData);
       if (response['status'] == ResponseStatus.success) {
-        UserModel user = response['data'] as UserModel;
+        User user = response['data'] as User;
         Map<String, dynamic> data = {
           'userId': user.userId,
           'accessToken': user.accessToken,
@@ -191,6 +189,37 @@ class LoginViewModel extends ReactiveViewModel
       }
     }
   }
+
+  // Sign-in with google
+  Future<void> _googleAuth() async {
+    if (await _statusChecker.checkConnection()) {
+      await _googleAuthService.googleAuth();
+
+      Map<String, dynamic> data = {
+        'id_token': _googleUser?.authentication.idToken ?? '',
+      };
+
+      Map<String, dynamic> response = await _apiService.googleAuth(data);
+
+      if (response['status'] == ResponseStatus.success) {
+        User user = response['data'] as User;
+        Map<String, dynamic> data = {
+          'userId': user.userId,
+          'accessToken': user.accessToken,
+          'refreshToken': user.refreshToken
+        };
+        await _authenticationService.saveUserCredential(data);
+        clearUserData();
+        await replaceWithHome();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  Future<void> signInWithGoogle() async => await runBusyFuture(_googleAuth(),
+      busyObject: StateObjects.loginWithGoogle);
 
   // Login with phone
   Future<void> loginWithPhoneNumber() async =>
@@ -209,46 +238,12 @@ class LoginViewModel extends ReactiveViewModel
     }
   }
 
-  // Sign-in with google
-  Future<void> signInWithGoogle() async => await runBusyFuture(_googleAuth(),
-      busyObject: StateObjects.loginWithGoogle);
-
-  Future<void> _googleAuth() async {
-    if (await _statusChecker.checkConnection()) {
-      await _googleAuthService.googleAuth();
-
-      Map<String, dynamic> data = {
-        'id_token': _googleUser?.authentication.idToken ?? '',
-      };
-
-      Map<String, dynamic> response = await _apiService.googleAuth(data);
-
-      if (response['status'] == ResponseStatus.success) {
-        UserModel user = response['data'] as UserModel;
-        Map<String, dynamic> data = {
-          'userId': user.userId,
-          'accessToken': user.accessToken,
-          'refreshToken': user.refreshToken
-        };
-        await _authenticationService.saveUserCredential(data);
-        clearUserData();
-        await replaceWithHome();
-        showSuccessToast(response['message']);
-      } else {
-        showErrorToast(response['message']);
-      }
-    }
-  }
-
   // Verify otp
-  Future<void> verifyOtp() async =>
-      await runBusyFuture(_verifyOtp(), busyObject: StateObjects.verifyOtp);
-
   Future<void> _verifyOtp() async {
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> response = await _apiService.verifyOtp(_userData);
       if (response['status'] == ResponseStatus.success) {
-        UserModel user = response['data'] as UserModel;
+        User user = response['data'] as User;
         Map<String, dynamic> data = {
           'userId': user.userId,
           'accessToken': user.accessToken,
@@ -264,10 +259,10 @@ class LoginViewModel extends ReactiveViewModel
     }
   }
 
-  // Resend otp
-  Future<void> resendOtp() async =>
-      await runBusyFuture(_resendOtp(), busyObject: StateObjects.resendOtp);
+  Future<void> verifyOtp() async =>
+      await runBusyFuture(_verifyOtp(), busyObject: StateObjects.verifyOtp);
 
+  // Resend otp
   Future<void> _resendOtp() async {
     if (await _statusChecker.checkConnection()) {
       resetButton();
@@ -281,4 +276,7 @@ class LoginViewModel extends ReactiveViewModel
       }
     }
   }
+
+  Future<void> resendOtp() async =>
+      await runBusyFuture(_resendOtp(), busyObject: StateObjects.resendOtp);
 }

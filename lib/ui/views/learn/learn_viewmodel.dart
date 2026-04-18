@@ -1,45 +1,43 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
-import 'package:yimaru_app/models/user_model.dart';
-import 'package:yimaru_app/services/authentication_service.dart';
+import 'package:yimaru_app/models/course.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../services/api_service.dart';
+import '../../../services/status_checker_service.dart';
 
-class LearnViewModel extends ReactiveViewModel {
+class LearnViewModel extends BaseViewModel {
+  // Dependency injection
+  final _apiService = locator<ApiService>();
+
+  final _statusChecker = locator<StatusCheckerService>();
+
   final _navigationService = locator<NavigationService>();
-  final _authenticationService = locator<AuthenticationService>();
 
-  @override
-  List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService];
+  // Learn courses
+  List<Course> _courses = [];
 
-  // Current user
-  UserModel? get _user => _authenticationService.user;
+  List<Course> get courses => _courses;
 
-  UserModel? get user => _user;
+  // Navigation
+  void pop() => _navigationService.back();
 
-  final List<Map<String, dynamic>> _learnLevels = [
-    {
-      'title': 'Beginner',
-      'status': ProgressStatuses.started,
-      'subtitle': 'Start your journey with the basics of English.',
-    },
-    // {
-    //   'title': 'Intermediate',
-    //   'status': ProgressStatuses.started,
-    //   'subtitle': 'Practice real conversations and expand vocabulary.',
-    // },
-    // {
-    //   'title': 'Advanced',
-    //   'status': ProgressStatuses.pending,
-    //   'subtitle': 'Achieve fluency and master complex topics.',
-    // },
-  ];
+  Future<void> navigateToLearnLevel(int id) async =>
+      _navigationService.navigateToLearnLevelView(id: id);
 
-  List<Map<String, dynamic>> get learnLevels => _learnLevels;
+  // Remote api call
 
-  Future<void> navigateToLearnLevel() async =>
-      _navigationService.navigateToLearnLevelView();
+  // Learn courses
+  Future<void> getCourses(int id) async => await runBusyFuture(_getCourses(id),
+      busyObject: StateObjects.learnCourses);
+
+  Future<void> _getCourses(int id) async {
+    if (_courses.isEmpty) {
+      if (await _statusChecker.checkConnection()) {
+        _courses = await _apiService.getCourses(id);
+      }
+    }
+  }
 }

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
-import 'package:yimaru_app/models/user_model.dart';
+import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 
 import '../app/app.locator.dart';
@@ -135,7 +135,7 @@ class DioService {
 
   // Refresh token
   Future<bool> _refreshToken() async {
-    final UserModel? user = await _authenticationService.getUser();
+    final User? user = await _authenticationService.getUser();
 
     if (user?.refreshToken == null) return false;
 

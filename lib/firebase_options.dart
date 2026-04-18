@@ -50,21 +50,23 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC7QlhcuSNte49CERnRKPrQbyLbwErIRmk',
-    appId: '1:574860813475:android:cd7fa6cf3a0527d97acb16',
-    messagingSenderId: '574860813475',
-    projectId: 'yimaru-lms-e834e',
-    storageBucket: 'yimaru-lms-e834e.firebasestorage.app',
+    apiKey: 'AIzaSyAi8e4PMFH8QQU11DWftHdNEu8WUP7i2ww',
+    appId: '1:900714037062:android:f11e3b69315b05304e6f47',
+    messagingSenderId: '900714037062',
+    projectId: 'yimaru-academy-5e7e2',
+    storageBucket: 'yimaru-academy-5e7e2.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBBcQ17JB6RBTjD7G7mh6Xf_FMUGxP5cC8',
-    appId: '1:574860813475:ios:3ac9f7c4ae1771287acb16',
-    messagingSenderId: '574860813475',
-    projectId: 'yimaru-lms-e834e',
-    storageBucket: 'yimaru-lms-e834e.firebasestorage.app',
+    apiKey: 'AIzaSyDbaGD47oUJOyn9n3b0pbH6ozmbGyIlOKk',
+    appId: '1:900714037062:ios:1caf8f24a4333b8e4e6f47',
+    messagingSenderId: '900714037062',
+    projectId: 'yimaru-academy-5e7e2',
+    storageBucket: 'yimaru-academy-5e7e2.firebasestorage.app',
     androidClientId:
-        '574860813475-3p3k63lkrfd113sn6jscgvdj0aigsg5s.apps.googleusercontent.com',
+        '900714037062-ngc0gc426sfnnjjr494g4vni46ne5uqv.apps.googleusercontent.com',
+    iosClientId:
+        '900714037062-35bg0hsou56hg37mbcbpiar9uti7tcku.apps.googleusercontent.com',
     iosBundleId: 'com.yimaru.lms.app',
   );
 }
