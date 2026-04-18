@@ -25,6 +25,15 @@ class LearnLessonDetailViewModel extends BaseViewModel {
   VideoPlayerController? get videoPlayerController => _videoPlayerController;
 
   // Video player
+  void close() {
+    _videoPlayerController?.dispose();
+    _chewieController?.dispose();
+  }
+
+  Future<void> pause() async {
+    await _chewieController?.pause();
+  }
+
   Future<void> initializePlayer() async =>
       await runBusyFuture(_initializePlayer(),
           busyObject: StateObjects.loadLessonVideo);
@@ -49,15 +58,6 @@ class LearnLessonDetailViewModel extends BaseViewModel {
     }
 
     //  rebuildUi();
-  }
-
-  Future<void> pause() async {
-    await _chewieController?.pause();
-  }
-
-  void close() {
-    _videoPlayerController?.dispose();
-    _chewieController?.dispose();
   }
 
   // Navigation

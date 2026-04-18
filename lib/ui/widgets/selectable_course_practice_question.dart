@@ -84,7 +84,8 @@ class SelectableCoursePracticeQuestion
           ? _buildProgressIndicator()
           : _buildContinueButton(viewModel);
 
-  Widget _buildProgressIndicator()=>const CustomCircularProgressIndicator(color: kcPrimaryColor);
+  Widget _buildProgressIndicator() =>
+      const CustomCircularProgressIndicator(color: kcPrimaryColor);
 
   Widget _buildContinueButton(CoursePracticeQuestionViewModel viewModel) =>
       CustomElevatedButton(
@@ -92,7 +93,7 @@ class SelectableCoursePracticeQuestion
         borderRadius: 12,
         foregroundColor: kcWhite,
         text: viewModel.currentQuestionIndex ==
-            viewModel.coursePracticeQuestions.length - 1
+                viewModel.coursePracticeQuestions.length - 1
             ? 'Finish'
             : 'Continue',
         backgroundColor:
@@ -100,7 +101,7 @@ class SelectableCoursePracticeQuestion
                 ? kcPrimaryColor
                 : kcPrimaryColor.withOpacity(0.1),
         onTap: viewModel.selectedAnswers.containsKey((index + 1).toString())
-            ? ()async =>await viewModel.nextQuestion(viewModel
+            ? () async => await viewModel.nextQuestion(viewModel
                     .coursePracticeQuestions[
                         index + 1 < viewModel.coursePracticeQuestions.length
                             ? index + 1
@@ -108,6 +109,5 @@ class SelectableCoursePracticeQuestion
                     .questionId ??
                 0)
             : null,
-
       );
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/views/assessment/screens/Assessment_form_screen.dart';
+import 'package:yimaru_app/ui/views/assessment/screens/assessment_questions_screen.dart';
 import 'package:yimaru_app/ui/views/assessment/screens/assessment_intro_screen.dart';
 import 'package:yimaru_app/ui/views/assessment/screens/assessment_result_screen.dart';
 import 'package:yimaru_app/ui/views/assessment/screens/start_lesson_screen.dart';
@@ -51,7 +51,7 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
 
   Widget _buildAssessmentIntro() => const AssessmentIntroScreen();
 
-  Widget _buildAssessment() => const AssessmentFormScreen();
+  Widget _buildAssessment() => const AssessmentQuestionsScreen();
 
   Widget _buildAssessmentResult() => const AssessmentResultScreen();
 

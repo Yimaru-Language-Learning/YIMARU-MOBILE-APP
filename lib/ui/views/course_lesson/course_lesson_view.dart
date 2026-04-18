@@ -76,12 +76,8 @@ class CourseLessonView extends StackedView<CourseLessonViewModel> {
         children: _buildLessonColumnChildren(viewModel),
       );
 
-  List<Widget> _buildLessonColumnChildren(CourseLessonViewModel viewModel) => [
-        //  verticalSpaceLarge,
-        _buildTitle(),
-        verticalSpaceMedium,
-        _buildListViewBuilder(viewModel)
-      ];
+  List<Widget> _buildLessonColumnChildren(CourseLessonViewModel viewModel) =>
+      [_buildTitle(), verticalSpaceMedium, _buildListViewBuilder(viewModel)];
 
   Widget _buildTitle() => Text(
         '${course.title} course lessons',

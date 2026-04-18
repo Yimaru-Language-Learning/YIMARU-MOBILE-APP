@@ -20,9 +20,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
 
   Widget getPadding(context) {
     double half = screenHeight(context) / 2;
-    return SizedBox(
-      height: half + 375 - half,
-    );
+    return SizedBox(height: half + 375 - half);
   }
 
   void _inAppPop(ForgetPasswordViewModel viewModel) {

@@ -33,8 +33,8 @@ Map<String, dynamic> _$CourseLessonToJson(CourseLesson instance) =>
       'visibility': instance.visibility,
       'description': instance.description,
       'video_url': instance.videoUrl,
+      'vimeo_status': instance.vimeoStatus,
       'instructor_id': instance.instructorId,
       'sub_course_id': instance.courseId,
-      'vimeo_status': instance.vimeoStatus,
       'display_order': instance.displayOrder,
     };

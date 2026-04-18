@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../models/course_category.dart';
-import '../../../models/course_subcategory.dart';
+import '../../../models/category.dart';
+import '../../../models/subcategory.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
@@ -12,14 +12,14 @@ import '../../widgets/small_app_bar.dart';
 import 'course_subcategory_viewmodel.dart';
 
 class CourseSubcategoryView extends StackedView<CourseSubcategoryViewModel> {
-  final CourseCategory category;
+  final Category category;
 
   const CourseSubcategoryView({Key? key, required this.category})
       : super(key: key);
 
   @override
   void onViewModelReady(CourseSubcategoryViewModel viewModel) async {
-    await viewModel.getCourseSubcategories(category.id ?? 0);
+    await viewModel.getSubcategories(category.id ?? 0);
     super.onViewModelReady(viewModel);
   }
 
@@ -121,7 +121,7 @@ class CourseSubcategoryView extends StackedView<CourseSubcategoryViewModel> {
   Widget _buildTile({
     GestureTapCallback? onCourseTap,
     GestureTapCallback? onPracticeTap,
-    required CourseSubcategory subcategory,
+    required Subcategory subcategory,
   }) =>
       CourseSubcategoryTile(
         subcategory: subcategory,

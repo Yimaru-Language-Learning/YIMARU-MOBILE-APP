@@ -9,7 +9,7 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../models/user_model.dart';
+import '../../../models/user.dart';
 import '../../../services/google_auth_service.dart';
 import '../../../services/smart_auth_service.dart';
 import '../../../services/status_checker_service.dart';
@@ -336,7 +336,7 @@ class RegisterViewModel extends ReactiveViewModel
       Map<String, dynamic> response = await _apiService.googleAuth(data);
 
       if (response['status'] == ResponseStatus.success) {
-        UserModel user = response['data'] as UserModel;
+        User user = response['data'] as User;
         Map<String, dynamic> data = {
           'userId': user.userId,
           'accessToken': user.accessToken,
@@ -359,7 +359,7 @@ class RegisterViewModel extends ReactiveViewModel
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> response = await _apiService.verifyOtp(_userData);
       if (response['status'] == ResponseStatus.success) {
-        UserModel user = response['data'] as UserModel;
+        User user = response['data'] as User;
         Map<String, dynamic> data = {
           'userId': user.userId,
           'accessToken': user.accessToken,

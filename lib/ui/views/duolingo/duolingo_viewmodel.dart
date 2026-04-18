@@ -169,41 +169,32 @@ class DuolingoViewModel extends FormViewModel {
 
   List<String> get listeningAssessments => _listeningAssessments;
 
-  // Topics
-  void setAssessmentFocus() {
-    _assessmentFocus = true;
-    rebuildUi();
-  }
-
-  // Speaking state
+  // Assessment
   void setSpeakingState() {
     _isSpeaking = !_isSpeaking;
     rebuildUi();
   }
 
-  // Set assessment
+  void setAssessmentFocus() {
+    _assessmentFocus = true;
+    rebuildUi();
+  }
+
   void setSelectedAssessment(
       {required int page, required Map<String, dynamic> assessment}) {
     _selectedAssessment = assessment;
     goTo(page);
   }
 
-  // Listening assessment
+  bool isSelectedListeningAssessment(String value) =>
+      _selectedListeningAssessment == value;
 
   void setSelectedListeningAssessment(String value) {
     _selectedListeningAssessment = value;
     rebuildUi();
   }
 
-  bool isSelectedListeningAssessment(String value) =>
-      _selectedListeningAssessment == value;
-
   // In-app navigation
-  void goTo(int page) {
-    _currentPage = page;
-    rebuildUi();
-  }
-
   void goBack() {
     if (_currentPage == 0) {
       pop();
@@ -211,6 +202,11 @@ class DuolingoViewModel extends FormViewModel {
       _currentPage--;
       rebuildUi();
     }
+  }
+
+  void goTo(int page) {
+    _currentPage = page;
+    rebuildUi();
   }
 
   // Navigation

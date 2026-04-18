@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../models/course_category.dart';
+import '../../../models/category.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
@@ -15,7 +15,7 @@ class CourseCategoryView extends StackedView<CourseCategoryViewModel> {
 
   @override
   void onViewModelReady(CourseCategoryViewModel viewModel) async {
-    await viewModel.getCourseCategories();
+    await viewModel.getCategories();
     super.onViewModelReady(viewModel);
   }
 
@@ -114,7 +114,7 @@ class CourseCategoryView extends StackedView<CourseCategoryViewModel> {
 
   //
   Widget _buildTile({
-    required CourseCategory category,
+    required Category category,
     required GestureTapCallback onTap,
   }) =>
       CourseCategoryCard(

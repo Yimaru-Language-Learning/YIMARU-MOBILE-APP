@@ -8,38 +8,40 @@ import 'dart:ui' as _i10;
 
 import 'package:audioplayers/audioplayers.dart' as _i4;
 import 'package:dio/dio.dart' as _i2;
-import 'package:firebase_messaging/firebase_messaging.dart' as _i30;
+import 'package:firebase_messaging/firebase_messaging.dart' as _i32;
 import 'package:flutter/material.dart' as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
-import 'package:permission_handler/permission_handler.dart' as _i25;
+import 'package:permission_handler/permission_handler.dart' as _i27;
 import 'package:stacked_services/stacked_services.dart' as _i6;
 import 'package:waveform_recorder/waveform_recorder.dart' as _i5;
-import 'package:yimaru_app/models/course.dart' as _i17;
-import 'package:yimaru_app/models/course_category.dart' as _i15;
-import 'package:yimaru_app/models/course_detail.dart' as _i33;
-import 'package:yimaru_app/models/course_lesson.dart' as _i19;
-import 'package:yimaru_app/models/course_progress.dart' as _i18;
-import 'package:yimaru_app/models/course_subcategory.dart' as _i16;
-import 'package:yimaru_app/models/practice.dart' as _i20;
-import 'package:yimaru_app/models/practice_question.dart' as _i21;
+import 'package:yimaru_app/models/category.dart' as _i15;
+import 'package:yimaru_app/models/course.dart' as _i21;
+import 'package:yimaru_app/models/course_detail.dart' as _i35;
+import 'package:yimaru_app/models/course_lesson.dart' as _i18;
+import 'package:yimaru_app/models/course_progress.dart' as _i17;
+import 'package:yimaru_app/models/level.dart' as _i22;
+import 'package:yimaru_app/models/module.dart' as _i23;
+import 'package:yimaru_app/models/practice.dart' as _i19;
+import 'package:yimaru_app/models/practice_question.dart' as _i20;
 import 'package:yimaru_app/models/question.dart' as _i14;
-import 'package:yimaru_app/models/user_model.dart' as _i12;
+import 'package:yimaru_app/models/subcategory.dart' as _i16;
+import 'package:yimaru_app/models/user.dart' as _i12;
 import 'package:yimaru_app/services/api_service.dart' as _i13;
-import 'package:yimaru_app/services/audio_player_service.dart' as _i34;
+import 'package:yimaru_app/services/audio_player_service.dart' as _i36;
 import 'package:yimaru_app/services/authentication_service.dart' as _i11;
-import 'package:yimaru_app/services/course_service.dart' as _i32;
-import 'package:yimaru_app/services/dio_service.dart' as _i22;
-import 'package:yimaru_app/services/google_auth_service.dart' as _i27;
-import 'package:yimaru_app/services/image_downloader_service.dart' as _i28;
-import 'package:yimaru_app/services/image_picker_service.dart' as _i26;
-import 'package:yimaru_app/services/notification_service.dart' as _i29;
-import 'package:yimaru_app/services/permission_handler_service.dart' as _i24;
+import 'package:yimaru_app/services/course_service.dart' as _i34;
+import 'package:yimaru_app/services/dio_service.dart' as _i24;
+import 'package:yimaru_app/services/google_auth_service.dart' as _i29;
+import 'package:yimaru_app/services/image_downloader_service.dart' as _i30;
+import 'package:yimaru_app/services/image_picker_service.dart' as _i28;
+import 'package:yimaru_app/services/notification_service.dart' as _i31;
+import 'package:yimaru_app/services/permission_handler_service.dart' as _i26;
 import 'package:yimaru_app/services/secure_storage_service.dart' as _i3;
-import 'package:yimaru_app/services/smart_auth_service.dart' as _i31;
-import 'package:yimaru_app/services/status_checker_service.dart' as _i23;
-import 'package:yimaru_app/services/voice_recorder_service.dart' as _i35;
-import 'package:yimaru_app/ui/common/enmus.dart' as _i36;
+import 'package:yimaru_app/services/smart_auth_service.dart' as _i33;
+import 'package:yimaru_app/services/status_checker_service.dart' as _i25;
+import 'package:yimaru_app/services/voice_recorder_service.dart' as _i37;
+import 'package:yimaru_app/ui/common/enmus.dart' as _i38;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -857,7 +859,7 @@ class MockAuthenticationService extends _i1.Mock
       ) as _i9.Future<void>);
 
   @override
-  _i9.Future<void> saveUserData(_i12.UserModel? data) => (super.noSuchMethod(
+  _i9.Future<void> saveUserData(_i12.User? data) => (super.noSuchMethod(
         Invocation.method(
           #saveUserData,
           [data],
@@ -898,14 +900,14 @@ class MockAuthenticationService extends _i1.Mock
       ) as _i9.Future<void>);
 
   @override
-  _i9.Future<_i12.UserModel?> getUser() => (super.noSuchMethod(
+  _i9.Future<_i12.User?> getUser() => (super.noSuchMethod(
         Invocation.method(
           #getUser,
           [],
         ),
-        returnValue: _i9.Future<_i12.UserModel?>.value(),
-        returnValueForMissingStub: _i9.Future<_i12.UserModel?>.value(),
-      ) as _i9.Future<_i12.UserModel?>);
+        returnValue: _i9.Future<_i12.User?>.value(),
+        returnValueForMissingStub: _i9.Future<_i12.User?>.value(),
+      ) as _i9.Future<_i12.User?>);
 
   @override
   _i9.Future<void> logout() => (super.noSuchMethod(
@@ -1053,7 +1055,7 @@ class MockApiService extends _i1.Mock implements _i13.ApiService {
       ) as _i9.Future<Map<String, dynamic>>);
 
   @override
-  _i9.Future<Map<String, dynamic>> getProfileStatus(_i12.UserModel? user) =>
+  _i9.Future<Map<String, dynamic>> getProfileStatus(_i12.User? user) =>
       (super.noSuchMethod(
         Invocation.method(
           #getProfileStatus,
@@ -1124,68 +1126,54 @@ class MockApiService extends _i1.Mock implements _i13.ApiService {
       ) as _i9.Future<List<_i14.Question>>);
 
   @override
-  _i9.Future<List<_i15.CourseCategory>> getCourseCategories() =>
-      (super.noSuchMethod(
+  _i9.Future<List<_i15.Category>> getCategories() => (super.noSuchMethod(
         Invocation.method(
           #getCourseCategories,
           [],
         ),
-        returnValue: _i9.Future<List<_i15.CourseCategory>>.value(
-            <_i15.CourseCategory>[]),
-        returnValueForMissingStub: _i9.Future<List<_i15.CourseCategory>>.value(
-            <_i15.CourseCategory>[]),
-      ) as _i9.Future<List<_i15.CourseCategory>>);
+        returnValue: _i9.Future<List<_i15.Category>>.value(<_i15.Category>[]),
+        returnValueForMissingStub:
+            _i9.Future<List<_i15.Category>>.value(<_i15.Category>[]),
+      ) as _i9.Future<List<_i15.Category>>);
 
   @override
-  _i9.Future<List<_i16.CourseSubcategory>> getCourseSubcategories(int? id) =>
+  _i9.Future<List<_i16.Subcategory>> getSubcategories(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCourseSubcategories,
           [id],
         ),
-        returnValue: _i9.Future<List<_i16.CourseSubcategory>>.value(
-            <_i16.CourseSubcategory>[]),
+        returnValue:
+            _i9.Future<List<_i16.Subcategory>>.value(<_i16.Subcategory>[]),
         returnValueForMissingStub:
-            _i9.Future<List<_i16.CourseSubcategory>>.value(
-                <_i16.CourseSubcategory>[]),
-      ) as _i9.Future<List<_i16.CourseSubcategory>>);
+            _i9.Future<List<_i16.Subcategory>>.value(<_i16.Subcategory>[]),
+      ) as _i9.Future<List<_i16.Subcategory>>);
 
   @override
-  _i9.Future<List<_i17.Course>> getCourses(int? id) => (super.noSuchMethod(
-        Invocation.method(
-          #getCourses,
-          [id],
-        ),
-        returnValue: _i9.Future<List<_i17.Course>>.value(<_i17.Course>[]),
-        returnValueForMissingStub:
-            _i9.Future<List<_i17.Course>>.value(<_i17.Course>[]),
-      ) as _i9.Future<List<_i17.Course>>);
-
-  @override
-  _i9.Future<List<_i18.CourseProgress>> getCourseProgress(int? id) =>
+  _i9.Future<List<_i17.CourseProgress>> getCourseProgress(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCourseProgress,
           [id],
         ),
-        returnValue: _i9.Future<List<_i18.CourseProgress>>.value(
-            <_i18.CourseProgress>[]),
-        returnValueForMissingStub: _i9.Future<List<_i18.CourseProgress>>.value(
-            <_i18.CourseProgress>[]),
-      ) as _i9.Future<List<_i18.CourseProgress>>);
+        returnValue: _i9.Future<List<_i17.CourseProgress>>.value(
+            <_i17.CourseProgress>[]),
+        returnValueForMissingStub: _i9.Future<List<_i17.CourseProgress>>.value(
+            <_i17.CourseProgress>[]),
+      ) as _i9.Future<List<_i17.CourseProgress>>);
 
   @override
-  _i9.Future<List<_i19.CourseLesson>> getCourseLessons(int? id) =>
+  _i9.Future<List<_i18.CourseLesson>> getCourseLessons(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCourseLessons,
           [id],
         ),
         returnValue:
-            _i9.Future<List<_i19.CourseLesson>>.value(<_i19.CourseLesson>[]),
+            _i9.Future<List<_i18.CourseLesson>>.value(<_i18.CourseLesson>[]),
         returnValueForMissingStub:
-            _i9.Future<List<_i19.CourseLesson>>.value(<_i19.CourseLesson>[]),
-      ) as _i9.Future<List<_i19.CourseLesson>>);
+            _i9.Future<List<_i18.CourseLesson>>.value(<_i18.CourseLesson>[]),
+      ) as _i9.Future<List<_i18.CourseLesson>>);
 
   @override
   _i9.Future<Map<String, dynamic>> completeLesson(int? id) =>
@@ -1201,30 +1189,87 @@ class MockApiService extends _i1.Mock implements _i13.ApiService {
       ) as _i9.Future<Map<String, dynamic>>);
 
   @override
-  _i9.Future<List<_i20.Practice>> getCoursePractices(int? id) =>
+  _i9.Future<List<_i19.Practice>> getCoursePractices(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCoursePractices,
           [id],
         ),
-        returnValue: _i9.Future<List<_i20.Practice>>.value(<_i20.Practice>[]),
+        returnValue: _i9.Future<List<_i19.Practice>>.value(<_i19.Practice>[]),
         returnValueForMissingStub:
-            _i9.Future<List<_i20.Practice>>.value(<_i20.Practice>[]),
-      ) as _i9.Future<List<_i20.Practice>>);
+            _i9.Future<List<_i19.Practice>>.value(<_i19.Practice>[]),
+      ) as _i9.Future<List<_i19.Practice>>);
 
   @override
-  _i9.Future<List<_i21.PracticeQuestion>> getCoursePracticeQuestions(int? id) =>
+  _i9.Future<List<_i20.PracticeQuestion>> getCoursePracticeQuestions(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCoursePracticeQuestions,
           [id],
         ),
-        returnValue: _i9.Future<List<_i21.PracticeQuestion>>.value(
-            <_i21.PracticeQuestion>[]),
+        returnValue: _i9.Future<List<_i20.PracticeQuestion>>.value(
+            <_i20.PracticeQuestion>[]),
         returnValueForMissingStub:
-            _i9.Future<List<_i21.PracticeQuestion>>.value(
-                <_i21.PracticeQuestion>[]),
-      ) as _i9.Future<List<_i21.PracticeQuestion>>);
+            _i9.Future<List<_i20.PracticeQuestion>>.value(
+                <_i20.PracticeQuestion>[]),
+      ) as _i9.Future<List<_i20.PracticeQuestion>>);
+
+  @override
+  _i9.Future<_i14.Question?> getCoursePracticeQuestion(int? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getCoursePracticeQuestion,
+          [id],
+        ),
+        returnValue: _i9.Future<_i14.Question?>.value(),
+        returnValueForMissingStub: _i9.Future<_i14.Question?>.value(),
+      ) as _i9.Future<_i14.Question?>);
+
+  @override
+  _i9.Future<List<_i16.Subcategory>> getLearnSubcategories() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getLearnSubcategories,
+          [],
+        ),
+        returnValue:
+            _i9.Future<List<_i16.Subcategory>>.value(<_i16.Subcategory>[]),
+        returnValueForMissingStub:
+            _i9.Future<List<_i16.Subcategory>>.value(<_i16.Subcategory>[]),
+      ) as _i9.Future<List<_i16.Subcategory>>);
+
+  @override
+  _i9.Future<List<_i21.Course>> getCourses(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #getCourses,
+          [id],
+        ),
+        returnValue: _i9.Future<List<_i21.Course>>.value(<_i21.Course>[]),
+        returnValueForMissingStub:
+            _i9.Future<List<_i21.Course>>.value(<_i21.Course>[]),
+      ) as _i9.Future<List<_i21.Course>>);
+
+  @override
+  _i9.Future<List<_i22.Level>> getLevels(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #getLevels,
+          [id],
+        ),
+        returnValue: _i9.Future<List<_i22.Level>>.value(<_i22.Level>[]),
+        returnValueForMissingStub:
+            _i9.Future<List<_i22.Level>>.value(<_i22.Level>[]),
+      ) as _i9.Future<List<_i22.Level>>);
+
+  @override
+  _i9.Future<List<_i23.Module>> getModules(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #getModules,
+          [id],
+        ),
+        returnValue: _i9.Future<List<_i23.Module>>.value(<_i23.Module>[]),
+        returnValueForMissingStub:
+            _i9.Future<List<_i23.Module>>.value(<_i23.Module>[]),
+      ) as _i9.Future<List<_i23.Module>>);
 }
 
 /// A class which mocks [SecureStorageService].
@@ -1327,7 +1372,7 @@ class MockSecureStorageService extends _i1.Mock
 /// A class which mocks [DioService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDioService extends _i1.Mock implements _i22.DioService {
+class MockDioService extends _i1.Mock implements _i24.DioService {
   @override
   _i2.Dio get dio => (super.noSuchMethod(
         Invocation.getter(#dio),
@@ -1346,7 +1391,7 @@ class MockDioService extends _i1.Mock implements _i22.DioService {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockStatusCheckerService extends _i1.Mock
-    implements _i23.StatusCheckerService {
+    implements _i25.StatusCheckerService {
   @override
   _i3.SecureStorageService get storage => (super.noSuchMethod(
         Invocation.getter(#storage),
@@ -1412,40 +1457,40 @@ class MockStatusCheckerService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPermissionHandlerService extends _i1.Mock
-    implements _i24.PermissionHandlerService {
+    implements _i26.PermissionHandlerService {
   @override
-  _i9.Future<_i25.PermissionStatus> requestPermission(
-          _i25.Permission? requestedPermission) =>
+  _i9.Future<_i27.PermissionStatus> requestPermission(
+          _i27.Permission? requestedPermission) =>
       (super.noSuchMethod(
         Invocation.method(
           #requestPermission,
           [requestedPermission],
         ),
-        returnValue: _i9.Future<_i25.PermissionStatus>.value(
-            _i25.PermissionStatus.denied),
-        returnValueForMissingStub: _i9.Future<_i25.PermissionStatus>.value(
-            _i25.PermissionStatus.denied),
-      ) as _i9.Future<_i25.PermissionStatus>);
+        returnValue: _i9.Future<_i27.PermissionStatus>.value(
+            _i27.PermissionStatus.denied),
+        returnValueForMissingStub: _i9.Future<_i27.PermissionStatus>.value(
+            _i27.PermissionStatus.denied),
+      ) as _i9.Future<_i27.PermissionStatus>);
 
   @override
-  _i9.Future<_i25.PermissionStatus> request(_i25.Permission? permission) =>
+  _i9.Future<_i27.PermissionStatus> request(_i27.Permission? permission) =>
       (super.noSuchMethod(
         Invocation.method(
           #request,
           [permission],
         ),
-        returnValue: _i9.Future<_i25.PermissionStatus>.value(
-            _i25.PermissionStatus.denied),
-        returnValueForMissingStub: _i9.Future<_i25.PermissionStatus>.value(
-            _i25.PermissionStatus.denied),
-      ) as _i9.Future<_i25.PermissionStatus>);
+        returnValue: _i9.Future<_i27.PermissionStatus>.value(
+            _i27.PermissionStatus.denied),
+        returnValueForMissingStub: _i9.Future<_i27.PermissionStatus>.value(
+            _i27.PermissionStatus.denied),
+      ) as _i9.Future<_i27.PermissionStatus>);
 }
 
 /// A class which mocks [ImagePickerService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockImagePickerService extends _i1.Mock
-    implements _i26.ImagePickerService {
+    implements _i28.ImagePickerService {
   @override
   _i9.Future<String?> gallery() => (super.noSuchMethod(
         Invocation.method(
@@ -1470,7 +1515,7 @@ class MockImagePickerService extends _i1.Mock
 /// A class which mocks [GoogleAuthService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGoogleAuthService extends _i1.Mock implements _i27.GoogleAuthService {
+class MockGoogleAuthService extends _i1.Mock implements _i29.GoogleAuthService {
   @override
   int get listenersCount => (super.noSuchMethod(
         Invocation.getter(#listenersCount),
@@ -1540,7 +1585,7 @@ class MockGoogleAuthService extends _i1.Mock implements _i27.GoogleAuthService {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockImageDownloaderService extends _i1.Mock
-    implements _i28.ImageDownloaderService {
+    implements _i30.ImageDownloaderService {
   @override
   _i9.Future<String> downloader(String? networkImage) => (super.noSuchMethod(
         Invocation.method(
@@ -1569,7 +1614,7 @@ class MockImageDownloaderService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNotificationService extends _i1.Mock
-    implements _i29.NotificationService {
+    implements _i31.NotificationService {
   @override
   _i9.Future<void> initialize() => (super.noSuchMethod(
         Invocation.method(
@@ -1591,7 +1636,7 @@ class MockNotificationService extends _i1.Mock
       ) as _i9.Future<void>);
 
   @override
-  _i9.Future<void> showNotification(_i30.RemoteMessage? message) =>
+  _i9.Future<void> showNotification(_i32.RemoteMessage? message) =>
       (super.noSuchMethod(
         Invocation.method(
           #showNotification,
@@ -1625,7 +1670,7 @@ class MockNotificationService extends _i1.Mock
 /// A class which mocks [SmartAuthService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSmartAuthService extends _i1.Mock implements _i31.SmartAuthService {
+class MockSmartAuthService extends _i1.Mock implements _i33.SmartAuthService {
   @override
   bool get listenForMultipleSms => (super.noSuchMethod(
         Invocation.getter(#listenForMultipleSms),
@@ -1657,26 +1702,26 @@ class MockSmartAuthService extends _i1.Mock implements _i31.SmartAuthService {
 /// A class which mocks [CourseService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCourseService extends _i1.Mock implements _i32.CourseService {
+class MockCourseService extends _i1.Mock implements _i34.CourseService {
   @override
-  _i9.Future<List<_i33.CourseDetail>> getCoursesDetail(int? id) =>
+  _i9.Future<List<_i35.CourseDetail>> getCoursesDetail(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCoursesDetail,
           [id],
         ),
         returnValue:
-            _i9.Future<List<_i33.CourseDetail>>.value(<_i33.CourseDetail>[]),
+            _i9.Future<List<_i35.CourseDetail>>.value(<_i35.CourseDetail>[]),
         returnValueForMissingStub:
-            _i9.Future<List<_i33.CourseDetail>>.value(<_i33.CourseDetail>[]),
-      ) as _i9.Future<List<_i33.CourseDetail>>);
+            _i9.Future<List<_i35.CourseDetail>>.value(<_i35.CourseDetail>[]),
+      ) as _i9.Future<List<_i35.CourseDetail>>);
 }
 
 /// A class which mocks [AudioPlayerService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAudioPlayerService extends _i1.Mock
-    implements _i34.AudioPlayerService {
+    implements _i36.AudioPlayerService {
   @override
   _i4.AudioPlayer get player => (super.noSuchMethod(
         Invocation.getter(#player),
@@ -1800,13 +1845,13 @@ class MockAudioPlayerService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockVoiceRecorderService extends _i1.Mock
-    implements _i35.VoiceRecorderService {
+    implements _i37.VoiceRecorderService {
   @override
-  _i36.VoiceRecordingState get recordingState => (super.noSuchMethod(
+  _i38.VoiceRecordingState get recordingState => (super.noSuchMethod(
         Invocation.getter(#recordingState),
-        returnValue: _i36.VoiceRecordingState.pending,
-        returnValueForMissingStub: _i36.VoiceRecordingState.pending,
-      ) as _i36.VoiceRecordingState);
+        returnValue: _i38.VoiceRecordingState.pending,
+        returnValueForMissingStub: _i38.VoiceRecordingState.pending,
+      ) as _i38.VoiceRecordingState);
 
   @override
   _i5.WaveformRecorderController get waveController => (super.noSuchMethod(

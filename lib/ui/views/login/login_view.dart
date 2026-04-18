@@ -11,8 +11,8 @@ import 'login_viewmodel.dart';
 
 @FormView(fields: [
   FormTextField(name: 'otp', validator: FormValidator.validateForm),
-  FormTextField(name: 'email', validator: FormValidator.validateEmailForm),
   FormTextField(name: 'password', validator: FormValidator.validateForm),
+  FormTextField(name: 'email', validator: FormValidator.validateEmailForm),
   FormTextField(name: 'phoneNumber', validator: FormValidator.validateForm)
 ])
 class LoginView extends StackedView<LoginViewModel> with $LoginView {

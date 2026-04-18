@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/models/level.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/learn_module_tile.dart';
 import 'package:yimaru_app/ui/widgets/overall_learn_progress.dart';
 
+import '../../../models/module.dart';
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/small_app_bar.dart';
 import 'learn_module_viewmodel.dart';
 
 class LearnModuleView extends StackedView<LearnModuleViewModel> {
-  const LearnModuleView({Key? key}) : super(key: key);
+  final Level level;
+
+  const LearnModuleView({Key? key, required this.level}) : super(key: key);
+
+  @override
+  void onViewModelReady(LearnModuleViewModel viewModel) async {
+    await viewModel.getModules(level.id ?? 0);
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   LearnModuleViewModel viewModelBuilder(BuildContext context) =>
@@ -42,7 +52,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
           verticalSpaceMedium,
           _buildAppBar(viewModel),
           verticalSpaceMedium,
-          _buildLevelsColumnWrapper(viewModel),
+          _buildModulesColumnWrapper(viewModel),
         ],
       );
 
@@ -51,7 +61,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         showBackButton: true,
       );
 
-  Widget _buildLevelsColumnWrapper(LearnModuleViewModel viewModel) =>
+  Widget _buildModulesColumnWrapper(LearnModuleViewModel viewModel) =>
       Expanded(child: _buildLevelsColumnScrollView(viewModel));
 
   Widget _buildLevelsColumnScrollView(LearnModuleViewModel viewModel) =>
@@ -61,7 +71,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
 
   Widget _buildLevelsColumn(LearnModuleViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: _buildLevelsColumnChildren(viewModel),
       );
 
@@ -76,7 +86,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'A1 - Beginner',
+        level.title ?? '',
         style: style18P600,
       );
 
@@ -92,27 +102,19 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         itemCount: viewModel.modules.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
-            title: viewModel.modules[index]['title'],
-            status: viewModel.modules[index]['status'],
-            topics: viewModel.modules[index]['topics'],
-            subtitle: viewModel.modules[index]['subtitle'],
-            practices: viewModel.modules[index]['practices'],
-            description: viewModel.modules[index]['description']),
+            module: viewModel.modules[index],
+            onLessonTap: () {},
+            onPracticeTap: () {}),
       );
 
-  Widget _buildTile(
-          {required String title,
-          required String topics,
-          required String subtitle,
-          required String description,
-          required ProgressStatuses status,
-          required List<Map<String, dynamic>> practices}) =>
+  Widget _buildTile({
+    required Module module,
+    required GestureTapCallback onLessonTap,
+    required GestureTapCallback onPracticeTap,
+  }) =>
       LearnModuleTile(
-        title: title,
-        status: status,
-        topics: topics,
-        subtitle: subtitle,
-        practices: practices,
-        description: description,
+        module: module,
+        onLessonTap: onLessonTap,
+        onPracticeTap: onPracticeTap,
       );
 }

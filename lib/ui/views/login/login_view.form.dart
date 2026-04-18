@@ -13,8 +13,8 @@ import 'package:yimaru_app/ui/common/validators/form_validator.dart';
 const bool _autoTextFieldValidation = true;
 
 const String OtpValueKey = 'otp';
-const String EmailValueKey = 'email';
 const String PasswordValueKey = 'password';
+const String EmailValueKey = 'email';
 const String PhoneNumberValueKey = 'phoneNumber';
 
 final Map<String, TextEditingController> _LoginViewTextEditingControllers = {};
@@ -23,24 +23,24 @@ final Map<String, FocusNode> _LoginViewFocusNodes = {};
 
 final Map<String, String? Function(String?)?> _LoginViewTextValidations = {
   OtpValueKey: FormValidator.validateForm,
-  EmailValueKey: FormValidator.validateEmailForm,
   PasswordValueKey: FormValidator.validateForm,
+  EmailValueKey: FormValidator.validateEmailForm,
   PhoneNumberValueKey: FormValidator.validateForm,
 };
 
 mixin $LoginView {
   TextEditingController get otpController =>
       _getFormTextEditingController(OtpValueKey);
-  TextEditingController get emailController =>
-      _getFormTextEditingController(EmailValueKey);
   TextEditingController get passwordController =>
       _getFormTextEditingController(PasswordValueKey);
+  TextEditingController get emailController =>
+      _getFormTextEditingController(EmailValueKey);
   TextEditingController get phoneNumberController =>
       _getFormTextEditingController(PhoneNumberValueKey);
 
   FocusNode get otpFocusNode => _getFormFocusNode(OtpValueKey);
-  FocusNode get emailFocusNode => _getFormFocusNode(EmailValueKey);
   FocusNode get passwordFocusNode => _getFormFocusNode(PasswordValueKey);
+  FocusNode get emailFocusNode => _getFormFocusNode(EmailValueKey);
   FocusNode get phoneNumberFocusNode => _getFormFocusNode(PhoneNumberValueKey);
 
   TextEditingController _getFormTextEditingController(
@@ -68,8 +68,8 @@ mixin $LoginView {
   /// with the latest textController values
   void syncFormWithViewModel(FormStateHelper model) {
     otpController.addListener(() => _updateFormData(model));
-    emailController.addListener(() => _updateFormData(model));
     passwordController.addListener(() => _updateFormData(model));
+    emailController.addListener(() => _updateFormData(model));
     phoneNumberController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
@@ -83,8 +83,8 @@ mixin $LoginView {
   )
   void listenToFormUpdated(FormViewModel model) {
     otpController.addListener(() => _updateFormData(model));
-    emailController.addListener(() => _updateFormData(model));
     passwordController.addListener(() => _updateFormData(model));
+    emailController.addListener(() => _updateFormData(model));
     phoneNumberController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
@@ -96,8 +96,8 @@ mixin $LoginView {
       model.formValueMap
         ..addAll({
           OtpValueKey: otpController.text,
-          EmailValueKey: emailController.text,
           PasswordValueKey: passwordController.text,
+          EmailValueKey: emailController.text,
           PhoneNumberValueKey: phoneNumberController.text,
         }),
     );
@@ -141,8 +141,8 @@ extension ValueProperties on FormStateHelper {
   }
 
   String? get otpValue => this.formValueMap[OtpValueKey] as String?;
-  String? get emailValue => this.formValueMap[EmailValueKey] as String?;
   String? get passwordValue => this.formValueMap[PasswordValueKey] as String?;
+  String? get emailValue => this.formValueMap[EmailValueKey] as String?;
   String? get phoneNumberValue =>
       this.formValueMap[PhoneNumberValueKey] as String?;
 
@@ -156,16 +156,6 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
-  set emailValue(String? value) {
-    this.setData(
-      this.formValueMap..addAll({EmailValueKey: value}),
-    );
-
-    if (_LoginViewTextEditingControllers.containsKey(EmailValueKey)) {
-      _LoginViewTextEditingControllers[EmailValueKey]?.text = value ?? '';
-    }
-  }
-
   set passwordValue(String? value) {
     this.setData(
       this.formValueMap..addAll({PasswordValueKey: value}),
@@ -173,6 +163,16 @@ extension ValueProperties on FormStateHelper {
 
     if (_LoginViewTextEditingControllers.containsKey(PasswordValueKey)) {
       _LoginViewTextEditingControllers[PasswordValueKey]?.text = value ?? '';
+    }
+  }
+
+  set emailValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({EmailValueKey: value}),
+    );
+
+    if (_LoginViewTextEditingControllers.containsKey(EmailValueKey)) {
+      _LoginViewTextEditingControllers[EmailValueKey]?.text = value ?? '';
     }
   }
 
@@ -189,31 +189,31 @@ extension ValueProperties on FormStateHelper {
   bool get hasOtp =>
       this.formValueMap.containsKey(OtpValueKey) &&
       (otpValue?.isNotEmpty ?? false);
-  bool get hasEmail =>
-      this.formValueMap.containsKey(EmailValueKey) &&
-      (emailValue?.isNotEmpty ?? false);
   bool get hasPassword =>
       this.formValueMap.containsKey(PasswordValueKey) &&
       (passwordValue?.isNotEmpty ?? false);
+  bool get hasEmail =>
+      this.formValueMap.containsKey(EmailValueKey) &&
+      (emailValue?.isNotEmpty ?? false);
   bool get hasPhoneNumber =>
       this.formValueMap.containsKey(PhoneNumberValueKey) &&
       (phoneNumberValue?.isNotEmpty ?? false);
 
   bool get hasOtpValidationMessage =>
       this.fieldsValidationMessages[OtpValueKey]?.isNotEmpty ?? false;
-  bool get hasEmailValidationMessage =>
-      this.fieldsValidationMessages[EmailValueKey]?.isNotEmpty ?? false;
   bool get hasPasswordValidationMessage =>
       this.fieldsValidationMessages[PasswordValueKey]?.isNotEmpty ?? false;
+  bool get hasEmailValidationMessage =>
+      this.fieldsValidationMessages[EmailValueKey]?.isNotEmpty ?? false;
   bool get hasPhoneNumberValidationMessage =>
       this.fieldsValidationMessages[PhoneNumberValueKey]?.isNotEmpty ?? false;
 
   String? get otpValidationMessage =>
       this.fieldsValidationMessages[OtpValueKey];
-  String? get emailValidationMessage =>
-      this.fieldsValidationMessages[EmailValueKey];
   String? get passwordValidationMessage =>
       this.fieldsValidationMessages[PasswordValueKey];
+  String? get emailValidationMessage =>
+      this.fieldsValidationMessages[EmailValueKey];
   String? get phoneNumberValidationMessage =>
       this.fieldsValidationMessages[PhoneNumberValueKey];
 }
@@ -221,18 +221,18 @@ extension ValueProperties on FormStateHelper {
 extension Methods on FormStateHelper {
   setOtpValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[OtpValueKey] = validationMessage;
-  setEmailValidationMessage(String? validationMessage) =>
-      this.fieldsValidationMessages[EmailValueKey] = validationMessage;
   setPasswordValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[PasswordValueKey] = validationMessage;
+  setEmailValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[EmailValueKey] = validationMessage;
   setPhoneNumberValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[PhoneNumberValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
   void clearForm() {
     otpValue = '';
-    emailValue = '';
     passwordValue = '';
+    emailValue = '';
     phoneNumberValue = '';
   }
 
@@ -240,8 +240,8 @@ extension Methods on FormStateHelper {
   void validateForm() {
     this.setValidationMessages({
       OtpValueKey: getValidationMessage(OtpValueKey),
-      EmailValueKey: getValidationMessage(EmailValueKey),
       PasswordValueKey: getValidationMessage(PasswordValueKey),
+      EmailValueKey: getValidationMessage(EmailValueKey),
       PhoneNumberValueKey: getValidationMessage(PhoneNumberValueKey),
     });
   }
@@ -263,7 +263,7 @@ String? getValidationMessage(String key) {
 void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
       OtpValueKey: getValidationMessage(OtpValueKey),
-      EmailValueKey: getValidationMessage(EmailValueKey),
       PasswordValueKey: getValidationMessage(PasswordValueKey),
+      EmailValueKey: getValidationMessage(EmailValueKey),
       PhoneNumberValueKey: getValidationMessage(PhoneNumberValueKey),
     });

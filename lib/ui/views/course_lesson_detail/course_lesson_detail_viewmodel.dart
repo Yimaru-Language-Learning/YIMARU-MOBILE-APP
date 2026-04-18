@@ -29,6 +29,38 @@ class CourseLessonDetailViewModel extends BaseViewModel {
   VideoPlayerController? get videoPlayerController => _videoPlayerController;
 
   // Video player
+
+  @override
+  void dispose() {
+    _videoPlayerController?.dispose();
+    _chewieController?.dispose();
+    super.dispose();
+  }
+
+  Future<void> pause() async {
+    await _chewieController?.pause();
+  }
+
+  Future<void> _videoListener(CourseLesson lesson) async {
+    final controller = _videoPlayerController;
+
+    if (controller == null || !controller.value.isInitialized) return;
+
+    final position = controller.value.position;
+    final duration = controller.value.duration;
+
+    if (duration.inSeconds == 0) return;
+
+    double progress = position.inSeconds / duration.inSeconds;
+
+    print("Video progress: ${(progress * 100).toStringAsFixed(2)}%");
+
+    // Example: mark completion at 95%
+    if (progress >= 0.95) {
+      await _onVideoCompleted(lesson);
+    }
+  }
+
   Future<void> initializePlayer(CourseLesson lesson) async =>
       await runBusyFuture(_initializePlayer(lesson),
           busyObject: StateObjects.loadCourseVideo);
@@ -59,26 +91,6 @@ class CourseLessonDetailViewModel extends BaseViewModel {
     rebuildUi();
   }
 
-  Future<void> _videoListener(CourseLesson lesson) async {
-    final controller = _videoPlayerController;
-
-    if (controller == null || !controller.value.isInitialized) return;
-
-    final position = controller.value.position;
-    final duration = controller.value.duration;
-
-    if (duration.inSeconds == 0) return;
-
-    double progress = position.inSeconds / duration.inSeconds;
-
-    print("Video progress: ${(progress * 100).toStringAsFixed(2)}%");
-
-    // Example: mark completion at 95%
-    if (progress >= 0.95) {
-      await _onVideoCompleted(lesson);
-    }
-  }
-
   Future<void> _onVideoCompleted(CourseLesson lesson) async {
     if (_isCompleted) return;
 
@@ -87,17 +99,6 @@ class CourseLessonDetailViewModel extends BaseViewModel {
     print("Video completed!");
 
     await _apiService.completeLesson(lesson.id ?? 0);
-  }
-
-  Future<void> pause() async {
-    await _chewieController?.pause();
-  }
-
-  @override
-  void dispose() {
-    _videoPlayerController?.dispose();
-    _chewieController?.dispose();
-    super.dispose();
   }
 
   // Navigation

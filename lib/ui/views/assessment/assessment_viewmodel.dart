@@ -37,13 +37,13 @@ class AssessmentViewModel extends BaseViewModel {
 
   int get currentQuestion => _currentQuestion;
 
-  ProficiencyLevels _proficiencyLevel = ProficiencyLevels.none;
-
-  ProficiencyLevels get proficiencyLevel => _proficiencyLevel;
-
   List<Question> _assessments = [];
 
   List<Question> get assessments => _assessments;
+
+  ProficiencyLevels _proficiencyLevel = ProficiencyLevels.none;
+
+  ProficiencyLevels get proficiencyLevel => _proficiencyLevel;
 
   final Map<String, dynamic> _selectedAnswers = {};
 
@@ -55,20 +55,6 @@ class AssessmentViewModel extends BaseViewModel {
   Map<String, dynamic> get userData => _userData;
 
   //  Assessment
-  int countCorrectAnswersUntil(int untilQuestion) {
-    int count = 0;
-
-    for (int i = 1; i <= untilQuestion; i++) {
-      final answer = _selectedAnswers[i.toString()];
-
-      if (answer is Map<String, dynamic> && answer['correct'] == true) {
-        count++;
-      }
-    }
-
-    return count;
-  }
-
   Map<String, dynamic> evaluateAssessment() {
     if (_currentQuestion == 5) {
       // A1
@@ -111,6 +97,24 @@ class AssessmentViewModel extends BaseViewModel {
     }
   }
 
+  int countCorrectAnswersUntil(int untilQuestion) {
+    int count = 0;
+
+    for (int i = 1; i <= untilQuestion; i++) {
+      final answer = _selectedAnswers[i.toString()];
+
+      if (answer is Map<String, dynamic> && answer['correct'] == true) {
+        count++;
+      }
+    }
+
+    return count;
+  }
+
+  bool isSelectedAnswer({required int question, required String answer}) {
+    return _selectedAnswers[question.toString()]?['option'] == answer;
+  }
+
   void setSelectedAnswer({required int question, required Option? option}) {
     bool correct = false;
     if (option?.isCorrect ?? false) {
@@ -133,43 +137,18 @@ class AssessmentViewModel extends BaseViewModel {
     rebuildUi();
   }
 
-  bool isSelectedAnswer({required int question, required String answer}) {
-    return _selectedAnswers[question.toString()]?['option'] == answer;
-  }
-
-  // Add user data
-  void initUserData(Map<String, dynamic> data) {
-    clearUserData();
-    _userData.addAll(data);
+  // User data
+  void clearUserData() {
+    _userData.clear();
   }
 
   void addUserData(Map<String, dynamic> data) {
     _userData.addAll(data);
   }
 
-  void clearUserData() {
-    _userData.clear();
-  }
-
-  // Dialog
-  Future<bool?> showAbortDialog() async {
-    DialogResponse? response = await _dialogService.showDialog(
-      cancelTitle: 'No',
-      buttonTitle: 'Yes',
-      barrierDismissible: true,
-      title: 'Abort Assessment',
-      cancelTitleColor: kcDarkGrey,
-      buttonTitleColor: kcPrimaryColor,
-      description: 'Are you sure to abort the assessment ?',
-    );
-    return response?.confirmed;
-  }
-
-  Future<void> abort() async {
-    bool? response = await showAbortDialog();
-    if (response != null && response) {
-      next(page: 3);
-    }
+  void initUserData(Map<String, dynamic> data) {
+    clearUserData();
+    _userData.addAll(data);
   }
 
   // Question navigation
@@ -206,19 +185,6 @@ class AssessmentViewModel extends BaseViewModel {
   }
 
   // In-app navigation
-  void next({int? page}) async {
-    if (page == null) {
-      if (_previousPage != 0) {
-        _currentPage = _previousPage;
-      } else {
-        _currentPage++;
-      }
-    } else {
-      _previousPage = _currentPage;
-      _currentPage = page;
-    }
-    rebuildUi();
-  }
 
   void goBack() {
     if (_currentPage == 0) {
@@ -236,23 +202,51 @@ class AssessmentViewModel extends BaseViewModel {
     }
   }
 
+  void next({int? page}) async {
+    if (page == null) {
+      if (_previousPage != 0) {
+        _currentPage = _previousPage;
+      } else {
+        _currentPage++;
+      }
+    } else {
+      _previousPage = _currentPage;
+      _currentPage = page;
+    }
+    rebuildUi();
+  }
+
+  // Dialog
+  Future<void> abort() async {
+    bool? response = await showAbortDialog();
+    if (response != null && response) {
+      next(page: 3);
+    }
+  }
+
+  Future<bool?> showAbortDialog() async {
+    DialogResponse? response = await _dialogService.showDialog(
+      cancelTitle: 'No',
+      buttonTitle: 'Yes',
+      barrierDismissible: true,
+      title: 'Abort Assessment',
+      cancelTitleColor: kcDarkGrey,
+      buttonTitleColor: kcPrimaryColor,
+      description: 'Are you sure to abort the assessment ?',
+    );
+    return response?.confirmed;
+  }
+
   // Navigation
   void pop() => _navigationService.back();
-
-  Future<void> navigateToLanguage() async =>
-      await _navigationService.navigateToLanguageView();
 
   Future<void> replaceWithHome() async =>
       await _navigationService.clearStackAndShow(Routes.homeView);
 
-  // Remote api call
-  Future<void> getAssessments() async => await runBusyFuture(_getAssessments());
+  Future<void> navigateToLanguage() async =>
+      await _navigationService.navigateToLanguageView();
 
-  Future<void> _getAssessments() async {
-    if (await _statusChecker.checkConnection()) {
-      _assessments = await _apiService.getAssessments();
-    }
-  }
+  // Remote api call
 
   // Complete profile
   Future<void> completeProfile() async =>
@@ -272,4 +266,13 @@ class AssessmentViewModel extends BaseViewModel {
       }
     }
   }
+
+  // Assessments
+  Future<void> _getAssessments() async {
+    if (await _statusChecker.checkConnection()) {
+      _assessments = await _apiService.getAssessments();
+    }
+  }
+
+  Future<void> getAssessments() async => await runBusyFuture(_getAssessments());
 }

@@ -11,7 +11,6 @@ import '../../common/enmus.dart';
 
 class CourseViewModel extends BaseViewModel {
   // Dependency injection
-
   final _courseService = locator<CourseService>();
 
   final _statusChecker = locator<StatusCheckerService>();
@@ -26,15 +25,15 @@ class CourseViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToCoursePayment(Course course) async =>
-      _navigationService.navigateToCoursePaymentView(course: course);
-
   Future<void> navigateToCoursePractice(int id) =>
       _navigationService.navigateToCoursePracticeView(id: id);
 
+  Future<void> navigateToCoursePayment(Course course) async =>
+      _navigationService.navigateToCoursePaymentView(course: course);
+
   // Remote api call
 
-  // Sub course
+  // Course detail
   Future<void> getCourseDetails(int id) async =>
       await runBusyFuture(_getCourseDetails(id),
           busyObject: StateObjects.courses);
@@ -42,8 +41,8 @@ class CourseViewModel extends BaseViewModel {
   Future<void> _getCourseDetails(int id) async {
     if (await _statusChecker.checkConnection()) {
       _courseDetail = await _courseService.getCoursesDetail(id);
-      _courseDetail.sort((a, b) =>
-          (a.course?.displayOrder ?? 0).compareTo(b.course?.displayOrder ?? 0));
+      // _courseDetail.sort((a, b) =>
+      //     (a.course?.displayOrder ?? 0).compareTo(b.course?.displayOrder ?? 0));
     }
   }
 }

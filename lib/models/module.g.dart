@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'course_subcategory.dart';
+part of 'module.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CourseSubcategory _$CourseSubcategoryFromJson(Map<String, dynamic> json) =>
-    CourseSubcategory(
+Module _$ModuleFromJson(Map<String, dynamic> json) => Module(
       id: (json['id'] as num?)?.toInt(),
       title: json['title'] as String?,
+      iconUrl: json['icon_url'] as String?,
+      levelId: (json['level_id'] as num?)?.toInt(),
       isActive: json['is_active'] as bool?,
-      thumbnail: json['thumbnail'] as String?,
-      categoryId: (json['category_id'] as num?)?.toInt(),
       description: json['description'] as String?,
+      displayOrder: (json['display_order'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$CourseSubcategoryToJson(CourseSubcategory instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ModuleToJson(Module instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
-      'thumbnail': instance.thumbnail,
       'description': instance.description,
+      'icon_url': instance.iconUrl,
+      'level_id': instance.levelId,
       'is_active': instance.isActive,
-      'category_id': instance.categoryId,
+      'display_order': instance.displayOrder,
     };

@@ -95,16 +95,16 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> {
         shrinkWrap: true,
         itemCount: viewModel.coursePractices.length,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => _buildCard(
-          title: viewModel.coursePractices[index].title ?? '',
-          onTap: () async =>
-              await viewModel.navigateToCoursePracticeQuestion(viewModel.coursePractices[index].id ?? 0),
-        ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 15,
           crossAxisSpacing: 15,
           childAspectRatio: 1.2,
+        ),
+        itemBuilder: (context, index) => _buildCard(
+          title: viewModel.coursePractices[index].title ?? '',
+          onTap: () async => await viewModel.navigateToCoursePracticeQuestion(
+              viewModel.coursePractices[index].id ?? 0),
         ),
       );
 

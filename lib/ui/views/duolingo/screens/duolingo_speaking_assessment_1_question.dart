@@ -89,14 +89,11 @@ class DuolingoSpeakingAssessment1Question
       [_buildTimer(), _buildCountdownTime()];
 
   Widget _buildTimer() => const CircularProgressIndicator(
-        constraints: BoxConstraints(
-          minWidth: 50,
-          minHeight: 50,
-        ),
         value: 1.0,
         strokeWidth: 5,
-        padding: EdgeInsets.zero,
         color: kcPrimaryColor,
+        padding: EdgeInsets.zero,
+        constraints: BoxConstraints(minWidth: 50, minHeight: 50),
       );
 
   Widget _buildCountdownTime() => Text(

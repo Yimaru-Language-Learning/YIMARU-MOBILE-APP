@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/profile_app_bar.dart';
-import 'package:yimaru_app/ui/widgets/learn_level_tile.dart';
+import 'package:yimaru_app/ui/widgets/learn_tile.dart';
 
+import '../../../models/course.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
+import '../../widgets/custom_circular_progress_indicator.dart';
+import '../../widgets/small_app_bar.dart';
 import 'learn_viewmodel.dart';
 
 class LearnView extends StackedView<LearnViewModel> {
-  const LearnView({Key? key}) : super(key: key);
+  final int id;
+
+  const LearnView({Key? key, required this.id}) : super(key: key);
+
+  @override
+  void onViewModelReady(LearnViewModel viewModel) async {
+    await viewModel.getCourses(id);
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   LearnViewModel viewModelBuilder(BuildContext context) => LearnViewModel();
@@ -40,49 +50,50 @@ class LearnView extends StackedView<LearnViewModel> {
           verticalSpaceMedium,
           _buildAppBar(viewModel),
           verticalSpaceMedium,
-          _buildLevelsColumnWrapper(viewModel)
+          _buildLearnColumnWrapper(viewModel)
         ],
       );
 
-  Widget _buildAppBar(LearnViewModel viewModel) => ProfileAppBar(
-        name: viewModel.user?.firstName,
-        profileImage: viewModel.user?.profilePicture,
+  Widget _buildAppBar(LearnViewModel viewModel) => SmallAppBar(
+        onTap: viewModel.pop,
+        showBackButton: true,
       );
 
-  Widget _buildLevelsColumnWrapper(LearnViewModel viewModel) =>
-      Expanded(child: _buildLevelsColumnScrollView(viewModel));
+  Widget _buildLearnColumnWrapper(LearnViewModel viewModel) =>
+      Expanded(child: _buildLearnColumnScrollView(viewModel));
 
-  Widget _buildLevelsColumnScrollView(LearnViewModel viewModel) =>
+  Widget _buildLearnColumnScrollView(LearnViewModel viewModel) =>
       SingleChildScrollView(
-        child: _buildLevelsColumn(viewModel),
+        child: _buildListViewBuilder(viewModel),
       );
 
-  Widget _buildLevelsColumn(LearnViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildLevelsColumnChildren(viewModel),
+  Widget _buildListViewBuilder(LearnViewModel viewModel) =>
+      viewModel.busy(StateObjects.learnCourses)
+          ? _buildProgressIndicator()
+          : _buildListView(viewModel);
+
+  Widget _buildProgressIndicator() => const Center(
+        child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
-  List<Widget> _buildLevelsColumnChildren(LearnViewModel viewModel) =>
-      [verticalSpaceLarge, _buildListView(viewModel)];
-
-  Widget _buildListView(LearnViewModel viewModel) => ListView.builder(
+  Widget _buildListView(LearnViewModel viewModel) => ListView.separated(
         shrinkWrap: true,
-        itemCount: viewModel.learnLevels.length,
+        itemCount: viewModel.courses.length,
         physics: const NeverScrollableScrollPhysics(),
+        separatorBuilder: (context, index) => verticalSpaceSmall,
         itemBuilder: (context, index) => _buildTile(
-            title: viewModel.learnLevels[index]['title'],
-            status: viewModel.learnLevels[index]['status'],
-            subtitle: viewModel.learnLevels[index]['subtitle']),
+          course: viewModel.courses[index],
+          onTap: () async => await viewModel
+              .navigateToLearnLevel(viewModel.courses[index].id ?? 0),
+        ),
       );
 
-  Widget _buildTile(
-          {required String title,
-          required String subtitle,
-          required ProgressStatuses status}) =>
-      LearnLevelTile(
-        title: title,
-        status: status,
-        subtitle: subtitle,
+  Widget _buildTile({
+    required Course course,
+    required GestureTapCallback onTap,
+  }) =>
+      LearnTile(
+        onTap: onTap,
+        course: course,
       );
 }

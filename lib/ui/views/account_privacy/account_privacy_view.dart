@@ -127,8 +127,8 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
 
   Widget _buildPrivacyPolicy(AccountPrivacyViewModel viewModel) =>
       CustomListTile(
-        icon: Icons.shield_moon_outlined,
         title: 'Privacy Policy',
+        icon: Icons.shield_moon_outlined,
         onTap: () async => await viewModel.navigateToPrivacyPolicy(),
       );
 

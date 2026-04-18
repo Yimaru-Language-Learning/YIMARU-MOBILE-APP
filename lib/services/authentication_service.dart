@@ -1,6 +1,6 @@
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/app/app.locator.dart';
-import 'package:yimaru_app/models/user_model.dart';
+import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/secure_storage_service.dart';
 
 class AuthenticationService with ListenableServiceMixin {
@@ -8,9 +8,9 @@ class AuthenticationService with ListenableServiceMixin {
   final _secureService = locator<SecureStorageService>();
 
   // User data
-  UserModel? _user;
+  User? _user;
 
-  UserModel? get user => _user;
+  User? get user => _user;
 
   // Initialization
   AuthenticationService() {
@@ -51,7 +51,7 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('accessToken', data['accessToken']);
     await _secureService.setString('refreshToken', data['refreshToken']);
 
-    _user = UserModel(
+    _user = User(
       userId: await _secureService.getInt('userId'),
       accessToken: await _secureService.getString('accessToken'),
       refreshToken: await _secureService.getString('refreshToken'),
@@ -66,7 +66,6 @@ class AuthenticationService with ListenableServiceMixin {
       userInfoLoaded: _user?.userInfoLoaded ?? false,
       profileCompleted: await _secureService.getBool('profileCompleted'),
     );
-
 
     notifyListeners();
   }
@@ -83,7 +82,7 @@ class AuthenticationService with ListenableServiceMixin {
   }
 
   // Save user data
-  Future<void> saveUserData(UserModel data) async {
+  Future<void> saveUserData(User data) async {
     await _secureService.setBool('userInfoLoaded', true);
     await _secureService.setBool(
         'profileCompleted', data.profileCompleted ?? false);
@@ -96,7 +95,7 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('firstName', data.firstName ?? '');
     await _secureService.setString('occupation', data.occupation ?? '');
 
-    _user = UserModel(
+    _user = User(
       email: data.email,
       gender: data.gender,
       region: data.region,
@@ -148,8 +147,8 @@ class AuthenticationService with ListenableServiceMixin {
   }
 
   // Get user data
-  Future<UserModel?> getUser() async {
-    _user = UserModel(
+  Future<User?> getUser() async {
+    _user = User(
       userId: await _secureService.getInt('userId'),
       email: await _secureService.getString('email'),
       region: await _secureService.getString('region'),

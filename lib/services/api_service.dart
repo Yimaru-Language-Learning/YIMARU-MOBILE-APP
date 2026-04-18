@@ -1,17 +1,19 @@
 import 'package:dio/dio.dart';
+import 'package:yimaru_app/models/level.dart';
 import 'package:yimaru_app/models/question.dart';
-import 'package:yimaru_app/models/course_subcategory.dart';
-import 'package:yimaru_app/models/course_category.dart';
+import 'package:yimaru_app/models/subcategory.dart';
+import 'package:yimaru_app/models/category.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
 import 'package:yimaru_app/models/course_progress.dart';
 import 'package:yimaru_app/models/course.dart';
 import 'package:yimaru_app/models/practice.dart';
 import 'package:yimaru_app/models/practice_question.dart';
-import 'package:yimaru_app/models/user_model.dart';
+import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 
 import '../app/app.locator.dart';
+import '../models/module.dart';
 import '../ui/common/enmus.dart';
 
 class ApiService {
@@ -58,7 +60,7 @@ class ApiService {
         return {
           'status': ResponseStatus.success,
           'message': 'Logged in successfully',
-          'data': UserModel.fromJson(response.data['data']),
+          'data': User.fromJson(response.data['data']),
         };
       } else {
         return {
@@ -86,7 +88,7 @@ class ApiService {
         return {
           'status': ResponseStatus.success,
           'message': 'Logged in successfully',
-          'data': UserModel.fromJson(response.data['data']),
+          'data': User.fromJson(response.data['data']),
         };
       } else {
         return {
@@ -113,7 +115,7 @@ class ApiService {
         return {
           'status': ResponseStatus.success,
           'message': 'Otp verified successfully',
-          'data': UserModel.fromJson(response.data['data']),
+          'data': User.fromJson(response.data['data']),
         };
       } else {
         return {
@@ -212,7 +214,7 @@ class ApiService {
   }
 
   // GEt profile completion status
-  Future<Map<String, dynamic>> getProfileStatus(UserModel? user) async {
+  Future<Map<String, dynamic>> getProfileStatus(User? user) async {
     try {
       Response response = await _service.dio.get(
         '$kBaseUrl/$kUserBaseUrl/${user?.userId}/$kProfileStatusUrl',
@@ -249,7 +251,7 @@ class ApiService {
         return {
           'status': ResponseStatus.success,
           'message': 'Profile fetched successfully',
-          'data': UserModel.fromJson(response.data['data']),
+          'data': User.fromJson(response.data['data']),
         };
       } else {
         return {
@@ -369,20 +371,20 @@ class ApiService {
     }
   }
 
-  // Get course categories
-  Future<List<CourseCategory>> getCourseCategories() async {
+  // Get categories
+  Future<List<Category>> getCategories() async {
     try {
-      List<CourseCategory> categories = [];
+      List<Category> categories = [];
 
-      final Response response = await _service.dio
-          .get('$kBaseUrl/$kCourseBaseUrl/$kCourseCategoryUrl');
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kCategoryUrl');
 
       if (response.statusCode == 200) {
         var data = response.data;
         var decodedData = data['data']['categories'] as List;
         categories = decodedData.map(
           (e) {
-            return CourseCategory.fromJson(e);
+            return Category.fromJson(e);
           },
         ).toList();
         return categories;
@@ -394,19 +396,19 @@ class ApiService {
   }
 
   // Get course subcategory
-  Future<List<CourseSubcategory>> getCourseSubcategories(int id) async {
+  Future<List<Subcategory>> getSubcategories(int id) async {
     try {
-      List<CourseSubcategory> subcategories = [];
+      List<Subcategory> subcategories = [];
 
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/$kCourseBaseUrl/$kCourseCategoryUrl/$id/$kCoursesUrl');
+      final Response response = await _service.dio
+          .get('$kBaseUrl/$kCourseBaseUrl/$kCategoryUrl/$id/$kCoursesUrl');
 
       if (response.statusCode == 200) {
         var data = response.data;
         var decodedData = data['data']['courses'] as List;
         subcategories = decodedData.map(
           (e) {
-            return CourseSubcategory.fromJson(e);
+            return Subcategory.fromJson(e);
           },
         ).toList();
         return subcategories;
@@ -418,28 +420,28 @@ class ApiService {
   }
 
   // Get courses
-  Future<List<Course>> getCourses(int id) async {
-    try {
-      List<Course> courses = [];
-
-      final Response response = await _service.dio
-          .get('$kBaseUrl/$kCourseBaseUrl/$kCoursesUrl/$id/$kSubcoursesUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data']['sub_courses'] as List;
-        courses = decodedData.map(
-          (e) {
-            return Course.fromJson(e);
-          },
-        ).toList();
-        return courses;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
+  // Future<List<Course>> getCourses(int id) async {
+  //   try {
+  //     List<Course> courses = [];
+  //
+  //     final Response response = await _service.dio
+  //         .get('$kBaseUrl/$kCourseBaseUrl/$kCoursesUrl/$id/$kSubcoursesUrl');
+  //
+  //     if (response.statusCode == 200) {
+  //       var data = response.data;
+  //       var decodedData = data['data']['sub_courses'] as List;
+  //       courses = decodedData.map(
+  //         (e) {
+  //           return Course.fromJson(e);
+  //         },
+  //       ).toList();
+  //       return courses;
+  //     }
+  //     return [];
+  //   } catch (e) {
+  //     return [];
+  //   }
+  // }
 
   // Get course progress
   Future<List<CourseProgress>> getCourseProgress(int id) async {
@@ -574,6 +576,102 @@ class ApiService {
       return null;
     } catch (e) {
       return null;
+    }
+  }
+
+  // Get learn subcategories
+  Future<List<Subcategory>> getLearnSubcategories() async {
+    try {
+      List<Subcategory> learnSubcategories = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kLearnSubcategoriesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['sub_categories'] as List;
+        learnSubcategories = decodedData.map(
+          (e) {
+            return Subcategory.fromJson(e);
+          },
+        ).toList();
+        return learnSubcategories;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get courses
+  Future<List<Course>> getCourses(int id) async {
+    try {
+      List<Course> courses = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kSubcategoriesUrl/$id/$kCoursesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['courses'] as List;
+        courses = decodedData.map(
+          (e) {
+            return Course.fromJson(e);
+          },
+        ).toList();
+        return courses;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get levels
+  Future<List<Level>> getLevels(int id) async {
+    try {
+      List<Level> levels = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kCoursesUrl/$id/$kLevelsUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['levels'] as List;
+        levels = decodedData.map(
+          (e) {
+            return Level.fromJson(e);
+          },
+        ).toList();
+        return levels;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get modules
+  Future<List<Module>> getModules(int id) async {
+    try {
+      List<Module> modules = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kLevelsUrl/$id/$kModulesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['modules'] as List;
+        modules = decodedData.map(
+          (e) {
+            return Module.fromJson(e);
+          },
+        ).toList();
+        return modules;
+      }
+      return [];
+    } catch (e) {
+      return [];
     }
   }
 }

@@ -7,7 +7,6 @@ class LanguageViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
 
   // Languages
-
   Map<String, dynamic> _selectedLanguage = {
     'code': 'EN',
     'language': 'English'
@@ -23,13 +22,14 @@ class LanguageViewModel extends BaseViewModel {
   List<Map<String, dynamic>> get languages => _languages;
 
   // Languages
+  bool isSelectedLanguage(String title) =>
+      _selectedLanguage['language'] == title;
+
   void setSelectedLanguage(Map<String, dynamic> title) {
     _selectedLanguage = title;
     rebuildUi();
   }
 
-  bool isSelectedLanguage(String title) =>
-      _selectedLanguage['language'] == title;
   // Navigation
   void pop() => _navigationService.back();
 }
