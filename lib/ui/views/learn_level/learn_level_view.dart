@@ -55,6 +55,7 @@ class LearnLevelView extends StackedView<LearnLevelViewModel> {
       );
 
   Widget _buildAppBar(LearnLevelViewModel viewModel) => SmallAppBar(
+        title: 'Levels',
         onTap: viewModel.pop,
         showBackButton: true,
       );
@@ -82,7 +83,8 @@ class LearnLevelView extends StackedView<LearnLevelViewModel> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           level: viewModel.levels[index],
-          onTap: () async => await viewModel.navigateToModule( viewModel.levels[index]),
+          onTap: () async =>
+              await viewModel.navigateToModule(viewModel.levels[index]),
         ),
         separatorBuilder: (context, index) => verticalSpaceSmall,
       );

@@ -8,40 +8,42 @@ import 'dart:ui' as _i10;
 
 import 'package:audioplayers/audioplayers.dart' as _i4;
 import 'package:dio/dio.dart' as _i2;
-import 'package:firebase_messaging/firebase_messaging.dart' as _i32;
+import 'package:firebase_messaging/firebase_messaging.dart' as _i34;
 import 'package:flutter/material.dart' as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
-import 'package:permission_handler/permission_handler.dart' as _i27;
+import 'package:permission_handler/permission_handler.dart' as _i29;
 import 'package:stacked_services/stacked_services.dart' as _i6;
 import 'package:waveform_recorder/waveform_recorder.dart' as _i5;
 import 'package:yimaru_app/models/category.dart' as _i15;
 import 'package:yimaru_app/models/course.dart' as _i21;
-import 'package:yimaru_app/models/course_detail.dart' as _i35;
+import 'package:yimaru_app/models/course_detail.dart' as _i37;
 import 'package:yimaru_app/models/course_lesson.dart' as _i18;
 import 'package:yimaru_app/models/course_progress.dart' as _i17;
+import 'package:yimaru_app/models/lesson.dart' as _i25;
 import 'package:yimaru_app/models/level.dart' as _i22;
 import 'package:yimaru_app/models/module.dart' as _i23;
 import 'package:yimaru_app/models/practice.dart' as _i19;
 import 'package:yimaru_app/models/practice_question.dart' as _i20;
 import 'package:yimaru_app/models/question.dart' as _i14;
 import 'package:yimaru_app/models/subcategory.dart' as _i16;
+import 'package:yimaru_app/models/submodule.dart' as _i24;
 import 'package:yimaru_app/models/user.dart' as _i12;
 import 'package:yimaru_app/services/api_service.dart' as _i13;
-import 'package:yimaru_app/services/audio_player_service.dart' as _i36;
+import 'package:yimaru_app/services/audio_player_service.dart' as _i38;
 import 'package:yimaru_app/services/authentication_service.dart' as _i11;
-import 'package:yimaru_app/services/course_service.dart' as _i34;
-import 'package:yimaru_app/services/dio_service.dart' as _i24;
-import 'package:yimaru_app/services/google_auth_service.dart' as _i29;
-import 'package:yimaru_app/services/image_downloader_service.dart' as _i30;
-import 'package:yimaru_app/services/image_picker_service.dart' as _i28;
-import 'package:yimaru_app/services/notification_service.dart' as _i31;
-import 'package:yimaru_app/services/permission_handler_service.dart' as _i26;
+import 'package:yimaru_app/services/course_service.dart' as _i36;
+import 'package:yimaru_app/services/dio_service.dart' as _i26;
+import 'package:yimaru_app/services/google_auth_service.dart' as _i31;
+import 'package:yimaru_app/services/image_downloader_service.dart' as _i32;
+import 'package:yimaru_app/services/image_picker_service.dart' as _i30;
+import 'package:yimaru_app/services/notification_service.dart' as _i33;
+import 'package:yimaru_app/services/permission_handler_service.dart' as _i28;
 import 'package:yimaru_app/services/secure_storage_service.dart' as _i3;
-import 'package:yimaru_app/services/smart_auth_service.dart' as _i33;
-import 'package:yimaru_app/services/status_checker_service.dart' as _i25;
-import 'package:yimaru_app/services/voice_recorder_service.dart' as _i37;
-import 'package:yimaru_app/ui/common/enmus.dart' as _i38;
+import 'package:yimaru_app/services/smart_auth_service.dart' as _i35;
+import 'package:yimaru_app/services/status_checker_service.dart' as _i27;
+import 'package:yimaru_app/services/voice_recorder_service.dart' as _i39;
+import 'package:yimaru_app/ui/common/enmus.dart' as _i40;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -1128,7 +1130,7 @@ class MockApiService extends _i1.Mock implements _i13.ApiService {
   @override
   _i9.Future<List<_i15.Category>> getCategories() => (super.noSuchMethod(
         Invocation.method(
-          #getCourseCategories,
+          #getCategories,
           [],
         ),
         returnValue: _i9.Future<List<_i15.Category>>.value(<_i15.Category>[]),
@@ -1140,7 +1142,7 @@ class MockApiService extends _i1.Mock implements _i13.ApiService {
   _i9.Future<List<_i16.Subcategory>> getSubcategories(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getCourseSubcategories,
+          #getSubcategories,
           [id],
         ),
         returnValue:
@@ -1270,6 +1272,29 @@ class MockApiService extends _i1.Mock implements _i13.ApiService {
         returnValueForMissingStub:
             _i9.Future<List<_i23.Module>>.value(<_i23.Module>[]),
       ) as _i9.Future<List<_i23.Module>>);
+
+  @override
+  _i9.Future<List<_i24.Submodule>> getSubmodules(int? id) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getSubmodules,
+          [id],
+        ),
+        returnValue: _i9.Future<List<_i24.Submodule>>.value(<_i24.Submodule>[]),
+        returnValueForMissingStub:
+            _i9.Future<List<_i24.Submodule>>.value(<_i24.Submodule>[]),
+      ) as _i9.Future<List<_i24.Submodule>>);
+
+  @override
+  _i9.Future<List<_i25.Lesson>> getLessons(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #getLessons,
+          [id],
+        ),
+        returnValue: _i9.Future<List<_i25.Lesson>>.value(<_i25.Lesson>[]),
+        returnValueForMissingStub:
+            _i9.Future<List<_i25.Lesson>>.value(<_i25.Lesson>[]),
+      ) as _i9.Future<List<_i25.Lesson>>);
 }
 
 /// A class which mocks [SecureStorageService].
@@ -1372,7 +1397,7 @@ class MockSecureStorageService extends _i1.Mock
 /// A class which mocks [DioService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDioService extends _i1.Mock implements _i24.DioService {
+class MockDioService extends _i1.Mock implements _i26.DioService {
   @override
   _i2.Dio get dio => (super.noSuchMethod(
         Invocation.getter(#dio),
@@ -1391,7 +1416,7 @@ class MockDioService extends _i1.Mock implements _i24.DioService {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockStatusCheckerService extends _i1.Mock
-    implements _i25.StatusCheckerService {
+    implements _i27.StatusCheckerService {
   @override
   _i3.SecureStorageService get storage => (super.noSuchMethod(
         Invocation.getter(#storage),
@@ -1457,40 +1482,40 @@ class MockStatusCheckerService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPermissionHandlerService extends _i1.Mock
-    implements _i26.PermissionHandlerService {
+    implements _i28.PermissionHandlerService {
   @override
-  _i9.Future<_i27.PermissionStatus> requestPermission(
-          _i27.Permission? requestedPermission) =>
+  _i9.Future<_i29.PermissionStatus> requestPermission(
+          _i29.Permission? requestedPermission) =>
       (super.noSuchMethod(
         Invocation.method(
           #requestPermission,
           [requestedPermission],
         ),
-        returnValue: _i9.Future<_i27.PermissionStatus>.value(
-            _i27.PermissionStatus.denied),
-        returnValueForMissingStub: _i9.Future<_i27.PermissionStatus>.value(
-            _i27.PermissionStatus.denied),
-      ) as _i9.Future<_i27.PermissionStatus>);
+        returnValue: _i9.Future<_i29.PermissionStatus>.value(
+            _i29.PermissionStatus.denied),
+        returnValueForMissingStub: _i9.Future<_i29.PermissionStatus>.value(
+            _i29.PermissionStatus.denied),
+      ) as _i9.Future<_i29.PermissionStatus>);
 
   @override
-  _i9.Future<_i27.PermissionStatus> request(_i27.Permission? permission) =>
+  _i9.Future<_i29.PermissionStatus> request(_i29.Permission? permission) =>
       (super.noSuchMethod(
         Invocation.method(
           #request,
           [permission],
         ),
-        returnValue: _i9.Future<_i27.PermissionStatus>.value(
-            _i27.PermissionStatus.denied),
-        returnValueForMissingStub: _i9.Future<_i27.PermissionStatus>.value(
-            _i27.PermissionStatus.denied),
-      ) as _i9.Future<_i27.PermissionStatus>);
+        returnValue: _i9.Future<_i29.PermissionStatus>.value(
+            _i29.PermissionStatus.denied),
+        returnValueForMissingStub: _i9.Future<_i29.PermissionStatus>.value(
+            _i29.PermissionStatus.denied),
+      ) as _i9.Future<_i29.PermissionStatus>);
 }
 
 /// A class which mocks [ImagePickerService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockImagePickerService extends _i1.Mock
-    implements _i28.ImagePickerService {
+    implements _i30.ImagePickerService {
   @override
   _i9.Future<String?> gallery() => (super.noSuchMethod(
         Invocation.method(
@@ -1515,7 +1540,7 @@ class MockImagePickerService extends _i1.Mock
 /// A class which mocks [GoogleAuthService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGoogleAuthService extends _i1.Mock implements _i29.GoogleAuthService {
+class MockGoogleAuthService extends _i1.Mock implements _i31.GoogleAuthService {
   @override
   int get listenersCount => (super.noSuchMethod(
         Invocation.getter(#listenersCount),
@@ -1585,7 +1610,7 @@ class MockGoogleAuthService extends _i1.Mock implements _i29.GoogleAuthService {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockImageDownloaderService extends _i1.Mock
-    implements _i30.ImageDownloaderService {
+    implements _i32.ImageDownloaderService {
   @override
   _i9.Future<String> downloader(String? networkImage) => (super.noSuchMethod(
         Invocation.method(
@@ -1614,7 +1639,7 @@ class MockImageDownloaderService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNotificationService extends _i1.Mock
-    implements _i31.NotificationService {
+    implements _i33.NotificationService {
   @override
   _i9.Future<void> initialize() => (super.noSuchMethod(
         Invocation.method(
@@ -1636,7 +1661,7 @@ class MockNotificationService extends _i1.Mock
       ) as _i9.Future<void>);
 
   @override
-  _i9.Future<void> showNotification(_i32.RemoteMessage? message) =>
+  _i9.Future<void> showNotification(_i34.RemoteMessage? message) =>
       (super.noSuchMethod(
         Invocation.method(
           #showNotification,
@@ -1670,7 +1695,7 @@ class MockNotificationService extends _i1.Mock
 /// A class which mocks [SmartAuthService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSmartAuthService extends _i1.Mock implements _i33.SmartAuthService {
+class MockSmartAuthService extends _i1.Mock implements _i35.SmartAuthService {
   @override
   bool get listenForMultipleSms => (super.noSuchMethod(
         Invocation.getter(#listenForMultipleSms),
@@ -1702,26 +1727,26 @@ class MockSmartAuthService extends _i1.Mock implements _i33.SmartAuthService {
 /// A class which mocks [CourseService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCourseService extends _i1.Mock implements _i34.CourseService {
+class MockCourseService extends _i1.Mock implements _i36.CourseService {
   @override
-  _i9.Future<List<_i35.CourseDetail>> getCoursesDetail(int? id) =>
+  _i9.Future<List<_i37.CourseDetail>> getCoursesDetail(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCoursesDetail,
           [id],
         ),
         returnValue:
-            _i9.Future<List<_i35.CourseDetail>>.value(<_i35.CourseDetail>[]),
+            _i9.Future<List<_i37.CourseDetail>>.value(<_i37.CourseDetail>[]),
         returnValueForMissingStub:
-            _i9.Future<List<_i35.CourseDetail>>.value(<_i35.CourseDetail>[]),
-      ) as _i9.Future<List<_i35.CourseDetail>>);
+            _i9.Future<List<_i37.CourseDetail>>.value(<_i37.CourseDetail>[]),
+      ) as _i9.Future<List<_i37.CourseDetail>>);
 }
 
 /// A class which mocks [AudioPlayerService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAudioPlayerService extends _i1.Mock
-    implements _i36.AudioPlayerService {
+    implements _i38.AudioPlayerService {
   @override
   _i4.AudioPlayer get player => (super.noSuchMethod(
         Invocation.getter(#player),
@@ -1845,13 +1870,13 @@ class MockAudioPlayerService extends _i1.Mock
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockVoiceRecorderService extends _i1.Mock
-    implements _i37.VoiceRecorderService {
+    implements _i39.VoiceRecorderService {
   @override
-  _i38.VoiceRecordingState get recordingState => (super.noSuchMethod(
+  _i40.VoiceRecordingState get recordingState => (super.noSuchMethod(
         Invocation.getter(#recordingState),
-        returnValue: _i38.VoiceRecordingState.pending,
-        returnValueForMissingStub: _i38.VoiceRecordingState.pending,
-      ) as _i38.VoiceRecordingState);
+        returnValue: _i40.VoiceRecordingState.pending,
+        returnValueForMissingStub: _i40.VoiceRecordingState.pending,
+      ) as _i40.VoiceRecordingState);
 
   @override
   _i5.WaveformRecorderController get waveController => (super.noSuchMethod(

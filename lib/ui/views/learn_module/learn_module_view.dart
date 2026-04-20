@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/level.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/learn_module_tile.dart';
 import 'package:yimaru_app/ui/widgets/overall_learn_progress.dart';
 
 import '../../../models/module.dart';
 import '../../common/app_colors.dart';
+import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
+import '../../widgets/custom_circular_progress_indicator.dart';
 import '../../widgets/small_app_bar.dart';
 import 'learn_module_viewmodel.dart';
 
@@ -57,6 +58,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       );
 
   Widget _buildAppBar(LearnModuleViewModel viewModel) => SmallAppBar(
+        title: 'Modules',
         onTap: viewModel.pop,
         showBackButton: true,
       );
@@ -79,10 +81,10 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         _buildSubtitle(),
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildOverallProgress(),
         verticalSpaceMedium,
-        _buildListView(viewModel)
+        _buildListViewBuilder(viewModel)
       ];
 
   Widget _buildTitle() => Text(
@@ -95,26 +97,36 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         style: style14DG400,
       );
 
-  Widget _buildOverallProgress() => const OverallLearnProgress();
+  Widget _buildOverallProgress() => OverallLearnProgress(
+        color: kcPrimaryColor.withOpacity(0.1),
+      );
+
+  Widget _buildListViewBuilder(LearnModuleViewModel viewModel) =>
+      viewModel.busy(StateObjects.learnModules)
+          ? _buildProgressIndicator()
+          : _buildListView(viewModel);
+
+  Widget _buildProgressIndicator() => const Center(
+        child: CustomCircularProgressIndicator(color: kcPrimaryColor),
+      );
 
   Widget _buildListView(LearnModuleViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
         itemCount: viewModel.modules.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
-            module: viewModel.modules[index],
-            onLessonTap: () {},
-            onPracticeTap: () {}),
+          module: viewModel.modules[index],
+          onModuleTap: () async => await viewModel
+              .navigateToLearnSubmodule(viewModel.modules[index]),
+        ),
       );
 
   Widget _buildTile({
     required Module module,
-    required GestureTapCallback onLessonTap,
-    required GestureTapCallback onPracticeTap,
+    required GestureTapCallback onModuleTap,
   }) =>
       LearnModuleTile(
         module: module,
-        onLessonTap: onLessonTap,
-        onPracticeTap: onPracticeTap,
+        onModuleTap: onModuleTap,
       );
 }

@@ -8,7 +8,7 @@ class CourseModuleBanner extends StatelessWidget {
   Widget build(BuildContext context) => _buildContainer();
 
   Widget _buildContainer() => Container(
-        height: 150,
+        height: 125,
         width: double.maxFinite,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(

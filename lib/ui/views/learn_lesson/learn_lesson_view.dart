@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/models/submodule.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/learn_lesson_tile.dart';
 import 'package:yimaru_app/ui/widgets/module_progress.dart';
 import 'package:yimaru_app/ui/widgets/motivation_card.dart';
 
+import '../../../models/lesson.dart';
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
-import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/custom_circular_progress_indicator.dart';
 import '../../widgets/small_app_bar.dart';
 import 'learn_lesson_viewmodel.dart';
 
 class LearnLessonView extends StackedView<LearnLessonViewModel> {
-  final String title;
-  final String topics;
-  final String subtitle;
-  final String description;
-  final List<Map<String, dynamic>> practices;
+  final Submodule submodule;
 
-  const LearnLessonView(
-      {Key? key,
-      required this.title,
-      required this.topics,
-      required this.subtitle,
-      required this.practices,
-      required this.description})
-      : super(key: key);
+  const LearnLessonView({Key? key, required this.submodule}) : super(key: key);
+
+
+  @override
+  void onViewModelReady(LearnLessonViewModel viewModel) async {
+    await viewModel.getLessons(submodule.id ?? 0);
+    super.onViewModelReady(viewModel);
+  }
+
 
   Widget getPadding(context) {
     double half = screenHeight(context) / 2;
@@ -117,95 +116,63 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         verticalSpaceTiny,
         _buildSubtitle(),
         verticalSpaceSmall,
-        _buildTopics(),
         verticalSpaceSmall,
-        // _buildModuleProgress(),
-        // verticalSpaceMedium,
-        //   _buildContinueButton(),
-        // verticalSpaceMedium,
-        // _buildMotivationCard(),
-        // verticalSpaceMedium,
-        //_buildHeader(),
-        //verticalSpaceMedium,
-        // _buildListView(viewModel),
-        getPadding(context),
-        _buildStartButton(viewModel),
-        verticalSpaceSmall,
-        _buildPracticeButton(viewModel)
+        _buildModuleProgress(),
+        verticalSpaceMedium,
+        verticalSpaceMedium,
+        _buildMotivationCard(),
+        verticalSpaceMedium,
+        _buildHeader(),
+        verticalSpaceMedium,
+        _buildListViewBuilder(viewModel),
       ];
 
   Widget _buildTitle() => Text(
-        title,
+        submodule.title ?? '',
         style: style16DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        subtitle,
+        submodule.description ?? '',
         style: style14DG600,
-      );
-
-  Widget _buildTopics() => Text(
-        topics,
-        style: style14DG500,
       );
 
   Widget _buildModuleProgress() => const ModuleProgress();
 
-  Widget _buildStartButton(LearnLessonViewModel viewModel) =>
-      CustomElevatedButton(
-        height: 55,
-        borderRadius: 12,
-        text: 'Start $title',
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.navigateToLearnLessonDetail(
-            title: title, practices: practices, description: description),
-      );
-
-  Widget _buildPracticeButton(LearnLessonViewModel viewModel) =>
-      CustomElevatedButton(
-          height: 55,
-          borderRadius: 12,
-          text: 'Practice',
-          backgroundColor: kcWhite,
-          borderColor: kcPrimaryColor,
-          foregroundColor: kcPrimaryColor,
-          onTap: () async =>
-              await viewModel.navigateToLearnPractice(practices));
-
   Widget _buildMotivationCard() => const MotivationCard();
 
   Widget _buildHeader() => Text(
-        title,
+        'Lessons in this module',
         style: style18DG700,
       );
+
+
+  Widget _buildListViewBuilder(LearnLessonViewModel viewModel) =>
+      viewModel.busy(StateObjects.learnLessons)
+          ? _buildProgressIndicator()
+          : _buildListView(viewModel);
+
+  Widget _buildProgressIndicator() => const Center(
+    child: CustomCircularProgressIndicator(color: kcPrimaryColor),
+  );
+
 
   Widget _buildListView(LearnLessonViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
         itemCount: viewModel.lessons.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
-          title: viewModel.lessons[index]['title'],
-          status: viewModel.lessons[index]['status'],
-          thumbnail: viewModel.lessons[index]['thumbnail'],
-          onLessonTap: () async => await viewModel.navigateToLearnLessonDetail(
-              title: title, practices: practices, description: description),
-          // onPracticeTap: () async => await viewModel.navigateToLearnPractice(),
+          lesson: viewModel.lessons[index],
+          onLessonTap: () async => await viewModel.navigateToLearnLessonDetail(viewModel.lessons[index]),
         ),
       );
 
   Widget _buildTile({
-    required String title,
-    required String thumbnail,
-    GestureTapCallback? onLessonTap,
-    required ProgressStatuses status,
-    GestureTapCallback? onPracticeTap,
+    required Lesson lesson,
+    required GestureTapCallback? onLessonTap,
   }) =>
       LearnLessonTile(
-        title: title,
-        status: status,
-        thumbnail: thumbnail,
+        lesson: lesson,
         onLessonTap: onLessonTap,
-        onPracticeTap: onPracticeTap,
       );
 }

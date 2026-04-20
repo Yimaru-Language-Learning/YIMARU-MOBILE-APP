@@ -10,6 +10,8 @@ String kCoursesUrl = 'courses';
 
 String kModulesUrl = 'modules';
 
+String kLessonsUrl = 'lessons';
+
 String kRegisterUrl = 'register';
 
 String kCategoryUrl = 'categories';
@@ -23,6 +25,8 @@ String kVerifyOtpUrl = 'verify-otp';
 String kResendOtpUrl = 'resend-otp';
 
 String kGetUserUrl = 'user-profile';
+
+String kSubmodulesUrl = 'sub-modules';
 
 String kSubcoursesUrl = 'sub-courses';
 

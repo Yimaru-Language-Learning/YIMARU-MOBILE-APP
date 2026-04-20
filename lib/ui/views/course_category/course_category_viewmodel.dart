@@ -41,9 +41,8 @@ class CourseCategoryViewModel extends ReactiveViewModel {
   // Remote api call
 
   // Course categories
-  Future<void> getCategories() async =>
-      await runBusyFuture(_getCategories(),
-          busyObject: StateObjects.courseCategories);
+  Future<void> getCategories() async => await runBusyFuture(_getCategories(),
+      busyObject: StateObjects.courseCategories);
 
   Future<void> _getCategories() async {
     if (categories.isEmpty) {

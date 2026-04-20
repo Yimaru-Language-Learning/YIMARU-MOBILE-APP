@@ -24,27 +24,8 @@ class LearnModuleViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnLesson(
-          {required String title,
-          required String topics,
-          required String subtitle,
-          required String description,
-          required List<Map<String, dynamic>> practices}) async =>
-      await _navigationService.navigateToLearnLessonView(
-          title: title,
-          topics: topics,
-          subtitle: subtitle,
-          practices: practices,
-          description: description);
-
-  Future<void> navigateToLearnPractice(
-          List<Map<String, dynamic>> practices) async =>
-      await _navigationService.navigateToLearnPracticeView(
-        practices: practices,
-        title: 'Let’s Practice',
-        buttonLabel: 'Begin Lesson Practice',
-        subtitle: 'Let’s quickly review what you’ve learned in this lesson!',
-      );
+  Future<void> navigateToLearnSubmodule(Module module) async =>
+      await _navigationService.navigateToLearnSubmoduleView(module: module);
 
   // Remote api call
 

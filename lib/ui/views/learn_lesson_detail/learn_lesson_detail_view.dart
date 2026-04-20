@@ -1,8 +1,9 @@
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:vimeo_video_player/vimeo_video_player.dart';
 import 'package:yimaru_app/ui/widgets/empty_video_player.dart';
 
+import '../../../models/lesson.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
@@ -11,20 +12,14 @@ import '../../widgets/small_app_bar.dart';
 import 'learn_lesson_detail_viewmodel.dart';
 
 class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
-  final String title;
-  final String description;
-  final List<Map<String, dynamic>> practices;
+  final Lesson lesson;
 
-  const LearnLessonDetailView(
-      {Key? key,
-      required this.title,
-      required this.practices,
-      required this.description})
+  const LearnLessonDetailView({Key? key, required this.lesson})
       : super(key: key);
 
   Future<void> _navigate(LearnLessonDetailViewModel viewModel) async {
     await viewModel.pause();
-    await viewModel.navigateToLearnPractice(practices);
+  //   await viewModel.navigateToLearnPractice(practices);
   }
 
   @override
@@ -32,12 +27,6 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
     print('DISPOSED');
     viewModel.close();
     super.onDispose(viewModel);
-  }
-
-  @override
-  void onViewModelReady(LearnLessonDetailViewModel viewModel) async {
-    await viewModel.initializePlayer();
-    super.onViewModelReady(viewModel);
   }
 
   @override
@@ -125,7 +114,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
       );
 
   Widget _buildTitle() => Text(
-        title,
+        lesson.title ?? '',
         style: style16DG600,
       );
 
@@ -134,21 +123,21 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
         height: 200,
         color: kcBlack,
         width: double.maxFinite,
-        child: _buildVideoPlayerState(viewModel),
+        child: _buildVideoPlayer(viewModel),
       );
 
-  Widget _buildVideoPlayerState(LearnLessonDetailViewModel viewModel) =>
-      viewModel.chewieController != null &&
-              viewModel.videoPlayerController != null &&
-              !viewModel.busy(StateObjects.loadLessonVideo)
-          ? _buildVideoPlayer(viewModel)
-          : _buildEmptyVideoPlayer();
+
 
   Widget _buildVideoPlayer(LearnLessonDetailViewModel viewModel) =>
-      _buildChewiePlayer(viewModel);
+      _buildVimeoPlayer(viewModel);
 
-  Widget _buildChewiePlayer(LearnLessonDetailViewModel viewModel) =>
-      Chewie(controller: viewModel.chewieController!);
+  Widget _buildVimeoPlayer(LearnLessonDetailViewModel viewModel) =>
+      VimeoVideoPlayer(
+        isAutoPlay: true,
+        onInAppWebViewCreated: (controller) =>
+            viewModel.initializePlayer(controller),
+        videoId: lesson.teachingVideoUrl?.split('/').last ?? '',
+      );
 
   Widget _buildEmptyVideoPlayer() => const EmptyVideoPlayer();
 
@@ -158,7 +147,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
       );
 
   Widget _buildDescription() => Text(
-        description,
+        lesson.description ?? '',
         style: style14DG600,
       );
 
@@ -175,7 +164,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   Widget _buildContinueButton(LearnLessonDetailViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Practice',
+        text: 'Lessons',
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
