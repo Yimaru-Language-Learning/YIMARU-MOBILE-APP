@@ -36,17 +36,17 @@ class ModuleProgress extends StatelessWidget {
       [_buildProgressInfo(), _buildProgress()];
 
   Widget _buildProgressInfo() => Text(
-        '60% Progress',
+        '0% Progress',
         style: style16DG400,
       );
 
   Widget _buildProgress() => Text(
-        '2/3',
+        '0/3',
         style: style14P400,
       );
 
   Widget _buildProgressIndicator() => const CustomLinearProgressIndicator(
-        progress: 0.75,
+        progress: 0,
         activeColor: kcPrimaryColor,
         backgroundColor: kcVeryLightGrey,
       );

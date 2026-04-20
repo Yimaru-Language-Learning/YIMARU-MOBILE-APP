@@ -6,17 +6,14 @@ import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
 import '../../models/module.dart';
 import '../common/app_colors.dart';
-import '../common/enmus.dart';
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
   final Module module;
-  final GestureTapCallback? onLessonTap;
-  final GestureTapCallback? onPracticeTap;
+  final GestureTapCallback? onModuleTap;
 
-  const LearnModuleTile(
-      {super.key, this.onLessonTap, this.onPracticeTap, required this.module});
+  const LearnModuleTile({super.key, this.onModuleTap, required this.module});
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -158,7 +155,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
           required LearnModuleViewModel viewModel}) =>
       SizedBox(
         height: 40,
-        child: _buildActionButtons(context: context, viewModel: viewModel),
+        child: _buildModuleButton(viewModel),
       );
 
   Widget _buildActionButtons(
@@ -166,46 +163,39 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
           required LearnModuleViewModel viewModel}) =>
       Row(
         children: [
-          _buildLessonButtonWrapper(viewModel),
+          _buildModuleButtonWrapper(viewModel),
           horizontalSpaceSmall,
           _buildPracticeButtonWrapper(context: context, viewModel: viewModel)
         ],
       );
 
-  Widget _buildLessonButtonWrapper(LearnModuleViewModel viewModel) => Expanded(
-        child: _buildLessonButton(viewModel),
+  Widget _buildModuleButtonWrapper(LearnModuleViewModel viewModel) => Expanded(
+        child: _buildModuleButton(viewModel),
       );
 
-  Widget _buildLessonButton(LearnModuleViewModel viewModel) =>
+  Widget _buildModuleButton(LearnModuleViewModel viewModel) =>
       CustomElevatedButton(
         height: 15,
         borderRadius: 12,
-        onTap: onLessonTap,
+        onTap: onModuleTap,
         text: 'View Module',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        // onTap: () async => await viewModel.navigateToLearnLesson(
-        //     title: title,
-        //     topics: topics,
-        //     subtitle: subtitle,
-        //     practices: practices,
-        //     description: description),
       );
 
   Widget _buildPracticeButtonWrapper(
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>
       Expanded(
-        child: _buildPracticeButton(context: context, viewModel: viewModel),
+        child: Container(),
       );
 
   Widget _buildPracticeButton(
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>
-      CustomElevatedButton(
+      const CustomElevatedButton(
         height: 15,
         borderRadius: 12,
-        onTap: onPracticeTap,
         text: 'View Practices',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,

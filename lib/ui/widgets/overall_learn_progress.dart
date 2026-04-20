@@ -4,7 +4,8 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
 class OverallLearnProgress extends StatelessWidget {
-  const OverallLearnProgress({super.key});
+  final Color color;
+  const OverallLearnProgress({super.key, required this.color});
 
   @override
   Widget build(BuildContext context) => _buildContainer();
@@ -12,8 +13,8 @@ class OverallLearnProgress extends StatelessWidget {
   Widget _buildContainer() => Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
         decoration: BoxDecoration(
+          color: color,
           borderRadius: BorderRadius.circular(4),
-          color: kcPrimaryColor.withOpacity(0.1),
         ),
         child: _buildProgressSection(),
       );

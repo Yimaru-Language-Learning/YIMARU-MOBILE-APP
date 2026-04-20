@@ -13,7 +13,9 @@ import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 
 import '../app/app.locator.dart';
+import '../models/lesson.dart';
 import '../models/module.dart';
+import '../models/submodule.dart';
 import '../ui/common/enmus.dart';
 
 class ApiService {
@@ -668,6 +670,54 @@ class ApiService {
           },
         ).toList();
         return modules;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get submodules
+  Future<List<Submodule>> getSubmodules(int id) async {
+    try {
+      List<Submodule> submodules = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kModulesUrl/$id/$kSubmodulesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['sub_modules'] as List;
+        submodules = decodedData.map(
+          (e) {
+            return Submodule.fromJson(e);
+          },
+        ).toList();
+        return submodules;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get lessons
+  Future<List<Lesson>> getLessons(int id) async {
+    try {
+      List<Lesson> lessons = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kSubmodulesUrl/$id/$kLessonsUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data'] as List;
+        lessons = decodedData.map(
+          (e) {
+            return Lesson.fromJson(e);
+          },
+        ).toList();
+        return lessons;
       }
       return [];
     } catch (e) {

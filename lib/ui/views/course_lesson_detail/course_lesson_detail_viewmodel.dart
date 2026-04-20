@@ -66,6 +66,7 @@ class CourseLessonDetailViewModel extends BaseViewModel {
           busyObject: StateObjects.loadCourseVideo);
 
   Future<void> _initializePlayer(CourseLesson lesson) async {
+    print('URL: $kSampleVideoUrl');
     _videoPlayerController =
         VideoPlayerController.networkUrl(Uri.parse(kSampleVideoUrl));
 

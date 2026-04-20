@@ -1,11 +1,10 @@
 import 'package:chewie/chewie.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:yimaru_app/app/app.router.dart';
-import 'package:yimaru_app/ui/common/app_constants.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../services/status_checker_service.dart';
@@ -19,6 +18,10 @@ class LearnLessonDetailViewModel extends BaseViewModel {
   ChewieController? _chewieController;
 
   ChewieController? get chewieController => _chewieController;
+
+  InAppWebViewController? _webViewController;
+
+  InAppWebViewController? get webViewController => _webViewController;
 
   VideoPlayerController? _videoPlayerController;
 
@@ -34,31 +37,21 @@ class LearnLessonDetailViewModel extends BaseViewModel {
     await _chewieController?.pause();
   }
 
-  Future<void> initializePlayer() async =>
-      await runBusyFuture(_initializePlayer(),
-          busyObject: StateObjects.loadLessonVideo);
-
-  Future<void> _initializePlayer() async {
-    _videoPlayerController =
-        VideoPlayerController.networkUrl(Uri.parse(kSampleVideoUrl));
-
-    await _videoPlayerController?.initialize();
-
-    if (_videoPlayerController != null) {
-      _chewieController = ChewieController(
-          looping: true,
-          autoPlay: true,
-          showOptions: true,
-          showControls: true,
-          aspectRatio: 16 / 9,
-          autoInitialize: true,
-          allowedScreenSleep: false,
-          videoPlayerController: _videoPlayerController!,
-          materialProgressColors: buildChewieProgressIndicator);
-    }
-
-    //  rebuildUi();
+  void initializePlayer(InAppWebViewController controller){
+    _webViewController = controller;
+    rebuildUi();
   }
+
+  void onLoadVideoStart() {
+    setBusyForObject(StateObjects.loadLessonVideo, true);
+    rebuildUi();
+  }
+
+  void onLoadVideoComplete() {
+    setBusyForObject(StateObjects.loadLessonVideo, false);
+    rebuildUi();
+  }
+
 
   // Navigation
   void pop() => _navigationService.back();
