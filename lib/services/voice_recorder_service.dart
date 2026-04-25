@@ -14,11 +14,9 @@ class VoiceRecorderService with ListenableServiceMixin {
 
   WaveformRecorderController get waveController => _waveController;
 
-
   bool _isRecording = false;
 
-   bool get isRecording => _isRecording;
-
+  bool get isRecording => _isRecording;
 
   // Start voice recording
   Future<void> startRecording() async {
@@ -41,5 +39,4 @@ class VoiceRecorderService with ListenableServiceMixin {
     if (file == null) return null;
     return file.path;
   }
-
 }

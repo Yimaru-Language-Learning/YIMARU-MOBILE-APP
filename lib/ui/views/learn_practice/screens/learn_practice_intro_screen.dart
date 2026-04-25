@@ -17,12 +17,11 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
     viewModel.pop();
     viewModel.pop();
     viewModel.stopRecording();
-
   }
 
   Future<void> _showSheet(
-      {required BuildContext context,
-        required LearnPracticeViewModel viewModel}) async =>
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -32,41 +31,51 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
 
   @override
   Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(context: context,viewModel: viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(  {required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context,viewModel: viewModel),
+        body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold(  {required BuildContext context,
-    required LearnPracticeViewModel viewModel}) =>
-      SafeArea(child: _buildColumnWrapper(context: context,viewModel: viewModel));
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      SafeArea(
+          child: _buildColumnWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildColumnWrapper(  {required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => Padding(
+  Widget _buildColumnWrapper(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(context: context,viewModel: viewModel),
+        child: _buildColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildColumn(  {required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => Column(
+  Widget _buildColumn(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(context: context,viewModel: viewModel),
+          _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceMedium,
           _buildBodyColumnWrapper(viewModel),
         ],
       );
 
-  Widget _buildAppBar(  {required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => SmallAppBar(
+  Widget _buildAppBar(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      SmallAppBar(
         showBackButton: true,
         title: 'Practice Speaking',
-    onTap: () async => await _showSheet(context: context,viewModel: viewModel),
-
-  );
+        onTap: () async =>
+            await _showSheet(context: context, viewModel: viewModel),
+      );
 
   Widget _buildSheet(LearnPracticeViewModel viewModel) =>
       CancelLearnPracticeSheet(

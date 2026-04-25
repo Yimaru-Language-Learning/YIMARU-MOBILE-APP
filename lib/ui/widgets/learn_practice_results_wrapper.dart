@@ -29,11 +29,8 @@ class LearnPracticeResultsWrapper
         children: _buildColumnChildren(viewModel),
       );
 
-  List<Widget> _buildColumnChildren(LearnPracticeViewModel viewModel) => [
-        _buildTitle(),
-        verticalSpaceSmall,
-    _buildResults(viewModel)
-      ];
+  List<Widget> _buildColumnChildren(LearnPracticeViewModel viewModel) =>
+      [_buildTitle(), verticalSpaceSmall, _buildResults(viewModel)];
 
   Widget _buildTitle() => Text(
         'Conversation Review',
@@ -42,14 +39,14 @@ class LearnPracticeResultsWrapper
       );
 
   Widget _buildResults(LearnPracticeViewModel viewModel) => ListView.separated(
-    shrinkWrap: true,
-    itemCount: viewModel.answers.length,
-    physics: const NeverScrollableScrollPhysics(),
-    separatorBuilder: (context, index) => verticalSpaceSmall,
-    itemBuilder: (context, index) => _buildResult( viewModel.answers[index]),
-  );
+        shrinkWrap: true,
+        itemCount: viewModel.answers.length,
+        physics: const NeverScrollableScrollPhysics(),
+        separatorBuilder: (context, index) => verticalSpaceSmall,
+        itemBuilder: (context, index) => _buildResult(viewModel.answers[index]),
+      );
 
-
-
-  Widget _buildResult(Map<String,dynamic> answer) =>  LearnPracticeResultCard(answer: answer,);
+  Widget _buildResult(Map<String, dynamic> answer) => LearnPracticeResultCard(
+        answer: answer,
+      );
 }

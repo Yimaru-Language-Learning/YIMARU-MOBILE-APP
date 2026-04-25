@@ -38,7 +38,7 @@ class LearnPracticeQuestionsScreen
       PageView(
         controller: viewModel.questionController,
         physics: const NeverScrollableScrollPhysics(),
-        children: _buildScreens(index:index,question: question),
+        children: _buildScreens(index: index, question: question),
       );
 
   List<Widget> _buildScreens({
@@ -46,20 +46,25 @@ class LearnPracticeQuestionsScreen
     required LearnQuestion question,
   }) =>
       [
-        _buildStartLearnPracticeScreen(index:index,question: question),
-        _buildInteractLearnPracticeScreen(index:index,question: question)
+        _buildStartLearnPracticeScreen(index: index, question: question),
+        _buildInteractLearnPracticeScreen(index: index, question: question)
       ];
 
   Widget _buildStartLearnPracticeScreen({
-  required int index,
-  required LearnQuestion question,}
-  ) => StartLearnPracticeScreen(
+    required int index,
+    required LearnQuestion question,
+  }) =>
+      StartLearnPracticeScreen(
         index: index,
-    question: question,
+        question: question,
       );
 
   Widget _buildInteractLearnPracticeScreen({
     required int index,
-    required LearnQuestion question,}) =>
-      InteractLearnPracticeScreen(index: index,question: question,);
+    required LearnQuestion question,
+  }) =>
+      InteractLearnPracticeScreen(
+        index: index,
+        question: question,
+      );
 }

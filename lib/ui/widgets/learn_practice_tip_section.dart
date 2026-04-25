@@ -10,7 +10,8 @@ class LearnPracticeTipSection extends ViewModelWidget<LearnPracticeViewModel> {
   const LearnPracticeTipSection({super.key});
 
   @override
-  Widget build(BuildContext context,LearnPracticeViewModel viewModel) => _buildContainer(viewModel);
+  Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
+      _buildContainer(viewModel);
 
   Widget _buildContainer(LearnPracticeViewModel viewModel) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
@@ -24,7 +25,7 @@ class LearnPracticeTipSection extends ViewModelWidget<LearnPracticeViewModel> {
   Widget _buildColumn(LearnPracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildColumnChildren( viewModel),
+        children: _buildColumnChildren(viewModel),
       );
 
   List<Widget> _buildColumnChildren(LearnPracticeViewModel viewModel) =>

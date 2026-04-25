@@ -47,10 +47,6 @@ class ProfileDetailViewModel extends ReactiveViewModel
 
   String? get selectedGender => _selectedGender;
 
-  // Birthday
-  String? _selectedBirthday;
-
-  String? get selectedBirthday => _selectedBirthday;
 
   // First name
   bool _focusPhoneNumber = false;
@@ -67,15 +63,16 @@ class ProfileDetailViewModel extends ReactiveViewModel
 
   String get selectedCountry => _selectedCountry;
 
-  // Region
-  String _selectedRegion = 'Addis Ababa';
-
-  String get selectedRegion => _selectedRegion;
 
   // Occupation
   bool _focusOccupation = false;
 
   bool get focusOccupation => _focusOccupation;
+
+  // Region
+  bool _focusRegion = false;
+
+  bool get focusRegion => _focusRegion;
 
   // User data
   final Map<String, dynamic> _userData = {};
@@ -100,11 +97,6 @@ class ProfileDetailViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
-  // Birthday
-  void setBirthday(String value) {
-    _selectedBirthday = value;
-    rebuildUi();
-  }
 
   // Phone number
   void setPhoneNumberFocus() {
@@ -119,51 +111,178 @@ class ProfileDetailViewModel extends ReactiveViewModel
   }
 
   // Country
-  List<String> getCountries() => ['Ethiopia', 'Other'];
+  // Country
+  List<String> getCountries() => [
+    "Afghanistan",
+    "Albania",
+    "Algeria",
+    "Andorra",
+    "Angola",
+    "Argentina",
+    "Armenia",
+    "Australia",
+    "Austria",
+    "Azerbaijan",
+    "Bahrain",
+    "Bangladesh",
+    "Belarus",
+    "Belgium",
+    "Belize",
+    "Benin",
+    "Bhutan",
+    "Bolivia",
+    "Bosnia and Herzegovina",
+    "Botswana",
+    "Brazil",
+    "Brunei",
+    "Bulgaria",
+    "Burkina Faso",
+    "Burundi",
+    "Cambodia",
+    "Cameroon",
+    "Canada",
+    "Chad",
+    "Chile",
+    "China",
+    "Colombia",
+    "Comoros",
+    "Congo",
+    "Costa Rica",
+    "Croatia",
+    "Cuba",
+    "Cyprus",
+    "Czech Republic",
+    "Denmark",
+    "Djibouti",
+    "Dominican Republic",
+    "Ecuador",
+    "Egypt",
+    "El Salvador",
+    "Eritrea",
+    "Estonia",
+    "Eswatini",
+    "Ethiopia",
+    "Finland",
+    "France",
+    "Gabon",
+    "Gambia",
+    "Georgia",
+    "Germany",
+    "Ghana",
+    "Greece",
+    "Guatemala",
+    "Guinea",
+    "Haiti",
+    "Honduras",
+    "Hungary",
+    "Iceland",
+    "India",
+    "Indonesia",
+    "Iran",
+    "Iraq",
+    "Ireland",
+    "Israel",
+    "Italy",
+    "Jamaica",
+    "Japan",
+    "Jordan",
+    "Kazakhstan",
+    "Kenya",
+    "Kuwait",
+    "Kyrgyzstan",
+    "Laos",
+    "Latvia",
+    "Lebanon",
+    "Liberia",
+    "Libya",
+    "Lithuania",
+    "Luxembourg",
+    "Madagascar",
+    "Malawi",
+    "Malaysia",
+    "Maldives",
+    "Mali",
+    "Malta",
+    "Mexico",
+    "Moldova",
+    "Monaco",
+    "Mongolia",
+    "Morocco",
+    "Mozambique",
+    "Myanmar",
+    "Namibia",
+    "Nepal",
+    "Netherlands",
+    "New Zealand",
+    "Nicaragua",
+    "Niger",
+    "Nigeria",
+    "North Korea",
+    "Norway",
+    "Oman",
+    "Pakistan",
+    "Panama",
+    "Paraguay",
+    "Peru",
+    "Philippines",
+    "Poland",
+    "Portugal",
+    "Qatar",
+    "Romania",
+    "Russia",
+    "Rwanda",
+    "Saudi Arabia",
+    "Senegal",
+    "Serbia",
+    "Singapore",
+    "Slovakia",
+    "Slovenia",
+    "Somalia",
+    "South Africa",
+    "South Korea",
+    "Spain",
+    "Sri Lanka",
+    "Sudan",
+    "Sweden",
+    "Switzerland",
+    "Syria",
+    "Taiwan",
+    "Tajikistan",
+    "Tanzania",
+    "Thailand",
+    "Tunisia",
+    "Turkey",
+    "Uganda",
+    "Ukraine",
+    "United Arab Emirates",
+    "United Kingdom",
+    "United States",
+    "Uruguay",
+    "Uzbekistan",
+    "Venezuela",
+    "Vietnam",
+    "Yemen",
+    "Zambia",
+    "Zimbabwe"
+  ];
 
   void setSelectedCountry(String value) {
     _selectedCountry = value;
-    if (selectedCountry != 'Ethiopia') {
-      _selectedRegion = 'Other';
-    } else {
-      _selectedRegion = 'Addis Ababa';
-    }
+
 
     rebuildUi();
   }
 
-  // Region
-  List<String> getRegions(String country) {
-    if (country == 'Ethiopia') {
-      return [
-        'Afar',
-        'SNNPR',
-        'Amhara',
-        'Harari',
-        'Oromia',
-        'Sidama',
-        'Somali',
-        'Tigray',
-        'Gambela',
-        'Dire Dawa',
-        'Addis Ababa',
-        'Central Ethiopia',
-        'Benishangul-Gumuz',
-        'South West Ethiopia',
-      ];
-    } else {
-      return ['Other'];
-    }
-  }
-
-  void setSelectedRegion(String value) {
-    _selectedRegion = value;
-    rebuildUi();
-  }
 
   // Occupation
   void setOccupationFocus() {
     _focusOccupation = true;
+    rebuildUi();
+  }
+
+  // Region
+  void setRegionFocus() {
+    _focusRegion = true;
     rebuildUi();
   }
 

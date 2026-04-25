@@ -14,6 +14,7 @@ import 'package:yimaru_app/ui/common/validators/form_validator.dart';
 const bool _autoTextFieldValidation = true;
 
 const String EmailValueKey = 'email';
+const String RegionValueKey = 'region';
 const String PhoneNumberValueKey = 'phoneNumber';
 const String LastNameValueKey = 'lastName';
 const String FirstNameValueKey = 'firstName';
@@ -27,6 +28,7 @@ final Map<String, FocusNode> _ProfileDetailViewFocusNodes = {};
 final Map<String, String? Function(String?)?>
     _ProfileDetailViewTextValidations = {
   EmailValueKey: FormValidator.validateForm,
+  RegionValueKey: FormValidator.validateForm,
   PhoneNumberValueKey: FormValidator.validatePhoneNumberForm,
   LastNameValueKey: FormValidator.validateForm,
   FirstNameValueKey: FormValidator.validateForm,
@@ -36,6 +38,8 @@ final Map<String, String? Function(String?)?>
 mixin $ProfileDetailView {
   TextEditingController get emailController =>
       _getFormTextEditingController(EmailValueKey);
+  TextEditingController get regionController =>
+      _getFormTextEditingController(RegionValueKey);
   TextEditingController get phoneNumberController =>
       _getFormTextEditingController(PhoneNumberValueKey);
   TextEditingController get lastNameController =>
@@ -46,6 +50,7 @@ mixin $ProfileDetailView {
       _getFormTextEditingController(OccupationValueKey);
 
   FocusNode get emailFocusNode => _getFormFocusNode(EmailValueKey);
+  FocusNode get regionFocusNode => _getFormFocusNode(RegionValueKey);
   FocusNode get phoneNumberFocusNode => _getFormFocusNode(PhoneNumberValueKey);
   FocusNode get lastNameFocusNode => _getFormFocusNode(LastNameValueKey);
   FocusNode get firstNameFocusNode => _getFormFocusNode(FirstNameValueKey);
@@ -76,6 +81,7 @@ mixin $ProfileDetailView {
   /// with the latest textController values
   void syncFormWithViewModel(FormStateHelper model) {
     emailController.addListener(() => _updateFormData(model));
+    regionController.addListener(() => _updateFormData(model));
     phoneNumberController.addListener(() => _updateFormData(model));
     lastNameController.addListener(() => _updateFormData(model));
     firstNameController.addListener(() => _updateFormData(model));
@@ -92,6 +98,7 @@ mixin $ProfileDetailView {
   )
   void listenToFormUpdated(FormViewModel model) {
     emailController.addListener(() => _updateFormData(model));
+    regionController.addListener(() => _updateFormData(model));
     phoneNumberController.addListener(() => _updateFormData(model));
     lastNameController.addListener(() => _updateFormData(model));
     firstNameController.addListener(() => _updateFormData(model));
@@ -106,6 +113,7 @@ mixin $ProfileDetailView {
       model.formValueMap
         ..addAll({
           EmailValueKey: emailController.text,
+          RegionValueKey: regionController.text,
           PhoneNumberValueKey: phoneNumberController.text,
           LastNameValueKey: lastNameController.text,
           FirstNameValueKey: firstNameController.text,
@@ -152,6 +160,7 @@ extension ValueProperties on FormStateHelper {
   }
 
   String? get emailValue => this.formValueMap[EmailValueKey] as String?;
+  String? get regionValue => this.formValueMap[RegionValueKey] as String?;
   String? get phoneNumberValue =>
       this.formValueMap[PhoneNumberValueKey] as String?;
   String? get lastNameValue => this.formValueMap[LastNameValueKey] as String?;
@@ -166,6 +175,17 @@ extension ValueProperties on FormStateHelper {
 
     if (_ProfileDetailViewTextEditingControllers.containsKey(EmailValueKey)) {
       _ProfileDetailViewTextEditingControllers[EmailValueKey]?.text =
+          value ?? '';
+    }
+  }
+
+  set regionValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({RegionValueKey: value}),
+    );
+
+    if (_ProfileDetailViewTextEditingControllers.containsKey(RegionValueKey)) {
+      _ProfileDetailViewTextEditingControllers[RegionValueKey]?.text =
           value ?? '';
     }
   }
@@ -221,6 +241,9 @@ extension ValueProperties on FormStateHelper {
   bool get hasEmail =>
       this.formValueMap.containsKey(EmailValueKey) &&
       (emailValue?.isNotEmpty ?? false);
+  bool get hasRegion =>
+      this.formValueMap.containsKey(RegionValueKey) &&
+      (regionValue?.isNotEmpty ?? false);
   bool get hasPhoneNumber =>
       this.formValueMap.containsKey(PhoneNumberValueKey) &&
       (phoneNumberValue?.isNotEmpty ?? false);
@@ -236,6 +259,8 @@ extension ValueProperties on FormStateHelper {
 
   bool get hasEmailValidationMessage =>
       this.fieldsValidationMessages[EmailValueKey]?.isNotEmpty ?? false;
+  bool get hasRegionValidationMessage =>
+      this.fieldsValidationMessages[RegionValueKey]?.isNotEmpty ?? false;
   bool get hasPhoneNumberValidationMessage =>
       this.fieldsValidationMessages[PhoneNumberValueKey]?.isNotEmpty ?? false;
   bool get hasLastNameValidationMessage =>
@@ -247,6 +272,8 @@ extension ValueProperties on FormStateHelper {
 
   String? get emailValidationMessage =>
       this.fieldsValidationMessages[EmailValueKey];
+  String? get regionValidationMessage =>
+      this.fieldsValidationMessages[RegionValueKey];
   String? get phoneNumberValidationMessage =>
       this.fieldsValidationMessages[PhoneNumberValueKey];
   String? get lastNameValidationMessage =>
@@ -260,6 +287,8 @@ extension ValueProperties on FormStateHelper {
 extension Methods on FormStateHelper {
   void setEmailValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[EmailValueKey] = validationMessage;
+  void setRegionValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[RegionValueKey] = validationMessage;
   void setPhoneNumberValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[PhoneNumberValueKey] = validationMessage;
   void setLastNameValidationMessage(String? validationMessage) =>
@@ -272,6 +301,7 @@ extension Methods on FormStateHelper {
   /// Clears text input fields on the Form
   void clearForm() {
     emailValue = '';
+    regionValue = '';
     phoneNumberValue = '';
     lastNameValue = '';
     firstNameValue = '';
@@ -282,6 +312,7 @@ extension Methods on FormStateHelper {
   void validateForm() {
     this.setValidationMessages({
       EmailValueKey: getValidationMessage(EmailValueKey),
+      RegionValueKey: getValidationMessage(RegionValueKey),
       PhoneNumberValueKey: getValidationMessage(PhoneNumberValueKey),
       LastNameValueKey: getValidationMessage(LastNameValueKey),
       FirstNameValueKey: getValidationMessage(FirstNameValueKey),
@@ -306,6 +337,7 @@ String? getValidationMessage(String key) {
 void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
       EmailValueKey: getValidationMessage(EmailValueKey),
+      RegionValueKey: getValidationMessage(RegionValueKey),
       PhoneNumberValueKey: getValidationMessage(PhoneNumberValueKey),
       LastNameValueKey: getValidationMessage(LastNameValueKey),
       FirstNameValueKey: getValidationMessage(FirstNameValueKey),

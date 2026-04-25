@@ -1993,6 +1993,13 @@ class MockVoiceRecorderService extends _i1.Mock
       ) as _i5.WaveformRecorderController);
 
   @override
+  bool get isRecording => (super.noSuchMethod(
+        Invocation.getter(#isRecording),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   int get listenersCount => (super.noSuchMethod(
         Invocation.getter(#listenersCount),
         returnValue: 0,

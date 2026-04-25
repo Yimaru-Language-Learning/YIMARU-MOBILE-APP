@@ -15,15 +15,17 @@ class CancelLearnPracticeSheet extends StatelessWidget {
   final GestureTapCallback? onContinue;
 
   const CancelLearnPracticeSheet(
-      {super.key, this.onClose, this.onCancel, this.onContinue,required this.user});
+      {super.key,
+      this.onClose,
+      this.onCancel,
+      this.onContinue,
+      required this.user});
 
   @override
-  Widget build(BuildContext context) =>
-      _buildSheetWrapper();
+  Widget build(BuildContext context) => _buildSheetWrapper();
 
-  Widget _buildSheetWrapper() =>
-      CustomBottomSheet(
-          height: 500, onTap: onClose, child: _buildColumnWrapper());
+  Widget _buildSheetWrapper() => CustomBottomSheet(
+      height: 500, onTap: onClose, child: _buildColumnWrapper());
 
   Widget _buildColumnWrapper() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

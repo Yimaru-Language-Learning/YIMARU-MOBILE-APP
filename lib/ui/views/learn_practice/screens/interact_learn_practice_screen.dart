@@ -31,11 +31,10 @@ class InteractLearnPracticeScreen
   }
 
   void _start(LearnPracticeViewModel viewModel) =>
-    viewModel.playVoicePrompt(question);
-
+      viewModel.playVoicePrompt(question);
 
   Future<void> _stop(LearnPracticeViewModel viewModel) async =>
-      await viewModel.nextQuestion(index: index,question: question);
+      await viewModel.nextQuestion(index: index, question: question);
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -96,25 +95,30 @@ class InteractLearnPracticeScreen
           {required BuildContext context,
           required LearnPracticeViewModel viewModel}) =>
       [
-        _buildAppBarWrapper(context: context,viewModel: viewModel),
+        _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildSpeakingIndicatorWrapper(viewModel),
         _buildLowerButtonsSectionWrapper(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildAppBarWrapper(   {required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => Column(
+  Widget _buildAppBarWrapper(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(context: context,viewModel: viewModel),
+          _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceMedium,
         ],
       );
 
-  Widget _buildAppBar(   {required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => SmallAppBar(
-        showBackButton: true,
-        onTap: () async => await _showSheet(context: context,viewModel: viewModel),
-      title: 'Practice Speaking ($index/${viewModel.questions.length})');
+  Widget _buildAppBar(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      SmallAppBar(
+          showBackButton: true,
+          onTap: () async =>
+              await _showSheet(context: context, viewModel: viewModel),
+          title: 'Practice Speaking ($index/${viewModel.questions.length})');
 
   Widget _buildSpeakingIndicatorWrapper(LearnPracticeViewModel viewModel) =>
       Column(
