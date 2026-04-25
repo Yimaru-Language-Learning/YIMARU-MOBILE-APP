@@ -60,8 +60,8 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
           required LearnPracticeViewModel viewModel}) =>
       PopScope(
           canPop: false,
-          onPopInvokedWithResult: (value, data)
-       async=>await _showSheet(context: context, viewModel: viewModel),
+          onPopInvokedWithResult: (value, data) async =>
+              await _showSheet(context: context, viewModel: viewModel),
           child: _buildScaffoldWrapper(viewModel));
 
   Widget _buildSheet(LearnPracticeViewModel viewModel) =>

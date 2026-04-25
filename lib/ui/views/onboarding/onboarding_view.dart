@@ -3,7 +3,6 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 
 import 'package:yimaru_app/ui/views/onboarding/screens/age_group_form_screen.dart';
-import 'package:yimaru_app/ui/views/onboarding/screens/birthday_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/challenge_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/country_region_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/educational_background_form_screen.dart';
@@ -22,6 +21,7 @@ import 'onboarding_view.form.dart';
   FormTextField(name: 'topic', validator: FormValidator.validateForm),
   FormTextField(
       name: 'fullName', validator: FormValidator.validateFullNameForm),
+  FormTextField(name: 'region', validator: FormValidator.validateForm),
   FormTextField(name: 'challenge', validator: FormValidator.validateForm),
   FormTextField(name: 'occupation', validator: FormValidator.validateForm),
   FormTextField(name: 'languageGoal', validator: FormValidator.validateForm),
@@ -50,25 +50,23 @@ class OnboardingView extends StackedView<OnboardingViewModel>
     } else if (viewModel.currentPage == 1) {
       viewModel.resetGenderFormScreen();
     } else if (viewModel.currentPage == 2) {
-      viewModel.resetBirthdayFormScreen();
-    } else if (viewModel.currentPage == 3) {
       viewModel.resetAgeGroupFormScreen();
-    } else if (viewModel.currentPage == 4) {
+    } else if (viewModel.currentPage == 3) {
       viewModel.resetEducationalBackgroundFormScreen();
-    } else if (viewModel.currentPage == 5) {
+    } else if (viewModel.currentPage == 4) {
       occupationController.clear();
       viewModel.resetOccupationFormScreen();
-    } else if (viewModel.currentPage == 6) {
+    } else if (viewModel.currentPage == 5) {
       viewModel.resetCountryRegionFormScreen();
-    } else if (viewModel.currentPage == 7) {
+    } else if (viewModel.currentPage == 6) {
       viewModel.resetLearningGoalFormScreen();
-    } else if (viewModel.currentPage == 8) {
+    } else if (viewModel.currentPage == 7) {
       languageGoalController.clear();
       viewModel.resetLanguageGoalFormScreen();
-    } else if (viewModel.currentPage == 9) {
+    } else if (viewModel.currentPage == 8) {
       challengeController.clear();
       viewModel.resetChallengeFormScreen();
-    } else if (viewModel.currentPage == 10) {
+    } else if (viewModel.currentPage == 9) {
       topicController.clear();
       viewModel.resetTopicFormScreen();
     }
@@ -117,7 +115,6 @@ class OnboardingView extends StackedView<OnboardingViewModel>
   List<Widget> _buildScreens() => [
         _buildFullNameForm(),
         _buildGenderForm(),
-        _buildBirthdayForm(),
         _buildAgeGroupForm(),
         _buildEducationalBackgroundForm(),
         _buildOccupationForm(),
@@ -133,8 +130,6 @@ class OnboardingView extends StackedView<OnboardingViewModel>
 
   Widget _buildGenderForm() => const GenderFormScreen();
 
-  Widget _buildBirthdayForm() => const BirthdayFormScreen();
-
   Widget _buildAgeGroupForm() => const AgeGroupFormScreen();
 
   Widget _buildEducationalBackgroundForm() =>
@@ -143,7 +138,9 @@ class OnboardingView extends StackedView<OnboardingViewModel>
   Widget _buildOccupationForm() =>
       OccupationFormScreen(occupationController: occupationController);
 
-  Widget _buildCountryRegionForm() => const CountryRegionFormScreen();
+  Widget _buildCountryRegionForm() => CountryRegionFormScreen(
+        regionController: regionController,
+      );
 
   Widget _buildLearningGoalForm() => const LearningGoalFormScreen();
 

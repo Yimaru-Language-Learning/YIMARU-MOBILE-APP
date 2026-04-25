@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
-import 'package:yimaru_app/ui/widgets/birthday_selector.dart';
 import 'package:yimaru_app/ui/widgets/custom_form_label.dart';
 import 'package:yimaru_app/ui/widgets/small_app_bar.dart';
 
@@ -22,6 +21,7 @@ import 'profile_detail_view.form.dart';
 
 @FormView(fields: [
   FormTextField(name: 'email', validator: FormValidator.validateForm),
+  FormTextField(name: 'region', validator: FormValidator.validateForm),
   FormTextField(
       name: 'phoneNumber', validator: FormValidator.validatePhoneNumberForm),
   FormTextField(name: 'lastName', validator: FormValidator.validateForm),
@@ -34,13 +34,13 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   Future<void> _update(ProfileDetailViewModel viewModel) async {
     Map<String, dynamic> data = {
-      'region': viewModel.selectedRegion,
+      'region':regionController.text,
       'gender': viewModel.selectedGender,
       'last_name': lastNameController.text,
       'country': viewModel.selectedCountry,
       'first_name': firstNameController.text,
       'occupation': occupationController.text,
-      'birth_day': viewModel.selectedBirthday,
+      'birth_day': DateFormat('d MMM, yyyy').format(DateTime.now()),
     };
 
     viewModel.addUserData(data);
@@ -68,15 +68,14 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   void _onModelReady(ProfileDetailViewModel viewModel) {
     phoneNumberController.text = '251900000000';
     emailController.text = viewModel.user?.email ?? '';
+    regionController.text = viewModel.user?.region ?? '';
     lastNameController.text = viewModel.user?.lastName ?? '';
     firstNameController.text = viewModel.user?.firstName ?? '';
     occupationController.text = viewModel.user?.occupation ?? '';
     viewModel.clearUserData();
     viewModel.setGender(viewModel.user?.gender ?? '');
     viewModel.setSelectedCountry(viewModel.user?.country ?? 'Ethiopia');
-    viewModel.setSelectedRegion(viewModel.user?.region ?? 'Addis Ababa');
-    viewModel.setBirthday(viewModel.user?.birthday ??
-        DateFormat('d MMM, yyyy').format(DateTime.now()));
+
   }
 
   @override
@@ -185,14 +184,17 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         verticalSpaceMedium,
         _buildGenderFormFieldWrapper(viewModel),
         verticalSpaceSmall,
-        _buildBirthdayColumn(viewModel),
-        verticalSpaceSmall,
         _buildPhoneNumberFormFieldSection(viewModel),
         verticalSpaceTiny,
         _buildEmailFormFieldSection(viewModel),
         verticalSpaceMedium,
-        _buildCountryRegionSection(viewModel),
+        _buildCountryDropdownLabel(),
+        verticalSpaceSmall,
+        _buildCountryDropdown(viewModel),
         verticalSpaceMedium,
+    _buildRegionFormFieldWrapper(viewModel),
+        verticalSpaceMedium,
+
         _buildOccupationDropdownWrapper(viewModel),
         verticalSpaceLarge,
         _buildLowerColumn(viewModel)
@@ -415,30 +417,6 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         ),
       );
 
-  Widget _buildBirthdayColumn(ProfileDetailViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildBirthdayChildren(viewModel),
-      );
-
-  List<Widget> _buildBirthdayChildren(ProfileDetailViewModel viewModel) => [
-        _buildBirthdayLabel(),
-        verticalSpaceSmall,
-        _buildBirthdayFormField(viewModel),
-      ];
-
-  Widget _buildBirthdayLabel() => CustomFormLabel(
-        label: 'Birthday',
-        style: style16DG600,
-      );
-
-  Widget _buildBirthdayFormField(ProfileDetailViewModel viewModel) =>
-      BirthdaySelector(
-        birthday: viewModel.selectedBirthday,
-        onSelected: (value) =>
-            viewModel.setBirthday(DateFormat('d MMM, yyyy').format(value)),
-      );
-
   Widget _buildPhoneNumberFormFieldSection(ProfileDetailViewModel viewModel) =>
       Column(
         mainAxisSize: MainAxisSize.min,
@@ -533,39 +511,6 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         style: validationStyle,
       );
 
-  Widget _buildCountryRegionSection(ProfileDetailViewModel viewModel) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildCountryRegionChildren(viewModel),
-      );
-
-  List<Widget> _buildCountryRegionChildren(ProfileDetailViewModel viewModel) =>
-      [
-        _buildCountryDropdownColumnWrapper(viewModel),
-        const SizedBox(width: 20),
-        _buildRegionDropdownColumnWrapper(viewModel)
-      ];
-
-  Widget _buildCountryDropdownColumnWrapper(ProfileDetailViewModel viewModel) =>
-      Expanded(
-        child: _buildCountryDropdownColumn(viewModel),
-      );
-
-  Widget _buildCountryDropdownColumn(ProfileDetailViewModel viewModel) =>
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildCountryDropdownChildren(viewModel),
-      );
-
-  List<Widget> _buildCountryDropdownChildren(
-          ProfileDetailViewModel viewModel) =>
-      [
-        _buildCountryDropdownLabel(),
-        verticalSpaceSmall,
-        _buildCountryDropdown(viewModel)
-      ];
-
   Widget _buildCountryDropdownLabel() => CustomFormLabel(
         label: 'Country',
         style: style16DG600,
@@ -579,38 +524,48 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         onChanged: (value) => viewModel.setSelectedCountry(value ?? 'Ethiopia'),
       );
 
-  Widget _buildRegionDropdownColumnWrapper(ProfileDetailViewModel viewModel) =>
-      Expanded(
-        child: _buildRegionDropdownColumn(viewModel),
-      );
-
-  Widget _buildRegionDropdownColumn(ProfileDetailViewModel viewModel) => Column(
+  Widget _buildRegionFormFieldWrapper(ProfileDetailViewModel viewModel) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildRegionDropdownChildren(viewModel),
+        children: _buildRegionFormFieldChildren(viewModel),
       );
 
-  List<Widget> _buildRegionDropdownChildren(ProfileDetailViewModel viewModel) =>
+  List<Widget> _buildRegionFormFieldChildren(
+      ProfileDetailViewModel viewModel) =>
       [
-        _buildRegionDropdownLabel(),
-        verticalSpaceSmall,
-        _buildRegionDropdown(viewModel)
+        _buildRegionFormFieldLabel(),verticalSpaceSmall,
+        _buildRegionFormField(viewModel),
+        if (viewModel.hasRegionValidationMessage && viewModel.focusRegion)
+          verticalSpaceTiny,
+        if (viewModel.hasRegionValidationMessage && viewModel.focusRegion)
+          _buildRegionValidatorWrapper(viewModel),
       ];
 
-  Widget _buildRegionDropdownLabel() => CustomFormLabel(
+  Widget _buildRegionFormFieldLabel() => CustomFormLabel(
         label: 'Region',
         style: style16DG600,
       );
 
-  Widget _buildRegionDropdown(ProfileDetailViewModel viewModel) =>
-      CustomDropdownPicker(
-        hint: 'Select region',
-        selectedItem: viewModel.selectedRegion,
-        items: (value, props) =>
-            viewModel.getRegions(viewModel.selectedCountry),
-        onChanged: (value) =>
-            viewModel.setSelectedRegion(value ?? 'Addis Ababa'),
+  Widget _buildRegionFormField(ProfileDetailViewModel viewModel) =>
+      TextFormField(
+        controller: regionController,
+        onTap: viewModel.setRegionFocus,
+        decoration: inputDecoration(
+            hint: 'Enter Your City',
+            focus: viewModel.focusRegion,
+            filled: regionController.text.isNotEmpty),
+      );
+
+  Widget _buildRegionValidatorWrapper(ProfileDetailViewModel viewModel) =>
+      viewModel.hasRegionValidationMessage
+          ? _buildRegionValidator(viewModel)
+          : Container();
+
+  Widget _buildRegionValidator(ProfileDetailViewModel viewModel) => Text(
+        viewModel.regionValidationMessage!,
+        style: style12R700,
       );
 
   Widget _buildOccupationDropdownWrapper(ProfileDetailViewModel viewModel) =>

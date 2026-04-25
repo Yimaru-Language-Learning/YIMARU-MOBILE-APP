@@ -12,11 +12,9 @@ import '../../../widgets/small_app_bar.dart';
 
 class LearnPracticeResultScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
-
   const LearnPracticeResultScreen({super.key});
 
-
-  void _navigate(LearnPracticeViewModel viewModel){
+  void _navigate(LearnPracticeViewModel viewModel) {
     viewModel.questionSetController.jumpToPage(0);
     viewModel.goTo(0);
   }
@@ -25,12 +23,11 @@ class LearnPracticeResultScreen
     viewModel.pop();
     viewModel.pop();
     viewModel.stopRecording();
-
   }
 
   Future<void> _showSheet(
-      {required BuildContext context,
-        required LearnPracticeViewModel viewModel}) async =>
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -40,42 +37,57 @@ class LearnPracticeResultScreen
 
   @override
   Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(context: context,viewModel: viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context,viewModel: viewModel),
+        body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) =>
-      SafeArea(child: _buildBodyColumnWrapper(context: context,viewModel: viewModel));
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      SafeArea(
+          child:
+              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildBodyColumnWrapper({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => Padding(
+  Widget _buildBodyColumnWrapper(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(context: context,viewModel: viewModel),
+        child: _buildBodyColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBodyColumn({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => Column(
-        children: _buildBodyColumnChildren(context: context,viewModel: viewModel),
+  Widget _buildBodyColumn(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Column(
+        children:
+            _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => [
+  List<Widget> _buildBodyColumnChildren(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
-        _buildAppBar(context: context,viewModel: viewModel),
+        _buildAppBar(context: context, viewModel: viewModel),
         verticalSpaceMedium,
         _buildBodyWrapper(viewModel)
       ];
 
-  Widget _buildAppBar({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => SmallAppBar(
+  Widget _buildAppBar(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      SmallAppBar(
         title: 'Result',
         showBackButton: true,
-    onTap: () async => await _showSheet(context: context,viewModel: viewModel),
+        onTap: () async =>
+            await _showSheet(context: context, viewModel: viewModel),
       );
 
   Widget _buildSheet(LearnPracticeViewModel viewModel) =>
@@ -112,7 +124,7 @@ class LearnPracticeResultScreen
   Widget _buildResultsSection(LearnPracticeViewModel viewModel) =>
       const LearnPracticeResultsWrapper();
 
-  Widget _buildLearnPracticeTipSection() =>  const LearnPracticeTipSection();
+  Widget _buildLearnPracticeTipSection() => const LearnPracticeTipSection();
 
   Widget _buildLowerButtonsSection(LearnPracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -148,6 +160,5 @@ class LearnPracticeResultScreen
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
         onTap: () => _navigate(viewModel),
-
       );
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
@@ -25,6 +26,7 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
     Map<String, dynamic> data = {
       'profile_completed': true,
       'preferred_language': 'en',
+      'birth_day': DateFormat('yyyy-MM-dd').format(DateTime.now()),
       'favoutite_topic': viewModel.selectedTopic ?? topicController.text,
     };
     viewModel.addUserData(data);

@@ -15,6 +15,7 @@ const bool _autoTextFieldValidation = true;
 
 const String TopicValueKey = 'topic';
 const String FullNameValueKey = 'fullName';
+const String RegionValueKey = 'region';
 const String ChallengeValueKey = 'challenge';
 const String OccupationValueKey = 'occupation';
 const String LanguageGoalValueKey = 'languageGoal';
@@ -27,6 +28,7 @@ final Map<String, FocusNode> _OnboardingViewFocusNodes = {};
 final Map<String, String? Function(String?)?> _OnboardingViewTextValidations = {
   TopicValueKey: FormValidator.validateForm,
   FullNameValueKey: FormValidator.validateFullNameForm,
+  RegionValueKey: FormValidator.validateForm,
   ChallengeValueKey: FormValidator.validateForm,
   OccupationValueKey: FormValidator.validateForm,
   LanguageGoalValueKey: FormValidator.validateForm,
@@ -37,6 +39,8 @@ mixin $OnboardingView {
       _getFormTextEditingController(TopicValueKey);
   TextEditingController get fullNameController =>
       _getFormTextEditingController(FullNameValueKey);
+  TextEditingController get regionController =>
+      _getFormTextEditingController(RegionValueKey);
   TextEditingController get challengeController =>
       _getFormTextEditingController(ChallengeValueKey);
   TextEditingController get occupationController =>
@@ -46,6 +50,7 @@ mixin $OnboardingView {
 
   FocusNode get topicFocusNode => _getFormFocusNode(TopicValueKey);
   FocusNode get fullNameFocusNode => _getFormFocusNode(FullNameValueKey);
+  FocusNode get regionFocusNode => _getFormFocusNode(RegionValueKey);
   FocusNode get challengeFocusNode => _getFormFocusNode(ChallengeValueKey);
   FocusNode get occupationFocusNode => _getFormFocusNode(OccupationValueKey);
   FocusNode get languageGoalFocusNode =>
@@ -77,6 +82,7 @@ mixin $OnboardingView {
   void syncFormWithViewModel(FormStateHelper model) {
     topicController.addListener(() => _updateFormData(model));
     fullNameController.addListener(() => _updateFormData(model));
+    regionController.addListener(() => _updateFormData(model));
     challengeController.addListener(() => _updateFormData(model));
     occupationController.addListener(() => _updateFormData(model));
     languageGoalController.addListener(() => _updateFormData(model));
@@ -93,6 +99,7 @@ mixin $OnboardingView {
   void listenToFormUpdated(FormViewModel model) {
     topicController.addListener(() => _updateFormData(model));
     fullNameController.addListener(() => _updateFormData(model));
+    regionController.addListener(() => _updateFormData(model));
     challengeController.addListener(() => _updateFormData(model));
     occupationController.addListener(() => _updateFormData(model));
     languageGoalController.addListener(() => _updateFormData(model));
@@ -107,6 +114,7 @@ mixin $OnboardingView {
         ..addAll({
           TopicValueKey: topicController.text,
           FullNameValueKey: fullNameController.text,
+          RegionValueKey: regionController.text,
           ChallengeValueKey: challengeController.text,
           OccupationValueKey: occupationController.text,
           LanguageGoalValueKey: languageGoalController.text,
@@ -153,6 +161,7 @@ extension ValueProperties on FormStateHelper {
 
   String? get topicValue => this.formValueMap[TopicValueKey] as String?;
   String? get fullNameValue => this.formValueMap[FullNameValueKey] as String?;
+  String? get regionValue => this.formValueMap[RegionValueKey] as String?;
   String? get challengeValue => this.formValueMap[ChallengeValueKey] as String?;
   String? get occupationValue =>
       this.formValueMap[OccupationValueKey] as String?;
@@ -177,6 +186,16 @@ extension ValueProperties on FormStateHelper {
     if (_OnboardingViewTextEditingControllers.containsKey(FullNameValueKey)) {
       _OnboardingViewTextEditingControllers[FullNameValueKey]?.text =
           value ?? '';
+    }
+  }
+
+  set regionValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({RegionValueKey: value}),
+    );
+
+    if (_OnboardingViewTextEditingControllers.containsKey(RegionValueKey)) {
+      _OnboardingViewTextEditingControllers[RegionValueKey]?.text = value ?? '';
     }
   }
 
@@ -220,6 +239,9 @@ extension ValueProperties on FormStateHelper {
   bool get hasFullName =>
       this.formValueMap.containsKey(FullNameValueKey) &&
       (fullNameValue?.isNotEmpty ?? false);
+  bool get hasRegion =>
+      this.formValueMap.containsKey(RegionValueKey) &&
+      (regionValue?.isNotEmpty ?? false);
   bool get hasChallenge =>
       this.formValueMap.containsKey(ChallengeValueKey) &&
       (challengeValue?.isNotEmpty ?? false);
@@ -234,6 +256,8 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[TopicValueKey]?.isNotEmpty ?? false;
   bool get hasFullNameValidationMessage =>
       this.fieldsValidationMessages[FullNameValueKey]?.isNotEmpty ?? false;
+  bool get hasRegionValidationMessage =>
+      this.fieldsValidationMessages[RegionValueKey]?.isNotEmpty ?? false;
   bool get hasChallengeValidationMessage =>
       this.fieldsValidationMessages[ChallengeValueKey]?.isNotEmpty ?? false;
   bool get hasOccupationValidationMessage =>
@@ -245,6 +269,8 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[TopicValueKey];
   String? get fullNameValidationMessage =>
       this.fieldsValidationMessages[FullNameValueKey];
+  String? get regionValidationMessage =>
+      this.fieldsValidationMessages[RegionValueKey];
   String? get challengeValidationMessage =>
       this.fieldsValidationMessages[ChallengeValueKey];
   String? get occupationValidationMessage =>
@@ -258,6 +284,8 @@ extension Methods on FormStateHelper {
       this.fieldsValidationMessages[TopicValueKey] = validationMessage;
   void setFullNameValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[FullNameValueKey] = validationMessage;
+  void setRegionValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[RegionValueKey] = validationMessage;
   void setChallengeValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[ChallengeValueKey] = validationMessage;
   void setOccupationValidationMessage(String? validationMessage) =>
@@ -269,6 +297,7 @@ extension Methods on FormStateHelper {
   void clearForm() {
     topicValue = '';
     fullNameValue = '';
+    regionValue = '';
     challengeValue = '';
     occupationValue = '';
     languageGoalValue = '';
@@ -279,6 +308,7 @@ extension Methods on FormStateHelper {
     this.setValidationMessages({
       TopicValueKey: getValidationMessage(TopicValueKey),
       FullNameValueKey: getValidationMessage(FullNameValueKey),
+      RegionValueKey: getValidationMessage(RegionValueKey),
       ChallengeValueKey: getValidationMessage(ChallengeValueKey),
       OccupationValueKey: getValidationMessage(OccupationValueKey),
       LanguageGoalValueKey: getValidationMessage(LanguageGoalValueKey),
@@ -303,6 +333,7 @@ void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
       TopicValueKey: getValidationMessage(TopicValueKey),
       FullNameValueKey: getValidationMessage(FullNameValueKey),
+      RegionValueKey: getValidationMessage(RegionValueKey),
       ChallengeValueKey: getValidationMessage(ChallengeValueKey),
       OccupationValueKey: getValidationMessage(OccupationValueKey),
       LanguageGoalValueKey: getValidationMessage(LanguageGoalValueKey),

@@ -6,9 +6,11 @@ import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_dropdown.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
+import '../onboarding_view.form.dart';
 
 class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
-  const CountryRegionFormScreen({super.key});
+  final TextEditingController regionController;
+  const CountryRegionFormScreen({super.key, required this.regionController});
 
   void _pop(OnboardingViewModel viewModel) {
     viewModel.resetCountryRegionFormScreen();
@@ -19,8 +21,8 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     Map<String, dynamic> data = {
+      'region': regionController.text,
       'country': viewModel.selectedCountry,
-      'region': viewModel.selectedRegion
     };
     viewModel.addUserData(data);
 
@@ -83,8 +85,11 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildCountryDropDown(viewModel),
         verticalSpaceMedium,
-        _buildRegionDropDown(viewModel),
-        verticalSpaceMedium,
+        _buildRegionFormField(viewModel),
+        if (viewModel.hasRegionValidationMessage && viewModel.focusRegion)
+          verticalSpaceTiny,
+        if (viewModel.hasRegionValidationMessage && viewModel.focusRegion)
+          _buildRegionValidatorWrapper(viewModel)
       ];
 
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
@@ -112,16 +117,23 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
           items: (value, props) => viewModel.getCountries(),
           onChanged: (value) =>
               viewModel.setSelectedCountry(value ?? 'Ethiopia'));
+  Widget _buildRegionFormField(OnboardingViewModel viewModel) => TextFormField(
+        controller: regionController,
+        onTap: viewModel.setRegionFocus,
+        decoration: inputDecoration(
+            hint: 'Enter Your City',
+            focus: viewModel.focusRegion,
+            filled: regionController.text.isNotEmpty),
+      );
 
-  Widget _buildRegionDropDown(OnboardingViewModel viewModel) =>
-      CustomDropdownPicker(
-        hint: 'Select region',
-        icon: _buildSearchIcon(),
-        selectedItem: viewModel.selectedRegion,
-        items: (value, props) =>
-            viewModel.getRegions(viewModel.selectedCountry),
-        onChanged: (value) =>
-            viewModel.setSelectedRegion(value ?? 'Addis Ababa'),
+  Widget _buildRegionValidatorWrapper(OnboardingViewModel viewModel) =>
+      viewModel.hasRegionValidationMessage
+          ? _buildRegionValidator(viewModel)
+          : Container();
+
+  Widget _buildRegionValidator(OnboardingViewModel viewModel) => Text(
+        viewModel.regionValidationMessage!,
+        style: style12R700,
       );
 
   Icon _buildSearchIcon() => const Icon(
@@ -140,7 +152,9 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: () => _next(viewModel),
-        backgroundColor: kcPrimaryColor,
+        onTap: regionController.text.isNotEmpty ? () => _next(viewModel) : null,
+        backgroundColor: regionController.text.isNotEmpty
+            ? kcPrimaryColor
+            : kcPrimaryColor.withOpacity(0.1),
       );
 }
