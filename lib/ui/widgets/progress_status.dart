@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 class ProgressStatus extends StatelessWidget {
   final Color color;
@@ -20,10 +21,6 @@ class ProgressStatus extends StatelessWidget {
 
   Widget _buildLabel() => Text(
         status,
-        style: TextStyle(
-          color: color,
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style12RP600.copyWith(color: color),
       );
 }

@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // StackedLocatorGenerator
@@ -19,6 +20,7 @@ import '../services/dio_service.dart';
 import '../services/google_auth_service.dart';
 import '../services/image_downloader_service.dart';
 import '../services/image_picker_service.dart';
+import '../services/in_app_update_service.dart';
 import '../services/notification_service.dart';
 import '../services/permission_handler_service.dart';
 import '../services/secure_storage_service.dart';
@@ -28,10 +30,8 @@ import '../services/voice_recorder_service.dart';
 
 final locator = StackedLocator.instance;
 
-Future<void> setupLocator({
-  String? environment,
-  EnvironmentFilter? environmentFilter,
-}) async {
+Future<void> setupLocator(
+    {String? environment, EnvironmentFilter? environmentFilter}) async {
 // Register environments
   locator.registerEnvironment(
       environment: environment, environmentFilter: environmentFilter);
@@ -54,4 +54,5 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => CourseService());
   locator.registerLazySingleton(() => AudioPlayerService());
   locator.registerLazySingleton(() => VoiceRecorderService());
+  locator.registerLazySingleton(() => InAppUpdateService());
 }

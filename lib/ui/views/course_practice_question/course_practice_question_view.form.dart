@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // StackedFormGenerator
@@ -145,7 +146,7 @@ extension ValueProperties on FormStateHelper {
 }
 
 extension Methods on FormStateHelper {
-  setAnswerValidationMessage(String? validationMessage) =>
+  void setAnswerValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[AnswerValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
@@ -167,7 +168,7 @@ String? getValidationMessage(String key) {
   if (validatorForKey == null) return null;
 
   String? validationMessageForKey = validatorForKey(
-    _CoursePracticeQuestionViewTextEditingControllers[key]!.text,
+    _CoursePracticeQuestionViewTextEditingControllers[key]?.text,
   );
 
   return validationMessageForKey;

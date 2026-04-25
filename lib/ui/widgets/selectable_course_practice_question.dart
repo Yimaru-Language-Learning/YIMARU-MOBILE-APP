@@ -106,7 +106,7 @@ class SelectableCoursePracticeQuestion
                         index + 1 < viewModel.coursePracticeQuestions.length
                             ? index + 1
                             : index]
-                    .questionId ??
+                    .id ??
                 0)
             : null,
       );

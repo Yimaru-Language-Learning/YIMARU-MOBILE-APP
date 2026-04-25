@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // StackedFormGenerator
@@ -252,15 +253,15 @@ extension ValueProperties on FormStateHelper {
 }
 
 extension Methods on FormStateHelper {
-  setOtpValidationMessage(String? validationMessage) =>
+  void setOtpValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[OtpValueKey] = validationMessage;
-  setEmailValidationMessage(String? validationMessage) =>
+  void setEmailValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[EmailValueKey] = validationMessage;
-  setPasswordValidationMessage(String? validationMessage) =>
+  void setPasswordValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[PasswordValueKey] = validationMessage;
-  setPhoneNumberValidationMessage(String? validationMessage) =>
+  void setPhoneNumberValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[PhoneNumberValueKey] = validationMessage;
-  setConfirmPasswordValidationMessage(String? validationMessage) =>
+  void setConfirmPasswordValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[ConfirmPasswordValueKey] =
           validationMessage;
 
@@ -291,7 +292,7 @@ String? getValidationMessage(String key) {
   if (validatorForKey == null) return null;
 
   String? validationMessageForKey = validatorForKey(
-    _RegisterViewTextEditingControllers[key]!.text,
+    _RegisterViewTextEditingControllers[key]?.text,
   );
 
   return validationMessageForKey;

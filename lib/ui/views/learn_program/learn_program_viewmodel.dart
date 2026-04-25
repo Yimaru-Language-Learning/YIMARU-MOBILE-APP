@@ -1,16 +1,16 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/app/app.router.dart';
+import 'package:yimaru_app/models/learn_program.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../app/app.router.dart';
-import '../../../models/subcategory.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 
-class LearnSubcategoryViewModel extends ReactiveViewModel {
+class LearnProgramViewModel extends ReactiveViewModel {
   // Dependency injection
   final _apiService = locator<ApiService>();
 
@@ -29,26 +29,28 @@ class LearnSubcategoryViewModel extends ReactiveViewModel {
 
   User? get user => _user;
 
-  // Learn subcategories
-  List<Subcategory> _subcategories = [];
+  // Learn programs
+  List<LearnProgram> _learnPrograms = [];
 
-  List<Subcategory> get subcategories => _subcategories;
+  List<LearnProgram> get learnPrograms => _learnPrograms;
 
   // Navigation
-  Future<void> navigateToLearn(int id) async =>
-      _navigationService.navigateToLearnView(id: id);
+  Future<void> navigateToLearnCourse(int id) async =>
+      _navigationService.navigateToLearnCourseView(id: id);
 
   // Remote api call
 
-  // Learn subcategories
-  Future<void> getLearnSubcategories() async =>
-      await runBusyFuture(_getLearnSubcategories(),
-          busyObject: StateObjects.learnSubcategories);
+  // Learn programs
+  Future<void> getLearnPrograms() async =>
+      await runBusyFuture(_getLearnPrograms(),
+          busyObject: StateObjects.learnPrograms);
 
-  Future<void> _getLearnSubcategories() async {
-    if (_subcategories.isEmpty) {
+  Future<void> _getLearnPrograms() async {
+    if (_learnPrograms.isEmpty) {
       if (await _statusChecker.checkConnection()) {
-        _subcategories = await _apiService.getLearnSubcategories();
+        _learnPrograms = await _apiService.getLearnPrograms();
+        _learnPrograms
+            .sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
       }
     }
   }

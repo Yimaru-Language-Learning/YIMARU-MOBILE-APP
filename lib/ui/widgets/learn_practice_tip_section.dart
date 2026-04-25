@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
+import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
-class LearnPracticeTipSection extends StatelessWidget {
+import '../../models/learn_practice.dart';
+
+class LearnPracticeTipSection extends ViewModelWidget<LearnPracticeViewModel> {
   const LearnPracticeTipSection({super.key});
 
   @override
-  Widget build(BuildContext context) => _buildContainer();
+  Widget build(BuildContext context,LearnPracticeViewModel viewModel) => _buildContainer(viewModel);
 
-  Widget _buildContainer() => Container(
+  Widget _buildContainer(LearnPracticeViewModel viewModel) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: kcBlue.withOpacity(0.1),
         ),
-        child: _buildColumn(),
+        child: _buildColumn(viewModel),
       );
 
-  Widget _buildColumn() => Column(
+  Widget _buildColumn(LearnPracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildColumnChildren(),
+        children: _buildColumnChildren( viewModel),
       );
 
-  List<Widget> _buildColumnChildren() =>
-      [_buildTitleWrapper(), verticalSpaceTiny, _buildContent()];
+  List<Widget> _buildColumnChildren(LearnPracticeViewModel viewModel) =>
+      [_buildTitleWrapper(), verticalSpaceTiny, _buildContent(viewModel)];
 
   Widget _buildTitleWrapper() => Row(
         children: [_buildLeading(), horizontalSpaceSmall, _buildTitle()],
@@ -40,8 +44,8 @@ class LearnPracticeTipSection extends StatelessWidget {
         style: style16B600,
       );
 
-  Widget _buildContent() => Text(
-        "You can always do better!\nSpeak in full sentences instead of short phrases.\nMaintain a steady pace, not too fast, not too slow.\nUse varied vocabulary to make your answers richer.\nPause naturally instead of using fillers like “um” or “uh”.",
+  Widget _buildContent(LearnPracticeViewModel viewModel) => Text(
+        viewModel.practices.firstOrNull?.quickTips ?? '',
         style: style14B400,
         textAlign: TextAlign.start,
       );

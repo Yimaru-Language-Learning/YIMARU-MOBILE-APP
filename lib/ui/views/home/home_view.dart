@@ -3,9 +3,10 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/course_category/course_category_view.dart';
-import 'package:yimaru_app/ui/views/learn_subcategory/learn_subcategory_view.dart';
+import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
 import 'package:yimaru_app/ui/views/startup/startup_view.dart';
+import 'package:yimaru_app/ui/widgets/coming_soon.dart';
 
 import 'home_viewmodel.dart';
 
@@ -18,7 +19,6 @@ class HomeView extends StackedView<HomeViewModel> {
   @override
   void onViewModelReady(HomeViewModel viewModel) async {
     // Removable
-    print('HERE');
     await _init(viewModel);
     super.onViewModelReady(viewModel);
   }
@@ -83,9 +83,9 @@ Widget _buildProfileIcon() => const Icon(Icons.person);
 Widget getViewForIndex(int index) {
   switch (index) {
     case 0:
-      return const LearnSubcategoryView();
+      return const LearnProgramView();
     case 1:
-      return const CourseCategoryView();
+      return const ComingSoon();
 
     default:
       return const ProfileView();

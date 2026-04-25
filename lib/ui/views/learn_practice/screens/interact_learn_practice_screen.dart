@@ -9,6 +9,7 @@ import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 import 'package:yimaru_app/ui/widgets/wave_wrapper.dart';
 
+import '../../../../models/learn_question.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
@@ -17,22 +18,24 @@ import '../../../widgets/small_app_bar.dart';
 
 class InteractLearnPracticeScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
-  const InteractLearnPracticeScreen({super.key});
+  final int index;
+  final LearnQuestion question;
+
+  const InteractLearnPracticeScreen(
+      {super.key, required this.index, required this.question});
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
     viewModel.pop();
-    viewModel.goTo(0);
+    viewModel.pop();
     viewModel.stopRecording();
   }
 
-  void _start(LearnPracticeViewModel viewModel) {
-    viewModel.playQuestionAudio();
-  }
+  void _start(LearnPracticeViewModel viewModel) =>
+    viewModel.playVoicePrompt(question);
 
-  Future<void> _stop(LearnPracticeViewModel viewModel) async {
-    await viewModel.stopRecording();
-    viewModel.goTo(4);
-  }
+
+  Future<void> _stop(LearnPracticeViewModel viewModel) async =>
+      await viewModel.nextQuestion(index: index,question: question);
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -41,7 +44,7 @@ class InteractLearnPracticeScreen
         context: context,
         isScrollControlled: true,
         backgroundColor: kcTransparent,
-        builder: (_) => _buildSheet(viewModel),
+        builder: (cxt) => _buildSheet(viewModel),
       );
 
   @override
@@ -68,16 +71,9 @@ class InteractLearnPracticeScreen
         children: [
           _buildBodyColumnWrapper(context: context, viewModel: viewModel),
           _buildProgressIndicatorState(viewModel),
-          _buildSpeakerState(context: context, viewModel: viewModel)
+          _buildPageLoadingIndicatorState(viewModel)
         ],
       );
-
-  Widget _buildSpeakerState(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      viewModel.busy(StateObjects.learnPracticeQuestion)
-          ? const PageLoadingIndicator()
-          : Container();
 
   Widget _buildBodyColumnWrapper(
           {required BuildContext context,
@@ -100,24 +96,25 @@ class InteractLearnPracticeScreen
           {required BuildContext context,
           required LearnPracticeViewModel viewModel}) =>
       [
-        _buildAppBarWrapper(viewModel),
+        _buildAppBarWrapper(context: context,viewModel: viewModel),
         _buildSpeakingIndicatorWrapper(viewModel),
         _buildLowerButtonsSectionWrapper(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildAppBarWrapper(LearnPracticeViewModel viewModel) => Column(
+  Widget _buildAppBarWrapper(   {required BuildContext context,
+    required LearnPracticeViewModel viewModel}) => Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(viewModel),
+          _buildAppBar(context: context,viewModel: viewModel),
           verticalSpaceMedium,
         ],
       );
 
-  Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
+  Widget _buildAppBar(   {required BuildContext context,
+    required LearnPracticeViewModel viewModel}) => SmallAppBar(
         showBackButton: true,
-        title: 'Practice Speaking',
-        onTap: () async => await _cancel(viewModel),
-      );
+        onTap: () async => await _showSheet(context: context,viewModel: viewModel),
+      title: 'Practice Speaking ($index/${viewModel.questions.length})');
 
   Widget _buildSpeakingIndicatorWrapper(LearnPracticeViewModel viewModel) =>
       Column(
@@ -328,6 +325,7 @@ class InteractLearnPracticeScreen
       CancelLearnPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
+        user: viewModel.user?.firstName ?? '',
         onCancel: () async => await _cancel(viewModel),
       );
 
@@ -355,4 +353,9 @@ class InteractLearnPracticeScreen
           activeColor: kcPrimaryColor,
           progress: viewModel.progress,
           backgroundColor: kcVeryLightGrey);
+
+  Widget _buildPageLoadingIndicatorState(LearnPracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.learnPracticeQuestion)
+          ? const PageLoadingIndicator()
+          : Container();
 }

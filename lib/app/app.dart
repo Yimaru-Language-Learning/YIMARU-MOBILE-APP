@@ -18,8 +18,6 @@ import 'package:yimaru_app/ui/views/privacy_policy/privacy_policy_view.dart';
 import 'package:yimaru_app/ui/views/terms_and_conditions/terms_and_conditions_view.dart';
 import 'package:yimaru_app/ui/views/register/register_view.dart';
 import 'package:yimaru_app/ui/views/login/login_view.dart';
-import 'package:yimaru_app/ui/views/learn/learn_view.dart';
-import 'package:yimaru_app/ui/views/learn_level/learn_level_view.dart';
 import 'package:yimaru_app/ui/views/learn_module/learn_module_view.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/api_service.dart';
@@ -51,8 +49,9 @@ import 'package:yimaru_app/ui/views/course/course_view.dart';
 import 'package:yimaru_app/services/audio_player_service.dart';
 import 'package:yimaru_app/services/voice_recorder_service.dart';
 import 'package:yimaru_app/ui/views/course_practice_question/course_practice_question_view.dart';
-import 'package:yimaru_app/ui/views/learn_subcategory/learn_subcategory_view.dart';
-import 'package:yimaru_app/ui/views/learn_submodule/learn_submodule_view.dart';
+import 'package:yimaru_app/services/in_app_update_service.dart';
+import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
+import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -73,8 +72,6 @@ import 'package:yimaru_app/ui/views/learn_submodule/learn_submodule_view.dart';
     MaterialRoute(page: TermsAndConditionsView),
     MaterialRoute(page: RegisterView),
     MaterialRoute(page: LoginView),
-    MaterialRoute(page: LearnView),
-    MaterialRoute(page: LearnLevelView),
     MaterialRoute(page: LearnModuleView),
     MaterialRoute(page: WelcomeView),
     MaterialRoute(page: AssessmentView),
@@ -92,8 +89,8 @@ import 'package:yimaru_app/ui/views/learn_submodule/learn_submodule_view.dart';
     MaterialRoute(page: CourseSubcategoryView),
     MaterialRoute(page: CourseView),
     MaterialRoute(page: CoursePracticeQuestionView),
-    MaterialRoute(page: LearnSubcategoryView),
-    MaterialRoute(page: LearnSubmoduleView),
+    MaterialRoute(page: LearnProgramView),
+    MaterialRoute(page: LearnCourseView),
 // @stacked-route
   ],
   dependencies: [
@@ -114,6 +111,7 @@ import 'package:yimaru_app/ui/views/learn_submodule/learn_submodule_view.dart';
     LazySingleton(classType: CourseService),
     LazySingleton(classType: AudioPlayerService),
     LazySingleton(classType: VoiceRecorderService),
+    LazySingleton(classType: InAppUpdateService),
 // @stacked-service
   ],
   bottomsheets: [

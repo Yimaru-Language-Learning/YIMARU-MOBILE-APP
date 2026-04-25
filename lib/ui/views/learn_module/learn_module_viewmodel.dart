@@ -1,7 +1,7 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
-import 'package:yimaru_app/models/module.dart';
+import 'package:yimaru_app/models/learn_module.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../services/api_service.dart';
@@ -17,28 +17,31 @@ class LearnModuleViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
 
   // Learn module
-  List<Module> _modules = [];
+  List<LearnModule> _modules = [];
 
-  List<Module> get modules => _modules;
+  List<LearnModule> get modules => _modules;
 
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnSubmodule(Module module) async =>
-      await _navigationService.navigateToLearnSubmoduleView(module: module);
+  Future<void> navigateToLearnLesson(LearnModule module) async =>
+      await _navigationService.navigateToLearnLessonView(module: module);
+
+  Future<void> navigateToLearnPractice(int id) async => await _navigationService
+      .navigateToLearnPracticeView(id: id, practice: LearnPractices.module);
 
   // Remote api call
 
   // Learn modules
-  Future<void> getModules(int id) async => await runBusyFuture(_getModules(id),
-      busyObject: StateObjects.learnModules);
+  Future<void> getLearnModules(int id) async =>
+      await runBusyFuture(_getLearnModules(id),
+          busyObject: StateObjects.learnModules);
 
-  Future<void> _getModules(int id) async {
+  Future<void> _getLearnModules(int id) async {
     if (_modules.isEmpty) {
       if (await _statusChecker.checkConnection()) {
-        _modules = await _apiService.getModules(id);
-        _modules.sort(
-            (a, b) => (a.displayOrder ?? 0).compareTo(b.displayOrder ?? 0));
+        _modules = await _apiService.getLearnModules(id);
+        _modules.sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
       }
     }
   }

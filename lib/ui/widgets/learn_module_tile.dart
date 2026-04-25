@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/models/learn_module.dart';
 import 'package:yimaru_app/ui/views/learn_module/learn_module_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
-import '../../models/module.dart';
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
-  final Module module;
+  final LearnModule module;
   final GestureTapCallback? onModuleTap;
+  final GestureTapCallback? onPracticeTap;
 
-  const LearnModuleTile({super.key, this.onModuleTap, required this.module});
+  const LearnModuleTile(
+      {super.key, this.onModuleTap, this.onPracticeTap, required this.module});
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -35,7 +37,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: kcVeryLightGrey),
+          border: Border.all(color: kcPrimaryColor.withOpacity(0.1)),
         ),
         child: _buildTileStack(context: context, viewModel: viewModel),
       );
@@ -55,11 +57,11 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
           required LearnModuleViewModel viewModel}) =>
       ExpansionTile(
         enabled: true,
-        title: _buildTitle(),
         textColor: kcDarkGrey,
         showTrailingIcon: true,
         initiallyExpanded: true,
         subtitle: _buildContent(),
+        title: _buildTitleWrapper(),
         leading: _buildIconWrapper(),
         collapsedIconColor: kcDarkGrey,
         collapsedTextColor: kcDarkGrey,
@@ -70,8 +72,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
-        childrenPadding: const EdgeInsets.fromLTRB(70, 15, 15, 15),
-        // enabled: status != ProgressStatuses.pending,
+        childrenPadding: const EdgeInsets.fromLTRB(70, 0, 15, 15),
+        // enabled:(module.access?.isAccessible ?? false) ,
         // showTrailingIcon: status != ProgressStatuses.pending ? true : false,
         //initiallyExpanded: status == ProgressStatuses.started ? true : false,
         children:
@@ -88,8 +90,13 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         color: kcPrimaryColor,
       );
 
+  Widget _buildTitleWrapper() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: _buildTitle(),
+      );
+
   Widget _buildTitle() => Text(
-        module.title ?? '',
+        module.name ?? '',
         maxLines: 1,
         softWrap: false,
         style: style16P600,
@@ -123,8 +130,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>
       [
-        // _buildProgressRow(),
-        // verticalSpaceSmall,
+        _buildProgressRow(),
+        verticalSpaceSmall,
         _buildActionButtonWrapper(context: context, viewModel: viewModel)
       ];
 
@@ -141,12 +148,12 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       );
 
   Widget _buildProgressStatus() => const CustomLinearProgressIndicator(
-      progress: 0.75,
+      progress: 0,
       activeColor: kcPrimaryColor,
-      backgroundColor: kcVeryLightGrey);
+      backgroundColor: kcPrimaryColorLight);
 
   Widget _buildProgress() => const Text(
-        '2/3',
+        '0/0',
         style: TextStyle(color: kcDarkGrey),
       );
 
@@ -155,17 +162,14 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
           required LearnModuleViewModel viewModel}) =>
       SizedBox(
         height: 40,
-        child: _buildModuleButton(viewModel),
+        child: _buildActionButtons(viewModel),
       );
 
-  Widget _buildActionButtons(
-          {required BuildContext context,
-          required LearnModuleViewModel viewModel}) =>
-      Row(
+  Widget _buildActionButtons(LearnModuleViewModel viewModel) => Row(
         children: [
           _buildModuleButtonWrapper(viewModel),
           horizontalSpaceSmall,
-          _buildPracticeButtonWrapper(context: context, viewModel: viewModel)
+          _buildPracticeButtonWrapper(viewModel)
         ],
       );
 
@@ -183,23 +187,21 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         backgroundColor: kcPrimaryColor,
       );
 
-  Widget _buildPracticeButtonWrapper(
-          {required BuildContext context,
-          required LearnModuleViewModel viewModel}) =>
+  Widget _buildPracticeButtonWrapper(LearnModuleViewModel viewModel) =>
       Expanded(
-        child: Container(),
+        child: _buildPracticeButton(viewModel),
       );
 
-  Widget _buildPracticeButton(
-          {required BuildContext context,
-          required LearnModuleViewModel viewModel}) =>
-      const CustomElevatedButton(
+  Widget _buildPracticeButton(LearnModuleViewModel viewModel) =>
+      CustomElevatedButton(
         height: 15,
         borderRadius: 12,
-        text: 'View Practices',
+        onTap: onPracticeTap,
+        text: 'Take Practices',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
+
         // onTap: () async => await viewModel.navigateToLearnPractice(practices),
       );
 

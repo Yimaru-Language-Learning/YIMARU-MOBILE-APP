@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/models/submodule.dart';
+import 'package:yimaru_app/models/learn_lesson.dart';
+import 'package:yimaru_app/models/learn_module.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/learn_lesson_tile.dart';
 import 'package:yimaru_app/ui/widgets/module_progress.dart';
 import 'package:yimaru_app/ui/widgets/motivation_card.dart';
 
-import '../../../models/lesson.dart';
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
@@ -14,17 +14,15 @@ import '../../widgets/small_app_bar.dart';
 import 'learn_lesson_viewmodel.dart';
 
 class LearnLessonView extends StackedView<LearnLessonViewModel> {
-  final Submodule submodule;
+  final LearnModule module;
 
-  const LearnLessonView({Key? key, required this.submodule}) : super(key: key);
-
+  const LearnLessonView({Key? key, required this.module}) : super(key: key);
 
   @override
   void onViewModelReady(LearnLessonViewModel viewModel) async {
-    await viewModel.getLessons(submodule.id ?? 0);
+    await viewModel.getLessons(module.id ?? 0);
     super.onViewModelReady(viewModel);
   }
-
 
   Widget getPadding(context) {
     double half = screenHeight(context) / 2;
@@ -116,9 +114,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         verticalSpaceTiny,
         _buildSubtitle(),
         verticalSpaceSmall,
-        verticalSpaceSmall,
         _buildModuleProgress(),
-        verticalSpaceMedium,
         verticalSpaceMedium,
         _buildMotivationCard(),
         verticalSpaceMedium,
@@ -128,13 +124,13 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        submodule.title ?? '',
+        module.name ?? '',
         style: style16DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        submodule.description ?? '',
-        style: style14DG600,
+        module.description ?? '',
+        style: style14DG500,
       );
 
   Widget _buildModuleProgress() => const ModuleProgress();
@@ -146,16 +142,14 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         style: style18DG700,
       );
 
-
   Widget _buildListViewBuilder(LearnLessonViewModel viewModel) =>
       viewModel.busy(StateObjects.learnLessons)
           ? _buildProgressIndicator()
           : _buildListView(viewModel);
 
   Widget _buildProgressIndicator() => const Center(
-    child: CustomCircularProgressIndicator(color: kcPrimaryColor),
-  );
-
+        child: CustomCircularProgressIndicator(color: kcPrimaryColor),
+      );
 
   Widget _buildListView(LearnLessonViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
@@ -163,16 +157,21 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           lesson: viewModel.lessons[index],
-          onLessonTap: () async => await viewModel.navigateToLearnLessonDetail(viewModel.lessons[index]),
+          onLessonTap: () async => await viewModel
+              .navigateToLearnLessonDetail(viewModel.lessons[index]),
+          onPracticeTap: () async => await viewModel
+              .navigateToLearnPractice(viewModel.lessons[index].id ?? 0),
         ),
       );
 
   Widget _buildTile({
-    required Lesson lesson,
+    required LearnLesson lesson,
     required GestureTapCallback? onLessonTap,
+    required GestureTapCallback? onPracticeTap,
   }) =>
       LearnLessonTile(
         lesson: lesson,
         onLessonTap: onLessonTap,
+        onPracticeTap: onPracticeTap,
       );
 }

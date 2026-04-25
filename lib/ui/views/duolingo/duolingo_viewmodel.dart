@@ -26,7 +26,7 @@ class DuolingoViewModel extends FormViewModel {
   Map<String, dynamic> _selectedAssessment = {
     'label': 'Speaking 01',
     'intro_title': 'Speak About the Photo',
-    'type': DuolingoAssessmentType.speaking,
+    'type': DuolingoAssessments.speaking,
     'outro_title': 'Speaking Practice Completed',
     'outro_subtitle': 'You’ve finished this speaking session. Great work!',
     'intro_subtitle':
@@ -40,7 +40,7 @@ class DuolingoViewModel extends FormViewModel {
     {
       'label': 'Speaking 01',
       'intro_title': 'Speak About the Photo',
-      'type': DuolingoAssessmentType.speaking,
+      'type': DuolingoAssessments.speaking,
       'outro_title': 'Speaking Practice Completed',
       'outro_subtitle': 'You’ve finished this speaking session. Great work!',
       'intro_subtitle':
@@ -49,7 +49,7 @@ class DuolingoViewModel extends FormViewModel {
     {
       'label': 'Speaking 02',
       'intro_title': 'Read, Then Speak',
-      'type': DuolingoAssessmentType.speaking,
+      'type': DuolingoAssessments.speaking,
       'outro_title': 'Speaking Practice Completed',
       'intro_subtitle': 'You will speak about the given topic',
       'outro_subtitle': 'You’ve finished this speaking session. Great work!',
@@ -57,7 +57,7 @@ class DuolingoViewModel extends FormViewModel {
     {
       'label': 'Speaking 03',
       'intro_title': 'Speaking Sample',
-      'type': DuolingoAssessmentType.speaking,
+      'type': DuolingoAssessments.speaking,
       'outro_title': 'Speaking Practice Completed',
       'intro_subtitle': 'You’ll speak for 1–3 minutes about a given topic.',
       'outro_subtitle': 'You’ve finished this speaking session. Great work!',
@@ -65,7 +65,7 @@ class DuolingoViewModel extends FormViewModel {
     {
       'label': 'Speaking 04',
       'intro_title': 'Interactive Speaking',
-      'type': DuolingoAssessmentType.speaking,
+      'type': DuolingoAssessments.speaking,
       'outro_title': 'Speaking Practice Completed',
       'intro_subtitle': ' You’ll answer a series of short questions.',
       'outro_subtitle': 'You’ve finished this speaking session. Great work!',
@@ -73,7 +73,7 @@ class DuolingoViewModel extends FormViewModel {
     {
       'label': 'Writing 05',
       'intro_title': 'Write About the Photo',
-      'type': DuolingoAssessmentType.writing,
+      'type': DuolingoAssessments.writing,
       'outro_title': 'Writing Practice Completed',
       'outro_subtitle': 'You’ve finished this writing session. Great work!',
       'intro_subtitle':
@@ -82,7 +82,7 @@ class DuolingoViewModel extends FormViewModel {
     {
       'label': 'Writing 06',
       'intro_title': 'Writing Sample',
-      'type': DuolingoAssessmentType.writing,
+      'type': DuolingoAssessments.writing,
       'outro_title': 'Writing Practice Completed',
       'outro_subtitle': 'You’ve finished this writing session. Great work!',
       'intro_subtitle':
@@ -90,7 +90,7 @@ class DuolingoViewModel extends FormViewModel {
     },
     {
       'label': 'Writing 07',
-      'type': DuolingoAssessmentType.writing,
+      'type': DuolingoAssessments.writing,
       'outro_title': 'Writing Practice Completed',
       'intro_title': 'Interactive Writing Part 1',
       'outro_subtitle': 'You’ve finished this writing session. Great work!',
@@ -99,7 +99,7 @@ class DuolingoViewModel extends FormViewModel {
     },
     {
       'label': 'Writing 08',
-      'type': DuolingoAssessmentType.writing,
+      'type': DuolingoAssessments.writing,
       'intro_title': 'Interactive Writing Part 2',
       'outro_title': 'Writing Practice Completed',
       'outro_subtitle': 'You’ve finished this writing session. Great work!',
@@ -109,7 +109,7 @@ class DuolingoViewModel extends FormViewModel {
     {
       'label': 'Listening 09',
       'intro_title': 'Listen and Type',
-      'type': DuolingoAssessmentType.listening,
+      'type': DuolingoAssessments.listening,
       'outro_title': 'Listening Practice Completed',
       'intro_subtitle':
           'You will hear a short audio clip. Type exactly what you hear.',
@@ -117,7 +117,7 @@ class DuolingoViewModel extends FormViewModel {
     },
     {
       'label': 'Listening 10',
-      'type': DuolingoAssessmentType.listening,
+      'type': DuolingoAssessments.listening,
       'outro_title': 'Listening Practice Completed',
       'intro_title': 'Interactive Listening - Part 1',
       'intro_subtitle': ' Listen carefully and complete the missing words.',
@@ -125,7 +125,7 @@ class DuolingoViewModel extends FormViewModel {
     },
     {
       'label': 'Listening 11',
-      'type': DuolingoAssessmentType.listening,
+      'type': DuolingoAssessments.listening,
       'outro_title': 'Listening Practice Completed',
       'intro_title': 'Interactive Listening - Part 2',
       'intro_subtitle': 'Listen and choose the correct option.',
@@ -133,7 +133,7 @@ class DuolingoViewModel extends FormViewModel {
     },
     {
       'label': 'Assessment 12',
-      'type': DuolingoAssessmentType.listening,
+      'type': DuolingoAssessments.listening,
       'title': 'Interactive Listening - Part 3',
       'outro_title': 'Listening Practice Completed',
       'subtitle': 'Write a summary of the conversation you just had',
@@ -142,14 +142,14 @@ class DuolingoViewModel extends FormViewModel {
     {
       'label': 'Reading 13',
       'intro_title': 'Read and Select',
-      'type': DuolingoAssessmentType.reading,
+      'type': DuolingoAssessments.reading,
       'intro_subtitle':
           'Read the sentence and select the option that correctly completes the meaning.'
     },
     {
       'label': 'Reading 14',
       'intro_title': 'Fill in the blank',
-      'type': DuolingoAssessmentType.reading,
+      'type': DuolingoAssessments.reading,
       'intro_subtitle': 'Complete the sentences by filling in the missing words'
     },
   ];

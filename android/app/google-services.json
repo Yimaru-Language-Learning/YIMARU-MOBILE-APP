@@ -14,11 +14,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "900714037062-ngc0gc426sfnnjjr494g4vni46ne5uqv.apps.googleusercontent.com",
+          "client_id": "900714037062-4trqu7ln6en4kcm6gadk0uo01qijn1mk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.yimaru.lms.app",
-            "certificate_hash": "139ee56ac9763191d1eee882efc440c10530e6e9"
+            "certificate_hash": "b9cb22406df59b3b9b210896cc10fc704cc25858"
+          }
+        },
+        {
+          "client_id": "900714037062-d9aqa2eoni3ppumdpi39d5rtub2bsbbs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yimaru.lms.app",
+            "certificate_hash": "29797902ad6a24212b9d9fad71562907956f6a6c"
+          }
+        },
+        {
+          "client_id": "900714037062-ok9oeme95rfcvljtg065aj0f7mmsr0fa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yimaru.lms.app",
+            "certificate_hash": "928ead08b5e39d6a861a55ae7cceb8c402d1ee7a"
           }
         },
         {

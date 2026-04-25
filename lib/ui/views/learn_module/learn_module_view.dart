@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/models/level.dart';
+import 'package:yimaru_app/models/learn_module.dart';
 import 'package:yimaru_app/ui/widgets/learn_module_tile.dart';
 import 'package:yimaru_app/ui/widgets/overall_learn_progress.dart';
 
-import '../../../models/module.dart';
+import '../../../models/learn_course.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
@@ -13,13 +13,13 @@ import '../../widgets/small_app_bar.dart';
 import 'learn_module_viewmodel.dart';
 
 class LearnModuleView extends StackedView<LearnModuleViewModel> {
-  final Level level;
+  final LearnCourse course;
 
-  const LearnModuleView({Key? key, required this.level}) : super(key: key);
+  const LearnModuleView({Key? key, required this.course}) : super(key: key);
 
   @override
   void onViewModelReady(LearnModuleViewModel viewModel) async {
-    await viewModel.getModules(level.id ?? 0);
+    await viewModel.getLearnModules(1);
     super.onViewModelReady(viewModel);
   }
 
@@ -58,7 +58,6 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       );
 
   Widget _buildAppBar(LearnModuleViewModel viewModel) => SmallAppBar(
-        title: 'Modules',
         onTap: viewModel.pop,
         showBackButton: true,
       );
@@ -78,27 +77,28 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       );
 
   List<Widget> _buildLevelsColumnChildren(LearnModuleViewModel viewModel) => [
-        verticalSpaceMedium,
+        verticalSpaceSmall,
         _buildTitle(),
         _buildSubtitle(),
-        verticalSpaceLarge,
+        verticalSpaceMedium,
         _buildOverallProgress(),
         verticalSpaceMedium,
         _buildListViewBuilder(viewModel)
       ];
 
   Widget _buildTitle() => Text(
-        level.title ?? '',
+        course.name ?? '',
         style: style18P600,
       );
 
   Widget _buildSubtitle() => Text(
         'Your Current Level',
-        style: style14DG400,
+        style: style14P400,
       );
 
   Widget _buildOverallProgress() => OverallLearnProgress(
-        color: kcPrimaryColor.withOpacity(0.1),
+        indicatorBackgroundColor: kcWhite,
+        backgroundColor: kcPrimaryColor.withOpacity(0.1),
       );
 
   Widget _buildListViewBuilder(LearnModuleViewModel viewModel) =>
@@ -116,17 +116,20 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           module: viewModel.modules[index],
-          onModuleTap: () async => await viewModel
-              .navigateToLearnSubmodule(viewModel.modules[index]),
+          onModuleTap: () async =>
+              await viewModel.navigateToLearnLesson(viewModel.modules[index]),
+          onPracticeTap: () async => await viewModel
+              .navigateToLearnPractice(viewModel.modules[index].id ?? 0),
         ),
       );
 
   Widget _buildTile({
-    required Module module,
+    required LearnModule module,
     required GestureTapCallback onModuleTap,
+    required GestureTapCallback onPracticeTap,
   }) =>
       LearnModuleTile(
-        module: module,
-        onModuleTap: onModuleTap,
-      );
+          module: module,
+          onModuleTap: onModuleTap,
+          onPracticeTap: onPracticeTap);
 }

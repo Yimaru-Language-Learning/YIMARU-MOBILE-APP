@@ -46,7 +46,7 @@ Color getColor() {
 }
 
 // Get playable url
-String? getPlayableUrl(String url) {
+String? getReadableUrl(String url) {
   try {
     // Case 1: /file/d/FILE_ID/view
     final fileIdRegex = RegExp(r'/file/d/([a-zA-Z0-9_-]+)');
