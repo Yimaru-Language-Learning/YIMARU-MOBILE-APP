@@ -4,16 +4,20 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
 class OverallLearnProgress extends StatelessWidget {
-  final Color color;
-  const OverallLearnProgress({super.key, required this.color});
+  final Color backgroundColor;
+  final Color indicatorBackgroundColor;
+  const OverallLearnProgress(
+      {super.key,
+      required this.backgroundColor,
+      required this.indicatorBackgroundColor});
 
   @override
   Widget build(BuildContext context) => _buildContainer();
 
   Widget _buildContainer() => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         decoration: BoxDecoration(
-          color: color,
+          color: backgroundColor,
           borderRadius: BorderRadius.circular(4),
         ),
         child: _buildProgressSection(),
@@ -51,10 +55,10 @@ class OverallLearnProgress extends StatelessWidget {
         style: style14P400,
       );
 
-  Widget _buildProgressIndicator() => const CustomLinearProgressIndicator(
+  Widget _buildProgressIndicator() => CustomLinearProgressIndicator(
         progress: 0.0,
         activeColor: kcPrimaryColor,
-        backgroundColor: kcVeryLightGrey,
+        backgroundColor: indicatorBackgroundColor,
       );
 
   Widget _buildSubtitle() => const Text(

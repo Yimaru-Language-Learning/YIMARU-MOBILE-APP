@@ -1,47 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/finish_learn_practice_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_completion_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_result_screen.dart';
-import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practices_screen.dart';
+import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_questions_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/interact_learn_practice_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_intro_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/start_learn_practice_screen.dart';
+import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../common/app_colors.dart';
 import '../../widgets/cancel_learn_practice_sheet.dart';
 import 'learn_practice_viewmodel.dart';
 
 class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
-  final String title;
-  final String subtitle;
-  final String buttonLabel;
-  final List<Map<String, dynamic>> practices;
+  final int id;
+  final LearnPractices practice;
 
-  const LearnPracticeView(
-      {Key? key,
-      required this.title,
-      required this.subtitle,
-      required this.practices,
-      required this.buttonLabel})
+  const LearnPracticeView({Key? key, required this.id, required this.practice})
       : super(key: key);
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
     viewModel.pop();
-    viewModel.goTo(0);
     viewModel.stopRecording();
-  }
-
-  Future<void> _pop(
-      {required BuildContext context,
-      required LearnPracticeViewModel viewModel}) async {
-    {
-      if (viewModel.currentPage == 3) {
-        await _showSheet(context: context, viewModel: viewModel);
-      } else {
-        viewModel.goBack();
-      }
-    }
+    viewModel.pop();
   }
 
   Future<void> _showSheet(
@@ -53,6 +36,12 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
         backgroundColor: kcTransparent,
         builder: (_) => _buildSheet(viewModel),
       );
+
+  @override
+  void onViewModelReady(LearnPracticeViewModel viewModel) async {
+    await viewModel.getLearnPractices(id: id, practice: practice);
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   LearnPracticeViewModel viewModelBuilder(BuildContext context) =>
@@ -70,50 +59,45 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
           {required BuildContext context,
           required LearnPracticeViewModel viewModel}) =>
       PopScope(
-          canPop: viewModel.currentPage == 0 ? true : false,
-          onPopInvokedWithResult: (value, data) async =>
-              await _pop(context: context, viewModel: viewModel),
+          canPop: false,
+          onPopInvokedWithResult: (value, data)
+       async=>await _showSheet(context: context, viewModel: viewModel),
           child: _buildScaffoldWrapper(viewModel));
 
   Widget _buildSheet(LearnPracticeViewModel viewModel) =>
       CancelLearnPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
+        user: viewModel.user?.firstName ?? '',
         onCancel: () async => await _cancel(viewModel),
       );
 
   Widget _buildScaffoldWrapper(LearnPracticeViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildBody(viewModel),
+        body: _buildBodyState(viewModel),
       );
 
-  Widget _buildBody(LearnPracticeViewModel viewModel) =>
-      IndexedStack(index: viewModel.currentPage, children: _buildScreens());
+  Widget _buildBodyState(LearnPracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.learnPractices)
+          ? const PageLoadingIndicator()
+          : _buildBody(viewModel);
 
-  List<Widget> _buildScreens() => [
-        _buildLearnPracticesScreen(),
-        _buildLearnPracticeIntroScreen(),
-        _buildStartLearnPracticeScreen(),
-        _buildInteractLearnPracticeScreen(),
+  Widget _buildBody(LearnPracticeViewModel viewModel) => IndexedStack(
+      index: viewModel.currentPage, children: _buildScreens(viewModel));
+
+  List<Widget> _buildScreens(LearnPracticeViewModel viewModel) => [
+        _buildLearnPracticeIntroScreen(viewModel),
+        _buildLearnPracticeQuestionsScreen(viewModel),
         _buildFinishLearnPracticeScreen(),
         _buildLearnPracticeResultScreen(),
         _buildLearnPracticeCompletionScreen()
       ];
 
-  Widget _buildLearnPracticesScreen() => LearnPracticesScreen(
-        practices: practices,
-      );
+  Widget _buildLearnPracticeIntroScreen(LearnPracticeViewModel viewModel) =>
+      const LearnPracticeIntroScreen();
 
-  Widget _buildLearnPracticeIntroScreen() => LearnPracticeIntroScreen(
-        title: title,
-        subtitle: subtitle,
-        buttonLabel: buttonLabel,
-      );
-
-  Widget _buildStartLearnPracticeScreen() => const StartLearnPracticeScreen();
-
-  Widget _buildInteractLearnPracticeScreen() =>
-      const InteractLearnPracticeScreen();
+  Widget _buildLearnPracticeQuestionsScreen(LearnPracticeViewModel viewModel) =>
+      const LearnPracticeQuestionsScreen();
 
   Widget _buildFinishLearnPracticeScreen() => const FinishLearnPracticeScreen();
 

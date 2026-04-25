@@ -12,7 +12,13 @@ String kModulesUrl = 'modules';
 
 String kLessonsUrl = 'lessons';
 
+String kProgramsUrl = 'programs';
+
 String kRegisterUrl = 'register';
+
+String kPracticesUrl = 'practices';
+
+String kQuestionsUrl = 'questions';
 
 String kCategoryUrl = 'categories';
 
@@ -33,6 +39,8 @@ String kSubcoursesUrl = 'sub-courses';
 String kCompleteLessonUrl = 'complete';
 
 String kResetPassword = 'resetPassword';
+
+String kQuestionSetsUrl = 'question-sets';
 
 String kRequestResetCode = 'sendResetCode';
 

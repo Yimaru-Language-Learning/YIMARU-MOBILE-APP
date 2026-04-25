@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // StackedFormGenerator
@@ -253,15 +254,15 @@ extension ValueProperties on FormStateHelper {
 }
 
 extension Methods on FormStateHelper {
-  setTopicValidationMessage(String? validationMessage) =>
+  void setTopicValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[TopicValueKey] = validationMessage;
-  setFullNameValidationMessage(String? validationMessage) =>
+  void setFullNameValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[FullNameValueKey] = validationMessage;
-  setChallengeValidationMessage(String? validationMessage) =>
+  void setChallengeValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[ChallengeValueKey] = validationMessage;
-  setOccupationValidationMessage(String? validationMessage) =>
+  void setOccupationValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[OccupationValueKey] = validationMessage;
-  setLanguageGoalValidationMessage(String? validationMessage) =>
+  void setLanguageGoalValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[LanguageGoalValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
@@ -291,7 +292,7 @@ String? getValidationMessage(String key) {
   if (validatorForKey == null) return null;
 
   String? validationMessageForKey = validatorForKey(
-    _OnboardingViewTextEditingControllers[key]!.text,
+    _OnboardingViewTextEditingControllers[key]?.text,
   );
 
   return validationMessageForKey;

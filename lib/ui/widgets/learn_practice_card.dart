@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/models/practice.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
 import '../common/app_colors.dart';
@@ -8,8 +9,8 @@ import 'custom_elevated_button.dart';
 
 class LearnPracticeCard extends ViewModelWidget<LearnPracticeViewModel> {
   final int index;
+  final Practice practice;
   final GestureTapCallback? onTap;
-  final Map<String, dynamic> practice;
 
   const LearnPracticeCard(
       {super.key, this.onTap, required this.index, required this.practice});
@@ -57,6 +58,6 @@ class LearnPracticeCard extends ViewModelWidget<LearnPracticeViewModel> {
         text: 'Practice',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () => viewModel.setPractice(practice),
+        //  onTap: () => viewModel.setPractice(practice),
       );
 }

@@ -21,7 +21,7 @@ class AudioPlayerService with ListenableServiceMixin {
   Stream<PlayerState> get stateStream => _player.onPlayerStateChanged;
 
   Future<void> playUrl(String url) async {
-    final playableUrl = getPlayableUrl(url);
+    final playableUrl = getReadableUrl(url);
 
     if (playableUrl == null) {
       throw Exception("Invalid audio URL");

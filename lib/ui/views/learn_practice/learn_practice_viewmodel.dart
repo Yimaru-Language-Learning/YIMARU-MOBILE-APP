@@ -1,19 +1,29 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
+import 'package:yimaru_app/models/learn_practice.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/voice_recorder_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../models/learn_question.dart';
+import '../../../models/question.dart';
+import '../../../services/api_service.dart';
 import '../../../services/audio_player_service.dart';
+import '../../../services/status_checker_service.dart';
 import '../../common/app_colors.dart';
 
 class LearnPracticeViewModel extends ReactiveViewModel {
   // Dependency injection
+  final _apiService = locator<ApiService>();
+
   final _dialogService = locator<DialogService>();
+
+  final _statusChecker = locator<StatusCheckerService>();
 
   final _navigationService = locator<NavigationService>();
 
@@ -67,23 +77,48 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   VoiceRecordingState get recordingState => _recordingState;
 
   // Busy object
-  StateObjects _busyObject = StateObjects.none;
+  String? _busyObject;
 
-  StateObjects get busyObject => _busyObject;
+  String? get busyObject => _busyObject;
+
+  Voice? _playing;
+
+  Voice? get playing =>_playing;
+
+  // Learn practices
+  List<LearnPractice> _practices = [];
+
+  List<LearnPractice> get practices => _practices;
+
+  // Practice questions
+  List<LearnQuestion> _questions = [];
+
+  List<LearnQuestion> get questions => _questions;
+
+  // Practice answers
+  List<Map<String, dynamic>> _answers = [];
+
+  List<Map<String, dynamic>> get answers => _answers;
 
   // In-app navigation
   int _currentPage = 0;
 
   int get currentPage => _currentPage;
 
-  // Practice
-  Map<String, dynamic> _selectedPractice = {};
+  final PageController _questionSetController = PageController();
 
-  Map<String, dynamic> get selectedPractice => _selectedPractice;
+  PageController get questionSetController => _questionSetController;
+
+  final PageController _questionController = PageController();
+
+  PageController get questionController => _questionController;
 
   // Voice recorder
-  Future<void> stopRecording() async =>
+  Future<void> stopRecording() async {
+    if (_voiceRecorderService.waveController.isRecording) {
       await _voiceRecorderService.stopRecording();
+    }
+  }
 
   Future<void> startRecording() async => await runBusyFuture(_startRecording(),
       busyObject: StateObjects.recordLearnPracticeAnswer);
@@ -91,24 +126,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   Future<void> _startRecording() async =>
       await _voiceRecorderService.startRecording();
 
-  // Sample audio
-  Future<void> playSampleAudio() async =>
-      await runBusyFuture(_playSampleAudio(),
-          busyObject: StateObjects.learnPracticeSample);
-
-  Future<void> _playSampleAudio() async {
-    setBusyObject(StateObjects.learnPracticeSample);
-    await _audioPlayerService.playUrl(_selectedPractice['sample_answer']);
-  }
-
-  Future<void> pauseSampleAudio() async =>
-      await runBusyFuture(_pauseSampleAudio(),
-          busyObject: StateObjects.learnPracticeSample);
-
-  Future<void> _pauseSampleAudio() async {
-    setBusyObject(StateObjects.learnPracticeSample);
-    await _audioPlayerService.pause();
-  }
 
   // Play practice audio
   void _listenToAudio() {
@@ -125,46 +142,53 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     });
   }
 
-  Future<void> playQuestionAudio() async =>
-      await runBusyFuture(_playQuestionAudio(),
+  Future<void> playVoicePrompt(LearnQuestion question) async =>
+      await runBusyFuture(_playVoicePrompt(question),
           busyObject: StateObjects.learnPracticeQuestion);
 
-  Future<void> _playQuestionAudio() async {
-    goTo(3);
-    await _audioPlayerService.playUrl(_selectedPractice['question_audio_url']);
+  Future<void> _playVoicePrompt(LearnQuestion question) async {
+    _questionController.jumpToPage(1);
+    await _audioPlayerService.playUrl(question.voicePrompt ?? '');
   }
 
-  // Recorded audio
-  Future<void> playRecordedAudio() async =>
-      await runBusyFuture(_playRecordedAudio(),
-          busyObject: StateObjects.learnPracticeAnswer);
-
-  Future<void> _playRecordedAudio() async {
-    setBusyObject(StateObjects.learnPracticeAnswer);
-    await _audioPlayerService
-        .playLocal(await _voiceRecorderService.getRecordedAudio() ?? '');
+  Future<void> playResult({required Map<String,dynamic> answer,required Voice voice})async{
+    setBusyObject(
+        playing: voice,
+        object: answer['busy_object']);
+    await playAudio(voice: voice,answer: answer);
   }
 
-  Future<void> pauseRecordedAudio() async =>
-      await runBusyFuture(_pauseRecordedAudio(),
-          busyObject: StateObjects.learnPracticeAnswer);
+  Future<void> playAudio({required Map<String,dynamic> answer,required Voice voice}) async =>
+      await runBusyFuture(_playAudio(voice:voice,answer:answer),
+          busyObject: answer['busy_object']);
 
-  Future<void> _pauseRecordedAudio() async {
-    setBusyObject(StateObjects.learnPracticeAnswer);
+  Future<void> _playAudio({required Map<String,dynamic> answer,required Voice voice}) async {
+
+
+    if(voice == Voice.recorded){
+      await _audioPlayerService
+          .playLocal(answer['recorded_voice_answer']);
+    }else{
+      await _audioPlayerService.playUrl(answer['sample_voice_answer']);
+
+    }
+
+
+  }
+
+
+  Future<void> pauseAudio() async {
     await _audioPlayerService.pause();
   }
 
   // Set busy object
-  void setBusyObject(StateObjects object) {
+  void setBusyObject({required String object,required Voice playing}) {
+    _playing = playing;
     _busyObject = object;
-    notifyListeners();
+    rebuildUi();
   }
 
-  // Practice
-  void setPractice(Map<String, dynamic> practice) {
-    _selectedPractice = practice;
-    goTo(1);
-  }
+
 
   // Dialogue
   Future<bool?> showAbortDialog() async {
@@ -195,6 +219,53 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     }
   }
 
+  Future<void> nextQuestion({required int index,required LearnQuestion question}) async {
+    await stopRecording();
+    _answers.add({
+      'busy_object': question.id.toString(),
+      'sample_text_answer': question.audioCorrectAnswerText,
+      'sample_voice_answer': question.sampleAnswerVoicePrompt,
+      'recorded_voice_answer' : _voiceRecorderService.getRecordedAudio() ,
+    });
+    if (index != _questions.length) {
+      _questionSetController.nextPage(
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeInOutCubic);
+    } else {
+      goTo(3);
+    }
+  }
+
   // Navigation
   void pop() => _navigationService.back();
+
+  // Remote api call
+
+  // Learn practice
+  Future<void> getLearnPractices(
+          {required int id, required LearnPractices practice}) async =>
+      await runBusyFuture(_getLearnPractices(id: id, practice: practice),
+          busyObject: StateObjects.learnPractices);
+
+  Future<void> _getLearnPractices(
+      {required int id, required LearnPractices practice}) async {
+    if (await _statusChecker.checkConnection()) {
+      if (practice == LearnPractices.course) {
+        _practices = await _apiService.getLearnCoursePractices(id);
+        await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
+      } else if (practice == LearnPractices.module) {
+        _practices = await _apiService.getLearnModulePractices(id);
+        await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
+      } else {
+        _practices = await _apiService.getLearnLessonPractices(id);
+        print('PRACTICE LENGTH: ${_practices.length}');
+        await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
+      }
+    }
+  }
+
+  Future<void> _getLearnPracticeQuestions(int id) async {
+    _questions = await _apiService.getLearnQuestions(id);
+
+  }
 }

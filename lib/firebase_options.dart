@@ -64,7 +64,7 @@ class DefaultFirebaseOptions {
     projectId: 'yimaru-academy-5e7e2',
     storageBucket: 'yimaru-academy-5e7e2.firebasestorage.app',
     androidClientId:
-        '900714037062-ngc0gc426sfnnjjr494g4vni46ne5uqv.apps.googleusercontent.com',
+        '900714037062-4trqu7ln6en4kcm6gadk0uo01qijn1mk.apps.googleusercontent.com',
     iosClientId:
         '900714037062-35bg0hsou56hg37mbcbpiar9uti7tcku.apps.googleusercontent.com',
     iosBundleId: 'com.yimaru.lms.app',

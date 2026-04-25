@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/models/practice_question.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/option.dart';
@@ -43,10 +42,9 @@ class CoursePracticeQuestionViewModel extends FormViewModel {
 
   Question? get currentQuestion => _currentQuestion;
 
-  List<PracticeQuestion> _coursePracticeQuestions = [];
+  List<Question> _coursePracticeQuestions = [];
 
-  List<PracticeQuestion> get coursePracticeQuestions =>
-      _coursePracticeQuestions;
+  List<Question> get coursePracticeQuestions => _coursePracticeQuestions;
 
   int _currentQuestionIndex = 0;
 
@@ -184,8 +182,8 @@ class CoursePracticeQuestionViewModel extends FormViewModel {
       _coursePracticeQuestions =
           await _apiService.getCoursePracticeQuestions(id);
       if (_coursePracticeQuestions.isNotEmpty) {
-        _currentQuestion = await _apiService.getCoursePracticeQuestion(
-            coursePracticeQuestions.first.questionId ?? 0);
+        _currentQuestion = await _apiService
+            .getCoursePracticeQuestion(coursePracticeQuestions.first.id ?? 0);
       }
     }
   }

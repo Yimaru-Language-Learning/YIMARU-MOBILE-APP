@@ -1,54 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/models/learn_practice.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
+import '../../../widgets/cancel_learn_practice_sheet.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/small_app_bar.dart';
 import '../../../widgets/speaking_partner_image.dart';
 
 class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
-  final String title;
-  final String subtitle;
-  final String buttonLabel;
+  const LearnPracticeIntroScreen({super.key});
 
-  const LearnPracticeIntroScreen(
-      {super.key,
-      required this.title,
-      required this.subtitle,
-      required this.buttonLabel});
+  Future<void> _cancel(LearnPracticeViewModel viewModel) async {
+    viewModel.pop();
+    viewModel.pop();
+    viewModel.stopRecording();
+
+  }
+
+  Future<void> _showSheet(
+      {required BuildContext context,
+        required LearnPracticeViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: kcTransparent,
+        builder: (cxt) => _buildSheet(viewModel),
+      );
 
   @override
   Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffoldWrapper(context: context,viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(LearnPracticeViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(  {required BuildContext context,
+    required LearnPracticeViewModel viewModel}) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffold(context: context,viewModel: viewModel),
       );
 
-  Widget _buildScaffold(LearnPracticeViewModel viewModel) =>
-      SafeArea(child: _buildColumnWrapper(viewModel));
+  Widget _buildScaffold(  {required BuildContext context,
+    required LearnPracticeViewModel viewModel}) =>
+      SafeArea(child: _buildColumnWrapper(context: context,viewModel: viewModel));
 
-  Widget _buildColumnWrapper(LearnPracticeViewModel viewModel) => Padding(
+  Widget _buildColumnWrapper(  {required BuildContext context,
+    required LearnPracticeViewModel viewModel}) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(viewModel),
+        child: _buildColumn(context: context,viewModel: viewModel),
       );
 
-  Widget _buildColumn(LearnPracticeViewModel viewModel) => Column(
+  Widget _buildColumn(  {required BuildContext context,
+    required LearnPracticeViewModel viewModel}) => Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(viewModel),
+          _buildAppBar(context: context,viewModel: viewModel),
           verticalSpaceMedium,
           _buildBodyColumnWrapper(viewModel),
         ],
       );
 
-  Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
+  Widget _buildAppBar(  {required BuildContext context,
+    required LearnPracticeViewModel viewModel}) => SmallAppBar(
         showBackButton: true,
-        onTap: viewModel.goBack,
         title: 'Practice Speaking',
+    onTap: () async => await _showSheet(context: context,viewModel: viewModel),
+
+  );
+
+  Widget _buildSheet(LearnPracticeViewModel viewModel) =>
+      CancelLearnPracticeSheet(
+        onClose: viewModel.pop,
+        onContinue: viewModel.pop,
+        user: viewModel.user?.firstName ?? '',
+        onCancel: () async => await _cancel(viewModel),
       );
 
   Widget _buildBodyColumnWrapper(LearnPracticeViewModel viewModel) => Expanded(
@@ -96,7 +121,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildPartnerName() => Text.rich(
-        TextSpan(text: 'Daniel', style: style14DG600, children: [
+        TextSpan(text: 'Dawit', style: style14DG600, children: [
           TextSpan(
             text: ' - Your Speaking Partner',
             style: style14MG400,
@@ -105,13 +130,14 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildTitle() => Text(
-        title,
+        'Let\'s practice what you just learnt!',
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle() => Text(
-        subtitle,
+        'I’ll ask you a few questions, and you can respond naturally.',
+        maxLines: 1,
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -126,9 +152,9 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: buttonLabel,
+        text: 'Practice',
         foregroundColor: kcWhite,
-        onTap: () => viewModel.goTo(2),
+        onTap: () => viewModel.goTo(1),
         backgroundColor: kcPrimaryColor,
       );
 }

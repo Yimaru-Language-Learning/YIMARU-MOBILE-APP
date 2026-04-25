@@ -16,6 +16,7 @@ import 'package:yimaru_app/services/smart_auth_service.dart';
 import 'package:yimaru_app/services/course_service.dart';
 import 'package:yimaru_app/services/audio_player_service.dart';
 import 'package:yimaru_app/services/voice_recorder_service.dart';
+import 'package:yimaru_app/services/in_app_update_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -42,6 +43,7 @@ import 'test_helpers.mocks.dart';
     MockSpec<CourseService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<AudioPlayerService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<VoiceRecorderService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<InAppUpdateService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
   ],
 )
@@ -63,6 +65,7 @@ void registerServices() {
   getAndRegisterCourseService();
   getAndRegisterAudioPlayerService();
   getAndRegisterVoiceRecorderService();
+  getAndRegisterInAppUpdateService();
 // @stacked-mock-register
 }
 
@@ -215,6 +218,13 @@ MockVoiceRecorderService getAndRegisterVoiceRecorderService() {
   _removeRegistrationIfExists<VoiceRecorderService>();
   final service = MockVoiceRecorderService();
   locator.registerSingleton<VoiceRecorderService>(service);
+  return service;
+}
+
+MockInAppUpdateService getAndRegisterInAppUpdateService() {
+  _removeRegistrationIfExists<InAppUpdateService>();
+  final service = MockInAppUpdateService();
+  locator.registerSingleton<InAppUpdateService>(service);
   return service;
 }
 // @stacked-mock-create

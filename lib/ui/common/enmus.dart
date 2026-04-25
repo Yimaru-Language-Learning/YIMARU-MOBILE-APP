@@ -1,3 +1,6 @@
+// Practice voice
+enum Voice { sample, recorded }
+
 // Response status
 enum ResponseStatus { success, failure }
 
@@ -6,6 +9,9 @@ enum LoginMethod { phone, email, google }
 
 // Sign-up method
 enum SignUpMethod { phone, email, google }
+
+// Learn practice
+enum LearnPractices { course, module, lesson }
 
 // Voice recording state
 enum VoiceRecordingState { pending, recording }
@@ -16,8 +22,8 @@ enum ProficiencyLevels { a1, a2, b1, b2, none }
 // Progress status
 enum ProgressStatuses { pending, started, completed }
 
-// Duolingo assessment types
-enum DuolingoAssessmentType { speaking, reading, writing, listening }
+// Duolingo  types
+enum DuolingoAssessments { speaking, reading, writing, listening }
 
 // State object
 enum StateObjects {
@@ -27,17 +33,18 @@ enum StateObjects {
   register,
   verifyOtp,
   resendOtp,
-  learnLevels,
   learnLessons,
   learnModules,
   learnCourses,
   profileImage,
+  learnPrograms,
   courseLessons,
   profileUpdate,
   resetPassword,
   subcategories,
   loginWithEmail,
   coursePractice,
+  learnPractices,
   loginWithGoogle,
   loadLessonVideo,
   loadCourseVideo,
@@ -46,7 +53,6 @@ enum StateObjects {
   courseCategories,
   profileCompletion,
   registerWithGoogle,
-  learnSubcategories,
   learnPracticeSample,
   learnPracticeAnswer,
   loginWithPhoneNumber,

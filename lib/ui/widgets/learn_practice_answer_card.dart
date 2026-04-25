@@ -8,11 +8,15 @@ import '../common/ui_helpers.dart';
 import '../views/learn_practice/learn_practice_viewmodel.dart';
 
 class LearnPracticeAnswerCard extends ViewModelWidget<LearnPracticeViewModel> {
+  final Voice voice;
   final String title;
-  final StateObjects object;
+  final Map<String, dynamic> answer;
 
   const LearnPracticeAnswerCard(
-      {super.key, required this.title, required this.object});
+      {super.key,
+      required this.voice,
+      required this.title,
+      required this.answer});
 
   @override
   Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
@@ -38,25 +42,20 @@ class LearnPracticeAnswerCard extends ViewModelWidget<LearnPracticeViewModel> {
           shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
           backgroundColor: WidgetStatePropertyAll(kcPrimaryColor),
         ),
-        onPressed: () async => viewModel.player.state == PlayerState.playing
-            ? viewModel.busyObject == StateObjects.learnPracticeSample
-                ? await viewModel.pauseSampleAudio()
-                : await viewModel.pauseRecordedAudio()
-            : object == StateObjects.learnPracticeSample
-                ? await viewModel.playSampleAudio()
-                : await viewModel.playRecordedAudio(),
+        onPressed: () async => viewModel.busyObject == answer['busy_object'] &&
+                viewModel.player.state == PlayerState.playing
+            ? await viewModel.pauseAudio()
+            : await viewModel.playResult(answer: answer, voice: voice),
         child: _buildButtonState(viewModel),
       );
 
   Widget _buildButtonState(LearnPracticeViewModel viewModel) =>
-      viewModel.busy(object)
-          ? viewModel.busyObject == object
-              ? _buildPauseIcon()
-              : _buildPlayIcon()
-          : viewModel.busyObject == object &&
-                  viewModel.player.state == PlayerState.playing
-              ? _buildPauseIcon()
-              : _buildPlayIcon();
+      (viewModel.busy(answer['busy_object']) && viewModel.playing == voice) ||
+              (viewModel.busyObject == answer['busy_object'] &&
+                  viewModel.playing == voice &&
+                  viewModel.player.state == PlayerState.playing)
+          ? _buildPauseIcon()
+          : _buildPlayIcon();
 
   Widget _buildPlayIcon() => const Icon(
         Icons.play_arrow_rounded,

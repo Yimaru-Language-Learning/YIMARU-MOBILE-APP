@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:yimaru_app/models/learn_lesson.dart';
+import 'package:yimaru_app/models/learn_practice.dart';
+import 'package:yimaru_app/models/learn_program.dart';
 import 'package:yimaru_app/models/level.dart';
 import 'package:yimaru_app/models/question.dart';
 import 'package:yimaru_app/models/subcategory.dart';
@@ -7,12 +10,14 @@ import 'package:yimaru_app/models/course_lesson.dart';
 import 'package:yimaru_app/models/course_progress.dart';
 import 'package:yimaru_app/models/course.dart';
 import 'package:yimaru_app/models/practice.dart';
-import 'package:yimaru_app/models/practice_question.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 
 import '../app/app.locator.dart';
+import '../models/learn_course.dart';
+import '../models/learn_module.dart';
+import '../models/learn_question.dart';
 import '../models/lesson.dart';
 import '../models/module.dart';
 import '../models/submodule.dart';
@@ -215,7 +220,7 @@ class ApiService {
     }
   }
 
-  // GEt profile completion status
+  // Get profile completion status
   Future<Map<String, dynamic>> getProfileStatus(User? user) async {
     try {
       Response response = await _service.dio.get(
@@ -372,6 +377,201 @@ class ApiService {
       return [];
     }
   }
+
+  // Learn learn programs
+  Future<List<LearnProgram>> getLearnPrograms() async {
+    try {
+      List<LearnProgram> learnPrograms = [];
+
+      final Response response =
+          await _service.dio.get('$kBaseUrl/api/$kApiVersionUrl/$kProgramsUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['programs'] as List;
+        learnPrograms = decodedData.map(
+          (e) {
+            return LearnProgram.fromJson(e);
+          },
+        ).toList();
+        return learnPrograms;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Learn learn courses
+  Future<List<LearnCourse>> getLearnCourse(int id) async {
+    try {
+      List<LearnCourse> learnCourses = [];
+
+      final Response response = await _service.dio
+          .get('$kBaseUrl/api/$kApiVersionUrl/$kProgramsUrl/$id/$kCoursesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['courses'] as List;
+        learnCourses = decodedData.map(
+          (e) {
+            return LearnCourse.fromJson(e);
+          },
+        ).toList();
+        return learnCourses;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Learn course practices
+  Future<List<LearnPractice>> getLearnCoursePractices(int id) async {
+    try {
+      List<LearnPractice> practices = [];
+
+      final Response response = await _service.dio
+          .get('$kBaseUrl/api/$kApiVersionUrl/$kCoursesUrl/$id/$kPracticesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['practices'] as List;
+        practices = decodedData.map(
+          (e) {
+            return LearnPractice.fromJson(e);
+          },
+        ).toList();
+        return practices;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get learn modules
+  Future<List<LearnModule>> getLearnModules(int id) async {
+    try {
+      List<LearnModule> modules = [];
+
+      final Response response = await _service.dio
+          .get('$kBaseUrl/api/$kApiVersionUrl/$kCoursesUrl/$id/$kModulesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['modules'] as List;
+        modules = decodedData.map(
+          (e) {
+            return LearnModule.fromJson(e);
+          },
+        ).toList();
+        return modules;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Learn module practices
+  Future<List<LearnPractice>> getLearnModulePractices(int id) async {
+    try {
+      List<LearnPractice> practices = [];
+
+      final Response response = await _service.dio
+          .get('$kBaseUrl/api/$kApiVersionUrl/$kModulesUrl/$id/$kPracticesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data'] as List;
+        practices = decodedData.map(
+          (e) {
+            return LearnPractice.fromJson(e);
+          },
+        ).toList();
+        return practices;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get learn lessons
+  Future<List<LearnLesson>> getLearnLessons(int id) async {
+    try {
+      List<LearnLesson> lessons = [];
+
+      final Response response = await _service.dio
+          .get('$kBaseUrl/api/$kApiVersionUrl/$kModulesUrl/$id/$kLessonsUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['lessons'] as List;
+        lessons = decodedData.map(
+          (e) {
+            return LearnLesson.fromJson(e);
+          },
+        ).toList();
+        return lessons;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Learn lesson practices
+  Future<List<LearnPractice>> getLearnLessonPractices(int id) async {
+    try {
+      List<LearnPractice> practices = [];
+
+      final Response response = await _service.dio
+          .get('$kBaseUrl/api/$kApiVersionUrl/$kLessonsUrl/$id/$kPracticesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['practices'] as List;
+        practices = decodedData.map(
+          (e) {
+            return LearnPractice.fromJson(e);
+          },
+        ).toList();
+        return practices;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get learn questions
+  Future<List<LearnQuestion>> getLearnQuestions(int id) async {
+    try {
+      List<LearnQuestion> questions = [];
+      print('Here');
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kQuestionSetsUrl/$id/$kQuestionsUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data'] as List;
+        questions = decodedData.map(
+          (e) {
+            return LearnQuestion.fromJson(e);
+          },
+        ).toList();
+        return questions;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /* TO BE MODIFIED*/
 
   // Get categories
   Future<List<Category>> getCategories() async {
@@ -541,9 +741,9 @@ class ApiService {
   }
 
   // Get course practic questions
-  Future<List<PracticeQuestion>> getCoursePracticeQuestions(int id) async {
+  Future<List<Question>> getCoursePracticeQuestions(int id) async {
     try {
-      List<PracticeQuestion> coursePracticeQuestions = [];
+      List<Question> coursePracticeQuestions = [];
 
       final Response response = await _service.dio
           .get('$kBaseUrl/$kPracticeBaseUrl/$id/$kCoursePracticeQuestions');
@@ -553,7 +753,7 @@ class ApiService {
         var decodedData = data['data'] as List;
         coursePracticeQuestions = decodedData.map(
           (e) {
-            return PracticeQuestion.fromJson(e);
+            return Question.fromJson(e);
           },
         ).toList();
         return coursePracticeQuestions;
@@ -718,6 +918,54 @@ class ApiService {
           },
         ).toList();
         return lessons;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Practices
+  Future<List<Practice>> getPractices(int id) async {
+    try {
+      List<Practice> coursePractices = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kPracticeBaseUrl/$kCoursePractice?owner_type=SUB_MODULE&owner_id=$id');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data'] as List;
+        coursePractices = decodedData.map(
+          (e) {
+            return Practice.fromJson(e);
+          },
+        ).toList();
+        return coursePractices;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Questions
+  Future<List<Question>> getQuestions(int id) async {
+    try {
+      List<Question> questions = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kQuestionSetsUrl/$id/$kQuestionsUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data'] as List;
+        questions = decodedData.map(
+          (e) {
+            return Question.fromJson(e);
+          },
+        ).toList();
+        return questions;
       }
       return [];
     } catch (e) {

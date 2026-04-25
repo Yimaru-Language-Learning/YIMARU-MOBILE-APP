@@ -7,24 +7,16 @@ import '../../../app/app.locator.dart';
 import '../../../services/status_checker_service.dart';
 
 class WelcomeViewModel extends BaseViewModel {
+  // Dependency Injection
   final _navigationService = locator<NavigationService>();
 
   final _statusChecker = locator<StatusCheckerService>();
 
   final _authenticationService = locator<AuthenticationService>();
 
-  int _currentPage = 0;
-
-  int get currentPage => _currentPage;
-
   // Navigation
   Future<void> navigateToLogin() async =>
       await _navigationService.navigateToLoginView();
-
-  void next() {
-    _currentPage++;
-    rebuildUi();
-  }
 
   // Remote api call
 
@@ -34,9 +26,7 @@ class WelcomeViewModel extends BaseViewModel {
   }
 
   Future<void> _setFirstTimeInstall() async {
-    if (await _statusChecker.checkConnection()) {
-      await _authenticationService.setFirstTimeInstall(false);
-      await navigateToLogin();
-    }
+    await _authenticationService.setFirstTimeInstall(false);
+    await navigateToLogin();
   }
 }

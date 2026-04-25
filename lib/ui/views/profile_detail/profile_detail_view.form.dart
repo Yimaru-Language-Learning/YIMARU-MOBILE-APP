@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // StackedFormGenerator
@@ -257,15 +258,15 @@ extension ValueProperties on FormStateHelper {
 }
 
 extension Methods on FormStateHelper {
-  setEmailValidationMessage(String? validationMessage) =>
+  void setEmailValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[EmailValueKey] = validationMessage;
-  setPhoneNumberValidationMessage(String? validationMessage) =>
+  void setPhoneNumberValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[PhoneNumberValueKey] = validationMessage;
-  setLastNameValidationMessage(String? validationMessage) =>
+  void setLastNameValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[LastNameValueKey] = validationMessage;
-  setFirstNameValidationMessage(String? validationMessage) =>
+  void setFirstNameValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[FirstNameValueKey] = validationMessage;
-  setOccupationValidationMessage(String? validationMessage) =>
+  void setOccupationValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[OccupationValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
@@ -295,7 +296,7 @@ String? getValidationMessage(String key) {
   if (validatorForKey == null) return null;
 
   String? validationMessageForKey = validatorForKey(
-    _ProfileDetailViewTextEditingControllers[key]!.text,
+    _ProfileDetailViewTextEditingControllers[key]?.text,
   );
 
   return validationMessageForKey;

@@ -6,30 +6,31 @@ import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart
 import 'package:yimaru_app/ui/widgets/learn_practice_answer_card.dart';
 
 class LearnPracticeResultCard extends ViewModelWidget<LearnPracticeViewModel> {
-  final Map<String, dynamic> data;
-  const LearnPracticeResultCard({super.key, required this.data});
+  final Map<String, dynamic> answer;
+
+  const LearnPracticeResultCard({super.key, required this.answer});
 
   @override
   Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
-      _buildColumnWrapper();
+      _buildColumnWrapper(viewModel);
 
-  Widget _buildColumnWrapper() => SizedBox(
+  Widget _buildColumnWrapper(LearnPracticeViewModel viewModel) => SizedBox(
         height: 100,
         width: double.maxFinite,
-        child: _buildColumn(),
+        child: _buildColumn(viewModel),
       );
 
-  Widget _buildColumn() => Column(
+  Widget _buildColumn(LearnPracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildColumnChildren(),
+        children: _buildColumnChildren(viewModel),
       );
 
-  List<Widget> _buildColumnChildren() =>
-      [_buildQuestion(), verticalSpaceSmall, _buildRow()];
+  List<Widget> _buildColumnChildren(LearnPracticeViewModel viewModel) =>
+      [_buildQuestion(viewModel), verticalSpaceSmall, _buildRow()];
 
-  Widget _buildQuestion() => Text(
-        data['question_text'],
+  Widget _buildQuestion(LearnPracticeViewModel viewModel) => Text(
+        answer['sample_text_answer'],
         style: style14DG400,
       );
 
@@ -46,16 +47,18 @@ class LearnPracticeResultCard extends ViewModelWidget<LearnPracticeViewModel> {
   Widget _buildSampleResponseWrapper() =>
       Expanded(child: _buildSampleResponse());
 
-  Widget _buildSampleResponse() => const LearnPracticeAnswerCard(
+  Widget _buildSampleResponse() => LearnPracticeAnswerCard(
+        answer: answer,
+        voice: Voice.sample,
         title: 'Sample Answer',
-        object: StateObjects.learnPracticeSample,
       );
 
   Widget _buildActualResponseWrapper() =>
       Expanded(child: _buildActualResponse());
 
-  Widget _buildActualResponse() => const LearnPracticeAnswerCard(
+  Widget _buildActualResponse() => LearnPracticeAnswerCard(
+        answer: answer,
         title: 'Your Answer',
-        object: StateObjects.learnPracticeAnswer,
+        voice: Voice.recorded,
       );
 }

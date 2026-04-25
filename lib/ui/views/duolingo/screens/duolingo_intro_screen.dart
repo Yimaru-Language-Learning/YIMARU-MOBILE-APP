@@ -13,7 +13,7 @@ import '../../../widgets/wave_wrapper.dart';
 class DuolingoIntroScreen extends ViewModelWidget<DuolingoViewModel> {
   final String title;
   final String subtitle;
-  final DuolingoAssessmentType type;
+  final DuolingoAssessments type;
 
   const DuolingoIntroScreen(
       {super.key,
@@ -22,11 +22,11 @@ class DuolingoIntroScreen extends ViewModelWidget<DuolingoViewModel> {
       required this.subtitle});
 
   IconData _getIcon() {
-    if (type == DuolingoAssessmentType.speaking) {
+    if (type == DuolingoAssessments.speaking) {
       return Icons.waves;
-    } else if (type == DuolingoAssessmentType.writing) {
+    } else if (type == DuolingoAssessments.writing) {
       return Iconsax.pen_add;
-    } else if (type == DuolingoAssessmentType.listening) {
+    } else if (type == DuolingoAssessments.listening) {
       return Icons.hearing;
     } else {
       return Icons.book;

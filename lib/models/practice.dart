@@ -22,8 +22,14 @@ class Practice {
   @JsonKey(name: 'owner_type')
   final String? ownerType;
 
+  @JsonKey(name: 'intro_video_url')
+  final String? introVideoUrl;
+
   @JsonKey(name: 'shuffle_questions')
   final bool? shuffleQuestions;
+
+  @JsonKey(name: 'time_limit_minutes')
+  final int? timeLimitMinutes;
 
   const Practice(
       {this.id,
@@ -34,7 +40,9 @@ class Practice {
       this.ownerId,
       this.ownerType,
       this.description,
-      this.shuffleQuestions});
+      this.introVideoUrl,
+      this.shuffleQuestions,
+      this.timeLimitMinutes});
 
   factory Practice.fromJson(Map<String, dynamic> json) =>
       _$PracticeFromJson(json);

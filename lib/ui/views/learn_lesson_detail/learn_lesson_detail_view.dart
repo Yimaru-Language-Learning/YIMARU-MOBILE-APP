@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:vimeo_video_player/vimeo_video_player.dart';
-import 'package:yimaru_app/ui/widgets/empty_video_player.dart';
+import 'package:yimaru_app/models/learn_lesson.dart';
 
-import '../../../models/lesson.dart';
 import '../../common/app_colors.dart';
-import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/small_app_bar.dart';
 import 'learn_lesson_detail_viewmodel.dart';
 
 class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
-  final Lesson lesson;
+  final LearnLesson lesson;
 
   const LearnLessonDetailView({Key? key, required this.lesson})
       : super(key: key);
 
   Future<void> _navigate(LearnLessonDetailViewModel viewModel) async {
     await viewModel.pause();
-  //   await viewModel.navigateToLearnPractice(practices);
+    await viewModel.navigateToLearnPractice();
   }
 
   @override
   void onDispose(LearnLessonDetailViewModel viewModel) {
-    print('DISPOSED');
     viewModel.close();
     super.onDispose(viewModel);
   }
@@ -126,8 +123,6 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
         child: _buildVideoPlayer(viewModel),
       );
 
-
-
   Widget _buildVideoPlayer(LearnLessonDetailViewModel viewModel) =>
       _buildVimeoPlayer(viewModel);
 
@@ -136,10 +131,8 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
         isAutoPlay: true,
         onInAppWebViewCreated: (controller) =>
             viewModel.initializePlayer(controller),
-        videoId: lesson.teachingVideoUrl?.split('/').last ?? '',
+        videoId: lesson.videoUrl?.split('/').last ?? '',
       );
-
-  Widget _buildEmptyVideoPlayer() => const EmptyVideoPlayer();
 
   Widget _buildDescriptionWrapper() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -148,7 +141,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
 
   Widget _buildDescription() => Text(
         lesson.description ?? '',
-        style: style14DG600,
+        style: style14DG400,
       );
 
   Widget _buildContinueButtonWrapper(LearnLessonDetailViewModel viewModel) =>
@@ -164,8 +157,8 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   Widget _buildContinueButton(LearnLessonDetailViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Lessons',
         borderRadius: 12,
+        text: 'Practices',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _navigate(viewModel),

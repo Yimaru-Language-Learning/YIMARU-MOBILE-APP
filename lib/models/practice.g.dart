@@ -15,7 +15,9 @@ Practice _$PracticeFromJson(Map<String, dynamic> json) => Practice(
       ownerId: (json['owner_id'] as num?)?.toInt(),
       ownerType: json['owner_type'] as String?,
       description: json['description'] as String?,
+      introVideoUrl: json['intro_video_url'] as String?,
       shuffleQuestions: json['shuffle_questions'] as bool?,
+      timeLimitMinutes: (json['time_limit_minutes'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$PracticeToJson(Practice instance) => <String, dynamic>{
@@ -27,5 +29,7 @@ Map<String, dynamic> _$PracticeToJson(Practice instance) => <String, dynamic>{
       'owner_id': instance.ownerId,
       'set_type': instance.setType,
       'owner_type': instance.ownerType,
+      'intro_video_url': instance.introVideoUrl,
       'shuffle_questions': instance.shuffleQuestions,
+      'time_limit_minutes': instance.timeLimitMinutes,
     };

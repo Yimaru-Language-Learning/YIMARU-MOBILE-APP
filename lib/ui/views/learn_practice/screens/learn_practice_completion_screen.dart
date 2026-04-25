@@ -76,8 +76,8 @@ class LearnPracticeCompletionScreen
         height: 55,
         borderRadius: 12,
         text: 'Continue',
+        onTap: viewModel.pop,
         foregroundColor: kcWhite,
-        onTap: () => viewModel.goTo(0),
         backgroundColor: kcPrimaryColor,
       );
 }
