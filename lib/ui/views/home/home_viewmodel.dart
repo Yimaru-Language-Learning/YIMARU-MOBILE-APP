@@ -14,12 +14,9 @@ import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 
 class HomeViewModel extends ReactiveViewModel {
-  final _apiService = locator<ApiService>();
-  final _statusChecker = locator<StatusCheckerService>();
-  final _navigationService = locator<NavigationService>();
+
   final _bottomSheetService = locator<BottomSheetService>();
   final _authenticationService = locator<AuthenticationService>();
-  final _imageDownloaderService = locator<ImageDownloaderService>();
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
@@ -49,75 +46,9 @@ class HomeViewModel extends ReactiveViewModel {
     rebuildUi();
   }
 
-  // Save profile status
-  Future<void> saveProfileStatus(bool value) async =>
-      await _authenticationService.saveProfileStatus(value);
 
-  // Navigation
-  Future<void> replaceWithFailure() async => await _navigationService
-      .replaceWithFailureView(label: 'Check you internet connection');
 
-  Future<void> replaceWithOnboarding() async =>
-      await _navigationService.replaceWithOnboardingView();
 
-  // Remote api calls
 
-  // Initialize user data
-  Future<void> initialize() async =>
-      await runBusyFuture(_initialize(), busyObject: StateObjects.homeView);
 
-  Future<void> _initialize() async {
-    await _getProfileStatus();
-    await _getProfileData();
-  }
-
-  // Get profile data
-  Future<void> _getProfileData() async {
-    if (!(_user?.userInfoLoaded ?? false)) {
-      Map<String, dynamic> response = {};
-
-      if (_user?.profileCompleted != null &&
-          (_user?.profileCompleted ?? false)) {
-        if (await _statusChecker.checkConnection()) {
-          response = await _apiService.getProfileData(_user?.userId);
-
-          if (response['status'] == ResponseStatus.success) {
-            User user = response['data'] as User;
-
-            await _authenticationService.saveUserData(user);
-
-            String image =
-                await _imageDownloaderService.downloader(user.profilePicture);
-
-            await _authenticationService.saveProfilePicture(image);
-          }
-        } else {
-          await replaceWithFailure();
-        }
-      }
-    }
-  }
-
-  // Get profile status
-  Future<void> _getProfileStatus() async {
-    Map<String, dynamic> response = {};
-    if (_user?.profileCompleted == null) {
-      if (await _statusChecker.checkConnection()) {
-        response = await _apiService.getProfileStatus(_user);
-      } else {
-        await Future.delayed(kDuration);
-        await replaceWithFailure();
-      }
-    } else if (!(_user?.profileCompleted ?? false)) {
-      response = {'data': false, 'status': ResponseStatus.success};
-    } else {
-      response = {'data': true, 'status': ResponseStatus.success};
-    }
-    if (response['status'] == ResponseStatus.success && !response['data']) {
-      await replaceWithOnboarding();
-    } else if (response['status'] == ResponseStatus.success &&
-        response['data']) {
-      await saveProfileStatus(response['data']);
-    }
-  }
 }

@@ -240,8 +240,8 @@ class AssessmentViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShow(Routes.homeView);
+  Future<void> replaceWithStartUp() async =>
+      await _navigationService.clearStackAndShow(Routes.startupView);
 
   Future<void> navigateToLanguage() async =>
       await _navigationService.navigateToLanguageView();
@@ -259,7 +259,7 @@ class AssessmentViewModel extends BaseViewModel {
           await _apiService.completeProfile(_userData);
       if (response['status'] == ResponseStatus.success) {
         clearUserData();
-        await replaceWithHome();
+        await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);

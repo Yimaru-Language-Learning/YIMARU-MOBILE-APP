@@ -11,7 +11,6 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/learn_question.dart';
-import '../../../models/question.dart';
 import '../../../services/api_service.dart';
 import '../../../services/audio_player_service.dart';
 import '../../../services/status_checker_service.dart';
@@ -96,7 +95,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   List<LearnQuestion> get questions => _questions;
 
   // Practice answers
-  List<Map<String, dynamic>> _answers = [];
+  final List<Map<String, dynamic>> _answers = [];
 
   List<Map<String, dynamic>> get answers => _answers;
 

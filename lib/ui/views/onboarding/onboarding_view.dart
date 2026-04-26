@@ -32,7 +32,6 @@ class OnboardingView extends StackedView<OnboardingViewModel>
 
   void _initUserData(OnboardingViewModel viewModel) {
     fullNameController.text = viewModel.googleUser?.displayName ?? '';
-    print('Full-NAME: ${fullNameController.text}');
   }
 
   void _initClearData() {

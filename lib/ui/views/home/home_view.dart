@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/views/course_category/course_category_view.dart';
 import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
 import 'package:yimaru_app/ui/views/startup/startup_view.dart';
@@ -17,26 +16,11 @@ class HomeView extends StackedView<HomeViewModel> {
   HomeViewModel viewModelBuilder(BuildContext context) => HomeViewModel();
 
   @override
-  void onViewModelReady(HomeViewModel viewModel) async {
-    // Removable
-    await _init(viewModel);
-    super.onViewModelReady(viewModel);
-  }
-
-  Future<void> _init(HomeViewModel viewModel) async =>
-      await viewModel.initialize();
-
-  @override
   Widget builder(
           BuildContext context, HomeViewModel viewModel, Widget? child) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffold(viewModel);
 
-  Widget _buildScaffoldWrapper(HomeViewModel viewModel) =>
-      viewModel.busy(StateObjects.homeView)
-          ? _buildStartUpView()
-          : _buildScaffold(viewModel);
 
-  Widget _buildStartUpView() => const StartupView(label: 'Checking user info');
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(
         body: getViewForIndex(viewModel.currentPage),

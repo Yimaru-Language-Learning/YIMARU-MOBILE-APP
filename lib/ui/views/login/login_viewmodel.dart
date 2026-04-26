@@ -154,14 +154,19 @@ class LoginViewModel extends ReactiveViewModel
   }
 
   // Navigation
-  Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShow(Routes.homeView);
+
 
   Future<void> navigateToRegister() async =>
       await _navigationService.navigateToRegisterView();
 
   Future<void> navigateToForgetPassword() async =>
       await _navigationService.navigateToForgetPasswordView();
+
+  Future<void> replaceWithStartUp() async =>
+      await _navigationService.clearStackAndShow(Routes.startupView);
+
+
+
 
   // Remote api calls
 
@@ -182,7 +187,7 @@ class LoginViewModel extends ReactiveViewModel
 
         await _authenticationService.saveUserCredential(data);
         clearUserData();
-        await replaceWithHome();
+        await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);
@@ -210,7 +215,7 @@ class LoginViewModel extends ReactiveViewModel
         };
         await _authenticationService.saveUserCredential(data);
         clearUserData();
-        await replaceWithHome();
+        await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);
@@ -251,7 +256,7 @@ class LoginViewModel extends ReactiveViewModel
         };
 
         await _authenticationService.saveUserCredential(data);
-        await replaceWithHome();
+        await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);

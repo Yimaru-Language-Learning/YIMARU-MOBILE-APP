@@ -19,8 +19,6 @@ class RegisterViewModel extends ReactiveViewModel
     implements FormViewModel {
   final _apiService = locator<ApiService>();
 
-  final _smartAuthService = locator<SmartAuthService>();
-
   final _statusChecker = locator<StatusCheckerService>();
 
   final _navigationService = locator<NavigationService>();
@@ -297,8 +295,8 @@ class RegisterViewModel extends ReactiveViewModel
   Future<void> replaceToLogin() async =>
       await _navigationService.replaceWithLoginView();
 
-  Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShow(Routes.homeView);
+  Future<void> replaceWithStartUp() async =>
+      await _navigationService.clearStackAndShow(Routes.startupView);
 
   // Remote api calls
 
@@ -344,7 +342,7 @@ class RegisterViewModel extends ReactiveViewModel
         };
         await _authenticationService.saveUserCredential(data);
         clearUserData();
-        await replaceWithHome();
+        await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);
@@ -367,7 +365,7 @@ class RegisterViewModel extends ReactiveViewModel
         };
 
         await _authenticationService.saveUserCredential(data);
-        await replaceWithHome();
+        await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);

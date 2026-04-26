@@ -5,9 +5,7 @@ import 'package:yimaru_app/ui/views/learn_practice/screens/finish_learn_practice
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_completion_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_result_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_questions_screen.dart';
-import 'package:yimaru_app/ui/views/learn_practice/screens/interact_learn_practice_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_intro_screen.dart';
-import 'package:yimaru_app/ui/views/learn_practice/screens/start_learn_practice_screen.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../common/app_colors.dart';

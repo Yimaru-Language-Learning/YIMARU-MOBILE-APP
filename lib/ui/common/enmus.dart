@@ -29,7 +29,7 @@ enum DuolingoAssessments { speaking, reading, writing, listening }
 enum StateObjects {
   none,
   courses,
-  homeView,
+  startupView,
   register,
   verifyOtp,
   resendOtp,

@@ -14,7 +14,7 @@ class VoiceRecorderService with ListenableServiceMixin {
 
   WaveformRecorderController get waveController => _waveController;
 
-  bool _isRecording = false;
+  final bool _isRecording = false;
 
   bool get isRecording => _isRecording;
 

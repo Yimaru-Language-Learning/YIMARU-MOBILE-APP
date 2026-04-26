@@ -614,6 +614,5 @@ class OnboardingViewModel extends ReactiveViewModel
   Future<void> navigateToAssessment() async =>
       await _navigationService.navigateToAssessmentView(data: _userData);
 
-  Future<void> replaceWithHome() async =>
-      await _navigationService.clearStackAndShow(Routes.homeView);
+
 }
