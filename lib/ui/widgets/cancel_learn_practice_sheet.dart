@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/speaking_partner_image.dart';
 
 import '../common/app_colors.dart';

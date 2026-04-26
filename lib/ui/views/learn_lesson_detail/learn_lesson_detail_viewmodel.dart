@@ -1,7 +1,6 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';

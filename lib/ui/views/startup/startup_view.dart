@@ -6,6 +6,7 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 
 import '../../common/app_colors.dart';
+import '../../common/enmus.dart';
 import 'startup_viewmodel.dart';
 
 class StartupView extends StackedView<StartupViewModel> {
@@ -18,12 +19,19 @@ class StartupView extends StackedView<StartupViewModel> {
     StartupViewModel viewModel,
     Widget? child,
   ) =>
-      _buildScaffoldWrapper();
+      _buildScaffoldWrapper(viewModel);
 
-  Widget _buildScaffoldWrapper() => Scaffold(
+  Widget _buildScaffoldWrapper(StartupViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(),
+        body: _buildScaffoldState(viewModel),
       );
+
+  Widget _buildScaffoldState(StartupViewModel viewModel) =>
+      viewModel.busy(StateObjects.startupView)
+          ? _buildStartUpView()
+          : _buildScaffold();
+
+  Widget _buildStartUpView() => const StartupView(label: 'Checking user info');
 
   Widget _buildScaffold() => Stack(
         children: _buildScaffoldChildren(),

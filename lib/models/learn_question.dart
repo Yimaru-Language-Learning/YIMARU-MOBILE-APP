@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:yimaru_app/models/option.dart';
 
 part 'learn_question.g.dart';
 
