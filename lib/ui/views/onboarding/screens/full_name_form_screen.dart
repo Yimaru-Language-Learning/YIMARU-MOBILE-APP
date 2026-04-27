@@ -122,11 +122,7 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildFullNameValidator(OnboardingViewModel viewModel) => Text(
         viewModel.fullNameValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
   Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(
@@ -140,10 +136,13 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap:
-            fullNameController.text.isNotEmpty ? () => _next(viewModel) : null,
-        backgroundColor: fullNameController.text.isNotEmpty
+        backgroundColor: fullNameController.text.isNotEmpty &&
+                !viewModel.hasFullNameValidationMessage
             ? kcPrimaryColor
             : kcPrimaryColor.withOpacity(0.1),
+        onTap: fullNameController.text.isNotEmpty &&
+                !viewModel.hasFullNameValidationMessage
+            ? () => _next(viewModel)
+            : null,
       );
 }
