@@ -62,4 +62,5 @@ enum StateObjects {
   coursePracticeQuestion,
   coursePracticeQuestions,
   recordLearnPracticeAnswer,
+  finishLearnPracticeQuestion
 }

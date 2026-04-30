@@ -46,7 +46,5 @@ class LearnPracticeResultsWrapper
         itemBuilder: (context, index) => _buildResult(viewModel.answers[index]),
       );
 
-  Widget _buildResult(Map<String, dynamic> answer) => LearnPracticeResultCard(
-        answer: answer,
-      );
+  Widget _buildResult(Map<String, dynamic> answer) => LearnPracticeResultCard(answer: answer);
 }

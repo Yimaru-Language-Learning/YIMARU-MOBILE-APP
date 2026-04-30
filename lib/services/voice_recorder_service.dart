@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
@@ -37,6 +42,22 @@ class VoiceRecorderService with ListenableServiceMixin {
     final file = _waveController.file;
     print('RECORDED $file');
     if (file == null) return null;
-    return file.path;
+
+    await _saveRecordedAudio(file);
+
+   // return file.path;
+    String? voice = await _saveRecordedAudio(file);
+    return voice;
+  }
+
+  Future<String?> _saveRecordedAudio(XFile? file) async {
+    late File voice;
+    final voiceName = basename(file?.name ?? '');
+    final Directory appDir = await getApplicationDocumentsDirectory();
+
+    final localImagePath = join(appDir.path, voiceName);
+    voice = File(localImagePath);
+    //voice.writeAsBytes(await file?.);
+    return voice.path;
   }
 }
