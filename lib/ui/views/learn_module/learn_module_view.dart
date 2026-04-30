@@ -19,7 +19,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
 
   @override
   void onViewModelReady(LearnModuleViewModel viewModel) async {
-    await viewModel.getLearnModules(1);
+    await viewModel.getLearnModules(course.id ?? 0);
     super.onViewModelReady(viewModel);
   }
 
@@ -58,7 +58,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       );
 
   Widget _buildAppBar(LearnModuleViewModel viewModel) => SmallAppBar(
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         showBackButton: true,
       );
 
@@ -116,10 +116,10 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           module: viewModel.modules[index],
-          onModuleTap: () async =>
-              await viewModel.navigateToLearnLesson(viewModel.modules[index]),
           onPracticeTap: () async => await viewModel
               .navigateToLearnPractice(viewModel.modules[index].id ?? 0),
+          onModuleTap: () async =>
+              await viewModel.navigateToLearnLesson(viewModel.modules[index]),
         ),
       );
 

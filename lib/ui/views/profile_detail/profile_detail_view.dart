@@ -34,13 +34,13 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   Future<void> _update(ProfileDetailViewModel viewModel) async {
     Map<String, dynamic> data = {
-      'region':regionController.text,
+      'region': regionController.text,
       'gender': viewModel.selectedGender,
       'last_name': lastNameController.text,
       'country': viewModel.selectedCountry,
       'first_name': firstNameController.text,
       'occupation': occupationController.text,
-      'birth_day': DateFormat('d MMM, yyyy').format(DateTime.now()),
+      'birth_day': DateFormat('yyyy-MM-dd').format(DateTime.now()),
     };
 
     viewModel.addUserData(data);
@@ -75,7 +75,6 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
     viewModel.clearUserData();
     viewModel.setGender(viewModel.user?.gender ?? '');
     viewModel.setSelectedCountry(viewModel.user?.country ?? 'Ethiopia');
-
   }
 
   @override
@@ -147,7 +146,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       ];
 
   Widget _buildAppbar(ProfileDetailViewModel viewModel) => SmallAppBar(
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         showBackButton: true,
         title: 'Edit Profile',
       );
@@ -192,9 +191,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         verticalSpaceSmall,
         _buildCountryDropdown(viewModel),
         verticalSpaceMedium,
-    _buildRegionFormFieldWrapper(viewModel),
+        _buildRegionFormFieldWrapper(viewModel),
         verticalSpaceMedium,
-
         _buildOccupationDropdownWrapper(viewModel),
         verticalSpaceLarge,
         _buildLowerColumn(viewModel)
@@ -533,9 +531,10 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       );
 
   List<Widget> _buildRegionFormFieldChildren(
-      ProfileDetailViewModel viewModel) =>
+          ProfileDetailViewModel viewModel) =>
       [
-        _buildRegionFormFieldLabel(),verticalSpaceSmall,
+        _buildRegionFormFieldLabel(),
+        verticalSpaceSmall,
         _buildRegionFormField(viewModel),
         if (viewModel.hasRegionValidationMessage && viewModel.focusRegion)
           verticalSpaceTiny,

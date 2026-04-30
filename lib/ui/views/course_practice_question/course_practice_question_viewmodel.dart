@@ -4,7 +4,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/option.dart';
-import '../../../models/question.dart';
+import '../../../models/assessment_question.dart';
 import '../../../services/api_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/app_colors.dart';
@@ -38,13 +38,14 @@ class CoursePracticeQuestionViewModel extends FormViewModel {
 
   bool get focusAnswer => _focusAnswer;
 
-  Question? _currentQuestion;
+  AssessmentQuestion? _currentQuestion;
 
-  Question? get currentQuestion => _currentQuestion;
+  AssessmentQuestion? get currentQuestion => _currentQuestion;
 
-  List<Question> _coursePracticeQuestions = [];
+  List<AssessmentQuestion> _coursePracticeQuestions = [];
 
-  List<Question> get coursePracticeQuestions => _coursePracticeQuestions;
+  List<AssessmentQuestion> get coursePracticeQuestions =>
+      _coursePracticeQuestions;
 
   int _currentQuestionIndex = 0;
 

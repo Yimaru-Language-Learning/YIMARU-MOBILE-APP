@@ -40,7 +40,7 @@ class LearnPracticeQuestionsScreen
     required LearnQuestion question,
   }) =>
       [
-        _buildStartLearnPracticeScreen(index: index, question: question),
+     if(index ==1)   _buildStartLearnPracticeScreen(index: index, question: question),
         _buildInteractLearnPracticeScreen(index: index, question: question)
       ];
 

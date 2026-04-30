@@ -11,7 +11,10 @@ class Option {
   @JsonKey(name: 'option_text')
   final String? optionText;
 
-  const Option({this.id, this.optionText, this.isCorrect});
+  @JsonKey(name: 'option_order')
+  final int? optionOrder;
+
+  const Option({this.id, this.optionText, this.isCorrect, this.optionOrder});
 
   factory Option.fromJson(Map<String, dynamic> json) => _$OptionFromJson(json);
 

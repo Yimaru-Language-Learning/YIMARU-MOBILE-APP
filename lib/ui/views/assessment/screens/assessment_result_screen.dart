@@ -75,7 +75,7 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       ];
 
   Widget _buildTitle(AssessmentViewModel viewModel) => Text(
-        'You’re likely a ${viewModel.proficiencyLevel.name.toUpperCase()} speaker!',
+        'You’re likely a ${viewModel.proficiencyLevel?.toUpperCase()} speaker!',
         style: style25DG600,
         textAlign: TextAlign.center,
       );
@@ -87,12 +87,12 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   Widget _buildIconWrapper(AssessmentViewModel viewModel) =>
-      viewModel.proficiencyLevel != ProficiencyLevels.none
+      viewModel.proficiencyLevel != null
           ? _buildIcon(viewModel)
           : Container();
 
   Widget _buildIcon(AssessmentViewModel viewModel) => SvgPicture.asset(
-      'assets/icons/${viewModel.proficiencyLevel.name.substring(0, 1)}_${viewModel.proficiencyLevel.name.substring(1)}.svg');
+      'assets/icons/${viewModel.proficiencyLevel?.substring(0, 1).toLowerCase()}_${viewModel.proficiencyLevel?.substring(1).toLowerCase()}.svg');
 
   Widget _buildSecondarySubtitle() => Text(
         'Let\'s start your practice',

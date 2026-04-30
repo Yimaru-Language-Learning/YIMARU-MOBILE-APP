@@ -97,7 +97,7 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
           required LearnPracticeViewModel viewModel}) =>
       SmallAppBar(
           showBackButton: true,
-          onTap: () async =>
+          onPop: () async =>
               await _showSheet(context: context, viewModel: viewModel),
           title: 'Practice Speaking ($index/${viewModel.questions.length})');
 

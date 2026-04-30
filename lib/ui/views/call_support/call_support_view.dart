@@ -49,7 +49,7 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
 
   Widget _buildAppbar(CallSupportViewModel viewModel) => SmallAppBar(
         showBackButton: true,
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         title: 'Call Support',
       );
 

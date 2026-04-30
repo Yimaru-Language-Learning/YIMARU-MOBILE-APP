@@ -9,8 +9,10 @@ import 'failure_viewmodel.dart';
 
 class FailureView extends StackedView<FailureViewModel> {
   final String label;
+  final GestureTapCallback onTap;
 
-  const FailureView({Key? key, required this.label}) : super(key: key);
+  const FailureView({Key? key, required this.onTap, required this.label})
+      : super(key: key);
 
   @override
   FailureViewModel viewModelBuilder(BuildContext context) => FailureViewModel();
@@ -48,18 +50,37 @@ class FailureView extends StackedView<FailureViewModel> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: _buildUpperColumnChildren(),
+        children: _buildColumnChildren(),
       );
 
-  List<Widget> _buildUpperColumnChildren() =>
+  List<Widget> _buildColumnChildren() =>
       [_buildIconWrapper(), _buildSafeWrapper()];
 
-  Widget _buildSafeWrapper() => SafeArea(child: _buildLoadingTextContainer());
-
-  Widget _buildLoadingTextContainer() => Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: _buildLoadingTextWrapper(),
+  Widget _buildIconWrapper() => Padding(
+        padding: const EdgeInsets.only(top: 100),
+        child: _buildIcon(),
       );
+
+  Widget _buildIcon() => SvgPicture.asset('assets/icons/logo.svg', height: 50);
+
+  Widget _buildSafeWrapper() => SafeArea(child: _buildBottomSectionWrapper());
+
+  Widget _buildBottomSectionWrapper() => Padding(
+        padding: const EdgeInsets.only(bottom: 50),
+        child: _buildBottomSectionColumn(),
+      );
+
+  Widget _buildBottomSectionColumn() => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: _buildBottomSectionChildren(),
+      );
+
+  List<Widget> _buildBottomSectionChildren() => [
+        _buildLoadingTextWrapper(),
+        verticalSpaceSmall,
+        _buildRetryButtonWrapper()
+      ];
 
   Widget _buildLoadingTextWrapper() => Row(
         mainAxisSize: MainAxisSize.min,
@@ -85,10 +106,14 @@ class FailureView extends StackedView<FailureViewModel> {
   Widget _buildIndicator() =>
       const CustomCircularProgressIndicator(color: kcWhite);
 
-  Widget _buildIconWrapper() => Padding(
-        padding: const EdgeInsets.only(top: 100),
-        child: _buildIcon(),
+  Widget _buildRetryButtonWrapper() => GestureDetector(
+        onTap: onTap,
+        child: _buildRetryButton(),
       );
 
-  Widget _buildIcon() => SvgPicture.asset('assets/icons/logo.svg', height: 50);
+  Widget _buildRetryButton() => Text(
+        'Retry',
+        style: style16W600.copyWith(
+            fontStyle: FontStyle.italic, decoration: TextDecoration.underline),
+      );
 }

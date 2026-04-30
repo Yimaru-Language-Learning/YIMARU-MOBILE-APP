@@ -72,7 +72,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       SmallAppBar(
         showBackButton: true,
         title: 'Practice Speaking',
-        onTap: () async =>
+        onPop: () async =>
             await _showSheet(context: context, viewModel: viewModel),
       );
 

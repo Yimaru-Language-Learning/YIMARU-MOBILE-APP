@@ -57,7 +57,7 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewModel> {
       child: _buildAppBar(viewModel));
 
   Widget _buildAppBar(CourseLessonDetailViewModel viewModel) => SmallAppBar(
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         showBackButton: true,
         title: lesson.title ?? '',
       );

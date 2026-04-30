@@ -56,7 +56,7 @@ class ProgressView extends StackedView<ProgressViewModel> {
   Widget _buildAppbar(ProgressViewModel viewModel) => SmallAppBar(
         title: 'My Progress',
         showBackButton: true,
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
       );
 
   Widget _buildContentScrollViewWrapper(ProgressViewModel viewModel) =>

@@ -4,7 +4,6 @@ import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
-
 class LearnPracticeTipSection extends ViewModelWidget<LearnPracticeViewModel> {
   const LearnPracticeTipSection({super.key});
 

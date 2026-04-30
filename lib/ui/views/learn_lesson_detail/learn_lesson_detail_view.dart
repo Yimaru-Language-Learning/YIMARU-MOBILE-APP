@@ -17,7 +17,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
 
   Future<void> _navigate(LearnLessonDetailViewModel viewModel) async {
     await viewModel.pause();
-    await viewModel.navigateToLearnPractice();
+    await viewModel.navigateToLearnPractice(lesson.id ?? 0);
   }
 
   @override
@@ -60,7 +60,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
       child: _buildAppBar(viewModel));
 
   Widget _buildAppBar(LearnLessonDetailViewModel viewModel) => SmallAppBar(
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         showBackButton: true,
       );
 

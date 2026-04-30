@@ -155,7 +155,6 @@ class LoginViewModel extends ReactiveViewModel
 
   // Navigation
 
-
   Future<void> navigateToRegister() async =>
       await _navigationService.navigateToRegisterView();
 
@@ -164,9 +163,6 @@ class LoginViewModel extends ReactiveViewModel
 
   Future<void> replaceWithStartUp() async =>
       await _navigationService.clearStackAndShow(Routes.startupView);
-
-
-
 
   // Remote api calls
 

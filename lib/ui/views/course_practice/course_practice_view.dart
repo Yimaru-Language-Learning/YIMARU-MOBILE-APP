@@ -53,7 +53,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> {
       );
 
   Widget _buildAppBar(CoursePracticeViewModel viewModel) => SmallAppBar(
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         showBackButton: true,
       );
 

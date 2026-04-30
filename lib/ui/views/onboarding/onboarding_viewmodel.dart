@@ -191,7 +191,7 @@ class OnboardingViewModel extends ReactiveViewModel
 
   final List<String> _topics = [
     'Food & Cooking',
-    ' Hobbies, Sports, Music',
+    'Hobbies, Sports, Music',
     'Tech, News, Business',
     'Travel, Places, Culture',
     'Other'
@@ -547,6 +547,7 @@ class OnboardingViewModel extends ReactiveViewModel
 
   // Reset country region form screen
   void resetCountryRegionFormScreen() {
+    _focusRegion = false;
     _selectedCountry = 'Ethiopia';
     rebuildUi();
   }
@@ -613,6 +614,4 @@ class OnboardingViewModel extends ReactiveViewModel
 
   Future<void> navigateToAssessment() async =>
       await _navigationService.navigateToAssessmentView(data: _userData);
-
-
 }

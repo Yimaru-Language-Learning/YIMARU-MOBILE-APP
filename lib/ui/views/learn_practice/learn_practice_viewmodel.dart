@@ -149,6 +149,10 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     await _audioPlayerService.playUrl(question.voicePrompt ?? '');
   }
 
+  Future<void> replayVoicePrompt(LearnQuestion question) async {
+    await _audioPlayerService.playUrl(question.voicePrompt ?? '');
+  }
+
   Future<void> playResult(
       {required Map<String, dynamic> answer, required Voice voice}) async {
     setBusyObject(playing: voice, object: answer['busy_object']);
@@ -222,6 +226,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
       _questionSetController.nextPage(
           duration: const Duration(milliseconds: 350),
           curve: Curves.easeInOutCubic);
+      await playVoicePrompt(_questions[index]);
     } else {
       goTo(3);
     }

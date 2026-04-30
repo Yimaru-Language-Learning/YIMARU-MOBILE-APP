@@ -11,7 +11,6 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import '../../../app/app.locator.dart';
 import '../../../models/user.dart';
 import '../../../services/google_auth_service.dart';
-import '../../../services/smart_auth_service.dart';
 import '../../../services/status_checker_service.dart';
 
 class RegisterViewModel extends ReactiveViewModel

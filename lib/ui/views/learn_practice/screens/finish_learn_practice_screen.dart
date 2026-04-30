@@ -50,7 +50,7 @@ class FinishLearnPracticeScreen
 
   Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
         showBackButton: true,
-        onTap: viewModel.goBack,
+        onPop: viewModel.goBack,
         title: 'Practice Speaking',
       );
 

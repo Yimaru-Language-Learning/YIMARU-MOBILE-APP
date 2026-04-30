@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yimaru_app/models/option.dart';
-part 'question.g.dart';
+part 'assessment_question.g.dart';
 
 @JsonSerializable()
-class Question {
+class AssessmentQuestion {
   final int? id;
 
   final int? points;
@@ -18,21 +18,17 @@ class Question {
   @JsonKey(name: 'question_text')
   final String? questionText;
 
-  @JsonKey(name: 'difficulty_level')
-  final String? difficultyLevel;
-
-  const Question({
+  const AssessmentQuestion({
     this.id,
     this.points,
     this.status,
     this.options,
     this.questionText,
     this.questionType,
-    this.difficultyLevel,
   });
 
-  factory Question.fromJson(Map<String, dynamic> json) =>
-      _$QuestionFromJson(json);
+  factory AssessmentQuestion.fromJson(Map<String, dynamic> json) =>
+      _$AssessmentQuestionFromJson(json);
 
-  Map<String, dynamic> toJson() => _$QuestionToJson(this);
+  Map<String, dynamic> toJson() => _$AssessmentQuestionToJson(this);
 }

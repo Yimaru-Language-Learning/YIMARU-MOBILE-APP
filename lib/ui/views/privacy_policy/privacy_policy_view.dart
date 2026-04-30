@@ -55,7 +55,7 @@ class PrivacyPolicyView extends StackedView<PrivacyPolicyViewModel> {
 
   Widget _buildAppbar(PrivacyPolicyViewModel viewModel) => SmallAppBar(
         showBackButton: true,
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         title: 'Privacy Policy',
       );
 

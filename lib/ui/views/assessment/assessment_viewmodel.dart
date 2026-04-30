@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/models/assessment_question.dart';
 import 'package:yimaru_app/models/option.dart';
 import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
-import '../../../models/question.dart';
+import '../../../models/assessment.dart';
 import '../../../services/api_service.dart';
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
@@ -33,21 +34,34 @@ class AssessmentViewModel extends BaseViewModel {
   PageController get pageController => _pageController;
 
   // Assessment
-  int _currentQuestion = 0;
 
-  int get currentQuestion => _currentQuestion;
+  List<Assessment> _assessments = [];
 
-  List<Question> _assessments = [];
+  List<Assessment> get assessments => _assessments;
 
-  List<Question> get assessments => _assessments;
+  Assessment? _currentAssessment;
 
-  ProficiencyLevels _proficiencyLevel = ProficiencyLevels.none;
+  Assessment? get currentAssessment => _currentAssessment;
 
-  ProficiencyLevels get proficiencyLevel => _proficiencyLevel;
+  int _currentQuestionIndex = 0;
+
+  int get currentQuestionIndex => _currentQuestionIndex;
+
+  int _currentAssessmentIndex = 0;
+
+  int get currentAssessmentIndex => _currentAssessmentIndex;
+
+  String? _proficiencyLevel;
+
+  String? get proficiencyLevel => _proficiencyLevel;
 
   final Map<String, dynamic> _selectedAnswers = {};
 
   Map<String, dynamic> get selectedAnswers => _selectedAnswers;
+
+  List<AssessmentQuestion> _assessmentQuestions = [];
+
+  List<AssessmentQuestion> get assessmentQuestions => _assessmentQuestions;
 
   // User data
   final Map<String, dynamic> _userData = {};
@@ -55,60 +69,43 @@ class AssessmentViewModel extends BaseViewModel {
   Map<String, dynamic> get userData => _userData;
 
   //  Assessment
+  Future<void> setFirstAssessment()async{
+    _proficiencyLevel = null;
+    _selectedAnswers.clear();
+    _currentQuestionIndex = 0;
+    _pageController.jumpToPage(_currentQuestionIndex);
+    _currentAssessment =   assessments[currentAssessmentIndex];
+    await getAssessmentQuestions(
+        _currentAssessment?.id ?? 0);
+
+    next();
+  }
   Map<String, dynamic> evaluateAssessment() {
-    if (_currentQuestion == 5) {
-      // A1
-      final correctCount = countCorrectAnswersUntil(5);
-
-      if (correctCount > 3) {
-        return {'continue': true, 'level': ProficiencyLevels.a1};
-      } else {
-        return {'continue': false, 'level': ProficiencyLevels.a1};
-      }
-    } else if (_currentQuestion == 10) {
-      // A2
-
-      final correctCount = countCorrectAnswersUntil(10);
-
-      if (correctCount > 3) {
-        return {'continue': true, 'level': ProficiencyLevels.a2};
-      } else {
-        return {'continue': false, 'level': ProficiencyLevels.a2};
-      }
-    } else if (_currentQuestion == 16) {
-      // B1
-      final correctCount = countCorrectAnswersUntil(16);
-
-      if (correctCount > 4) {
-        return {'continue': true, 'level': ProficiencyLevels.b1};
-      } else {
-        return {'continue': false, 'level': ProficiencyLevels.b1};
-      }
-    } else if (_currentQuestion == 22) {
-      final correctCount = countCorrectAnswersUntil(16);
-
-      if (correctCount > 4) {
-        return {'continue': false, 'level': ProficiencyLevels.b2};
-      } else {
-        return {'continue': false, 'level': ProficiencyLevels.b2};
-      }
+    bool levelPassed = canPassLevel();
+    if (levelPassed) {
+      return {'passed': true, 'level': _currentAssessment?.description};
     } else {
-      return {'continue': true, 'level': ProficiencyLevels.none};
+      return {'passed': false, 'level': _currentAssessment?.description};
     }
   }
 
-  int countCorrectAnswersUntil(int untilQuestion) {
+  bool canPassLevel() {
     int count = 0;
 
-    for (int i = 1; i <= untilQuestion; i++) {
+    for (int i = 1; i <= _assessmentQuestions.length; i++) {
       final answer = _selectedAnswers[i.toString()];
 
       if (answer is Map<String, dynamic> && answer['correct'] == true) {
         count++;
       }
     }
+    print('COUNT: $count');
+    print('ASSESSMENT: ${_currentAssessment?.passingScore}');
+    if (count >= (_currentAssessment?.passingScore ?? 0)) {
+      return true;
+    }
 
-    return count;
+    return false;
   }
 
   bool isSelectedAnswer({required int question, required String answer}) {
@@ -125,7 +122,7 @@ class AssessmentViewModel extends BaseViewModel {
       question.toString(): {
         'correct': correct,
         'option': option?.optionText,
-        'answer': _assessments[question - 1]
+        'answer': _assessmentQuestions[question - 1]
             .options
             ?.firstWhere((e) => e.isCorrect ?? false)
             .optionText
@@ -152,32 +149,41 @@ class AssessmentViewModel extends BaseViewModel {
   }
 
   // Question navigation
-  void nextQuestion() {
-    _currentQuestion++;
+  Future<void> nextQuestion() async {
+    _currentQuestionIndex++;
     Map<String, dynamic> response = evaluateAssessment();
-
-    if (_currentQuestion == _assessments.length) {
-      _proficiencyLevel = response['level'];
-      next();
-    } else {
-      if (response['level'] == ProficiencyLevels.none) {
-        _pageController.jumpToPage(_currentQuestion);
+    print('LEVEL: $response');
+    print('LENGTH: ${_assessmentQuestions.length}');
+    print('INDEX: $_currentQuestionIndex');
+    if (_currentQuestionIndex == _assessmentQuestions.length) {
+      _currentAssessmentIndex = _currentAssessmentIndex + 1;
+      if (_currentAssessmentIndex == _assessments.length) {
+        _proficiencyLevel = response['level'];
+        next();
       } else {
-        if (response['continue']) {
-          _pageController.jumpToPage(_currentQuestion);
+        if (response['passed']) {
+          _selectedAnswers.clear();
+          _currentQuestionIndex = 0;
+          _proficiencyLevel = response['level'];
+          _currentAssessment =   assessments[currentAssessmentIndex];
+          await getAssessmentQuestions(
+              _currentAssessment?.id ?? 0);
+          _pageController.jumpToPage(_currentQuestionIndex);
         } else {
           _proficiencyLevel = response['level'];
           next();
         }
       }
+    } else {
+      _pageController.jumpToPage(_currentQuestionIndex);
     }
 
     rebuildUi();
   }
 
   void previousQuestion() {
-    if (_currentQuestion != 0) {
-      _currentQuestion--;
+    if (_currentQuestionIndex != 0) {
+      _currentQuestionIndex--;
       _pageController.previousPage(
           duration: const Duration(microseconds: 100), curve: Curves.linear);
       rebuildUi();
@@ -193,7 +199,7 @@ class AssessmentViewModel extends BaseViewModel {
       _currentPage = 0;
       rebuildUi();
     } else if (_currentPage == 3) {
-      if (_proficiencyLevel != ProficiencyLevels.none) {
+      if (_proficiencyLevel != null) {
         _currentPage--;
       } else {
         _currentPage = 0;
@@ -240,11 +246,11 @@ class AssessmentViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> replaceWithStartUp() async =>
-      await _navigationService.clearStackAndShow(Routes.startupView);
-
   Future<void> navigateToLanguage() async =>
       await _navigationService.navigateToLanguageView();
+
+  Future<void> replaceWittStartUp() async =>
+      await _navigationService.clearStackAndShow(Routes.startupView);
 
   // Remote api call
 
@@ -259,7 +265,7 @@ class AssessmentViewModel extends BaseViewModel {
           await _apiService.completeProfile(_userData);
       if (response['status'] == ResponseStatus.success) {
         clearUserData();
-        await replaceWithStartUp();
+        await replaceWittStartUp();
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);
@@ -268,11 +274,23 @@ class AssessmentViewModel extends BaseViewModel {
   }
 
   // Assessments
+  Future<void> getAssessments() async =>
+      await runBusyFuture(_getAssessments(),
+          busyObject: StateObjects.assessments);
+
   Future<void> _getAssessments() async {
     if (await _statusChecker.checkConnection()) {
       _assessments = await _apiService.getAssessments();
     }
   }
 
-  Future<void> getAssessments() async => await runBusyFuture(_getAssessments());
+  Future<void> getAssessmentQuestions(int id) async =>
+      await runBusyFuture(_getAssessmentQuestions(id),
+          busyObject: StateObjects.assessmentQuestions);
+
+  Future<void> _getAssessmentQuestions(int id) async {
+    if (await _statusChecker.checkConnection()) {
+      _assessmentQuestions = await _apiService.getAssessmentQuestions(id);
+    }
+  }
 }

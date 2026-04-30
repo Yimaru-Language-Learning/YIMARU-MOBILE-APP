@@ -25,7 +25,6 @@ import 'package:yimaru_app/services/secure_storage_service.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/views/welcome/welcome_view.dart';
-import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
 import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_view.dart';
 import 'package:yimaru_app/services/permission_handler_service.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
@@ -52,6 +51,7 @@ import 'package:yimaru_app/ui/views/course_practice_question/course_practice_que
 import 'package:yimaru_app/services/in_app_update_service.dart';
 import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart';
+import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -74,7 +74,6 @@ import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart';
     MaterialRoute(page: LoginView),
     MaterialRoute(page: LearnModuleView),
     MaterialRoute(page: WelcomeView),
-    MaterialRoute(page: AssessmentView),
     MaterialRoute(page: LearnLessonView),
     MaterialRoute(page: ForgetPasswordView),
     MaterialRoute(page: LearnLessonDetailView),
@@ -91,6 +90,7 @@ import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart';
     MaterialRoute(page: CoursePracticeQuestionView),
     MaterialRoute(page: LearnProgramView),
     MaterialRoute(page: LearnCourseView),
+    MaterialRoute(page: AssessmentView),
 // @stacked-route
   ],
   dependencies: [

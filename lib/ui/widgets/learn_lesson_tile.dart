@@ -55,7 +55,7 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         collapsedBackgroundColor: kcPrimaryColor.withOpacity(0.1),
         childrenPadding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-        // enabled: status != ProgressStatuses.pending,
+        // enabled: (lesson.access?.isAccessible ?? false),
         // backgroundColor: ProgressStatuses.pending == status
         //     ? kcPrimaryColor.withOpacity(0.1)
         //     : kcGreen.withOpacity(0.1),

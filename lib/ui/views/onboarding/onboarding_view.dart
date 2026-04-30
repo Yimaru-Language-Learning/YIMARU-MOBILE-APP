@@ -36,6 +36,7 @@ class OnboardingView extends StackedView<OnboardingViewModel>
 
   void _initClearData() {
     topicController.clear();
+    regionController.clear();
     fullNameController.clear();
     challengeController.clear();
     occupationController.clear();

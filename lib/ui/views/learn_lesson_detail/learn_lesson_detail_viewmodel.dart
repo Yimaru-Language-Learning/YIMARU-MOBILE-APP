@@ -4,6 +4,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../app/app.router.dart';
 import '../../../services/status_checker_service.dart';
 
 class LearnLessonDetailViewModel extends BaseViewModel {
@@ -44,6 +45,6 @@ class LearnLessonDetailViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnPractice() async {}
-  //   await _navigationService.navigateToLearnPracticeView();
+  Future<void> navigateToLearnPractice(int id) async => await _navigationService
+      .navigateToLearnPracticeView(id: id, practice: LearnPractices.lesson);
 }
