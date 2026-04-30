@@ -5,6 +5,7 @@ import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/cancel_learn_practice_sheet.dart';
+import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 import 'package:yimaru_app/ui/widgets/wave_wrapper.dart';
@@ -70,7 +71,6 @@ class InteractLearnPracticeScreen
         children: [
           _buildBodyColumnWrapper(context: context, viewModel: viewModel),
           _buildProgressIndicatorState(viewModel),
-          _buildPageLoadingIndicatorState(viewModel)
         ],
       );
 
@@ -139,7 +139,9 @@ class InteractLearnPracticeScreen
       viewModel.player.state == PlayerState.playing
           ? _buildListeningLabel()
           : VoiceRecordingState.recording == viewModel.recordingState
-              ? _buildSpeakingLabel()
+              ? viewModel.busy(StateObjects.finishLearnPracticeQuestion)
+                  ? const SizedBox(height: 20)
+                  : _buildSpeakingLabel()
               : const SizedBox(height: 20);
 
   Widget _buildListeningLabel() => Text(
@@ -149,7 +151,7 @@ class InteractLearnPracticeScreen
       );
 
   Widget _buildSpeakingLabel() => Text(
-        'You\'re is speaking...',
+        'You\'re speaking...',
         style: style14P400,
         textAlign: TextAlign.center,
       );
@@ -158,8 +160,11 @@ class InteractLearnPracticeScreen
       WaveWrapper(height: 200, child: _buildSpinnerState(viewModel));
 
   Widget _buildSpinnerState(LearnPracticeViewModel viewModel) =>
-      viewModel.player.state == PlayerState.playing
-          ? _buildSpinner()
+      viewModel.busy(StateObjects.recordLearnPracticeAnswer) ||
+              viewModel.busy(StateObjects.finishLearnPracticeQuestion)
+          ? Container()
+          : viewModel.player.state == PlayerState.playing
+              ? _buildSpinner()
           : VoiceRecordingState.recording == viewModel.recordingState &&
                   viewModel.waveController.isRecording
               ? _buildSpeakingSpinnerColumn(viewModel)
@@ -184,7 +189,6 @@ class InteractLearnPracticeScreen
   Widget _buildSpeakingSpinner(LearnPracticeViewModel viewModel) =>
       WaveformRecorder(
         height: 35,
-        onRecordingStopped: () {},
         waveColor: kcPrimaryColor,
         durationTextStyle: style14P600,
         controller: viewModel.waveController,
@@ -221,7 +225,7 @@ class InteractLearnPracticeScreen
       [
         _buildActionLabel(),
         verticalSpaceMedium,
-        _buildButtonsRowWrapper(context: context, viewModel: viewModel),
+        _buildButtonRowContainer(context: context, viewModel: viewModel),
         verticalSpaceMedium,
       ];
 
@@ -229,6 +233,27 @@ class InteractLearnPracticeScreen
         'Tap the microphone to speak',
         style: style14DG400,
         textAlign: TextAlign.center,
+      );
+
+  Widget _buildButtonRowContainer(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      SizedBox(
+        height: 75,
+        width: double.maxFinite,
+        child: _buildButtonRowState(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildButtonRowState(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      viewModel.busy(StateObjects.learnPracticeQuestion) ||
+              viewModel.busy(StateObjects.finishLearnPracticeQuestion)
+          ? _buildProgressIndicator(kcPrimaryColor)
+          : _buildButtonsRowWrapper(context: context, viewModel: viewModel);
+
+  Widget _buildProgressIndicator(Color color) => Center(
+        child: CustomCircularProgressIndicator(color: color),
       );
 
   Widget _buildButtonsRowWrapper(
@@ -268,7 +293,12 @@ class InteractLearnPracticeScreen
       );
 
   Widget _buildMicButtonWrapper(LearnPracticeViewModel viewModel) =>
-      Expanded(child: _buildMicButton(viewModel));
+      Expanded(child: _buildMicButtonState(viewModel));
+
+  Widget _buildMicButtonState(LearnPracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.recordLearnPracticeAnswer)
+          ? _buildProgressIndicator(kcPrimaryColor)
+          : _buildMicButton(viewModel);
 
   Widget _buildMicButton(LearnPracticeViewModel viewModel) => ElevatedButton(
         style: ButtonStyle(
@@ -335,7 +365,11 @@ class InteractLearnPracticeScreen
 
   Widget _buildProgressIndicatorState(LearnPracticeViewModel viewModel) =>
       viewModel.recordingState == VoiceRecordingState.pending
-          ? _buildProgressIndicatorWrapper(viewModel)
+          ? viewModel.busy(StateObjects.finishLearnPracticeQuestion) ||
+                  viewModel.busy(StateObjects.learnPracticeQuestion) ||
+                  viewModel.busy(StateObjects.recordLearnPracticeAnswer)
+              ? Container()
+              : _buildProgressIndicatorWrapper(viewModel)
           : Container();
 
   Widget _buildProgressIndicatorWrapper(LearnPracticeViewModel viewModel) =>
@@ -349,17 +383,12 @@ class InteractLearnPracticeScreen
   Widget _buildProgressIndicatorSpacer(LearnPracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildProgressIndicator(viewModel),
+        child: _buildLinearProgressIndicator(viewModel),
       );
 
-  Widget _buildProgressIndicator(LearnPracticeViewModel viewModel) =>
+  Widget _buildLinearProgressIndicator(LearnPracticeViewModel viewModel) =>
       CustomLinearProgressIndicator(
           activeColor: kcPrimaryColor,
           progress: viewModel.progress,
           backgroundColor: kcVeryLightGrey);
-
-  Widget _buildPageLoadingIndicatorState(LearnPracticeViewModel viewModel) =>
-      viewModel.busy(StateObjects.learnPracticeQuestion)
-          ? const PageLoadingIndicator()
-          : Container();
 }

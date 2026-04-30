@@ -167,6 +167,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   Future<void> _playAudio(
       {required Map<String, dynamic> answer, required Voice voice}) async {
     if (voice == Voice.recorded) {
+      print(answer['recorded_voice_answer']);
       await _audioPlayerService.playLocal(answer['recorded_voice_answer']);
     } else {
       await _audioPlayerService.playUrl(answer['sample_voice_answer']);
@@ -214,18 +215,24 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   }
 
   Future<void> nextQuestion(
+          {required int index, required LearnQuestion question}) async =>
+      await runBusyFuture(_nextQuestion(index: index, question: question),
+          busyObject: StateObjects.finishLearnPracticeQuestion);
+
+  Future<void> _nextQuestion(
       {required int index, required LearnQuestion question}) async {
     await stopRecording();
     _answers.add({
       'busy_object': question.id.toString(),
       'sample_text_answer': question.audioCorrectAnswerText,
       'sample_voice_answer': question.sampleAnswerVoicePrompt,
-      'recorded_voice_answer': _voiceRecorderService.getRecordedAudio(),
+      'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
     });
     if (index != _questions.length) {
       _questionSetController.nextPage(
-          duration: const Duration(milliseconds: 350),
-          curve: Curves.easeInOutCubic);
+        curve: Curves.easeInOutCubic,
+        duration: const Duration(milliseconds: 350),
+      );
       await playVoicePrompt(_questions[index]);
     } else {
       goTo(3);
