@@ -56,9 +56,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>
       ExpansionTile(
-        enabled: true,
         textColor: kcDarkGrey,
-        showTrailingIcon: true,
         initiallyExpanded: true,
         subtitle: _buildContent(),
         title: _buildTitleWrapper(),
@@ -69,13 +67,12 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
         collapsedBackgroundColor: kcBackgroundColor,
+        enabled: (module.access?.isAccessible ?? false),
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
         childrenPadding: const EdgeInsets.fromLTRB(70, 0, 15, 15),
-        // enabled:(module.access?.isAccessible ?? false) ,
-        // showTrailingIcon: status != ProgressStatuses.pending ? true : false,
-        //initiallyExpanded: status == ProgressStatuses.started ? true : false,
+        showTrailingIcon: (module.access?.isAccessible ?? false) ? true : false,
         children:
             _buildExpansionTileChildren(context: context, viewModel: viewModel),
       );
@@ -209,9 +206,9 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         onTap: viewModel.pop,
       );
 
-  // Widget _buildContainerShaderState() => status == ProgressStatuses.pending
-  //     ? _buildContainerShaderWrapper()
-  //     : Container();
+  Widget _buildContainerShaderState() => !(module.access?.isAccessible ?? false)
+      ? _buildContainerShaderWrapper()
+      : Container();
 
   Widget _buildContainerShaderWrapper() => Positioned.fill(
         child: _buildContainerShader(),

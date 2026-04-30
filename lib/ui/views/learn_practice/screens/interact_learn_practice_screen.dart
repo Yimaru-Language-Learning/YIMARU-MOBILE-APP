@@ -30,8 +30,8 @@ class InteractLearnPracticeScreen
     viewModel.stopRecording();
   }
 
-  void _start(LearnPracticeViewModel viewModel) =>
-      viewModel.playVoicePrompt(question);
+  void _reply(LearnPracticeViewModel viewModel) =>
+      viewModel.replayVoicePrompt(question);
 
   Future<void> _stop(LearnPracticeViewModel viewModel) async =>
       await viewModel.nextQuestion(index: index, question: question);
@@ -116,7 +116,7 @@ class InteractLearnPracticeScreen
           required LearnPracticeViewModel viewModel}) =>
       SmallAppBar(
           showBackButton: true,
-          onTap: () async =>
+          onPop: () async =>
               await _showSheet(context: context, viewModel: viewModel),
           title: 'Practice Speaking ($index/${viewModel.questions.length})');
 
@@ -263,7 +263,7 @@ class InteractLearnPracticeScreen
             : kcLightGrey,
         onTap: viewModel.recordingState == VoiceRecordingState.pending &&
                 viewModel.player.state != PlayerState.playing
-            ? () => _start(viewModel)
+            ? () => _reply(viewModel)
             : null,
       );
 
@@ -272,15 +272,15 @@ class InteractLearnPracticeScreen
 
   Widget _buildMicButton(LearnPracticeViewModel viewModel) => ElevatedButton(
         style: ButtonStyle(
+          shadowColor: const WidgetStatePropertyAll(kcWhite),
+          shape: const WidgetStatePropertyAll(CircleBorder()),
+          padding: const WidgetStatePropertyAll(EdgeInsets.all(15)),
           backgroundColor: WidgetStatePropertyAll(
             viewModel.player.state == PlayerState.playing ||
                     viewModel.busy(StateObjects.recordLearnPracticeAnswer)
                 ? kcVeryLightGrey
                 : kcPrimaryColor,
           ),
-          shadowColor: const WidgetStatePropertyAll(kcWhite),
-          shape: const WidgetStatePropertyAll(CircleBorder()),
-          padding: const WidgetStatePropertyAll(EdgeInsets.all(15)),
         ),
         onPressed: () async => viewModel.player.state == PlayerState.playing ||
                 viewModel.busy(StateObjects.recordLearnPracticeAnswer)

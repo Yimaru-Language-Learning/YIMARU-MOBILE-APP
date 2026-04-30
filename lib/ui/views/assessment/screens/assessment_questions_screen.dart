@@ -6,28 +6,15 @@ import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/widgets/custom_small_radio_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
+import '../../../widgets/assessment_loading_screen.dart';
 import '../assessment_viewmodel.dart';
-import 'assessment_loading_screen.dart';
 
 class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
   const AssessmentQuestionsScreen({super.key});
 
   @override
   Widget build(BuildContext context, AssessmentViewModel viewModel) =>
-      _buildAssessmentScreens(viewModel);
-
-  Widget _buildAssessmentScreens(AssessmentViewModel viewModel) =>
-      viewModel.isBusy || viewModel.assessments.isEmpty
-          ? _buildPageLoadingIndicator(viewModel)
-          : _buildAssessmentScreensWrapper(viewModel);
-
-  Widget _buildPageLoadingIndicator(AssessmentViewModel viewModel) =>
-      AssessmentLoadingScreen(
-        isLoading: viewModel.isBusy,
-        isEmpty: viewModel.assessments.isEmpty,
-        onTap: () async => await viewModel.getAssessments(),
-        onPop: viewModel.assessments.isEmpty ? viewModel.pop : null,
-      );
+      _buildAssessmentScreensWrapper(viewModel);
 
   Widget _buildAssessmentScreensWrapper(AssessmentViewModel viewModel) =>
       PopScope(
@@ -52,7 +39,7 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         onClose: viewModel.abort,
         showLanguageSelection: false,
         onPop: viewModel.previousQuestion,
-        showBackButton: viewModel.currentQuestion == 0 ? false : true,
+        showBackButton: viewModel.currentQuestionIndex == 0 ? false : true,
       );
 
   Widget _buildExpandedBody(AssessmentViewModel viewModel) =>
@@ -65,7 +52,7 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildAssessment(AssessmentViewModel viewModel) => PageView.builder(
         controller: viewModel.pageController,
-        itemCount: viewModel.assessments.length,
+        itemCount: viewModel.assessmentQuestions.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (cotext, index) =>
             _buildBodyScroller(index: index, viewModel: viewModel),
@@ -98,7 +85,7 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
   Widget _buildTitle(
           {required int index, required AssessmentViewModel viewModel}) =>
       Text(
-        'Q${index + 1}. ${viewModel.assessments[index].questionText} ',
+        'Q${index + 1}. ${viewModel.assessmentQuestions[index].questionText} ',
         style: style16DG600,
       );
 
@@ -107,15 +94,18 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: viewModel.assessments[index].options?.length,
+        itemCount: viewModel.assessmentQuestions[index].options?.length,
         itemBuilder: (context, inner) => _buildAnswer(
           onTap: () => viewModel.setSelectedAnswer(
               question: index + 1,
-              option: viewModel.assessments[index].options?[inner]),
-          title: viewModel.assessments[index].options?[inner].optionText ?? '',
+              option: viewModel.assessmentQuestions[index].options?[inner]),
+          title:
+              viewModel.assessmentQuestions[index].options?[inner].optionText ??
+                  '',
           selected: viewModel.isSelectedAnswer(
               question: index + 1,
-              answer: viewModel.assessments[index].options?[inner].optionText ??
+              answer: viewModel
+                      .assessmentQuestions[index].options?[inner].optionText ??
                   ''),
         ),
       );
@@ -150,8 +140,8 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         onTap: viewModel.selectedAnswers.containsKey(question.toString())
             ? () => viewModel.nextQuestion()
             : null,
-        text: viewModel.currentQuestion == viewModel.assessments.length - 1
-            ? 'Finish'
+        text: viewModel.currentQuestionIndex == viewModel.assessmentQuestions.length - 1
+            ? 'Finish Level'
             : 'Continue',
       );
 }

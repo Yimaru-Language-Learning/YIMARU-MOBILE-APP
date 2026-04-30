@@ -51,8 +51,8 @@ class StartupView extends StackedView<StartupViewModel> {
 
   Widget _buildColumn() => Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _buildUpperColumnChildren(),
       );
 

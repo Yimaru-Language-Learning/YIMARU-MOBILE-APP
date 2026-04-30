@@ -61,13 +61,6 @@ class ProfileViewModel extends ReactiveViewModel {
     }
   }
 
-  // Logout
-  Future<void> _logout() async {
-    await _googleAuthService.logout();
-    await _authenticationService.logout();
-    await _navigationService.replaceWithLoginView();
-  }
-
   // Dialog
   Future<bool?> showAbortDialog() async {
     DialogResponse? response = await _dialogService.showDialog(
@@ -80,13 +73,6 @@ class ProfileViewModel extends ReactiveViewModel {
       description: 'Are you sure you want to quit?',
     );
     return response?.confirmed;
-  }
-
-  Future<void> logout() async {
-    bool? response = await showAbortDialog();
-    if (response != null && response) {
-      await _logout();
-    }
   }
 
   // Navigation
@@ -107,6 +93,9 @@ class ProfileViewModel extends ReactiveViewModel {
   Future<void> navigateToSupport() async =>
       await _navigationService.navigateToSupportView();
 
+  Future<void> navigateToLogin() async =>
+      await _navigationService.clearStackAndShow(Routes.loginView);
+
   // Remote api call
 
   // Update profile
@@ -115,10 +104,21 @@ class ProfileViewModel extends ReactiveViewModel {
 
   Future<void> _updateProfilePicture(String image) async {
     if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> data = {
-        'profile_picture_url': image,
-      };
+      Map<String, dynamic> data = {'profile_picture_url': image};
       await _apiService.updateProfileImage(data: data, userId: _user?.userId);
     }
+  }
+
+  Future<void> logout() async {
+    bool? response = await showAbortDialog();
+    if (response != null && response) {
+      await _logout();
+    }
+  }
+
+  Future<void> _logout() async {
+    await _googleAuthService.logout();
+    await _authenticationService.logout();
+    await navigateToLogin();
   }
 }

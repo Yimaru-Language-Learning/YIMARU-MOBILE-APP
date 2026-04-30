@@ -10,6 +10,9 @@ import '../assessment_viewmodel.dart';
 class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
   const AssessmentIntroScreen({super.key});
 
+  Future<void> _next(AssessmentViewModel viewModel) async =>
+      viewModel.setFirstAssessment();
+
   @override
   Widget build(BuildContext context, AssessmentViewModel viewModel) =>
       _buildScaffoldWrapper(viewModel);
@@ -95,8 +98,8 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,
+        onTap: () async => await _next(viewModel),
       );
 
   Widget _buildSkipButtonWrapper(AssessmentViewModel viewModel) => Padding(

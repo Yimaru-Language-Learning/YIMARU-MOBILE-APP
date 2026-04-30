@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
-import 'package:yimaru_app/ui/views/startup/startup_view.dart';
 import 'package:yimaru_app/ui/widgets/coming_soon.dart';
 
+import '../../common/enmus.dart';
+import '../../widgets/page_loading_indicator.dart';
 import 'home_viewmodel.dart';
 
 class HomeView extends StackedView<HomeViewModel> {
   const HomeView({Key? key}) : super(key: key);
+  @override
+  void onViewModelReady(HomeViewModel viewModel) async {
+    await viewModel.inAppUpdate();
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   HomeViewModel viewModelBuilder(BuildContext context) => HomeViewModel();
@@ -19,8 +24,6 @@ class HomeView extends StackedView<HomeViewModel> {
   Widget builder(
           BuildContext context, HomeViewModel viewModel, Widget? child) =>
       _buildScaffold(viewModel);
-
-
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(
         body: getViewForIndex(viewModel.currentPage),
@@ -56,22 +59,22 @@ class HomeView extends StackedView<HomeViewModel> {
         label: 'Profile',
         icon: _buildProfileIcon(),
       );
-}
 
-Widget _buildLearnIcon() => const Icon(Icons.school);
+  Widget _buildLearnIcon() => const Icon(Icons.school);
 
-Widget _buildCourseIcon() => const Icon(Icons.book);
+  Widget _buildCourseIcon() => const Icon(Icons.book);
 
-Widget _buildProfileIcon() => const Icon(Icons.person);
+  Widget _buildProfileIcon() => const Icon(Icons.person);
 
-Widget getViewForIndex(int index) {
-  switch (index) {
-    case 0:
-      return const LearnProgramView();
-    case 1:
-      return const ComingSoon();
+  Widget getViewForIndex(int index) {
+    switch (index) {
+      case 0:
+        return const LearnProgramView();
+      case 1:
+        return const ComingSoon();
 
-    default:
-      return const ProfileView();
+      default:
+        return const ProfileView();
+    }
   }
 }

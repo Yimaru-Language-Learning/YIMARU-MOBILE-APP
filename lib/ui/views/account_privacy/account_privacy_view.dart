@@ -56,7 +56,7 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
 
   Widget _buildAppbar(AccountPrivacyViewModel viewModel) => SmallAppBar(
         showBackButton: true,
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         title: 'Account Privacy',
       );
 

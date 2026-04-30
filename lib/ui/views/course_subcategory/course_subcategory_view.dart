@@ -59,7 +59,7 @@ class CourseSubcategoryView extends StackedView<CourseSubcategoryViewModel> {
       );
 
   Widget _buildAppBar(CourseSubcategoryViewModel viewModel) => SmallAppBar(
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         showBackButton: true,
       );
 

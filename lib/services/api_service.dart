@@ -3,7 +3,7 @@ import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/models/learn_practice.dart';
 import 'package:yimaru_app/models/learn_program.dart';
 import 'package:yimaru_app/models/level.dart';
-import 'package:yimaru_app/models/question.dart';
+import 'package:yimaru_app/models/assessment_question.dart';
 import 'package:yimaru_app/models/subcategory.dart';
 import 'package:yimaru_app/models/category.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
@@ -20,6 +20,7 @@ import '../models/learn_module.dart';
 import '../models/learn_question.dart';
 import '../models/lesson.dart';
 import '../models/module.dart';
+import '../models/assessment.dart';
 import '../models/submodule.dart';
 import '../ui/common/enmus.dart';
 
@@ -354,23 +355,47 @@ class ApiService {
     }
   }
 
-  // Get assessments
-  Future<List<Question>> getAssessments() async {
+  // Get assessment question sets
+  Future<List<Assessment>> getAssessments() async {
     try {
-      List<Question> assessments = [];
+      List<Assessment> assessments = [];
 
-      final Response response =
-          await _service.dio.get('$kBaseUrl/$kAssessmentsUrl');
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kQuestionSetsUrl?set_type=INITIAL_ASSESSMENT&limit=10&offset=0');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['question_sets'] as List;
+        assessments = decodedData.map(
+          (e) {
+            return Assessment.fromJson(e);
+          },
+        ).toList();
+        return assessments;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get assessment questions
+  Future<List<AssessmentQuestion>> getAssessmentQuestions(int id) async {
+    try {
+      List<AssessmentQuestion> questions = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/api/$kApiVersionUrl/$kQuestionSetsUrl/$id/$kQuestionsUrl');
 
       if (response.statusCode == 200) {
         var data = response.data;
         var decodedData = data['data'] as List;
-        assessments = decodedData.map(
+        questions = decodedData.map(
           (e) {
-            return Question.fromJson(e);
+            return AssessmentQuestion.fromJson(e);
           },
         ).toList();
-        return assessments;
+        return questions;
       }
       return [];
     } catch (e) {
@@ -741,9 +766,9 @@ class ApiService {
   }
 
   // Get course practic questions
-  Future<List<Question>> getCoursePracticeQuestions(int id) async {
+  Future<List<AssessmentQuestion>> getCoursePracticeQuestions(int id) async {
     try {
-      List<Question> coursePracticeQuestions = [];
+      List<AssessmentQuestion> coursePracticeQuestions = [];
 
       final Response response = await _service.dio
           .get('$kBaseUrl/$kPracticeBaseUrl/$id/$kCoursePracticeQuestions');
@@ -753,7 +778,7 @@ class ApiService {
         var decodedData = data['data'] as List;
         coursePracticeQuestions = decodedData.map(
           (e) {
-            return Question.fromJson(e);
+            return AssessmentQuestion.fromJson(e);
           },
         ).toList();
         return coursePracticeQuestions;
@@ -765,13 +790,14 @@ class ApiService {
   }
 
   // Get course practice question
-  Future<Question?> getCoursePracticeQuestion(int id) async {
+  Future<AssessmentQuestion?> getCoursePracticeQuestion(int id) async {
     try {
       final Response response =
           await _service.dio.get('$kBaseUrl/$kCoursePracticeQuestion/$id');
 
       if (response.statusCode == 200) {
-        Question question = Question.fromJson(response.data['data']);
+        AssessmentQuestion question =
+            AssessmentQuestion.fromJson(response.data['data']);
 
         return question;
       }
@@ -950,9 +976,9 @@ class ApiService {
   }
 
   // Questions
-  Future<List<Question>> getQuestions(int id) async {
+  Future<List<AssessmentQuestion>> getQuestions(int id) async {
     try {
-      List<Question> questions = [];
+      List<AssessmentQuestion> questions = [];
 
       final Response response = await _service.dio.get(
           '$kBaseUrl/api/$kApiVersionUrl/$kQuestionSetsUrl/$id/$kQuestionsUrl');
@@ -962,7 +988,7 @@ class ApiService {
         var decodedData = data['data'] as List;
         questions = decodedData.map(
           (e) {
-            return Question.fromJson(e);
+            return AssessmentQuestion.fromJson(e);
           },
         ).toList();
         return questions;

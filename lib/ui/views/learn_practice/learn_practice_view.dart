@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/finish_learn_practice_screen.dart';
+import 'package:yimaru_app/ui/views/learn_practice/screens/learn_loading_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_completion_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_result_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_questions_screen.dart';
@@ -78,7 +79,20 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
   Widget _buildBodyState(LearnPracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.learnPractices)
           ? const PageLoadingIndicator()
-          : _buildBody(viewModel);
+          : viewModel.practices.isEmpty || viewModel.questions.isEmpty
+              ? _buildPageLoadingIndicator(viewModel)
+              : _buildBody(viewModel);
+
+  Widget _buildPageLoadingIndicator(LearnPracticeViewModel viewModel) =>
+      LearnLoadingScreen(
+        isLoading: viewModel.busy(StateObjects.learnPractices),
+        onTap: () async =>
+            await viewModel.getLearnPractices(id: id, practice: practice),
+        onPop: viewModel.practices.isEmpty || viewModel.questions.isEmpty
+            ? viewModel.pop
+            : null,
+        isEmpty: viewModel.practices.isEmpty || viewModel.questions.isEmpty,
+      );
 
   Widget _buildBody(LearnPracticeViewModel viewModel) => IndexedStack(
       index: viewModel.currentPage, children: _buildScreens(viewModel));

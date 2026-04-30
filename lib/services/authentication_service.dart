@@ -173,5 +173,6 @@ class AuthenticationService with ListenableServiceMixin {
     _user = null;
     await _secureService.clear();
     await setFirstTimeInstall(firstTimeInstall);
+    notifyListeners();
   }
 }

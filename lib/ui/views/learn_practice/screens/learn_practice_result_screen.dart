@@ -86,7 +86,7 @@ class LearnPracticeResultScreen
       SmallAppBar(
         title: 'Result',
         showBackButton: true,
-        onTap: () async =>
+        onPop: () async =>
             await _showSheet(context: context, viewModel: viewModel),
       );
 

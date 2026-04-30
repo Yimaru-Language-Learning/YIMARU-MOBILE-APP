@@ -5,10 +5,10 @@ import 'package:yimaru_app/ui/widgets/custom_back_button.dart';
 class SmallAppBar extends StatelessWidget {
   final String? title;
   final bool showBackButton;
-  final GestureTapCallback? onTap;
+  final GestureTapCallback? onPop;
 
   const SmallAppBar(
-      {super.key, this.onTap, this.title, required this.showBackButton});
+      {super.key, this.onPop, this.title, required this.showBackButton});
 
   @override
   Widget build(BuildContext context) => _buildAppBar();
@@ -28,7 +28,7 @@ class SmallAppBar extends StatelessWidget {
         child: _buildBackButton(),
       );
 
-  Widget _buildBackButton() => CustomBackButton(onTap: onTap);
+  Widget _buildBackButton() => CustomBackButton(onTap: onPop);
 
   Widget _buildTitleWrapper() => Align(
         alignment: Alignment.center,

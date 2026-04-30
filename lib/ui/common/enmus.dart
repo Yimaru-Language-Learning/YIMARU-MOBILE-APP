@@ -16,8 +16,8 @@ enum LearnPractices { course, module, lesson }
 // Voice recording state
 enum VoiceRecordingState { pending, recording }
 
-// Levels
-enum ProficiencyLevels { a1, a2, b1, b2, none }
+// // Levels
+// enum ProficiencyLevels { a1, a2, b1, b2, none }
 
 // Progress status
 enum ProgressStatuses { pending, started, completed }
@@ -29,10 +29,11 @@ enum DuolingoAssessments { speaking, reading, writing, listening }
 enum StateObjects {
   none,
   courses,
-  startupView,
   register,
   verifyOtp,
   resendOtp,
+  assessments,
+  startupView,
   learnLessons,
   learnModules,
   learnCourses,
@@ -56,6 +57,7 @@ enum StateObjects {
   learnPracticeSample,
   learnPracticeAnswer,
   loginWithPhoneNumber,
+  assessmentQuestions,
   learnPracticeQuestion,
   coursePracticeQuestion,
   coursePracticeQuestions,

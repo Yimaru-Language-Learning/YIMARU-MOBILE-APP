@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
+import 'package:yimaru_app/ui/widgets/refresh_button.dart';
 
-import '../../../common/app_colors.dart';
-import '../../../widgets/large_app_bar.dart';
-import '../../../widgets/refresh_button.dart';
+import '../common/app_colors.dart';
+import 'large_app_bar.dart';
 
 class AssessmentLoadingScreen extends StatelessWidget {
   final bool isEmpty;

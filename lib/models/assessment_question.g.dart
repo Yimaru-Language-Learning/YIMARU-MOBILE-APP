@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'question.dart';
+part of 'assessment_question.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
+AssessmentQuestion _$AssessmentQuestionFromJson(Map<String, dynamic> json) =>
+    AssessmentQuestion(
       id: (json['id'] as num?)?.toInt(),
       points: (json['points'] as num?)?.toInt(),
       status: json['status'] as String?,
@@ -15,15 +16,14 @@ Question _$QuestionFromJson(Map<String, dynamic> json) => Question(
           .toList(),
       questionText: json['question_text'] as String?,
       questionType: json['question_type'] as String?,
-      difficultyLevel: json['difficulty_level'] as String?,
     );
 
-Map<String, dynamic> _$QuestionToJson(Question instance) => <String, dynamic>{
+Map<String, dynamic> _$AssessmentQuestionToJson(AssessmentQuestion instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'points': instance.points,
       'status': instance.status,
       'options': instance.options,
       'question_type': instance.questionType,
       'question_text': instance.questionText,
-      'difficulty_level': instance.difficultyLevel,
     };

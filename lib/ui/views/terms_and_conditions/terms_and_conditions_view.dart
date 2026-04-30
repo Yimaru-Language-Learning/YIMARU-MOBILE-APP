@@ -57,7 +57,7 @@ class TermsAndConditionsView extends StackedView<TermsAndConditionsViewModel> {
       );
 
   Widget _buildAppbar(TermsAndConditionsViewModel viewModel) => SmallAppBar(
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         showBackButton: true,
         title: 'Terms and Conditions',
       );

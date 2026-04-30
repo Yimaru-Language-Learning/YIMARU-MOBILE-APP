@@ -50,7 +50,7 @@ class CoursePaymentView extends StackedView<CoursePaymentViewModel> {
       );
 
   Widget _buildAppBar(CoursePaymentViewModel viewModel) => SmallAppBar(
-        onTap: viewModel.pop,
+        onPop: viewModel.pop,
         showBackButton: true,
       );
 
