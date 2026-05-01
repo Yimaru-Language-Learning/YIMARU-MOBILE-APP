@@ -19,10 +19,9 @@ class NoDataIndicator extends StatelessWidget {
       );
 
   List<Widget> _buildColumnChildren() => [
-    _buildIconWrapper(),
+        _buildIconWrapper(),
         verticalSpaceMedium,
         _buildTitle(),
-
       ];
 
   Widget _buildTitle() => Text(
@@ -31,15 +30,13 @@ class NoDataIndicator extends StatelessWidget {
       );
 
   Widget _buildIconWrapper() => GestureDetector(
-    onTap: onTap,
-    child: _buildIcon(),
-  );
+        onTap: onTap,
+        child: _buildIcon(),
+      );
 
   Widget _buildIcon() => const Icon(
         Icons.replay,
         size: 75,
         color: kcPrimaryColor,
       );
-
-
 }

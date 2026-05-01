@@ -47,7 +47,8 @@ class StartupViewModel extends ReactiveViewModel {
   }
 
   // Navigation
-  Future<void> replaceWithFailure() async => await _navigationService.replaceWithFailureView(
+  Future<void> replaceWithFailure() async =>
+      await _navigationService.replaceWithFailureView(
           label: 'Check you internet connection',
           onTap: () async => await _getProfileStatus());
 

@@ -5,8 +5,6 @@ import 'package:yimaru_app/ui/widgets/small_app_bar.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
-import '../../../widgets/large_app_bar.dart';
-import '../../../widgets/refresh_button.dart';
 
 class LearnLoadingScreen extends StatelessWidget {
   final bool isEmpty;
@@ -58,9 +56,11 @@ class LearnLoadingScreen extends StatelessWidget {
 
   Widget _buildPageIndicator() => const PageLoadingIndicator();
 
-  Widget _buildRefreshButtonWrapper() => Align(
-      alignment: Alignment.center,
-      child:_buildRefreshButton());
+  Widget _buildRefreshButtonWrapper() =>
+      Align(alignment: Alignment.center, child: _buildRefreshButton());
 
-  Widget _buildRefreshButton()=>  NoDataIndicator(title:'No practice available!' ,onTap: onTap,);
+  Widget _buildRefreshButton() => NoDataIndicator(
+        title: 'No practice available!',
+        onTap: onTap,
+      );
 }

@@ -7,7 +7,6 @@ import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart
 import 'package:yimaru_app/ui/widgets/cancel_learn_practice_sheet.dart';
 import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
-import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 import 'package:yimaru_app/ui/widgets/wave_wrapper.dart';
 
 import '../../../../models/learn_question.dart';
@@ -26,9 +25,9 @@ class InteractLearnPracticeScreen
       {super.key, required this.index, required this.question});
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
     viewModel.pop();
     viewModel.pop();
-    viewModel.stopRecording();
   }
 
   void _reply(LearnPracticeViewModel viewModel) =>
@@ -165,10 +164,10 @@ class InteractLearnPracticeScreen
           ? Container()
           : viewModel.player.state == PlayerState.playing
               ? _buildSpinner()
-          : VoiceRecordingState.recording == viewModel.recordingState &&
-                  viewModel.waveController.isRecording
-              ? _buildSpeakingSpinnerColumn(viewModel)
-              : Container();
+              : VoiceRecordingState.recording == viewModel.recordingState &&
+                      viewModel.waveController.isRecording
+                  ? _buildSpeakingSpinnerColumn(viewModel)
+                  : Container();
 
   Widget _buildSpeakingSpinnerColumn(LearnPracticeViewModel viewModel) =>
       Column(

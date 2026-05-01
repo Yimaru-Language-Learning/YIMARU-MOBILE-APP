@@ -21,8 +21,8 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
       : super(key: key);
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.stopRecording();
     viewModel.pop();
   }
 
@@ -59,8 +59,12 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
           required LearnPracticeViewModel viewModel}) =>
       PopScope(
           canPop: false,
-          onPopInvokedWithResult: (value, data) async =>
-              await _showSheet(context: context, viewModel: viewModel),
+          onPopInvokedWithResult: (didPop, data) {
+            if (!didPop) {
+              Future.microtask(() async =>
+                  await _showSheet(context: context, viewModel: viewModel));
+            }
+          },
           child: _buildScaffoldWrapper(viewModel));
 
   Widget _buildSheet(LearnPracticeViewModel viewModel) =>

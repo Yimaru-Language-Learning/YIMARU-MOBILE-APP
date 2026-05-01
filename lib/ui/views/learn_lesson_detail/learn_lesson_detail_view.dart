@@ -1,11 +1,14 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:vimeo_video_player/vimeo_video_player.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
 
 import '../../common/app_colors.dart';
+import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/empty_video_player.dart';
 import '../../widgets/small_app_bar.dart';
 import 'learn_lesson_detail_viewmodel.dart';
 
@@ -18,6 +21,12 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   Future<void> _navigate(LearnLessonDetailViewModel viewModel) async {
     await viewModel.pause();
     await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+  }
+
+  @override
+  void onViewModelReady(LearnLessonDetailViewModel viewModel) async {
+    await viewModel.initializePlayer(lesson.videoUrl ?? '');
+    super.onViewModelReady(viewModel);
   }
 
   @override
@@ -120,19 +129,23 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
         height: 200,
         color: kcBlack,
         width: double.maxFinite,
-        child: _buildVideoPlayer(viewModel),
+        child: _buildVideoPlayerState(viewModel),
       );
+
+  Widget _buildVideoPlayerState(LearnLessonDetailViewModel viewModel) =>
+      viewModel.chewieController != null &&
+              viewModel.videoPlayerController != null &&
+              !viewModel.busy(StateObjects.loadLessonVideo)
+          ? _buildVideoPlayer(viewModel)
+          : _buildEmptyVideoPlayer();
 
   Widget _buildVideoPlayer(LearnLessonDetailViewModel viewModel) =>
-      _buildVimeoPlayer(viewModel);
+      _buildChewiePlayer(viewModel);
 
-  Widget _buildVimeoPlayer(LearnLessonDetailViewModel viewModel) =>
-      VimeoVideoPlayer(
-        isAutoPlay: true,
-        onInAppWebViewCreated: (controller) =>
-            viewModel.initializePlayer(controller),
-        videoId: lesson.videoUrl?.split('/').last ?? '',
-      );
+  Widget _buildChewiePlayer(LearnLessonDetailViewModel viewModel) =>
+      Chewie(controller: viewModel.chewieController!);
+
+  Widget _buildEmptyVideoPlayer() => const EmptyVideoPlayer();
 
   Widget _buildDescriptionWrapper() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

@@ -17,9 +17,9 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
       {super.key, required this.index, required this.question});
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
     viewModel.pop();
     viewModel.pop();
-    viewModel.stopRecording();
   }
 
   void _start(LearnPracticeViewModel viewModel) {

@@ -26,6 +26,7 @@ import '../services/permission_handler_service.dart';
 import '../services/secure_storage_service.dart';
 import '../services/smart_auth_service.dart';
 import '../services/status_checker_service.dart';
+import '../services/vimeo_service.dart';
 import '../services/voice_recorder_service.dart';
 
 final locator = StackedLocator.instance;
@@ -55,4 +56,5 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => AudioPlayerService());
   locator.registerLazySingleton(() => VoiceRecorderService());
   locator.registerLazySingleton(() => InAppUpdateService());
+  locator.registerLazySingleton(() => VimeoService());
 }

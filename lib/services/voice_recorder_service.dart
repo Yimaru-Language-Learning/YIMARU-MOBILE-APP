@@ -1,7 +1,5 @@
 import 'dart:io';
-
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
+import 'dart:math';
 import 'package:path_provider/path_provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
@@ -39,25 +37,19 @@ class VoiceRecorderService with ListenableServiceMixin {
 
   // Get recorded audio
   Future<String?> getRecordedAudio() async {
-    final file = _waveController.file;
-    print('RECORDED $file');
-    if (file == null) return null;
+    final recorded = _waveController.file;
+    if (recorded == null) return null;
 
-    await _saveRecordedAudio(file);
+    final generator = Random();
 
-   // return file.path;
-    String? voice = await _saveRecordedAudio(file);
-    return voice;
-  }
+    int random = generator.nextInt(100);
 
-  Future<String?> _saveRecordedAudio(XFile? file) async {
-    late File voice;
-    final voiceName = basename(file?.name ?? '');
-    final Directory appDir = await getApplicationDocumentsDirectory();
+    final dir = await getTemporaryDirectory();
 
-    final localImagePath = join(appDir.path, voiceName);
-    voice = File(localImagePath);
-    //voice.writeAsBytes(await file?.);
-    return voice.path;
+    final playable = File('${dir.path}/temp_audio_$random.aac');
+
+    await playable.writeAsBytes(await recorded.readAsBytes(), flush: true);
+
+    return playable.path;
   }
 }

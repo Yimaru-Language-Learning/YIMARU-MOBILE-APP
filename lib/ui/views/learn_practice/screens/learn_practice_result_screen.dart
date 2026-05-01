@@ -20,9 +20,9 @@ class LearnPracticeResultScreen
   }
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
     viewModel.pop();
     viewModel.pop();
-    viewModel.stopRecording();
   }
 
   Future<void> _showSheet(
