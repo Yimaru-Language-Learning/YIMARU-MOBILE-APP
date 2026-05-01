@@ -13,9 +13,10 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
   const LearnPracticeIntroScreen({super.key});
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
     viewModel.pop();
     viewModel.pop();
-    viewModel.stopRecording();
+
   }
 
   Future<void> _showSheet(
@@ -81,7 +82,8 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
-        onCancel: () async => await _cancel(viewModel),
+        onCancel: ()async  => await _cancel(viewModel),
+
       );
 
   Widget _buildBodyColumnWrapper(LearnPracticeViewModel viewModel) => Expanded(

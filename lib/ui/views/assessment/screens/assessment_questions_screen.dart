@@ -6,7 +6,6 @@ import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/widgets/custom_small_radio_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
-import '../../../widgets/assessment_loading_screen.dart';
 import '../assessment_viewmodel.dart';
 
 class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {

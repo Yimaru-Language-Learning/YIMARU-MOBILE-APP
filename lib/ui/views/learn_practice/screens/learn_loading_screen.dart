@@ -5,8 +5,6 @@ import 'package:yimaru_app/ui/widgets/small_app_bar.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
-import '../../../widgets/large_app_bar.dart';
-import '../../../widgets/refresh_button.dart';
 
 class LearnLoadingScreen extends StatelessWidget {
   final bool isEmpty;
