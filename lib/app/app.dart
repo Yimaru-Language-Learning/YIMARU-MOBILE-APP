@@ -52,6 +52,7 @@ import 'package:yimaru_app/services/in_app_update_service.dart';
 import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart';
 import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
+import 'package:yimaru_app/services/vimeo_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -112,6 +113,7 @@ import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
     LazySingleton(classType: AudioPlayerService),
     LazySingleton(classType: VoiceRecorderService),
     LazySingleton(classType: InAppUpdateService),
+    LazySingleton(classType: VimeoService),
 // @stacked-service
   ],
   bottomsheets: [

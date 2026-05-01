@@ -23,7 +23,6 @@ class LearnPracticeResultScreen
     await viewModel.stopRecording();
     viewModel.pop();
     viewModel.pop();
-
   }
 
   Future<void> _showSheet(
@@ -96,7 +95,7 @@ class LearnPracticeResultScreen
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
-        onCancel: ()async  => await _cancel(viewModel),
+        onCancel: () async => await _cancel(viewModel),
       );
 
   Widget _buildBodyWrapper(LearnPracticeViewModel viewMode) => Expanded(

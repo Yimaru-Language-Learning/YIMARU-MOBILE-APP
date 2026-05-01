@@ -139,7 +139,8 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         onTap: viewModel.selectedAnswers.containsKey(question.toString())
             ? () => viewModel.nextQuestion()
             : null,
-        text: viewModel.currentQuestionIndex == viewModel.assessmentQuestions.length - 1
+        text: viewModel.currentQuestionIndex ==
+                viewModel.assessmentQuestions.length - 1
             ? 'Finish Level'
             : 'Continue',
       );

@@ -312,9 +312,8 @@ TextStyle style14MG400 = const TextStyle(
 TextStyle style14DG500 =
     const TextStyle(color: kcDarkGrey, fontWeight: FontWeight.w500);
 
-TextStyle style18MG500 =
-const TextStyle(fontSize: 18,color: kcMediumGrey, fontWeight: FontWeight.w500);
-
+TextStyle style18MG500 = const TextStyle(
+    fontSize: 18, color: kcMediumGrey, fontWeight: FontWeight.w500);
 
 TextStyle style14DG400 = const TextStyle(
   color: kcDarkGrey,

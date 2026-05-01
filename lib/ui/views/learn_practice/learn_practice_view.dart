@@ -61,10 +61,10 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
           canPop: false,
           onPopInvokedWithResult: (didPop, data) {
             if (!didPop) {
-              Future.microtask(()async =>await _showSheet(context: context, viewModel: viewModel));
+              Future.microtask(() async =>
+                  await _showSheet(context: context, viewModel: viewModel));
             }
           },
-
           child: _buildScaffoldWrapper(viewModel));
 
   Widget _buildSheet(LearnPracticeViewModel viewModel) =>

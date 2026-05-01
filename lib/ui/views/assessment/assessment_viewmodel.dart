@@ -69,17 +69,17 @@ class AssessmentViewModel extends BaseViewModel {
   Map<String, dynamic> get userData => _userData;
 
   //  Assessment
-  Future<void> setFirstAssessment()async{
+  Future<void> setFirstAssessment() async {
     _proficiencyLevel = null;
     _selectedAnswers.clear();
     _currentQuestionIndex = 0;
     _pageController.jumpToPage(_currentQuestionIndex);
-    _currentAssessment =   assessments[currentAssessmentIndex];
-    await getAssessmentQuestions(
-        _currentAssessment?.id ?? 0);
+    _currentAssessment = assessments[currentAssessmentIndex];
+    await getAssessmentQuestions(_currentAssessment?.id ?? 0);
 
     next();
   }
+
   Map<String, dynamic> evaluateAssessment() {
     bool levelPassed = canPassLevel();
     if (levelPassed) {
@@ -165,9 +165,8 @@ class AssessmentViewModel extends BaseViewModel {
           _selectedAnswers.clear();
           _currentQuestionIndex = 0;
           _proficiencyLevel = response['level'];
-          _currentAssessment =   assessments[currentAssessmentIndex];
-          await getAssessmentQuestions(
-              _currentAssessment?.id ?? 0);
+          _currentAssessment = assessments[currentAssessmentIndex];
+          await getAssessmentQuestions(_currentAssessment?.id ?? 0);
           _pageController.jumpToPage(_currentQuestionIndex);
         } else {
           _proficiencyLevel = response['level'];
@@ -274,9 +273,8 @@ class AssessmentViewModel extends BaseViewModel {
   }
 
   // Assessments
-  Future<void> getAssessments() async =>
-      await runBusyFuture(_getAssessments(),
-          busyObject: StateObjects.assessments);
+  Future<void> getAssessments() async => await runBusyFuture(_getAssessments(),
+      busyObject: StateObjects.assessments);
 
   Future<void> _getAssessments() async {
     if (await _statusChecker.checkConnection()) {

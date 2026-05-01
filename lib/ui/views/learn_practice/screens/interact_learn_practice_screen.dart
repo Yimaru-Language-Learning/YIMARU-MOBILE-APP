@@ -28,8 +28,8 @@ class InteractLearnPracticeScreen
     await viewModel.stopRecording();
     viewModel.pop();
     viewModel.pop();
-
   }
+
   void _reply(LearnPracticeViewModel viewModel) =>
       viewModel.replayVoicePrompt(question);
 
@@ -164,10 +164,10 @@ class InteractLearnPracticeScreen
           ? Container()
           : viewModel.player.state == PlayerState.playing
               ? _buildSpinner()
-          : VoiceRecordingState.recording == viewModel.recordingState &&
-                  viewModel.waveController.isRecording
-              ? _buildSpeakingSpinnerColumn(viewModel)
-              : Container();
+              : VoiceRecordingState.recording == viewModel.recordingState &&
+                      viewModel.waveController.isRecording
+                  ? _buildSpeakingSpinnerColumn(viewModel)
+                  : Container();
 
   Widget _buildSpeakingSpinnerColumn(LearnPracticeViewModel viewModel) =>
       Column(
@@ -359,8 +359,7 @@ class InteractLearnPracticeScreen
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
-        onCancel: ()async  => await _cancel(viewModel),
-
+        onCancel: () async => await _cancel(viewModel),
       );
 
   Widget _buildProgressIndicatorState(LearnPracticeViewModel viewModel) =>

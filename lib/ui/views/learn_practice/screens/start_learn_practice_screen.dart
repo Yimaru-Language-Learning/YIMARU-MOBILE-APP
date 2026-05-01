@@ -20,7 +20,6 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
     await viewModel.stopRecording();
     viewModel.pop();
     viewModel.pop();
-
   }
 
   void _start(LearnPracticeViewModel viewModel) {
@@ -107,7 +106,7 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
-        onCancel: ()async  => await _cancel(viewModel),
+        onCancel: () async => await _cancel(viewModel),
       );
 
   Widget _buildStartButtonWrapper(LearnPracticeViewModel viewModel) => Expanded(

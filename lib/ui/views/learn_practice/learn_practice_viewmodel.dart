@@ -64,7 +64,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     return _position.inMilliseconds / _duration.inMilliseconds;
   }
 
-
   // Voice recorder
   WaveformRecorderController get _waveController =>
       _voiceRecorderService.waveController;
@@ -129,12 +128,12 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   // Play practice audio
   void _listenToAudio() {
-  _audioPlayerService.durationStream.listen((dur) {
-    if (dur.inMilliseconds > 0) {
-      _duration = dur;
-      rebuildUi();
-    }
-  });
+    _audioPlayerService.durationStream.listen((dur) {
+      if (dur.inMilliseconds > 0) {
+        _duration = dur;
+        rebuildUi();
+      }
+    });
 
     _audioPlayerService.positionStream.listen((pos) {
       _position = pos;

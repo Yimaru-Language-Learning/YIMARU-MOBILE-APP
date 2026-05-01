@@ -17,6 +17,7 @@ import 'package:yimaru_app/services/course_service.dart';
 import 'package:yimaru_app/services/audio_player_service.dart';
 import 'package:yimaru_app/services/voice_recorder_service.dart';
 import 'package:yimaru_app/services/in_app_update_service.dart';
+import 'package:yimaru_app/services/vimeo_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -44,6 +45,8 @@ import 'test_helpers.mocks.dart';
     MockSpec<AudioPlayerService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<VoiceRecorderService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<InAppUpdateService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<VimeoService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<VimeoService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
   ],
 )
@@ -66,6 +69,8 @@ void registerServices() {
   getAndRegisterAudioPlayerService();
   getAndRegisterVoiceRecorderService();
   getAndRegisterInAppUpdateService();
+  getAndRegisterVimeoService();
+  getAndRegisterVimeoService();
 // @stacked-mock-register
 }
 
@@ -225,6 +230,13 @@ MockInAppUpdateService getAndRegisterInAppUpdateService() {
   _removeRegistrationIfExists<InAppUpdateService>();
   final service = MockInAppUpdateService();
   locator.registerSingleton<InAppUpdateService>(service);
+  return service;
+}
+
+MockVimeoService getAndRegisterVimeoService() {
+  _removeRegistrationIfExists<VimeoService>();
+  final service = MockVimeoService();
+  locator.registerSingleton<VimeoService>(service);
   return service;
 }
 // @stacked-mock-create

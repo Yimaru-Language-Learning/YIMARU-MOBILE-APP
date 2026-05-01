@@ -56,9 +56,11 @@ class LearnLoadingScreen extends StatelessWidget {
 
   Widget _buildPageIndicator() => const PageLoadingIndicator();
 
-  Widget _buildRefreshButtonWrapper() => Align(
-      alignment: Alignment.center,
-      child:_buildRefreshButton());
+  Widget _buildRefreshButtonWrapper() =>
+      Align(alignment: Alignment.center, child: _buildRefreshButton());
 
-  Widget _buildRefreshButton()=>  NoDataIndicator(title:'No practice available!' ,onTap: onTap,);
+  Widget _buildRefreshButton() => NoDataIndicator(
+        title: 'No practice available!',
+        onTap: onTap,
+      );
 }

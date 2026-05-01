@@ -86,9 +86,7 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   Widget _buildIconWrapper(AssessmentViewModel viewModel) =>
-      viewModel.proficiencyLevel != null
-          ? _buildIcon(viewModel)
-          : Container();
+      viewModel.proficiencyLevel != null ? _buildIcon(viewModel) : Container();
 
   Widget _buildIcon(AssessmentViewModel viewModel) => SvgPicture.asset(
       'assets/icons/${viewModel.proficiencyLevel?.substring(0, 1).toLowerCase()}_${viewModel.proficiencyLevel?.substring(1).toLowerCase()}.svg');
