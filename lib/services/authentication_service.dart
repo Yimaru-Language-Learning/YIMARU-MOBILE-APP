@@ -148,6 +148,8 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Get user data
   Future<User?> getUser() async {
+    print('GENDER:');
+    print(await _secureService.getString('gender'));
     _user = User(
       userId: await _secureService.getInt('userId'),
       email: await _secureService.getString('email'),

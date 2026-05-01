@@ -370,7 +370,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   Widget _buildMaleRadioTile(ProfileDetailViewModel viewModel) =>
       RadioListTile<String?>(
-        value: 'Male',
+        value: 'male',
         title: _buildMaleTitle(),
         activeColor: kcPrimaryColor,
         contentPadding: EdgeInsets.zero,
@@ -400,7 +400,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   Widget _buildFemaleRadioTile(ProfileDetailViewModel viewModel) =>
       RadioListTile<String?>(
-        value: 'Female',
+        value: 'female',
         title: _buildFemaleTitle(),
         activeColor: kcPrimaryColor,
         contentPadding: EdgeInsets.zero,

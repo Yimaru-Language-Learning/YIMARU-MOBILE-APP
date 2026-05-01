@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:async/async.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:stacked/stacked.dart';
 
@@ -9,13 +12,19 @@ class AudioPlayerService with ListenableServiceMixin {
 
   AudioPlayer get player => _player;
 
+  final _durationController = StreamController<Duration>.broadcast();
+
   AudioPlayerService() {
     _player.setReleaseMode(ReleaseMode.stop);
   }
 
   // Streams
+  Stream<Duration> get durationStream => StreamGroup.merge([
+        _player.onDurationChanged,
+        _durationController.stream,
+      ]);
+
   Stream<Duration> get positionStream => _player.onPositionChanged;
-  Stream<Duration> get durationStream => _player.onDurationChanged;
 
   // Optional: player state
   Stream<PlayerState> get stateStream => _player.onPlayerStateChanged;
@@ -28,10 +37,16 @@ class AudioPlayerService with ListenableServiceMixin {
     }
 
     await _player.play(UrlSource(playableUrl));
+
+    // 👇 Force duration fetch
+    final dur = await _player.getDuration();
+    if (dur != null) {
+      _durationController.add(dur);
+    }
   }
 
   Future<void> playLocal(String url) async {
-    await _player.play(UrlSource(url));
+    await _player.play(DeviceFileSource(url));
   }
 
   Future<void> pause() async => await _player.pause();

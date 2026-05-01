@@ -59,9 +59,11 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   Duration get duration => _duration;
 
   double get progress {
+    print('DURATION: ${_duration.inMilliseconds}');
     if (_duration.inMilliseconds == 0) return 0;
     return _position.inMilliseconds / _duration.inMilliseconds;
   }
+
 
   // Voice recorder
   WaveformRecorderController get _waveController =>
@@ -127,15 +129,15 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   // Play practice audio
   void _listenToAudio() {
-    _audioPlayerService.durationStream.listen((dur) {
+  _audioPlayerService.durationStream.listen((dur) {
+    if (dur.inMilliseconds > 0) {
       _duration = dur;
-      print('DURATION: $_duration');
       rebuildUi();
-    });
+    }
+  });
 
     _audioPlayerService.positionStream.listen((pos) {
       _position = pos;
-      print('POSITION: $_position');
       rebuildUi();
     });
   }
@@ -255,13 +257,14 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     if (await _statusChecker.checkConnection()) {
       if (practice == LearnPractices.course) {
         _practices = await _apiService.getLearnCoursePractices(id);
+
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else if (practice == LearnPractices.module) {
         _practices = await _apiService.getLearnModulePractices(id);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else {
         _practices = await _apiService.getLearnLessonPractices(id);
-        print('PRACTICE LENGTH: ${_practices.length}');
+
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       }
     }

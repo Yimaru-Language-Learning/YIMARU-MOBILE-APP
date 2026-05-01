@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 
 import '../common/app_colors.dart';
 import '../common/enmus.dart';
@@ -50,12 +51,21 @@ class LearnPracticeAnswerCard extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildButtonState(LearnPracticeViewModel viewModel) =>
-      (viewModel.busy(answer['busy_object']) && viewModel.playing == voice) ||
-              (viewModel.busyObject == answer['busy_object'] &&
-                  viewModel.playing == voice &&
-                  viewModel.player.state == PlayerState.playing)
-          ? _buildPauseIcon()
+      viewModel.busyObject == answer['busy_object'] &&
+              viewModel.playing == voice
+          ? viewModel.busy(answer['busy_object'])
+              ? _buildProgressIndicatorWrapper()
+              : viewModel.player.state == PlayerState.playing
+                  ? _buildPauseIcon()
+                  : _buildPlayIcon()
           : _buildPlayIcon();
+
+  Widget _buildProgressIndicatorWrapper() => Center(
+        child: _buildProgressIndicator(),
+      );
+
+  Widget _buildProgressIndicator() =>
+      const CustomCircularProgressIndicator(color: kcWhite);
 
   Widget _buildPlayIcon() => const Icon(
         Icons.play_arrow_rounded,

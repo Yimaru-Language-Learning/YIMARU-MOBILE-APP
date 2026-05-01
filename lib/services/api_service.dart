@@ -506,10 +506,11 @@ class ApiService {
 
       final Response response = await _service.dio
           .get('$kBaseUrl/api/$kApiVersionUrl/$kModulesUrl/$id/$kPracticesUrl');
+      print('MODULE PRACTICES: ${response.data}');
 
       if (response.statusCode == 200) {
         var data = response.data;
-        var decodedData = data['data'] as List;
+        var decodedData = data['data']['practices'] as List;
         practices = decodedData.map(
           (e) {
             return LearnPractice.fromJson(e);

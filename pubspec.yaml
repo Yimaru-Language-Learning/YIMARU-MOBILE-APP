@@ -12,6 +12,7 @@ dependencies:
   intl: any
   dio: ^5.9.0
   path: ^1.9.1
+  async: ^2.13.1
   pinput: ^6.0.1
   stacked: ^3.4.0
   iconsax: ^0.0.8
