@@ -240,6 +240,13 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     }
   }
 
+  // Reset
+  Future<void> reset() async {
+    goTo(0);
+    _answers.clear();
+    questionSetController.jumpToPage(0);
+  }
+
   // Navigation
   void pop() => _navigationService.back();
 

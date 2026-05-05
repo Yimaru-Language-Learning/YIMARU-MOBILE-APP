@@ -6,6 +6,7 @@ import 'package:yimaru_app/ui/widgets/mini_thumbnail.dart';
 
 import '../common/app_colors.dart';
 import '../common/helper_functions.dart';
+
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 import 'custom_linear_progress_indicator.dart';

@@ -92,7 +92,7 @@ class CourseProgressSection extends ViewModelWidget<ProgressViewModel> {
       [_buildLearningStatus(), verticalSpaceSmall, _buildActionButton()];
 
   Widget _buildProgressIndicator() => const CustomLinearProgressIndicator(
-        progress: 0.5,
+        progress: 0,
         activeColor: kcPrimaryColor,
         backgroundColor: kcVeryLightGrey,
       );
@@ -111,10 +111,10 @@ class CourseProgressSection extends ViewModelWidget<ProgressViewModel> {
       ];
 
   Widget _buildWatchedVideos() =>
-      const CustomColumn(title: '15/25', subtitle: 'Videos');
+      const CustomColumn(title: '0/0', subtitle: 'Videos');
 
   Widget _buildCompletedPractices() =>
-      const CustomColumn(title: '8/12', subtitle: 'Practices');
+      const CustomColumn(title: '0/0', subtitle: 'Practices');
 
   Widget _buildActionButton() => const CustomElevatedButton(
         height: 15,

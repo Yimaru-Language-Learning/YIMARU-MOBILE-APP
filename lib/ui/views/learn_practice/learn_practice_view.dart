@@ -4,6 +4,7 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/finish_learn_practice_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_loading_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_completion_screen.dart';
+import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_description_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_result_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_questions_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_intro_screen.dart';
@@ -102,17 +103,21 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
       index: viewModel.currentPage, children: _buildScreens(viewModel));
 
   List<Widget> _buildScreens(LearnPracticeViewModel viewModel) => [
-        _buildLearnPracticeIntroScreen(viewModel),
-        _buildLearnPracticeQuestionsScreen(viewModel),
+        _buildLearnPracticeIntroScreen(),
+    _buildLearnPracticeElementsScreen(),
+        _buildLearnPracticeQuestionsScreen(),
         _buildFinishLearnPracticeScreen(),
         _buildLearnPracticeResultScreen(),
         _buildLearnPracticeCompletionScreen()
       ];
 
-  Widget _buildLearnPracticeIntroScreen(LearnPracticeViewModel viewModel) =>
+  Widget _buildLearnPracticeIntroScreen() =>
       const LearnPracticeIntroScreen();
 
-  Widget _buildLearnPracticeQuestionsScreen(LearnPracticeViewModel viewModel) =>
+  Widget _buildLearnPracticeElementsScreen() =>
+      const LearnPracticeDescriptionScreen();
+
+  Widget _buildLearnPracticeQuestionsScreen() =>
       const LearnPracticeQuestionsScreen();
 
   Widget _buildFinishLearnPracticeScreen() => const FinishLearnPracticeScreen();
