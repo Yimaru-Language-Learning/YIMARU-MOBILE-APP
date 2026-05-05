@@ -14,10 +14,7 @@ class LearnPracticeResultScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
   const LearnPracticeResultScreen({super.key});
 
-  void _navigate(LearnPracticeViewModel viewModel) {
-    viewModel.questionSetController.jumpToPage(0);
-    viewModel.goTo(0);
-  }
+  void _navigate(LearnPracticeViewModel viewModel) async=>await viewModel.reset();
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -147,7 +144,7 @@ class LearnPracticeResultScreen
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: () => viewModel.goTo(4),
+        onTap: () => viewModel.goTo(5),
         backgroundColor: kcPrimaryColor,
       );
 

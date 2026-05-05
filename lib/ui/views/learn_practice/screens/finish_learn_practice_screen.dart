@@ -12,6 +12,8 @@ class FinishLearnPracticeScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
   const FinishLearnPracticeScreen({super.key});
 
+  Future<void> _reset(LearnPracticeViewModel viewModel)async =>await viewModel.reset();
+
   @override
   Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
       _buildScaffoldWrapper(viewModel);
@@ -109,7 +111,7 @@ class FinishLearnPracticeScreen
         borderRadius: 12,
         foregroundColor: kcWhite,
         text: 'Continue Practice',
-        onTap: () => viewModel.goTo(5),
+        onTap: () => viewModel.goTo(4),
         backgroundColor: kcPrimaryColor,
       );
 
@@ -120,7 +122,7 @@ class FinishLearnPracticeScreen
         text: 'Practice Again',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
-        onTap: () => viewModel.goTo(1),
         foregroundColor: kcPrimaryColor,
+        onTap: ()async => await _reset(viewModel) ,
       );
 }

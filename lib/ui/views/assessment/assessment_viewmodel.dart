@@ -279,6 +279,7 @@ class AssessmentViewModel extends BaseViewModel {
   Future<void> _getAssessments() async {
     if (await _statusChecker.checkConnection()) {
       _assessments = await _apiService.getAssessments();
+      _assessments.reversed;
     }
   }
 

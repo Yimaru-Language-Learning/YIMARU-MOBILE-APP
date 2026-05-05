@@ -55,13 +55,9 @@ class LearningProgressCard extends StatelessWidget {
         color: kcPrimaryColor,
       );
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() =>  Text(
         'Learn English',
-        style: TextStyle(
-          fontSize: 16,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style16DG600,
       );
 
   Widget _buildSubtitle() => const Text(
@@ -71,7 +67,7 @@ class LearningProgressCard extends StatelessWidget {
       );
 
   Widget _buildProgressIndicator() => const CustomLinearProgressIndicator(
-        progress: 0.5,
+        progress: 0,
         activeColor: kcPrimaryColor,
         backgroundColor: kcVeryLightGrey,
       );
@@ -89,11 +85,11 @@ class LearningProgressCard extends StatelessWidget {
       ];
 
   Widget _buildWatchedVideos() => const Expanded(
-      child: CustomColumn(title: '120', subtitle: 'Videos Watched'));
+      child: CustomColumn(title: '0', subtitle: 'Videos Watched'));
   Widget _buildCompletedPractices() => const Expanded(
-      child: CustomColumn(title: '85', subtitle: 'Practices Completed'));
+      child: CustomColumn(title: '0', subtitle: 'Practices Completed'));
   Widget _buildTakenQuizzes() => const Expanded(
-      child: CustomColumn(title: '45', subtitle: 'Quizzes Taken'));
+      child: CustomColumn(title: '0', subtitle: 'Quizzes Taken'));
 
   Widget _buildActionButton() => const CustomElevatedButton(
         height: 15,
