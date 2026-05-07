@@ -14,7 +14,8 @@ class LearnPracticeResultScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
   const LearnPracticeResultScreen({super.key});
 
-  void _navigate(LearnPracticeViewModel viewModel) async=>await viewModel.reset();
+  void _navigate(LearnPracticeViewModel viewModel) async =>
+      await viewModel.reset();
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
     await viewModel.stopRecording();

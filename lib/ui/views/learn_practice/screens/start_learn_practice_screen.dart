@@ -22,9 +22,8 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
     viewModel.pop();
   }
 
-  Future<void> _start(LearnPracticeViewModel viewModel)async =>
-   await viewModel.playVoicePrompt(question);
-  
+  Future<void> _start(LearnPracticeViewModel viewModel) async =>
+      await viewModel.playVoicePrompt(question);
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -115,7 +114,7 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
 
   Widget _buildStartButtonContainer(LearnPracticeViewModel viewModel) =>
       GestureDetector(
-        onTap: () async=>await _start(viewModel),
+        onTap: () async => await _start(viewModel),
         child: _buildStartButton(),
       );
 
@@ -142,16 +141,16 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
             startAngle: 0.0,
             center: Alignment.center,
             colors: [
-              kcPrimaryColor.withValues(alpha:0.3),
-              kcIndigo.withValues(alpha:0.2),
-              kcIndigo.withValues(alpha:0.3),
-              kcIndigo.withValues(alpha:0.4),
-              kcIndigo.withValues(alpha:0.5),
-              kcPrimaryColor.withValues(alpha:0.5),
-              kcPrimaryColor.withValues(alpha:0.4),
-              kcPrimaryColor.withValues(alpha:0.3),
+              kcPrimaryColor.withValues(alpha: 0.3),
+              kcIndigo.withValues(alpha: 0.2),
+              kcIndigo.withValues(alpha: 0.3),
+              kcIndigo.withValues(alpha: 0.4),
+              kcIndigo.withValues(alpha: 0.5),
+              kcPrimaryColor.withValues(alpha: 0.5),
+              kcPrimaryColor.withValues(alpha: 0.4),
+              kcPrimaryColor.withValues(alpha: 0.3),
               kcPrimaryColor.withValues(alpha: 0.2),
-              kcPrimaryColor.withValues(alpha:0.5),
+              kcPrimaryColor.withValues(alpha: 0.5),
             ],
             // quarterly spread
           ),

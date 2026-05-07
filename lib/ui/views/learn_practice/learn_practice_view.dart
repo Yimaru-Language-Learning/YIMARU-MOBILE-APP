@@ -104,15 +104,14 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
 
   List<Widget> _buildScreens(LearnPracticeViewModel viewModel) => [
         _buildLearnPracticeIntroScreen(),
-    _buildLearnPracticeElementsScreen(),
+        _buildLearnPracticeElementsScreen(),
         _buildLearnPracticeQuestionsScreen(),
         _buildFinishLearnPracticeScreen(),
         _buildLearnPracticeResultScreen(),
         _buildLearnPracticeCompletionScreen()
       ];
 
-  Widget _buildLearnPracticeIntroScreen() =>
-      const LearnPracticeIntroScreen();
+  Widget _buildLearnPracticeIntroScreen() => const LearnPracticeIntroScreen();
 
   Widget _buildLearnPracticeElementsScreen() =>
       const LearnPracticeDescriptionScreen();

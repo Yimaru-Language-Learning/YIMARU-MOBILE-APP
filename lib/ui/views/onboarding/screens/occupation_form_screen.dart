@@ -6,15 +6,13 @@ import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
+import '../../../widgets/custom_dropdown.dart';
 import '../onboarding_view.form.dart';
 
 class OccupationFormScreen extends ViewModelWidget<OnboardingViewModel> {
-  final TextEditingController occupationController;
-
-  const OccupationFormScreen({super.key, required this.occupationController});
+  const OccupationFormScreen({super.key});
 
   void _pop(OnboardingViewModel viewModel) {
-    occupationController.clear();
     viewModel.resetOccupationFormScreen();
     viewModel.goBack();
   }
@@ -22,7 +20,7 @@ class OccupationFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    Map<String, dynamic> data = {'occupation': occupationController.text};
+    Map<String, dynamic> data = {'occupation': viewModel.selectedOccupation};
     viewModel.addUserData(data);
 
     viewModel.next();
@@ -82,13 +80,7 @@ class OccupationFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceSmall,
         _buildSubtitle(),
         verticalSpaceLarge,
-        _buildOccupationFormField(viewModel),
-        if (viewModel.hasOccupationValidationMessage &&
-            viewModel.focusOccupation)
-          verticalSpaceTiny,
-        if (viewModel.hasOccupationValidationMessage &&
-            viewModel.focusOccupation)
-          _buildOccupationValidatorWrapper(viewModel)
+        _buildOccupationDropdown(viewModel),
       ];
 
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
@@ -108,24 +100,17 @@ class OccupationFormScreen extends ViewModelWidget<OnboardingViewModel> {
         style: style14MG400,
       );
 
-  Widget _buildOccupationFormField(OnboardingViewModel viewModel) =>
-      TextFormField(
-        controller: occupationController,
-        onTap: viewModel.setOccupationFocus,
-        decoration: inputDecoration(
-            hint: 'Enter Your Occupation',
-            focus: viewModel.focusOccupation,
-            filled: occupationController.text.isNotEmpty),
-      );
-
-  Widget _buildOccupationValidatorWrapper(OnboardingViewModel viewModel) =>
-      viewModel.hasOccupationValidationMessage
-          ? _buildOccupationValidator(viewModel)
-          : Container();
-
-  Widget _buildOccupationValidator(OnboardingViewModel viewModel) => Text(
-        viewModel.occupationValidationMessage!,
-        style: style12R700,
+  Widget _buildOccupationDropdown(OnboardingViewModel viewModel) =>
+      CustomDropdownPicker(
+          hint: 'Select occupation',
+          icon: _buildSearchIcon(),
+          selectedItem: viewModel.selectedOccupation,
+          items: (value, props) => viewModel.getOccupations(),
+          onChanged: (value) => viewModel.setSelectedOccupation(
+              value ?? 'Students (High school & University)'));
+  Icon _buildSearchIcon() => const Icon(
+        Icons.search,
+        color: kcPrimaryColor,
       );
 
   Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(
@@ -135,15 +120,10 @@ class OccupationFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
-        height: 55,
-        text: 'Continue',
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        onTap: occupationController.text.isNotEmpty
-            ? () => _next(viewModel)
-            : null,
-        backgroundColor: occupationController.text.isNotEmpty
-            ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
-      );
+          height: 55,
+          text: 'Continue',
+          borderRadius: 12,
+          foregroundColor: kcWhite,
+          onTap: () => _next(viewModel),
+          backgroundColor: kcPrimaryColor);
 }

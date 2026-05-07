@@ -114,8 +114,6 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
         _buildLinearProgressIndicator(viewModel),
         verticalSpaceSmall,
         _buildCharLengthValidator(viewModel),
-        _buildNumberValidator(viewModel),
-        _buildSymbolValidator(viewModel),
         _buildPasswordMatchValidator(viewModel),
         _buildCheckBox(viewModel),
         verticalSpaceSmall,
@@ -215,15 +213,6 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
           backgroundColor: viewModel.length ? kcPrimaryColor : kcLightGrey,
           label: '8 characters minimum');
 
-  Widget _buildNumberValidator(RegisterViewModel viewModel) =>
-      ValidatorListTile(
-          backgroundColor: viewModel.number ? kcPrimaryColor : kcLightGrey,
-          label: 'a number');
-
-  Widget _buildSymbolValidator(RegisterViewModel viewModel) =>
-      ValidatorListTile(
-          backgroundColor: viewModel.specialChar ? kcPrimaryColor : kcLightGrey,
-          label: 'one symbol minimum');
 
   Widget _buildPasswordMatchValidator(RegisterViewModel viewModel) =>
       ValidatorListTile(
@@ -265,20 +254,14 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
         foregroundColor: kcWhite,
         onTap: passwordController.text.isNotEmpty &&
                 confirmPasswordController.text.isNotEmpty &&
-                viewModel.number &&
                 viewModel.length &&
-                viewModel.specialChar &&
-                viewModel.specialChar &&
                 viewModel.passwordMatch &&
                 viewModel.agree
             ? () async => await _signUp(viewModel)
             : null,
         backgroundColor: passwordController.text.isNotEmpty &&
                 confirmPasswordController.text.isNotEmpty &&
-                viewModel.number &&
                 viewModel.length &&
-                viewModel.specialChar &&
-                viewModel.specialChar &&
                 viewModel.passwordMatch &&
                 viewModel.agree
             ? kcPrimaryColor

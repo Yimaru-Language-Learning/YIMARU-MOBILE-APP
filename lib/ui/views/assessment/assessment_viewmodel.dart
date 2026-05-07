@@ -99,8 +99,7 @@ class AssessmentViewModel extends BaseViewModel {
         count++;
       }
     }
-    print('COUNT: $count');
-    print('ASSESSMENT: ${_currentAssessment?.passingScore}');
+
     if (count >= (_currentAssessment?.passingScore ?? 0)) {
       return true;
     }
@@ -152,9 +151,7 @@ class AssessmentViewModel extends BaseViewModel {
   Future<void> nextQuestion() async {
     _currentQuestionIndex++;
     Map<String, dynamic> response = evaluateAssessment();
-    print('LEVEL: $response');
-    print('LENGTH: ${_assessmentQuestions.length}');
-    print('INDEX: $_currentQuestionIndex');
+
     if (_currentQuestionIndex == _assessmentQuestions.length) {
       _currentAssessmentIndex = _currentAssessmentIndex + 1;
       if (_currentAssessmentIndex == _assessments.length) {
@@ -279,7 +276,6 @@ class AssessmentViewModel extends BaseViewModel {
   Future<void> _getAssessments() async {
     if (await _statusChecker.checkConnection()) {
       _assessments = await _apiService.getAssessments();
-      _assessments.reversed;
     }
   }
 
@@ -290,6 +286,8 @@ class AssessmentViewModel extends BaseViewModel {
   Future<void> _getAssessmentQuestions(int id) async {
     if (await _statusChecker.checkConnection()) {
       _assessmentQuestions = await _apiService.getAssessmentQuestions(id);
+      _assessmentQuestions
+          .removeWhere((question) => question.questionType != 'MCQ');
     }
   }
 }

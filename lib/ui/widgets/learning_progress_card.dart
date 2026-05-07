@@ -55,7 +55,7 @@ class LearningProgressCard extends StatelessWidget {
         color: kcPrimaryColor,
       );
 
-  Widget _buildTitle() =>  Text(
+  Widget _buildTitle() => Text(
         'Learn English',
         style: style16DG600,
       );

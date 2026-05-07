@@ -49,14 +49,6 @@ class RegisterViewModel extends ReactiveViewModel
 
   bool get length => _length;
 
-  bool _number = false;
-
-  bool get number => _number;
-
-  bool _specialChar = false;
-
-  bool get specialChar => _specialChar;
-
   bool _focusPassword = false;
 
   bool get focusPassword => _focusPassword;
@@ -138,17 +130,6 @@ class RegisterViewModel extends ReactiveViewModel
       _length = false;
     }
 
-    if (RegExp(r'\d').hasMatch(password)) {
-      _number = true;
-    } else {
-      _number = false;
-    }
-
-    if (RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(password)) {
-      _specialChar = true;
-    } else {
-      _specialChar = false;
-    }
 
     if (password == confirmPassword) {
       _passwordMatch = true;
@@ -160,13 +141,9 @@ class RegisterViewModel extends ReactiveViewModel
 
   double validationProgress() {
     int completed = 0;
-
     if (_length) completed++;
-    if (_number) completed++;
-    if (_specialChar) completed++;
     if (_passwordMatch) completed++;
-
-    return completed / 4; // returns 0.0 → 1.0
+    return completed / 2; // returns 0.0 → 1.0
   }
 
   void setObscurePassword() {
@@ -238,8 +215,6 @@ class RegisterViewModel extends ReactiveViewModel
   void resetCreatePasswordScreen() {
     _agree = false;
     _length = false;
-    _number = false;
-    _specialChar = false;
     _passwordMatch = false;
     _focusPassword = false;
     _focusConfirmPassword = false;
