@@ -100,7 +100,7 @@ class ProfileDetailViewModel extends ReactiveViewModel
   }
 
   // Gender
-  void setGender(String value) {
+  void setSelectedGender(String value) {
     _selectedGender = value;
     rebuildUi();
   }
@@ -321,8 +321,11 @@ class ProfileDetailViewModel extends ReactiveViewModel
     'Tigray',
   ];
 
-  bool checkRegion(String value){
-    return getRegions().contains(value);
+  bool checkRegion({required String region,required String country}){
+    if(country == 'Ethiopia'){
+      return getRegions().contains(region);
+    }
+    return false;
   }
 
   void setSelectedRegion(String value) {

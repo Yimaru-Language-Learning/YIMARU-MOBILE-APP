@@ -40,7 +40,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       'last_name': lastNameController.text,
       'country': viewModel.selectedCountry,
       'first_name': firstNameController.text,
-      'occupation': occupationController.text,
+      'occupation': viewModel.selectedOccupation,
       'birth_day': DateFormat('yyyy-MM-dd').format(DateTime.now()),
     };
 
@@ -67,7 +67,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       );
 
   void _checkRegion(ProfileDetailViewModel viewModel){
-    if(viewModel.checkRegion(viewModel.user?.region ?? '')){
+    bool region = viewModel.checkRegion(region:viewModel.user?.region ?? 'Addis Ababa',country:viewModel.user?.country ?? 'Ethiopia' );
+    if(region){
       viewModel.setSelectedRegion(viewModel.user?.region ?? 'Addis Ababa');
     }else{
       regionController.text = viewModel.user?.region ?? '';
@@ -78,13 +79,12 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   void _onModelReady(ProfileDetailViewModel viewModel) {
     phoneNumberController.text = '251900000000';
     emailController.text = viewModel.user?.email ?? '';
-
     lastNameController.text = viewModel.user?.lastName ?? '';
     firstNameController.text = viewModel.user?.firstName ?? '';
-    occupationController.text = viewModel.user?.occupation ?? '';
     _checkRegion(viewModel);
     viewModel.clearUserData();
-    viewModel.setGender(viewModel.user?.gender ?? '');
+    viewModel.setSelectedGender(viewModel.user?.gender ?? '');
+    viewModel.setSelectedOccupation(viewModel.user?.occupation ?? '');
     viewModel.setSelectedCountry(viewModel.user?.country ?? 'Ethiopia');
   }
 
@@ -370,7 +370,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   Widget _buildMaleRadioButton(ProfileDetailViewModel viewModel) =>
       RadioGroup<String?>(
           groupValue: viewModel.selectedGender,
-          onChanged: (value) => viewModel.setGender(value ?? ''),
+          onChanged: (value) => viewModel.setSelectedGender(value ?? ''),
           child: _buildMaleRadioTileWrapper(viewModel));
 
   Widget _buildMaleRadioTileWrapper(ProfileDetailViewModel viewModel) =>
@@ -399,7 +399,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   Widget _buildFemaleRadioButton(ProfileDetailViewModel viewModel) =>
       RadioGroup<String?>(
           groupValue: viewModel.selectedGender,
-          onChanged: (value) => viewModel.setGender(value ?? ''),
+          onChanged: (value) => viewModel.setSelectedGender(value ?? ''),
           child: _buildFemaleRadioTileWrapper(viewModel));
 
   Widget _buildFemaleRadioTileWrapper(ProfileDetailViewModel viewModel) =>
