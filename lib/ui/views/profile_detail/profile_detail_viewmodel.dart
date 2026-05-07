@@ -57,20 +57,30 @@ class ProfileDetailViewModel extends ReactiveViewModel
 
   bool get focusEmail => _focusEmail;
 
+
+  // Occupation
+  String _selectedOccupation = 'Students (High school & University)';
+
+  String get selectedOccupation => _selectedOccupation;
+
+
   // Country
   String _selectedCountry = 'Ethiopia';
 
   String get selectedCountry => _selectedCountry;
 
-  // Occupation
-  bool _focusOccupation = false;
-
-  bool get focusOccupation => _focusOccupation;
-
   // Region
   bool _focusRegion = false;
 
   bool get focusRegion => _focusRegion;
+
+  bool _dropdownRegion = true;
+
+  bool get dropdownRegion => _dropdownRegion;
+
+  String _selectedRegion = 'Addis Ababa';
+
+  String get selectedRegion => _selectedRegion;
 
   // User data
   final Map<String, dynamic> _userData = {};
@@ -107,177 +117,226 @@ class ProfileDetailViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
-  // Country
+
+
+  // Occupation
+  List<String> getOccupations() => [
+    'Students (High school & University)',
+    'Job Seekers / Fresh Graduates',
+    'Working Professionals (Corporate/Office)',
+    'Government & NGO Workers',
+    'Entrepreneurs & Small Business Owners',
+    'Hospitality & Tourism Workers',
+    'Freelancers / Remote Workers (Digital Economy)'
+  ];
+
+  void setSelectedOccupation(String value) {
+    _selectedOccupation = value;
+    rebuildUi();
+  }
+
   // Country
   List<String> getCountries() => [
-        "Afghanistan",
-        "Albania",
-        "Algeria",
-        "Andorra",
-        "Angola",
-        "Argentina",
-        "Armenia",
-        "Australia",
-        "Austria",
-        "Azerbaijan",
-        "Bahrain",
-        "Bangladesh",
-        "Belarus",
-        "Belgium",
-        "Belize",
-        "Benin",
-        "Bhutan",
-        "Bolivia",
-        "Bosnia and Herzegovina",
-        "Botswana",
-        "Brazil",
-        "Brunei",
-        "Bulgaria",
-        "Burkina Faso",
-        "Burundi",
-        "Cambodia",
-        "Cameroon",
-        "Canada",
-        "Chad",
-        "Chile",
-        "China",
-        "Colombia",
-        "Comoros",
-        "Congo",
-        "Costa Rica",
-        "Croatia",
-        "Cuba",
-        "Cyprus",
-        "Czech Republic",
-        "Denmark",
-        "Djibouti",
-        "Dominican Republic",
-        "Ecuador",
-        "Egypt",
-        "El Salvador",
-        "Eritrea",
-        "Estonia",
-        "Eswatini",
-        "Ethiopia",
-        "Finland",
-        "France",
-        "Gabon",
-        "Gambia",
-        "Georgia",
-        "Germany",
-        "Ghana",
-        "Greece",
-        "Guatemala",
-        "Guinea",
-        "Haiti",
-        "Honduras",
-        "Hungary",
-        "Iceland",
-        "India",
-        "Indonesia",
-        "Iran",
-        "Iraq",
-        "Ireland",
-        "Israel",
-        "Italy",
-        "Jamaica",
-        "Japan",
-        "Jordan",
-        "Kazakhstan",
-        "Kenya",
-        "Kuwait",
-        "Kyrgyzstan",
-        "Laos",
-        "Latvia",
-        "Lebanon",
-        "Liberia",
-        "Libya",
-        "Lithuania",
-        "Luxembourg",
-        "Madagascar",
-        "Malawi",
-        "Malaysia",
-        "Maldives",
-        "Mali",
-        "Malta",
-        "Mexico",
-        "Moldova",
-        "Monaco",
-        "Mongolia",
-        "Morocco",
-        "Mozambique",
-        "Myanmar",
-        "Namibia",
-        "Nepal",
-        "Netherlands",
-        "New Zealand",
-        "Nicaragua",
-        "Niger",
-        "Nigeria",
-        "North Korea",
-        "Norway",
-        "Oman",
-        "Pakistan",
-        "Panama",
-        "Paraguay",
-        "Peru",
-        "Philippines",
-        "Poland",
-        "Portugal",
-        "Qatar",
-        "Romania",
-        "Russia",
-        "Rwanda",
-        "Saudi Arabia",
-        "Senegal",
-        "Serbia",
-        "Singapore",
-        "Slovakia",
-        "Slovenia",
-        "Somalia",
-        "South Africa",
-        "South Korea",
-        "Spain",
-        "Sri Lanka",
-        "Sudan",
-        "Sweden",
-        "Switzerland",
-        "Syria",
-        "Taiwan",
-        "Tajikistan",
-        "Tanzania",
-        "Thailand",
-        "Tunisia",
-        "Turkey",
-        "Uganda",
-        "Ukraine",
-        "United Arab Emirates",
-        "United Kingdom",
-        "United States",
-        "Uruguay",
-        "Uzbekistan",
-        "Venezuela",
-        "Vietnam",
-        "Yemen",
-        "Zambia",
-        "Zimbabwe"
-      ];
+    "Afghanistan",
+    "Albania",
+    "Algeria",
+    "Andorra",
+    "Angola",
+    "Argentina",
+    "Armenia",
+    "Australia",
+    "Austria",
+    "Azerbaijan",
+    "Bahrain",
+    "Bangladesh",
+    "Belarus",
+    "Belgium",
+    "Belize",
+    "Benin",
+    "Bhutan",
+    "Bolivia",
+    "Bosnia and Herzegovina",
+    "Botswana",
+    "Brazil",
+    "Brunei",
+    "Bulgaria",
+    "Burkina Faso",
+    "Burundi",
+    "Cambodia",
+    "Cameroon",
+    "Canada",
+    "Chad",
+    "Chile",
+    "China",
+    "Colombia",
+    "Comoros",
+    "Congo",
+    "Costa Rica",
+    "Croatia",
+    "Cuba",
+    "Cyprus",
+    "Czech Republic",
+    "Denmark",
+    "Djibouti",
+    "Dominican Republic",
+    "Ecuador",
+    "Egypt",
+    "El Salvador",
+    "Eritrea",
+    "Estonia",
+    "Eswatini",
+    "Ethiopia",
+    "Finland",
+    "France",
+    "Gabon",
+    "Gambia",
+    "Georgia",
+    "Germany",
+    "Ghana",
+    "Greece",
+    "Guatemala",
+    "Guinea",
+    "Haiti",
+    "Honduras",
+    "Hungary",
+    "Iceland",
+    "India",
+    "Indonesia",
+    "Iran",
+    "Iraq",
+    "Ireland",
+    "Israel",
+    "Italy",
+    "Jamaica",
+    "Japan",
+    "Jordan",
+    "Kazakhstan",
+    "Kenya",
+    "Kuwait",
+    "Kyrgyzstan",
+    "Laos",
+    "Latvia",
+    "Lebanon",
+    "Liberia",
+    "Libya",
+    "Lithuania",
+    "Luxembourg",
+    "Madagascar",
+    "Malawi",
+    "Malaysia",
+    "Maldives",
+    "Mali",
+    "Malta",
+    "Mexico",
+    "Moldova",
+    "Monaco",
+    "Mongolia",
+    "Morocco",
+    "Mozambique",
+    "Myanmar",
+    "Namibia",
+    "Nepal",
+    "Netherlands",
+    "New Zealand",
+    "Nicaragua",
+    "Niger",
+    "Nigeria",
+    "North Korea",
+    "Norway",
+    "Oman",
+    "Pakistan",
+    "Panama",
+    "Paraguay",
+    "Peru",
+    "Philippines",
+    "Poland",
+    "Portugal",
+    "Qatar",
+    "Romania",
+    "Russia",
+    "Rwanda",
+    "Saudi Arabia",
+    "Senegal",
+    "Serbia",
+    "Singapore",
+    "Slovakia",
+    "Slovenia",
+    "Somalia",
+    "South Africa",
+    "South Korea",
+    "Spain",
+    "Sri Lanka",
+    "Sudan",
+    "Sweden",
+    "Switzerland",
+    "Syria",
+    "Taiwan",
+    "Tajikistan",
+    "Tanzania",
+    "Thailand",
+    "Tunisia",
+    "Turkey",
+    "Uganda",
+    "Ukraine",
+    "United Arab Emirates",
+    "United Kingdom",
+    "United States",
+    "Uruguay",
+    "Uzbekistan",
+    "Venezuela",
+    "Vietnam",
+    "Yemen",
+    "Zambia",
+    "Zimbabwe"
+  ];
 
   void setSelectedCountry(String value) {
     _selectedCountry = value;
 
-    rebuildUi();
-  }
+    if (value == 'Ethiopia') {
+      _dropdownRegion = true;
+      _selectedRegion = 'Addis Ababa';
+    } else {
+      _dropdownRegion = false;
+    }
 
-  // Occupation
-  void setOccupationFocus() {
-    _focusOccupation = true;
     rebuildUi();
   }
 
   // Region
+  List<String> getRegions() => [
+    'Addis Ababa',
+    'Afar',
+    'Amhara',
+    'Benishangul-Gumuz',
+    'Central Ethiopia',
+    'Dire Dawa',
+    'Gambela',
+    'Harari',
+    'Oromia',
+    'Sidama',
+    'Somali',
+    'South Ethiopia',
+    'South West Ethiopia Peoples',
+    'Tigray',
+  ];
+
+  bool checkRegion(String value){
+    return getRegions().contains(value);
+  }
+
+  void setSelectedRegion(String value) {
+    _selectedRegion = value;
+    rebuildUi();
+  }
+
   void setRegionFocus() {
     _focusRegion = true;
+    rebuildUi();
+  }
+
+  void unsetRegionFocus() {
+    _focusRegion = false;
     rebuildUi();
   }
 

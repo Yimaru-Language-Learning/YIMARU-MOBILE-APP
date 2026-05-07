@@ -12,6 +12,16 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
   final TextEditingController regionController;
   const CountryRegionFormScreen({super.key, required this.regionController});
 
+  void _setSelectedCountry(
+      {String? value, required OnboardingViewModel viewModel}) {
+    viewModel.setSelectedCountry(value ?? 'Ethiopia');
+
+    if (viewModel.selectedCountry != 'Ethiopia') {
+      regionController.clear();
+      viewModel.unsetRegionFocus();
+    }
+  }
+
   void _pop(OnboardingViewModel viewModel) {
     viewModel.resetCountryRegionFormScreen();
     viewModel.goBack();
@@ -21,7 +31,9 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     Map<String, dynamic> data = {
-      'region': regionController.text,
+      'region': viewModel.dropdownRegion
+          ? viewModel.selectedRegion
+          : regionController.text,
       'country': viewModel.selectedCountry,
     };
     viewModel.addUserData(data);
@@ -85,10 +97,14 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
         verticalSpaceMedium,
         _buildCountryDropDown(viewModel),
         verticalSpaceMedium,
-        _buildRegionFormField(viewModel),
-        if (viewModel.hasRegionValidationMessage && viewModel.focusRegion)
+        _buildRegionFormState(viewModel),
+          if (viewModel.hasRegionValidationMessage &&
+              !viewModel.dropdownRegion &&
+              viewModel.focusRegion)
           verticalSpaceTiny,
-        if (viewModel.hasRegionValidationMessage && viewModel.focusRegion)
+        if (viewModel.hasRegionValidationMessage &&
+            !viewModel.dropdownRegion &&
+            viewModel.focusRegion)
           _buildRegionValidatorWrapper(viewModel)
       ];
 
@@ -116,7 +132,22 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
           selectedItem: viewModel.selectedCountry,
           items: (value, props) => viewModel.getCountries(),
           onChanged: (value) =>
-              viewModel.setSelectedCountry(value ?? 'Ethiopia'));
+              _setSelectedCountry(value: value, viewModel: viewModel));
+
+  Widget _buildRegionFormState(OnboardingViewModel viewModel) =>
+      viewModel.dropdownRegion
+          ? _buildRegionDropDown(viewModel)
+          : _buildRegionFormField(viewModel);
+
+  Widget _buildRegionDropDown(OnboardingViewModel viewModel) =>
+      CustomDropdownPicker(
+          hint: 'Select region',
+          icon: _buildSearchIcon(),
+          selectedItem: viewModel.selectedRegion,
+          items: (value, props) => viewModel.getRegions(),
+          onChanged: (value) =>
+              viewModel.setSelectedRegion(value ?? 'Addis Ababa'));
+
   Widget _buildRegionFormField(OnboardingViewModel viewModel) => TextFormField(
         controller: regionController,
         onTap: viewModel.setRegionFocus,
@@ -152,9 +183,15 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: regionController.text.isNotEmpty ? () => _next(viewModel) : null,
-        backgroundColor: regionController.text.isNotEmpty
-            ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+        onTap: !viewModel.dropdownRegion
+            ? regionController.text.isNotEmpty
+                ? () => _next(viewModel)
+                : null
+            : () => _next(viewModel),
+        backgroundColor: !viewModel.dropdownRegion
+            ? regionController.text.isNotEmpty
+                ? kcPrimaryColor
+                : kcPrimaryColor.withOpacity(0.1)
+            : kcPrimaryColor,
       );
 }

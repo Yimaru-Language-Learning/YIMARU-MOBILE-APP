@@ -2,6 +2,8 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
+import 'package:yimaru_app/services/phone_caller_service.dart';
+import 'package:yimaru_app/ui/common/app_constants.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
@@ -10,6 +12,7 @@ import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/google_auth_service.dart';
 import '../../../services/status_checker_service.dart';
+import '../../../services/url_launcher_service.dart';
 import '../../common/app_colors.dart';
 
 class ProfileViewModel extends ReactiveViewModel {
@@ -22,6 +25,10 @@ class ProfileViewModel extends ReactiveViewModel {
   final _navigationService = locator<NavigationService>();
 
   final _googleAuthService = locator<GoogleAuthService>();
+
+  final _phoneCallerService = locator<PhoneCallerService>();
+
+  final _urlLauncherService = locator<UrlLauncherService>();
 
   final _imagePickerService = locator<ImagePickerService>();
 
@@ -60,6 +67,13 @@ class ProfileViewModel extends ReactiveViewModel {
       await _authenticationService.saveProfilePicture(image);
     }
   }
+
+  // Launch telegram
+  Future<void> launchTelegram() =>
+      _urlLauncherService.launchUri(kTelegramSupport);
+
+  // Call support
+  Future<void> callSupport() => _phoneCallerService.call(kPhoneSupport);
 
   // Dialog
   Future<bool?> showAbortDialog() async {

@@ -366,11 +366,15 @@ class ApiService {
       if (response.statusCode == 200) {
         var data = response.data;
         var decodedData = data['data']['question_sets'] as List;
-        assessments = decodedData.map(
-          (e) {
-            return Assessment.fromJson(e);
-          },
-        ).toList();
+        assessments = decodedData
+            .map(
+              (e) {
+                return Assessment.fromJson(e);
+              },
+            )
+            .toList()
+            .reversed
+            .toList();
         return assessments;
       }
       return [];

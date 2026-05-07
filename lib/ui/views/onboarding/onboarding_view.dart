@@ -23,7 +23,6 @@ import 'onboarding_view.form.dart';
       name: 'fullName', validator: FormValidator.validateFullNameForm),
   FormTextField(name: 'region', validator: FormValidator.validateForm),
   FormTextField(name: 'challenge', validator: FormValidator.validateForm),
-  FormTextField(name: 'occupation', validator: FormValidator.validateForm),
   FormTextField(name: 'languageGoal', validator: FormValidator.validateForm),
 ])
 class OnboardingView extends StackedView<OnboardingViewModel>
@@ -39,7 +38,6 @@ class OnboardingView extends StackedView<OnboardingViewModel>
     regionController.clear();
     fullNameController.clear();
     challengeController.clear();
-    occupationController.clear();
     languageGoalController.clear();
   }
 
@@ -54,7 +52,6 @@ class OnboardingView extends StackedView<OnboardingViewModel>
     } else if (viewModel.currentPage == 3) {
       viewModel.resetEducationalBackgroundFormScreen();
     } else if (viewModel.currentPage == 4) {
-      occupationController.clear();
       viewModel.resetOccupationFormScreen();
     } else if (viewModel.currentPage == 5) {
       viewModel.resetCountryRegionFormScreen();
@@ -135,8 +132,7 @@ class OnboardingView extends StackedView<OnboardingViewModel>
   Widget _buildEducationalBackgroundForm() =>
       const EducationalBackgroundFormScreen();
 
-  Widget _buildOccupationForm() =>
-      OccupationFormScreen(occupationController: occupationController);
+  Widget _buildOccupationForm() => const OccupationFormScreen();
 
   Widget _buildCountryRegionForm() => CountryRegionFormScreen(
         regionController: regionController,

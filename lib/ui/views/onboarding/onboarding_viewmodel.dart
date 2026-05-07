@@ -91,9 +91,9 @@ class OnboardingViewModel extends ReactiveViewModel
   Map<String, dynamic>? get selectedAgeGroup => _selectedAgeGroup;
 
   // Occupation
-  bool _focusOccupation = false;
+  String _selectedOccupation = 'Students (High school & University)';
 
-  bool get focusOccupation => _focusOccupation;
+  String get selectedOccupation => _selectedOccupation;
 
   // Country
   String _selectedCountry = 'Ethiopia';
@@ -104,6 +104,14 @@ class OnboardingViewModel extends ReactiveViewModel
   bool _focusRegion = false;
 
   bool get focusRegion => _focusRegion;
+
+  bool _dropdownRegion = true;
+
+  bool get dropdownRegion => _dropdownRegion;
+
+  String _selectedRegion = 'Addis Ababa';
+
+  String get selectedRegion => _selectedRegion;
 
   // Learning goal
   String? _selectedLearningGoal;
@@ -253,8 +261,18 @@ class OnboardingViewModel extends ReactiveViewModel
       _selectedAgeGroup == value;
 
   // Occupation
-  void setOccupationFocus() {
-    _focusOccupation = true;
+  List<String> getOccupations() => [
+        'Students (High school & University)',
+        'Job Seekers / Fresh Graduates',
+        'Working Professionals (Corporate/Office)',
+        'Government & NGO Workers',
+        'Entrepreneurs & Small Business Owners',
+        'Hospitality & Tourism Workers',
+        'Freelancers / Remote Workers (Digital Economy)'
+      ];
+
+  void setSelectedOccupation(String value) {
+    _selectedOccupation = value;
     rebuildUi();
   }
 
@@ -415,12 +433,47 @@ class OnboardingViewModel extends ReactiveViewModel
 
   void setSelectedCountry(String value) {
     _selectedCountry = value;
+
+    if (value == 'Ethiopia') {
+      _dropdownRegion = true;
+      _selectedRegion = 'Addis Ababa';
+    } else {
+      _dropdownRegion = false;
+    }
+
     rebuildUi();
   }
 
   // Region
+  List<String> getRegions() => [
+        'Addis Ababa',
+        'Afar',
+        'Amhara',
+        'Benishangul-Gumuz',
+        'Central Ethiopia',
+        'Dire Dawa',
+        'Gambela',
+        'Harari',
+        'Oromia',
+        'Sidama',
+        'Somali',
+        'South Ethiopia',
+        'South West Ethiopia Peoples',
+        'Tigray',
+      ];
+
+  void setSelectedRegion(String value) {
+    _selectedRegion = value;
+    rebuildUi();
+  }
+
   void setRegionFocus() {
     _focusRegion = true;
+    rebuildUi();
+  }
+
+  void unsetRegionFocus() {
+    _focusRegion = false;
     rebuildUi();
   }
 
@@ -541,7 +594,7 @@ class OnboardingViewModel extends ReactiveViewModel
 
   // Reset occupation form screen
   void resetOccupationFormScreen() {
-    _focusOccupation = false;
+    _selectedOccupation = 'Students (High school & University)';
     rebuildUi();
   }
 
@@ -549,6 +602,7 @@ class OnboardingViewModel extends ReactiveViewModel
   void resetCountryRegionFormScreen() {
     _focusRegion = false;
     _selectedCountry = 'Ethiopia';
+    _selectedRegion = 'Addis Ababa';
     rebuildUi();
   }
 

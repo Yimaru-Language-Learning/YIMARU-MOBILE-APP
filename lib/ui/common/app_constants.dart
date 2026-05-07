@@ -1,3 +1,4 @@
+// Endpoints
 String kBaseUrl = 'https://api.yimaruacademy.com';
 
 String kApiUrl = 'api';
@@ -83,3 +84,8 @@ String kSampleVideoUrl =
 
 String kServerClientId =
     '900714037062-24ria5fcfet71o3vde8f6gsvsj1n68ec.apps.googleusercontent.com';
+
+// Other
+String kPhoneSupport = '+251946396655';
+
+String kTelegramSupport = '@yimaruacademy2026';

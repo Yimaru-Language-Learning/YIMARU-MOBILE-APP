@@ -10,13 +10,11 @@ class WelcomeViewModel extends BaseViewModel {
   // Dependency Injection
   final _navigationService = locator<NavigationService>();
 
-  final _statusChecker = locator<StatusCheckerService>();
-
   final _authenticationService = locator<AuthenticationService>();
 
   // Navigation
   Future<void> navigateToLogin() async =>
-      await _navigationService.navigateToLoginView();
+      await _navigationService.replaceWithLoginView();
 
   // Remote api call
 

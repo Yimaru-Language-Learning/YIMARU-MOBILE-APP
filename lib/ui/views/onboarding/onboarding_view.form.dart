@@ -17,7 +17,6 @@ const String TopicValueKey = 'topic';
 const String FullNameValueKey = 'fullName';
 const String RegionValueKey = 'region';
 const String ChallengeValueKey = 'challenge';
-const String OccupationValueKey = 'occupation';
 const String LanguageGoalValueKey = 'languageGoal';
 
 final Map<String, TextEditingController> _OnboardingViewTextEditingControllers =
@@ -30,7 +29,6 @@ final Map<String, String? Function(String?)?> _OnboardingViewTextValidations = {
   FullNameValueKey: FormValidator.validateFullNameForm,
   RegionValueKey: FormValidator.validateForm,
   ChallengeValueKey: FormValidator.validateForm,
-  OccupationValueKey: FormValidator.validateForm,
   LanguageGoalValueKey: FormValidator.validateForm,
 };
 
@@ -43,8 +41,6 @@ mixin $OnboardingView {
       _getFormTextEditingController(RegionValueKey);
   TextEditingController get challengeController =>
       _getFormTextEditingController(ChallengeValueKey);
-  TextEditingController get occupationController =>
-      _getFormTextEditingController(OccupationValueKey);
   TextEditingController get languageGoalController =>
       _getFormTextEditingController(LanguageGoalValueKey);
 
@@ -52,7 +48,6 @@ mixin $OnboardingView {
   FocusNode get fullNameFocusNode => _getFormFocusNode(FullNameValueKey);
   FocusNode get regionFocusNode => _getFormFocusNode(RegionValueKey);
   FocusNode get challengeFocusNode => _getFormFocusNode(ChallengeValueKey);
-  FocusNode get occupationFocusNode => _getFormFocusNode(OccupationValueKey);
   FocusNode get languageGoalFocusNode =>
       _getFormFocusNode(LanguageGoalValueKey);
 
@@ -84,7 +79,6 @@ mixin $OnboardingView {
     fullNameController.addListener(() => _updateFormData(model));
     regionController.addListener(() => _updateFormData(model));
     challengeController.addListener(() => _updateFormData(model));
-    occupationController.addListener(() => _updateFormData(model));
     languageGoalController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
@@ -101,7 +95,6 @@ mixin $OnboardingView {
     fullNameController.addListener(() => _updateFormData(model));
     regionController.addListener(() => _updateFormData(model));
     challengeController.addListener(() => _updateFormData(model));
-    occupationController.addListener(() => _updateFormData(model));
     languageGoalController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
@@ -116,7 +109,6 @@ mixin $OnboardingView {
           FullNameValueKey: fullNameController.text,
           RegionValueKey: regionController.text,
           ChallengeValueKey: challengeController.text,
-          OccupationValueKey: occupationController.text,
           LanguageGoalValueKey: languageGoalController.text,
         }),
     );
@@ -163,8 +155,6 @@ extension ValueProperties on FormStateHelper {
   String? get fullNameValue => this.formValueMap[FullNameValueKey] as String?;
   String? get regionValue => this.formValueMap[RegionValueKey] as String?;
   String? get challengeValue => this.formValueMap[ChallengeValueKey] as String?;
-  String? get occupationValue =>
-      this.formValueMap[OccupationValueKey] as String?;
   String? get languageGoalValue =>
       this.formValueMap[LanguageGoalValueKey] as String?;
 
@@ -210,17 +200,6 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
-  set occupationValue(String? value) {
-    this.setData(
-      this.formValueMap..addAll({OccupationValueKey: value}),
-    );
-
-    if (_OnboardingViewTextEditingControllers.containsKey(OccupationValueKey)) {
-      _OnboardingViewTextEditingControllers[OccupationValueKey]?.text =
-          value ?? '';
-    }
-  }
-
   set languageGoalValue(String? value) {
     this.setData(
       this.formValueMap..addAll({LanguageGoalValueKey: value}),
@@ -245,9 +224,6 @@ extension ValueProperties on FormStateHelper {
   bool get hasChallenge =>
       this.formValueMap.containsKey(ChallengeValueKey) &&
       (challengeValue?.isNotEmpty ?? false);
-  bool get hasOccupation =>
-      this.formValueMap.containsKey(OccupationValueKey) &&
-      (occupationValue?.isNotEmpty ?? false);
   bool get hasLanguageGoal =>
       this.formValueMap.containsKey(LanguageGoalValueKey) &&
       (languageGoalValue?.isNotEmpty ?? false);
@@ -260,8 +236,6 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[RegionValueKey]?.isNotEmpty ?? false;
   bool get hasChallengeValidationMessage =>
       this.fieldsValidationMessages[ChallengeValueKey]?.isNotEmpty ?? false;
-  bool get hasOccupationValidationMessage =>
-      this.fieldsValidationMessages[OccupationValueKey]?.isNotEmpty ?? false;
   bool get hasLanguageGoalValidationMessage =>
       this.fieldsValidationMessages[LanguageGoalValueKey]?.isNotEmpty ?? false;
 
@@ -273,8 +247,6 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[RegionValueKey];
   String? get challengeValidationMessage =>
       this.fieldsValidationMessages[ChallengeValueKey];
-  String? get occupationValidationMessage =>
-      this.fieldsValidationMessages[OccupationValueKey];
   String? get languageGoalValidationMessage =>
       this.fieldsValidationMessages[LanguageGoalValueKey];
 }
@@ -288,8 +260,6 @@ extension Methods on FormStateHelper {
       this.fieldsValidationMessages[RegionValueKey] = validationMessage;
   void setChallengeValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[ChallengeValueKey] = validationMessage;
-  void setOccupationValidationMessage(String? validationMessage) =>
-      this.fieldsValidationMessages[OccupationValueKey] = validationMessage;
   void setLanguageGoalValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[LanguageGoalValueKey] = validationMessage;
 
@@ -299,7 +269,6 @@ extension Methods on FormStateHelper {
     fullNameValue = '';
     regionValue = '';
     challengeValue = '';
-    occupationValue = '';
     languageGoalValue = '';
   }
 
@@ -310,7 +279,6 @@ extension Methods on FormStateHelper {
       FullNameValueKey: getValidationMessage(FullNameValueKey),
       RegionValueKey: getValidationMessage(RegionValueKey),
       ChallengeValueKey: getValidationMessage(ChallengeValueKey),
-      OccupationValueKey: getValidationMessage(OccupationValueKey),
       LanguageGoalValueKey: getValidationMessage(LanguageGoalValueKey),
     });
   }
@@ -335,6 +303,5 @@ void updateValidationData(FormStateHelper model) =>
       FullNameValueKey: getValidationMessage(FullNameValueKey),
       RegionValueKey: getValidationMessage(RegionValueKey),
       ChallengeValueKey: getValidationMessage(ChallengeValueKey),
-      OccupationValueKey: getValidationMessage(OccupationValueKey),
       LanguageGoalValueKey: getValidationMessage(LanguageGoalValueKey),
     });

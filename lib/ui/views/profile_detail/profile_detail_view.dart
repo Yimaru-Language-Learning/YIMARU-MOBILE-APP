@@ -26,7 +26,6 @@ import 'profile_detail_view.form.dart';
       name: 'phoneNumber', validator: FormValidator.validatePhoneNumberForm),
   FormTextField(name: 'lastName', validator: FormValidator.validateForm),
   FormTextField(name: 'firstName', validator: FormValidator.validateForm),
-  FormTextField(name: 'occupation', validator: FormValidator.validateForm),
 ])
 class ProfileDetailView extends StackedView<ProfileDetailViewModel>
     with $ProfileDetailView {
@@ -34,7 +33,9 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   Future<void> _update(ProfileDetailViewModel viewModel) async {
     Map<String, dynamic> data = {
-      'region': regionController.text,
+      'region': viewModel.dropdownRegion
+          ? viewModel.selectedRegion
+          : regionController.text,
       'gender': viewModel.selectedGender,
       'last_name': lastNameController.text,
       'country': viewModel.selectedCountry,
@@ -65,13 +66,23 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         content: _buildImagePicker(context: context, viewModel: viewModel),
       );
 
+  void _checkRegion(ProfileDetailViewModel viewModel){
+    if(viewModel.checkRegion(viewModel.user?.region ?? '')){
+      viewModel.setSelectedRegion(viewModel.user?.region ?? 'Addis Ababa');
+    }else{
+      regionController.text = viewModel.user?.region ?? '';
+
+    }
+  }
+
   void _onModelReady(ProfileDetailViewModel viewModel) {
     phoneNumberController.text = '251900000000';
     emailController.text = viewModel.user?.email ?? '';
-    regionController.text = viewModel.user?.region ?? '';
+
     lastNameController.text = viewModel.user?.lastName ?? '';
     firstNameController.text = viewModel.user?.firstName ?? '';
     occupationController.text = viewModel.user?.occupation ?? '';
+    _checkRegion(viewModel);
     viewModel.clearUserData();
     viewModel.setGender(viewModel.user?.gender ?? '');
     viewModel.setSelectedCountry(viewModel.user?.country ?? 'Ethiopia');
@@ -535,11 +546,13 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       [
         _buildRegionFormFieldLabel(),
         verticalSpaceSmall,
-        _buildRegionFormField(viewModel),
-        if (viewModel.hasRegionValidationMessage && viewModel.focusRegion)
-          verticalSpaceTiny,
-        if (viewModel.hasRegionValidationMessage && viewModel.focusRegion)
-          _buildRegionValidatorWrapper(viewModel),
+        _buildRegionFormState(viewModel),
+        if (viewModel.hasRegionValidationMessage &&
+            !viewModel.dropdownRegion &&
+            viewModel.focusRegion)          verticalSpaceTiny,
+        if (viewModel.hasRegionValidationMessage &&
+            !viewModel.dropdownRegion &&
+            viewModel.focusRegion)          _buildRegionValidatorWrapper(viewModel),
       ];
 
   Widget _buildRegionFormFieldLabel() => CustomFormLabel(
@@ -547,15 +560,28 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         style: style16DG600,
       );
 
-  Widget _buildRegionFormField(ProfileDetailViewModel viewModel) =>
-      TextFormField(
-        controller: regionController,
-        onTap: viewModel.setRegionFocus,
-        decoration: inputDecoration(
-            hint: 'Enter Your City',
-            focus: viewModel.focusRegion,
-            filled: regionController.text.isNotEmpty),
-      );
+  Widget _buildRegionFormState(ProfileDetailViewModel viewModel) =>
+      viewModel.dropdownRegion
+          ? _buildRegionDropDown(viewModel)
+          : _buildRegionFormField(viewModel);
+
+  Widget _buildRegionDropDown(ProfileDetailViewModel viewModel) =>
+      CustomDropdownPicker(
+          hint: 'Select region',
+          icon: _buildSearchIcon(),
+          selectedItem: viewModel.selectedRegion,
+          items: (value, props) => viewModel.getRegions(),
+          onChanged: (value) =>
+              viewModel.setSelectedRegion(value ?? 'Addis Ababa'));
+
+  Widget _buildRegionFormField(ProfileDetailViewModel viewModel) => TextFormField(
+    controller: regionController,
+    onTap: viewModel.setRegionFocus,
+    decoration: inputDecoration(
+        hint: 'Enter Your City',
+        focus: viewModel.focusRegion,
+        filled: regionController.text.isNotEmpty),
+  );
 
   Widget _buildRegionValidatorWrapper(ProfileDetailViewModel viewModel) =>
       viewModel.hasRegionValidationMessage
@@ -563,9 +589,10 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
           : Container();
 
   Widget _buildRegionValidator(ProfileDetailViewModel viewModel) => Text(
-        viewModel.regionValidationMessage!,
-        style: style12R700,
-      );
+    viewModel.regionValidationMessage!,
+    style: style12R700,
+  );
+
 
   Widget _buildOccupationDropdownWrapper(ProfileDetailViewModel viewModel) =>
       Column(
@@ -580,13 +607,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       [
         _buildOccupationDropdownLabel(),
         verticalSpaceSmall,
-        _buildOccupationFormField(viewModel),
-        if (viewModel.hasOccupationValidationMessage &&
-            viewModel.focusOccupation)
-          verticalSpaceTiny,
-        if (viewModel.hasOccupationValidationMessage &&
-            viewModel.focusOccupation)
-          _buildOccupationValidatorWrapper(viewModel)
+        _buildOccupationDropdown(viewModel)
+
       ];
 
   Widget _buildOccupationDropdownLabel() => CustomFormLabel(
@@ -594,29 +616,18 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         style: style16DG600,
       );
 
-  Widget _buildOccupationFormField(ProfileDetailViewModel viewModel) =>
-      TextFormField(
-        controller: occupationController,
-        onTap: viewModel.setOccupationFocus,
-        decoration: inputDecoration(
-            hint: 'Enter Your Occupation',
-            focus: viewModel.focusOccupation,
-            filled: occupationController.text.isNotEmpty),
-      );
-
-  Widget _buildOccupationValidatorWrapper(ProfileDetailViewModel viewModel) =>
-      viewModel.hasOccupationValidationMessage
-          ? _buildOccupationValidator(viewModel)
-          : Container();
-
-  Widget _buildOccupationValidator(ProfileDetailViewModel viewModel) => Text(
-        viewModel.occupationValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
-      );
+  Widget _buildOccupationDropdown(ProfileDetailViewModel viewModel) =>
+      CustomDropdownPicker(
+          hint: 'Select occupation',
+          icon: _buildSearchIcon(),
+          selectedItem: viewModel.selectedOccupation,
+          items: (value, props) => viewModel.getOccupations(),
+          onChanged: (value) => viewModel.setSelectedOccupation(
+              value ?? 'Students (High school & University)'));
+  Icon _buildSearchIcon() => const Icon(
+    Icons.search,
+    color: kcPrimaryColor,
+  );
   Widget _buildLowerColumn(ProfileDetailViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         children: _buildLowerColumnChildren(viewModel),

@@ -153,9 +153,9 @@ class LearnPracticeDescriptionScreen
   Widget _buildImage(LearnPracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.cover,
         width: double.maxFinite,
-    imageUrl: getReadableUrl(viewModel.practices.first.storyImage ?? '') ?? '',
-
-  );
+        imageUrl:
+            getReadableUrl(viewModel.practices.first.storyImage ?? '') ?? '',
+      );
 
   Widget _buildContinueButtonWrapper(LearnPracticeViewModel viewModel) =>
       Padding(
