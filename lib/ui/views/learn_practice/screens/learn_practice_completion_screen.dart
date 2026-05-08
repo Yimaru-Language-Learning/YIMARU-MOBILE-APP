@@ -9,7 +9,8 @@ import '../../../widgets/custom_elevated_button.dart';
 
 class LearnPracticeCompletionScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
-  const LearnPracticeCompletionScreen({super.key});
+  final String level;
+  const LearnPracticeCompletionScreen({super.key, required this.level});
 
   @override
   Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
@@ -54,7 +55,7 @@ class LearnPracticeCompletionScreen
       );
 
   Widget _buildTitle() => Text(
-        'Yay, you’ve completed A1 ',
+        'Yay, you’ve completed $level ',
         style: style25DG600,
         textAlign: TextAlign.center,
       );

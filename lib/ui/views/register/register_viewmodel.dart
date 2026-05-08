@@ -130,7 +130,6 @@ class RegisterViewModel extends ReactiveViewModel
       _length = false;
     }
 
-
     if (password == confirmPassword) {
       _passwordMatch = true;
     } else {
@@ -237,6 +236,7 @@ class RegisterViewModel extends ReactiveViewModel
   }
 
   void goBack() {
+    print('HERE');
     if (_currentPage == 1) {
       _currentPage = 0;
       rebuildUi();

@@ -143,7 +143,7 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
         height: 15,
         borderRadius: 12,
         onTap: onViewTap,
-        text: 'View Courses',
+        text: 'View Course',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );
@@ -158,7 +158,7 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
         height: 15,
         borderRadius: 12,
         onTap: onPracticeTap,
-        text: 'Take Practices',
+        text: 'Take Practice',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,

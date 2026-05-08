@@ -115,9 +115,9 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         _buildSubtitle(),
         verticalSpaceSmall,
         _buildModuleProgress(),
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildMotivationCard(),
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildHeader(),
         verticalSpaceMedium,
         _buildListViewBuilder(viewModel),
@@ -156,20 +156,25 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         itemCount: viewModel.lessons.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
+          index: index,
           lesson: viewModel.lessons[index],
-          onLessonTap: () async => await viewModel
-              .navigateToLearnLessonDetail(viewModel.lessons[index]),
+          onLessonTap: () async => await viewModel.navigateToLearnLessonDetail(
+              lesson: viewModel.lessons[index],
+              hasPractice:
+                  index != viewModel.lessons.length - 1 ? true : false),
           onPracticeTap: () async => await viewModel
               .navigateToLearnPractice(viewModel.lessons[index].id ?? 0),
         ),
       );
 
   Widget _buildTile({
+    required int index,
     required LearnLesson lesson,
     required GestureTapCallback? onLessonTap,
     required GestureTapCallback? onPracticeTap,
   }) =>
       LearnLessonTile(
+        index: index,
         lesson: lesson,
         onLessonTap: onLessonTap,
         onPracticeTap: onPracticeTap,

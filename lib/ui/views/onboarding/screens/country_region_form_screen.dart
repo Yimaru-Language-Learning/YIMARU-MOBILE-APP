@@ -98,9 +98,9 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
         _buildCountryDropDown(viewModel),
         verticalSpaceMedium,
         _buildRegionFormState(viewModel),
-          if (viewModel.hasRegionValidationMessage &&
-              !viewModel.dropdownRegion &&
-              viewModel.focusRegion)
+        if (viewModel.hasRegionValidationMessage &&
+            !viewModel.dropdownRegion &&
+            viewModel.focusRegion)
           verticalSpaceTiny,
         if (viewModel.hasRegionValidationMessage &&
             !viewModel.dropdownRegion &&

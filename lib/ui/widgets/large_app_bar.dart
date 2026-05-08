@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/widgets/app_bar_pattern.dart';
 import 'package:yimaru_app/ui/widgets/language_button.dart';
 
 class LargeAppBar extends StatelessWidget {
@@ -18,12 +19,11 @@ class LargeAppBar extends StatelessWidget {
       required this.showLanguageSelection});
 
   @override
-  Widget build(BuildContext context) => _buildAppBarWrapper();
+  Widget build(BuildContext context) => _buildStackWrapper();
 
-  Widget _buildAppBarWrapper() => Container(
+  Widget _buildStackWrapper() => Container(
         height: 125,
         width: double.maxFinite,
-        alignment: Alignment.bottomCenter,
         decoration: const BoxDecoration(
           color: kcPrimaryColor,
           borderRadius: BorderRadius.only(
@@ -31,6 +31,18 @@ class LargeAppBar extends StatelessWidget {
             bottomRight: Radius.circular(24),
           ),
         ),
+        child: _buildStack(),
+      );
+
+  Widget _buildStack() => Stack(
+        children: [ _buildPattern(),_buildAppBarWrapper()],
+      );
+
+  Widget _buildAppBarWrapper() => Container(
+        color: kcTransparent,
+        width: double.maxFinite,
+        height: double.maxFinite,
+        alignment: Alignment.bottomCenter,
         padding: const EdgeInsets.only(bottom: 25, right: 15),
         child: _buildAppBarItems(),
       );
@@ -74,4 +86,6 @@ class LargeAppBar extends StatelessWidget {
         Icons.close,
         color: kcWhite,
       );
+
+  Widget _buildPattern() => const AppBarPattern();
 }

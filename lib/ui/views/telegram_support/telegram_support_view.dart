@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/app_constants.dart';
 import 'package:yimaru_app/ui/widgets/circular_icon.dart';
 
 import '../../common/app_colors.dart';
@@ -91,20 +92,16 @@ class TelegramSupportView extends StackedView<TelegramSupportViewModel> {
   Widget _buildIcon() =>
       const CircularIcon(icon: Icons.telegram, size: 50, color: kcSkyBlue);
 
-  Widget _buildTitle() => const Text(
+  Widget _buildTitle() => Text(
         'Join Yimaru Academy on Telegram',
+        style: style25DG600,
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
       );
 
-  Widget _buildSubtitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'Connect with our support team instantly on Telegram for quick assistance and community updates',
+        style: style14MG400,
         textAlign: TextAlign.center,
-        style: TextStyle(color: kcMediumGrey),
       );
 
   Widget _buildLowerColumn(TelegramSupportViewModel viewModel) => Column(
@@ -123,31 +120,24 @@ class TelegramSupportView extends StackedView<TelegramSupportViewModel> {
       ];
 
   Widget _buildContinueButton(TelegramSupportViewModel viewModel) =>
-      const CustomElevatedButton(
+      CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        leadingIcon: Icons.telegram,
         text: 'Open in Telegram',
         foregroundColor: kcWhite,
+        leadingIcon: Icons.telegram,
         backgroundColor: kcPrimaryColor,
+        onTap: () async => await viewModel.launchTelegram(),
       );
 
   Widget _buildOptionTextDivider() => const OptionTextDivider();
 
-  Widget _buildSearchText() => const Text.rich(
-        TextSpan(
-            text: 'Search for',
-            style: TextStyle(
-              color: kcDarkGrey,
-            ),
-            children: [
-              TextSpan(
-                text: ' @YimaruSupport',
-                style: TextStyle(
-                  color: kcPrimaryColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            ]),
+  Widget _buildSearchText() => Text.rich(
+        TextSpan(text: 'Search for', style: style14DG500, children: [
+          TextSpan(
+            style: style14P600,
+            text: ' $kTelegramSupport',
+          )
+        ]),
       );
 }

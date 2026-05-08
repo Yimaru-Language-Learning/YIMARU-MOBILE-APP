@@ -13,9 +13,11 @@ import '../../widgets/small_app_bar.dart';
 import 'learn_lesson_detail_viewmodel.dart';
 
 class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
+  final bool hasPractice;
   final LearnLesson lesson;
 
-  const LearnLessonDetailView({Key? key, required this.lesson})
+  const LearnLessonDetailView(
+      {Key? key, required this.lesson, required this.hasPractice})
       : super(key: key);
 
   Future<void> _navigate(LearnLessonDetailViewModel viewModel) async {
@@ -86,7 +88,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   List<Widget> _buildBodyColumnChildren(LearnLessonDetailViewModel viewModel) =>
       [
         _buildLevelsColumnWrapper(viewModel),
-        _buildContinueButtonWrapper(viewModel)
+        if (hasPractice) _buildPracticeButtonWrapper(viewModel)
       ];
 
   Widget _buildLevelsColumnWrapper(LearnLessonDetailViewModel viewModel) =>
@@ -157,21 +159,21 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
         style: style14DG400,
       );
 
-  Widget _buildContinueButtonWrapper(LearnLessonDetailViewModel viewModel) =>
+  Widget _buildPracticeButtonWrapper(LearnLessonDetailViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.only(
           left: 15,
           right: 15,
           bottom: 50,
         ),
-        child: _buildContinueButton(viewModel),
+        child: _buildPracticeButton(viewModel),
       );
 
-  Widget _buildContinueButton(LearnLessonDetailViewModel viewModel) =>
+  Widget _buildPracticeButton(LearnLessonDetailViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Practices',
+        text: 'Take Practice',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _navigate(viewModel),

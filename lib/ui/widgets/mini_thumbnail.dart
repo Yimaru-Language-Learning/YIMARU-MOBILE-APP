@@ -14,8 +14,7 @@ class MiniThumbnail extends StatelessWidget {
   Widget build(BuildContext context) => _buildWrapper();
 
   Widget _buildWrapper() => SizedBox(
-        width: 75,
-        height: double.maxFinite,
+        width: 80,
         child: _buildLeadingClipper(),
       );
 
@@ -40,15 +39,17 @@ class MiniThumbnail extends StatelessWidget {
       : _buildNetworkImage();
 
   Widget _buildNetworkImage() => CachedNetworkImage(
+        fit: BoxFit.cover,
         imageUrl: thumbnail,
-        fit: BoxFit.fill,
         width: double.maxFinite,
+        height: double.maxFinite,
       );
 
   Widget _buildLocalImage() => Image.asset(
         thumbnail,
-        fit: BoxFit.fill,
+        fit: BoxFit.cover,
         width: double.maxFinite,
+        height: double.maxFinite,
       );
 
   Widget _buildPlayButtonWrapper() => Align(

@@ -238,6 +238,12 @@ TextStyle style25P600 = const TextStyle(
   fontWeight: FontWeight.w600,
 );
 
+TextStyle style40P900 = const TextStyle(
+  fontSize: 40,
+  color: kcPrimaryColor,
+  fontWeight: FontWeight.w900,
+);
+
 TextStyle style25DG600 = const TextStyle(
   fontSize: 25,
   color: kcDarkGrey,
@@ -309,15 +315,13 @@ TextStyle style14LG400 = const TextStyle(
 TextStyle style14MG400 = const TextStyle(
   color: kcMediumGrey,
 );
+TextStyle style14DG400 = const TextStyle(color: kcDarkGrey);
+
 TextStyle style14DG500 =
     const TextStyle(color: kcDarkGrey, fontWeight: FontWeight.w500);
 
 TextStyle style18MG500 = const TextStyle(
     fontSize: 18, color: kcMediumGrey, fontWeight: FontWeight.w500);
-
-TextStyle style14DG400 = const TextStyle(
-  color: kcDarkGrey,
-);
 
 TextStyle style14DG600 = const TextStyle(
   color: kcDarkGrey,

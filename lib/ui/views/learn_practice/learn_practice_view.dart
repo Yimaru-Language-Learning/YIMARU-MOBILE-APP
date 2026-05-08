@@ -16,10 +16,21 @@ import 'learn_practice_viewmodel.dart';
 
 class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
   final int id;
+  final String label;
+  final String title;
+  final String? level;
+  final String subtitle;
   final LearnPractices practice;
 
-  const LearnPracticeView({Key? key, required this.id, required this.practice})
-      : super(key: key);
+  const LearnPracticeView({
+    Key? key,
+    this.level,
+    required this.id,
+    required this.label,
+    required this.title,
+    required this.practice,
+    required this.subtitle,
+  }) : super(key: key);
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -108,10 +119,17 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
         _buildLearnPracticeQuestionsScreen(),
         _buildFinishLearnPracticeScreen(),
         _buildLearnPracticeResultScreen(),
-        _buildLearnPracticeCompletionScreen()
+        if (practice == LearnPractices.course)
+          _buildLearnPracticeCompletionScreen()
       ];
 
-  Widget _buildLearnPracticeIntroScreen() => const LearnPracticeIntroScreen();
+  Widget _buildLearnPracticeIntroScreen() => LearnPracticeIntroScreen(
+        level: level,
+        title: title,
+        label: label,
+        practice: practice,
+        subtitle: subtitle,
+      );
 
   Widget _buildLearnPracticeElementsScreen() =>
       const LearnPracticeDescriptionScreen();
@@ -121,8 +139,9 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
 
   Widget _buildFinishLearnPracticeScreen() => const FinishLearnPracticeScreen();
 
-  Widget _buildLearnPracticeResultScreen() => const LearnPracticeResultScreen();
+  Widget _buildLearnPracticeResultScreen() =>
+      LearnPracticeResultScreen(practice: practice);
 
   Widget _buildLearnPracticeCompletionScreen() =>
-      const LearnPracticeCompletionScreen();
+      LearnPracticeCompletionScreen(level: level ?? '');
 }

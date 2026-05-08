@@ -26,10 +26,6 @@ class ProfileViewModel extends ReactiveViewModel {
 
   final _googleAuthService = locator<GoogleAuthService>();
 
-  final _phoneCallerService = locator<PhoneCallerService>();
-
-  final _urlLauncherService = locator<UrlLauncherService>();
-
   final _imagePickerService = locator<ImagePickerService>();
 
   final _authenticationService = locator<AuthenticationService>();
@@ -67,13 +63,6 @@ class ProfileViewModel extends ReactiveViewModel {
       await _authenticationService.saveProfilePicture(image);
     }
   }
-
-  // Launch telegram
-  Future<void> launchTelegram() =>
-      _urlLauncherService.launchUri(kTelegramSupport);
-
-  // Call support
-  Future<void> callSupport() => _phoneCallerService.call(kPhoneSupport);
 
   // Dialog
   Future<bool?> showAbortDialog() async {

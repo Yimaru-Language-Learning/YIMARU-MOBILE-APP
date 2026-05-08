@@ -12,12 +12,16 @@ import 'custom_elevated_button.dart';
 import 'custom_linear_progress_indicator.dart';
 
 class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
+  final int index;
   final LearnLesson lesson;
   final GestureTapCallback? onLessonTap;
   final GestureTapCallback? onPracticeTap;
 
-  const LearnLessonTile(
-      {super.key, this.onLessonTap, this.onPracticeTap, required this.lesson});
+  const LearnLessonTile({super.key,
+    this.onLessonTap,
+    this.onPracticeTap,
+    required this.index,
+    required this.lesson});
 
   @override
   Widget build(BuildContext context, LearnLessonViewModel viewModel) =>
@@ -52,8 +56,8 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         expandedAlignment: Alignment.centerLeft,
         backgroundColor: kcPrimaryColor.withOpacity(0.1),
         controlAffinity: ListTileControlAffinity.trailing,
-        tilePadding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        tilePadding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
         collapsedBackgroundColor: kcPrimaryColor.withOpacity(0.1),
         childrenPadding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
         // enabled: (lesson.access?.isAccessible ?? false),
@@ -130,11 +134,12 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
 
   Widget _buildActionButtons(LearnLessonViewModel viewModel) => Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: __buildActionButtonChildren(viewModel),
+        children: _buildActionButtonChildren(viewModel),
       );
 
-  List<Widget> __buildActionButtonChildren(LearnLessonViewModel viewModel) => [
-        _buildPracticeButtonWrapper(viewModel),
+  List<Widget> _buildActionButtonChildren(LearnLessonViewModel viewModel) => [
+        if (index != viewModel.lessons.length - 1)
+          _buildPracticeButtonWrapper(viewModel),
         horizontalSpaceSmall,
         _buildLessonButtonWrapper(viewModel)
       ];

@@ -84,8 +84,9 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
           course: viewModel.learnCourses[index],
           onViewTap: () async => await viewModel
               .navigateToLearnModule(viewModel.learnCourses[index]),
-          onPracticeTap: () async => await viewModel
-              .navigateToLearnPractice(viewModel.learnCourses[index].id ?? 0),
+          onPracticeTap: () async => await viewModel.navigateToLearnPractice(
+              id: viewModel.learnCourses[index].id ?? 0,
+              level: viewModel.learnCourses[index].name ?? ''),
         ),
         separatorBuilder: (context, index) => verticalSpaceSmall,
       );
