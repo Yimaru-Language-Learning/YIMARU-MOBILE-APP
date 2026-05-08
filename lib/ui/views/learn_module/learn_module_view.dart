@@ -116,8 +116,9 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           module: viewModel.modules[index],
-          onPracticeTap: () async => await viewModel
-              .navigateToLearnPractice(viewModel.modules[index].id ?? 0),
+          onPracticeTap: () async => await viewModel.navigateToLearnPractice(
+              id: viewModel.modules[index].id ?? 0,
+              module: viewModel.modules[index].name ?? ''),
           onModuleTap: () async =>
               await viewModel.navigateToLearnLesson(viewModel.modules[index]),
         ),

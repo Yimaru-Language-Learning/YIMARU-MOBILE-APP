@@ -53,62 +53,61 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         controller: viewModel.pageController,
         itemCount: viewModel.assessmentQuestions.length,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (cotext, index) =>
-            _buildBodyScroller( viewModel),
+        itemBuilder: (cotext, index) => _buildBodyScroller(viewModel),
       );
 
-  Widget _buildBodyScroller(
-       AssessmentViewModel viewModel) =>
+  Widget _buildBodyScroller(AssessmentViewModel viewModel) =>
       SingleChildScrollView(
-        child: _buildBody( viewModel),
+        child: _buildBody(viewModel),
       );
 
-  Widget _buildBody(
-           AssessmentViewModel viewModel) =>
-      Column(
+  Widget _buildBody(AssessmentViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildBodyChildren( viewModel),
+        children: _buildBodyChildren(viewModel),
       );
 
-  List<Widget> _buildBodyChildren(
-  AssessmentViewModel viewModel) =>[
-
+  List<Widget> _buildBodyChildren(AssessmentViewModel viewModel) => [
         verticalSpaceMedium,
-    _buildTitleState( viewModel),
+        _buildTitleState(viewModel),
         verticalSpaceMedium,
-    _buildAnswersState( viewModel),
-        _buildContinueButtonWrapper( viewModel)
+        _buildAnswersState(viewModel),
+        _buildContinueButtonWrapper(viewModel)
       ];
-  Widget _buildTitleState( AssessmentViewModel viewModel)=> viewModel.currentQuestionIndex ==
-      viewModel.assessmentQuestions.length  ?Container(): _buildTitle(viewModel);
-  Widget _buildTitle(
- AssessmentViewModel viewModel) =>
-      Text(
+  Widget _buildTitleState(AssessmentViewModel viewModel) =>
+      viewModel.currentQuestionIndex == viewModel.assessmentQuestions.length
+          ? Container()
+          : _buildTitle(viewModel);
+  Widget _buildTitle(AssessmentViewModel viewModel) => Text(
         'Q${viewModel.currentQuestionIndex + 1}. ${viewModel.assessmentQuestions[viewModel.currentQuestionIndex].questionText} ',
         style: style16DG600,
       );
 
-  Widget _buildAnswersState( AssessmentViewModel viewModel)=> viewModel.currentQuestionIndex ==
-      viewModel.assessmentQuestions.length  ?Container(): _buildAnswers(viewModel);
+  Widget _buildAnswersState(AssessmentViewModel viewModel) =>
+      viewModel.currentQuestionIndex == viewModel.assessmentQuestions.length
+          ? Container()
+          : _buildAnswers(viewModel);
 
-  Widget _buildAnswers(
-         AssessmentViewModel viewModel) =>
-      ListView.builder(
+  Widget _buildAnswers(AssessmentViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: viewModel.assessmentQuestions[viewModel.currentQuestionIndex].options?.length,
+        itemCount: viewModel.assessmentQuestions[viewModel.currentQuestionIndex]
+            .options?.length,
         itemBuilder: (context, inner) => _buildAnswer(
           onTap: () => viewModel.setSelectedAnswer(
               question: viewModel.currentQuestionIndex + 1,
-              option: viewModel.assessmentQuestions[viewModel.currentQuestionIndex].options?[inner]),
-          title:
-              viewModel.assessmentQuestions[viewModel.currentQuestionIndex].options?[inner].optionText ??
-                  '',
+              option: viewModel
+                  .assessmentQuestions[viewModel.currentQuestionIndex]
+                  .options?[inner]),
+          title: viewModel.assessmentQuestions[viewModel.currentQuestionIndex]
+                  .options?[inner].optionText ??
+              '',
           selected: viewModel.isSelectedAnswer(
-              question: viewModel.currentQuestionIndex  + 1,
+              question: viewModel.currentQuestionIndex + 1,
               answer: viewModel
-                      .assessmentQuestions[viewModel.currentQuestionIndex ].options?[inner].optionText ??
+                      .assessmentQuestions[viewModel.currentQuestionIndex]
+                      .options?[inner]
+                      .optionText ??
                   ''),
         ),
       );
@@ -123,30 +122,27 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         selected: selected,
       );
 
-  Widget _buildContinueButtonWrapper(
-         AssessmentViewModel viewModel) =>
-      Padding(
+  Widget _buildContinueButtonWrapper(AssessmentViewModel viewModel) => Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton( viewModel),
+        child: _buildContinueButton(viewModel),
       );
 
-  Widget _buildContinueButton(
-      AssessmentViewModel viewModel) =>
+  Widget _buildContinueButton(AssessmentViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
         foregroundColor: kcWhite,
         text: viewModel.currentQuestionIndex ==
-            viewModel.assessmentQuestions.length - 1
+                viewModel.assessmentQuestions.length - 1
             ? 'Finish Level'
             : 'Continue',
-        backgroundColor:
-            viewModel.selectedAnswers.containsKey('${viewModel.currentQuestionIndex + 1}')
-                ? kcPrimaryColor
-                : kcPrimaryColor.withOpacity(0.1),
-        onTap: viewModel.selectedAnswers.containsKey('${viewModel.currentQuestionIndex + 1}')
+        backgroundColor: viewModel.selectedAnswers
+                .containsKey('${viewModel.currentQuestionIndex + 1}')
+            ? kcPrimaryColor
+            : kcPrimaryColor.withOpacity(0.1),
+        onTap: viewModel.selectedAnswers
+                .containsKey('${viewModel.currentQuestionIndex + 1}')
             ? () => viewModel.nextQuestion()
             : null,
-
       );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/learn_practice_tip_section.dart';
 import 'package:yimaru_app/ui/widgets/learn_practice_results_wrapper.dart';
@@ -12,9 +13,19 @@ import '../../../widgets/small_app_bar.dart';
 
 class LearnPracticeResultScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
-  const LearnPracticeResultScreen({super.key});
+  final LearnPractices practice;
 
-  void _navigate(LearnPracticeViewModel viewModel) async =>
+  const LearnPracticeResultScreen({super.key, required this.practice});
+
+  Future<void> _navigate(LearnPracticeViewModel viewModel) async {
+    if (practice == LearnPractices.course) {
+      viewModel.goTo(5);
+    } else {
+      viewModel.pop();
+    }
+  }
+
+  Future<void> _retry(LearnPracticeViewModel viewModel) async =>
       await viewModel.reset();
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
@@ -145,8 +156,8 @@ class LearnPracticeResultScreen
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: () => viewModel.goTo(5),
         backgroundColor: kcPrimaryColor,
+        onTap: () async => await _navigate(viewModel),
       );
 
   Widget _buildPracticeAgainButton(LearnPracticeViewModel viewModel) =>
@@ -157,6 +168,6 @@ class LearnPracticeResultScreen
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
-        onTap: () => _navigate(viewModel),
+        onTap: () async => await _retry(viewModel),
       );
 }

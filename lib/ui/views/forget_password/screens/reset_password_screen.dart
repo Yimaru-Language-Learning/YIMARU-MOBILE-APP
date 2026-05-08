@@ -140,8 +140,6 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         _buildLinearProgressIndicator(viewModel),
         verticalSpaceSmall,
         _buildCharLengthValidator(viewModel),
-        _buildNumberValidator(viewModel),
-        _buildSymbolValidator(viewModel),
         _buildPasswordMatchValidator(viewModel),
         verticalSpaceSmall,
         _buildSignUpButton(viewModel),
@@ -256,16 +254,6 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           backgroundColor: viewModel.length ? kcPrimaryColor : kcLightGrey,
           label: '8 characters minimum');
 
-  Widget _buildNumberValidator(ForgetPasswordViewModel viewModel) =>
-      ValidatorListTile(
-          backgroundColor: viewModel.number ? kcPrimaryColor : kcLightGrey,
-          label: 'a number');
-
-  Widget _buildSymbolValidator(ForgetPasswordViewModel viewModel) =>
-      ValidatorListTile(
-          backgroundColor: viewModel.specialChar ? kcPrimaryColor : kcLightGrey,
-          label: 'one symbol minimum');
-
   Widget _buildPasswordMatchValidator(ForgetPasswordViewModel viewModel) =>
       ValidatorListTile(
           backgroundColor:
@@ -281,20 +269,14 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         onTap: passwordController.text.isNotEmpty &&
                 confirmPasswordController.text.isNotEmpty &&
                 resetCodeController.text.isNotEmpty &&
-                viewModel.number &&
                 viewModel.length &&
-                viewModel.specialChar &&
-                viewModel.specialChar &&
                 viewModel.passwordMatch
             ? () async => await _reset(viewModel)
             : null,
         backgroundColor: passwordController.text.isNotEmpty &&
                 confirmPasswordController.text.isNotEmpty &&
                 resetCodeController.text.isNotEmpty &&
-                viewModel.number &&
                 viewModel.length &&
-                viewModel.specialChar &&
-                viewModel.specialChar &&
                 viewModel.passwordMatch
             ? kcPrimaryColor
             : kcPrimaryColor.withOpacity(0.1),

@@ -213,7 +213,6 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
           backgroundColor: viewModel.length ? kcPrimaryColor : kcLightGrey,
           label: '8 characters minimum');
 
-
   Widget _buildPasswordMatchValidator(RegisterViewModel viewModel) =>
       ValidatorListTile(
           backgroundColor:

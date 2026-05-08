@@ -24,11 +24,20 @@ class LearnLessonViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnPractice(int id) async => await _navigationService
-      .navigateToLearnPracticeView(id: id, practice: LearnPractices.lesson);
+  Future<void> navigateToLearnPractice(int id) async =>
+      await _navigationService.navigateToLearnPracticeView(
+        id: id,
+        label: 'Start Practice',
+        practice: LearnPractices.lesson,
+        title: 'Let\'s practice what you just learnt!',
+        subtitle:
+            'I’ll ask you a few questions, and you can respond naturally.',
+      );
 
-  Future<void> navigateToLearnLessonDetail(LearnLesson lesson) async =>
-      await _navigationService.navigateToLearnLessonDetailView(lesson: lesson);
+  Future<void> navigateToLearnLessonDetail(
+          {required bool hasPractice, required LearnLesson lesson}) async =>
+      await _navigationService.navigateToLearnLessonDetailView(
+          lesson: lesson, hasPractice: hasPractice);
 
   // Remote api call
 

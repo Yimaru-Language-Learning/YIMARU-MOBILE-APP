@@ -3,6 +3,7 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_learn_practice_sheet.dart';
 import '../../../widgets/custom_elevated_button.dart';
@@ -10,7 +11,19 @@ import '../../../widgets/small_app_bar.dart';
 import '../../../widgets/speaking_partner_image.dart';
 
 class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
-  const LearnPracticeIntroScreen({super.key});
+  final String title;
+  final String label;
+  final String? level;
+  final String subtitle;
+  final LearnPractices practice;
+
+  const LearnPracticeIntroScreen(
+      {super.key,
+      this.level,
+      required this.label,
+      required this.title,
+      required this.subtitle,
+      required this.practice});
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -114,21 +127,44 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
   List<Widget> _buildPracticeColumnChildren(LearnPracticeViewModel viewModel) =>
       [
         verticalSpaceMassive,
-        _buildImage(),
+        _buildImageState(),
         verticalSpaceMedium,
-        _buildPartnerName(),
+        _buildPartnerNameState(),
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceMedium,
         _buildSubtitle()
       ];
 
-  Widget _buildImage() => const SpeakingPartnerImage(
+  Widget _buildImageState() =>
+      level != null ? _buildCourseSpeakingPartnerImage() : _buildImage(75);
+
+  Widget _buildCourseSpeakingPartnerImage() => CircleAvatar(
         radius: 75,
+        backgroundColor: kcPrimaryColorLight,
+        child: _buildCourseSpeakingPartnerText(),
       );
 
+  Widget _buildCourseSpeakingPartnerText() => Text(
+        level?.toUpperCase() ?? '',
+        style: style40P900,
+      );
+
+  Widget _buildImage(double radius) => SpeakingPartnerImage(radius: radius);
+
+  Widget _buildPartnerNameState() =>
+      level != null ? _buildCourseSpeakingPartner() : _buildPartnerName();
+
+  Widget _buildCourseSpeakingPartner() => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: _buildCourseSpeakingPartnerChildren(),
+      );
+
+  List<Widget> _buildCourseSpeakingPartnerChildren() =>
+      [_buildImage(15), horizontalSpaceTiny, _buildPartnerName()];
+
   Widget _buildPartnerName() => Text.rich(
-        TextSpan(text: 'Dawit', style: style14DG600, children: [
+        TextSpan(text: 'Daniel', style: style14DG600, children: [
           TextSpan(
             text: ' - Your Speaking Partner',
             style: style14MG400,
@@ -137,13 +173,13 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildTitle() => Text(
-        'Let\'s practice what you just learnt!',
+        title,
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle() => Text(
-        'I’ll ask you a few questions, and you can respond naturally.',
+        subtitle,
         maxLines: 1,
         style: style14DG400,
         textAlign: TextAlign.center,
@@ -158,8 +194,8 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
   Widget _buildContinueButton(LearnPracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        text: label,
         borderRadius: 12,
-        text: 'Practice',
         foregroundColor: kcWhite,
         onTap: () => viewModel.goTo(1),
         backgroundColor: kcPrimaryColor,

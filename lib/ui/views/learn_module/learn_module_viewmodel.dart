@@ -27,8 +27,15 @@ class LearnModuleViewModel extends BaseViewModel {
   Future<void> navigateToLearnLesson(LearnModule module) async =>
       await _navigationService.navigateToLearnLessonView(module: module);
 
-  Future<void> navigateToLearnPractice(int id) async => await _navigationService
-      .navigateToLearnPracticeView(id: id, practice: LearnPractices.module);
+  Future<void> navigateToLearnPractice(
+          {required int id, required String module}) async =>
+      await _navigationService.navigateToLearnPracticeView(
+        id: id,
+        label: 'Begin Module Practice',
+        practice: LearnPractices.module,
+        title: 'Let’s Practice $module',
+        subtitle: 'Let’s quickly review what you’ve learned in this module! ',
+      );
 
   // Remote api call
 

@@ -67,6 +67,13 @@ class LearnLessonDetailViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnPractice(int id) async => await _navigationService
-      .navigateToLearnPracticeView(id: id, practice: LearnPractices.lesson);
+  Future<void> navigateToLearnPractice(int id) async =>
+      await _navigationService.navigateToLearnPracticeView(
+        id: id,
+        label: 'Start Practice',
+        practice: LearnPractices.lesson,
+        title: 'Let\'s practice what you just learnt!',
+        subtitle:
+            'I’ll ask you a few questions, and you can respond naturally.',
+      );
 }

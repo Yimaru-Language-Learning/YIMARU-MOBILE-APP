@@ -15,7 +15,7 @@ class LearnPracticeResultCard extends ViewModelWidget<LearnPracticeViewModel> {
       _buildColumnWrapper(viewModel);
 
   Widget _buildColumnWrapper(LearnPracticeViewModel viewModel) => SizedBox(
-        height: 100,
+        height: 125,
         width: double.maxFinite,
         child: _buildColumn(viewModel),
       );
@@ -30,7 +30,8 @@ class LearnPracticeResultCard extends ViewModelWidget<LearnPracticeViewModel> {
       [_buildQuestion(viewModel), verticalSpaceSmall, _buildRow()];
 
   Widget _buildQuestion(LearnPracticeViewModel viewModel) => Text(
-        answer['sample_text_answer'],
+        answer['question_text'],
+        maxLines: 2,
         style: style14DG400,
       );
 

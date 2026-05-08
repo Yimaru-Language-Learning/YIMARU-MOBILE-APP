@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/app_constants.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
@@ -83,9 +84,7 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceMedium,
-        _buildSubtitle('+2519012345678'),
-        verticalSpaceSmall,
-        _buildSubtitle('+2519012345678'),
+        _buildSubtitle(kPhoneSupport),
       ];
 
   Widget _buildIcon() =>
@@ -109,12 +108,13 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
       );
 
   Widget _buildContinueButton(CallSupportViewModel viewModel) =>
-      const CustomElevatedButton(
+      CustomElevatedButton(
         height: 55,
         borderRadius: 12,
         text: 'Tap to Call',
         leadingIcon: Icons.call,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
+        onTap: () async => await viewModel.callSupport(),
       );
 }
