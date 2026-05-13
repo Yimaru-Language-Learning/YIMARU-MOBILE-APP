@@ -13,7 +13,7 @@ class TelegramSupportViewModel extends BaseViewModel {
 
   // Launch telegram
   Future<void> launchTelegram() =>
-      _urlLauncherService.launchUri(kTelegramSupport);
+      _urlLauncherService.launchUri(kTelegramSupportLink);
 
   // Navigation
   void pop() => _navigationService.back();

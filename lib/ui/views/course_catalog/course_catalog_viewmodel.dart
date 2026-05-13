@@ -1,14 +1,14 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/models/course_catalog.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
-import '../../../models/subcategory.dart';
 import '../../../services/api_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 
-class CourseSubcategoryViewModel extends BaseViewModel {
+class CourseCatalogViewModel extends BaseViewModel {
   // Dependency injection
   final _apiService = locator<ApiService>();
 
@@ -16,10 +16,10 @@ class CourseSubcategoryViewModel extends BaseViewModel {
 
   final _navigationService = locator<NavigationService>();
 
-  // Course subcategories
-  List<Subcategory> _subcategories = [];
+  // Course catalogs
+  List<CourseCatalog> _courseCatalogs = [];
 
-  List<Subcategory> get subcategories => _subcategories;
+  List<CourseCatalog> get courseCatalogs => _courseCatalogs;
 
   // Navigation
   void pop() => _navigationService.back();
@@ -27,19 +27,19 @@ class CourseSubcategoryViewModel extends BaseViewModel {
   Future<void> navigateToCoursePractice(int id) async =>
       _navigationService.navigateToCoursePracticeView(id: id);
 
-  Future<void> navigateToSubcourse(Subcategory subcategory) async =>
-      _navigationService.navigateToCourseView(subcategory: subcategory);
+  // Future<void> navigateToSubcourse(Subcategory subcategory) async =>
+  //     _navigationService.navigateToCourseView(subcategory: subcategory);
 
   // Remote api call
 
-  // Course subcategories
-  Future<void> getSubcategories(int id) async =>
-      await runBusyFuture(_getSubcategories(id),
-          busyObject: StateObjects.subcategories);
+  // Course catalogs
+  Future<void> getCourseCatalogs() async =>
+      await runBusyFuture(_getSubcategories(),
+          busyObject: StateObjects.courseCatalogs);
 
-  Future<void> _getSubcategories(int id) async {
+  Future<void> _getSubcategories() async {
     if (await _statusChecker.checkConnection()) {
-      _subcategories = await _apiService.getSubcategories(id);
+      _courseCatalogs = await _apiService.getCourseCatalogs();
     }
   }
 }

@@ -4,10 +4,12 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
 class OverallLearnProgress extends StatelessWidget {
+  final int progress;
   final Color backgroundColor;
   final Color indicatorBackgroundColor;
   const OverallLearnProgress(
       {super.key,
+      required this.progress,
       required this.backgroundColor,
       required this.indicatorBackgroundColor});
 
@@ -51,12 +53,12 @@ class OverallLearnProgress extends StatelessWidget {
       );
 
   Widget _buildProgress() => Text(
-        '0%',
+        '$progress%',
         style: style14P400,
       );
 
   Widget _buildProgressIndicator() => CustomLinearProgressIndicator(
-        progress: 0.0,
+        progress: progress / 100,
         activeColor: kcPrimaryColor,
         backgroundColor: indicatorBackgroundColor,
       );

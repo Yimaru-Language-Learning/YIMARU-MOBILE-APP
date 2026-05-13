@@ -5,21 +5,25 @@ import 'package:yimaru_app/app/app.router.dart';
 import '../../../app/app.locator.dart';
 import '../../../models/learn_course.dart';
 import '../../../services/api_service.dart';
+import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 
-class LearnCourseViewModel extends BaseViewModel {
+class LearnCourseViewModel extends ReactiveViewModel {
   // Dependency injection
-  final _apiService = locator<ApiService>();
+  final _learnService = locator<LearnService>();
 
   final _statusChecker = locator<StatusCheckerService>();
 
   final _navigationService = locator<NavigationService>();
 
-  // Learn courses
-  List<LearnCourse> _learnCourses = [];
+  @override
+  List<ListenableServiceMixin> get listenableServices => [_learnService];
 
-  List<LearnCourse> get learnCourses => _learnCourses;
+  // Learn lessons
+  List<LearnCourse> get _courses => _learnService.courses;
+
+  List<LearnCourse> get courses => _courses;
 
   // Navigation
   void pop() => _navigationService.back();
@@ -46,12 +50,8 @@ class LearnCourseViewModel extends BaseViewModel {
           busyObject: StateObjects.learnCourses);
 
   Future<void> _getLearnCourses(int id) async {
-    if (_learnCourses.isEmpty) {
-      if (await _statusChecker.checkConnection()) {
-        _learnCourses = await _apiService.getLearnCourse(id);
-        _learnCourses
-            .sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
-      }
+    if (await _statusChecker.checkConnection()) {
+      await _learnService.getLearnCourses(id);
     }
   }
 }

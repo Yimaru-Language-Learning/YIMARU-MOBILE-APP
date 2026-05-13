@@ -9,6 +9,7 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_learn_practice_sheet.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/small_app_bar.dart';
 
 class LearnPracticeResultScreen
@@ -18,6 +19,7 @@ class LearnPracticeResultScreen
   const LearnPracticeResultScreen({super.key, required this.practice});
 
   Future<void> _navigate(LearnPracticeViewModel viewModel) async {
+    await viewModel.completeLearnPractices();
     if (practice == LearnPractices.course) {
       viewModel.goTo(5);
     } else {
@@ -53,8 +55,15 @@ class LearnPracticeResultScreen
           required LearnPracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldState(context: context, viewModel: viewModel),
       );
+
+  Widget _buildScaffoldState(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      viewModel.busy(StateObjects.completeLearnPractice)
+          ? const PageLoadingIndicator()
+          : _buildScaffold(context: context, viewModel: viewModel);
 
   Widget _buildScaffold(
           {required BuildContext context,

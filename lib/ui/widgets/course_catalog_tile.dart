@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
-import '../../models/subcategory.dart';
+import '../../models/course_catalog.dart';
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
-class CourseSubcategoryTile extends StatelessWidget {
-  final Subcategory subcategory;
+class CourseCatalogTile extends StatelessWidget {
+  final CourseCatalog courseCatalog;
   final GestureTapCallback? onCourseTap;
   final GestureTapCallback? onPracticeTap;
 
-  const CourseSubcategoryTile({
+  const CourseCatalogTile({
     super.key,
     this.onCourseTap,
     this.onPracticeTap,
-    required this.subcategory,
+    required this.courseCatalog,
   });
 
   @override
@@ -50,16 +50,14 @@ class CourseSubcategoryTile extends StatelessWidget {
       );
 
   List<Widget> _buildExpansionTileChildren() => [
-        // _buildProgressRow(),
-        // verticalSpaceSmall,
+        _buildProgressRow(),
+        verticalSpaceSmall,
         _buildActionButtonWrapper(),
         verticalSpaceSmall
       ];
 
   Widget _buildTitle() => Text(
-        (subcategory.name == null || subcategory.name!.isEmpty)
-            ? 'Course ${subcategory.id}'
-            : subcategory.name!,
+        courseCatalog.name ?? '',
         style: style16P600,
       );
 
@@ -76,12 +74,12 @@ class CourseSubcategoryTile extends StatelessWidget {
       );
 
   Widget _buildProgressStatus() => const CustomLinearProgressIndicator(
-      progress: 0.75,
+      progress: 0,
       activeColor: kcPrimaryColor,
       backgroundColor: kcVeryLightGrey);
 
   Widget _buildProgress() => const Text(
-        '75%',
+        '0%',
         style: TextStyle(color: kcDarkGrey),
       );
 
@@ -113,7 +111,7 @@ class CourseSubcategoryTile extends StatelessWidget {
       );
 
   Widget _buildExamButtonWrapper() => Expanded(
-        child: Container(),
+        child: _buildExamButton(),
       );
 
   Widget _buildExamButton() => CustomElevatedButton(

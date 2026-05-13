@@ -2,25 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../models/course_detail.dart';
-import '../../../models/subcategory.dart';
+import '../../../models/course_catalog.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
+import '../../widgets/course_category_card.dart';
 import '../../widgets/course_tile.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
+import '../../widgets/profile_app_bar.dart';
 import '../../widgets/small_app_bar.dart';
 import 'course_viewmodel.dart';
 
 class CourseView extends StackedView<CourseViewModel> {
-  final Subcategory subcategory;
-
-  const CourseView({Key? key, required this.subcategory}) : super(key: key);
-
-  @override
-  void onViewModelReady(CourseViewModel viewModel) async {
-    await viewModel.getCourseDetails(subcategory.id ?? 0);
-    super.onViewModelReady(viewModel);
-  }
+  const CourseView({Key? key}) : super(key: key);
 
   @override
   CourseViewModel viewModelBuilder(BuildContext context) => CourseViewModel();
@@ -51,78 +45,63 @@ class CourseView extends StackedView<CourseViewModel> {
           verticalSpaceMedium,
           _buildAppBar(viewModel),
           verticalSpaceMedium,
-          _buildCoursesColumnWrapper(viewModel),
+          _buildCategoryColumnWrapper(viewModel)
         ],
       );
 
-  Widget _buildAppBar(CourseViewModel viewModel) => SmallAppBar(
-        onPop: viewModel.pop,
-        showBackButton: true,
+  Widget _buildAppBar(CourseViewModel viewModel) => ProfileAppBar(
+        name: viewModel.user?.firstName,
+        profileImage: viewModel.user?.profilePicture,
       );
 
-  Widget _buildCoursesColumnWrapper(CourseViewModel viewModel) =>
-      Expanded(child: _buildCoursesColumnScrollView(viewModel));
+  Widget _buildCategoryColumnWrapper(CourseViewModel viewModel) =>
+      Expanded(child: _buildCourseColumnScrollView(viewModel));
 
-  Widget _buildCoursesColumnScrollView(CourseViewModel viewModel) =>
+  Widget _buildCourseColumnScrollView(CourseViewModel viewModel) =>
       SingleChildScrollView(
-        child: _buildCoursesColumn(viewModel),
+        child: _buildCourseColumn(viewModel),
       );
 
-  Widget _buildCoursesColumn(CourseViewModel viewModel) => Column(
+  Widget _buildCourseColumn(CourseViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildCoursesColumnChildren(viewModel),
+        children: _buildLevelsColumnChildren(viewModel),
       );
 
-  List<Widget> _buildCoursesColumnChildren(CourseViewModel viewModel) => [
-        verticalSpaceMedium,
+  List<Widget> _buildLevelsColumnChildren(CourseViewModel viewModel) => [
         _buildTitle(),
         _buildSubtitle(),
         verticalSpaceMedium,
-        _buildListViewBuilder(viewModel)
+        _buildListView(viewModel)
       ];
 
   Widget _buildTitle() => Text(
-        '${subcategory.name ?? ''} courses',
+        'Courses',
         style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(
-        'Explore variety of courses on ${subcategory.name ?? ''}.',
+        'Choose a course to improve your professional or exam skills.',
         style: style14DG400,
-      );
-
-  Widget _buildListViewBuilder(CourseViewModel viewModel) =>
-      viewModel.busy(StateObjects.courses)
-          ? _buildProgressIndicator()
-          : _buildListView(viewModel);
-
-  Widget _buildProgressIndicator() => const Center(
-        child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
   Widget _buildListView(CourseViewModel viewModel) => ListView.separated(
         shrinkWrap: true,
-        itemCount: viewModel.courseDetail.length,
+        itemCount: viewModel.courses.length,
         physics: const NeverScrollableScrollPhysics(),
-        separatorBuilder: (context, index) => verticalSpaceSmall,
         itemBuilder: (context, index) => _buildTile(
-          courseDetail: viewModel.courseDetail[index],
-          onCourseTap: () async => await viewModel
-              .navigateToCoursePayment(viewModel.courseDetail[index].course!),
-          onPracticeTap: () async => await viewModel.navigateToCoursePractice(
-              viewModel.courseDetail[index].course?.id ?? 0),
-        ),
+            course: viewModel.courses[index],
+            onTap: () async => await viewModel.navigateToCourseCatalog()),
+        separatorBuilder: (context, index) => verticalSpaceSmall,
       );
 
+  //
   Widget _buildTile({
-    GestureTapCallback? onCourseTap,
-    GestureTapCallback? onPracticeTap,
-    required CourseDetail courseDetail,
+    required GestureTapCallback onTap,
+    required Map<String, dynamic> course,
   }) =>
-      CourseTile(
-        onCourseTap: onCourseTap,
-        courseDetail: courseDetail,
-        onPracticeTap: onPracticeTap,
+      CourseCard(
+        onTap: onTap,
+        course: course,
       );
 }

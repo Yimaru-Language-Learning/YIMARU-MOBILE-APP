@@ -17,11 +17,19 @@ String kProgramsUrl = 'programs';
 
 String kRegisterUrl = 'register';
 
+String kProgressUrl = 'progress';
+
+String kCompleteUrl = 'complete';
+
+String kPaymentsUrl = 'payments';
+
+String kSubscribeUrl = 'subscribe';
+
 String kPracticesUrl = 'practices';
 
 String kQuestionsUrl = 'questions';
 
-String kCategoryUrl = 'categories';
+String kExamPrepUrl = 'exam-prep';
 
 String kCoursePractice = 'by-owner';
 
@@ -37,8 +45,6 @@ String kSubmodulesUrl = 'sub-modules';
 
 String kSubcoursesUrl = 'sub-courses';
 
-String kCompleteLessonUrl = 'complete';
-
 String kResetPassword = 'resetPassword';
 
 String kQuestionSetsUrl = 'question-sets';
@@ -51,7 +57,11 @@ String kPublishedVideos = 'videos/published';
 
 String kCoursePracticeQuestions = 'questions';
 
+String kCatalogCoursesUrl = 'catalog-courses';
+
 String kUpdateProfileImage = 'profile-picture';
+
+String kSubscriptionsUrl = 'subscription-plans';
 
 String kRefreshTokenUrl = 'api/v1/auth/refresh';
 
@@ -89,3 +99,10 @@ String kServerClientId =
 String kPhoneSupport = '+251946396655';
 
 String kTelegramSupport = '@yimaruacademy2026';
+
+String kTelegramSupportLink = 'https://t.me/yimaruacademy2026';
+
+String kErrorUrl = 'https://yimaru.net/api/v1/payments/arifpay/error';
+
+String kSuccessUrl =
+    'https://api.yimaruacademy.com/api/v1/payments/arifpay/success';

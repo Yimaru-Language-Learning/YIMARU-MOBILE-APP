@@ -5,19 +5,23 @@ import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../services/api_service.dart';
+import '../../../models/learn_module.dart';
+import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 
-class LearnLessonViewModel extends BaseViewModel {
+class LearnLessonViewModel extends ReactiveViewModel {
   // Dependency injection
-  final _apiService = locator<ApiService>();
+  final _learnService = locator<LearnService>();
 
   final _statusChecker = locator<StatusCheckerService>();
 
   final _navigationService = locator<NavigationService>();
 
+  @override
+  List<ListenableServiceMixin> get listenableServices => [_learnService];
+
   // Learn lessons
-  List<LearnLesson> _lessons = [];
+  List<LearnLesson> get _lessons => _learnService.lessons;
 
   List<LearnLesson> get lessons => _lessons;
 
@@ -35,9 +39,11 @@ class LearnLessonViewModel extends BaseViewModel {
       );
 
   Future<void> navigateToLearnLessonDetail(
-          {required bool hasPractice, required LearnLesson lesson}) async =>
+          {required bool hasPractice,
+          required LearnLesson lesson,
+          required LearnModule module}) async =>
       await _navigationService.navigateToLearnLessonDetailView(
-          lesson: lesson, hasPractice: hasPractice);
+          lesson: lesson, module: module, hasPractice: hasPractice);
 
   // Remote api call
 
@@ -46,11 +52,8 @@ class LearnLessonViewModel extends BaseViewModel {
       busyObject: StateObjects.learnLessons);
 
   Future<void> _getLessons(int id) async {
-    if (_lessons.isEmpty) {
-      if (await _statusChecker.checkConnection()) {
-        _lessons = await _apiService.getLearnLessons(id);
-        _lessons.sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
-      }
+    if (await _statusChecker.checkConnection()) {
+      await _learnService.getLearnLessons(id);
     }
   }
 }

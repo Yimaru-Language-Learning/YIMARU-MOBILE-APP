@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yimaru_app/models/category.dart';
 import 'package:yimaru_app/ui/common/helper_functions.dart';
 
 import '../common/app_colors.dart';
@@ -7,11 +6,11 @@ import '../common/app_strings.dart';
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
-class CourseCategoryCard extends StatelessWidget {
-  final Category category;
+class CourseCard extends StatelessWidget {
   final GestureTapCallback? onTap;
+  final Map<String, dynamic> course;
 
-  const CourseCategoryCard({super.key, this.onTap, required this.category});
+  const CourseCard({super.key, this.onTap, required this.course});
 
   @override
   Widget build(BuildContext context) => _buildContainer();
@@ -42,12 +41,12 @@ class CourseCategoryCard extends StatelessWidget {
       ];
 
   Widget _buildTitle() => Text(
-        category.name ?? '',
+        course['title'],
         style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(
-        ksCategorySubtitle,
+        course['description'],
         maxLines: 3,
         style: style16DG400,
       );

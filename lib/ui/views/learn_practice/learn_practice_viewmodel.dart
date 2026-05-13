@@ -13,12 +13,16 @@ import '../../../app/app.locator.dart';
 import '../../../models/learn_question.dart';
 import '../../../services/api_service.dart';
 import '../../../services/audio_player_service.dart';
+import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/app_colors.dart';
 
 class LearnPracticeViewModel extends ReactiveViewModel {
   // Dependency injection
+
   final _apiService = locator<ApiService>();
+
+  final _learnService = locator<LearnService>();
 
   final _dialogService = locator<DialogService>();
 
@@ -37,8 +41,12 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   }
 
   @override
-  List<ListenableServiceMixin> get listenableServices =>
-      [_audioPlayerService, _voiceRecorderService, _authenticationService];
+  List<ListenableServiceMixin> get listenableServices => [
+        _learnService,
+        _audioPlayerService,
+        _voiceRecorderService,
+        _authenticationService
+      ];
 
   // User
   User? get _user => _authenticationService.user;
@@ -256,7 +264,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   Future<void> getLearnPractices(
           {required int id, required LearnPractices practice}) async =>
       await runBusyFuture(_getLearnPractices(id: id, practice: practice),
-          busyObject: StateObjects.learnPractices);
+          busyObject: StateObjects.learnPractice);
 
   Future<void> _getLearnPractices(
       {required int id, required LearnPractices practice}) async {
@@ -278,5 +286,16 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   Future<void> _getLearnPracticeQuestions(int id) async {
     _questions = await _apiService.getLearnQuestions(id);
+  }
+
+  // Complete practice
+  Future<void> completeLearnPractices() async =>
+      await runBusyFuture(_completeLearnPractices(),
+          busyObject: StateObjects.completeLearnPractice);
+
+  Future<void> _completeLearnPractices() async {
+    if (await _statusChecker.checkConnection()) {
+      await _apiService.completeLearnPractice(_practices.first.id ?? 0);
+    }
   }
 }

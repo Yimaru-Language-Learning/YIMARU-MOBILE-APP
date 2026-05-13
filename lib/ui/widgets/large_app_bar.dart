@@ -35,7 +35,7 @@ class LargeAppBar extends StatelessWidget {
       );
 
   Widget _buildStack() => Stack(
-        children: [ _buildPattern(),_buildAppBarWrapper()],
+        children: [_buildPattern(), _buildAppBarWrapper()],
       );
 
   Widget _buildAppBarWrapper() => Container(

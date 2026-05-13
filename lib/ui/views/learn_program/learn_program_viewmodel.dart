@@ -7,12 +7,14 @@ import '../../../app/app.locator.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 
 class LearnProgramViewModel extends ReactiveViewModel {
   // Dependency injection
-  final _apiService = locator<ApiService>();
+
+  final _learnService = locator<LearnService>();
 
   final _statusChecker = locator<StatusCheckerService>();
 
@@ -22,7 +24,7 @@ class LearnProgramViewModel extends ReactiveViewModel {
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService];
+      [_learnService, _authenticationService];
 
   // Current user
   User? get _user => _authenticationService.user;
@@ -30,7 +32,7 @@ class LearnProgramViewModel extends ReactiveViewModel {
   User? get user => _user;
 
   // Learn programs
-  List<LearnProgram> _learnPrograms = [];
+  List<LearnProgram> get _learnPrograms => _learnService.programs;
 
   List<LearnProgram> get learnPrograms => _learnPrograms;
 
@@ -46,12 +48,8 @@ class LearnProgramViewModel extends ReactiveViewModel {
           busyObject: StateObjects.learnPrograms);
 
   Future<void> _getLearnPrograms() async {
-    if (_learnPrograms.isEmpty) {
-      if (await _statusChecker.checkConnection()) {
-        _learnPrograms = await _apiService.getLearnPrograms();
-        _learnPrograms
-            .sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
-      }
+    if (await _statusChecker.checkConnection()) {
+      await _learnService.getLearnPrograms();
     }
   }
 }

@@ -5,7 +5,15 @@ import '../common/ui_helpers.dart';
 import 'custom_linear_progress_indicator.dart';
 
 class ModuleProgress extends StatelessWidget {
-  const ModuleProgress({super.key});
+  final int total;
+  final int progress;
+  final int completed;
+
+  const ModuleProgress(
+      {super.key,
+      required this.total,
+      required this.progress,
+      required this.completed});
 
   @override
   Widget build(BuildContext context) => _buildContainer();
@@ -36,17 +44,17 @@ class ModuleProgress extends StatelessWidget {
       [_buildProgressInfo(), _buildProgress()];
 
   Widget _buildProgressInfo() => Text(
-        '0% Progress',
+        '$progress% Progress',
         style: style16DG400,
       );
 
   Widget _buildProgress() => Text(
-        '0/3',
+        '$completed/$total',
         style: style14P400,
       );
 
-  Widget _buildProgressIndicator() => const CustomLinearProgressIndicator(
-        progress: 0,
+  Widget _buildProgressIndicator() => CustomLinearProgressIndicator(
+        progress: progress / 100,
         activeColor: kcPrimaryColor,
         backgroundColor: kcVeryLightGrey,
       );
