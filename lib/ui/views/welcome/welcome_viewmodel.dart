@@ -4,7 +4,6 @@ import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../services/status_checker_service.dart';
 
 class WelcomeViewModel extends BaseViewModel {
   // Dependency Injection

@@ -93,7 +93,7 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
       );
 
   Widget _buildBodyState(LearnPracticeViewModel viewModel) =>
-      viewModel.busy(StateObjects.learnPractices)
+      viewModel.busy(StateObjects.learnPractice)
           ? const PageLoadingIndicator()
           : viewModel.practices.isEmpty || viewModel.questions.isEmpty
               ? _buildPageLoadingIndicator(viewModel)
@@ -101,7 +101,7 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
 
   Widget _buildPageLoadingIndicator(LearnPracticeViewModel viewModel) =>
       LearnLoadingScreen(
-        isLoading: viewModel.busy(StateObjects.learnPractices),
+        isLoading: viewModel.busy(StateObjects.learnPractice),
         onTap: () async =>
             await viewModel.getLearnPractices(id: id, practice: practice),
         onPop: viewModel.practices.isEmpty || viewModel.questions.isEmpty
@@ -142,6 +142,7 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
   Widget _buildLearnPracticeResultScreen() =>
       LearnPracticeResultScreen(practice: practice);
 
-  Widget _buildLearnPracticeCompletionScreen() =>
-      LearnPracticeCompletionScreen(level: level ?? '');
+  Widget _buildLearnPracticeCompletionScreen() => LearnPracticeCompletionScreen(
+        level: level ?? '',
+      );
 }

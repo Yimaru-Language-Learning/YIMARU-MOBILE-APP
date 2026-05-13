@@ -1,5 +1,4 @@
 import 'package:chewie/chewie.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:video_player/video_player.dart';
@@ -7,19 +6,37 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
+import '../../../models/learn_lesson.dart';
+import '../../../services/api_service.dart';
+import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../../services/vimeo_service.dart';
-import '../../common/app_constants.dart';
-import '../../common/helper_functions.dart';
 import '../../common/ui_helpers.dart';
 
-class LearnLessonDetailViewModel extends BaseViewModel {
+class LearnLessonDetailViewModel extends ReactiveViewModel {
   // Dependency injection
+
+  final _apiService = locator<ApiService>();
+
+  final _learnService = locator<LearnService>();
+
   final _vimeoService = locator<VimeoService>();
+
+  final _statusChecker = locator<StatusCheckerService>();
 
   final _navigationService = locator<NavigationService>();
 
+  @override
+  List<ListenableServiceMixin> get listenableServices => [_learnService];
+
+  // Learn lessons
+  List<LearnLesson> get _lessons => _learnService.lessons;
+
+  List<LearnLesson> get lessons => _lessons;
+
   // Video player config
+  bool _lessonCompleted = false;
+
   ChewieController? _chewieController;
 
   ChewieController? get chewieController => _chewieController;
@@ -38,11 +55,18 @@ class LearnLessonDetailViewModel extends BaseViewModel {
     await _chewieController?.pause();
   }
 
-  Future<void> initializePlayer(String url) async =>
-      await runBusyFuture(_initializePlayer(url),
+  Future<void> initializePlayer(
+          {required String url,
+          required int lessonId,
+          required int moduleId}) async =>
+      await runBusyFuture(
+          _initializePlayer(url: url, moduleId: moduleId, lessonId: lessonId),
           busyObject: StateObjects.loadLessonVideo);
 
-  Future<void> _initializePlayer(String url) async {
+  Future<void> _initializePlayer(
+      {required String url,
+      required int lessonId,
+      required int moduleId}) async {
     final playableUrl = await _vimeoService.getVideoUrl(url);
 
     if (playableUrl == null) {
@@ -54,11 +78,41 @@ class LearnLessonDetailViewModel extends BaseViewModel {
 
     await _videoPlayerController?.initialize();
 
+    // Listen for video completion
+    _videoPlayerController?.addListener(() async {
+      final controller = _videoPlayerController;
+
+      if (controller == null || _lessonCompleted) return;
+
+      final position = controller.value.position.inSeconds;
+      final duration = controller.value.duration.inSeconds;
+
+      if (duration <= 0) return;
+
+      // Calculate watched percentage
+      final progress = position / duration;
+
+      // Mark complete at 95%
+      if (progress >= 0.95) {
+        _lessonCompleted = true;
+
+        await completeLearnLesson(
+          lessonId: lessonId,
+          moduleId: moduleId,
+        );
+      }
+    });
+
     _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController!,
+      looping: false,
       autoPlay: true,
-      looping: true,
+      showOptions: true,
+      showControls: true,
       aspectRatio: 16 / 9,
+      autoInitialize: true,
+      allowedScreenSleep: false,
+      videoPlayerController: _videoPlayerController!,
+      materialProgressColors: buildChewieProgressIndicator,
     );
 
     notifyListeners();
@@ -76,4 +130,24 @@ class LearnLessonDetailViewModel extends BaseViewModel {
         subtitle:
             'I’ll ask you a few questions, and you can respond naturally.',
       );
+
+  // Remote api call
+
+  // Mark lesson
+  Future<void> completeLearnLesson(
+          {required int lessonId, required int moduleId}) async =>
+      await runBusyFuture(
+          _completeLearnLesson(lessonId: lessonId, moduleId: moduleId),
+          busyObject: StateObjects.learnLessons);
+
+  Future<void> _completeLearnLesson(
+      {required int lessonId, required int moduleId}) async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response =
+          await _apiService.completeLearnLesson(lessonId);
+      if (response['status'] == ResponseStatus.success) {
+        await _learnService.getLearnLessons(moduleId);
+      }
+    }
+  }
 }

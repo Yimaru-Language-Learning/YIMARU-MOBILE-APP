@@ -35,7 +35,6 @@ import 'package:yimaru_app/ui/views/learn_lesson_detail/learn_lesson_detail_view
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_view.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
 import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart';
-import 'package:yimaru_app/ui/views/course_category/course_category_view.dart';
 import 'package:yimaru_app/ui/views/failure/failure_view.dart';
 import 'package:yimaru_app/ui/views/course_lesson/course_lesson_view.dart';
 import 'package:yimaru_app/ui/views/course_lesson_detail/course_lesson_detail_view.dart';
@@ -43,7 +42,6 @@ import 'package:yimaru_app/services/notification_service.dart';
 import 'package:yimaru_app/ui/views/duolingo/duolingo_view.dart';
 import 'package:yimaru_app/services/smart_auth_service.dart';
 import 'package:yimaru_app/services/course_service.dart';
-import 'package:yimaru_app/ui/views/course_subcategory/course_subcategory_view.dart';
 import 'package:yimaru_app/ui/views/course/course_view.dart';
 import 'package:yimaru_app/services/audio_player_service.dart';
 import 'package:yimaru_app/services/voice_recorder_service.dart';
@@ -55,6 +53,11 @@ import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
 import 'package:yimaru_app/services/vimeo_service.dart';
 import 'package:yimaru_app/services/url_launcher_service.dart';
 import 'package:yimaru_app/services/phone_caller_service.dart';
+import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_view.dart';
+import 'package:yimaru_app/ui/views/arif_pay/arif_pay_view.dart';
+import 'package:yimaru_app/services/learn_service.dart';
+import 'package:yimaru_app/ui/views/course_catalog/course_catalog_view.dart';
+import 'package:yimaru_app/ui/views/course_unit/course_unit_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -83,17 +86,19 @@ import 'package:yimaru_app/services/phone_caller_service.dart';
     MaterialRoute(page: LearnPracticeView),
     MaterialRoute(page: CoursePracticeView),
     MaterialRoute(page: CoursePaymentView),
-    MaterialRoute(page: CourseCategoryView),
     MaterialRoute(page: FailureView),
     MaterialRoute(page: CourseLessonView),
     MaterialRoute(page: CourseLessonDetailView),
     MaterialRoute(page: DuolingoView),
-    MaterialRoute(page: CourseSubcategoryView),
     MaterialRoute(page: CourseView),
     MaterialRoute(page: CoursePracticeQuestionView),
     MaterialRoute(page: LearnProgramView),
     MaterialRoute(page: LearnCourseView),
     MaterialRoute(page: AssessmentView),
+    MaterialRoute(page: LearnSubscriptionView),
+    MaterialRoute(page: ArifPayView),
+    MaterialRoute(page: CourseCatalogView),
+    MaterialRoute(page: CourseUnitView),
 // @stacked-route
   ],
   dependencies: [
@@ -118,6 +123,7 @@ import 'package:yimaru_app/services/phone_caller_service.dart';
     LazySingleton(classType: VimeoService),
     LazySingleton(classType: UrlLauncherService),
     LazySingleton(classType: PhoneCallerService),
+    LazySingleton(classType: LearnService),
 // @stacked-service
   ],
   bottomsheets: [

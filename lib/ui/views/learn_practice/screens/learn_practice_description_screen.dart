@@ -9,7 +9,6 @@ import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_learn_practice_sheet.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/small_app_bar.dart';
-import '../../../widgets/speaking_partner_image.dart';
 
 class LearnPracticeDescriptionScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
@@ -121,6 +120,7 @@ class LearnPracticeDescriptionScreen
         _buildSubtitle(viewModel),
         verticalSpaceMedium,
         _buildImageContainer(viewModel),
+        verticalSpaceLarge
       ];
 
   Widget _buildTitle(LearnPracticeViewModel viewModel) => Text.rich(

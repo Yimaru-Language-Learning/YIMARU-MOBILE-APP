@@ -7,7 +7,6 @@ import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
 import '../../../widgets/custom_dropdown.dart';
-import '../onboarding_view.form.dart';
 
 class OccupationFormScreen extends ViewModelWidget<OnboardingViewModel> {
   const OccupationFormScreen({super.key});

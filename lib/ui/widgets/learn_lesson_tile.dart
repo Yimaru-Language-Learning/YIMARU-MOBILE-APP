@@ -8,6 +8,7 @@ import '../common/app_colors.dart';
 import '../common/helper_functions.dart';
 
 import '../common/ui_helpers.dart';
+import 'custom_container_shader.dart';
 import 'custom_elevated_button.dart';
 import 'custom_linear_progress_indicator.dart';
 
@@ -17,11 +18,12 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
   final GestureTapCallback? onLessonTap;
   final GestureTapCallback? onPracticeTap;
 
-  const LearnLessonTile({super.key,
-    this.onLessonTap,
-    this.onPracticeTap,
-    required this.index,
-    required this.lesson});
+  const LearnLessonTile(
+      {super.key,
+      this.onLessonTap,
+      this.onPracticeTap,
+      required this.index,
+      required this.lesson});
 
   @override
   Widget build(BuildContext context, LearnLessonViewModel viewModel) =>
@@ -33,41 +35,44 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color: kcPrimaryColor.withOpacity(0.1),
-            // color: ProgressStatuses.pending == status
-            //     ? kcPrimaryColor.withOpacity(0.1)
-            //     : kcGreen.withOpacity(0.1),
+            color: (lesson.access?.isCompleted ?? false)
+                ? kcGreen.withOpacity(0.1)
+                : kcPrimaryColor.withOpacity(0.1),
           ),
         ),
-        child: _buildExpansionTile(viewModel),
+        child: _buildTileStack(viewModel),
+      );
+
+  Widget _buildTileStack(LearnLessonViewModel viewModel) => Stack(
+        children: [
+          _buildExpansionTile(viewModel),
+          _buildContainerShaderState()
+        ],
       );
 
   Widget _buildExpansionTile(LearnLessonViewModel viewModel) => ExpansionTile(
-        enabled: true,
         title: _buildTitle(),
         textColor: kcDarkGrey,
         showTrailingIcon: true,
-        initiallyExpanded: false,
-        trailing: _buildPendingIcon(),
+        trailing: _buildIconState(),
         collapsedIconColor: kcDarkGrey,
         collapsedTextColor: kcDarkGrey,
         leading: _buildLeadingWrapper(),
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
-        backgroundColor: kcPrimaryColor.withOpacity(0.1),
+        enabled: (lesson.access?.isAccessible ?? false),
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-        collapsedBackgroundColor: kcPrimaryColor.withOpacity(0.1),
+        backgroundColor: (lesson.access?.isCompleted ?? false)
+            ? kcGreen.withOpacity(0.1)
+            : kcPrimaryColor.withOpacity(0.1),
         childrenPadding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-        // enabled: (lesson.access?.isAccessible ?? false),
-        // backgroundColor: ProgressStatuses.pending == status
-        //     ? kcPrimaryColor.withOpacity(0.1)
-        //     : kcGreen.withOpacity(0.1),
-        // collapsedBackgroundColor: ProgressStatuses.pending == status
-        //     ? kcPrimaryColor.withOpacity(0.1)
-        //     : kcGreen.withOpacity(0.1),
-        // initiallyExpanded: status != ProgressStatuses.completed ? true : false,
+        initiallyExpanded: (lesson.access?.isAccessible ?? false) &&
+            !(lesson.access?.isCompleted ?? false),
+        collapsedBackgroundColor: (lesson.access?.isCompleted ?? false)
+            ? kcGreen.withOpacity(0.1)
+            : kcPrimaryColor.withOpacity(0.1),
         children: _buildExpansionTileChildren(viewModel),
       );
 
@@ -83,9 +88,9 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         style: style16DG600,
       );
 
-  // Widget _buildIconState() => ProgressStatuses.pending == status
-  //     ? _buildPendingIcon()
-  //     : _buildCompleteIcon();
+  Widget _buildIconState() => (lesson.access?.isCompleted ?? false)
+      ? _buildCompleteIcon()
+      : _buildPendingIcon();
 
   Widget _buildCompleteIcon() => const Icon(
         Icons.check,
@@ -116,14 +121,14 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         _buildActionButtonWrapper(viewModel)
       ];
 
-  Widget _buildProgress() => const CustomLinearProgressIndicator(
-        progress: 0,
+  Widget _buildProgress() => CustomLinearProgressIndicator(
         activeColor: kcPrimaryColor,
         backgroundColor: kcVeryLightGrey,
+        progress: (lesson.access?.progressPercent ?? 0) / 100,
       );
 
   Widget _buildProgressText() => Text(
-        'In Progress',
+        (lesson.access?.isCompleted ?? false) ? 'Completed' : 'In Progress',
         style: style14P600,
       );
 
@@ -179,4 +184,10 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         trailingIcon: Icons.play_arrow,
         backgroundColor: kcPrimaryColor,
       );
+
+  Widget _buildContainerShaderState() => !(lesson.access?.isAccessible ?? false)
+      ? _buildContainerShader()
+      : Container();
+
+  Widget _buildContainerShader() => const CustomContainerShader();
 }

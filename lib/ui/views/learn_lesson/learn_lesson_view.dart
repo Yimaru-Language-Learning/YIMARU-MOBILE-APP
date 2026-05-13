@@ -133,7 +133,11 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         style: style14DG500,
       );
 
-  Widget _buildModuleProgress() => const ModuleProgress();
+  Widget _buildModuleProgress() => ModuleProgress(
+        total: module.access?.totalCount ?? 0,
+        completed: module.access?.completedCount ?? 0,
+        progress: module.access?.progressPercent ?? 0,
+      );
 
   Widget _buildMotivationCard() => const MotivationCard();
 
@@ -159,6 +163,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
           index: index,
           lesson: viewModel.lessons[index],
           onLessonTap: () async => await viewModel.navigateToLearnLessonDetail(
+              module: module,
               lesson: viewModel.lessons[index],
               hasPractice:
                   index != viewModel.lessons.length - 1 ? true : false),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/learn_module.dart';
 import 'package:yimaru_app/ui/views/learn_module/learn_module_viewmodel.dart';
+import 'package:yimaru_app/ui/widgets/custom_container_shader.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
@@ -11,11 +12,16 @@ import 'custom_elevated_button.dart';
 
 class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
   final LearnModule module;
+  final GestureTapCallback? onLockTap;
   final GestureTapCallback? onModuleTap;
   final GestureTapCallback? onPracticeTap;
 
   const LearnModuleTile(
-      {super.key, this.onModuleTap, this.onPracticeTap, required this.module});
+      {super.key,
+      this.onLockTap,
+      this.onModuleTap,
+      this.onPracticeTap,
+      required this.module});
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -28,8 +34,15 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
 
   @override
   Widget build(BuildContext context, LearnModuleViewModel viewModel) =>
-      _buildExpansionTileCard(context: context, viewModel: viewModel);
+      _buildExpansionTileWrapper(context: context, viewModel: viewModel);
 
+  Widget _buildExpansionTileWrapper(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      GestureDetector(
+        onTap: !(module.access?.isAccessible ?? false) ? onLockTap : null,
+        child: _buildExpansionTileCard(context: context, viewModel: viewModel),
+      );
   Widget _buildExpansionTileCard(
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>
@@ -48,7 +61,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       Stack(
         children: [
           _buildExpansionTile(context: context, viewModel: viewModel),
-          // _buildContainerShaderState()
+          _buildContainerShaderState()
         ],
       );
 
@@ -57,8 +70,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
           required LearnModuleViewModel viewModel}) =>
       ExpansionTile(
         textColor: kcDarkGrey,
-        initiallyExpanded: true,
         subtitle: _buildContent(),
+        trailing: _buildLockIcon(),
         title: _buildTitleWrapper(),
         leading: _buildIconWrapper(),
         collapsedIconColor: kcDarkGrey,
@@ -72,9 +85,16 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
         childrenPadding: const EdgeInsets.fromLTRB(70, 0, 15, 15),
-        showTrailingIcon: (module.access?.isAccessible ?? false) ? true : false,
+        initiallyExpanded: (module.access?.isAccessible ?? false),
+        showTrailingIcon:
+            !(module.access?.isAccessible ?? false) ? true : false,
         children:
             _buildExpansionTileChildren(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildLockIcon() => const Icon(
+        Icons.lock_outline_rounded,
+        color: kcLightGrey,
       );
 
   Widget _buildIconWrapper() => CircleAvatar(
@@ -144,14 +164,15 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         child: _buildProgressStatus(),
       );
 
-  Widget _buildProgressStatus() => const CustomLinearProgressIndicator(
-      progress: 0,
-      activeColor: kcPrimaryColor,
-      backgroundColor: kcPrimaryColorLight);
+  Widget _buildProgressStatus() => CustomLinearProgressIndicator(
+        activeColor: kcPrimaryColor,
+        backgroundColor: kcPrimaryColorLight,
+        progress: (module.access?.progressPercent ?? 0) / 100,
+      );
 
-  Widget _buildProgress() => const Text(
-        '0/0',
-        style: TextStyle(color: kcDarkGrey),
+  Widget _buildProgress() => Text(
+        '${module.access?.completedCount ?? 0}/${module.access?.totalCount ?? 0}',
+        style: style14DG500,
       );
 
   Widget _buildActionButtonWrapper(
@@ -207,17 +228,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       );
 
   Widget _buildContainerShaderState() => !(module.access?.isAccessible ?? false)
-      ? _buildContainerShaderWrapper()
+      ? _buildContainerShader()
       : Container();
 
-  Widget _buildContainerShaderWrapper() => Positioned.fill(
-        child: _buildContainerShader(),
-      );
-
-  Widget _buildContainerShader() => Container(
-        decoration: BoxDecoration(
-          color: kcWhite.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(5),
-        ),
-      );
+  Widget _buildContainerShader() => const CustomContainerShader();
 }

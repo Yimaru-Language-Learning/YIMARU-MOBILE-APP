@@ -78,15 +78,15 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
 
   Widget _buildListView(LearnCourseViewModel viewModel) => ListView.separated(
         shrinkWrap: true,
-        itemCount: viewModel.learnCourses.length,
+        itemCount: viewModel.courses.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
-          course: viewModel.learnCourses[index],
-          onViewTap: () async => await viewModel
-              .navigateToLearnModule(viewModel.learnCourses[index]),
+          course: viewModel.courses[index],
+          onViewTap: () async =>
+              await viewModel.navigateToLearnModule(viewModel.courses[index]),
           onPracticeTap: () async => await viewModel.navigateToLearnPractice(
-              id: viewModel.learnCourses[index].id ?? 0,
-              level: viewModel.learnCourses[index].name ?? ''),
+              id: viewModel.courses[index].id ?? 0,
+              level: viewModel.courses[index].name ?? ''),
         ),
         separatorBuilder: (context, index) => verticalSpaceSmall,
       );

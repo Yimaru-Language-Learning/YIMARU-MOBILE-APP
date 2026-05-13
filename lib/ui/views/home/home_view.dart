@@ -5,6 +5,7 @@ import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
 import 'package:yimaru_app/ui/widgets/coming_soon.dart';
 
+import '../course/course_view.dart';
 import 'home_viewmodel.dart';
 
 class HomeView extends StackedView<HomeViewModel> {
@@ -69,7 +70,7 @@ class HomeView extends StackedView<HomeViewModel> {
       case 0:
         return const LearnProgramView();
       case 1:
-        return const ComingSoon();
+        return const CourseView();
 
       default:
         return const ProfileView();

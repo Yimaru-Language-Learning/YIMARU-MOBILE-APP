@@ -110,8 +110,6 @@ class ForgetPasswordViewModel extends FormViewModel {
       _length = false;
     }
 
-
-
     if (password == confirmPassword) {
       _passwordMatch = true;
     } else {

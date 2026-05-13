@@ -1,8 +1,8 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:vimeo_video_player/vimeo_video_player.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
+import 'package:yimaru_app/models/learn_module.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
@@ -14,10 +14,14 @@ import 'learn_lesson_detail_viewmodel.dart';
 
 class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   final bool hasPractice;
+  final LearnModule module;
   final LearnLesson lesson;
 
   const LearnLessonDetailView(
-      {Key? key, required this.lesson, required this.hasPractice})
+      {Key? key,
+      required this.lesson,
+      required this.module,
+      required this.hasPractice})
       : super(key: key);
 
   Future<void> _navigate(LearnLessonDetailViewModel viewModel) async {
@@ -27,7 +31,11 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
 
   @override
   void onViewModelReady(LearnLessonDetailViewModel viewModel) async {
-    await viewModel.initializePlayer(lesson.videoUrl ?? '');
+    await viewModel.initializePlayer(
+      lessonId: lesson.id ?? 0,
+      moduleId: module.id ?? 0,
+      url: lesson.videoUrl ?? '',
+    );
     super.onViewModelReady(viewModel);
   }
 
@@ -144,8 +152,9 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   Widget _buildVideoPlayer(LearnLessonDetailViewModel viewModel) =>
       _buildChewiePlayer(viewModel);
 
-  Widget _buildChewiePlayer(LearnLessonDetailViewModel viewModel) =>
-      Chewie(controller: viewModel.chewieController!);
+  Widget _buildChewiePlayer(LearnLessonDetailViewModel viewModel) => Chewie(
+        controller: viewModel.chewieController!,
+      );
 
   Widget _buildEmptyVideoPlayer() => const EmptyVideoPlayer();
 
