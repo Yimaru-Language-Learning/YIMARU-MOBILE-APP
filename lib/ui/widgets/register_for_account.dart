@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
@@ -18,9 +20,9 @@ class RegisterForAccount extends StatelessWidget {
         ],
       );
 
-  Widget _buildLeadingText() => const Text(
-        'Don’t have an account? ',
-        style: TextStyle(color: kcMediumGrey),
+  Widget _buildLeadingText() =>  Text(
+        '${LocaleKeys.dont_have_account.tr()} ',
+        style: style14MG400,
       );
 
   Widget _buildRegisterTextButton() => TextButton(
@@ -31,8 +33,8 @@ class RegisterForAccount extends StatelessWidget {
         child: _buildRegisterText(),
       );
 
-  Widget _buildRegisterText() => const Text(
-        'Register',
-        style: TextStyle(color: kcPrimaryColor),
+  Widget _buildRegisterText() =>  Text(
+       LocaleKeys.register.tr(),
+        style:style14P400 ,
       );
 }

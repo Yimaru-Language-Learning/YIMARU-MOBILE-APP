@@ -101,23 +101,25 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
 
   Widget _buildListView(CourseCatalogViewModel viewModel) => ListView.separated(
         shrinkWrap: true,
-        itemCount: viewModel.courseCatalogs.length,
+        itemCount: viewModel.catalogs.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
-            courseCatalog: viewModel.courseCatalogs[index],
-            onCourseTap: () {},
-            onPracticeTap: () {}),
+          onPracticeTap: () {},
+          catalog: viewModel.catalogs[index],
+          onCourseTap: () async =>
+              await viewModel.navigateToCourseUnit(viewModel.catalogs[index]),
+        ),
         separatorBuilder: (context, index) => verticalSpaceSmall,
       );
 
   Widget _buildTile({
-    required CourseCatalog courseCatalog,
+    required CourseCatalog catalog,
     required GestureTapCallback onCourseTap,
     required GestureTapCallback onPracticeTap,
   }) =>
       CourseCatalogTile(
+        catalog: catalog,
         onCourseTap: onCourseTap,
         onPracticeTap: onPracticeTap,
-        courseCatalog: courseCatalog,
       );
 }

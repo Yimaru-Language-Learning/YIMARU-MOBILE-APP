@@ -3,11 +3,11 @@ import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
-class OverallLearnProgress extends StatelessWidget {
+class OverallProgress extends StatelessWidget {
   final int progress;
   final Color backgroundColor;
   final Color indicatorBackgroundColor;
-  const OverallLearnProgress(
+  const OverallProgress(
       {super.key,
       required this.progress,
       required this.backgroundColor,
@@ -63,8 +63,8 @@ class OverallLearnProgress extends StatelessWidget {
         backgroundColor: indicatorBackgroundColor,
       );
 
-  Widget _buildSubtitle() => const Text(
+  Widget _buildSubtitle() => Text(
         'Keep up the great work! You\'re doing amazing.',
-        style: TextStyle(color: kcDarkGrey),
+        style: style14DG500,
       );
 }

@@ -52,6 +52,8 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
         showBackButton: true,
         onPop: viewModel.goBack,
         showLanguageSelection: true,
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
   Widget _buildExpandedBody(AssessmentViewModel viewModel) =>

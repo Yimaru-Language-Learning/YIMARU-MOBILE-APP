@@ -14,6 +14,8 @@ import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 
 import '../app/app.locator.dart';
+import '../models/course_module.dart';
+import '../models/course_unit.dart';
 import '../models/learn_course.dart';
 import '../models/learn_module.dart';
 import '../models/learn_question.dart';
@@ -722,6 +724,54 @@ class ApiService {
           },
         ).toList();
         return catalogs;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get course units
+  Future<List<CourseUnit>> getCourseUnits(int id) async {
+    try {
+      List<CourseUnit> units = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kExamPrepUrl/$kCatalogCoursesUrl/$id/$kUnitsUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['units'] as List;
+        units = decodedData.map(
+          (e) {
+            return CourseUnit.fromJson(e);
+          },
+        ).toList();
+        return units;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get course modules
+  Future<List<CourseModule>> getCourseModules(int id) async {
+    try {
+      List<CourseModule> modules = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kExamPrepUrl/$kUnitsUrl/$id/$kModulesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['modules'] as List;
+        modules = decodedData.map(
+          (e) {
+            return CourseModule.fromJson(e);
+          },
+        ).toList();
+        return modules;
       }
       return [];
     } catch (e) {

@@ -7,7 +7,8 @@ import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/services/notification_service.dart';
-
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/codegen_loader.g.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -15,26 +16,42 @@ Future<void> main() async {
   await setupLocator();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await locator<NotificationService>().initialize();
+  await EasyLocalization.ensureInitialized();
   setupDialogUi();
   setupBottomSheetUi();
-  runApp(const MainApp());
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('en'),
+        Locale('am'),
+      ],
+      path: 'assets/translations',
+      startLocale: const Locale('en'),
+      assetLoader: const CodegenLoader(),
+      fallbackLocale: const Locale('en'),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) => _buildMaterialWrapper();
+  Widget build(BuildContext context) => _buildMaterialWrapper(context);
 
-  Widget _buildMaterialWrapper() => ToastificationWrapper(
-        child: _buildMaterialApp(),
+  Widget _buildMaterialWrapper(BuildContext context) => ToastificationWrapper(
+        child: _buildMaterialApp(context),
       );
 
-  Widget _buildMaterialApp() => MaterialApp(
+  Widget _buildMaterialApp(BuildContext context) => MaterialApp(
+        locale: context.locale,
         initialRoute: Routes.startupView,
         theme: ThemeData(fontFamily: 'Aeonik'),
         navigatorKey: StackedService.navigatorKey,
+        supportedLocales: context.supportedLocales,
         onGenerateRoute: StackedRouter().onGenerateRoute,
         navigatorObservers: [StackedService.routeObserver],
+        localizationsDelegates: context.localizationDelegates,
       );
 }

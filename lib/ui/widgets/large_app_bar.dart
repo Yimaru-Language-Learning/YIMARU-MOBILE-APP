@@ -4,6 +4,7 @@ import 'package:yimaru_app/ui/widgets/app_bar_pattern.dart';
 import 'package:yimaru_app/ui/widgets/language_button.dart';
 
 class LargeAppBar extends StatelessWidget {
+  final String? language;
   final bool showBackButton;
   final GestureTapCallback? onPop;
   final bool showLanguageSelection;
@@ -14,6 +15,7 @@ class LargeAppBar extends StatelessWidget {
       {super.key,
       this.onPop,
       this.onClose,
+      this.language,
       this.onLanguage,
       required this.showBackButton,
       required this.showLanguageSelection});
@@ -72,8 +74,8 @@ class LargeAppBar extends StatelessWidget {
           : _buildCloseButton());
 
   Widget _buildLanguageSelector() => LanguageButton(
-        language: 'EN',
         onTap: onLanguage,
+        language: language ?? '',
       );
 
   Widget _buildCloseButton() => IconButton(

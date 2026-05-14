@@ -86,7 +86,11 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _inAppPop(viewModel),
-      );
+    language: viewModel.selectedLanguage['code'],
+
+    onLanguage: ()async => await viewModel.navigateToLanguage(),
+
+  );
 
   Widget _buildExpandedBody(ForgetPasswordViewModel viewModel) =>
       Expanded(child: _buildColumnScroller(viewModel));

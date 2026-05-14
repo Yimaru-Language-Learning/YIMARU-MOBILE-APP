@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/login/login_view.form.dart';
 import 'package:yimaru_app/ui/widgets/obscure_password.dart';
 
@@ -76,9 +78,11 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildAppBar(LoginViewModel viewModel) => const LargeAppBar(
+  Widget _buildAppBar(LoginViewModel viewModel) => LargeAppBar(
         showBackButton: false,
         showLanguageSelection: true,
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
   Widget _buildExpandedBody(
@@ -140,7 +144,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Welcome Back',
+        LocaleKeys.welcome_back.tr(),
         style: style25DG600,
       );
 
@@ -150,10 +154,10 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
 
   Widget _buildEmailFormField(LoginViewModel viewModel) => TextFormField(
         controller: emailController,
-        keyboardType: TextInputType.emailAddress,
         onTap: viewModel.setEmailFocus,
+        keyboardType: TextInputType.emailAddress,
         decoration: inputDecoration(
-            hint: 'Email',
+            hint: LocaleKeys.email.tr(),
             focus: viewModel.focusEmail,
             filled: emailController.text.isNotEmpty),
       );
@@ -173,7 +177,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         onTap: viewModel.setPasswordFocus,
         obscureText: viewModel.obscurePassword,
         decoration: inputDecoration(
-            hint: 'Password',
+            hint: LocaleKeys.password.tr(),
             focus: viewModel.focusPassword,
             suffix: _buildObscureButton(viewModel),
             filled: passwordController.text.isNotEmpty),
@@ -207,7 +211,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
       );
 
   Widget _buildForgetPasswordText() => Text(
-        'Forgot Password?',
+        LocaleKeys.forgot_password.tr(),
         style: style14P400,
       );
 
@@ -227,9 +231,9 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
   Widget _buildContinueButton(LoginViewModel viewModel) => CustomElevatedButton(
         height: 55,
         safe: false,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         onTap: emailController.text.isNotEmpty &&
                 passwordController.text.isNotEmpty
             ? () async => await _login(viewModel)
@@ -245,9 +249,9 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         height: 55,
         borderRadius: 12,
         backgroundColor: kcWhite,
-        text: 'Login with Google',
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
+        text: LocaleKeys.login_with_google.tr(),
         leadingImage: 'assets/icons/google.png',
         onTap: () async => await viewModel.signInWithGoogle(),
       );
@@ -263,7 +267,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         borderColor: kcPrimaryColor,
         onTap: () => viewModel.goTo(1),
         foregroundColor: kcPrimaryColor,
-        text: 'Login with Phone Number',
+        text: LocaleKeys.login_with_phone.tr()
       );
 
   Widget _buildLoginWithEmailState(LoginViewModel viewModel) =>

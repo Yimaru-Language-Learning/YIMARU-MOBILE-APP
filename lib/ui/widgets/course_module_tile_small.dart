@@ -3,11 +3,12 @@ import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
-class CourseTopicTile extends StatelessWidget {
+class CourseModuleTileSmall extends StatelessWidget {
   final String title;
   final ProgressStatuses status;
 
-  const CourseTopicTile({super.key, required this.title, required this.status});
+  const CourseModuleTileSmall(
+      {super.key, required this.title, required this.status});
 
   @override
   Widget build(BuildContext context) => _buildTile();
@@ -27,7 +28,9 @@ class CourseTopicTile extends StatelessWidget {
 
   Widget _buildTitle() => Text(
         title,
-        style: style16DG600,
+        maxLines: 1,
+        softWrap: false,
+        style: style14DG600,
       );
 
   Widget _buildLeadingWrapper() => CircleAvatar(

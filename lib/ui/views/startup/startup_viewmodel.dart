@@ -47,16 +47,20 @@ class StartupViewModel extends ReactiveViewModel {
   }
 
   // Navigation
+
+  Future<void> replaceWithHome() async =>
+      await _navigationService.replaceWithHomeView();
+
   Future<void> replaceWithFailure() async =>
       await _navigationService.replaceWithFailureView(
           label: 'Check you internet connection',
           onTap: () async => await _getProfileStatus());
 
+
+
   Future<void> replaceWithOnboarding() async =>
       await _navigationService.replaceWithOnboardingView();
 
-  Future<void> replaceWithHome() async =>
-      await _navigationService.replaceWithHomeView();
 
   // Remote api calls
 

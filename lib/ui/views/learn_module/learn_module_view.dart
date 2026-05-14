@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/learn_module.dart';
 import 'package:yimaru_app/ui/widgets/learn_module_tile.dart';
-import 'package:yimaru_app/ui/widgets/overall_learn_progress.dart';
+import 'package:yimaru_app/ui/widgets/overall_progress.dart';
 
 import '../../../models/learn_course.dart';
 import '../../common/app_colors.dart';
@@ -96,7 +96,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         style: style14P400,
       );
 
-  Widget _buildOverallProgress() => OverallLearnProgress(
+  Widget _buildOverallProgress() => OverallProgress(
         indicatorBackgroundColor: kcWhite,
         progress: course.access?.progressPercent ?? 0,
         backgroundColor: kcPrimaryColor.withOpacity(0.1),

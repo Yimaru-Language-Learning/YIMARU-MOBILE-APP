@@ -21,6 +21,7 @@ import 'package:yimaru_app/services/vimeo_service.dart';
 import 'package:yimaru_app/services/url_launcher_service.dart';
 import 'package:yimaru_app/services/phone_caller_service.dart';
 import 'package:yimaru_app/services/learn_service.dart';
+import 'package:yimaru_app/services/localization_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -56,6 +57,7 @@ import 'test_helpers.mocks.dart';
     MockSpec<LearnLessonService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<LearnService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<LearnService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<LocalizationService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
   ],
 )
@@ -86,6 +88,7 @@ void registerServices() {
   getAndRegisterLearnLessonService();
   getAndRegisterLearnService();
   getAndRegisterLearnService();
+  getAndRegisterLocalizationService();
 // @stacked-mock-register
 }
 
@@ -273,6 +276,13 @@ MockLearnService getAndRegisterLearnService() {
   _removeRegistrationIfExists<LearnService>();
   final service = MockLearnService();
   locator.registerSingleton<LearnService>(service);
+  return service;
+}
+
+MockLocalizationService getAndRegisterLocalizationService() {
+  _removeRegistrationIfExists<LocalizationService>();
+  final service = MockLocalizationService();
+  locator.registerSingleton<LocalizationService>(service);
   return service;
 }
 // @stacked-mock-create

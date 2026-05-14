@@ -58,6 +58,7 @@ import 'package:yimaru_app/ui/views/arif_pay/arif_pay_view.dart';
 import 'package:yimaru_app/services/learn_service.dart';
 import 'package:yimaru_app/ui/views/course_catalog/course_catalog_view.dart';
 import 'package:yimaru_app/ui/views/course_unit/course_unit_view.dart';
+import 'package:yimaru_app/services/localization_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -124,6 +125,7 @@ import 'package:yimaru_app/ui/views/course_unit/course_unit_view.dart';
     LazySingleton(classType: UrlLauncherService),
     LazySingleton(classType: PhoneCallerService),
     LazySingleton(classType: LearnService),
+    LazySingleton(classType: LocalizationService),
 // @stacked-service
   ],
   bottomsheets: [

@@ -3,6 +3,8 @@ String kBaseUrl = 'https://api.yimaruacademy.com';
 
 String kApiUrl = 'api';
 
+String kUnitsUrl = 'units';
+
 String kApiVersionUrl = 'v1';
 
 String kLevelsUrl = 'levels';

@@ -76,7 +76,11 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => viewModel.goTo(0),
-      );
+    language: viewModel.selectedLanguage['code'],
+
+    onLanguage: ()async => await viewModel.navigateToLanguage(),
+
+  );
 
   Widget _buildExpandedBody(
           {required BuildContext context, required LoginViewModel viewModel}) =>

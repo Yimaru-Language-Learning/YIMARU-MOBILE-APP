@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../common/app_colors.dart';
+import '../common/translations/locale_keys.g.dart';
 import '../common/ui_helpers.dart';
 
 class OptionTextDivider extends StatelessWidget {
@@ -22,9 +24,9 @@ class OptionTextDivider extends StatelessWidget {
 
   Widget _buildDivider() => const Divider(color: kcVeryLightGrey);
 
-  Widget _buildOrText() => const Text(
-        'or',
+  Widget _buildOrText() => Text(
+        LocaleKeys.or.tr(),
+        style: style14MG400,
         textAlign: TextAlign.center,
-        style: TextStyle(color: kcMediumGrey),
       );
 }
