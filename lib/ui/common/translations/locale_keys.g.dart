@@ -1,0 +1,85 @@
+// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+// ignore_for_file: constant_identifier_names
+
+abstract class  LocaleKeys {
+  static const welcome_back = 'welcome_back';
+  static const dont_have_account = 'dont_have_account';
+  static const email = 'email';
+  static const password = 'password';
+  static const forgot_password = 'forgot_password';
+  static const cont = 'cont';
+  static const register = 'register';
+  static const login_with_google = 'login_with_google';
+  static const or = 'or';
+  static const login_with_phone = 'login_with_phone';
+  static const create_account = 'create_account';
+  static const already_have_account = 'already_have_account';
+  static const login = 'login';
+  static const register_with_google = 'register_with_google';
+  static const register_with_phone = 'register_with_phone';
+  static const enter_phone_number = 'enter_phone_number';
+  static const login_with_email = 'login_with_email';
+  static const create_password = 'create_password';
+  static const confirm_password = 'confirm_password';
+  static const sign_up_agreement = 'sign_up_agreement';
+  static const reset_password = 'reset_password';
+  static const enter_email_reset_code = 'enter_email_reset_code';
+  static const please_wait = 'please_wait';
+  static const reset_code_sent = 'reset_code_sent';
+  static const reset_code = 'reset_code';
+  static const new_password = 'new_password';
+  static const logged_in_successfully = 'logged_in_successfully';
+  static const view_course = 'view_course';
+  static const take_practice = 'take_practice';
+  static const your_current_level = 'your_current_level';
+  static const overall_progress = 'overall_progress';
+  static const great_work = 'great_work';
+  static const view_module = 'view_module';
+  static const progress = 'progress';
+  static const keep_going = 'keep_going';
+  static const lessons_in_module = 'lessons_in_module';
+  static const practice = 'practice';
+  static const start = 'start';
+  static const in_progress = 'in_progress';
+  static const hello = 'hello';
+  static const ready_to_learn = 'ready_to_learn';
+  static const learn = 'learn';
+  static const course = 'course';
+  static const profile = 'profile';
+  static const speaking_partner = 'speaking_partner';
+  static const practice_what_you_learned = 'practice_what_you_learned';
+  static const practice_questions = 'practice_questions';
+  static const start_practice = 'start_practice';
+  static const almost_there = 'almost_there';
+  static const finish_session = 'finish_session';
+  static const continue_practice = 'continue_practice';
+  static const end_session = 'end_session';
+  static const tap_start_to_listen = 'tap_start_to_listen';
+  static const practice_speaking = 'practice_speaking';
+  static const tap_microphone = 'tap_microphone';
+  static const reply = 'reply';
+  static const cancel = 'cancel';
+  static const you_are_speaking = 'you_are_speaking';
+  static const practice_completed = 'practice_completed';
+  static const great_improvement = 'great_improvement';
+  static const practice_again = 'practice_again';
+  static const conversation_review = 'conversation_review';
+  static const result = 'result';
+  static const quick_tip = 'quick_tip';
+  static const retry = 'retry';
+  static const completed_a1 = 'completed_a1';
+  static const analyzing_speaking = 'analyzing_speaking';
+  static const view_profile = 'view_profile';
+  static const hi = 'hi';
+  static const edit_profile = 'edit_profile';
+  static const first_name = 'first_name';
+  static const last_name = 'last_name';
+  static const gender = 'gender';
+  static const phone_number = 'phone_number';
+  static const country = 'country';
+  static const region = 'region';
+  static const occupation = 'occupation';
+  static const save_changes = 'save_changes';
+
+}

@@ -10,15 +10,25 @@ import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
 import '../../../models/assessment.dart';
 import '../../../services/api_service.dart';
+import '../../../services/localization_service.dart';
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
 
-class AssessmentViewModel extends BaseViewModel {
+class AssessmentViewModel extends ReactiveViewModel {
   // Dependency injection
   final _apiService = locator<ApiService>();
   final _dialogService = locator<DialogService>();
   final _statusChecker = locator<StatusCheckerService>();
   final _navigationService = locator<NavigationService>();
+  final _localizationService = locator<LocalizationService>();
+
+  @override
+  List<ListenableServiceMixin> get listenableServices => [_localizationService];
+
+  // Languages
+  Map<String, dynamic> get _selectedLanguage => _localizationService.selectedLanguage;
+
+  Map<String, dynamic> get selectedLanguage => _selectedLanguage;
 
   // In-app navigation
   int _currentPage = 0;

@@ -12,8 +12,8 @@ class LearnService with ListenableServiceMixin {
   final _apiService = locator<ApiService>();
 
   // Initialization
-  LearnLessonService() {
-    listenToReactiveValues([_programs, _lessons]);
+  learnService() {
+    listenToReactiveValues([_programs, _lessons, _modules]);
   }
 
   // Learn program

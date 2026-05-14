@@ -84,7 +84,11 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
         showBackButton: true,
         onPop: viewModel.goBack,
         showLanguageSelection: true,
-      );
+    language: viewModel.selectedLanguage['code'],
+
+    onLanguage: ()async => await viewModel.navigateToLanguage(),
+
+  );
 
   Widget _buildExpandedBody(
           {required BuildContext context,

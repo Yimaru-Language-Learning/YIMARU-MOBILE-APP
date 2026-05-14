@@ -6,11 +6,12 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i39;
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as _i39;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i46;
+import 'package:stacked_services/stacked_services.dart' as _i47;
 import 'package:yimaru_app/models/course.dart' as _i44;
+import 'package:yimaru_app/models/course_catalog.dart' as _i46;
 import 'package:yimaru_app/models/course_lesson.dart' as _i45;
 import 'package:yimaru_app/models/learn_course.dart' as _i40;
 import 'package:yimaru_app/models/learn_lesson.dart' as _i42;
@@ -664,11 +665,10 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i38.CourseUnitView: (data) {
-      final args = data.getArgs<CourseUnitViewArguments>(
-        orElse: () => const CourseUnitViewArguments(),
-      );
+      final args = data.getArgs<CourseUnitViewArguments>(nullOk: false);
       return _i39.MaterialPageRoute<dynamic>(
-        builder: (context) => _i38.CourseUnitView(key: args.key),
+        builder: (context) =>
+            _i38.CourseUnitView(key: args.key, catalog: args.catalog),
         settings: data,
       );
     },
@@ -1586,28 +1586,33 @@ class CourseCatalogViewArguments {
 }
 
 class CourseUnitViewArguments {
-  const CourseUnitViewArguments({this.key});
+  const CourseUnitViewArguments({
+    this.key,
+    required this.catalog,
+  });
 
   final _i39.Key? key;
 
+  final _i46.CourseCatalog catalog;
+
   @override
   String toString() {
-    return '{"key": "$key"}';
+    return '{"key": "$key", "catalog": "$catalog"}';
   }
 
   @override
   bool operator ==(covariant CourseUnitViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key;
+    return other.key == key && other.catalog == catalog;
   }
 
   @override
   int get hashCode {
-    return key.hashCode;
+    return key.hashCode ^ catalog.hashCode;
   }
 }
 
-extension NavigatorStateExtension on _i46.NavigationService {
+extension NavigatorStateExtension on _i47.NavigationService {
   Future<dynamic> navigateToHomeView({
     _i39.Key? key,
     int? routerId,
@@ -2216,6 +2221,7 @@ extension NavigatorStateExtension on _i46.NavigationService {
 
   Future<dynamic> navigateToCourseUnitView({
     _i39.Key? key,
+    required _i46.CourseCatalog catalog,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2223,7 +2229,7 @@ extension NavigatorStateExtension on _i46.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.courseUnitView,
-        arguments: CourseUnitViewArguments(key: key),
+        arguments: CourseUnitViewArguments(key: key, catalog: catalog),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2838,6 +2844,7 @@ extension NavigatorStateExtension on _i46.NavigationService {
 
   Future<dynamic> replaceWithCourseUnitView({
     _i39.Key? key,
+    required _i46.CourseCatalog catalog,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2845,7 +2852,7 @@ extension NavigatorStateExtension on _i46.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.courseUnitView,
-        arguments: CourseUnitViewArguments(key: key),
+        arguments: CourseUnitViewArguments(key: key, catalog: catalog),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

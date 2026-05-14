@@ -7,7 +7,7 @@ import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class CourseCatalogTile extends StatelessWidget {
-  final CourseCatalog courseCatalog;
+  final CourseCatalog catalog;
   final GestureTapCallback? onCourseTap;
   final GestureTapCallback? onPracticeTap;
 
@@ -15,7 +15,7 @@ class CourseCatalogTile extends StatelessWidget {
     super.key,
     this.onCourseTap,
     this.onPracticeTap,
-    required this.courseCatalog,
+    required this.catalog,
   });
 
   @override
@@ -57,7 +57,7 @@ class CourseCatalogTile extends StatelessWidget {
       ];
 
   Widget _buildTitle() => Text(
-        courseCatalog.name ?? '',
+        catalog.name ?? '',
         style: style16P600,
       );
 

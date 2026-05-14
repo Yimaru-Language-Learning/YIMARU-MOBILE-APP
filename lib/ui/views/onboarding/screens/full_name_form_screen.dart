@@ -88,7 +88,8 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
         showBackButton: false,
         showLanguageSelection: true,
-        onLanguage: () async => await viewModel.navigateToLanguage(),
+    language: viewModel.selectedLanguage['code'],
+    onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
   Widget _buildTitle() => const Text(

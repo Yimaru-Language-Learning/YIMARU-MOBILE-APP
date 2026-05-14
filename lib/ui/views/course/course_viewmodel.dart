@@ -34,11 +34,11 @@ class CourseViewModel extends ReactiveViewModel {
       'description':
           'Prepare for IELTS, TOEFL, or Duolingo with structured practice.'
     },
-    {
+    /*   {
       'title': 'Skill-Based Courses',
       'description':
           'Learn English for the workplace, travel, and real-life communication.'
-    },
+    },*/
   ];
 
   List<Map<String, dynamic>> get courses => _courses;

@@ -4,6 +4,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import '../../../app/app.locator.dart';
 import '../../../services/google_auth_service.dart';
+import '../../../services/localization_service.dart';
 
 class OnboardingViewModel extends ReactiveViewModel
     with FormStateHelper
@@ -14,13 +15,23 @@ class OnboardingViewModel extends ReactiveViewModel
 
   final _googleAuthService = locator<GoogleAuthService>();
 
+  final _localizationService = locator<LocalizationService>();
+
+
+
   @override
-  List<ListenableServiceMixin> get listenableServices => [_googleAuthService];
+  List<ListenableServiceMixin> get listenableServices => [_googleAuthService,_localizationService];
 
   // Google user
   GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
 
   GoogleSignInAccount? get googleUser => _googleUser;
+
+
+  // Languages
+  Map<String, dynamic> get _selectedLanguage => _localizationService.selectedLanguage;
+
+  Map<String, dynamic> get selectedLanguage => _selectedLanguage;
 
   // Navigation
   int _currentPage = 0;
@@ -207,20 +218,6 @@ class OnboardingViewModel extends ReactiveViewModel
 
   List<String> get topics => _topics;
 
-  // Languages
-  final List<Map<String, dynamic>> _languages = [
-    {'code': 'አማ', 'language': 'አማርኛ'},
-    {'code': 'EN', 'language': 'English'},
-  ];
-
-  List<Map<String, dynamic>> get languages => _languages;
-
-  Map<String, dynamic> _selectedLanguage = {
-    'code': 'EN',
-    'language': 'English'
-  };
-
-  Map<String, dynamic> get selectedLanguage => _selectedLanguage;
 
   // User data
   final Map<String, dynamic> _userData = {};
@@ -547,15 +544,6 @@ class OnboardingViewModel extends ReactiveViewModel
   }
 
   bool isSelectedTopic(String value) => _selectedTopic == value;
-
-  // Language
-  void setSelectedLanguage(Map<String, dynamic> value) {
-    _selectedLanguage = value;
-    rebuildUi();
-  }
-
-  bool isSelectedLanguage(String value) =>
-      _selectedLanguage['language'] == value;
 
   // Add user data
   void addUserData(Map<String, dynamic> data) {

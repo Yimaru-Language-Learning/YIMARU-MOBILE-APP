@@ -22,48 +22,72 @@ class LanguageView extends StackedView<LanguageViewModel> {
     LanguageViewModel viewModel,
     Widget? child,
   ) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(LanguageViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required LanguageViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold(LanguageViewModel viewModel) =>
-      SafeArea(child: _buildBodyWrapper(viewModel));
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required LanguageViewModel viewModel}) =>
+      SafeArea(
+          child: _buildBodyWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildBodyWrapper(LanguageViewModel viewModel) => Column(
+  Widget _buildBodyWrapper(
+          {required BuildContext context,
+          required LanguageViewModel viewModel}) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildBodyChildren(viewModel),
+        children: _buildBodyChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyChildren(LanguageViewModel viewModel) => [
+  List<Widget> _buildBodyChildren(
+          {required BuildContext context,
+          required LanguageViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
         _buildAppBarWrapper(viewModel),
-        _buildExpandedBody(viewModel)
+        _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildExpandedBody(LanguageViewModel viewModel) =>
-      Expanded(child: _buildColumnWrapper(viewModel));
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required LanguageViewModel viewModel}) =>
+      Expanded(
+          child: _buildColumnWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildColumnWrapper(LanguageViewModel viewModel) => Padding(
+  Widget _buildColumnWrapper(
+          {required BuildContext context,
+          required LanguageViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(viewModel),
+        child: _buildColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildColumn(LanguageViewModel viewModel) => Column(
+  Widget _buildColumn(
+          {required BuildContext context,
+          required LanguageViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildColumnChildren(viewModel),
+        children: _buildColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildColumnChildren(LanguageViewModel viewModel) => [
+  List<Widget> _buildColumnChildren(
+          {required BuildContext context,
+          required LanguageViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
         _buildSubtitle(),
         verticalSpaceMedium,
-        _buildLanguages(viewModel)
+        _buildLanguages(context: context, viewModel: viewModel)
       ];
 
   Widget _buildAppBarWrapper(LanguageViewModel viewModel) => Padding(
@@ -87,16 +111,19 @@ class LanguageView extends StackedView<LanguageViewModel> {
         style: style14MG400,
       );
 
-  Widget _buildLanguages(LanguageViewModel viewModel) => ListView.builder(
+  Widget _buildLanguages(
+          {required BuildContext context,
+          required LanguageViewModel viewModel}) =>
+      ListView.builder(
         shrinkWrap: true,
         itemCount: viewModel.languages.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildLanguage(
           title: viewModel.languages[index]['language'],
+          onTap: () => viewModel.setSelectedLanguage(
+              context: context, title: viewModel.languages[index]),
           selected: viewModel
               .isSelectedLanguage(viewModel.languages[index]['language']),
-          onTap: () =>
-              viewModel.setSelectedLanguage(viewModel.languages[index]),
         ),
       );
 

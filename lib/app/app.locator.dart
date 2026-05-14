@@ -22,6 +22,7 @@ import '../services/image_downloader_service.dart';
 import '../services/image_picker_service.dart';
 import '../services/in_app_update_service.dart';
 import '../services/learn_service.dart';
+import '../services/localization_service.dart';
 import '../services/notification_service.dart';
 import '../services/permission_handler_service.dart';
 import '../services/phone_caller_service.dart';
@@ -63,4 +64,5 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => UrlLauncherService());
   locator.registerLazySingleton(() => PhoneCallerService());
   locator.registerLazySingleton(() => LearnService());
+  locator.registerLazySingleton(() => LocalizationService());
 }

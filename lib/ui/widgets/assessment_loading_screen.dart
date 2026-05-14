@@ -43,7 +43,7 @@ class AssessmentLoadingScreen extends StatelessWidget {
   Widget _buildAppBar() => LargeAppBar(
         onPop: onPop,
         showBackButton: true,
-        showLanguageSelection: true,
+        showLanguageSelection: false,
       );
 
   Widget _buildBody() => Expanded(child: Container());

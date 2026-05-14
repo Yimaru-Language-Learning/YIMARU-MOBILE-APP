@@ -11,6 +11,7 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import '../../../app/app.locator.dart';
 import '../../../models/user.dart';
 import '../../../services/google_auth_service.dart';
+import '../../../services/localization_service.dart';
 import '../../../services/status_checker_service.dart';
 
 class RegisterViewModel extends ReactiveViewModel
@@ -24,15 +25,23 @@ class RegisterViewModel extends ReactiveViewModel
 
   final _googleAuthService = locator<GoogleAuthService>();
 
+  final _localizationService = locator<LocalizationService>();
+
   final _authenticationService = locator<AuthenticationService>();
 
   @override
-  List<ListenableServiceMixin> get listenableServices => [_googleAuthService];
+  List<ListenableServiceMixin> get listenableServices => [_googleAuthService,_localizationService];
 
   // Google user
   GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
 
   GoogleSignInAccount? get googleUser => _googleUser;
+
+  // Languages
+  Map<String, dynamic> get _selectedLanguage => _localizationService.selectedLanguage;
+
+  Map<String, dynamic> get selectedLanguage => _selectedLanguage;
+
 
   // Navigation
   int _currentPage = 0;
@@ -260,14 +269,19 @@ class RegisterViewModel extends ReactiveViewModel
 
   void pop() => _navigationService.back();
 
-  Future<void> navigateToTermsAndConditions() async =>
-      await _navigationService.navigateToTermsAndConditionsView();
+  Future<void> replaceToLogin() async =>
+      await _navigationService.replaceWithLoginView();
+
+  Future<void> navigateToLanguage() async =>
+      await _navigationService.navigateToLanguageView();
+
 
   Future<void> navigateToPrivacyPolicy() async =>
       await _navigationService.navigateToPrivacyPolicyView();
 
-  Future<void> replaceToLogin() async =>
-      await _navigationService.replaceWithLoginView();
+
+  Future<void> navigateToTermsAndConditions() async =>
+      await _navigationService.navigateToTermsAndConditionsView();
 
   Future<void> replaceWithStartUp() async =>
       await _navigationService.clearStackAndShow(Routes.startupView);

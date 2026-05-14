@@ -9,6 +9,7 @@ import 'package:yimaru_app/models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/google_auth_service.dart';
+import '../../../services/localization_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
@@ -24,15 +25,22 @@ class LoginViewModel extends ReactiveViewModel
 
   final _googleAuthService = locator<GoogleAuthService>();
 
+  final _localizationService = locator<LocalizationService>();
+
   final _authenticationService = locator<AuthenticationService>();
 
   @override
-  List<ListenableServiceMixin> get listenableServices => [_googleAuthService];
+  List<ListenableServiceMixin> get listenableServices => [_googleAuthService,_localizationService];
 
   // Google user
   GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
 
   GoogleSignInAccount? get googleUser => _googleUser;
+
+  // Languages
+  Map<String, dynamic> get _selectedLanguage => _localizationService.selectedLanguage;
+
+  Map<String, dynamic> get selectedLanguage => _selectedLanguage;
 
   // In-app navigation
   int _currentPage = 0;
@@ -158,8 +166,13 @@ class LoginViewModel extends ReactiveViewModel
   Future<void> navigateToRegister() async =>
       await _navigationService.navigateToRegisterView();
 
+  Future<void> navigateToLanguage() async =>
+      await _navigationService.navigateToLanguageView();
+
   Future<void> navigateToForgetPassword() async =>
       await _navigationService.navigateToForgetPasswordView();
+
+
 
   Future<void> replaceWithStartUp() async =>
       await _navigationService.clearStackAndShow(Routes.startupView);

@@ -4,16 +4,29 @@ import 'package:stacked_services/stacked_services.dart';
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
 import '../../../services/api_service.dart';
+import '../../../services/localization_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 
-class ForgetPasswordViewModel extends FormViewModel {
+class ForgetPasswordViewModel extends ReactiveViewModel
+    with FormStateHelper
+    implements FormViewModel {
   final _apiService = locator<ApiService>();
 
   final _statusChecker = locator<StatusCheckerService>();
 
   final _navigationService = locator<NavigationService>();
+
+  final _localizationService = locator<LocalizationService>();
+
+  @override
+  List<ListenableServiceMixin> get listenableServices => [_localizationService];
+
+  // Languages
+  Map<String, dynamic> get _selectedLanguage => _localizationService.selectedLanguage;
+
+  Map<String, dynamic> get selectedLanguage => _selectedLanguage;
 
   // User data
   final Map<String, dynamic> _userData = {};
@@ -164,6 +177,10 @@ class ForgetPasswordViewModel extends FormViewModel {
 
   // Navigation
   void pop() => _navigationService.back();
+
+  Future<void> navigateToLanguage() async =>
+      await _navigationService.navigateToLanguageView();
+
 
   Future<void> replaceWithLogin() async =>
       await _navigationService.clearStackAndShow(Routes.loginView);
