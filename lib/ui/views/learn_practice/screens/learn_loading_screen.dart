@@ -24,7 +24,12 @@ class LearnLoadingScreen extends StatelessWidget {
 
   Widget _buildScaffoldWrapper() => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(),
+        body: _buildScaffoldContainer(),
+      );
+
+  Widget _buildScaffoldContainer() => Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(),
       );
 
   Widget _buildScaffold() => SafeArea(child: _buildStack());

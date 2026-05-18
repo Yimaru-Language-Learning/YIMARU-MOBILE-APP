@@ -44,8 +44,7 @@ class QuestionLoadingScreen extends StatelessWidget {
         onPop: onPop,
         showBackButton: true,
         showLanguageSelection: false,
-
-  );
+      );
 
   Widget _buildBody() => Expanded(child: Container());
 

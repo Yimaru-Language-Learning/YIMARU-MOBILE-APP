@@ -3,12 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
-import '../../../../models/learn_practice.dart';
 import '../../../common/app_colors.dart';
-import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/page_loading_indicator.dart';
 
 class LearnPracticeCompletionScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
@@ -21,7 +18,12 @@ class LearnPracticeCompletionScreen
 
   Widget _buildScaffoldWrapper(LearnPracticeViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildBodyWrapper(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(LearnPracticeViewModel viewModel) => Container(
+        decoration: bgDecoration,
+        child: _buildBodyWrapper(viewModel),
       );
 
   Widget _buildBodyWrapper(LearnPracticeViewModel viewModel) => Padding(
@@ -29,14 +31,18 @@ class LearnPracticeCompletionScreen
         child: _buildBody(viewModel),
       );
 
-  Widget _buildBody(LearnPracticeViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildBody(LearnPracticeViewModel viewModel) => Stack(
         children: _buildBodyChildren(viewModel),
       );
 
-  List<Widget> _buildBodyChildren(LearnPracticeViewModel viewModel) =>
-      [_buildUpperColumn(viewModel), _buildContinueButtonWrapper(viewModel)];
+  List<Widget> _buildBodyChildren(LearnPracticeViewModel viewModel) => [
+        _buildUpperColumnWrapper(viewModel),
+        _buildContinueButtonWrapper(viewModel)
+      ];
+  Widget _buildUpperColumnWrapper(LearnPracticeViewModel viewModel) => Align(
+        alignment: Alignment.center,
+        child: _buildUpperColumn(viewModel),
+      );
 
   Widget _buildUpperColumn(LearnPracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -45,16 +51,13 @@ class LearnPracticeCompletionScreen
       );
 
   List<Widget> _buildUpperColumnChildren(LearnPracticeViewModel viewModel) => [
-        verticalSpaceMassive,
         _buildIcon(),
         verticalSpaceMedium,
         _buildTitle(),
-        verticalSpaceSmall,
-        _buildSubtitle(),
       ];
 
   Widget _buildIcon() => SvgPicture.asset(
-        'assets/icons/complete.svg',
+        'assets/icons/mascot.svg',
       );
 
   Widget _buildTitle() => Text(
@@ -63,13 +66,12 @@ class LearnPracticeCompletionScreen
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSubtitle() => Text(
-        'We’re now analyzing your speaking skills',
-        textAlign: TextAlign.center,
-        style: style14MG400,
+  Widget _buildContinueButtonWrapper(LearnPracticeViewModel viewModel) => Align(
+        alignment: Alignment.bottomCenter,
+        child: _buildContinueButtonPadding(viewModel),
       );
 
-  Widget _buildContinueButtonWrapper(LearnPracticeViewModel viewModel) =>
+  Widget _buildContinueButtonPadding(LearnPracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(viewModel),

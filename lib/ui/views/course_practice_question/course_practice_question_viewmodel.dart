@@ -3,7 +3,6 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../app/app.router.dart';
 import '../../../models/option.dart';
 import '../../../models/assessment_question.dart';
 import '../../../services/api_service.dart';
@@ -153,8 +152,6 @@ class CoursePracticeQuestionViewModel extends FormViewModel {
 
   // Navigation
   void pop() => _navigationService.back();
-
-
 
   // Remote api call
 

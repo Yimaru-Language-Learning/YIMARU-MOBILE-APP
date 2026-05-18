@@ -30,7 +30,8 @@ class LoginViewModel extends ReactiveViewModel
   final _authenticationService = locator<AuthenticationService>();
 
   @override
-  List<ListenableServiceMixin> get listenableServices => [_googleAuthService,_localizationService];
+  List<ListenableServiceMixin> get listenableServices =>
+      [_googleAuthService, _localizationService];
 
   // Google user
   GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
@@ -38,7 +39,8 @@ class LoginViewModel extends ReactiveViewModel
   GoogleSignInAccount? get googleUser => _googleUser;
 
   // Languages
-  Map<String, dynamic> get _selectedLanguage => _localizationService.selectedLanguage;
+  Map<String, dynamic> get _selectedLanguage =>
+      _localizationService.selectedLanguage;
 
   Map<String, dynamic> get selectedLanguage => _selectedLanguage;
 
@@ -171,8 +173,6 @@ class LoginViewModel extends ReactiveViewModel
 
   Future<void> navigateToForgetPassword() async =>
       await _navigationService.navigateToForgetPasswordView();
-
-
 
   Future<void> replaceWithStartUp() async =>
       await _navigationService.clearStackAndShow(Routes.startupView);

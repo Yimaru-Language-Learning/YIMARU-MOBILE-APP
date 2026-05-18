@@ -59,6 +59,7 @@ import 'package:yimaru_app/services/learn_service.dart';
 import 'package:yimaru_app/ui/views/course_catalog/course_catalog_view.dart';
 import 'package:yimaru_app/ui/views/course_unit/course_unit_view.dart';
 import 'package:yimaru_app/services/localization_service.dart';
+import 'package:yimaru_app/ui/views/landing/landing_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -100,6 +101,7 @@ import 'package:yimaru_app/services/localization_service.dart';
     MaterialRoute(page: ArifPayView),
     MaterialRoute(page: CourseCatalogView),
     MaterialRoute(page: CourseUnitView),
+    MaterialRoute(page: LandingView),
 // @stacked-route
   ],
   dependencies: [

@@ -3,13 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/phone_number_prefix.dart';
-import 'package:yimaru_app/ui/widgets/speaking_partner_image.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/small_app_bar.dart';
-import '../../course_practice_question/course_practice_question_view.form.dart';
-import '../../../widgets/custom_bottom_sheet.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../learn_subscription_view.form.dart';
 
@@ -29,7 +26,13 @@ class LearnSubscriptionFormScreen
   Widget _buildScaffoldWrapper(LearnSubscriptionViewModel viewModel) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(LearnSubscriptionViewModel viewModel) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(viewModel),
       );
 
   Widget _buildScaffold(LearnSubscriptionViewModel viewModel) =>

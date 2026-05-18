@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,11 +8,12 @@ import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
+import '../../common/translations/locale_keys.g.dart';
 import 'startup_viewmodel.dart';
 
 class StartupView extends StackedView<StartupViewModel> {
-  final String label;
-  const StartupView({Key? key, this.label = 'Loading'}) : super(key: key);
+  final String? label;
+  const StartupView({Key? key, this.label}) : super(key: key);
 
   @override
   Widget builder(
@@ -31,7 +33,8 @@ class StartupView extends StackedView<StartupViewModel> {
           ? _buildStartUpView()
           : _buildScaffold();
 
-  Widget _buildStartUpView() => const StartupView(label: 'Checking user info');
+  Widget _buildStartUpView() =>
+      StartupView(label: LocaleKeys.checking_user_info.tr());
 
   Widget _buildScaffold() => Stack(
         children: _buildScaffoldChildren(),
@@ -78,7 +81,8 @@ class StartupView extends StackedView<StartupViewModel> {
         _buildIndicatorWrapper(),
       ];
 
-  Widget _buildLoadingText() => Text('$label ...', style: style16W600);
+  Widget _buildLoadingText() =>
+      Text('${label ?? LocaleKeys.loading.tr()} ...', style: style16W600);
 
   Widget _buildIndicatorWrapper() => SizedBox(
         width: 16,

@@ -1,4 +1,3 @@
-import 'package:flutter_html/flutter_html.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/models/course_progress.dart';

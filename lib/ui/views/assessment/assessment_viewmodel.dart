@@ -26,7 +26,8 @@ class AssessmentViewModel extends ReactiveViewModel {
   List<ListenableServiceMixin> get listenableServices => [_localizationService];
 
   // Languages
-  Map<String, dynamic> get _selectedLanguage => _localizationService.selectedLanguage;
+  Map<String, dynamic> get _selectedLanguage =>
+      _localizationService.selectedLanguage;
 
   Map<String, dynamic> get selectedLanguage => _selectedLanguage;
 

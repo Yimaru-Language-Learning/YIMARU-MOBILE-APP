@@ -21,9 +21,11 @@ class LearnPracticeResultScreen
   Future<void> _navigate(LearnPracticeViewModel viewModel) async {
     await viewModel.completeLearnPractices();
     if (practice == LearnPractices.course) {
+      viewModel.goTo(6);
+    } else if (practice == LearnPractices.module) {
       viewModel.goTo(5);
     } else {
-      viewModel.pop();
+      viewModel.goTo(4);
     }
   }
 
@@ -55,7 +57,15 @@ class LearnPracticeResultScreen
           required LearnPracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldState(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldContainer(
+          {required BuildContext context,
+          required LearnPracticeViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldState(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffoldState(

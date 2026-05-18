@@ -4,14 +4,8 @@ import 'package:stacked/stacked_annotations.dart';
 import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_view.form.dart';
 import 'package:yimaru_app/ui/views/learn_subscription/screens/learn_subscription_form_screen.dart';
 import 'package:yimaru_app/ui/views/learn_subscription/screens/learn_subscription_package_screen.dart';
-import 'package:yimaru_app/ui/widgets/learn_subscription_card.dart';
-import 'package:yimaru_app/ui/widgets/learn_subscription_pricing_section.dart';
 
-import '../../common/app_colors.dart';
-import '../../common/ui_helpers.dart';
 import '../../common/validators/form_validator.dart';
-import '../../widgets/custom_elevated_button.dart';
-import '../../widgets/small_app_bar.dart';
 import 'learn_subscription_viewmodel.dart';
 
 @FormView(fields: [

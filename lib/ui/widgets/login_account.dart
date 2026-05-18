@@ -1,6 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../common/app_colors.dart';
+import '../common/translations/locale_keys.g.dart';
 import '../common/ui_helpers.dart';
 
 class LoginAccount extends StatelessWidget {
@@ -18,9 +19,9 @@ class LoginAccount extends StatelessWidget {
         ],
       );
 
-  Widget _buildLeadingText() => const Text(
-        'Already have an account? ',
-        style: TextStyle(color: kcMediumGrey),
+  Widget _buildLeadingText() => Text(
+        LocaleKeys.already_have_account.tr(),
+        style: style14MG400,
       );
 
   Widget _buildRegisterTextButton() => TextButton(
@@ -31,8 +32,8 @@ class LoginAccount extends StatelessWidget {
         child: _buildRegisterText(),
       );
 
-  Widget _buildRegisterText() => const Text(
-        'Login',
-        style: TextStyle(color: kcPrimaryColor),
+  Widget _buildRegisterText() => Text(
+        LocaleKeys.login.tr(),
+        style: style14P400,
       );
 }

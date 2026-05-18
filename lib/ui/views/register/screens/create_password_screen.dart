@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -8,6 +9,7 @@ import 'package:yimaru_app/ui/widgets/validator_list_tile.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
+import '../../../common/translations/locale_keys.g.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/large_app_bar.dart';
@@ -43,7 +45,12 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildScaffoldWrapper(RegisterViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(RegisterViewModel viewModel) => Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldStack(viewModel),
       );
 
   Widget _buildScaffoldStack(RegisterViewModel viewModel) => Stack(
@@ -68,11 +75,9 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
         showBackButton: true,
         onPop: viewModel.goBack,
         showLanguageSelection: true,
-    language: viewModel.selectedLanguage['code'],
-
-    onLanguage: ()async => await viewModel.navigateToLanguage(),
-
-  );
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
+      );
 
   Widget _buildExpandedBody(RegisterViewModel viewModel) =>
       Expanded(child: _buildColumnScroller(viewModel));
@@ -97,7 +102,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceMedium,
-        _buildPasswordLabel('Password'),
+        _buildPasswordLabel(LocaleKeys.password.tr()),
         verticalSpaceSmall,
         _buildPasswordFormField(viewModel),
         if (viewModel.hasPasswordValidationMessage && viewModel.focusPassword)
@@ -105,7 +110,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
         if (viewModel.hasPasswordValidationMessage && viewModel.focusPassword)
           _buildPasswordValidationWrapper(viewModel),
         verticalSpaceMedium,
-        _buildPasswordLabel('Confirm Password'),
+        _buildPasswordLabel(LocaleKeys.confirm_password.tr()),
         verticalSpaceSmall,
         _buildConfirmPasswordFormField(viewModel),
         if (viewModel.hasConfirmPasswordValidationMessage &&
@@ -125,13 +130,9 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
         verticalSpaceMedium
       ];
 
-  Widget _buildTitle() => const Text(
-        'Create Password',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+  Widget _buildTitle() => Text(
+        LocaleKeys.create_password.tr(),
+        style: style25DG600,
       );
 
   Widget _buildPasswordLabel(String label) => CustomFormLabel(
@@ -144,7 +145,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
         onTap: viewModel.setPasswordFocus,
         obscureText: viewModel.obscurePassword,
         decoration: inputDecoration(
-            hint: 'Password',
+            hint: LocaleKeys.password.tr(),
             focus: viewModel.focusPassword,
             suffix: _buildObscurePassword(viewModel),
             filled: passwordController.text.isNotEmpty),
@@ -166,11 +167,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildPasswordValidator(RegisterViewModel viewModel) => Text(
         viewModel.passwordValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
   Widget _buildConfirmPasswordFormField(RegisterViewModel viewModel) =>
@@ -182,8 +179,8 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
             password: passwordController.text,
             confirmPassword: confirmPasswordController.text),
         decoration: inputDecoration(
-            hint: 'Confirm Password',
             focus: viewModel.focusConfirmPassword,
+            hint: LocaleKeys.confirm_password.tr(),
             suffix: _buildObscureConfirmPassword(viewModel),
             filled: confirmPasswordController.text.isNotEmpty),
       );
@@ -214,14 +211,15 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildCharLengthValidator(RegisterViewModel viewModel) =>
       ValidatorListTile(
-          backgroundColor: viewModel.length ? kcPrimaryColor : kcLightGrey,
-          label: '8 characters minimum');
+        label: LocaleKeys.eight_character_minimum.tr(),
+        backgroundColor: viewModel.length ? kcPrimaryColor : kcLightGrey,
+      );
 
   Widget _buildPasswordMatchValidator(RegisterViewModel viewModel) =>
       ValidatorListTile(
-          backgroundColor:
-              viewModel.passwordMatch ? kcPrimaryColor : kcLightGrey,
-          label: 'password match');
+        label: LocaleKeys.password_match.tr(),
+        backgroundColor: viewModel.passwordMatch ? kcPrimaryColor : kcLightGrey,
+      );
 
   Widget _buildCheckBox(RegisterViewModel viewMode) => CheckboxListTile(
       value: viewMode.agree,
@@ -232,18 +230,18 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildCheckBoxTitle(RegisterViewModel viewMode) => Text.rich(
         TextSpan(
-            text: 'By clicking "Sign Up", you agree to our',
+            text: LocaleKeys.sign_up_agreement.tr(),
             style: style14DG400,
             children: [
               TextSpan(
-                  text: ' Terms of Service',
+                  text: ' ${LocaleKeys.terms_of_services.tr()}',
                   style: style14P600,
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => viewMode.navigateToTermsAndConditions()),
-              TextSpan(text: ' and ', style: style14DG400),
+              TextSpan(text: ' ${LocaleKeys.and.tr()} ', style: style14DG400),
               TextSpan(
-                  text: 'Privacy Policy',
                   style: style14P600,
+                  text: LocaleKeys.privacy_policy.tr(),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () => viewMode.navigateToPrivacyPolicy()),
             ]),
@@ -252,9 +250,9 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
   Widget _buildSignUpButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Sign Up',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.register.tr(),
         onTap: passwordController.text.isNotEmpty &&
                 confirmPasswordController.text.isNotEmpty &&
                 viewModel.length &&

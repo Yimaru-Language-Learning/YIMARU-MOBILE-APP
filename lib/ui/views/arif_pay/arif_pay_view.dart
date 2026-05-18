@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/models/learn_subscription.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
-import '../../../models/learn_subscription_request.dart';
 import 'arif_pay_viewmodel.dart';
 
 class ArifPayView extends StackedView<ArifPayViewModel> {

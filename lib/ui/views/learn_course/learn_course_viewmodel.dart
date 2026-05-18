@@ -4,7 +4,6 @@ import 'package:yimaru_app/app/app.router.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/learn_course.dart';
-import '../../../services/api_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';

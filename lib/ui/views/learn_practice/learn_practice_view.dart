@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/views/learn_practice/screens/finish_learn_practice_screen.dart';
+import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_finish_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_loading_screen.dart';
+import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_appreciation_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_completion_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_description_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_result_screen.dart';
@@ -115,10 +116,12 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
 
   List<Widget> _buildScreens(LearnPracticeViewModel viewModel) => [
         _buildLearnPracticeIntroScreen(),
-        _buildLearnPracticeElementsScreen(),
+        if (practice != LearnPractices.lesson)
+          _buildLearnPracticeElementsScreen(),
         _buildLearnPracticeQuestionsScreen(),
-        _buildFinishLearnPracticeScreen(),
+        _buildLearnPracticeAppreciationScreen(),
         _buildLearnPracticeResultScreen(),
+        _buildLearnPracticeFinishScreen(),
         if (practice == LearnPractices.course)
           _buildLearnPracticeCompletionScreen()
       ];
@@ -137,12 +140,14 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
   Widget _buildLearnPracticeQuestionsScreen() =>
       const LearnPracticeQuestionsScreen();
 
-  Widget _buildFinishLearnPracticeScreen() => const FinishLearnPracticeScreen();
+  Widget _buildLearnPracticeAppreciationScreen() =>
+      const LearnPracticeAppreciationScreen();
 
   Widget _buildLearnPracticeResultScreen() =>
       LearnPracticeResultScreen(practice: practice);
 
-  Widget _buildLearnPracticeCompletionScreen() => LearnPracticeCompletionScreen(
-        level: level ?? '',
-      );
+  Widget _buildLearnPracticeFinishScreen() => const LearnPracticeFinishScreen();
+
+  Widget _buildLearnPracticeCompletionScreen() =>
+      LearnPracticeCompletionScreen(level: level ?? '');
 }

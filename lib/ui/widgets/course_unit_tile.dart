@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_unit.dart';
-import 'package:yimaru_app/models/submodule.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/course_module_tile_small.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';

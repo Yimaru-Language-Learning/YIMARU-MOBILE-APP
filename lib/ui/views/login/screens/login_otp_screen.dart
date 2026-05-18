@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:pinput/pinput.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/services/smart_auth_service.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/custom_cursor.dart';
 
 import '../../../common/app_colors.dart';
@@ -52,7 +54,14 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
           {required BuildContext context, required LoginViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldContainer(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffoldStack(
@@ -80,14 +89,12 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildAppBar(LoginViewModel viewModel) =>  LargeAppBar(
+  Widget _buildAppBar(LoginViewModel viewModel) => LargeAppBar(
         showBackButton: false,
         showLanguageSelection: true,
-    language: viewModel.selectedLanguage['code'],
-
-    onLanguage: ()async => await viewModel.navigateToLanguage(),
-
-  );
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
+      );
 
   Widget _buildExpandedBody(
           {required BuildContext context, required LoginViewModel viewModel}) =>
@@ -145,7 +152,7 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Verification Code',
+        LocaleKeys.verification_code.tr(),
         style: style25DG600,
       );
 
@@ -153,7 +160,7 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
       phoneNumberController.text.length == 9 ? _buildSubtitle() : Container();
 
   Widget _buildSubtitle() => Text(
-        'Code sent to your number +251${phoneNumberController.text.substring(0, 5)}****',
+        '${LocaleKeys.code_sent_to_phone.tr()} +251${phoneNumberController.text.substring(0, 3)}******',
         style: style14DG400,
       );
 
@@ -199,7 +206,7 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
       child: _buildResendText());
 
   Widget _buildResendText() => Text(
-        'Resend code',
+        LocaleKeys.reset_code.tr(),
         style: style14P600.copyWith(fontStyle: FontStyle.italic),
       );
 
@@ -211,7 +218,8 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
         ],
       );
 
-  Widget _buildCountdownText() => Text('Resend code in ', style: style14DG400);
+  Widget _buildCountdownText() =>
+      Text('${LocaleKeys.resend_code_in.tr()} ', style: style14DG400);
 
   Widget _buildTimer(LoginViewModel viewModel) => TimerCountdown(
         enableDescriptions: false,
@@ -229,9 +237,9 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
 
   Widget _buildContinueButton(LoginViewModel viewModel) => CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         backgroundColor:
             otpController.text.length == 6 && !viewModel.hasOtpValidationMessage
                 ? kcPrimaryColor
