@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/login_account.dart';
 import 'package:yimaru_app/ui/widgets/option_text_divider.dart';
 
@@ -49,7 +51,15 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
           required RegisterViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldContainer(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffoldStack(
@@ -84,11 +94,9 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
         showBackButton: true,
         onPop: viewModel.goBack,
         showLanguageSelection: true,
-    language: viewModel.selectedLanguage['code'],
-
-    onLanguage: ()async => await viewModel.navigateToLanguage(),
-
-  );
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
+      );
 
   Widget _buildExpandedBody(
           {required BuildContext context,
@@ -152,7 +160,7 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Create an Account',
+        LocaleKeys.create_account.tr(),
         style: style25DG600,
       );
 
@@ -161,7 +169,7 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
       );
 
   Widget _buildSubtitle() => Text(
-        'Enter your phone number. We will send you a confirmation code there',
+        LocaleKeys.enter_phone_number.tr(),
         style: style14MG400,
       );
 
@@ -221,9 +229,9 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
   Widget _buildContinueButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         onTap: phoneNumberController.text.isNotEmpty
             ? () async => await _addUserData(viewModel)
             : null,
@@ -239,9 +247,9 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
         backgroundColor: kcWhite,
         leadingIcon: Icons.email,
         borderColor: kcPrimaryColor,
-        text: 'Register with Email',
         foregroundColor: kcPrimaryColor,
         onTap: () => viewModel.goTo(page: 0),
+        text: LocaleKeys.register_with_email.tr(),
       );
 
   Widget _buildRegisterWithPhoneState(RegisterViewModel viewModel) =>

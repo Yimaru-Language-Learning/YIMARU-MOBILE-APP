@@ -2,8 +2,10 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
+  static const loading = 'loading';
   static const welcome_back = 'welcome_back';
+  static const checking_user_info = 'checking_user_info';
   static const dont_have_account = 'dont_have_account';
   static const email = 'email';
   static const password = 'password';
@@ -22,7 +24,18 @@ abstract class  LocaleKeys {
   static const login_with_email = 'login_with_email';
   static const create_password = 'create_password';
   static const confirm_password = 'confirm_password';
+  static const eight_character_minimum = 'eight_character_minimum';
+  static const password_match = 'password_match';
   static const sign_up_agreement = 'sign_up_agreement';
+  static const terms_of_services = 'terms_of_services';
+  static const and = 'and';
+  static const privacy_policy = 'privacy_policy';
+  static const register_with_email = 'register_with_email';
+  static const verification_code = 'verification_code';
+  static const resend_code = 'resend_code';
+  static const code_sent_to_phone = 'code_sent_to_phone';
+  static const code_sent_to_email = 'code_sent_to_email';
+  static const resend_code_in = 'resend_code_in';
   static const reset_password = 'reset_password';
   static const enter_email_reset_code = 'enter_email_reset_code';
   static const please_wait = 'please_wait';
@@ -81,5 +94,4 @@ abstract class  LocaleKeys {
   static const region = 'region';
   static const occupation = 'occupation';
   static const save_changes = 'save_changes';
-
 }

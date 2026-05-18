@@ -53,7 +53,15 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           required ForgetPasswordViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldContainer(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffoldStack(
@@ -88,11 +96,9 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _inAppPop(viewModel),
-    language: viewModel.selectedLanguage['code'],
-
-    onLanguage: ()async => await viewModel.navigateToLanguage(),
-
-  );
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
+      );
 
   Widget _buildExpandedBody(
           {required BuildContext context,

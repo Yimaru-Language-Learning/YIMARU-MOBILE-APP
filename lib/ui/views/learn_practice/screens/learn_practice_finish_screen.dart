@@ -8,9 +8,9 @@ import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/small_app_bar.dart';
 
-class FinishLearnPracticeScreen
+class LearnPracticeFinishScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
-  const FinishLearnPracticeScreen({super.key});
+  const LearnPracticeFinishScreen({super.key});
 
   Future<void> _reset(LearnPracticeViewModel viewModel) async =>
       await viewModel.reset();
@@ -21,7 +21,12 @@ class FinishLearnPracticeScreen
 
   Widget _buildScaffoldWrapper(LearnPracticeViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(LearnPracticeViewModel viewModel) => Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(viewModel),
       );
 
   Widget _buildScaffold(LearnPracticeViewModel viewModel) =>
@@ -110,9 +115,9 @@ class FinishLearnPracticeScreen
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
+        onTap: viewModel.pop,
         foregroundColor: kcWhite,
         text: 'Continue Practice',
-        onTap: () => viewModel.goTo(4),
         backgroundColor: kcPrimaryColor,
       );
 

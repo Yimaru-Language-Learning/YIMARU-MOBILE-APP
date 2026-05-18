@@ -60,7 +60,13 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   Widget _buildScaffoldWrapper(LearnLessonDetailViewModel viewModel) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(LearnLessonDetailViewModel viewModel) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(viewModel),
       );
 
   Widget _buildScaffold(LearnLessonDetailViewModel viewModel) =>

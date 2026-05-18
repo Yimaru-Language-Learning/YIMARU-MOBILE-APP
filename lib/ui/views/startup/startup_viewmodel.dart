@@ -34,7 +34,7 @@ class StartupViewModel extends ReactiveViewModel {
     final firstTimeInstall = await _authenticationService.isFirstTimeInstall();
 
     if (firstTimeInstall) {
-      await _navigationService.replaceWithWelcomeView();
+      await _navigationService.replaceWithLandingView();
     } else {
       if (loggedIn) {
         await _authenticationService.getUser();
@@ -56,11 +56,8 @@ class StartupViewModel extends ReactiveViewModel {
           label: 'Check you internet connection',
           onTap: () async => await _getProfileStatus());
 
-
-
   Future<void> replaceWithOnboarding() async =>
       await _navigationService.replaceWithOnboardingView();
-
 
   // Remote api calls
 

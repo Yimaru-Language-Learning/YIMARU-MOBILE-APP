@@ -1,10 +1,8 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/models/course_module.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/course_unit.dart';
-import '../../../services/api_service.dart';
 import '../../../services/course_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';

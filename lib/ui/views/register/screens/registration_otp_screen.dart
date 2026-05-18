@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:pinput/pinput.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/register/register_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_cursor.dart';
 
@@ -60,7 +62,15 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
           required RegisterViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldContainer(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffoldStack(
@@ -160,7 +170,7 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Verification Code',
+        LocaleKeys.verification_code.tr(),
         style: style25DG600,
       );
 
@@ -174,7 +184,7 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
       : Container();
 
   Widget _buildPhoneSubtitle() => Text(
-        'Code sent to your number +251${phoneNumberController.text.substring(0, 5)}****',
+        '${LocaleKeys.code_sent_to_phone.tr()} +251${phoneNumberController.text.substring(0, 3)}******',
         softWrap: false,
         style: style14DG400,
       );
@@ -183,7 +193,7 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
       emailController.text.isNotEmpty ? _buildEmailSubtitle() : Container();
 
   Widget _buildEmailSubtitle() => Text(
-        'Code sent to your number email ${emailController.text.substring(0, 3)}****${emailController.text.split('@').last}',
+        '${LocaleKeys.code_sent_to_email.tr()} ${emailController.text.substring(0, 2)}******${emailController.text.split('@').last}',
         softWrap: false,
         style: style14DG400,
       );
@@ -229,7 +239,7 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
       child: _buildResendText());
 
   Widget _buildResendText() => Text(
-        'Resend code',
+        LocaleKeys.resend_code.tr(),
         style: style14P600.copyWith(fontStyle: FontStyle.italic),
       );
 
@@ -241,7 +251,8 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
         ],
       );
 
-  Widget _buildCountdownText() => Text('Resend code in ', style: style14DG400);
+  Widget _buildCountdownText() =>
+      Text('${LocaleKeys.resend_code_in.tr()} ', style: style14DG400);
 
   Widget _buildTimer(RegisterViewModel viewModel) => TimerCountdown(
         enableDescriptions: false,
@@ -260,9 +271,9 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
   Widget _buildContinueButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         backgroundColor:
             otpController.text.length == 6 && !viewModel.hasOtpValidationMessage
                 ? kcPrimaryColor

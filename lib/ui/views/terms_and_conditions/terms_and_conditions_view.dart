@@ -73,38 +73,12 @@ class TermsAndConditionsView extends StackedView<TermsAndConditionsViewModel> {
 
   Widget _buildMenuColumnScrollView(TermsAndConditionsViewModel viewModel) =>
       SingleChildScrollView(
-        child: _buildContentColumn(),
+        child: _buildContent(),
       );
-
-  Widget _buildContentColumn() => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildContentColumnChildren(),
-      );
-
-  List<Widget> _buildContentColumnChildren() => [
-        _buildContent(),
-        verticalSpaceMedium,
-        //  _buildDownloadButtonWrapper(),
-      ];
 
   Widget _buildContent() => Html(
         data: ksTerms,
         shrinkWrap: true,
         style: htmlStyle,
-      );
-
-  Widget _buildDownloadButtonWrapper() => Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: _buildDownloadButton(),
-      );
-
-  Widget _buildDownloadButton() => const CustomElevatedButton(
-        height: 55,
-        borderRadius: 12,
-        text: 'Download PDF',
-        leadingIcon: Icons.download,
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
       );
 }

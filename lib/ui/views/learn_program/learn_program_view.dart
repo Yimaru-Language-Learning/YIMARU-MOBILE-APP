@@ -33,7 +33,12 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
 
   Widget _buildScaffoldWrapper(LearnProgramViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(LearnProgramViewModel viewModel) => Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(viewModel),
       );
 
   Widget _buildScaffold(LearnProgramViewModel viewModel) =>

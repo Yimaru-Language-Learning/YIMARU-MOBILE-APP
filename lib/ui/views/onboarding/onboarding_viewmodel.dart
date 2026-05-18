@@ -17,19 +17,18 @@ class OnboardingViewModel extends ReactiveViewModel
 
   final _localizationService = locator<LocalizationService>();
 
-
-
   @override
-  List<ListenableServiceMixin> get listenableServices => [_googleAuthService,_localizationService];
+  List<ListenableServiceMixin> get listenableServices =>
+      [_googleAuthService, _localizationService];
 
   // Google user
   GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
 
   GoogleSignInAccount? get googleUser => _googleUser;
 
-
   // Languages
-  Map<String, dynamic> get _selectedLanguage => _localizationService.selectedLanguage;
+  Map<String, dynamic> get _selectedLanguage =>
+      _localizationService.selectedLanguage;
 
   Map<String, dynamic> get selectedLanguage => _selectedLanguage;
 
@@ -217,7 +216,6 @@ class OnboardingViewModel extends ReactiveViewModel
   ];
 
   List<String> get topics => _topics;
-
 
   // User data
   final Map<String, dynamic> _userData = {};

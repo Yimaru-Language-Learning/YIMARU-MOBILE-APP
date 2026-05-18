@@ -3,7 +3,6 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
-import 'package:yimaru_app/ui/widgets/coming_soon.dart';
 
 import '../course/course_view.dart';
 import 'home_viewmodel.dart';

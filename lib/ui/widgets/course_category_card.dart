@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/helper_functions.dart';
 
 import '../common/app_colors.dart';
-import '../common/app_strings.dart';
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 

@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../models/course_detail.dart';
-import '../../../models/course_catalog.dart';
 import '../../common/app_colors.dart';
-import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/course_category_card.dart';
-import '../../widgets/course_tile.dart';
-import '../../widgets/custom_circular_progress_indicator.dart';
 import '../../widgets/profile_app_bar.dart';
-import '../../widgets/small_app_bar.dart';
 import 'course_viewmodel.dart';
 
 class CourseView extends StackedView<CourseViewModel> {

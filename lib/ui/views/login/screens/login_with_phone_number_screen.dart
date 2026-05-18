@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/login/login_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/option_text_divider.dart';
 import 'package:yimaru_app/ui/widgets/register_for_account.dart';
@@ -46,7 +48,14 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
           {required BuildContext context, required LoginViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldContainer(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffoldStack(
@@ -76,11 +85,9 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => viewModel.goTo(0),
-    language: viewModel.selectedLanguage['code'],
-
-    onLanguage: ()async => await viewModel.navigateToLanguage(),
-
-  );
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
+      );
 
   Widget _buildExpandedBody(
           {required BuildContext context, required LoginViewModel viewModel}) =>
@@ -138,7 +145,7 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Welcome Back',
+        LocaleKeys.welcome_back.tr(),
         style: style25DG600,
       );
 
@@ -147,7 +154,7 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
       );
 
   Widget _buildSubtitle() => Text(
-        'Enter your phone number. We will send you a confirmation code there',
+        LocaleKeys.enter_phone_number.tr(),
         style: style14MG400,
       );
 
@@ -205,9 +212,9 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
 
   Widget _buildContinueButton(LoginViewModel viewModel) => CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         onTap: phoneNumberController.text.isNotEmpty
             ? () async => await _login(viewModel)
             : null,
@@ -220,12 +227,12 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Login with Email',
         backgroundColor: kcWhite,
         leadingIcon: Icons.email,
         borderColor: kcPrimaryColor,
-        foregroundColor: kcPrimaryColor,
         onTap: () => viewModel.goTo(0),
+        foregroundColor: kcPrimaryColor,
+        text: LocaleKeys.login_with_email.tr(),
       );
 
   Widget _buildLoginWithPhoneNumber(LoginViewModel viewModel) =>

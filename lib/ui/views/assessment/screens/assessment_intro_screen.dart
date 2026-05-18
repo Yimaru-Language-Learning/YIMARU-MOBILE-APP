@@ -67,8 +67,8 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
         showBackButton: true,
         onPop: viewModel.goBack,
         showLanguageSelection: true,
-    language: viewModel.selectedLanguage['code'],
-    onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
   Widget _buildTitle() => Text(

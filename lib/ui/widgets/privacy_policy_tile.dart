@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:yimaru_app/ui/common/app_strings.dart';
+import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../common/app_colors.dart';
 
@@ -64,17 +65,11 @@ class PrivacyPolicyTile extends StatelessWidget {
 
   Widget _buildTitle() => Text(
         title,
-        style: const TextStyle(
-          fontSize: 16,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+        style: style16DG600,
       );
 
-  Widget _buildContent() => const Text(
+  Widget _buildContent() => Text(
         ksPrivacyPolicy,
-        style: TextStyle(
-          color: kcDarkGrey,
-        ),
+        style: style14DG400,
       );
 }

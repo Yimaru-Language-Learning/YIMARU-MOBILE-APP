@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
+import '../../../common/translations/locale_keys.g.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_form_label.dart';
@@ -58,7 +60,15 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           required ForgetPasswordViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldContainer(
+          {required BuildContext context,
+          required ForgetPasswordViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffoldStack(
@@ -86,11 +96,9 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _inAppPop(viewModel),
-    language: viewModel.selectedLanguage['code'],
-
-    onLanguage: ()async => await viewModel.navigateToLanguage(),
-
-  );
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
+      );
 
   Widget _buildExpandedBody(ForgetPasswordViewModel viewModel) =>
       Expanded(child: _buildColumnScroller(viewModel));
@@ -115,7 +123,7 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceMedium,
-        _buildFormLabel('Reset code'),
+        _buildFormLabel(LocaleKeys.reset_code.tr()),
         verticalSpaceSmall,
         _buildResetCodeFormField(viewModel),
         if (viewModel.hasResetCodeValidationMessage && viewModel.focusResetCode)
@@ -123,7 +131,7 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         if (viewModel.hasResetCodeValidationMessage && viewModel.focusResetCode)
           _buildResetCodeValidationWrapper(viewModel),
         verticalSpaceMedium,
-        _buildFormLabel('New Password'),
+        _buildFormLabel(LocaleKeys.new_password.tr()),
         verticalSpaceSmall,
         _buildPasswordFormField(viewModel),
         if (viewModel.hasPasswordValidationMessage && viewModel.focusPassword)
@@ -131,7 +139,7 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         if (viewModel.hasPasswordValidationMessage && viewModel.focusPassword)
           _buildPasswordValidationWrapper(viewModel),
         verticalSpaceMedium,
-        _buildFormLabel('Confirm Password'),
+        _buildFormLabel(LocaleKeys.confirm_password.tr()),
         verticalSpaceSmall,
         _buildConfirmPasswordFormField(viewModel),
         if (viewModel.hasConfirmPasswordValidationMessage &&
@@ -151,7 +159,7 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Reset password',
+        LocaleKeys.reset_password.tr(),
         style: style25DG600,
       );
 
@@ -165,7 +173,7 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         controller: resetCodeController,
         onTap: viewModel.setResetCodeFocus,
         decoration: inputDecoration(
-            hint: 'Reset code',
+            hint: LocaleKeys.reset_code.tr(),
             focus: viewModel.focusResetCode,
             filled: passwordController.text.isNotEmpty),
       );
@@ -186,7 +194,7 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         onTap: viewModel.setPasswordFocus,
         obscureText: viewModel.obscurePassword,
         decoration: inputDecoration(
-            hint: 'Password',
+            hint: LocaleKeys.password.tr(),
             focus: viewModel.focusPassword,
             suffix: _buildObscurePassword(viewModel),
             filled: passwordController.text.isNotEmpty),
@@ -221,7 +229,7 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
             password: passwordController.text,
             confirmPassword: confirmPasswordController.text),
         decoration: inputDecoration(
-            hint: 'Confirm Password',
+            hint: LocaleKeys.confirm_password.tr(),
             focus: viewModel.focusConfirmPassword,
             suffix: _buildObscureConfirmPassword(viewModel),
             filled: confirmPasswordController.text.isNotEmpty),
@@ -255,21 +263,22 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
 
   Widget _buildCharLengthValidator(ForgetPasswordViewModel viewModel) =>
       ValidatorListTile(
-          backgroundColor: viewModel.length ? kcPrimaryColor : kcLightGrey,
-          label: '8 characters minimum');
+        label: LocaleKeys.eight_character_minimum.tr(),
+        backgroundColor: viewModel.length ? kcPrimaryColor : kcLightGrey,
+      );
 
   Widget _buildPasswordMatchValidator(ForgetPasswordViewModel viewModel) =>
       ValidatorListTile(
-          backgroundColor:
-              viewModel.passwordMatch ? kcPrimaryColor : kcLightGrey,
-          label: 'password match');
+        label: LocaleKeys.password_match.tr(),
+        backgroundColor: viewModel.passwordMatch ? kcPrimaryColor : kcLightGrey,
+      );
 
   Widget _buildSignUpButton(ForgetPasswordViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         onTap: passwordController.text.isNotEmpty &&
                 confirmPasswordController.text.isNotEmpty &&
                 resetCodeController.text.isNotEmpty &&

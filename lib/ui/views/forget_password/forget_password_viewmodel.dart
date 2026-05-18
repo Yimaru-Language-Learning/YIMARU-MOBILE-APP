@@ -24,7 +24,8 @@ class ForgetPasswordViewModel extends ReactiveViewModel
   List<ListenableServiceMixin> get listenableServices => [_localizationService];
 
   // Languages
-  Map<String, dynamic> get _selectedLanguage => _localizationService.selectedLanguage;
+  Map<String, dynamic> get _selectedLanguage =>
+      _localizationService.selectedLanguage;
 
   Map<String, dynamic> get selectedLanguage => _selectedLanguage;
 
@@ -180,7 +181,6 @@ class ForgetPasswordViewModel extends ReactiveViewModel
 
   Future<void> navigateToLanguage() async =>
       await _navigationService.navigateToLanguageView();
-
 
   Future<void> replaceWithLogin() async =>
       await _navigationService.clearStackAndShow(Routes.loginView);

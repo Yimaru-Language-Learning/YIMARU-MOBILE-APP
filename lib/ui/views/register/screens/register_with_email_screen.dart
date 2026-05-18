@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/login_account.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/translations/locale_keys.g.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/large_app_bar.dart';
@@ -46,7 +48,15 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
           required RegisterViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldContainer(
+          {required BuildContext context,
+          required RegisterViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffoldStack(
@@ -81,11 +91,9 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         showBackButton: true,
         onPop: viewModel.goBack,
         showLanguageSelection: true,
-    language: viewModel.selectedLanguage['code'],
-
-    onLanguage: ()async => await viewModel.navigateToLanguage(),
-
-  );
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
+      );
 
   Widget _buildExpandedBody(
           {required BuildContext context,
@@ -144,13 +152,9 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
           _buildEmailValidatorWrapper(viewModel),
       ];
 
-  Widget _buildTitle() => const Text(
-        'Create an Account',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+  Widget _buildTitle() => Text(
+        LocaleKeys.create_account.tr(),
+        style: style25DG600,
       );
 
   Widget _buildSubtitleWrapper(RegisterViewModel viewModel) => LoginAccount(
@@ -159,10 +163,10 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildEmailFormField(RegisterViewModel viewModel) => TextFormField(
         controller: emailController,
-        keyboardType: TextInputType.emailAddress,
         onTap: viewModel.setEmailFocus,
+        keyboardType: TextInputType.emailAddress,
         decoration: inputDecoration(
-            hint: 'Email',
+            hint: LocaleKeys.email.tr(),
             focus: viewModel.focusEmail,
             filled: emailController.text.isNotEmpty),
       );
@@ -174,11 +178,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildEmailValidator(RegisterViewModel viewModel) => Text(
         viewModel.emailValidationMessage!,
-        style: const TextStyle(
-          fontSize: 12,
-          color: Colors.red,
-          fontWeight: FontWeight.w700,
-        ),
+        style: style12R700,
       );
 
   Widget _buildLowerColumn(RegisterViewModel viewModel) => Column(
@@ -198,9 +198,9 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
       CustomElevatedButton(
         height: 55,
         safe: false,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         onTap: emailController.text.isNotEmpty &&
                 !viewModel.hasEmailValidationMessage
             ? () => _addUserData(viewModel)
@@ -216,9 +216,9 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         height: 55,
         borderRadius: 12,
         backgroundColor: kcWhite,
-        text: 'Login with Google',
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
+        text: LocaleKeys.register_with_google.tr(),
         leadingImage: 'assets/icons/google.png',
         onTap: () async => await viewModel.registerWithGoogle(),
       );
@@ -233,8 +233,8 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         leadingIcon: Icons.phone,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
-        text: 'Register with Phone Number',
         onTap: () => viewModel.goTo(page: 1),
+        text: LocaleKeys.register_with_phone.tr(),
       );
 
   Widget _buildRegisterWithEmailState(RegisterViewModel viewModel) =>

@@ -14,14 +14,13 @@ class LanguageViewModel extends ReactiveViewModel {
   @override
   List<ListenableServiceMixin> get listenableServices => [_localizationService];
 
-
-
   // Languages
   List<Map<String, dynamic>> get _languages => _localizationService.languages;
 
   List<Map<String, dynamic>> get languages => _languages;
 
-  Map<String, dynamic> get _selectedLanguage => _localizationService.selectedLanguage;
+  Map<String, dynamic> get _selectedLanguage =>
+      _localizationService.selectedLanguage;
 
   Map<String, dynamic> get selectedLanguage => _selectedLanguage;
   // Languages

@@ -5,7 +5,6 @@ import 'package:yimaru_app/models/learn_program.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/user.dart';
-import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';

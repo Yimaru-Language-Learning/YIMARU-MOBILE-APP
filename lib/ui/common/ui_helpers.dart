@@ -100,6 +100,12 @@ double getResponsiveFontSize(
   return responsiveSize;
 }
 
+BoxDecoration bgDecoration = const BoxDecoration(
+  image: DecorationImage(
+    image: AssetImage('assets/images/pattern.png'),
+  ),
+);
+
 InputDecoration inputDecoration(
         {String? hint,
         Widget? suffix,
@@ -191,6 +197,13 @@ TextStyle style18W600 = const TextStyle(
   fontWeight: FontWeight.w600,
 );
 
+TextStyle style25W400 = const TextStyle(
+  fontSize: 25,
+  color: kcWhite,
+  fontWeight: FontWeight.w400
+);
+
+
 TextStyle style25W600 = const TextStyle(
   fontSize: 25,
   color: kcWhite,
@@ -236,6 +249,12 @@ TextStyle style25P600 = const TextStyle(
   fontSize: 25,
   color: kcPrimaryColor,
   fontWeight: FontWeight.w600,
+);
+
+TextStyle style25P400 = const TextStyle(
+  fontSize: 25,
+  color: kcPrimaryColor,
+  fontWeight: FontWeight.w400,
 );
 
 TextStyle style40P900 = const TextStyle(

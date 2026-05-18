@@ -51,7 +51,14 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
           {required BuildContext context, required LoginViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldContainer(
+          {required BuildContext context, required LoginViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffoldStack(
@@ -260,15 +267,14 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
 
   Widget _buildLoginWithPhoneButton(LoginViewModel viewModel) =>
       CustomElevatedButton(
-        height: 55,
-        borderRadius: 12,
-        backgroundColor: kcWhite,
-        leadingIcon: Icons.phone,
-        borderColor: kcPrimaryColor,
-        onTap: () => viewModel.goTo(1),
-        foregroundColor: kcPrimaryColor,
-        text: LocaleKeys.login_with_phone.tr()
-      );
+          height: 55,
+          borderRadius: 12,
+          backgroundColor: kcWhite,
+          leadingIcon: Icons.phone,
+          borderColor: kcPrimaryColor,
+          onTap: () => viewModel.goTo(1),
+          foregroundColor: kcPrimaryColor,
+          text: LocaleKeys.login_with_phone.tr());
 
   Widget _buildLoginWithEmailState(LoginViewModel viewModel) =>
       viewModel.busy(StateObjects.loginWithEmail)

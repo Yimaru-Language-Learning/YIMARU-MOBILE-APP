@@ -98,9 +98,8 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
-    language: viewModel.selectedLanguage['code'],
-
-    onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'],
+        onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
   Widget _buildTitle(OnboardingViewModel viewModel) => Text.rich(

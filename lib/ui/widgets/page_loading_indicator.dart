@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import 'custom_circular_progress_indicator.dart';
@@ -53,8 +55,8 @@ class PageLoadingIndicator extends StatelessWidget {
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
-  Widget _buildText() => const Text(
-        'Please wait',
-        style: TextStyle(color: kcPrimaryColor),
+  Widget _buildText() => Text(
+        LocaleKeys.please_wait.tr(),
+        style: style14P400,
       );
 }

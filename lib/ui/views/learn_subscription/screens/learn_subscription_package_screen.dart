@@ -22,7 +22,13 @@ class LearnSubscriptionPackageScreen
   Widget _buildScaffoldWrapper(LearnSubscriptionViewModel viewModel) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldState(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(LearnSubscriptionViewModel viewModel) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldState(viewModel),
       );
 
   Widget _buildScaffoldState(LearnSubscriptionViewModel viewModel) =>

@@ -29,7 +29,15 @@ class LanguageView extends StackedView<LanguageViewModel> {
           required LanguageViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldContainer(
+          {required BuildContext context,
+          required LanguageViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffold(
