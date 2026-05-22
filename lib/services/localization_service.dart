@@ -1,8 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/services/secure_storage_service.dart';
+
+import '../app/app.locator.dart';
 
 class LocalizationService with ListenableServiceMixin {
+  // Dependency injection
+  final _secureService = locator<SecureStorageService>();
+
   // Initialization
   localizationService() {
     listenToReactiveValues([_selectedLanguage]);
@@ -10,7 +16,7 @@ class LocalizationService with ListenableServiceMixin {
 
   // Languages
   Map<String, dynamic> _selectedLanguage = {
-    'code': 'EN',
+    'code': 'en',
     'language': 'English'
   };
 
@@ -18,7 +24,7 @@ class LocalizationService with ListenableServiceMixin {
 
   final List<Map<String, dynamic>> _languages = [
     {'code': 'አማ', 'language': 'አማርኛ'},
-    {'code': 'EN', 'language': 'English'},
+    {'code': 'en', 'language': 'English'},
   ];
 
   List<Map<String, dynamic>> get languages => _languages;
@@ -34,14 +40,33 @@ class LocalizationService with ListenableServiceMixin {
     if (title['code'] == 'አማ') {
       await setAmharicLanguage(context);
     } else {
-      await setAmharicLanguage(context);
+      await setEnglishLanguage(context);
     }
     notifyListeners();
   }
 
-  Future<void> setAmharicLanguage(BuildContext context) async =>
-      await context.setLocale(const Locale('am'));
+  Future<void> loadSelectedLanguage() async {
+    String language = await _secureService.getString('language') ?? 'en';
 
-  Future<void> setEnglishLanguage(BuildContext context) async =>
-      await context.setLocale(const Locale('en'));
+    if (language == 'en') {
+      _selectedLanguage = {'code': 'en', 'language': 'English'};
+ 
+    } else {
+      _selectedLanguage = {'code': 'አማ', 'language': 'አማርኛ'};
+    }
+notifyListeners();
+    print('SELECTED LANGUAGE: $language $_selectedLanguage');
+  }
+
+  Future<void> setAmharicLanguage(BuildContext context) async {
+    await context.setLocale(const Locale('am'));
+    await _secureService.setString('language', 'am');
+    notifyListeners();
+  }
+
+  Future<void> setEnglishLanguage(BuildContext context) async {
+    await context.setLocale(const Locale('en'));
+    await _secureService.setString('language', 'en');
+    notifyListeners();
+  }
 }

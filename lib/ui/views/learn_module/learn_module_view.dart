@@ -122,7 +122,6 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           module: viewModel.modules[index],
-          onLockTap: () async => await viewModel.navigateToLearnSubscription(),
           onPracticeTap: () async => await viewModel.navigateToLearnPractice(
               id: viewModel.modules[index].id ?? 0,
               module: viewModel.modules[index].name ?? ''),
@@ -133,13 +132,11 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
 
   Widget _buildTile({
     required LearnModule module,
-    required GestureTapCallback onLockTap,
     required GestureTapCallback onModuleTap,
     required GestureTapCallback onPracticeTap,
   }) =>
       LearnModuleTile(
           module: module,
-          onLockTap: onLockTap,
           onModuleTap: onModuleTap,
           onPracticeTap: onPracticeTap);
 }

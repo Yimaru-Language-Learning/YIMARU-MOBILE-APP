@@ -127,7 +127,7 @@ class CoursePaymentView extends StackedView<CoursePaymentViewModel> {
         text: 'Subscribe Now',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.navigateToCourseLesson(course),
+        onTap: () {},
       );
 
   Widget _buildSecurePaymentWrapper() => Align(

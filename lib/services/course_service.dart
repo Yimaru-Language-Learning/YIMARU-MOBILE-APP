@@ -1,10 +1,9 @@
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/app/app.locator.dart';
-import 'package:yimaru_app/models/course_progress.dart';
 import 'package:yimaru_app/services/api_service.dart';
 
 import '../models/course_catalog.dart';
-import '../models/course_detail.dart';
+import '../models/course_lesson.dart';
 import '../models/course_module.dart';
 import '../models/course_unit.dart';
 
@@ -28,9 +27,14 @@ class CourseService with ListenableServiceMixin {
   List<CourseUnit> get units => _units;
 
   // Course modules
-  List<CourseModule> _modules = [];
+  final List<CourseModule> _modules = [];
 
   List<CourseModule> get modules => _modules;
+
+  // Course lessons
+  List<CourseLesson> _lessons = [];
+
+  List<CourseLesson> get lessons => _lessons;
 
   // Course catalogs
   Future<void> getCourseCatalogs() async {
@@ -47,7 +51,7 @@ class CourseService with ListenableServiceMixin {
   }
 
   // Course modules
-  Future<void> getCourseUnitModule({
+  Future<void> getCourseModules({
     required int id,
     required int index,
   }) async {
@@ -66,26 +70,10 @@ class CourseService with ListenableServiceMixin {
     notifyListeners();
   }
 
-  Future<void> getCourseModules(int id) async {
-    _modules = await _apiService.getCourseModules(id);
-    _modules.sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
+  // Course units
+  Future<void> getCourseLessons(int id) async {
+    _lessons = await _apiService.getCourseLessons(id);
+    _lessons.sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
     notifyListeners();
-  }
-
-  // Get course detail
-  Future<List<CourseDetail>> getCoursesDetail(int id) async {
-    final courses = await _apiService.getCourses(id);
-    final progress = await _apiService.getCourseProgress(id);
-
-    final progressMap = {
-      for (var p in progress.whereType<CourseProgress>()) p.courseId: p
-    };
-
-    return courses.map((course) {
-      return CourseDetail(
-        course: course,
-        courseProgress: progressMap[course.id],
-      );
-    }).toList();
   }
 }

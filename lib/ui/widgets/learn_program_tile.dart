@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/progress_status.dart';
 
@@ -11,12 +13,20 @@ import 'custom_elevated_button.dart';
 class LearnProgramTile extends ViewModelWidget<LearnProgramViewModel> {
   final LearnProgram program;
   final GestureTapCallback? onTap;
+  final GestureTapCallback? onLockTap;
 
-  const LearnProgramTile({super.key, this.onTap, required this.program});
+  const LearnProgramTile(
+      {super.key, this.onTap, this.onLockTap, required this.program});
 
   @override
   Widget build(BuildContext context, LearnProgramViewModel viewModel) =>
-      _buildExpansionTileCard(viewModel);
+      _buildExpansionTileCardWrapper(viewModel);
+
+  Widget _buildExpansionTileCardWrapper(LearnProgramViewModel viewModel) =>
+      GestureDetector(
+        onTap: !(program.access?.isAccessible ?? false) ? onLockTap : null,
+        child: _buildExpansionTileCard(viewModel),
+      );
 
   Widget _buildExpansionTileCard(LearnProgramViewModel viewModel) => Container(
         margin: const EdgeInsets.only(bottom: 15),
@@ -99,8 +109,8 @@ class LearnProgramTile extends ViewModelWidget<LearnProgramViewModel> {
   Widget _buildProgressStatus() => ProgressStatus(
         color: kcPrimaryColor,
         status: (program.access?.isCompleted ?? false)
-            ? 'Completed'
-            : 'In Progress',
+            ?LocaleKeys.completed.tr()
+            : LocaleKeys.in_progress.tr(),
       );
 
   Widget _buildContent() => Text(
@@ -123,7 +133,7 @@ class LearnProgramTile extends ViewModelWidget<LearnProgramViewModel> {
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         text: program.access?.progressPercent == 0
-            ? 'Start Learning'
-            : 'Continue Learning',
+            ? LocaleKeys.start_learning.tr()
+            :LocaleKeys.continue_learning.tr() ,
       );
 }

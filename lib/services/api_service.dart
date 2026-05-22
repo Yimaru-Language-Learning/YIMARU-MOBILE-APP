@@ -2,13 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/models/learn_practice.dart';
 import 'package:yimaru_app/models/learn_program.dart';
-import 'package:yimaru_app/models/level.dart';
 import 'package:yimaru_app/models/assessment_question.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
-import 'package:yimaru_app/models/course_progress.dart';
-import 'package:yimaru_app/models/course.dart';
-import 'package:yimaru_app/models/practice.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
@@ -20,10 +16,7 @@ import '../models/learn_course.dart';
 import '../models/learn_module.dart';
 import '../models/learn_question.dart';
 import '../models/learn_subscription.dart';
-import '../models/lesson.dart';
-import '../models/module.dart';
 import '../models/assessment.dart';
-import '../models/submodule.dart';
 import '../models/learn_subscription_request.dart';
 import '../ui/common/enmus.dart';
 
@@ -779,354 +772,23 @@ class ApiService {
     }
   }
 
-  /* TO BE MODIFIED*/
-
-  // Get courses
-  // Future<List<Course>> getCourses(int id) async {
-  //   try {
-  //     List<Course> courses = [];
-  //
-  //     final Response response = await _service.dio
-  //         .get('$kBaseUrl/$kCourseBaseUrl/$kCoursesUrl/$id/$kSubcoursesUrl');
-  //
-  //     if (response.statusCode == 200) {
-  //       var data = response.data;
-  //       var decodedData = data['data']['sub_courses'] as List;
-  //       courses = decodedData.map(
-  //         (e) {
-  //           return Course.fromJson(e);
-  //         },
-  //       ).toList();
-  //       return courses;
-  //     }
-  //     return [];
-  //   } catch (e) {
-  //     return [];
-  //   }
-  // }
-
-  // Get course progress
-  Future<List<CourseProgress>> getCourseProgress(int id) async {
-    try {
-      List<CourseProgress> courseProgress = [];
-
-      final Response response =
-          await _service.dio.get('$kBaseUrl/$kCourseProgressUrl/$id');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data'] as List;
-        courseProgress = decodedData.map(
-          (e) {
-            return CourseProgress.fromJson(e);
-          },
-        ).toList();
-        return courseProgress;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
   // Get course lessons
   Future<List<CourseLesson>> getCourseLessons(int id) async {
     try {
-      List<CourseLesson> courseLessons = [];
+      List<CourseLesson> lessons = [];
 
       final Response response = await _service.dio.get(
-          '$kBaseUrl/$kCourseBaseUrl/$kSubcoursesUrl/$id/$kPublishedVideos');
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kExamPrepUrl/$kModulesUrl/$id/$kLessonsUrl');
 
       if (response.statusCode == 200) {
         var data = response.data;
-        var decodedData = data['data'] as List;
-        courseLessons = decodedData.map(
+        var decodedData = data['data']['lessons'] as List;
+        lessons = decodedData.map(
           (e) {
             return CourseLesson.fromJson(e);
           },
         ).toList();
-        return courseLessons;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Complete lesson
-  Future<Map<String, dynamic>> completeLesson(int id) async {
-    try {
-      Response response = await _service.dio.post(
-        '$kBaseUrl/$kLessonProgressUrl/$id/$kCompleteUrl',
-      );
-
-      if (response.statusCode == 200) {
-        return {'status': ResponseStatus.success, 'message': 'Video completed'};
-      } else {
-        return {
-          'status': ResponseStatus.failure,
-          'message': 'Unknown Error Occurred'
-        };
-      }
-    } on DioException catch (e) {
-      return {
-        'status': ResponseStatus.failure,
-        'message': e.response?.data.toString(),
-      };
-    }
-  }
-
-  // Course practices
-  Future<List<Practice>> getCoursePractices(int id) async {
-    try {
-      List<Practice> coursePractices = [];
-
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/$kPracticeBaseUrl/$kCoursePractice?owner_type=SUB_COURSE&owner_id=$id');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data'] as List;
-        coursePractices = decodedData.map(
-          (e) {
-            return Practice.fromJson(e);
-          },
-        ).toList();
-        return coursePractices;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Get course practic questions
-  Future<List<AssessmentQuestion>> getCoursePracticeQuestions(int id) async {
-    try {
-      List<AssessmentQuestion> coursePracticeQuestions = [];
-
-      final Response response = await _service.dio
-          .get('$kBaseUrl/$kPracticeBaseUrl/$id/$kCoursePracticeQuestions');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data'] as List;
-        coursePracticeQuestions = decodedData.map(
-          (e) {
-            return AssessmentQuestion.fromJson(e);
-          },
-        ).toList();
-        return coursePracticeQuestions;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Get course practice question
-  Future<AssessmentQuestion?> getCoursePracticeQuestion(int id) async {
-    try {
-      final Response response =
-          await _service.dio.get('$kBaseUrl/$kCoursePracticeQuestion/$id');
-
-      if (response.statusCode == 200) {
-        AssessmentQuestion question =
-            AssessmentQuestion.fromJson(response.data['data']);
-
-        return question;
-      }
-      return null;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // Get learn subcategories
-  Future<List<CourseCatalog>> getLearnSubcategories() async {
-    try {
-      List<CourseCatalog> learnSubcategories = [];
-
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kLearnSubcategoriesUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data']['sub_categories'] as List;
-        learnSubcategories = decodedData.map(
-          (e) {
-            return CourseCatalog.fromJson(e);
-          },
-        ).toList();
-        return learnSubcategories;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Get courses
-  Future<List<Course>> getCourses(int id) async {
-    try {
-      List<Course> courses = [];
-
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kSubcategoriesUrl/$id/$kCoursesUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data']['courses'] as List;
-        courses = decodedData.map(
-          (e) {
-            return Course.fromJson(e);
-          },
-        ).toList();
-        return courses;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Get levels
-  Future<List<Level>> getLevels(int id) async {
-    try {
-      List<Level> levels = [];
-
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kCoursesUrl/$id/$kLevelsUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data']['levels'] as List;
-        levels = decodedData.map(
-          (e) {
-            return Level.fromJson(e);
-          },
-        ).toList();
-        return levels;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Get modules
-  Future<List<Module>> getModules(int id) async {
-    try {
-      List<Module> modules = [];
-
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kLevelsUrl/$id/$kModulesUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data']['modules'] as List;
-        modules = decodedData.map(
-          (e) {
-            return Module.fromJson(e);
-          },
-        ).toList();
-        return modules;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Get submodules
-  Future<List<Submodule>> getSubmodules(int id) async {
-    try {
-      List<Submodule> submodules = [];
-
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kModulesUrl/$id/$kSubmodulesUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data']['sub_modules'] as List;
-        submodules = decodedData.map(
-          (e) {
-            return Submodule.fromJson(e);
-          },
-        ).toList();
-        return submodules;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Get lessons
-  Future<List<Lesson>> getLessons(int id) async {
-    try {
-      List<Lesson> lessons = [];
-
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/api/$kApiVersionUrl/$kCourseManagementUrl/$kSubmodulesUrl/$id/$kLessonsUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data'] as List;
-        lessons = decodedData.map(
-          (e) {
-            return Lesson.fromJson(e);
-          },
-        ).toList();
         return lessons;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Practices
-  Future<List<Practice>> getPractices(int id) async {
-    try {
-      List<Practice> coursePractices = [];
-
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/$kPracticeBaseUrl/$kCoursePractice?owner_type=SUB_MODULE&owner_id=$id');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data'] as List;
-        coursePractices = decodedData.map(
-          (e) {
-            return Practice.fromJson(e);
-          },
-        ).toList();
-        return coursePractices;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  // Questions
-  Future<List<AssessmentQuestion>> getQuestions(int id) async {
-    try {
-      List<AssessmentQuestion> questions = [];
-
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/api/$kApiVersionUrl/$kQuestionSetsUrl/$id/$kQuestionsUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data'] as List;
-        questions = decodedData.map(
-          (e) {
-            return AssessmentQuestion.fromJson(e);
-          },
-        ).toList();
-        return questions;
       }
       return [];
     } catch (e) {

@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
+import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 class ViewProfileButton extends StatelessWidget {
   final GestureTapCallback? onTap;
@@ -21,10 +24,9 @@ class ViewProfileButton extends StatelessWidget {
   List<Widget> _buildButtonRowChildren() =>
       [_buildButtonText(), const SizedBox(width: 10), _buildButtonIcon()];
 
-  Widget _buildButtonText() => const Text(
-        'View Profile',
-        style: TextStyle(
-            color: kcPrimaryColor, fontSize: 16, fontWeight: FontWeight.w900),
+  Widget _buildButtonText() => Text(
+        LocaleKeys.view_profile.tr(),
+        style: style16P900,
       );
 
   Widget _buildButtonIcon() => const Icon(

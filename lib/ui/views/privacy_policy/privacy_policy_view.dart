@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_strings.dart';
-import 'package:yimaru_app/ui/widgets/privacy_policy_tile.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
@@ -129,7 +130,7 @@ class PrivacyPolicyView extends StackedView<PrivacyPolicyViewModel> {
   Widget _buildAppbar(PrivacyPolicyViewModel viewModel) => SmallAppBar(
         onPop: viewModel.pop,
         showBackButton: true,
-        title: 'Privacy Policy',
+        title: LocaleKeys.privacy_policy.tr(),
       );
 
   Widget _buildContentWrapper(PrivacyPolicyViewModel viewModel) =>

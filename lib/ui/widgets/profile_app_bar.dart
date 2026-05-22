@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../common/app_colors.dart';
+import '../common/translations/locale_keys.g.dart';
 
 class ProfileAppBar extends StatelessWidget {
   final String? name;
@@ -72,7 +74,7 @@ class ProfileAppBar extends StatelessWidget {
       [_buildGreetingTitle(), _buildSubtitle()];
 
   Widget _buildGreetingTitle() => Text.rich(
-        TextSpan(text: 'Hello,', style: style14DG600, children: [
+        TextSpan(text: '${LocaleKeys.hello.tr()},', style: style14DG600, children: [
           TextSpan(
             text: ' $name!',
             style: style14P600,
@@ -81,7 +83,7 @@ class ProfileAppBar extends StatelessWidget {
       );
 
   Widget _buildSubtitle() => Text(
-        'Ready to keep learning English today?',
+     LocaleKeys.ready_to_learn.tr(),
         textAlign: TextAlign.center,
         style: style14DG400,
       );

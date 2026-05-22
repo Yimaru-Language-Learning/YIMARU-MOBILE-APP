@@ -2,7 +2,7 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class LocaleKeys {
+abstract class  LocaleKeys {
   static const loading = 'loading';
   static const welcome_back = 'welcome_back';
   static const checking_user_info = 'checking_user_info';
@@ -44,6 +44,9 @@ abstract class LocaleKeys {
   static const new_password = 'new_password';
   static const logged_in_successfully = 'logged_in_successfully';
   static const view_course = 'view_course';
+  static const continue_learning = 'continue_learning';
+  static const start_learning = 'start_learning';
+  static const completed = 'completed';
   static const take_practice = 'take_practice';
   static const your_current_level = 'your_current_level';
   static const overall_progress = 'overall_progress';
@@ -92,6 +95,32 @@ abstract class LocaleKeys {
   static const phone_number = 'phone_number';
   static const country = 'country';
   static const region = 'region';
+  static const select_region = 'select_region';
+  static const enter_your_city = 'enter_your_city';
   static const occupation = 'occupation';
+  static const select_occupation = 'select_occupation';
   static const save_changes = 'save_changes';
+  static const my_progress = 'my_progress';
+  static const track_your_achievement = 'track_your_achievement';
+  static const account_and_privacy = 'account_and_privacy';
+  static const manage_settings = 'manage_settings';
+  static const support = 'support';
+  static const get_help = 'get_help';
+  static const logout = 'logout';
+  static const app_settings = 'app_settings';
+  static const legal_and_information = 'legal_and_information';
+  static const change_language = 'change_language';
+  static const terms_and_conditions = 'terms_and_conditions';
+  static const delete_account = 'delete_account';
+  static const language_preference = 'language_preference';
+  static const choose_your_language = 'choose_your_language';
+  static const switch_language_anytime = 'switch_language_anytime';
+  static const need_help = 'need_help';
+  static const call_support = 'call_support';
+  static const talk_with_support = 'talk_with_support';
+  static const telegram_support = 'telegram_support';
+  static const chat_via_telegram = 'chat_via_telegram';
+  static const call_our_support = 'call_our_support';
+  static const tap_to_call = 'tap_to_call';
+
 }

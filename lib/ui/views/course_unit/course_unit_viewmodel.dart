@@ -1,7 +1,10 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/app/app.router.dart';
+import 'package:yimaru_app/models/course_catalog.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../models/course_module.dart';
 import '../../../models/course_unit.dart';
 import '../../../services/course_service.dart';
 import '../../../services/status_checker_service.dart';
@@ -26,6 +29,12 @@ class CourseUnitViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
+  Future<void> navigateToCourseModule(
+          {required CourseModule? module,
+          required CourseCatalog catalog}) async =>
+      await _navigationService.navigateToCourseModuleView(
+          module: module, catalog: catalog);
+
   // Remote api call
 
   // Course units
@@ -39,15 +48,13 @@ class CourseUnitViewModel extends ReactiveViewModel {
     }
   }
 
-  Future<void> getCourseUnitModules(
-          {required int id, required int index}) async =>
-      await runBusyFuture(_getCourseUnitModules(id: id, index: index),
-          busyObject: StateObjects.courseModules);
+  Future<void> getCourseModules({required int id, required int index}) async =>
+      await runBusyFuture(_getCourseModules(id: id, index: index),
+          busyObject: index);
 
-  Future<void> _getCourseUnitModules(
-      {required int id, required int index}) async {
+  Future<void> _getCourseModules({required int id, required int index}) async {
     if (await _statusChecker.checkConnection()) {
-      await _courseService.getCourseUnitModule(id: id, index: index);
+      await _courseService.getCourseModules(id: id, index: index);
     }
   }
 }

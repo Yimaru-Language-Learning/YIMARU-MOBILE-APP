@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../common/app_colors.dart';
+import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/custom_small_radio_button.dart';
 import '../../widgets/small_app_bar.dart';
@@ -106,16 +108,16 @@ class LanguageView extends StackedView<LanguageViewModel> {
   Widget _buildAppbar(LanguageViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.pop,
-        title: 'Language Preference',
+        title:LocaleKeys.language_preference.tr() ,
       );
 
   Widget _buildTitle() => Text(
-        'Choose your language',
+       LocaleKeys.choose_your_language.tr(),
         style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        'You can switch languages anytime',
+       LocaleKeys.switch_language_anytime.tr() ,
         style: style14MG400,
       );
 

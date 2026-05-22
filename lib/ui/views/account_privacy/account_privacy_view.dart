@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/custom_list_tile.dart';
 
 import '../../common/app_colors.dart';
@@ -57,7 +59,7 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
   Widget _buildAppbar(AccountPrivacyViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.pop,
-        title: 'Account Privacy',
+        title: LocaleKeys.account_and_privacy.tr(),
       );
 
   Widget _buildContentWrapper(AccountPrivacyViewModel viewModel) =>
@@ -92,12 +94,12 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
 
   List<Widget> _buildMenuColumnChildren(AccountPrivacyViewModel viewModel) => [
         verticalSpaceLarge,
-        _buildHeader('App Settings'),
+        _buildHeader(LocaleKeys.app_settings.tr()),
         verticalSpaceSmall,
         _buildLanguageMenu(viewModel),
         _buildDividerWrapper(),
         verticalSpaceMedium,
-        _buildHeader('Legal & Information'),
+        _buildHeader(LocaleKeys.legal_and_information.tr()),
         verticalSpaceSmall,
         _buildTermsAndConditionsMenu(viewModel),
         _buildPrivacyPolicy(viewModel),
@@ -112,23 +114,23 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
   Widget _buildLanguageMenu(AccountPrivacyViewModel viewModel) =>
       CustomListTile(
         isLanguage: true,
-        language: 'English',
         icon: Icons.language,
-        title: 'Change Language',
+        title: LocaleKeys.change_language.tr(),
+        language: viewModel.selectedLanguage['language'],
         onTap: () async => await viewModel.navigateToLanguage(),
       );
 
   Widget _buildTermsAndConditionsMenu(AccountPrivacyViewModel viewModel) =>
       CustomListTile(
         icon: Icons.handshake,
-        title: 'Terms & Conditions',
+        title: LocaleKeys.terms_and_conditions.tr(),
         onTap: () async => await viewModel.navigateToTerms(),
       );
 
   Widget _buildPrivacyPolicy(AccountPrivacyViewModel viewModel) =>
       CustomListTile(
-        title: 'Privacy Policy',
         icon: Icons.shield_moon_outlined,
+        title: LocaleKeys.privacy_policy.tr(),
         onTap: () async => await viewModel.navigateToPrivacyPolicy(),
       );
 
@@ -146,8 +148,8 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
   Widget _buildDeleteButton() => CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Delete Account',
         foregroundColor: kcRed,
+        text: LocaleKeys.delete_account.tr(),
         backgroundColor: kcRed.withOpacity(0.25),
       );
 }

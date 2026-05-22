@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/models/course_module.dart';
 import 'package:yimaru_app/models/course_unit.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/course_module_tile_small.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
+import '../../models/course_catalog.dart';
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
 import '../views/course_unit/course_unit_viewmodel.dart';
@@ -15,16 +16,18 @@ import 'custom_elevated_button.dart';
 class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
   final int index;
   final CourseUnit unit;
+  final CourseCatalog catalog;
+
   final GestureTapCallback? onLessonTap;
   final GestureTapCallback? onPracticeTap;
 
-  const CourseUnitTile({
-    super.key,
-    this.onLessonTap,
-    this.onPracticeTap,
-    required this.unit,
-    required this.index,
-  });
+  const CourseUnitTile(
+      {super.key,
+      this.onLessonTap,
+      this.onPracticeTap,
+      required this.unit,
+      required this.index,
+      required this.catalog});
 
   Future<void> _getCourseModules({
     required bool expanded,
@@ -35,7 +38,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
     // Prevent duplicate API calls
     if ((unit.modules?.isNotEmpty ?? false)) return;
 
-    await viewModel.getCourseUnitModules(index: index, id: unit.id ?? 0);
+    await viewModel.getCourseModules(index: index, id: unit.id ?? 0);
   }
 
   Future<void> _showSheet(
@@ -83,14 +86,12 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         showTrailingIcon: true,
         initiallyExpanded: false,
         subtitle: _buildSubtitle(),
-        // key: Key(unit.id.toString()),
         collapsedIconColor: kcDarkGrey,
         collapsedTextColor: kcDarkGrey,
         backgroundColor: kcBackgroundColor,
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
         collapsedBackgroundColor: kcBackgroundColor,
-
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
@@ -230,10 +231,15 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
       );
 
   Widget _buildCourseModulesState(CourseUnitViewModel viewModel) =>
-      viewModel.busy(StateObjects.courseModules)
-          ? _buildProgressIndicator()
+      viewModel.busy(index)
+          ? _buildProgressIndicatorWrapper()
           : _buildCourseModules(viewModel);
 
+  Widget _buildProgressIndicatorWrapper() => SizedBox(
+        height: 50,
+        width: double.maxFinite,
+        child: _buildProgressIndicator(),
+      );
   Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
@@ -242,12 +248,15 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         shrinkWrap: true,
         itemCount: unit.modules?.length,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) =>
-            _buildCourseModuleCard(unit.modules?[index].name ?? ''),
+        itemBuilder: (context, index) => _buildCourseModuleCard(
+            module: unit.modules?[index],
+            onTap: () async => await viewModel.navigateToCourseModule(
+                catalog: catalog, module: unit.modules?[index])),
       );
 
-  Widget _buildCourseModuleCard(String title) =>
-      CourseModuleTileSmall(title: title, status: ProgressStatuses.completed);
+  Widget _buildCourseModuleCard(
+          {required CourseModule? module, required GestureTapCallback onTap}) =>
+      CourseModuleTileSmall(onTap: onTap, module: module);
 
   // Widget _buildContainerShaderState() => status == ProgressStatuses.pending
   //     ? _buildContainerShaderWrapper()
