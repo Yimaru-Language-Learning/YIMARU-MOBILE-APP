@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:yimaru_app/models/course_module.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 class CourseModuleTileSmall extends StatelessWidget {
-  final String title;
-  final ProgressStatuses status;
+  final CourseModule? module;
+  final GestureTapCallback? onTap;
 
-  const CourseModuleTileSmall(
-      {super.key, required this.title, required this.status});
+  const CourseModuleTileSmall({super.key, this.onTap, required this.module});
 
   @override
   Widget build(BuildContext context) => _buildTile();
 
   Widget _buildTile() => ListTile(
+        onTap: onTap,
         title: _buildTitle(),
         leading: _buildLeadingWrapper(),
         trailing: _buildTrailingWrapper(),
@@ -27,7 +28,7 @@ class CourseModuleTileSmall extends StatelessWidget {
       );
 
   Widget _buildTitle() => Text(
-        title,
+        module?.name ?? '',
         maxLines: 1,
         softWrap: false,
         style: style14DG600,
@@ -43,9 +44,10 @@ class CourseModuleTileSmall extends StatelessWidget {
         color: kcLightGrey,
       );
 
-  Widget _buildTrailingWrapper() => status == ProgressStatuses.completed
-      ? _buildCompletedTrailing()
-      : _buildPendingTrailing();
+  Widget _buildTrailingWrapper() =>
+      ProgressStatuses.completed != ProgressStatuses.completed
+          ? _buildCompletedTrailing()
+          : _buildPendingTrailing();
 
   Widget _buildCompletedTrailing() => const Icon(
         Icons.check_circle,

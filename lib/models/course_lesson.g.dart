@@ -9,32 +9,22 @@ part of 'course_lesson.dart';
 CourseLesson _$CourseLessonFromJson(Map<String, dynamic> json) => CourseLesson(
       id: (json['id'] as num?)?.toInt(),
       title: json['title'] as String?,
-      status: json['status'] as String?,
-      courseId: (json['sub_course_id'] as num?)?.toInt(),
       videoUrl: json['video_url'] as String?,
-      duration: (json['duration'] as num?)?.toInt(),
+      sortOrder: (json['sort_order'] as num?)?.toInt(),
       thumbnail: json['thumbnail'] as String?,
-      visibility: json['visibility'] as String?,
-      resolution: json['resolution'] as String?,
-      vimeoStatus: json['vimeo_status'] as String?,
       description: json['description'] as String?,
-      displayOrder: (json['display_order'] as num?)?.toInt(),
-      instructorId: (json['instructor_id'] as num?)?.toInt(),
+      hasPractice: json['has_practice'] as bool?,
+      unitModuleId: (json['unit_module_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CourseLessonToJson(CourseLesson instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
-      'duration': instance.duration,
-      'status': instance.status,
       'thumbnail': instance.thumbnail,
-      'resolution': instance.resolution,
-      'visibility': instance.visibility,
       'description': instance.description,
       'video_url': instance.videoUrl,
-      'vimeo_status': instance.vimeoStatus,
-      'instructor_id': instance.instructorId,
-      'sub_course_id': instance.courseId,
-      'display_order': instance.displayOrder,
+      'sort_order': instance.sortOrder,
+      'has_practice': instance.hasPractice,
+      'unit_module_id': instance.unitModuleId,
     };

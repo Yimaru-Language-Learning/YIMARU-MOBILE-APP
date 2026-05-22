@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/support_card.dart';
 
 import '../../common/app_colors.dart';
@@ -51,10 +53,10 @@ class SupportView extends StackedView<SupportViewModel> {
       );
 
   Widget _buildAppbar(SupportViewModel viewModel) => SmallAppBar(
-        title: 'Need Help?',
         showBackButton: true,
         onPop: viewModel.pop,
-      );
+    title:LocaleKeys.need_help.tr(),
+  );
 
   Widget _buildContentWrapper(SupportViewModel viewModel) =>
       Expanded(child: _buildContentColumnWrapper(viewModel));
@@ -85,16 +87,16 @@ class SupportView extends StackedView<SupportViewModel> {
   Widget _buildCallSupport(SupportViewModel viewModel) => SupportCard(
         icon: Icons.call,
         color: kcPrimaryColor,
-        title: 'Call Support',
-        subtitle: 'Talk with our support team directly',
+        title:LocaleKeys.call_support.tr(),
+        subtitle: LocaleKeys.talk_with_support.tr(),
         onTap: () async => await viewModel.navigateToCallSupport(),
       );
 
   Widget _buildTelegramSupport(SupportViewModel viewModel) => SupportCard(
         color: kcSkyBlue,
         icon: Icons.telegram,
-        title: 'Telegram Support',
-        subtitle: 'Chat Instantly via Telegram',
+        title: LocaleKeys.telegram_support.tr(),
+        subtitle: LocaleKeys.chat_via_telegram.tr(),
         onTap: () async => await viewModel.navigateToTelegramSupport(),
       );
 }

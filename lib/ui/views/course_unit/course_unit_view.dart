@@ -39,7 +39,12 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
 
   Widget _buildScaffoldWrapper(CourseUnitViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(CourseUnitViewModel viewModel) => Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(viewModel),
       );
 
   Widget _buildScaffold(CourseUnitViewModel viewModel) =>
@@ -94,7 +99,7 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
 
   Widget _buildTitle() => Text(
         catalog.name ?? '',
-        style: style18P600,
+        style: style25DG600,
       );
 
   Widget _buildCourseModuleBanner() => const CourseModuleBanner();
@@ -130,19 +135,20 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
             index: index,
             unit: viewModel.units[index],
             onPracticeTap: () {},
-            onLessonTap: () {}),
+            onViewTap: () {}),
       );
 
   Widget _buildTile({
     required int index,
     required CourseUnit unit,
-    required GestureTapCallback onLessonTap,
+    required GestureTapCallback onViewTap,
     required GestureTapCallback onPracticeTap,
   }) =>
       CourseUnitTile(
         unit: unit,
         index: index,
-        onLessonTap: onLessonTap,
+        catalog: catalog,
+        onLessonTap: onViewTap,
         onPracticeTap: onPracticeTap,
       );
 }

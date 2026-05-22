@@ -24,7 +24,6 @@ import 'package:yimaru_app/services/api_service.dart';
 import 'package:yimaru_app/services/secure_storage_service.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/services/status_checker_service.dart';
-import 'package:yimaru_app/ui/views/welcome/welcome_view.dart';
 import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_view.dart';
 import 'package:yimaru_app/services/permission_handler_service.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
@@ -33,10 +32,8 @@ import 'package:yimaru_app/services/image_downloader_service.dart';
 import 'package:yimaru_app/ui/views/forget_password/forget_password_view.dart';
 import 'package:yimaru_app/ui/views/learn_lesson_detail/learn_lesson_detail_view.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_view.dart';
-import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
 import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart';
 import 'package:yimaru_app/ui/views/failure/failure_view.dart';
-import 'package:yimaru_app/ui/views/course_lesson/course_lesson_view.dart';
 import 'package:yimaru_app/ui/views/course_lesson_detail/course_lesson_detail_view.dart';
 import 'package:yimaru_app/services/notification_service.dart';
 import 'package:yimaru_app/ui/views/duolingo/duolingo_view.dart';
@@ -45,7 +42,6 @@ import 'package:yimaru_app/services/course_service.dart';
 import 'package:yimaru_app/ui/views/course/course_view.dart';
 import 'package:yimaru_app/services/audio_player_service.dart';
 import 'package:yimaru_app/services/voice_recorder_service.dart';
-import 'package:yimaru_app/ui/views/course_practice_question/course_practice_question_view.dart';
 import 'package:yimaru_app/services/in_app_update_service.dart';
 import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart';
@@ -60,6 +56,7 @@ import 'package:yimaru_app/ui/views/course_catalog/course_catalog_view.dart';
 import 'package:yimaru_app/ui/views/course_unit/course_unit_view.dart';
 import 'package:yimaru_app/services/localization_service.dart';
 import 'package:yimaru_app/ui/views/landing/landing_view.dart';
+import 'package:yimaru_app/ui/views/course_module/course_module_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -81,19 +78,15 @@ import 'package:yimaru_app/ui/views/landing/landing_view.dart';
     MaterialRoute(page: RegisterView),
     MaterialRoute(page: LoginView),
     MaterialRoute(page: LearnModuleView),
-    MaterialRoute(page: WelcomeView),
     MaterialRoute(page: LearnLessonView),
     MaterialRoute(page: ForgetPasswordView),
     MaterialRoute(page: LearnLessonDetailView),
     MaterialRoute(page: LearnPracticeView),
-    MaterialRoute(page: CoursePracticeView),
     MaterialRoute(page: CoursePaymentView),
     MaterialRoute(page: FailureView),
-    MaterialRoute(page: CourseLessonView),
     MaterialRoute(page: CourseLessonDetailView),
     MaterialRoute(page: DuolingoView),
     MaterialRoute(page: CourseView),
-    MaterialRoute(page: CoursePracticeQuestionView),
     MaterialRoute(page: LearnProgramView),
     MaterialRoute(page: LearnCourseView),
     MaterialRoute(page: AssessmentView),
@@ -102,6 +95,8 @@ import 'package:yimaru_app/ui/views/landing/landing_view.dart';
     MaterialRoute(page: CourseCatalogView),
     MaterialRoute(page: CourseUnitView),
     MaterialRoute(page: LandingView),
+    MaterialRoute(page: CourseModuleView),
+    MaterialRoute(page: LearnCourseView),
 // @stacked-route
   ],
   dependencies: [

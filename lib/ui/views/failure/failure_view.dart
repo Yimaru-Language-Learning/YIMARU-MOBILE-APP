@@ -40,7 +40,7 @@ class FailureView extends StackedView<FailureViewModel> {
       ];
 
   Widget _buildBackground() => Image.asset(
-        'assets/images/onboarding_1.png',
+        'assets/images/loading.png',
         fit: BoxFit.fill,
         width: double.maxFinite,
         height: double.maxFinite,

@@ -27,8 +27,7 @@ class LearnModuleViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnSubscription() async =>
-      await _navigationService.navigateToLearnSubscriptionView();
+
 
   Future<void> navigateToLearnLesson(LearnModule module) async =>
       await _navigationService.navigateToLearnLessonView(module: module);

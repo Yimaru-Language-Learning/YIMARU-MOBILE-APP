@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
 
@@ -44,18 +46,18 @@ class HomeView extends StackedView<HomeViewModel> {
       ];
 
   BottomNavigationBarItem _buildLearnItem() => BottomNavigationBarItem(
-        label: 'Learn',
         icon: _buildLearnIcon(),
+        label: LocaleKeys.learn.tr(),
       );
 
   BottomNavigationBarItem _buildCourseItem() => BottomNavigationBarItem(
-        label: 'Course',
         icon: _buildCourseIcon(),
+        label: LocaleKeys.course.tr(),
       );
 
   BottomNavigationBarItem _buildProfileItem() => BottomNavigationBarItem(
-        label: 'Profile',
         icon: _buildProfileIcon(),
+        label: LocaleKeys.profile.tr(),
       );
 
   Widget _buildLearnIcon() => const Icon(Icons.school);

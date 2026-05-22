@@ -7,6 +7,7 @@ import '../../../app/app.router.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/image_downloader_service.dart';
+import '../../../services/localization_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 
@@ -15,6 +16,7 @@ class StartupViewModel extends ReactiveViewModel {
   final _apiService = locator<ApiService>();
   final _statusChecker = locator<StatusCheckerService>();
   final _navigationService = locator<NavigationService>();
+  final _localizationService = locator<LocalizationService>();
   final _authenticationService = locator<AuthenticationService>();
   final _imageDownloaderService = locator<ImageDownloaderService>();
 
@@ -29,6 +31,8 @@ class StartupViewModel extends ReactiveViewModel {
 
   // Main startup and navigation logic
   Future runStartupLogic() async {
+    await _localizationService.loadSelectedLanguage();
+
     final loggedIn = await _authenticationService.userLoggedIn();
 
     final firstTimeInstall = await _authenticationService.isFirstTimeInstall();

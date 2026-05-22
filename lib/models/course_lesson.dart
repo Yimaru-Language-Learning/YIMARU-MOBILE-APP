@@ -4,51 +4,35 @@ part 'course_lesson.g.dart';
 
 @JsonSerializable()
 class CourseLesson {
-  int? id;
+  final int? id;
 
-  String? title;
+  final String? title;
 
-  int? duration;
+  final String? thumbnail;
 
-  String? status;
-
-  String? thumbnail;
-
-  String? resolution;
-
-  String? visibility;
-
-  String? description;
+  final String? description;
 
   @JsonKey(name: 'video_url')
-  String? videoUrl;
+  final String? videoUrl;
 
-  @JsonKey(name: 'vimeo_status')
-  String? vimeoStatus;
+  @JsonKey(name: 'sort_order')
+  final int? sortOrder;
 
-  @JsonKey(name: 'instructor_id')
-  int? instructorId;
+  @JsonKey(name: 'has_practice')
+  final bool? hasPractice;
 
-  @JsonKey(name: 'sub_course_id')
-  int? courseId;
+  @JsonKey(name: 'unit_module_id')
+  final int? unitModuleId;
 
-  @JsonKey(name: 'display_order')
-  int? displayOrder;
-
-  CourseLesson(
+  const CourseLesson(
       {this.id,
       this.title,
-      this.status,
-      this.courseId,
       this.videoUrl,
-      this.duration,
+      this.sortOrder,
       this.thumbnail,
-      this.visibility,
-      this.resolution,
-      this.vimeoStatus,
       this.description,
-      this.displayOrder,
-      this.instructorId});
+      this.hasPractice,
+      this.unitModuleId});
 
   factory CourseLesson.fromJson(Map<String, dynamic> json) =>
       _$CourseLessonFromJson(json);

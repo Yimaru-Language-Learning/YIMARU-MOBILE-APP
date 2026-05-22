@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/profile_card.dart';
 import 'package:yimaru_app/ui/widgets/profile_image.dart';
@@ -138,7 +140,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
       );
 
   Widget _buildProfileName(ProfileViewModel viewModel) => Text(
-        'Hi, ${viewModel.user?.firstName ?? ''} 👋',
+        '${LocaleKeys.hello.tr()}, ${viewModel.user?.firstName ?? ''} 👋',
         style: style25DG600,
       );
 
@@ -169,31 +171,31 @@ class ProfileView extends StackedView<ProfileViewModel> {
       );
 
   Widget _buildProgressCard(ProfileViewModel viewModel) => ProfileCard(
-        title: 'My Progress',
         icon: Icons.stacked_bar_chart,
-        subtitle: 'Track your achievements and learning streak',
-        onTap: () async => await viewModel.navigateToProgress(),
+        title: LocaleKeys.my_progress.tr(),
+        subtitle: LocaleKeys.track_your_achievement.tr(),
+       // onTap: () async => await viewModel.navigateToProgress(),
       );
 
   Widget _buildAccountCard(ProfileViewModel viewModel) => ProfileCard(
-        title: 'Account & Privacy',
         icon: Icons.privacy_tip_outlined,
-        subtitle: 'Manage setting and app preference',
+        subtitle: LocaleKeys.manage_settings.tr(),
+        title: LocaleKeys.account_and_privacy.tr(),
         onTap: () async => await viewModel.navigateToAccountPrivacy(),
       );
 
   Widget _buildSupportCard(ProfileViewModel viewModel) => ProfileCard(
-        title: 'Support',
         icon: Icons.headphones,
-        subtitle: 'Get help through phone or Telegram',
+        title: LocaleKeys.support.tr(),
+        subtitle: LocaleKeys.get_help.tr(),
         onTap: () async => await viewModel.navigateToSupport(),
       );
 
   Widget _buildLogOutButton(ProfileViewModel viewModel) => CustomElevatedButton(
         height: 55,
-        text: 'Logout',
         borderRadius: 12,
         foregroundColor: kcRed,
+        text: LocaleKeys.logout.tr(),
         backgroundColor: kcRed.withOpacity(0.25),
         onTap: () async => await viewModel.logout(),
       );

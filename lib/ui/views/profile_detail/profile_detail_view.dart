@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/custom_form_label.dart';
 import 'package:yimaru_app/ui/widgets/small_app_bar.dart';
 
@@ -160,7 +162,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   Widget _buildAppbar(ProfileDetailViewModel viewModel) => SmallAppBar(
         onPop: viewModel.pop,
         showBackButton: true,
-        title: 'Edit Profile',
+        title: LocaleKeys.edit_profile.tr(),
       );
 
   Widget _buildColumnWrapper(
@@ -270,8 +272,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       ];
 
   Widget _buildFirstNameLabel() => CustomFormLabel(
-        label: 'First Name',
         style: style16DG600,
+        label: LocaleKeys.first_name.tr(),
       );
 
   Widget _buildFirstNameFormField(ProfileDetailViewModel viewModel) =>
@@ -317,8 +319,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       ];
 
   Widget _buildLastNameLabel() => CustomFormLabel(
-        label: 'Last Name',
         style: style16DG600,
+        label: LocaleKeys.last_name.tr(),
       );
 
   Widget _buildLastNameFormField(ProfileDetailViewModel viewModel) =>
@@ -356,8 +358,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       ];
 
   Widget _buildGenderLabel() => CustomFormLabel(
-        label: 'Gender',
         style: style16DG600,
+        label: LocaleKeys.gender.tr(),
       );
 
   Widget _buildRadioButtonWrapper(ProfileDetailViewModel viewModel) => Row(
@@ -449,8 +451,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       ];
 
   Widget _buildPhoneNumberLabel() => CustomFormLabel(
-        label: 'Phone Number',
         style: style16DG600,
+        label: LocaleKeys.phone_number.tr(),
       );
 
   Widget _buildPhoneNumberFormField(ProfileDetailViewModel viewModel) =>
@@ -496,8 +498,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       ];
 
   Widget _buildEmailLabel() => CustomFormLabel(
-        label: 'Email',
         style: style16DG600,
+        label: LocaleKeys.email.tr(),
       );
 
   Widget _buildEmailFormField(ProfileDetailViewModel viewModel) =>
@@ -522,8 +524,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       );
 
   Widget _buildCountryDropdownLabel() => CustomFormLabel(
-        label: 'Country',
         style: style16DG600,
+        label: LocaleKeys.country.tr(),
       );
 
   Widget _buildCountryDropdown(ProfileDetailViewModel viewModel) =>
@@ -559,8 +561,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       ];
 
   Widget _buildRegionFormFieldLabel() => CustomFormLabel(
-        label: 'Region',
         style: style16DG600,
+        label: LocaleKeys.region.tr(),
       );
 
   Widget _buildRegionFormState(ProfileDetailViewModel viewModel) =>
@@ -570,8 +572,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   Widget _buildRegionDropDown(ProfileDetailViewModel viewModel) =>
       CustomDropdownPicker(
-          hint: 'Select region',
           icon: _buildSearchIcon(),
+          hint:LocaleKeys.select_region.tr(),
           selectedItem: viewModel.selectedRegion,
           items: (value, props) => viewModel.getRegions(),
           onChanged: (value) =>
@@ -582,8 +584,8 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         controller: regionController,
         onTap: viewModel.setRegionFocus,
         decoration: inputDecoration(
-            hint: 'Enter Your City',
             focus: viewModel.focusRegion,
+            hint:LocaleKeys.enter_your_city.tr(),
             filled: regionController.text.isNotEmpty),
       );
 
@@ -614,14 +616,14 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       ];
 
   Widget _buildOccupationDropdownLabel() => CustomFormLabel(
-        label: 'Occupation',
         style: style16DG600,
+        label: LocaleKeys.occupation.tr(),
       );
 
   Widget _buildOccupationDropdown(ProfileDetailViewModel viewModel) =>
       CustomDropdownPicker(
-          hint: 'Select occupation',
           icon: _buildSearchIcon(),
+          hint:LocaleKeys.select_occupation.tr(),
           selectedItem: viewModel.selectedOccupation,
           items: (value, props) => viewModel.getOccupations(),
           onChanged: (value) => viewModel.setSelectedOccupation(
@@ -645,9 +647,9 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Save Changes',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
+        text: LocaleKeys.save_changes.tr(),
         onTap: () async => await _update(viewModel),
       );
 
@@ -659,10 +661,10 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   Widget _buildCancelButton(ProfileDetailViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Cancel',
         borderRadius: 12,
         onTap: viewModel.pop,
         backgroundColor: kcWhite,
+        text:LocaleKeys.cancel.tr(),
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
       );

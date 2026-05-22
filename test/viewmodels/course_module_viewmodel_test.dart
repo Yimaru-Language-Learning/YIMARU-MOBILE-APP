@@ -4,7 +4,7 @@ import 'package:yimaru_app/app/app.locator.dart';
 import '../helpers/test_helpers.dart';
 
 void main() {
-  group('WelcomeViewModel Tests -', () {
+  group('CourseModuleViewModel Tests -', () {
     setUp(() => registerServices());
     tearDown(() => locator.reset());
   });

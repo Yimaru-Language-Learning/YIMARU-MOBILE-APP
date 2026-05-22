@@ -19,22 +19,20 @@ class FirstLandingScreen extends ViewModelWidget<LandingViewModel> {
         backgroundColor: kcPrimaryColor,
         body: _buildScaffoldPadding(viewModel),
       );
-  Widget _buildScaffoldPadding(LandingViewModel viewModel)=>  Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-  child: _buildScaffold(viewModel),);
+  Widget _buildScaffoldPadding(LandingViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildScaffold(viewModel),
+      );
 
   Widget _buildScaffold(LandingViewModel viewModel) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: _buildScaffoldChildren(viewModel),
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: _buildScaffoldChildren(viewModel),
       );
 
   List<Widget> _buildScaffoldChildren(LandingViewModel viewModel) =>
-      [ _buildUpperColumn(),_buildLowerColumnWrapper(viewModel)];
-
-
-
+      [_buildUpperColumn(), _buildLowerColumnWrapper(viewModel)];
 
   Widget _buildUpperColumn() => Column(
         mainAxisSize: MainAxisSize.min,
@@ -42,43 +40,38 @@ class FirstLandingScreen extends ViewModelWidget<LandingViewModel> {
         children: _buildUpperColumnChildren(),
       );
 
-  List<Widget> _buildUpperColumnChildren() => [
-        verticalSpaceLarge,
-    _buildIconWrapper(),
-    verticalSpaceLarge
+  List<Widget> _buildUpperColumnChildren() =>
+      [verticalSpaceLarge, _buildIconWrapper(), verticalSpaceLarge];
 
-      ];
-
-  Widget _buildIconWrapper()=> Align(alignment: Alignment.topLeft,child: _buildIcon(),);
+  Widget _buildIconWrapper() => Align(
+        alignment: Alignment.topLeft,
+        child: _buildIcon(),
+      );
 
   Widget _buildIcon() => SvgPicture.asset(
         'assets/icons/logo.svg',
         height: 25,
       );
 
-
-
   Widget _buildLowerColumnWrapper(LandingViewModel viewModel) => Expanded(
-    child: _buildLowerColumn(viewModel),
-  );
+        child: _buildLowerColumn(viewModel),
+      );
 
   Widget _buildLowerColumn(LandingViewModel viewModel) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: _buildLowerColumnChildren(viewModel),
-  );
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: _buildLowerColumnChildren(viewModel),
+      );
 
   List<Widget> _buildLowerColumnChildren(LandingViewModel viewModel) => [
-   _buildTitle(),
-    verticalSpaceMedium,
-    _buildImageWrapper(),
-    verticalSpaceMedium,
-    _buildSafeWrapper(viewModel)
-  ];
+        _buildTitle(),
+        verticalSpaceMedium,
+        _buildImageWrapper(),
+        verticalSpaceMedium,
+        _buildSafeWrapper(viewModel)
+      ];
 
-  Widget _buildTitle() =>
-
-      Text.rich(
+  Widget _buildTitle() => Text.rich(
         TextSpan(
           text: 'እንግሊዝኛ\n',
           style: style25W600,
@@ -90,29 +83,26 @@ class FirstLandingScreen extends ViewModelWidget<LandingViewModel> {
             TextSpan(
               text: ' ሰዓት ',
               style: style25W600,
-
             ),
-
             TextSpan(
               text: 'ይማሩ!',
               style: style25W400,
-
             ),
           ],
         ),
       );
 
-  Widget _buildImageWrapper()=> Expanded(child: _buildImageClipper());
+  Widget _buildImageWrapper() => Expanded(child: _buildImageClipper());
 
-  Widget _buildImageClipper()=> ClipRRect(
-    borderRadius: BorderRadius.circular(25),
-    child: _buildImage(),
-  );
+  Widget _buildImageClipper() => ClipRRect(
+        borderRadius: BorderRadius.circular(25),
+        child: _buildImage(),
+      );
 
-
-
-  Widget _buildImage()=> Image.asset('assets/images/profile.png',fit: BoxFit.cover,);
-
+  Widget _buildImage() => Image.asset(
+        'assets/images/landing_1.jpg',
+        fit: BoxFit.cover,
+      );
 
   Widget _buildSafeWrapper(LandingViewModel viewModel) =>
       SafeArea(child: _buildContinueButtonWrapper(viewModel));

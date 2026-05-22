@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
@@ -51,7 +53,7 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
   Widget _buildAppbar(CallSupportViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.pop,
-        title: 'Call Support',
+        title: LocaleKeys.call_support.tr(),
       );
 
   Widget _buildExpandedColumn(CallSupportViewModel viewModel) =>
@@ -91,7 +93,7 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
       const CircularIcon(icon: Icons.call, size: 50, color: kcPrimaryColor);
 
   Widget _buildTitle() => Text(
-        'Call our support team between 9 AM - 6 PM',
+       LocaleKeys.call_our_support.tr(),
         style: style25DG600,
         textAlign: TextAlign.center,
       );
@@ -111,10 +113,10 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Tap to Call',
         leadingIcon: Icons.call,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
+        text:LocaleKeys.tap_to_call.tr(),
         onTap: () async => await viewModel.callSupport(),
       );
 }

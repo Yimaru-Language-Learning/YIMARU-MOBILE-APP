@@ -3,9 +3,13 @@ import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/secure_storage_service.dart';
 
+import 'localization_service.dart';
+
 class AuthenticationService with ListenableServiceMixin {
   // Dependency injection
   final _secureService = locator<SecureStorageService>();
+
+  final _localizationService = locator<LocalizationService>();
 
   // User data
   User? _user;
@@ -14,7 +18,7 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Initialization
   AuthenticationService() {
-    listenToReactiveValues([_user]);
+    listenToReactiveValues([_user, _localizationService]);
   }
 
   // Check user logged in
@@ -172,9 +176,12 @@ class AuthenticationService with ListenableServiceMixin {
   // Logout
   Future<void> logout() async {
     bool firstTimeInstall = await isFirstTimeInstall();
+    String language = await _localizationService.selectedLanguage['code'];
+
     _user = null;
     await _secureService.clear();
     await setFirstTimeInstall(firstTimeInstall);
+    await _secureService.setString('language', language);
     notifyListeners();
   }
 }

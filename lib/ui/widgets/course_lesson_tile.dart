@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
-import 'package:yimaru_app/ui/views/course_lesson/course_lesson_viewmodel.dart';
+import 'package:yimaru_app/ui/views/course_module/course_module_viewmodel.dart';
 
 import '../common/app_colors.dart';
+import '../common/enmus.dart';
+import '../common/helper_functions.dart';
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 import 'mini_thumbnail.dart';
 
-class CourseLessonTile extends ViewModelWidget<CourseLessonViewModel> {
+class CourseLessonTile extends ViewModelWidget<CourseModuleViewModel> {
   final CourseLesson lesson;
   final GestureTapCallback? onVideoTap;
   final GestureTapCallback? onPracticeTap;
@@ -21,19 +23,16 @@ class CourseLessonTile extends ViewModelWidget<CourseLessonViewModel> {
   });
 
   @override
-  Widget build(BuildContext context, CourseLessonViewModel viewModel) =>
+  Widget build(BuildContext context, CourseModuleViewModel viewModel) =>
       _buildExpansionTileCard(context: context, viewModel: viewModel);
 
   Widget _buildExpansionTileCard(
           {required BuildContext context,
-          required CourseLessonViewModel viewModel}) =>
+          required CourseModuleViewModel viewModel}) =>
       Container(
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(
-            color: kcPrimaryColor.withValues(alpha: 0.25),
-          ),
         ),
         child: _buildColumn(),
       );
@@ -44,7 +43,7 @@ class CourseLessonTile extends ViewModelWidget<CourseLessonViewModel> {
       );
 
   List<Widget> _buildColumnChildren() => [
-        //  _buildDivider(),
+        _buildDivider(),
         verticalSpaceMedium,
         _buildTile(),
         verticalSpaceMedium,
@@ -52,11 +51,14 @@ class CourseLessonTile extends ViewModelWidget<CourseLessonViewModel> {
         verticalSpaceSmall,
       ];
 
+  Widget _buildDivider() => const Divider(color: kcVeryLightGrey);
+
   Widget _buildTile() => ListTile(
         minTileHeight: 0,
         title: _buildTitle(),
         subtitle: _buildSubtitle(),
         leading: _buildLeadingWrapper(),
+        trailing: _buildTrailingWrapper(),
         titleAlignment: ListTileTitleAlignment.top,
         contentPadding: const EdgeInsets.symmetric(horizontal: 15),
       );
@@ -67,12 +69,29 @@ class CourseLessonTile extends ViewModelWidget<CourseLessonViewModel> {
       );
 
   Widget _buildSubtitle() => Text(
-        '${((lesson.duration ?? 0) / 50).toInt()} min',
+        '${((lesson.id ?? 0) / 50).toInt()} min',
         style: style14MG400,
       );
 
-  Widget _buildLeadingWrapper() =>
-      const MiniThumbnail(thumbnail: 'assets/images/image_1.png');
+  Widget _buildLeadingWrapper() => MiniThumbnail(
+      thumbnail:
+          getReadableUrl(lesson.thumbnail ?? 'assets/images/image_1.png') ??
+              'assets/images/image_1.png');
+
+  Widget _buildTrailingWrapper() =>
+      ProgressStatuses.completed != ProgressStatuses.completed
+          ? _buildCompletedTrailing()
+          : _buildPendingTrailing();
+
+  Widget _buildCompletedTrailing() => const Icon(
+        Icons.check_circle,
+        color: kcGreen,
+      );
+
+  Widget _buildPendingTrailing() => const Icon(
+        Icons.circle_outlined,
+        color: kcLightGrey,
+      );
 
   Widget _buildActionButtonWrapper() => Container(
         height: 40,
@@ -107,9 +126,9 @@ class CourseLessonTile extends ViewModelWidget<CourseLessonViewModel> {
 
   Widget _buildPracticeButton() => CustomElevatedButton(
         height: 15,
-        text: 'Practice',
         borderRadius: 12,
         onTap: onPracticeTap,
+        text: 'Practice Test',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
