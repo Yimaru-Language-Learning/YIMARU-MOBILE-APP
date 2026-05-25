@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
 import '../../../common/app_colors.dart';
@@ -59,7 +61,7 @@ class LearnPracticeFinishScreen
   Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.goBack,
-        title: 'Practice Speaking',
+        title:LocaleKeys.practice_speaking.tr(),
       );
 
   Widget _buildSpeakingIndicatorWrapper(LearnPracticeViewModel viewModel) =>
@@ -79,13 +81,13 @@ class LearnPracticeFinishScreen
   Widget _buildIcon() => SvgPicture.asset('assets/icons/success.svg');
 
   Widget _buildTitle() => Text(
-        'Practice Completed!',
+      LocaleKeys.practice_completed.tr(),
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle() => Text(
-        'You sound more confident this time - great improvement!',
+     LocaleKeys.sound_confident.tr()  ,
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -117,18 +119,18 @@ class LearnPracticeFinishScreen
         borderRadius: 12,
         onTap: viewModel.pop,
         foregroundColor: kcWhite,
-        text: 'Continue Practice',
         backgroundColor: kcPrimaryColor,
+        text: LocaleKeys.continue_practice.tr() ,
       );
 
   Widget _buildPracticeAgainButton(LearnPracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Practice Again',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
+        text: LocaleKeys.practice_again.tr(),
         onTap: () async => await _reset(viewModel),
       );
 }

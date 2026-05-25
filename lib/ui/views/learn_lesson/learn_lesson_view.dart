@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/models/learn_module.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/learn_lesson_tile.dart';
 import 'package:yimaru_app/ui/widgets/module_progress.dart';
 import 'package:yimaru_app/ui/widgets/motivation_card.dart';
@@ -150,7 +152,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
   Widget _buildMotivationCard() => const MotivationCard();
 
   Widget _buildHeader() => Text(
-        'Lessons in this module',
+      LocaleKeys.lessons_in_module.tr(),
         style: style18DG700,
       );
 

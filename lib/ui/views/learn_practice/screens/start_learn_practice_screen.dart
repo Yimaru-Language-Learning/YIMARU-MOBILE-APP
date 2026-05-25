@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_column_button.dart';
 
@@ -106,7 +108,8 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
           showBackButton: true,
           onPop: () async =>
               await _showSheet(context: context, viewModel: viewModel),
-          title: 'Practice Speaking ($index/${viewModel.questions.length})');
+          title:
+              '${LocaleKeys.practice_speaking.tr()} ($index/${viewModel.questions.length})');
 
   Widget _buildSheet(LearnPracticeViewModel viewModel) =>
       CancelLearnPracticeSheet(
@@ -167,7 +170,7 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildStartText() => Text(
-        'Start',
+        LocaleKeys.start.tr(),
         style: style25W600,
       );
 
@@ -193,7 +196,7 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
       ];
 
   Widget _buildActionLabel() => Text(
-        'Tap the start button to listen',
+     LocaleKeys.tap_start_to_listen.tr() ,
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -212,8 +215,8 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
 
   Widget _buildReplyButtonWrapper() => Expanded(child: _buildReplyButton());
 
-  Widget _buildReplyButton() => const CustomColumnButton(
-      icon: Icons.replay, label: 'Reply', color: kcLightGrey);
+  Widget _buildReplyButton() =>  CustomColumnButton(
+      icon: Icons.replay, label:LocaleKeys.reply.tr() , color: kcLightGrey);
 
   Widget _buildMicButtonWrapper(LearnPracticeViewModel viewModel) =>
       Expanded(child: _buildMicButton(viewModel));

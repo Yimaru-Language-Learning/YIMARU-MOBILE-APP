@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/mini_thumbnail.dart';
 
@@ -128,7 +130,7 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
       );
 
   Widget _buildProgressText() => Text(
-        (lesson.access?.isCompleted ?? false) ? 'Completed' : 'In Progress',
+        (lesson.access?.isCompleted ?? false) ?LocaleKeys.completed.tr()  : LocaleKeys.in_progress.tr() ,
         style: style14P600,
       );
 
@@ -158,13 +160,13 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
   Widget _buildPracticeButton(LearnLessonViewModel viewModel) =>
       CustomElevatedButton(
         height: 15,
-        text: 'Practice',
         borderRadius: 12,
         onTap: onPracticeTap,
         trailingIcon: Icons.mic,
         width: double.maxFinite,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
+        text:LocaleKeys.practice.tr() ,
         foregroundColor: kcPrimaryColor,
       );
 
@@ -176,11 +178,11 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
   Widget _buildLessonButton(LearnLessonViewModel viewModel) =>
       CustomElevatedButton(
         height: 15,
-        text: 'Start',
         borderRadius: 12,
         onTap: onLessonTap,
         width: double.maxFinite,
         foregroundColor: kcWhite,
+        text:LocaleKeys.start.tr() ,
         trailingIcon: Icons.play_arrow,
         backgroundColor: kcPrimaryColor,
       );

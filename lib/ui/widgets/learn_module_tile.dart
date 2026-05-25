@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/learn_module.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_module/learn_module_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_container_shader.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
@@ -191,9 +193,9 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         height: 15,
         borderRadius: 12,
         onTap: onModuleTap,
-        text: 'View Module',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
+        text: LocaleKeys.view_module.tr(),
       );
 
   Widget _buildPracticeButtonWrapper(LearnModuleViewModel viewModel) =>
@@ -206,10 +208,10 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         height: 15,
         borderRadius: 12,
         onTap: onPracticeTap,
-        text: 'Take Practices',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
+        text:LocaleKeys.take_practice.tr(),
 
         // onTap: () async => await viewModel.navigateToLearnPractice(practices),
       );

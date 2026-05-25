@@ -119,7 +119,53 @@
   "telegram_support": "የቴሌግራም ድጋፍ",
   "chat_via_telegram": "በቴሌግራም በፍጥነት ይወያዩ",
   "call_our_support": "ከ3 ጠዋት እስከ 12 ማታ ድረስ የድጋፍ ቡድናችንን ይደውሉ",
-  "tap_to_call": "ለመደወል ይንኩ"
+  "tap_to_call": "ለመደወል ይንኩ",
+  "join_telegram": "በቴሌግራም የይማሩ አካዳሚን ይቀላቀሉ",
+  "connect_with_support_team": "ለፈጣን እርዳታ እና የማህበረሰብ ዝማኔዎች፣ በቴሌግራም ከድጋፍ ቡድናችን ጋር ወዲያውኑ ይገናኙ።",
+  "open_in_telegram": "በቴሌግራም ይክፈቱ",
+  "search_for": "ፈልጉት",
+  "current_level": "የአሁኑ ደረጃ",
+  "keep_up_the_great_work": "በጣም ጥሩ እየሰራህ ነው! ቀጥልበት፣ አስደናቂ ነህ።",
+  "no_practice_available": "ምንም ልምምድ አልተገኘም!",
+  "begin_module_practice": "የሞጁሉን ልምምድ ጀምር",
+  "lets_practice_lesson": "እንለማመድ",
+  "lets_quickly_review": "በዚህ ሞጁል ውስጥ የተማርከውን በፍጥነት እንከልስ!",
+  "lets_practice_module": "አሁን የተማርከውን እንለማመድ!",
+  "ask_you_few_actions": "ጥቂት ጥያቄዎችን እጠይቅሃለሁ፣ አንተም በተፈጥሮ መልስ ልትሰጥ ትችላለህ።",
+  "begin_level_practice": "የደረጃ ልምምድን ጀምር",
+  "lets_practice_course": "የኮርሱን ልምምድ እንለማመድ",
+  "lets_quick_practice": "በዚህ ደረጃ የተማርከውን በፍጥነት እንከልስ!",
+  "speaking": "እየተናገረ ነው",
+  "you_have_finished_practice": "ልምምድህን አጠናቀቅህ",
+  "view_results": "ውጤቶቼን እይ",
+  "sample_answer": "ናሙና መልስ",
+  "your_answer": "መልስህ",
+  "sound_confident": "በዚህ ጊዜ የበለጠ እምነት ያለህ ይመስላል — በጣም ጥሩ መሻሻል ነው!",
+  "you_have_completed": "አያይ! አጠናቀቅህ",
+  "yes": "አዎ",
+  "no": "አይ",
+  "want_to_quit": "ለመውጣት እርግጠኛ ነህ?",
+  "required_field": "ይህ መስክ ያስፈልጋል",
+  "enter_full_name": "ሙሉ ስምህን አስገባ",
+  "invalid_email": "የማይሰራ የኢሜይል ቅርጸት",
+  "phone_must_start_with": "የስልክ ቁጥር በ251 መጀመር አለበት",
+  "phone_must_be": "የስልክ ቁጥር 12 አሃዞች መሆን አለበት",
+  "what_should_we_call_you": "ምን ብለን እንጠራህ?",
+  "use_for_personalization": "በመማር ጉዞህ ውስጥ ለግል ለማድረግ ስምህን እንጠቀማለን።"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 

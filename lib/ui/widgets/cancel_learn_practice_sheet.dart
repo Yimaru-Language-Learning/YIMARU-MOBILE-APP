@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/speaking_partner_image.dart';
 
 import '../common/app_colors.dart';
@@ -51,8 +53,11 @@ class CancelLearnPracticeSheet extends StatelessWidget {
       );
 
   Widget _buildMessage() => Text.rich(
-        TextSpan(text: 'You’re almost there,', style: style18DG700, children: [
-          TextSpan(
+        TextSpan(
+            text: '${LocaleKeys.almost_there.tr()},',
+            style: style18DG700,
+            children: [
+              TextSpan(
             text: '  $user',
             style: style18P600,
           )
@@ -60,7 +65,7 @@ class CancelLearnPracticeSheet extends StatelessWidget {
       );
 
   Widget _buildSubtitle() => Text(
-        'Finish this session to see your progress.',
+        LocaleKeys.finish_session.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -70,17 +75,17 @@ class CancelLearnPracticeSheet extends StatelessWidget {
         onTap: onContinue,
         borderRadius: 12,
         foregroundColor: kcWhite,
-        text: 'Continue Practice',
         backgroundColor: kcPrimaryColor,
+        text: LocaleKeys.continue_practice.tr(),
       );
 
   Widget _buildEndButton() => CustomElevatedButton(
         height: 55,
         onTap: onCancel,
         borderRadius: 12,
-        text: 'End Session',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
+        text: LocaleKeys.end_session.tr(),
       );
 }

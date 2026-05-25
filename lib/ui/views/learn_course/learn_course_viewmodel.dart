@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
@@ -7,6 +8,7 @@ import '../../../models/learn_course.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
+import '../../common/translations/locale_keys.g.dart';
 
 class LearnCourseViewModel extends ReactiveViewModel {
   // Dependency injection
@@ -35,10 +37,10 @@ class LearnCourseViewModel extends ReactiveViewModel {
       await _navigationService.navigateToLearnPracticeView(
         id: id,
         level: level,
-        label: 'Begin Level Practice',
         practice: LearnPractices.course,
-        title: 'Let’s Practice Course $level',
-        subtitle: 'Let’s quickly review what you’ve learned in this level!',
+        label: LocaleKeys.begin_level_practice.tr(),
+        subtitle: LocaleKeys.lets_quick_practice.tr(),
+        title: '${LocaleKeys.lets_practice_course.tr()} $level',
       );
 
   // Remote api call

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/helper_functions.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
@@ -92,18 +94,14 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
         onLanguage: () async => await viewModel.navigateToLanguage(),
       );
 
-  Widget _buildTitle() => const Text(
-        'What should we call you? 😊',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+  Widget _buildTitle() =>  Text(
+        '${LocaleKeys.what_should_we_call_you.tr()} 😊',
+        style:style25DG600,
       );
 
-  Widget _buildSubtitle() => const Text(
-        'We’ll use your name to personalize your learning journey.',
-        style: TextStyle(color: kcMediumGrey),
+  Widget _buildSubtitle() =>  Text(
+        LocaleKeys.use_for_personalization.tr(),
+        style:style14MG400,
       );
 
   Widget _buildFullNameFormField(OnboardingViewModel viewModel) =>
@@ -111,8 +109,8 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
         controller: fullNameController,
         onTap: viewModel.setFullNameFocus,
         decoration: inputDecoration(
-            hint: 'Enter Your Name',
             focus: viewModel.focusFullName,
+            hint: LocaleKeys.enter_full_name.tr(),
             filled: fullNameController.text.isNotEmpty),
       );
 
@@ -134,9 +132,9 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         backgroundColor: fullNameController.text.isNotEmpty &&
                 !viewModel.hasFullNameValidationMessage
             ? kcPrimaryColor

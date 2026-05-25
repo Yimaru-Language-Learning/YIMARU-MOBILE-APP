@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/circular_icon.dart';
 
 import '../../common/app_colors.dart';
@@ -52,7 +54,7 @@ class TelegramSupportView extends StackedView<TelegramSupportViewModel> {
   Widget _buildAppbar(TelegramSupportViewModel viewModel) => SmallAppBar(
         onPop: viewModel.pop,
         showBackButton: true,
-        title: 'Telegram Support',
+        title: LocaleKeys.telegram_support.tr(),
       );
 
   Widget _buildExpandedColumn(TelegramSupportViewModel viewModel) =>
@@ -93,13 +95,13 @@ class TelegramSupportView extends StackedView<TelegramSupportViewModel> {
       const CircularIcon(icon: Icons.telegram, size: 50, color: kcSkyBlue);
 
   Widget _buildTitle() => Text(
-        'Join Yimaru Academy on Telegram',
+        LocaleKeys.join_telegram.tr(),
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle() => Text(
-        'Connect with our support team instantly on Telegram for quick assistance and community updates',
+        LocaleKeys.connect_with_support_team.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );
@@ -123,17 +125,17 @@ class TelegramSupportView extends StackedView<TelegramSupportViewModel> {
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Open in Telegram',
         foregroundColor: kcWhite,
         leadingIcon: Icons.telegram,
         backgroundColor: kcPrimaryColor,
+        text: LocaleKeys.open_in_telegram.tr(),
         onTap: () async => await viewModel.launchTelegram(),
       );
 
   Widget _buildOptionTextDivider() => const OptionTextDivider();
 
   Widget _buildSearchText() => Text.rich(
-        TextSpan(text: 'Search for', style: style14DG500, children: [
+        TextSpan(text: LocaleKeys.search_for.tr(), style: style14DG500, children: [
           TextSpan(
             style: style14P600,
             text: ' $kTelegramSupport',

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/learn_practice_result_card.dart';
@@ -33,7 +35,7 @@ class LearnPracticeResultsWrapper
       [_buildTitle(), verticalSpaceSmall, _buildResults(viewModel)];
 
   Widget _buildTitle() => Text(
-        'Conversation Review',
+       LocaleKeys.conversation_review.tr(),
         style: style16DG600,
         textAlign: TextAlign.center,
       );

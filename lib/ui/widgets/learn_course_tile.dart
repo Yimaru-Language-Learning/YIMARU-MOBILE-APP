@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/progress_status.dart';
 
 import '../../models/learn_course.dart';
@@ -107,9 +109,9 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
           ? _buildProgressStatus()
           : Container();
 
-  Widget _buildProgressStatus() => const ProgressStatus(
+  Widget _buildProgressStatus() =>  ProgressStatus(
         color: kcPrimaryColor,
-        status: 'Current Level',
+        status: LocaleKeys.current_level.tr(),
       );
 
   Widget _buildContent() => Text(
@@ -143,9 +145,9 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
         height: 15,
         borderRadius: 12,
         onTap: onViewTap,
-        text: 'View Course',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
+        text:LocaleKeys.view_course.tr(),
       );
 
   Widget _buildPracticeButtonWrapper(LearnCourseViewModel viewModel) =>
@@ -158,9 +160,9 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
         height: 15,
         borderRadius: 12,
         onTap: onPracticeTap,
-        text: 'Take Practice',
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
+        text:LocaleKeys.take_practice.tr() ,
       );
 }

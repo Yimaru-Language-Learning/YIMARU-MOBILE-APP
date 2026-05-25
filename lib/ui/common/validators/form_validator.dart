@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 class FormValidator {
   // Form validator
@@ -8,7 +10,7 @@ class FormValidator {
     }
 
     if (value.isEmpty) {
-      return 'The field is required';
+      return LocaleKeys.required_field.tr();
     }
 
     return null;
@@ -21,12 +23,12 @@ class FormValidator {
     }
 
     if (value.isEmpty) {
-      return 'The field is required';
+      return LocaleKeys.required_field.tr();
     }
     final regex = RegExp(r'^\S+\s+\S+.*$');
 
     if (!regex.hasMatch(value.trim())) {
-      return "Enter your full name";
+      return LocaleKeys.enter_full_name.tr();
     }
     return null;
   }
@@ -38,11 +40,11 @@ class FormValidator {
     }
 
     if (value.isEmpty) {
-      return 'The field is required';
+      return LocaleKeys.required_field.tr();
     }
 
     if (!EmailValidator.validate(value)) {
-      return 'Invalid email format';
+      return LocaleKeys.invalid_email.tr();
     }
 
     return null;
@@ -55,7 +57,7 @@ class FormValidator {
     }
 
     if (value.isEmpty) {
-      return 'The field is required';
+      return  LocaleKeys.required_field.tr();
     }
     return null;
   }
@@ -67,19 +69,19 @@ class FormValidator {
     }
 
     if (value.isEmpty) {
-      return 'The field is required';
+      return LocaleKeys.required_field.tr();
     }
 
     // Regex validation
     final regex = RegExp(r'^251');
 
     if (!regex.hasMatch(value)) {
-      return 'Phone number must start with 251';
+      return LocaleKeys.phone_must_start_with.tr();
     }
 
     // Length check first (optional but recommended)
     if (value.length != 12) {
-      return 'Phone number must be 12 digits';
+      return LocaleKeys.phone_must_be.tr();
     }
     return null;
   }

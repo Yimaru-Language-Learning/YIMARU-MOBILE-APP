@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
@@ -48,7 +50,7 @@ class OverallProgress extends StatelessWidget {
       [_buildProgressInfo(), _buildProgress()];
 
   Widget _buildProgressInfo() => Text(
-        'Overall Progress',
+      LocaleKeys.overall_progress.tr(),
         style: style16DG600,
       );
 
@@ -64,7 +66,7 @@ class OverallProgress extends StatelessWidget {
       );
 
   Widget _buildSubtitle() => Text(
-        'Keep up the great work! You\'re doing amazing.',
+     LocaleKeys.keep_up_the_great_work.tr(),
         style: style14DG500,
       );
 }

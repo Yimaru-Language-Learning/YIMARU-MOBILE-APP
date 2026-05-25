@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/widgets/no_data_indicator.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 import 'package:yimaru_app/ui/widgets/small_app_bar.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/translations/locale_keys.g.dart';
 import '../../../common/ui_helpers.dart';
 
 class LearnLoadingScreen extends StatelessWidget {
@@ -65,7 +67,7 @@ class LearnLoadingScreen extends StatelessWidget {
       Align(alignment: Alignment.center, child: _buildRefreshButton());
 
   Widget _buildRefreshButton() => NoDataIndicator(
-        title: 'No practice available!',
-        onTap: onTap,
+    onTap: onTap,
+    title: LocaleKeys.no_practice_available.tr(),
       );
 }

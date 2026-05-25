@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/helper_functions.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/translations/locale_keys.g.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_learn_practice_sheet.dart';
 import '../../../widgets/custom_elevated_button.dart';
@@ -175,9 +177,9 @@ class LearnPracticeDescriptionScreen
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Start Practice',
         foregroundColor: kcWhite,
         onTap: () => viewModel.goTo(2),
         backgroundColor: kcPrimaryColor,
+        text: LocaleKeys.start_practice.tr() ,
       );
 }

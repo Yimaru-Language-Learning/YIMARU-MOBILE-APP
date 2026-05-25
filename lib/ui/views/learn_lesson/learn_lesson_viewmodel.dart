@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/learn_module.dart';
@@ -31,11 +33,10 @@ class LearnLessonViewModel extends ReactiveViewModel {
   Future<void> navigateToLearnPractice(int id) async =>
       await _navigationService.navigateToLearnPracticeView(
         id: id,
-        label: 'Start Practice',
         practice: LearnPractices.lesson,
-        title: 'Let\'s practice what you just learnt!',
-        subtitle:
-            'I’ll ask you a few questions, and you can respond naturally.',
+        label:LocaleKeys.start_practice.tr(),
+        title: LocaleKeys.lets_practice_module.tr(),
+        subtitle:LocaleKeys.ask_you_few_actions.tr(),
       );
 
   Future<void> navigateToLearnLessonDetail(

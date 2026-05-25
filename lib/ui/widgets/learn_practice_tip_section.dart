@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
@@ -39,7 +41,7 @@ class LearnPracticeTipSection extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildTitle() => Text(
-        'Quick Tip',
+      LocaleKeys.quick_tip.tr(),
         style: style16B600,
       );
 

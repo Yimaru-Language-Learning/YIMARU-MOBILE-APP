@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
@@ -44,7 +46,7 @@ class ModuleProgress extends StatelessWidget {
       [_buildProgressInfo(), _buildProgress()];
 
   Widget _buildProgressInfo() => Text(
-        '$progress% Progress',
+        '$progress% ${LocaleKeys.progress.tr()}',
         style: style16DG400,
       );
 

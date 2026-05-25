@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/learn_practice_tip_section.dart';
 import 'package:yimaru_app/ui/widgets/learn_practice_results_wrapper.dart';
@@ -112,8 +114,8 @@ class LearnPracticeResultScreen
           {required BuildContext context,
           required LearnPracticeViewModel viewModel}) =>
       SmallAppBar(
-        title: 'Result',
         showBackButton: true,
+        title:LocaleKeys.result.tr(),
         onPop: () async =>
             await _showSheet(context: context, viewModel: viewModel),
       );
@@ -172,9 +174,9 @@ class LearnPracticeResultScreen
   Widget _buildContinueButton(LearnPracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text:LocaleKeys.cont.tr(),
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _navigate(viewModel),
       );
@@ -182,10 +184,10 @@ class LearnPracticeResultScreen
   Widget _buildPracticeAgainButton(LearnPracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Retry',
         borderRadius: 12,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
+        text: LocaleKeys.retry.tr(),
         foregroundColor: kcPrimaryColor,
         onTap: () async => await _retry(viewModel),
       );
