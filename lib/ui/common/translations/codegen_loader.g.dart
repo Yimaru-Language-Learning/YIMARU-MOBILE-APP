@@ -167,7 +167,9 @@ class CodegenLoader extends AssetLoader{
   "phone_must_start_with": "የስልክ ቁጥር በ251 መጀመር አለበት",
   "phone_must_be": "የስልክ ቁጥር 12 አሃዞች መሆን አለበት",
   "what_should_we_call_you": "ምን ብለን እንጠራህ?",
-  "use_for_personalization": "በመማር ጉዞህ ውስጥ ለግል ለማድረግ ስምህን እንጠቀማለን።"
+  "name_for_personalization": "በመማር ጉዞህ ውስጥ ለግል ለማድረግ ስምህን እንጠቀማለን።",
+  "choose_your_gender": "ጾታህን ምረጥ",
+  "gender_for_personalization": "በጾታህ መሰረት የመማር ተሞክሮህን እናበጅለታለን።"
 };
 static const Map<String,dynamic> _en = {
   "loading": "Loading",
@@ -322,7 +324,9 @@ static const Map<String,dynamic> _en = {
   "phone_must_start_with": "Phone number must start with 251",
   "phone_must_be": "Phone number must be 12 digits",
   "what_should_we_call_you": "What should we call you?",
-  "use_for_personalization": "We’ll use your name to personalize your learning journey."
+  "name_for_personalization": "We’ll use your name to personalize your learning journey.",
+  "choose_your_gender": "Choose your gender?",
+  "gender_for_personalization": "We’ll personalize your learning experience based on your gender."
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"am": _am, "en": _en};
 }

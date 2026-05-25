@@ -153,6 +153,8 @@ abstract class  LocaleKeys {
   static const phone_must_start_with = 'phone_must_start_with';
   static const phone_must_be = 'phone_must_be';
   static const what_should_we_call_you = 'what_should_we_call_you';
-  static const use_for_personalization = 'use_for_personalization';
+  static const name_for_personalization = 'name_for_personalization';
+  static const choose_your_gender = 'choose_your_gender';
+  static const gender_for_personalization = 'gender_for_personalization';
 
 }
