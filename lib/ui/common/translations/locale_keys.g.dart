@@ -122,5 +122,37 @@ abstract class  LocaleKeys {
   static const chat_via_telegram = 'chat_via_telegram';
   static const call_our_support = 'call_our_support';
   static const tap_to_call = 'tap_to_call';
+  static const join_telegram = 'join_telegram';
+  static const connect_with_support_team = 'connect_with_support_team';
+  static const open_in_telegram = 'open_in_telegram';
+  static const search_for = 'search_for';
+  static const current_level = 'current_level';
+  static const keep_up_the_great_work = 'keep_up_the_great_work';
+  static const no_practice_available = 'no_practice_available';
+  static const begin_module_practice = 'begin_module_practice';
+  static const lets_practice_lesson = 'lets_practice_lesson';
+  static const lets_quickly_review = 'lets_quickly_review';
+  static const lets_practice_module = 'lets_practice_module';
+  static const ask_you_few_actions = 'ask_you_few_actions';
+  static const begin_level_practice = 'begin_level_practice';
+  static const lets_practice_course = 'lets_practice_course';
+  static const lets_quick_practice = 'lets_quick_practice';
+  static const speaking = 'speaking';
+  static const you_have_finished_practice = 'you_have_finished_practice';
+  static const view_results = 'view_results';
+  static const sample_answer = 'sample_answer';
+  static const your_answer = 'your_answer';
+  static const sound_confident = 'sound_confident';
+  static const you_have_completed = 'you_have_completed';
+  static const yes = 'yes';
+  static const no = 'no';
+  static const want_to_quit = 'want_to_quit';
+  static const required_field = 'required_field';
+  static const enter_full_name = 'enter_full_name';
+  static const invalid_email = 'invalid_email';
+  static const phone_must_start_with = 'phone_must_start_with';
+  static const phone_must_be = 'phone_must_be';
+  static const what_should_we_call_you = 'what_should_we_call_you';
+  static const use_for_personalization = 'use_for_personalization';
 
 }

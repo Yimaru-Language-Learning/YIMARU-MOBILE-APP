@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/learn_practice_answer_card.dart';
@@ -51,7 +53,7 @@ class LearnPracticeResultCard extends ViewModelWidget<LearnPracticeViewModel> {
   Widget _buildSampleResponse() => LearnPracticeAnswerCard(
         answer: answer,
         voice: Voice.sample,
-        title: 'Sample Answer',
+        title:LocaleKeys.sample_answer.tr() ,
       );
 
   Widget _buildActualResponseWrapper() =>
@@ -59,7 +61,8 @@ class LearnPracticeResultCard extends ViewModelWidget<LearnPracticeViewModel> {
 
   Widget _buildActualResponse() => LearnPracticeAnswerCard(
         answer: answer,
-        title: 'Your Answer',
         voice: Voice.recorded,
-      );
+    title: LocaleKeys.your_answer.tr(),
+
+  );
 }

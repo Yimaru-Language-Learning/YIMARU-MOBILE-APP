@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/learn_module.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/learn_module_tile.dart';
 import 'package:yimaru_app/ui/widgets/overall_progress.dart';
 
@@ -97,7 +99,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       );
 
   Widget _buildSubtitle() => Text(
-        'Your Current Level',
+       LocaleKeys.your_current_level.tr(),
         style: style14P400,
       );
 

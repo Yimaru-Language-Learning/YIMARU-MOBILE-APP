@@ -24,7 +24,7 @@ class LearnProgramTile extends ViewModelWidget<LearnProgramViewModel> {
 
   Widget _buildExpansionTileCardWrapper(LearnProgramViewModel viewModel) =>
       GestureDetector(
-        onTap: !(program.access?.isAccessible ?? false) ? onLockTap : null,
+       // onTap: !(program.access?.isAccessible ?? false) ? onLockTap : null,
         child: _buildExpansionTileCard(viewModel),
       );
 

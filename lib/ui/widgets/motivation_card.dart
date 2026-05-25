@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../common/app_colors.dart';
@@ -31,7 +33,7 @@ class MotivationCard extends StatelessWidget {
 
   Widget _buildText() => Expanded(
         child: Text(
-          'Let’s keep going — you’re more than halfway there!',
+        LocaleKeys.keep_going.tr(),
           maxLines: 2,
           style: style14DG400,
         ),

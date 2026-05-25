@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/user.dart';
@@ -64,13 +66,13 @@ class ProfileViewModel extends ReactiveViewModel {
   // Dialog
   Future<bool?> showAbortDialog() async {
     DialogResponse? response = await _dialogService.showDialog(
-      title: 'Logout',
-      cancelTitle: 'No',
-      buttonTitle: 'Yes',
       barrierDismissible: true,
       cancelTitleColor: kcDarkGrey,
       buttonTitleColor: kcPrimaryColor,
-      description: 'Are you sure you want to quit?',
+      title: LocaleKeys.logout.tr(),
+      cancelTitle: LocaleKeys.no.tr(),
+      buttonTitle: LocaleKeys.yes.tr(),
+      description: LocaleKeys.want_to_quit.tr(),
     );
     return response?.confirmed;
   }

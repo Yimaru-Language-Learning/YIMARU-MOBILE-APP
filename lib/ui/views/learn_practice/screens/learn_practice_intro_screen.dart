@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
 import '../../../common/app_colors.dart';
@@ -174,7 +176,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
   Widget _buildPartnerName() => Text.rich(
         TextSpan(text: 'Daniel', style: style14DG600, children: [
           TextSpan(
-            text: ' - Your Speaking Partner',
+            text: ' - ${LocaleKeys.speaking_partner.tr()}',
             style: style14MG400,
           )
         ]),

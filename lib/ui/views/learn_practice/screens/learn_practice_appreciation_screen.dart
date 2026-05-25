@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
 import '../../../common/app_colors.dart';
@@ -131,13 +133,13 @@ class LearnPracticeAppreciationScreen
   Widget _buildIcon() => SvgPicture.asset('assets/icons/success.svg');
 
   Widget _buildTitle(LearnPracticeViewModel viewModel) => Text(
-        'Great work, ${viewModel.user?.firstName}',
+        '${LocaleKeys.great_work.tr()}, ${viewModel.user?.firstName}',
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle() => Text(
-        'You have finished your practice',
+       LocaleKeys.you_have_finished_practice.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -152,9 +154,10 @@ class LearnPracticeAppreciationScreen
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'View My Results',
         foregroundColor: kcWhite,
         onTap: () => viewModel.goTo(4),
         backgroundColor: kcPrimaryColor,
+        text: LocaleKeys.view_results.tr(),
+
       );
 }

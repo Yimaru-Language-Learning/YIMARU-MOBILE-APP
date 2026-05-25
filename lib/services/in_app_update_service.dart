@@ -1,9 +1,15 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_update/in_app_update.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'package:storage_info/storage_info.dart';
+import 'package:yimaru_app/app/app.locator.dart';
+
+import '../ui/common/ui_helpers.dart';
 
 class InAppUpdateService {
+  final _navigationService = locator<NavigationService>();
+
   Future<int> getBatteryLevel() async {
     final battery = Battery();
     final batteryLevel = await battery.batteryLevel;
@@ -43,7 +49,11 @@ class InAppUpdateService {
     try {
       final info = await InAppUpdate.checkForUpdate();
       if (info.updateAvailability == UpdateAvailability.updateAvailable) {
-        await InAppUpdate.completeFlexibleUpdate();
+        AppUpdateResult result = await InAppUpdate.performImmediateUpdate();
+        if (result == AppUpdateResult.userDeniedUpdate) {
+          showErrorToast('An update is required to continue using this app.');
+          _navigationService.back();
+        }
       }
 
       // ... rest of your update logic ...

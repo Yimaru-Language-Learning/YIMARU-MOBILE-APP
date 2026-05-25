@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:stacked/stacked.dart';
@@ -12,6 +13,7 @@ import 'package:yimaru_app/ui/widgets/wave_wrapper.dart';
 import '../../../../models/learn_question.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
+import '../../../common/translations/locale_keys.g.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_column_button.dart';
 import '../../../widgets/small_app_bar.dart';
@@ -125,7 +127,7 @@ class InteractLearnPracticeScreen
           showBackButton: true,
           onPop: () async =>
               await _showSheet(context: context, viewModel: viewModel),
-          title: 'Practice Speaking ($index/${viewModel.questions.length})');
+          title: '${LocaleKeys.practice_speaking.tr()} ($index/${viewModel.questions.length})');
 
   Widget _buildSpeakingIndicatorWrapper(LearnPracticeViewModel viewModel) =>
       Column(
@@ -152,13 +154,13 @@ class InteractLearnPracticeScreen
               : const SizedBox(height: 20);
 
   Widget _buildListeningLabel() => Text(
-        'Daniel is speaking...',
+      'Daniel ${LocaleKeys.speaking.tr()}',
         style: style14P400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSpeakingLabel() => Text(
-        'You\'re speaking...',
+       '${ LocaleKeys.you_are_speaking.tr()}...',
         style: style14P400,
         textAlign: TextAlign.center,
       );
@@ -237,7 +239,7 @@ class InteractLearnPracticeScreen
       ];
 
   Widget _buildActionLabel() => Text(
-        'Tap the microphone to speak',
+      LocaleKeys.tap_microphone.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -288,7 +290,7 @@ class InteractLearnPracticeScreen
   Widget _buildReplyButton(LearnPracticeViewModel viewModel) =>
       CustomColumnButton(
         icon: Icons.replay,
-        label: 'Reply',
+        label: LocaleKeys.reply.tr(),
         color: viewModel.recordingState == VoiceRecordingState.pending &&
                 viewModel.player.state != PlayerState.playing
             ? kcPrimaryColor
@@ -356,8 +358,8 @@ class InteractLearnPracticeScreen
           required LearnPracticeViewModel viewModel}) =>
       CustomColumnButton(
         color: kcRed,
-        label: 'Cancel',
         icon: Icons.close,
+        label:LocaleKeys.cancel.tr() ,
         onTap: () async =>
             await _showSheet(context: context, viewModel: viewModel),
       );

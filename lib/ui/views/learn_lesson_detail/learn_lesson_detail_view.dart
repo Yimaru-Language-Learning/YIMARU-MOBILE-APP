@@ -1,8 +1,10 @@
 import 'package:chewie/chewie.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/models/learn_module.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
@@ -188,9 +190,9 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Take Practice',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
+        text:LocaleKeys.take_practice.tr() ,
         onTap: () async => await _navigate(viewModel),
       );
 }

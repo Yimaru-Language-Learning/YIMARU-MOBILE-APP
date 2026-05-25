@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/learn_module.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../services/learn_service.dart';
@@ -36,10 +38,10 @@ class LearnModuleViewModel extends ReactiveViewModel {
           {required int id, required String module}) async =>
       await _navigationService.navigateToLearnPracticeView(
         id: id,
-        label: 'Begin Module Practice',
         practice: LearnPractices.module,
-        title: 'Let’s Practice $module',
-        subtitle: 'Let’s quickly review what you’ve learned in this module! ',
+        label: LocaleKeys.begin_module_practice.tr(),
+        subtitle: LocaleKeys.lets_quickly_review.tr(),
+        title: '${LocaleKeys.lets_practice_module.tr()} $module',
       );
 
   // Remote api call

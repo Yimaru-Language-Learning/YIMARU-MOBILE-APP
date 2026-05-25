@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 
 import '../../../common/app_colors.dart';
@@ -61,7 +63,7 @@ class LearnPracticeCompletionScreen
       );
 
   Widget _buildTitle() => Text(
-        'Yay, you’ve completed $level ',
+        '${LocaleKeys.you_have_completed.tr()} $level ',
         style: style25DG600,
         textAlign: TextAlign.center,
       );
@@ -81,9 +83,9 @@ class LearnPracticeCompletionScreen
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Continue',
         onTap: viewModel.pop,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         backgroundColor: kcPrimaryColor,
       );
 }
