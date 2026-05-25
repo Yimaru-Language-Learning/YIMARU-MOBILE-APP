@@ -59,8 +59,8 @@ notifyListeners();
   }
 
   Future<void> setAmharicLanguage(BuildContext context) async {
-    await context.setLocale(const Locale('am'));
-    await _secureService.setString('language', 'am');
+    await context.setLocale(const Locale('አማ'));
+    await _secureService.setString('language', 'አማ');
     notifyListeners();
   }
 
