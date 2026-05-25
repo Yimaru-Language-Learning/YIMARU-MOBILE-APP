@@ -151,7 +151,9 @@
   "phone_must_start_with": "የስልክ ቁጥር በ251 መጀመር አለበት",
   "phone_must_be": "የስልክ ቁጥር 12 አሃዞች መሆን አለበት",
   "what_should_we_call_you": "ምን ብለን እንጠራህ?",
-  "use_for_personalization": "በመማር ጉዞህ ውስጥ ለግል ለማድረግ ስምህን እንጠቀማለን።"
+  "name_for_personalization": "በመማር ጉዞህ ውስጥ ለግል ለማድረግ ስምህን እንጠቀማለን።",
+  "choose_your_gender": "ጾታህን ምረጥ",
+  "gender_for_personalization": "በጾታህ መሰረት የመማር ተሞክሮህን እናበጅለታለን።"
 
 
 

@@ -62,12 +62,19 @@ class OnboardingViewModel extends ReactiveViewModel
   String? get selectedEducationalBackground => _selectedEducationalBackground;
 
   // Gender
-  final List<String> _genders = [
+  final List<String> _gendersEn = [
     'Male',
     'Female',
   ];
 
-  List<String> get genders => _genders;
+  List<String> get gendersEn => _gendersEn;
+
+  final List<String> _gendersAm = [
+    'ወንድ',
+    'ሴት',
+  ];
+
+  List<String> get gendersAm => _gendersAm;
 
   String? _selectedGender;
 
@@ -78,7 +85,9 @@ class OnboardingViewModel extends ReactiveViewModel
     {
       'Under 13': 'UNDER_13',
     },
-    {'13-17': '13_17'},
+    {
+      '13-17': '13_17',
+    },
     {
       '18-24': '18_24',
     },

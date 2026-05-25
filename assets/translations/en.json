@@ -151,6 +151,9 @@
     "phone_must_start_with": "Phone number must start with 251",
     "phone_must_be": "Phone number must be 12 digits",
     "what_should_we_call_you": "What should we call you?",
-    "use_for_personalization": "We’ll use your name to personalize your learning journey."
+    "name_for_personalization": "We’ll use your name to personalize your learning journey.",
+    "choose_your_gender": "Choose your gender?",
+    "gender_for_personalization": "We’ll personalize your learning experience based on your gender."
+
 
   }

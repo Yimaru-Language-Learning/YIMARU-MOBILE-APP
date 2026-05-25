@@ -100,7 +100,7 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
       );
 
   Widget _buildSubtitle() =>  Text(
-        LocaleKeys.use_for_personalization.tr(),
+        LocaleKeys.name_for_personalization.tr(),
         style:style14MG400,
       );
 
