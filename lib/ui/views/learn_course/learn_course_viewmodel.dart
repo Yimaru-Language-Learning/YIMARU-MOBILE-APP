@@ -29,6 +29,9 @@ class LearnCourseViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
+  Future<void> navigateToLearnSubscription() async =>
+      await _navigationService.navigateToLearnSubscriptionView();
+
   Future<void> navigateToLearnModule(LearnCourse course) async =>
       _navigationService.navigateToLearnModuleView(course: course);
 
@@ -39,7 +42,7 @@ class LearnCourseViewModel extends ReactiveViewModel {
         level: level,
         practice: LearnPractices.course,
         label: LocaleKeys.begin_level_practice.tr(),
-        subtitle: LocaleKeys.lets_quick_practice.tr(),
+        subtitle: LocaleKeys.lets_quick_review.tr(),
         title: '${LocaleKeys.lets_practice_course.tr()} $level',
       );
 

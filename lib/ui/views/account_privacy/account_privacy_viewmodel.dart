@@ -12,8 +12,7 @@ class AccountPrivacyViewModel extends ReactiveViewModel {
   final _localizationService = locator<LocalizationService>();
 
   @override
-  List<ListenableServiceMixin> get listenableServices =>
-      [ _localizationService];
+  List<ListenableServiceMixin> get listenableServices => [_localizationService];
 
   // Languages
   Map<String, dynamic> get _selectedLanguage =>

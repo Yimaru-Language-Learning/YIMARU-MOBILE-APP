@@ -1,5 +1,5 @@
 name: yimaru_app
-version: 0.1.21+23
+version: 0.1.22+24
 publish_to: 'none'
 description: A new Flutter project.
 
@@ -22,8 +22,6 @@ dependencies:
   flutter_svg: ^2.2.3
   stacked_shared: any
   image_picker: ^1.2.1
-  battery_plus: ^7.0.0
-  storage_info: ^1.0.0
   flutter_html: ^3.0.0
   email_validator: any
   audioplayers: ^6.6.0
@@ -43,6 +41,7 @@ dependencies:
   json_serializable: ^6.8.0
   waveform_recorder: ^1.8.0
   vimeo_video_player: ^1.0.3
+  package_info_plus: ^10.1.0
   permission_handler: ^12.0.1
   firebase_messaging: ^16.1.1
   cached_network_image: ^3.4.1

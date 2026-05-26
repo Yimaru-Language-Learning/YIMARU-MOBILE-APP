@@ -96,8 +96,10 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _inAppPop(viewModel),
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildExpandedBody(

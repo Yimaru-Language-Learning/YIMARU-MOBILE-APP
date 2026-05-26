@@ -192,7 +192,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        text:LocaleKeys.take_practice.tr() ,
+        text: LocaleKeys.take_practice.tr(),
         onTap: () async => await _navigate(viewModel),
       );
 }

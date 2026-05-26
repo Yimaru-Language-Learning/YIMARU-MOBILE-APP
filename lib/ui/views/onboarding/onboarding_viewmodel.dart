@@ -3,8 +3,13 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import '../../../app/app.locator.dart';
+import '../../../models/field_option.dart';
+import '../../../services/api_service.dart';
 import '../../../services/google_auth_service.dart';
 import '../../../services/localization_service.dart';
+import '../../../services/onboarding_service.dart';
+import '../../../services/status_checker_service.dart';
+import '../../common/enmus.dart';
 
 class OnboardingViewModel extends ReactiveViewModel
     with FormStateHelper
@@ -14,6 +19,8 @@ class OnboardingViewModel extends ReactiveViewModel
   final _navigationService = locator<NavigationService>();
 
   final _googleAuthService = locator<GoogleAuthService>();
+
+  final _onboardingService = locator<OnboardingService>();
 
   final _localizationService = locator<LocalizationService>();
 
@@ -47,19 +54,15 @@ class OnboardingViewModel extends ReactiveViewModel
   bool get focusFullName => _focusFullName;
 
   // Educational background
-  final List<String> _educationalBackgrounds = [
-    'No formal education',
-    'Primary school',
-    'Secondary /High school',
-    'College / Diploma',
-    'Bachelor’s and above',
-  ];
+  List<FieldOption> get _educationalBackgrounds =>
+      _onboardingService.educationalBackgrounds;
 
-  List<String> get educationalBackgrounds => _educationalBackgrounds;
+  List<FieldOption> get educationalBackgrounds => _educationalBackgrounds;
 
-  String? _selectedEducationalBackground;
+  FieldOption? _selectedEducationalBackground;
 
-  String? get selectedEducationalBackground => _selectedEducationalBackground;
+  FieldOption? get selectedEducationalBackground =>
+      _selectedEducationalBackground;
 
   // Gender
   final List<String> _gendersEn = [
@@ -81,150 +84,73 @@ class OnboardingViewModel extends ReactiveViewModel
   String? get selectedGender => _selectedGender;
 
   // Age group
-  final List<Map<String, dynamic>> _ageGroups = [
-    {
-      'Under 13': 'UNDER_13',
-    },
-    {
-      '13-17': '13_17',
-    },
-    {
-      '18-24': '18_24',
-    },
-    {
-      '25-34': '25_34',
-    },
-    {
-      '35-44': '35_44',
-    },
-    {
-      '45-54': '45_54',
-    },
-    {'55-Plus': '55_PLUS'},
-  ];
+  List<FieldOption> get _ageGroups => _onboardingService.ageGroups;
 
-  List<Map<String, dynamic>> get ageGroups => _ageGroups;
+  List<FieldOption> get ageGroups => _ageGroups;
 
-  Map<String, dynamic>? _selectedAgeGroup;
+  FieldOption? _selectedAgeGroup;
 
-  Map<String, dynamic>? get selectedAgeGroup => _selectedAgeGroup;
+  FieldOption? get selectedAgeGroup => _selectedAgeGroup;
 
   // Occupation
-  String _selectedOccupation = 'Students (High school & University)';
+  FieldOption? _selectedOccupation;
 
-  String get selectedOccupation => _selectedOccupation;
+  FieldOption? get selectedOccupation => _selectedOccupation;
 
   // Country
-  String _selectedCountry = 'Ethiopia';
+  FieldOption? _selectedCountry;
 
-  String get selectedCountry => _selectedCountry;
+  FieldOption? get selectedCountry => _selectedCountry;
 
   // Region
   bool _focusRegion = false;
 
   bool get focusRegion => _focusRegion;
 
-  bool _dropdownRegion = true;
+  bool _dropdownRegion = false;
 
   bool get dropdownRegion => _dropdownRegion;
 
-  String _selectedRegion = 'Addis Ababa';
+  FieldOption? _selectedRegion;
 
-  String get selectedRegion => _selectedRegion;
+  FieldOption? get selectedRegion => _selectedRegion;
 
   // Learning goal
-  String? _selectedLearningGoal;
+  FieldOption? _selectedLearningGoal;
 
-  String? get selectedLearningGoal => _selectedLearningGoal;
+  FieldOption? get selectedLearningGoal => _selectedLearningGoal;
 
-  final List<Map<String, dynamic>> _learningGoals = [
-    {
-      'icon': 0,
-      'title': 'Learn to Speak English',
-      'subtitle': 'I know some English, but i want to learn to speak it',
-    },
-    {
-      'icon': 1,
-      'title': 'Practice Speaking English',
-      'subtitle': 'I already speak English, but I want more practice.',
-    },
-    {
-      'icon': 2,
-      'title': 'Skill-based Courses',
-      'subtitle': 'I want courses for IELTS, TOEFL, Duolingo, or work.',
-    },
-  ];
+  List<FieldOption> get _learningGoals => _onboardingService.learningGoals;
 
-  List<Map<String, dynamic>> get learningGoals => _learningGoals;
+  List<FieldOption> get learningGoals => _learningGoals;
 
   // Learning reason
-  bool _showLanguageGoalTextBox = false;
 
-  bool get showLanguageGoalTextBox => _showLanguageGoalTextBox;
+  FieldOption? _selectedLanguageGoal;
 
-  bool _focusLanguageGoal = false;
+  FieldOption? get selectedLanguageGoal => _selectedLanguageGoal;
 
-  bool get focusLanguageGoal => _focusLanguageGoal;
+  List<FieldOption> get _languageGoals => _onboardingService.languageGoals;
 
-  String? _selectedLanguageGoal;
-
-  String? get selectedLanguageGoal => _selectedLanguageGoal;
-
-  final List<String> _languageGoals = [
-    'Speak confidently at work or school',
-    'Travel or handle daily situations',
-    'Connect with family or friends',
-    'General skills expansion',
-    'Other'
-  ];
-
-  List<String> get languageGoals => _languageGoals;
+  List<FieldOption> get languageGoals => _languageGoals;
 
   // Challenges
-  bool _showChallengeTextBox = false;
+  FieldOption? _selectedChallenge;
 
-  bool get showChallengeTextBox => _showChallengeTextBox;
+  FieldOption? get selectedChallenge => _selectedChallenge;
 
-  bool _focusChallenge = false;
+  List<FieldOption> get _challenges => _onboardingService.challenges;
 
-  bool get focusChallenge => _focusChallenge;
-
-  String? _selectedChallenge;
-
-  String? get selectedChallenge => _selectedChallenge;
-
-  final List<String> _challenges = [
-    'Pronunciation',
-    'Finding words or grammar quickly',
-    'Feeling nervous or lacking confidence',
-    'Understanding accents or fast speech',
-    'Other'
-  ];
-
-  List<String> get challenges => _challenges;
+  List<FieldOption> get challenges => _challenges;
 
   // Topic
-  bool _showTopicTextBox = false;
+  FieldOption? _selectedTopic;
 
-  bool get showTopicTextBox => _showTopicTextBox;
+  FieldOption? get selectedTopic => _selectedTopic;
 
-  bool _focusTopic = false;
+  List<FieldOption> get _topics => _onboardingService.topics;
 
-  bool get focusTopic => _focusTopic;
-
-  String? _selectedTopic;
-
-  String? get selectedTopic => _selectedTopic;
-
-  final List<String> _topics = [
-    'Food & Cooking',
-    'Hobbies, Sports, Music',
-    'Tech, News, Business',
-    'Travel, Places, Culture',
-    'Other'
-  ];
-
-  List<String> get topics => _topics;
+  List<FieldOption> get topics => _topics;
 
   // User data
   final Map<String, dynamic> _userData = {};
@@ -238,12 +164,12 @@ class OnboardingViewModel extends ReactiveViewModel
   }
 
   // Education background
-  void setSelectedEducationalBackground(String value) {
+  void setSelectedEducationalBackground(FieldOption value) {
     _selectedEducationalBackground = value;
     rebuildUi();
   }
 
-  bool isSelectedEducationalBackground(String value) =>
+  bool isSelectedEducationalBackground(FieldOption value) =>
       _selectedEducationalBackground == value;
 
   // Gender
@@ -255,192 +181,35 @@ class OnboardingViewModel extends ReactiveViewModel
   bool isSelectedGender(String value) => _selectedGender == value;
 
   // Age group
-  void setSelectedAgeGroup(Map<String, dynamic> value) {
+  void setSelectedAgeGroup(FieldOption value) {
     _selectedAgeGroup = value;
 
     rebuildUi();
   }
 
-  bool isSelectedAgeGroup(Map<String, dynamic> value) =>
-      _selectedAgeGroup == value;
+  bool isSelectedAgeGroup(FieldOption value) => _selectedAgeGroup == value;
 
   // Occupation
-  List<String> getOccupations() => [
-        'Students (High school & University)',
-        'Job Seekers / Fresh Graduates',
-        'Working Professionals (Corporate/Office)',
-        'Government & NGO Workers',
-        'Entrepreneurs & Small Business Owners',
-        'Hospitality & Tourism Workers',
-        'Freelancers / Remote Workers (Digital Economy)'
-      ];
+  List<FieldOption> get _occupations => _onboardingService.occupations;
 
-  void setSelectedOccupation(String value) {
+  List<FieldOption> get occupations => _occupations;
+
+  void setSelectedOccupation(FieldOption? value) {
     _selectedOccupation = value;
     rebuildUi();
   }
 
   // Country
-  List<String> getCountries() => [
-        "Afghanistan",
-        "Albania",
-        "Algeria",
-        "Andorra",
-        "Angola",
-        "Argentina",
-        "Armenia",
-        "Australia",
-        "Austria",
-        "Azerbaijan",
-        "Bahrain",
-        "Bangladesh",
-        "Belarus",
-        "Belgium",
-        "Belize",
-        "Benin",
-        "Bhutan",
-        "Bolivia",
-        "Bosnia and Herzegovina",
-        "Botswana",
-        "Brazil",
-        "Brunei",
-        "Bulgaria",
-        "Burkina Faso",
-        "Burundi",
-        "Cambodia",
-        "Cameroon",
-        "Canada",
-        "Chad",
-        "Chile",
-        "China",
-        "Colombia",
-        "Comoros",
-        "Congo",
-        "Costa Rica",
-        "Croatia",
-        "Cuba",
-        "Cyprus",
-        "Czech Republic",
-        "Denmark",
-        "Djibouti",
-        "Dominican Republic",
-        "Ecuador",
-        "Egypt",
-        "El Salvador",
-        "Eritrea",
-        "Estonia",
-        "Eswatini",
-        "Ethiopia",
-        "Finland",
-        "France",
-        "Gabon",
-        "Gambia",
-        "Georgia",
-        "Germany",
-        "Ghana",
-        "Greece",
-        "Guatemala",
-        "Guinea",
-        "Haiti",
-        "Honduras",
-        "Hungary",
-        "Iceland",
-        "India",
-        "Indonesia",
-        "Iran",
-        "Iraq",
-        "Ireland",
-        "Israel",
-        "Italy",
-        "Jamaica",
-        "Japan",
-        "Jordan",
-        "Kazakhstan",
-        "Kenya",
-        "Kuwait",
-        "Kyrgyzstan",
-        "Laos",
-        "Latvia",
-        "Lebanon",
-        "Liberia",
-        "Libya",
-        "Lithuania",
-        "Luxembourg",
-        "Madagascar",
-        "Malawi",
-        "Malaysia",
-        "Maldives",
-        "Mali",
-        "Malta",
-        "Mexico",
-        "Moldova",
-        "Monaco",
-        "Mongolia",
-        "Morocco",
-        "Mozambique",
-        "Myanmar",
-        "Namibia",
-        "Nepal",
-        "Netherlands",
-        "New Zealand",
-        "Nicaragua",
-        "Niger",
-        "Nigeria",
-        "North Korea",
-        "Norway",
-        "Oman",
-        "Pakistan",
-        "Panama",
-        "Paraguay",
-        "Peru",
-        "Philippines",
-        "Poland",
-        "Portugal",
-        "Qatar",
-        "Romania",
-        "Russia",
-        "Rwanda",
-        "Saudi Arabia",
-        "Senegal",
-        "Serbia",
-        "Singapore",
-        "Slovakia",
-        "Slovenia",
-        "Somalia",
-        "South Africa",
-        "South Korea",
-        "Spain",
-        "Sri Lanka",
-        "Sudan",
-        "Sweden",
-        "Switzerland",
-        "Syria",
-        "Taiwan",
-        "Tajikistan",
-        "Tanzania",
-        "Thailand",
-        "Tunisia",
-        "Turkey",
-        "Uganda",
-        "Ukraine",
-        "United Arab Emirates",
-        "United Kingdom",
-        "United States",
-        "Uruguay",
-        "Uzbekistan",
-        "Venezuela",
-        "Vietnam",
-        "Yemen",
-        "Zambia",
-        "Zimbabwe"
-      ];
+  List<FieldOption> get _countries => _onboardingService.countries;
 
-  void setSelectedCountry(String value) {
+  List<FieldOption> get countries => _countries;
+
+  void setSelectedCountry(FieldOption? value) {
     _selectedCountry = value;
-
-    if (value == 'Ethiopia') {
+    if (value?.label?.toLowerCase().trim() == 'ethiopia') {
       _dropdownRegion = true;
-      _selectedRegion = 'Addis Ababa';
+      _selectedRegion = _regions
+          .firstWhere((e) => e.label?.toLowerCase().trim() == 'addis ababa');
     } else {
       _dropdownRegion = false;
     }
@@ -449,24 +218,11 @@ class OnboardingViewModel extends ReactiveViewModel
   }
 
   // Region
-  List<String> getRegions() => [
-        'Addis Ababa',
-        'Afar',
-        'Amhara',
-        'Benishangul-Gumuz',
-        'Central Ethiopia',
-        'Dire Dawa',
-        'Gambela',
-        'Harari',
-        'Oromia',
-        'Sidama',
-        'Somali',
-        'South Ethiopia',
-        'South West Ethiopia Peoples',
-        'Tigray',
-      ];
+  List<FieldOption> get _regions => _onboardingService.regions;
 
-  void setSelectedRegion(String value) {
+  List<FieldOption> get regions => _regions;
+
+  void setSelectedRegion(FieldOption? value) {
     _selectedRegion = value;
     rebuildUi();
   }
@@ -482,75 +238,42 @@ class OnboardingViewModel extends ReactiveViewModel
   }
 
   // Learning goal
-  void setSelectedLearningGoal(String value) {
+  void setSelectedLearningGoal(FieldOption value) {
     _selectedLearningGoal = value;
     rebuildUi();
   }
 
-  bool isSelectedLearningGoal(String value) => _selectedLearningGoal == value;
+  bool isSelectedLearningGoal(FieldOption value) =>
+      _selectedLearningGoal == value;
 
   // Learning reason
-  void setLanguageGoalFocus() {
-    _focusLanguageGoal = true;
-    rebuildUi();
-  }
 
-  void setSelectedLanguageGoal(String value) {
+  void setSelectedLanguageGoal(FieldOption value) {
     _selectedLanguageGoal = value;
-    if (value.toLowerCase() == 'other') {
-      _showLanguageGoalTextBox = true;
-    } else {
-      if (_showLanguageGoalTextBox) {
-        _showLanguageGoalTextBox = false;
-        _focusLanguageGoal = false;
-      }
-    }
+
     rebuildUi();
   }
 
-  bool isSelectedLanguageGoal(String value) => _selectedLanguageGoal == value;
+  bool isSelectedLanguageGoal(FieldOption value) =>
+      _selectedLanguageGoal == value;
 
   // Challenges
-  void setChallengesFocus() {
-    _focusChallenge = true;
-    rebuildUi();
-  }
 
-  void setSelectedChallenge(String value) {
+  void setSelectedChallenge(FieldOption value) {
     _selectedChallenge = value;
-    if (value.toLowerCase() == 'other') {
-      _showChallengeTextBox = true;
-    } else {
-      if (_showChallengeTextBox) {
-        _showChallengeTextBox = false;
-        _focusChallenge = false;
-      }
-    }
     rebuildUi();
   }
 
-  bool isSelectedChallenge(String value) => _selectedChallenge == value;
+  bool isSelectedChallenge(FieldOption value) => _selectedChallenge == value;
 
   // Topics
-  void setTopicsFocus() {
-    _focusTopic = true;
-    rebuildUi();
-  }
 
-  void setSelectedTopic(String value) {
+  void setSelectedTopic(FieldOption value) {
     _selectedTopic = value;
-    if (value.toLowerCase() == 'other') {
-      _showTopicTextBox = true;
-    } else {
-      if (_showTopicTextBox) {
-        _showTopicTextBox = false;
-        _focusTopic = false;
-      }
-    }
     rebuildUi();
   }
 
-  bool isSelectedTopic(String value) => _selectedTopic == value;
+  bool isSelectedTopic(FieldOption value) => _selectedTopic == value;
 
   // Add user data
   void addUserData(Map<String, dynamic> data) {
@@ -589,15 +312,15 @@ class OnboardingViewModel extends ReactiveViewModel
 
   // Reset occupation form screen
   void resetOccupationFormScreen() {
-    _selectedOccupation = 'Students (High school & University)';
+    _selectedOccupation = null;
     rebuildUi();
   }
 
   // Reset country region form screen
   void resetCountryRegionFormScreen() {
     _focusRegion = false;
-    _selectedCountry = 'Ethiopia';
-    _selectedRegion = 'Addis Ababa';
+    _selectedRegion = null;
+    _selectedCountry = null;
     rebuildUi();
   }
 
@@ -609,26 +332,20 @@ class OnboardingViewModel extends ReactiveViewModel
 
   // Reset language goal form screen
   void resetLanguageGoalFormScreen() {
-    _focusLanguageGoal = false;
     _selectedLanguageGoal = null;
-    _showLanguageGoalTextBox = false;
     rebuildUi();
   }
 
   // Reset challenge form screen
   void resetChallengeFormScreen() {
-    _focusChallenge = false;
     _selectedChallenge = null;
-    _showChallengeTextBox = false;
 
     rebuildUi();
   }
 
   // Reset topic form screen
   void resetTopicFormScreen() {
-    _focusTopic = false;
     _selectedTopic = null;
-    _showTopicTextBox = false;
     rebuildUi();
   }
 

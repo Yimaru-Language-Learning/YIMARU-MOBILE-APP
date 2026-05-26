@@ -82,8 +82,10 @@ class GenderFormScreen extends ViewModelWidget<OnboardingViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildTitle() => Text(
@@ -98,14 +100,22 @@ class GenderFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildAgeGroups(OnboardingViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
-        itemCount: viewModel.selectedLanguage['code'] == 'አማ'
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: viewModel.selectedLanguage['code'] == 'am'
             ? viewModel.gendersAm.length
             : viewModel.gendersEn.length,
-        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildAgeGroup(
-          title:viewModel.selectedLanguage['code'] == 'አማ' ?  viewModel.gendersAm[index]:viewModel.gendersEn[index],
-          selected: viewModel.isSelectedGender(viewModel.selectedLanguage['code'] == 'አማ' ? viewModel.gendersAm[index]: viewModel.gendersEn[index]),
-          onTap: () => viewModel.setSelectedGender(viewModel.selectedLanguage['code'] == 'አማ' ? viewModel.gendersAm[index]: viewModel.gendersEn[index]),
+          selected: viewModel.isSelectedGender(
+              viewModel.selectedLanguage['code'] == 'am'
+                  ? viewModel.gendersAm[index]
+                  : viewModel.gendersEn[index]),
+          onTap: () => viewModel.setSelectedGender(
+              viewModel.selectedLanguage['code'] == 'am'
+                  ? viewModel.gendersAm[index]
+                  : viewModel.gendersEn[index]),
+          title: viewModel.selectedLanguage['code'] == 'am'
+              ? viewModel.gendersAm[index]
+              : viewModel.gendersEn[index],
         ),
       );
 

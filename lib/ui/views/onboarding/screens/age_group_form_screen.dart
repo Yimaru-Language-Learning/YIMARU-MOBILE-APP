@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
@@ -19,9 +21,7 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    Map<String, dynamic> data = {
-      'age_group': viewModel.selectedAgeGroup?.values.first
-    };
+    Map<String, dynamic> data = {'age_group': viewModel.selectedAgeGroup?.code};
     viewModel.addUserData(data);
 
     viewModel.next();
@@ -88,17 +88,19 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildTitle() => Text(
-        'Which age range are you in?',
+        LocaleKeys.age_range.tr(),
         style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        'We’ll personalize your learning experience based on your age.',
+        LocaleKeys.age_for_personalization.tr(),
         style: style14DG400,
       );
 
@@ -107,7 +109,7 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
         itemCount: viewModel.ageGroups.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildAgeGroup(
-          title: viewModel.ageGroups[index].keys.first,
+          title: viewModel.ageGroups[index].label ?? '',
           selected: viewModel.isSelectedAgeGroup(viewModel.ageGroups[index]),
           onTap: () =>
               viewModel.setSelectedAgeGroup(viewModel.ageGroups[index]),
@@ -132,9 +134,9 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         backgroundColor: viewModel.selectedAgeGroup != null
             ? kcPrimaryColor
             : kcPrimaryColor.withOpacity(0.1),

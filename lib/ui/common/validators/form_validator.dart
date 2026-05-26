@@ -57,7 +57,7 @@ class FormValidator {
     }
 
     if (value.isEmpty) {
-      return  LocaleKeys.required_field.tr();
+      return LocaleKeys.required_field.tr();
     }
     return null;
   }

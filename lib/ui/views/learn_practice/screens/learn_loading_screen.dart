@@ -67,7 +67,7 @@ class LearnLoadingScreen extends StatelessWidget {
       Align(alignment: Alignment.center, child: _buildRefreshButton());
 
   Widget _buildRefreshButton() => NoDataIndicator(
-    onTap: onTap,
-    title: LocaleKeys.no_practice_available.tr(),
+        onTap: onTap,
+        title: LocaleKeys.no_practice_available.tr(),
       );
 }

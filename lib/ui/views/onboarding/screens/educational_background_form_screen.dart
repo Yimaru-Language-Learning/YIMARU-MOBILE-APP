@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
@@ -20,7 +22,7 @@ class EducationalBackgroundFormScreen
     FocusManager.instance.primaryFocus?.unfocus();
 
     Map<String, dynamic> data = {
-      'education_level': viewModel.selectedEducationalBackground
+      'education_level': viewModel.selectedEducationalBackground?.code
     };
     viewModel.addUserData(data);
 
@@ -88,22 +90,20 @@ class EducationalBackgroundFormScreen
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
-  Widget _buildTitle() => const Text(
-        'What’s your current educational level?',
-        style: TextStyle(
-          fontSize: 25,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w600,
-        ),
+  Widget _buildTitle() => Text(
+        LocaleKeys.educational_background.tr(),
+        style: style25DG600,
       );
 
-  Widget _buildSubtitle() => const Text(
-        'This helps us tailor your lessons to your experience.',
-        style: TextStyle(color: kcMediumGrey),
+  Widget _buildSubtitle() => Text(
+        LocaleKeys.education_for_personalization.tr(),
+        style: style14MG400,
       );
 
   Widget _buildEducationalLevels(OnboardingViewModel viewModel) =>
@@ -112,7 +112,7 @@ class EducationalBackgroundFormScreen
         physics: const NeverScrollableScrollPhysics(),
         itemCount: viewModel.educationalBackgrounds.length,
         itemBuilder: (context, index) => _buildEducationalLevel(
-          title: viewModel.educationalBackgrounds[index],
+          title: viewModel.educationalBackgrounds[index].label ?? '',
           selected: viewModel.isSelectedEducationalBackground(
               viewModel.educationalBackgrounds[index]),
           onTap: () => viewModel.setSelectedEducationalBackground(
@@ -138,9 +138,9 @@ class EducationalBackgroundFormScreen
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         onTap: viewModel.selectedEducationalBackground != null
             ? () => _next(viewModel)
             : null,

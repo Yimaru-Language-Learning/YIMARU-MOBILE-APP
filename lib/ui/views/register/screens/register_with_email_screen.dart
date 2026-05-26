@@ -91,8 +91,10 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         showBackButton: true,
         onPop: viewModel.goBack,
         showLanguageSelection: true,
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildExpandedBody(

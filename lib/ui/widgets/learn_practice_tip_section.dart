@@ -41,7 +41,7 @@ class LearnPracticeTipSection extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildTitle() => Text(
-      LocaleKeys.quick_tip.tr(),
+        LocaleKeys.quick_tip.tr(),
         style: style16B600,
       );
 

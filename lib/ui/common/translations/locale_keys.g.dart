@@ -136,7 +136,7 @@ abstract class  LocaleKeys {
   static const ask_you_few_actions = 'ask_you_few_actions';
   static const begin_level_practice = 'begin_level_practice';
   static const lets_practice_course = 'lets_practice_course';
-  static const lets_quick_practice = 'lets_quick_practice';
+  static const lets_quick_review = 'lets_quick_review';
   static const speaking = 'speaking';
   static const you_have_finished_practice = 'you_have_finished_practice';
   static const view_results = 'view_results';
@@ -156,5 +156,34 @@ abstract class  LocaleKeys {
   static const name_for_personalization = 'name_for_personalization';
   static const choose_your_gender = 'choose_your_gender';
   static const gender_for_personalization = 'gender_for_personalization';
+  static const age_range = 'age_range';
+  static const age_for_personalization = 'age_for_personalization';
+  static const educational_background = 'educational_background';
+  static const education_for_personalization = 'education_for_personalization';
+  static const your_occupation = 'your_occupation';
+  static const occupation_for_personalization = 'occupation_for_personalization';
+  static const location = 'location';
+  static const select_country_region = 'select_country_region';
+  static const select_country = 'select_country';
+  static const learning_goal = 'learning_goal';
+  static const language_goal = 'language_goal';
+  static const your_goal = 'your_goal';
+  static const write_your_goal = 'write_your_goal';
+  static const challenge_you_face = 'challenge_you_face';
+  static const evey_one_has_strugle = 'evey_one_has_strugle';
+  static const write_your_challenge = 'write_your_challenge';
+  static const topic_interest = 'topic_interest';
+  static const favourite_topic = 'favourite_topic';
+  static const your_interest = 'your_interest';
+  static const want_quick_assessment = 'want_quick_assessment';
+  static const answer_quick_questions = 'answer_quick_questions';
+  static const skip = 'skip';
+  static const finish_level = 'finish_level';
+  static const likely_speaker = 'likely_speaker';
+  static const great_job = 'great_job';
+  static const lets_start_practice = 'lets_start_practice';
+  static const welcome_abroad = 'welcome_abroad';
+  static const ready_to_explore = 'ready_to_explore';
+  static const finish = 'finish';
 
 }

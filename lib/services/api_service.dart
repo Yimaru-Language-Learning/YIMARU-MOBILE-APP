@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:yimaru_app/models/app_update.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/models/learn_practice.dart';
 import 'package:yimaru_app/models/learn_program.dart';
@@ -12,6 +13,7 @@ import 'package:yimaru_app/ui/common/app_constants.dart';
 import '../app/app.locator.dart';
 import '../models/course_module.dart';
 import '../models/course_unit.dart';
+import '../models/field_option.dart';
 import '../models/learn_course.dart';
 import '../models/learn_module.dart';
 import '../models/learn_question.dart';
@@ -372,6 +374,222 @@ class ApiService {
             .reversed
             .toList();
         return assessments;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get educational levels
+  Future<List<FieldOption>> getEducationalLevels() async {
+    try {
+      List<FieldOption> levels = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFieldOptions?field_key=education_level');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['education_level'] as List;
+        levels = decodedData.map(
+          (e) {
+            return FieldOption.fromJson(e);
+          },
+        ).toList();
+        return levels;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get ethiopia regions
+  Future<List<FieldOption>> getEthiopiaRegions() async {
+    try {
+      List<FieldOption> levels = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFieldOptions?field_key=ethiopia_regions');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['ethiopia_regions'] as List;
+        levels = decodedData.map(
+          (e) {
+            return FieldOption.fromJson(e);
+          },
+        ).toList();
+        return levels;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get language challenges
+  Future<List<FieldOption>> getLanguageChallenges() async {
+    try {
+      List<FieldOption> levels = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFieldOptions?field_key=language_challange');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['language_challange'] as List;
+        levels = decodedData.map(
+          (e) {
+            return FieldOption.fromJson(e);
+          },
+        ).toList();
+        return levels;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get occupations
+  Future<List<FieldOption>> getOccupations() async {
+    try {
+      List<FieldOption> levels = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFieldOptions?field_key=occupation');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['occupation'] as List;
+        levels = decodedData.map(
+          (e) {
+            return FieldOption.fromJson(e);
+          },
+        ).toList();
+        return levels;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get age group
+  Future<List<FieldOption>> getAgeGroups() async {
+    try {
+      List<FieldOption> levels = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFieldOptions?field_key=age_group');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['age_group'] as List;
+        levels = decodedData.map(
+          (e) {
+            return FieldOption.fromJson(e);
+          },
+        ).toList();
+        return levels;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get countries
+  Future<List<FieldOption>> getCountries() async {
+    try {
+      List<FieldOption> levels = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFieldOptions?field_key=country');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['country'] as List;
+        levels = decodedData.map(
+          (e) {
+            return FieldOption.fromJson(e);
+          },
+        ).toList();
+        return levels;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get topics
+  Future<List<FieldOption>> getTopics() async {
+    try {
+      List<FieldOption> levels = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFieldOptions?field_key=favourite_topic');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['favourite_topic'] as List;
+        levels = decodedData.map(
+          (e) {
+            return FieldOption.fromJson(e);
+          },
+        ).toList();
+        return levels;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get topics
+  Future<List<FieldOption>> getLanguageGoals() async {
+    try {
+      List<FieldOption> levels = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFieldOptions?field_key=language_goal');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['language_goal'] as List;
+        levels = decodedData.map(
+          (e) {
+            return FieldOption.fromJson(e);
+          },
+        ).toList();
+        return levels;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get learning goal
+  Future<List<FieldOption>> getLearningGoals() async {
+    try {
+      List<FieldOption> levels = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFieldOptions?field_key=learning_goal');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['learning_goal'] as List;
+        levels = decodedData.map(
+          (e) {
+            return FieldOption.fromJson(e);
+          },
+        ).toList();
+        return levels;
       }
       return [];
     } catch (e) {
@@ -793,6 +1011,31 @@ class ApiService {
       return [];
     } catch (e) {
       return [];
+    }
+  }
+
+  // Check update
+  Future<Map<String, dynamic>> checkUpdate(Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.get(
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kAppUrl/$kApiVersionUrl/$kCheckUrl',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'data': AppUpdate.fromJson(response.data['data']),
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+        };
+      }
+    } on DioException {
+      return {
+        'status': ResponseStatus.failure,
+      };
     }
   }
 }

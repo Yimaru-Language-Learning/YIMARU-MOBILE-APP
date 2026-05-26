@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_view.form.dart';
@@ -9,13 +11,9 @@ import 'package:yimaru_app/ui/widgets/custom_small_radio_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
 class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
-  final TextEditingController languageGoalController;
-
-  const LanguageGoalFormScreen(
-      {super.key, required this.languageGoalController});
+  const LanguageGoalFormScreen({super.key});
 
   void _pop(OnboardingViewModel viewModel) {
-    languageGoalController.clear();
     viewModel.resetLanguageGoalFormScreen();
     viewModel.goBack();
   }
@@ -24,8 +22,7 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     Map<String, dynamic> data = {
-      'language_goal':
-          viewModel.selectedLanguageGoal ?? languageGoalController.text,
+      'language_goal': viewModel.selectedLanguageGoal?.code,
     };
     viewModel.addUserData(data);
 
@@ -87,15 +84,6 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
         _buildSubtitle(),
         verticalSpaceMedium,
         _buildReasons(viewModel),
-        if (viewModel.showLanguageGoalTextBox) _buildReasonFormField(viewModel),
-        if (viewModel.showLanguageGoalTextBox &&
-            viewModel.hasLanguageGoalValidationMessage &&
-            viewModel.focusLanguageGoal)
-          verticalSpaceTiny,
-        if (viewModel.showLanguageGoalTextBox &&
-            viewModel.hasLanguageGoalValidationMessage &&
-            viewModel.focusLanguageGoal)
-          _buildReasonValidatorWrapper(viewModel),
         verticalSpaceMedium,
       ];
 
@@ -103,17 +91,19 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildTitle() => Text(
-        'What’s your main goal for improving your English?',
+        LocaleKeys.language_goal.tr(),
         style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        'Your goal helps us tailor your learning journey.',
+        LocaleKeys.your_goal.tr(),
         style: style14MG400,
       );
 
@@ -123,7 +113,7 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
         itemCount: viewModel.languageGoals.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildLanguageGoal(
-          title: viewModel.languageGoals[index],
+          title: viewModel.languageGoals[index].label ?? '',
           selected:
               viewModel.isSelectedLanguageGoal(viewModel.languageGoals[index]),
           onTap: () =>
@@ -141,26 +131,6 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
         selected: selected,
       );
 
-  Widget _buildReasonFormField(OnboardingViewModel viewModel) => TextFormField(
-        maxLines: 3,
-        controller: languageGoalController,
-        onTap: viewModel.setLanguageGoalFocus,
-        decoration: inputDecoration(
-            focus: true,
-            hint: 'Write your goal…',
-            filled: languageGoalController.text.isNotEmpty),
-      );
-
-  Widget _buildReasonValidatorWrapper(OnboardingViewModel viewModel) =>
-      viewModel.hasLanguageGoalValidationMessage
-          ? _buildReasonValidator(viewModel)
-          : Container();
-
-  Widget _buildReasonValidator(OnboardingViewModel viewModel) => Text(
-        viewModel.languageGoalValidationMessage!,
-        style: style12R700,
-      );
-
   Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(viewModel),
@@ -169,21 +139,13 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
           height: 55,
-          text: 'Continue',
           borderRadius: 12,
           foregroundColor: kcWhite,
+          text: LocaleKeys.cont.tr(),
           onTap: viewModel.selectedLanguageGoal != null
-              ? viewModel.selectedLanguageGoal?.toLowerCase() == 'other'
-                  ? languageGoalController.text.isNotEmpty
-                      ? () => _next(viewModel)
-                      : null
-                  : () => _next(viewModel)
+              ? () => _next(viewModel)
               : null,
           backgroundColor: viewModel.selectedLanguageGoal != null
-              ? viewModel.selectedLanguageGoal?.toLowerCase() == 'other'
-                  ? languageGoalController.text.isNotEmpty
-                      ? kcPrimaryColor
-                      : kcPrimaryColor.withOpacity(0.1)
-                  : kcPrimaryColor
+              ? kcPrimaryColor
               : kcPrimaryColor.withOpacity(0.1));
 }

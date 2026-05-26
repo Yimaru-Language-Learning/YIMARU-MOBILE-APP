@@ -55,8 +55,8 @@ class SupportView extends StackedView<SupportViewModel> {
   Widget _buildAppbar(SupportViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.pop,
-    title:LocaleKeys.need_help.tr(),
-  );
+        title: LocaleKeys.need_help.tr(),
+      );
 
   Widget _buildContentWrapper(SupportViewModel viewModel) =>
       Expanded(child: _buildContentColumnWrapper(viewModel));
@@ -87,7 +87,7 @@ class SupportView extends StackedView<SupportViewModel> {
   Widget _buildCallSupport(SupportViewModel viewModel) => SupportCard(
         icon: Icons.call,
         color: kcPrimaryColor,
-        title:LocaleKeys.call_support.tr(),
+        title: LocaleKeys.call_support.tr(),
         subtitle: LocaleKeys.talk_with_support.tr(),
         onTap: () async => await viewModel.navigateToCallSupport(),
       );

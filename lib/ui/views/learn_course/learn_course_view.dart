@@ -89,6 +89,7 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
           course: viewModel.courses[index],
           onViewTap: () async =>
               await viewModel.navigateToLearnModule(viewModel.courses[index]),
+          onLockTap: () async => await viewModel.navigateToLearnSubscription(),
           onPracticeTap: () async => await viewModel.navigateToLearnPractice(
               id: viewModel.courses[index].id ?? 0,
               level: viewModel.courses[index].name ?? ''),
@@ -99,11 +100,13 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
   Widget _buildTile({
     required LearnCourse course,
     required GestureTapCallback onViewTap,
+    required GestureTapCallback onLockTap,
     required GestureTapCallback onPracticeTap,
   }) =>
       LearnCourseTile(
         course: course,
         onViewTap: onViewTap,
+        onLockTap: onLockTap,
         onPracticeTap: onPracticeTap,
       );
 }

@@ -24,6 +24,7 @@ import '../services/in_app_update_service.dart';
 import '../services/learn_service.dart';
 import '../services/localization_service.dart';
 import '../services/notification_service.dart';
+import '../services/onboarding_service.dart';
 import '../services/permission_handler_service.dart';
 import '../services/phone_caller_service.dart';
 import '../services/secure_storage_service.dart';
@@ -65,4 +66,5 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => PhoneCallerService());
   locator.registerLazySingleton(() => LearnService());
   locator.registerLazySingleton(() => LocalizationService());
+  locator.registerLazySingleton(() => OnboardingService());
 }

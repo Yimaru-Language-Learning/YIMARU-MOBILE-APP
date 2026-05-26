@@ -108,16 +108,16 @@ class LanguageView extends StackedView<LanguageViewModel> {
   Widget _buildAppbar(LanguageViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.pop,
-        title:LocaleKeys.language_preference.tr() ,
+        title: LocaleKeys.language_preference.tr(),
       );
 
   Widget _buildTitle() => Text(
-       LocaleKeys.choose_your_language.tr(),
+        LocaleKeys.choose_your_language.tr(),
         style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(
-       LocaleKeys.switch_language_anytime.tr() ,
+        LocaleKeys.switch_language_anytime.tr(),
         style: style14MG400,
       );
 

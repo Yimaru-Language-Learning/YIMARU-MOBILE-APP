@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_view.form.dart';
@@ -9,12 +11,9 @@ import 'package:yimaru_app/ui/widgets/custom_small_radio_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
 class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
-  final TextEditingController challengeController;
-
-  const ChallengeFormScreen({super.key, required this.challengeController});
+  const ChallengeFormScreen({super.key});
 
   void _pop(OnboardingViewModel viewModel) {
-    challengeController.clear();
     viewModel.resetChallengeFormScreen();
     viewModel.goBack();
   }
@@ -23,8 +22,7 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     Map<String, dynamic> data = {
-      'language_challange':
-          viewModel.selectedChallenge ?? challengeController.text,
+      'language_challange': viewModel.selectedChallenge?.code,
     };
     viewModel.addUserData(data);
 
@@ -86,15 +84,6 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
         _buildSubtitle(),
         verticalSpaceMedium,
         _buildChallenges(viewModel),
-        if (viewModel.showChallengeTextBox) _buildChallengeFormField(viewModel),
-        if (viewModel.showChallengeTextBox &&
-            viewModel.hasChallengeValidationMessage &&
-            viewModel.focusChallenge)
-          verticalSpaceTiny,
-        if (viewModel.showChallengeTextBox &&
-            viewModel.hasChallengeValidationMessage &&
-            viewModel.focusChallenge)
-          _buildChallengeValidatorWrapper(viewModel),
         verticalSpaceMedium,
       ];
 
@@ -102,17 +91,19 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildTitle() => Text(
-        'What challenge do you face most with English?',
+        LocaleKeys.challenge_you_face.tr(),
         style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        'Everyone has struggles, let’s start fixing yours 😊',
+        '${LocaleKeys.evey_one_has_strugle.tr()} 😊',
         style: style14MG400,
       );
 
@@ -122,7 +113,7 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
         itemCount: viewModel.challenges.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildChallenge(
-          title: viewModel.challenges[index],
+          title: viewModel.challenges[index].label ?? '',
           onTap: () =>
               viewModel.setSelectedChallenge(viewModel.challenges[index]),
           selected: viewModel.isSelectedChallenge(viewModel.challenges[index]),
@@ -139,27 +130,6 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
         selected: selected,
       );
 
-  Widget _buildChallengeFormField(OnboardingViewModel viewModel) =>
-      TextFormField(
-        maxLines: 3,
-        controller: challengeController,
-        onTap: viewModel.setChallengesFocus,
-        decoration: inputDecoration(
-            focus: true,
-            hint: 'Write your challenge…',
-            filled: challengeController.text.isNotEmpty),
-      );
-
-  Widget _buildChallengeValidatorWrapper(OnboardingViewModel viewModel) =>
-      viewModel.hasChallengeValidationMessage
-          ? _buildChallengeValidator(viewModel)
-          : Container();
-
-  Widget _buildChallengeValidator(OnboardingViewModel viewModel) => Text(
-        viewModel.challengeValidationMessage!,
-        style: style12R700,
-      );
-
   Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(viewModel),
@@ -168,21 +138,13 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
           height: 55,
-          text: 'Continue',
           borderRadius: 12,
           foregroundColor: kcWhite,
+          text: LocaleKeys.cont.tr(),
           onTap: viewModel.selectedChallenge != null
-              ? viewModel.selectedChallenge?.toLowerCase() == 'other'
-                  ? challengeController.text.isNotEmpty
-                      ? () => _next(viewModel)
-                      : null
-                  : () => _next(viewModel)
+              ? () => _next(viewModel)
               : null,
           backgroundColor: viewModel.selectedChallenge != null
-              ? viewModel.selectedChallenge?.toLowerCase() == 'other'
-                  ? challengeController.text.isNotEmpty
-                      ? kcPrimaryColor
-                      : kcPrimaryColor.withOpacity(0.1)
-                  : kcPrimaryColor
+              ? kcPrimaryColor
               : kcPrimaryColor.withOpacity(0.1));
 }

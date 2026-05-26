@@ -5,12 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
+import '../../models/field_option.dart';
+
 class CustomDropdownPicker extends StatelessWidget {
   final Icon? icon;
   final String hint;
-  final String selectedItem;
-  final void Function(String?)? onChanged;
-  final FutureOr<List<String>> Function(String value, LoadProps? props)? items;
+  final FieldOption? selectedItem;
+  final void Function(FieldOption?)? onChanged;
+  final FutureOr<List<FieldOption>> Function(String value, LoadProps? props)?
+      items;
 
   const CustomDropdownPicker(
       {super.key,
@@ -28,16 +31,18 @@ class CustomDropdownPicker extends StatelessWidget {
         child: _buildDropDownSearch(),
       );
 
-  Widget _buildDropDownSearch() => DropdownSearch<String>(
+  Widget _buildDropDownSearch() => DropdownSearch<FieldOption>(
+        onChanged: onChanged,
         popupProps: _popupProps(),
         selectedItem: selectedItem,
-        onChanged: (value) => onChanged!(value),
+        itemAsString: (item) => item.label ?? '',
         decoratorProps: _dropDownDecoratorProps(),
+        compareFn: (item1, item2) => item1.label == item2.label,
+        items: (value, properties) => items!(value, properties),
         dropdownBuilder: (context, value) => _buildDropdownBuilder(value),
-        items: (value, properties) async => await items!(value, properties),
       );
 
-  PopupProps<String> _popupProps() => PopupProps.menu(
+  PopupProps<FieldOption> _popupProps() => PopupProps<FieldOption>.menu(
         showSearchBox: true,
         showSelectedItems: true,
         searchFieldProps: _searchFieldProps(),
@@ -57,25 +62,25 @@ class CustomDropdownPicker extends StatelessWidget {
   InputDecoration _popUpDecoration() => InputDecoration(
         filled: true,
         hintStyle: style14DG400,
-        fillColor: kcTransparent,
         errorBorder: searchBorder,
         focusedBorder: searchBorder,
         enabledBorder: searchBorder,
         disabledBorder: searchBorder,
         focusedErrorBorder: searchBorder,
+        fillColor: const Color(0xfff5e9f4),
         contentPadding: const EdgeInsets.only(top: 12),
         prefixIcon: icon != null ? _buildPrefixIcon() : null,
       );
 
-  Widget _buildPopupProsBuilderWrapper(String value) => Padding(
+  Widget _buildPopupProsBuilderWrapper(FieldOption value) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         child: _buildPopupProsBuilder(value),
       );
 
-  Widget _buildPopupProsBuilder(String value) => Text(
-        value,
+  Widget _buildPopupProsBuilder(FieldOption value) => Text(
+        value.label ?? '',
         maxLines: 1,
-        style: const TextStyle(color: kcDarkGrey, fontSize: 14),
+        style: style14DG400,
       );
 
   DropDownDecoratorProps _dropDownDecoratorProps() => DropDownDecoratorProps(
@@ -91,7 +96,7 @@ class CustomDropdownPicker extends StatelessWidget {
         focusedBorder: border,
         enabledBorder: border,
         disabledBorder: border,
-        hintStyle: style14LG400,
+        hintStyle: style14MG400,
         fillColor: kcPrimaryColor.withOpacity(0.1),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -102,8 +107,8 @@ class CustomDropdownPicker extends StatelessWidget {
         child: icon,
       );
 
-  Widget _buildDropdownBuilder(String? value) => Text(
-        value ?? hint,
+  Widget _buildDropdownBuilder(FieldOption? value) => Text(
+        value?.label ?? '',
         maxLines: 1,
         style: style14DG400,
       );

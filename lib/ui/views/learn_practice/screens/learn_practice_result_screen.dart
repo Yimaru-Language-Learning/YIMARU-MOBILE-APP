@@ -115,7 +115,7 @@ class LearnPracticeResultScreen
           required LearnPracticeViewModel viewModel}) =>
       SmallAppBar(
         showBackButton: true,
-        title:LocaleKeys.result.tr(),
+        title: LocaleKeys.result.tr(),
         onPop: () async =>
             await _showSheet(context: context, viewModel: viewModel),
       );
@@ -176,7 +176,7 @@ class LearnPracticeResultScreen
         height: 55,
         borderRadius: 12,
         foregroundColor: kcWhite,
-        text:LocaleKeys.cont.tr(),
+        text: LocaleKeys.cont.tr(),
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _navigate(viewModel),
       );

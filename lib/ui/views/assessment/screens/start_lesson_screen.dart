@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
@@ -52,8 +54,10 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
         showBackButton: true,
         onPop: viewModel.goBack,
         showLanguageSelection: true,
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildExpandedBody(AssessmentViewModel viewModel) =>
@@ -92,7 +96,7 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildTitle(AssessmentViewModel viewModel) => Text.rich(
         TextSpan(
-          text: 'Welcome aboard',
+          text: LocaleKeys.welcome_abroad.tr(),
           style: style25DG600,
           children: [
             TextSpan(
@@ -104,7 +108,7 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   Widget _buildSubtitle() => Text(
-        'You’re ready to explore your personalized lessons.',
+        LocaleKeys.ready_to_explore.tr(),
         style: style14MG400,
       );
 
@@ -116,9 +120,9 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
   Widget _buildContinueButton(AssessmentViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Finish',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.finish.tr(),
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _start(viewModel),
       );

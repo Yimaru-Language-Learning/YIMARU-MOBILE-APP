@@ -127,7 +127,8 @@ class InteractLearnPracticeScreen
           showBackButton: true,
           onPop: () async =>
               await _showSheet(context: context, viewModel: viewModel),
-          title: '${LocaleKeys.practice_speaking.tr()} ($index/${viewModel.questions.length})');
+          title:
+              '${LocaleKeys.practice_speaking.tr()} ($index/${viewModel.questions.length})');
 
   Widget _buildSpeakingIndicatorWrapper(LearnPracticeViewModel viewModel) =>
       Column(
@@ -154,13 +155,13 @@ class InteractLearnPracticeScreen
               : const SizedBox(height: 20);
 
   Widget _buildListeningLabel() => Text(
-      'Daniel ${LocaleKeys.speaking.tr()}',
+        'Daniel ${LocaleKeys.speaking.tr()}',
         style: style14P400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSpeakingLabel() => Text(
-       '${ LocaleKeys.you_are_speaking.tr()}...',
+        '${LocaleKeys.you_are_speaking.tr()}...',
         style: style14P400,
         textAlign: TextAlign.center,
       );
@@ -239,7 +240,7 @@ class InteractLearnPracticeScreen
       ];
 
   Widget _buildActionLabel() => Text(
-      LocaleKeys.tap_microphone.tr(),
+        LocaleKeys.tap_microphone.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -359,7 +360,7 @@ class InteractLearnPracticeScreen
       CustomColumnButton(
         color: kcRed,
         icon: Icons.close,
-        label:LocaleKeys.cancel.tr() ,
+        label: LocaleKeys.cancel.tr(),
         onTap: () async =>
             await _showSheet(context: context, viewModel: viewModel),
       );

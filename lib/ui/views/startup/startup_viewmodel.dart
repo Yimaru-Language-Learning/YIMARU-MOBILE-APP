@@ -1,6 +1,7 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
+import 'package:yimaru_app/services/onboarding_service.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
@@ -14,15 +15,22 @@ import '../../common/enmus.dart';
 class StartupViewModel extends ReactiveViewModel {
   // Dependency injection
   final _apiService = locator<ApiService>();
+
   final _statusChecker = locator<StatusCheckerService>();
+
   final _navigationService = locator<NavigationService>();
+
+  final _onboardingService = locator<OnboardingService>();
+
   final _localizationService = locator<LocalizationService>();
+
   final _authenticationService = locator<AuthenticationService>();
+
   final _imageDownloaderService = locator<ImageDownloaderService>();
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService];
+      [_onboardingService, _authenticationService];
 
   // Current user
   User? get _user => _authenticationService.user;
@@ -81,7 +89,7 @@ class StartupViewModel extends ReactiveViewModel {
       response = {'data': true, 'status': ResponseStatus.success};
     }
     if (response['status'] == ResponseStatus.success && !response['data']) {
-      await replaceWithOnboarding();
+      await etOnboardingFields();
     } else if (response['status'] == ResponseStatus.success &&
         response['data']) {
       await saveProfileStatus(response['data']);
@@ -120,6 +128,18 @@ class StartupViewModel extends ReactiveViewModel {
           await _authenticationService.saveProfilePicture(image);
         }
       }
+    }
+  }
+
+  // Remote api call
+
+  // Onboarding fields
+  Future<void> etOnboardingFields() async {
+    bool response = await _onboardingService.getOnboardingFields();
+    if (response) {
+      await replaceWithOnboarding();
+    } else {
+      await replaceWithFailure();
     }
   }
 }

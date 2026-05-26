@@ -1,9 +1,13 @@
 // Endpoints
 String kBaseUrl = 'https://api.yimaruacademy.com';
 
+String kAppUrl = 'app';
+
 String kApiUrl = 'api';
 
 String kUnitsUrl = 'units';
+
+String kCheckUrl = 'check';
 
 String kApiVersionUrl = 'v1';
 
@@ -14,6 +18,8 @@ String kCoursesUrl = 'courses';
 String kModulesUrl = 'modules';
 
 String kLessonsUrl = 'lessons';
+
+String kVersionUrl = 'version';
 
 String kProgramsUrl = 'programs';
 
@@ -46,6 +52,8 @@ String kGetUserUrl = 'user-profile';
 String kSubmodulesUrl = 'sub-modules';
 
 String kSubcoursesUrl = 'sub-courses';
+
+String kFieldOptions = 'field-options';
 
 String kResetPassword = 'resetPassword';
 

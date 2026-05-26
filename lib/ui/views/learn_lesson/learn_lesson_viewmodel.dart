@@ -34,9 +34,9 @@ class LearnLessonViewModel extends ReactiveViewModel {
       await _navigationService.navigateToLearnPracticeView(
         id: id,
         practice: LearnPractices.lesson,
-        label:LocaleKeys.start_practice.tr(),
+        label: LocaleKeys.start_practice.tr(),
         title: LocaleKeys.lets_practice_module.tr(),
-        subtitle:LocaleKeys.ask_you_few_actions.tr(),
+        subtitle: LocaleKeys.ask_you_few_actions.tr(),
       );
 
   Future<void> navigateToLearnLessonDetail(

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
@@ -35,8 +37,10 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         showBackButton: true,
         onPop: viewModel.goBack,
         showLanguageSelection: true,
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildExpandedBody(AssessmentViewModel viewModel) =>
@@ -75,13 +79,13 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       ];
 
   Widget _buildTitle(AssessmentViewModel viewModel) => Text(
-        'You’re likely a ${viewModel.proficiencyLevel?.toUpperCase()} speaker!',
+        '${LocaleKeys.likely_speaker.tr()} ${viewModel.proficiencyLevel?.toUpperCase()}',
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildPrimarySubtitle() => Text(
-        'Great Job! Here’s your next step to keep improving.',
+        LocaleKeys.great_job.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );
@@ -93,7 +97,7 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       'assets/icons/${viewModel.proficiencyLevel?.substring(0, 1).toLowerCase()}_${viewModel.proficiencyLevel?.substring(1).toLowerCase()}.svg');
 
   Widget _buildSecondarySubtitle() => Text(
-        'Let\'s start your practice',
+        LocaleKeys.lets_start_practice.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -106,9 +110,9 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
   Widget _buildContinueButton(AssessmentViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,
       );
