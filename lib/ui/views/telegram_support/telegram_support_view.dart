@@ -29,7 +29,14 @@ class TelegramSupportView extends StackedView<TelegramSupportViewModel> {
 
   Widget _buildScaffoldWrapper(TelegramSupportViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+
+  Widget _buildScaffoldContainer(TelegramSupportViewModel viewModel) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(viewModel),
       );
 
   Widget _buildScaffold(TelegramSupportViewModel viewModel) =>

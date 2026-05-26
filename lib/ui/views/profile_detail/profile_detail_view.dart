@@ -113,8 +113,15 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
           required ProfileDetailViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
+
+  Widget _buildScaffoldContainer(  {required BuildContext context,
+    required ProfileDetailViewModel viewModel}) => Container(
+    decoration: bgDecoration,
+    child: _buildScaffoldStack(context: context, viewModel: viewModel),
+  );
+
 
   Widget _buildScaffoldStack(
           {required BuildContext context,

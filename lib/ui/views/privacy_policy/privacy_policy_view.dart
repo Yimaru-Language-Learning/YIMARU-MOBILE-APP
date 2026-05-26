@@ -98,7 +98,13 @@ class PrivacyPolicyView extends StackedView<PrivacyPolicyViewModel> {
 
   Widget _buildScaffoldWrapper(PrivacyPolicyViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(PrivacyPolicyViewModel viewModel) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(viewModel),
       );
 
   Widget _buildScaffold(PrivacyPolicyViewModel viewModel) =>

@@ -51,7 +51,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       Stack(
         children: [
           _buildExpansionTile(context: context, viewModel: viewModel),
-          //  _buildContainerShaderState()
+          _buildContainerShaderState()
         ],
       );
 
@@ -70,14 +70,14 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
         collapsedBackgroundColor: kcBackgroundColor,
-        //enabled: (module.access?.isAccessible ?? false),
+        enabled: (module.access?.isAccessible ?? false),
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
         childrenPadding: const EdgeInsets.fromLTRB(70, 0, 15, 15),
-        //initiallyExpanded: (module.access?.isAccessible ?? false),
-        // showTrailingIcon:
-        //     !(module.access?.isAccessible ?? false) ? true : false,
+        initiallyExpanded: (module.access?.isAccessible ?? false),
+        showTrailingIcon:
+            !(module.access?.isAccessible ?? false) ? true : false,
         children:
             _buildExpansionTileChildren(context: context, viewModel: viewModel),
       );
