@@ -25,7 +25,13 @@ class SupportView extends StackedView<SupportViewModel> {
 
   Widget _buildScaffoldWrapper(SupportViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(SupportViewModel viewModel) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(viewModel),
       );
 
   Widget _buildScaffold(SupportViewModel viewModel) =>

@@ -28,7 +28,13 @@ class TermsAndConditionsView extends StackedView<TermsAndConditionsViewModel> {
   Widget _buildScaffoldWrapper(TermsAndConditionsViewModel viewModel) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldContainer(viewModel),
+      );
+
+  Widget _buildScaffoldContainer(TermsAndConditionsViewModel viewModel) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffold(viewModel),
       );
 
   Widget _buildScaffold(TermsAndConditionsViewModel viewModel) =>

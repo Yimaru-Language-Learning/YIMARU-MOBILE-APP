@@ -70,7 +70,7 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
             ? kcGreen.withOpacity(0.1)
             : kcPrimaryColor.withOpacity(0.1),
         childrenPadding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-        initiallyExpanded: (lesson.access?.isAccessible ?? false) &&
+       initiallyExpanded: (lesson.access?.isAccessible ?? false) &&
             !(lesson.access?.isCompleted ?? false),
         collapsedBackgroundColor: (lesson.access?.isCompleted ?? false)
             ? kcGreen.withOpacity(0.1)
