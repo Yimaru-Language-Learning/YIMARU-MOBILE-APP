@@ -127,10 +127,10 @@ class SecondLandingScreen extends ViewModelWidget<LandingViewModel> {
   Widget _buildContinueButton(LandingViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        text: 'Next',
         borderRadius: 25,
-        text: 'Get Started',
+        onTap: viewModel.next,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.setFirstTimeInstall(),
       );
 }

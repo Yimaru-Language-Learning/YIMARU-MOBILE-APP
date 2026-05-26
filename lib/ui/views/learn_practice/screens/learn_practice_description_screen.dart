@@ -180,6 +180,6 @@ class LearnPracticeDescriptionScreen
         foregroundColor: kcWhite,
         onTap: () => viewModel.goTo(2),
         backgroundColor: kcPrimaryColor,
-        text: LocaleKeys.start_practice.tr() ,
+        text: LocaleKeys.start_practice.tr(),
       );
 }

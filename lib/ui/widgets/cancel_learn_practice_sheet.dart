@@ -58,10 +58,10 @@ class CancelLearnPracticeSheet extends StatelessWidget {
             style: style18DG700,
             children: [
               TextSpan(
-            text: '  $user',
-            style: style18P600,
-          )
-        ]),
+                text: '  $user',
+                style: style18P600,
+              )
+            ]),
       );
 
   Widget _buildSubtitle() => Text(

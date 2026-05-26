@@ -23,7 +23,7 @@ class LocalizationService with ListenableServiceMixin {
   Map<String, dynamic> get selectedLanguage => _selectedLanguage;
 
   final List<Map<String, dynamic>> _languages = [
-    {'code': 'አማ', 'language': 'አማርኛ'},
+    {'code': 'am', 'language': 'አማርኛ'},
     {'code': 'en', 'language': 'English'},
   ];
 
@@ -37,7 +37,7 @@ class LocalizationService with ListenableServiceMixin {
       required Map<String, dynamic> title}) async {
     _selectedLanguage = title;
 
-    if (title['code'] == 'አማ') {
+    if (title['code'] == 'am') {
       await setAmharicLanguage(context);
     } else {
       await setEnglishLanguage(context);
@@ -50,17 +50,15 @@ class LocalizationService with ListenableServiceMixin {
 
     if (language == 'en') {
       _selectedLanguage = {'code': 'en', 'language': 'English'};
- 
     } else {
-      _selectedLanguage = {'code': 'አማ', 'language': 'አማርኛ'};
+      _selectedLanguage = {'code': 'am', 'language': 'አማርኛ'};
     }
-notifyListeners();
-    print('SELECTED LANGUAGE: $language $_selectedLanguage');
+    notifyListeners();
   }
 
   Future<void> setAmharicLanguage(BuildContext context) async {
-    await context.setLocale(const Locale('አማ'));
-    await _secureService.setString('language', 'አማ');
+    await context.setLocale(const Locale('am'));
+    await _secureService.setString('language', 'am');
     notifyListeners();
   }
 

@@ -35,7 +35,7 @@ class LearnPracticeResultsWrapper
       [_buildTitle(), verticalSpaceSmall, _buildResults(viewModel)];
 
   Widget _buildTitle() => Text(
-       LocaleKeys.conversation_review.tr(),
+        LocaleKeys.conversation_review.tr(),
         style: style16DG600,
         textAlign: TextAlign.center,
       );

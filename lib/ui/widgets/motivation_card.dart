@@ -33,7 +33,7 @@ class MotivationCard extends StatelessWidget {
 
   Widget _buildText() => Expanded(
         child: Text(
-        LocaleKeys.keep_going.tr(),
+          LocaleKeys.keep_going.tr(),
           maxLines: 2,
           style: style14DG400,
         ),

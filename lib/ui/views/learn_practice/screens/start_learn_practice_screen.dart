@@ -196,7 +196,7 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
       ];
 
   Widget _buildActionLabel() => Text(
-     LocaleKeys.tap_start_to_listen.tr() ,
+        LocaleKeys.tap_start_to_listen.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -215,8 +215,8 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
 
   Widget _buildReplyButtonWrapper() => Expanded(child: _buildReplyButton());
 
-  Widget _buildReplyButton() =>  CustomColumnButton(
-      icon: Icons.replay, label:LocaleKeys.reply.tr() , color: kcLightGrey);
+  Widget _buildReplyButton() => CustomColumnButton(
+      icon: Icons.replay, label: LocaleKeys.reply.tr(), color: kcLightGrey);
 
   Widget _buildMicButtonWrapper(LearnPracticeViewModel viewModel) =>
       Expanded(child: _buildMicButton(viewModel));

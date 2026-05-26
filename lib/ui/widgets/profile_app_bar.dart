@@ -74,16 +74,19 @@ class ProfileAppBar extends StatelessWidget {
       [_buildGreetingTitle(), _buildSubtitle()];
 
   Widget _buildGreetingTitle() => Text.rich(
-        TextSpan(text: '${LocaleKeys.hello.tr()},', style: style14DG600, children: [
-          TextSpan(
-            text: ' $name!',
-            style: style14P600,
-          )
-        ]),
+        TextSpan(
+            text: '${LocaleKeys.hello.tr()},',
+            style: style14DG600,
+            children: [
+              TextSpan(
+                text: ' $name!',
+                style: style14P600,
+              )
+            ]),
       );
 
   Widget _buildSubtitle() => Text(
-     LocaleKeys.ready_to_learn.tr(),
+        LocaleKeys.ready_to_learn.tr(),
         textAlign: TextAlign.center,
         style: style14DG400,
       );

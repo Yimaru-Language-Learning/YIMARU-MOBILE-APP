@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_view.form.dart';
@@ -10,12 +11,9 @@ import 'package:yimaru_app/ui/widgets/custom_small_radio_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
 class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
-  final TextEditingController topicController;
-
-  const TopicFormScreen({super.key, required this.topicController});
+  const TopicFormScreen({super.key});
 
   void _pop(OnboardingViewModel viewModel) {
-    topicController.clear();
     viewModel.resetTopicFormScreen();
     viewModel.goBack();
   }
@@ -26,8 +24,8 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
     Map<String, dynamic> data = {
       'profile_completed': true,
       'preferred_language': 'en',
+      'favoutite_topic': viewModel.selectedTopic?.code,
       'birth_day': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      'favoutite_topic': viewModel.selectedTopic ?? topicController.text,
     };
     viewModel.addUserData(data);
 
@@ -58,8 +56,10 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildExpandedBody(OnboardingViewModel viewModel) =>
@@ -97,25 +97,16 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
         _buildSubtitle(),
         verticalSpaceMedium,
         _buildTopics(viewModel),
-        if (viewModel.showTopicTextBox) _buildTopicFormField(viewModel),
-        if (viewModel.showTopicTextBox &&
-            viewModel.hasTopicValidationMessage &&
-            viewModel.focusTopic)
-          verticalSpaceTiny,
-        if (viewModel.showTopicTextBox &&
-            viewModel.hasTopicValidationMessage &&
-            viewModel.focusTopic)
-          _buildTopicWrapper(viewModel),
         verticalSpaceMedium,
       ];
 
   Widget _buildTitle() => Text(
-        'Which topics interest you most?',
+        LocaleKeys.topic_interest.tr(),
         style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        'Your favorite topics help us create fun, relatable lessons.',
+        LocaleKeys.favourite_topic.tr(),
         style: style14MG400,
       );
 
@@ -125,7 +116,7 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
         itemCount: viewModel.topics.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTopic(
-          title: viewModel.topics[index],
+          title: viewModel.topics[index].label ?? '',
           selected: viewModel.isSelectedTopic(viewModel.topics[index]),
           onTap: () => viewModel.setSelectedTopic(viewModel.topics[index]),
         ),
@@ -141,26 +132,6 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
         selected: selected,
       );
 
-  Widget _buildTopicFormField(OnboardingViewModel viewModel) => TextFormField(
-        maxLines: 3,
-        controller: topicController,
-        onTap: viewModel.setTopicsFocus,
-        decoration: inputDecoration(
-            focus: true,
-            hint: 'Write you interest…',
-            filled: topicController.text.isNotEmpty),
-      );
-
-  Widget _buildTopicWrapper(OnboardingViewModel viewModel) =>
-      viewModel.hasTopicValidationMessage
-          ? _buildTopicValidator(viewModel)
-          : Container();
-
-  Widget _buildTopicValidator(OnboardingViewModel viewModel) => Text(
-        viewModel.topicValidationMessage!,
-        style: style12R700,
-      );
-
   Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(viewModel),
@@ -169,21 +140,13 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
           height: 55,
-          text: 'Continue',
           borderRadius: 12,
           foregroundColor: kcWhite,
+          text: LocaleKeys.cont.tr(),
           onTap: viewModel.selectedTopic != null
-              ? viewModel.selectedTopic?.toLowerCase() == 'other'
-                  ? topicController.text.isNotEmpty
-                      ? () async => await _next(viewModel)
-                      : null
-                  : () async => await _next(viewModel)
+              ? () async => await _next(viewModel)
               : null,
           backgroundColor: viewModel.selectedTopic != null
-              ? viewModel.selectedTopic?.toLowerCase() == 'other'
-                  ? topicController.text.isNotEmpty
-                      ? kcPrimaryColor
-                      : kcPrimaryColor.withOpacity(0.1)
-                  : kcPrimaryColor
+              ? kcPrimaryColor
               : kcPrimaryColor.withOpacity(0.1));
 }

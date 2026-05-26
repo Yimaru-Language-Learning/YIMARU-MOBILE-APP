@@ -135,11 +135,14 @@ class TelegramSupportView extends StackedView<TelegramSupportViewModel> {
   Widget _buildOptionTextDivider() => const OptionTextDivider();
 
   Widget _buildSearchText() => Text.rich(
-        TextSpan(text: LocaleKeys.search_for.tr(), style: style14DG500, children: [
-          TextSpan(
-            style: style14P600,
-            text: ' $kTelegramSupport',
-          )
-        ]),
+        TextSpan(
+            text: LocaleKeys.search_for.tr(),
+            style: style14DG500,
+            children: [
+              TextSpan(
+                style: style14P600,
+                text: ' $kTelegramSupport',
+              )
+            ]),
       );
 }

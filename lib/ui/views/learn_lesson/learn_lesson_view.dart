@@ -152,7 +152,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
   Widget _buildMotivationCard() => const MotivationCard();
 
   Widget _buildHeader() => Text(
-      LocaleKeys.lessons_in_module.tr(),
+        LocaleKeys.lessons_in_module.tr(),
         style: style18DG700,
       );
 

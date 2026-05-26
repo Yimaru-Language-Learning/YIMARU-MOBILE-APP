@@ -61,7 +61,7 @@ class LearnPracticeFinishScreen
   Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.goBack,
-        title:LocaleKeys.practice_speaking.tr(),
+        title: LocaleKeys.practice_speaking.tr(),
       );
 
   Widget _buildSpeakingIndicatorWrapper(LearnPracticeViewModel viewModel) =>
@@ -81,13 +81,13 @@ class LearnPracticeFinishScreen
   Widget _buildIcon() => SvgPicture.asset('assets/icons/success.svg');
 
   Widget _buildTitle() => Text(
-      LocaleKeys.practice_completed.tr(),
+        LocaleKeys.practice_completed.tr(),
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle() => Text(
-     LocaleKeys.sound_confident.tr()  ,
+        LocaleKeys.sound_confident.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -120,7 +120,7 @@ class LearnPracticeFinishScreen
         onTap: viewModel.pop,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        text: LocaleKeys.continue_practice.tr() ,
+        text: LocaleKeys.continue_practice.tr(),
       );
 
   Widget _buildPracticeAgainButton(LearnPracticeViewModel viewModel) =>

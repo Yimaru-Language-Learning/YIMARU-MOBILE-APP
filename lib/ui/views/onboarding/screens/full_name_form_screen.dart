@@ -90,18 +90,20 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
         showBackButton: false,
         showLanguageSelection: true,
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
-  Widget _buildTitle() =>  Text(
+  Widget _buildTitle() => Text(
         '${LocaleKeys.what_should_we_call_you.tr()} 😊',
-        style:style25DG600,
+        style: style25DG600,
       );
 
-  Widget _buildSubtitle() =>  Text(
+  Widget _buildSubtitle() => Text(
         LocaleKeys.name_for_personalization.tr(),
-        style:style14MG400,
+        style: style14MG400,
       );
 
   Widget _buildFullNameFormField(OnboardingViewModel viewModel) =>

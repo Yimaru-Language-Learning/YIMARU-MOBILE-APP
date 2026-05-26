@@ -92,8 +92,10 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
   Widget _buildAppBar(LoginViewModel viewModel) => LargeAppBar(
         showBackButton: false,
         showLanguageSelection: true,
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildExpandedBody(

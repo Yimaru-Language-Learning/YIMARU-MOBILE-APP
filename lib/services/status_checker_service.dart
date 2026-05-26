@@ -1,4 +1,5 @@
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:yimaru_app/services/secure_storage_service.dart';
 
 import '../app/app.locator.dart';
@@ -24,5 +25,17 @@ class StatusCheckerService {
 
       return false;
     }
+  }
+
+  // Get app version
+  Future<String> getAppVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    String version = packageInfo.version; // e.g. 1.0.0
+    String buildNumber = packageInfo.buildNumber; // version code
+
+    print("Version: $version");
+    print("Build Number: $buildNumber");
+    return buildNumber;
   }
 }

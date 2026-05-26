@@ -2,7 +2,7 @@
   "loading": "በመጫን ላይ",
   "welcome_back": "እንኳን በደህና ተመለሱ",
   "checking_user_info": "የተጠቃሚ መረጃን በማረጋገጥ ላይ",
-  "dont_have_account": "መለያ የለዎትም? ይመዝገቡ",
+  "dont_have_account": "መለያ የለዎትም?",
   "email": "ኢሜይል",
   "password": "የይለፍ ቃል",
   "forgot_password": "የይለፍ ቃል ረሱ?",
@@ -43,14 +43,14 @@
   "continue_learning": "መማርን ይቀጥሉ",
   "start_learning": "ትምህርትን ይጀምሩ",
   "completed": "ተጠናቋል",
-  "take_practice": " ልምምድ ያድርጉ",
+  "take_practice": "ልምምድ ያድርጉ",
   "your_current_level": "የአሁኑ ደረጃዎ",
   "overall_progress": "አጠቃላይ እድገት",
   "great_work": "በርቱ! በጣም ጥሩ እየሰሩ ነው",
   "view_module": "ሞጁሉን ይመልከቱ",
   "progress": "እድገት",
-  "keep_going": " ይቀጥሉ - ከግማሽ በላይ ጨርሰዋል ",
-  "lessons_in_module": " በዚህ ሞጁል ውስጥ ያሉ ትምህርቶች ",
+  "keep_going": "ይቀጥሉ - ከግማሽ በላይ ጨርሰዋል ",
+  "lessons_in_module": "በዚህ ሞጁል ውስጥ ያሉ ትምህርቶች ",
   "practice": "ልምምድ",
   "start": "ጀምር",
   "in_progress": "በሂደት ላይ",
@@ -134,7 +134,7 @@
   "ask_you_few_actions": "ጥቂት ጥያቄዎችን እጠይቅሃለሁ፣ አንተም በተፈጥሮ መልስ ልትሰጥ ትችላለህ።",
   "begin_level_practice": "የደረጃ ልምምድን ጀምር",
   "lets_practice_course": "የኮርሱን ልምምድ እንለማመድ",
-  "lets_quick_practice": "በዚህ ደረጃ የተማርከውን በፍጥነት እንከልስ!",
+  "lets_quick_review": "በዚህ ደረጃ የተማርከውን በፍጥነት እንከልስ!",
   "speaking": "እየተናገረ ነው",
   "you_have_finished_practice": "ልምምድህን አጠናቀቅህ",
   "view_results": "ውጤቶቼን እይ",
@@ -153,15 +153,36 @@
   "what_should_we_call_you": "ምን ብለን እንጠራህ?",
   "name_for_personalization": "በመማር ጉዞህ ውስጥ ለግል ለማድረግ ስምህን እንጠቀማለን።",
   "choose_your_gender": "ጾታህን ምረጥ",
-  "gender_for_personalization": "በጾታህ መሰረት የመማር ተሞክሮህን እናበጅለታለን።"
-
-
-
-
-
-
-
-
+  "gender_for_personalization": "በጾታህ መሰረት የመማር ተሞክሮህን እናበጅለታለን።",
+  "age_range": "በየትኛው የእድሜ ክልል ውስጥ ነህ?",
+  "age_for_personalization": "በእድሜህ መሰረት የመማር ተሞክሮህን እናበጅለታለን።",
+  "educational_background": "አሁን ያለህ የትምህርት ደረጃ ምንድን ነው?",
+  "education_for_personalization": "ይህ ትምህርቶችን ከልምድህ ጋር እንዲስማሙ ለማድረግ ይረዳናል።",
+  "your_occupation": "ስራህ ምንድን ነው?",
+  "occupation_for_personalization": "በስራህ መሰረት የመማር ተሞክሮህን እናበጅለታለን።",
+  "location": "ከየት ነህ?",
+  "select_country_region": "አገርህን እና ክልልህን ከተቆልቋይ ዝርዝሩ ምረጥ",
+  "select_country": "አገር ምረጥ",
+  "learning_goal": "የመማር ዓላማህን ምረጥ",
+  "language_goal": "እንግሊዝኛህን ለማሻሻል ዋና ዓላማህ ምንድን ነው?",
+  "your_goal": "ዓላማህ የመማር ጉዞህን እንዲስማማ ለማድረግ ይረዳናል።",
+  "write_your_goal": "ዓላማህን ጻፍ…",
+  "challenge_you_face": "What challenge do you face most with English?",
+  "evey_one_has_strugle": "ሁሉም ሰው ችግሮች አሉት፣ የአንተን እንጀምር እንፍታ",
+  "write_your_challenge": "ችግርህን ጻፍ…",
+  "topic_interest": "በጣም የሚስቡህ ርዕሶች የትኞቹ ናቸው?",
+  "favourite_topic": "የምትወዳቸው ርዕሶች አስደሳች እና ከሕይወትህ ጋር የተዛመዱ ትምህርቶችን ለመፍጠር ይረዱናል።",
+  "your_interest": "ፍላጎትህን ጻፍ…",
+  "want_quick_assessment": "የእንግሊዝኛ ደረጃህን ለማወቅ ፈጣን ግምገማ ትፈልጋለህ?",
+  "answer_quick_questions": "የእንግሊዝኛ ችሎታህን ለመረዳት ጥቂት ፈጣን ጥያቄዎችን መልስ።",
+  "skip": "ዝለል",
+  "finish_level": "ደረጃውን አጠናቅቅ",
+  "likely_speaker": "አንተ ምናልባት ተናጋሪ ነህ",
+  "great_job": "በጣም ጥሩ ስራ! ለመሻሻል ቀጣዩ ደረጃህ ይኸው ነው።",
+  "lets_start_practice": "ልምምድህን እንጀምር",
+  "welcome_abroad": "እንኳን ደህና መጣህ",
+  "ready_to_explore": "የግል ትምህርቶችህን ለማሰስ ዝግጁ ነህ።",
+  "finish": "አጠናቅቅ"
 
 
 

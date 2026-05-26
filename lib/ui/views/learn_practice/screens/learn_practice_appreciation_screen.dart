@@ -139,7 +139,7 @@ class LearnPracticeAppreciationScreen
       );
 
   Widget _buildSubtitle() => Text(
-       LocaleKeys.you_have_finished_practice.tr(),
+        LocaleKeys.you_have_finished_practice.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -158,6 +158,5 @@ class LearnPracticeAppreciationScreen
         onTap: () => viewModel.goTo(4),
         backgroundColor: kcPrimaryColor,
         text: LocaleKeys.view_results.tr(),
-
       );
 }

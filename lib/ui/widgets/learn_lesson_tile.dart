@@ -130,7 +130,9 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
       );
 
   Widget _buildProgressText() => Text(
-        (lesson.access?.isCompleted ?? false) ?LocaleKeys.completed.tr()  : LocaleKeys.in_progress.tr() ,
+        (lesson.access?.isCompleted ?? false)
+            ? LocaleKeys.completed.tr()
+            : LocaleKeys.in_progress.tr(),
         style: style14P600,
       );
 
@@ -166,7 +168,7 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         width: double.maxFinite,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
-        text:LocaleKeys.practice.tr() ,
+        text: LocaleKeys.practice.tr(),
         foregroundColor: kcPrimaryColor,
       );
 
@@ -182,7 +184,7 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         onTap: onLessonTap,
         width: double.maxFinite,
         foregroundColor: kcWhite,
-        text:LocaleKeys.start.tr() ,
+        text: LocaleKeys.start.tr(),
         trailingIcon: Icons.play_arrow,
         backgroundColor: kcPrimaryColor,
       );

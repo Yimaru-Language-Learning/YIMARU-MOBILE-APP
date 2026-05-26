@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/widgets/custom_small_radio_button.dart';
@@ -134,8 +136,8 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         foregroundColor: kcWhite,
         text: viewModel.currentQuestionIndex ==
                 viewModel.assessmentQuestions.length - 1
-            ? 'Finish Level'
-            : 'Continue',
+            ? LocaleKeys.finish_level.tr()
+            : LocaleKeys.cont.tr(),
         backgroundColor: viewModel.selectedAnswers
                 .containsKey('${viewModel.currentQuestionIndex + 1}')
             ? kcPrimaryColor

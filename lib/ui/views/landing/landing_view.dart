@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/views/landing/screens/first_landing_screen.dart';
 import 'package:yimaru_app/ui/views/landing/screens/fourth_landing_screen.dart';
 import 'package:yimaru_app/ui/views/landing/screens/second_landing_screen.dart';
@@ -23,19 +24,21 @@ class LandingView extends StackedView<LandingViewModel> {
     LandingViewModel viewModel,
     Widget? child,
   ) =>
-      _buildLandingScreens(viewModel);
+      _buildLandingScreensWrapper(viewModel);
+
+  Widget _buildLandingScreensWrapper(LandingViewModel viewModel) => Scaffold(
+        backgroundColor: kcPrimaryColor,
+        body: _buildLandingScreens(viewModel),
+      );
 
   Widget _buildLandingScreens(LandingViewModel viewModel) => FlutterCarousel(
         options: FlutterCarouselOptions(
           autoPlay: true,
           viewportFraction: 1,
-          showIndicator: true,
           indicatorMargin: 40,
+          showIndicator: false,
           height: double.maxFinite,
-          slideIndicator: CircularSlideIndicator(
-            slideIndicatorOptions:
-                const SlideIndicatorOptions(indicatorRadius: 2.5),
-          ),
+          controller: viewModel.controller,
         ),
         items: _buildScreens(),
       );

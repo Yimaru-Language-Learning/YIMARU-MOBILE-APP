@@ -99,7 +99,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       );
 
   Widget _buildSubtitle() => Text(
-       LocaleKeys.your_current_level.tr(),
+        LocaleKeys.your_current_level.tr(),
         style: style14P400,
       );
 

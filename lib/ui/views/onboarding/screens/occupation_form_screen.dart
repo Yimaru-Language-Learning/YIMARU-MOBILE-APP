@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
@@ -19,7 +21,9 @@ class OccupationFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    Map<String, dynamic> data = {'occupation': viewModel.selectedOccupation};
+    Map<String, dynamic> data = {
+      'occupation': viewModel.selectedOccupation?.code
+    };
     viewModel.addUserData(data);
 
     viewModel.next();
@@ -86,28 +90,30 @@ class OccupationFormScreen extends ViewModelWidget<OnboardingViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildTitle() => Text(
-        'What’s your occupation?',
+        LocaleKeys.your_occupation.tr(),
         style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        'We’ll personalize your learning experience based on your occupation.',
+        LocaleKeys.occupation_for_personalization.tr(),
         style: style14MG400,
       );
 
   Widget _buildOccupationDropdown(OnboardingViewModel viewModel) =>
       CustomDropdownPicker(
-          hint: 'Select occupation',
           icon: _buildSearchIcon(),
+          hint: LocaleKeys.select_occupation.tr(),
           selectedItem: viewModel.selectedOccupation,
-          items: (value, props) => viewModel.getOccupations(),
-          onChanged: (value) => viewModel.setSelectedOccupation(
-              value ?? 'Students (High school & University)'));
+          items: (value, props) => viewModel.occupations,
+          onChanged: (value) => viewModel.setSelectedOccupation(value));
+
   Icon _buildSearchIcon() => const Icon(
         Icons.search,
         color: kcPrimaryColor,
@@ -120,10 +126,15 @@ class OccupationFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
-          height: 55,
-          text: 'Continue',
-          borderRadius: 12,
-          foregroundColor: kcWhite,
-          onTap: () => _next(viewModel),
-          backgroundColor: kcPrimaryColor);
+        height: 55,
+        borderRadius: 12,
+        foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
+        onTap: viewModel.selectedOccupation != null
+            ? () => _next(viewModel)
+            : null,
+        backgroundColor: viewModel.selectedOccupation != null
+            ? kcPrimaryColor
+            : kcPrimaryColor.withOpacity(0.1),
+      );
 }

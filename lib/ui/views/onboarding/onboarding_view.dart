@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 
 import 'package:yimaru_app/ui/views/onboarding/screens/age_group_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/challenge_form_screen.dart';
@@ -12,18 +13,16 @@ import 'package:yimaru_app/ui/views/onboarding/screens/language_goal_form_screen
 import 'package:yimaru_app/ui/views/onboarding/screens/learning_goal_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/occupation_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/topic_form_screen.dart';
+import 'package:yimaru_app/ui/views/startup/startup_view.dart';
 
 import '../../common/validators/form_validator.dart';
 import 'onboarding_viewmodel.dart';
 import 'onboarding_view.form.dart';
 
 @FormView(fields: [
-  FormTextField(name: 'topic', validator: FormValidator.validateForm),
   FormTextField(
       name: 'fullName', validator: FormValidator.validateFullNameForm),
   FormTextField(name: 'region', validator: FormValidator.validateForm),
-  FormTextField(name: 'challenge', validator: FormValidator.validateForm),
-  FormTextField(name: 'languageGoal', validator: FormValidator.validateForm),
 ])
 class OnboardingView extends StackedView<OnboardingViewModel>
     with $OnboardingView {
@@ -34,11 +33,8 @@ class OnboardingView extends StackedView<OnboardingViewModel>
   }
 
   void _initClearData() {
-    topicController.clear();
     regionController.clear();
     fullNameController.clear();
-    challengeController.clear();
-    languageGoalController.clear();
   }
 
   void _clearDataOnNavigation(OnboardingViewModel viewModel) {
@@ -54,17 +50,15 @@ class OnboardingView extends StackedView<OnboardingViewModel>
     } else if (viewModel.currentPage == 4) {
       viewModel.resetOccupationFormScreen();
     } else if (viewModel.currentPage == 5) {
+      regionController.clear();
       viewModel.resetCountryRegionFormScreen();
     } else if (viewModel.currentPage == 6) {
       viewModel.resetLearningGoalFormScreen();
     } else if (viewModel.currentPage == 7) {
-      languageGoalController.clear();
       viewModel.resetLanguageGoalFormScreen();
     } else if (viewModel.currentPage == 8) {
-      challengeController.clear();
       viewModel.resetChallengeFormScreen();
     } else if (viewModel.currentPage == 9) {
-      topicController.clear();
       viewModel.resetTopicFormScreen();
     }
   }
@@ -77,7 +71,7 @@ class OnboardingView extends StackedView<OnboardingViewModel>
   }
 
   @override
-  void onViewModelReady(OnboardingViewModel viewModel) {
+  void onViewModelReady(OnboardingViewModel viewModel) async {
     _initClearData();
     _initUserData(viewModel);
     syncFormWithViewModel(viewModel);
@@ -134,17 +128,13 @@ class OnboardingView extends StackedView<OnboardingViewModel>
 
   Widget _buildOccupationForm() => const OccupationFormScreen();
 
-  Widget _buildCountryRegionForm() => CountryRegionFormScreen(
-        regionController: regionController,
-      );
+  Widget _buildCountryRegionForm() => CountryRegionFormScreen(regionController: regionController);
 
   Widget _buildLearningGoalForm() => const LearningGoalFormScreen();
 
-  Widget _buildLanguageGoalForm() =>
-      LanguageGoalFormScreen(languageGoalController: languageGoalController);
+  Widget _buildLanguageGoalForm() => const LanguageGoalFormScreen();
 
-  Widget _buildChallengeForm() =>
-      ChallengeFormScreen(challengeController: challengeController);
+  Widget _buildChallengeForm() => const ChallengeFormScreen();
 
-  Widget _buildTopicForm() => TopicFormScreen(topicController: topicController);
+  Widget _buildTopicForm() => const TopicFormScreen();
 }

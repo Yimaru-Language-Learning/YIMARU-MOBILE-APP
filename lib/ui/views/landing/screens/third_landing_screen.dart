@@ -122,15 +122,15 @@ class ThirdLandingScreen extends ViewModelWidget<LandingViewModel> {
       viewModel.isBusy ? _buildIndicator() : _buildContinueButton(viewModel);
 
   Widget _buildIndicator() =>
-      const CustomCircularProgressIndicator(color: kcWhite);
+      const CustomCircularProgressIndicator(color: kcPrimaryColor);
 
   Widget _buildContinueButton(LandingViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        text: 'Next',
         borderRadius: 25,
-        text: 'Get Started',
+        onTap: viewModel.next,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.setFirstTimeInstall(),
       );
 }

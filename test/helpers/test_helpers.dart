@@ -22,9 +22,8 @@ import 'package:yimaru_app/services/url_launcher_service.dart';
 import 'package:yimaru_app/services/phone_caller_service.dart';
 import 'package:yimaru_app/services/learn_service.dart';
 import 'package:yimaru_app/services/localization_service.dart';
+import 'package:yimaru_app/services/onboarding_service.dart';
 // @stacked-import
-
-import 'test_helpers.mocks.dart';
 
 @GenerateMocks(
   [],
@@ -54,10 +53,10 @@ import 'test_helpers.mocks.dart';
     MockSpec<UrlLauncherService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<UrlLauncherService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<PhoneCallerService>(onMissingStub: OnMissingStub.returnDefault),
-    MockSpec<LearnLessonService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<LearnService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<LearnService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<LocalizationService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<OnboardingService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
   ],
 )
@@ -85,10 +84,10 @@ void registerServices() {
   getAndRegisterUrlLauncherService();
   getAndRegisterUrlLauncherService();
   getAndRegisterPhoneCallerService();
-  getAndRegisterLearnLessonService();
   getAndRegisterLearnService();
   getAndRegisterLearnService();
   getAndRegisterLocalizationService();
+  getAndRegisterOnboardingService();
 // @stacked-mock-register
 }
 
@@ -283,6 +282,13 @@ MockLocalizationService getAndRegisterLocalizationService() {
   _removeRegistrationIfExists<LocalizationService>();
   final service = MockLocalizationService();
   locator.registerSingleton<LocalizationService>(service);
+  return service;
+}
+
+MockOnboardingService getAndRegisterOnboardingService() {
+  _removeRegistrationIfExists<OnboardingService>();
+  final service = MockOnboardingService();
+  locator.registerSingleton<OnboardingService>(service);
   return service;
 }
 // @stacked-mock-create

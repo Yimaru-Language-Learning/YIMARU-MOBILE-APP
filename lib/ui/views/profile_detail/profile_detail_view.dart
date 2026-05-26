@@ -11,7 +11,6 @@ import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 import '../../common/validators/form_validator.dart';
-import '../../widgets/custom_dropdown.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/image_picker_option.dart';
 import '../../widgets/page_loading_indicator.dart';
@@ -202,7 +201,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         verticalSpaceMedium,
         _buildCountryDropdownLabel(),
         verticalSpaceSmall,
-        _buildCountryDropdown(viewModel),
+        // _buildCountryDropdown(viewModel),
         verticalSpaceMedium,
         _buildRegionFormFieldWrapper(viewModel),
         verticalSpaceMedium,
@@ -527,13 +526,13 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         label: LocaleKeys.country.tr(),
       );
 
-  Widget _buildCountryDropdown(ProfileDetailViewModel viewModel) =>
-      CustomDropdownPicker(
-        hint: 'Select country',
-        selectedItem: viewModel.selectedCountry,
-        items: (value, props) => viewModel.getCountries(),
-        onChanged: (value) => viewModel.setSelectedCountry(value ?? 'Ethiopia'),
-      );
+  // Widget _buildCountryDropdown(ProfileDetailViewModel viewModel) =>
+  //     CustomDropdownPicker(
+  //       hint: 'Select country',
+  //       selectedItem: viewModel.selectedCountry,
+  //       items: (value, props) => viewModel.getCountries(),
+  //       onChanged: (value) => viewModel.setSelectedCountry(value ?? 'Ethiopia'),
+  //     );
 
   Widget _buildRegionFormFieldWrapper(ProfileDetailViewModel viewModel) =>
       Column(
@@ -565,18 +564,19 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       );
 
   Widget _buildRegionFormState(ProfileDetailViewModel viewModel) =>
-      viewModel.dropdownRegion
-          ? _buildRegionDropDown(viewModel)
-          : _buildRegionFormField(viewModel);
-
-  Widget _buildRegionDropDown(ProfileDetailViewModel viewModel) =>
-      CustomDropdownPicker(
-          icon: _buildSearchIcon(),
-          hint:LocaleKeys.select_region.tr(),
-          selectedItem: viewModel.selectedRegion,
-          items: (value, props) => viewModel.getRegions(),
-          onChanged: (value) =>
-              viewModel.setSelectedRegion(value ?? 'Addis Ababa'));
+      // viewModel.dropdownRegion
+      //     ? _buildRegionDropDown(viewModel)
+      //     :
+      _buildRegionFormField(viewModel);
+  //
+  // Widget _buildRegionDropDown(ProfileDetailViewModel viewModel) =>
+  //     CustomDropdownPicker(
+  //         icon: _buildSearchIcon(),
+  //         hint:LocaleKeys.select_region.tr(),
+  //         selectedItem: viewModel.selectedRegion,
+  //         items: (value, props) => viewModel.getRegions(),
+  //         onChanged: (value) =>
+  //             viewModel.setSelectedRegion(value ?? 'Addis Ababa'));
 
   Widget _buildRegionFormField(ProfileDetailViewModel viewModel) =>
       TextFormField(
@@ -584,7 +584,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         onTap: viewModel.setRegionFocus,
         decoration: inputDecoration(
             focus: viewModel.focusRegion,
-            hint:LocaleKeys.enter_your_city.tr(),
+            hint: LocaleKeys.enter_your_city.tr(),
             filled: regionController.text.isNotEmpty),
       );
 
@@ -611,7 +611,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       [
         _buildOccupationDropdownLabel(),
         verticalSpaceSmall,
-        _buildOccupationDropdown(viewModel)
+        // _buildOccupationDropdown(viewModel)
       ];
 
   Widget _buildOccupationDropdownLabel() => CustomFormLabel(
@@ -619,14 +619,14 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         label: LocaleKeys.occupation.tr(),
       );
 
-  Widget _buildOccupationDropdown(ProfileDetailViewModel viewModel) =>
-      CustomDropdownPicker(
-          icon: _buildSearchIcon(),
-          hint:LocaleKeys.select_occupation.tr(),
-          selectedItem: viewModel.selectedOccupation,
-          items: (value, props) => viewModel.getOccupations(),
-          onChanged: (value) => viewModel.setSelectedOccupation(
-              value ?? 'Students (High school & University)'));
+  // Widget _buildOccupationDropdown(ProfileDetailViewModel viewModel) =>
+  //     CustomDropdownPicker(
+  //         icon: _buildSearchIcon(),
+  //         hint:LocaleKeys.select_occupation.tr(),
+  //         selectedItem: viewModel.selectedOccupation,
+  //         items: (value, props) => viewModel.getOccupations(),
+  //         onChanged: (value) => viewModel.setSelectedOccupation(
+  //             value ?? 'Students (High school & University)'));
   Icon _buildSearchIcon() => const Icon(
         Icons.search,
         color: kcPrimaryColor,
@@ -663,7 +663,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         borderRadius: 12,
         onTap: viewModel.pop,
         backgroundColor: kcWhite,
-        text:LocaleKeys.cancel.tr(),
+        text: LocaleKeys.cancel.tr(),
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
       );

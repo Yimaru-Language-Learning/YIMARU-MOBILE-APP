@@ -93,7 +93,7 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
       const CircularIcon(icon: Icons.call, size: 50, color: kcPrimaryColor);
 
   Widget _buildTitle() => Text(
-       LocaleKeys.call_our_support.tr(),
+        LocaleKeys.call_our_support.tr(),
         style: style25DG600,
         textAlign: TextAlign.center,
       );
@@ -116,7 +116,7 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
         leadingIcon: Icons.call,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        text:LocaleKeys.tap_to_call.tr(),
+        text: LocaleKeys.tap_to_call.tr(),
         onTap: () async => await viewModel.callSupport(),
       );
 }

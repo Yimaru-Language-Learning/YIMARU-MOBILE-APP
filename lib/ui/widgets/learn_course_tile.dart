@@ -13,18 +13,26 @@ import 'custom_elevated_button.dart';
 class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
   final LearnCourse course;
   final GestureTapCallback? onViewTap;
+  final GestureTapCallback? onLockTap;
   final GestureTapCallback? onPracticeTap;
 
   const LearnCourseTile({
     super.key,
     this.onViewTap,
+    this.onLockTap,
     this.onPracticeTap,
     required this.course,
   });
 
   @override
   Widget build(BuildContext context, LearnCourseViewModel viewModel) =>
-      _buildExpansionTileCard(viewModel);
+      _buildExpansionTileCardWrapper(viewModel);
+
+  Widget _buildExpansionTileCardWrapper(LearnCourseViewModel viewModel) =>
+      GestureDetector(
+        onTap: !(course.access?.isAccessible ?? false) ? onLockTap : null,
+        child: _buildExpansionTileCard(viewModel),
+      );
 
   Widget _buildExpansionTileCard(LearnCourseViewModel viewModel) => Container(
         margin: const EdgeInsets.only(bottom: 15),
@@ -109,7 +117,7 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
           ? _buildProgressStatus()
           : Container();
 
-  Widget _buildProgressStatus() =>  ProgressStatus(
+  Widget _buildProgressStatus() => ProgressStatus(
         color: kcPrimaryColor,
         status: LocaleKeys.current_level.tr(),
       );
@@ -147,7 +155,7 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
         onTap: onViewTap,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        text:LocaleKeys.view_course.tr(),
+        text: LocaleKeys.view_course.tr(),
       );
 
   Widget _buildPracticeButtonWrapper(LearnCourseViewModel viewModel) =>
@@ -163,6 +171,6 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
-        text:LocaleKeys.take_practice.tr() ,
+        text: LocaleKeys.take_practice.tr(),
       );
 }

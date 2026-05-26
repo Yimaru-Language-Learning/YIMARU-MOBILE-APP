@@ -53,7 +53,7 @@ class LearnPracticeResultCard extends ViewModelWidget<LearnPracticeViewModel> {
   Widget _buildSampleResponse() => LearnPracticeAnswerCard(
         answer: answer,
         voice: Voice.sample,
-        title:LocaleKeys.sample_answer.tr() ,
+        title: LocaleKeys.sample_answer.tr(),
       );
 
   Widget _buildActualResponseWrapper() =>
@@ -62,7 +62,6 @@ class LearnPracticeResultCard extends ViewModelWidget<LearnPracticeViewModel> {
   Widget _buildActualResponse() => LearnPracticeAnswerCard(
         answer: answer,
         voice: Voice.recorded,
-    title: LocaleKeys.your_answer.tr(),
-
-  );
+        title: LocaleKeys.your_answer.tr(),
+      );
 }

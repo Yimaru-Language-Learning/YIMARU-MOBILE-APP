@@ -1,11 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_dropdown.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
+import '../../../../models/field_option.dart';
 import '../onboarding_view.form.dart';
 
 class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
@@ -13,10 +16,10 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
   const CountryRegionFormScreen({super.key, required this.regionController});
 
   void _setSelectedCountry(
-      {String? value, required OnboardingViewModel viewModel}) {
-    viewModel.setSelectedCountry(value ?? 'Ethiopia');
+      {FieldOption? value, required OnboardingViewModel viewModel}) {
+    viewModel.setSelectedCountry(value);
 
-    if (viewModel.selectedCountry != 'Ethiopia') {
+    if (viewModel.selectedCountry?.label?.toLowerCase().tr() != 'ethiopia') {
       regionController.clear();
       viewModel.unsetRegionFocus();
     }
@@ -32,9 +35,9 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
     Map<String, dynamic> data = {
       'region': viewModel.dropdownRegion
-          ? viewModel.selectedRegion
+          ? viewModel.selectedRegion?.code
           : regionController.text,
-      'country': viewModel.selectedCountry,
+      'country': viewModel.selectedCountry?.code,
     };
     viewModel.addUserData(data);
 
@@ -112,26 +115,28 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildTitle() => Text(
-        'Where are you from?',
+        LocaleKeys.location.tr(),
         style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        'Select your country and region from the dropdown',
+        LocaleKeys.select_country_region.tr(),
         style: style14MG400,
       );
 
   Widget _buildCountryDropDown(OnboardingViewModel viewModel) =>
       CustomDropdownPicker(
-          hint: 'Select country',
           icon: _buildSearchIcon(),
+          hint: LocaleKeys.select_country.tr(),
           selectedItem: viewModel.selectedCountry,
-          items: (value, props) => viewModel.getCountries(),
+          items: (value, props) => viewModel.countries,
           onChanged: (value) =>
               _setSelectedCountry(value: value, viewModel: viewModel));
 
@@ -142,19 +147,18 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildRegionDropDown(OnboardingViewModel viewModel) =>
       CustomDropdownPicker(
-          hint: 'Select region',
           icon: _buildSearchIcon(),
+          hint: LocaleKeys.select_region.tr(),
           selectedItem: viewModel.selectedRegion,
-          items: (value, props) => viewModel.getRegions(),
-          onChanged: (value) =>
-              viewModel.setSelectedRegion(value ?? 'Addis Ababa'));
+          items: (value, props) => viewModel.regions,
+          onChanged: (value) => viewModel.setSelectedRegion(value));
 
   Widget _buildRegionFormField(OnboardingViewModel viewModel) => TextFormField(
         controller: regionController,
         onTap: viewModel.setRegionFocus,
         decoration: inputDecoration(
-            hint: 'Enter Your City',
             focus: viewModel.focusRegion,
+            hint: LocaleKeys.enter_your_city.tr(),
             filled: regionController.text.isNotEmpty),
       );
 
@@ -181,18 +185,26 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: !viewModel.dropdownRegion
-            ? regionController.text.isNotEmpty
-                ? () => _next(viewModel)
-                : null
-            : () => _next(viewModel),
-        backgroundColor: !viewModel.dropdownRegion
-            ? regionController.text.isNotEmpty
-                ? kcPrimaryColor
-                : kcPrimaryColor.withOpacity(0.1)
-            : kcPrimaryColor,
+        text: LocaleKeys.cont.tr(),
+        onTap: viewModel.selectedCountry != null
+            ? !viewModel.dropdownRegion
+                ? regionController.text.isNotEmpty
+                    ? () => _next(viewModel)
+                    : null
+                : viewModel.selectedRegion != null
+                    ? () => _next(viewModel)
+                    : null
+            : null,
+        backgroundColor: viewModel.selectedCountry != null
+            ? !viewModel.dropdownRegion
+                ? regionController.text.isNotEmpty
+                    ? kcPrimaryColor
+                    : kcPrimaryColor.withOpacity(0.1)
+                : viewModel.selectedRegion != null
+                    ? kcPrimaryColor
+                    : kcPrimaryColor.withOpacity(0.1)
+            : kcPrimaryColor.withOpacity(0.1),
       );
 }

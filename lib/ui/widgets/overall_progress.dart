@@ -50,7 +50,7 @@ class OverallProgress extends StatelessWidget {
       [_buildProgressInfo(), _buildProgress()];
 
   Widget _buildProgressInfo() => Text(
-      LocaleKeys.overall_progress.tr(),
+        LocaleKeys.overall_progress.tr(),
         style: style16DG600,
       );
 
@@ -66,7 +66,7 @@ class OverallProgress extends StatelessWidget {
       );
 
   Widget _buildSubtitle() => Text(
-     LocaleKeys.keep_up_the_great_work.tr(),
+        LocaleKeys.keep_up_the_great_work.tr(),
         style: style14DG500,
       );
 }

@@ -1,3 +1,4 @@
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -11,6 +12,16 @@ class LandingViewModel extends BaseViewModel {
 
   final _authenticationService = locator<AuthenticationService>();
 
+  // Controller
+  final FlutterCarouselController _controller = FlutterCarouselController();
+
+  FlutterCarouselController get controller => _controller;
+
+  // In-app navigation
+  void next() {
+    _controller.nextPage();
+  }
+
   // Navigation
   Future<void> navigateToLogin() async =>
       await _navigationService.replaceWithLoginView();
@@ -18,6 +29,7 @@ class LandingViewModel extends BaseViewModel {
   // Remote api call
 
   // First time install
+
   Future<void> setFirstTimeInstall() async {
     await runBusyFuture(_setFirstTimeInstall());
   }

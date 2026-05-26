@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
@@ -32,7 +34,7 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
     FocusManager.instance.primaryFocus?.unfocus();
 
     Map<String, dynamic> data = {
-      'learning_goal': viewModel.selectedLearningGoal,
+      'learning_goal': viewModel.selectedLearningGoal?.code,
     };
     viewModel.addUserData(data);
 
@@ -98,17 +100,20 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
-        language: viewModel.selectedLanguage['code'],
         onLanguage: () async => await viewModel.navigateToLanguage(),
+        language: viewModel.selectedLanguage['code'] == 'am'
+            ? 'አማ'
+            : viewModel.selectedLanguage['code'],
       );
 
   Widget _buildTitle(OnboardingViewModel viewModel) => Text.rich(
         TextSpan(
-            text: 'Hi ${viewModel.userData['first_name']},',
+            text:
+                '${LocaleKeys.hello.tr()} ${viewModel.userData['first_name']},',
             style: style18P600.copyWith(fontSize: 22),
             children: [
               TextSpan(
-                text: ' Choose your learning goal.',
+                text: ' ${LocaleKeys.learning_goal.tr()}',
                 style: style16DG600.copyWith(fontSize: 22),
               )
             ]),
@@ -119,27 +124,21 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
         itemCount: viewModel.learningGoals.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildLearningGoal(
-          title: viewModel.learningGoals[index]['title'],
-          icon: getIcon(viewModel.learningGoals[index]['icon']),
-          subtitle: viewModel.learningGoals[index]['subtitle'],
-          selected: viewModel
-              .isSelectedLearningGoal(viewModel.learningGoals[index]['title']),
-          onTap: () => viewModel
-              .setSelectedLearningGoal(viewModel.learningGoals[index]['title']),
+          title: viewModel.learningGoals[index].label ?? '',
+          selected:
+              viewModel.isSelectedLearningGoal(viewModel.learningGoals[index]),
+          onTap: () =>
+              viewModel.setSelectedLearningGoal(viewModel.learningGoals[index]),
         ),
       );
 
   Widget _buildLearningGoal(
           {required String title,
           required bool selected,
-          required IconData icon,
-          required String subtitle,
           required GestureTapCallback onTap}) =>
       CustomLargeRadioButton(
-        icon: icon,
         title: title,
         onTap: onTap,
-        subtitle: subtitle,
         selected: selected,
       );
 
@@ -151,9 +150,9 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         onTap: viewModel.selectedLearningGoal != null
             ? () => _next(viewModel)
             : null,

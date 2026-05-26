@@ -89,14 +89,12 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
           program: viewModel.learnPrograms[index],
           onTap: () async => await viewModel
               .navigateToLearnCourse(viewModel.learnPrograms[index].id ?? 0),
-          onLockTap: () async => await viewModel.navigateToLearnSubscription(),
         ),
       );
 
   Widget _buildTile({
     required LearnProgram program,
     required GestureTapCallback onTap,
-    required GestureTapCallback onLockTap,
   }) =>
-      LearnProgramTile(onTap: onTap, program: program,onLockTap: onLockTap,);
+      LearnProgramTile(onTap: onTap, program: program);
 }
