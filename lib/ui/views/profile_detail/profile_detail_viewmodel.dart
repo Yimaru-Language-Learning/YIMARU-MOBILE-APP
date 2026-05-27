@@ -2,10 +2,12 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../models/field_option.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/image_picker_service.dart';
+import '../../../services/onboarding_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
@@ -16,6 +18,8 @@ class ProfileDetailViewModel extends ReactiveViewModel
   final _apiService = locator<ApiService>();
 
   final _statusChecker = locator<StatusCheckerService>();
+
+  final _onboardingService = locator<OnboardingService>();
 
   final _navigationService = locator<NavigationService>();
 
@@ -58,14 +62,14 @@ class ProfileDetailViewModel extends ReactiveViewModel
   bool get focusEmail => _focusEmail;
 
   // Occupation
-  String _selectedOccupation = 'Students (High school & University)';
+  FieldOption? _selectedOccupation;
 
-  String get selectedOccupation => _selectedOccupation;
+  FieldOption? get selectedOccupation => _selectedOccupation;
 
   // Country
-  String _selectedCountry = 'Ethiopia';
+  FieldOption? _selectedCountry;
 
-  String get selectedCountry => _selectedCountry;
+  FieldOption? get selectedCountry => _selectedCountry;
 
   // Region
   bool _focusRegion = false;
@@ -76,9 +80,9 @@ class ProfileDetailViewModel extends ReactiveViewModel
 
   bool get dropdownRegion => _dropdownRegion;
 
-  String _selectedRegion = 'Addis Ababa';
+  FieldOption? _selectedRegion;
 
-  String get selectedRegion => _selectedRegion;
+  FieldOption? get selectedRegion => _selectedRegion;
 
   // User data
   final Map<String, dynamic> _userData = {};
@@ -116,182 +120,26 @@ class ProfileDetailViewModel extends ReactiveViewModel
   }
 
   // Occupation
-  List<String> getOccupations() => [
-        'Students (High school & University)',
-        'Job Seekers / Fresh Graduates',
-        'Working Professionals (Corporate/Office)',
-        'Government & NGO Workers',
-        'Entrepreneurs & Small Business Owners',
-        'Hospitality & Tourism Workers',
-        'Freelancers / Remote Workers (Digital Economy)'
-      ];
+  List<FieldOption> get _occupations => _onboardingService.occupations;
 
-  void setSelectedOccupation(String value) {
+  List<FieldOption> get occupations => _occupations;
+
+  void setSelectedOccupation(FieldOption? value) {
     _selectedOccupation = value;
     rebuildUi();
   }
 
   // Country
-  List<String> getCountries() => [
-        "Afghanistan",
-        "Albania",
-        "Algeria",
-        "Andorra",
-        "Angola",
-        "Argentina",
-        "Armenia",
-        "Australia",
-        "Austria",
-        "Azerbaijan",
-        "Bahrain",
-        "Bangladesh",
-        "Belarus",
-        "Belgium",
-        "Belize",
-        "Benin",
-        "Bhutan",
-        "Bolivia",
-        "Bosnia and Herzegovina",
-        "Botswana",
-        "Brazil",
-        "Brunei",
-        "Bulgaria",
-        "Burkina Faso",
-        "Burundi",
-        "Cambodia",
-        "Cameroon",
-        "Canada",
-        "Chad",
-        "Chile",
-        "China",
-        "Colombia",
-        "Comoros",
-        "Congo",
-        "Costa Rica",
-        "Croatia",
-        "Cuba",
-        "Cyprus",
-        "Czech Republic",
-        "Denmark",
-        "Djibouti",
-        "Dominican Republic",
-        "Ecuador",
-        "Egypt",
-        "El Salvador",
-        "Eritrea",
-        "Estonia",
-        "Eswatini",
-        "Ethiopia",
-        "Finland",
-        "France",
-        "Gabon",
-        "Gambia",
-        "Georgia",
-        "Germany",
-        "Ghana",
-        "Greece",
-        "Guatemala",
-        "Guinea",
-        "Haiti",
-        "Honduras",
-        "Hungary",
-        "Iceland",
-        "India",
-        "Indonesia",
-        "Iran",
-        "Iraq",
-        "Ireland",
-        "Israel",
-        "Italy",
-        "Jamaica",
-        "Japan",
-        "Jordan",
-        "Kazakhstan",
-        "Kenya",
-        "Kuwait",
-        "Kyrgyzstan",
-        "Laos",
-        "Latvia",
-        "Lebanon",
-        "Liberia",
-        "Libya",
-        "Lithuania",
-        "Luxembourg",
-        "Madagascar",
-        "Malawi",
-        "Malaysia",
-        "Maldives",
-        "Mali",
-        "Malta",
-        "Mexico",
-        "Moldova",
-        "Monaco",
-        "Mongolia",
-        "Morocco",
-        "Mozambique",
-        "Myanmar",
-        "Namibia",
-        "Nepal",
-        "Netherlands",
-        "New Zealand",
-        "Nicaragua",
-        "Niger",
-        "Nigeria",
-        "North Korea",
-        "Norway",
-        "Oman",
-        "Pakistan",
-        "Panama",
-        "Paraguay",
-        "Peru",
-        "Philippines",
-        "Poland",
-        "Portugal",
-        "Qatar",
-        "Romania",
-        "Russia",
-        "Rwanda",
-        "Saudi Arabia",
-        "Senegal",
-        "Serbia",
-        "Singapore",
-        "Slovakia",
-        "Slovenia",
-        "Somalia",
-        "South Africa",
-        "South Korea",
-        "Spain",
-        "Sri Lanka",
-        "Sudan",
-        "Sweden",
-        "Switzerland",
-        "Syria",
-        "Taiwan",
-        "Tajikistan",
-        "Tanzania",
-        "Thailand",
-        "Tunisia",
-        "Turkey",
-        "Uganda",
-        "Ukraine",
-        "United Arab Emirates",
-        "United Kingdom",
-        "United States",
-        "Uruguay",
-        "Uzbekistan",
-        "Venezuela",
-        "Vietnam",
-        "Yemen",
-        "Zambia",
-        "Zimbabwe"
-      ];
+  List<FieldOption> get _countries => _onboardingService.countries;
 
-  void setSelectedCountry(String value) {
+  List<FieldOption> get countries => _countries;
+
+  void setSelectedCountry(FieldOption? value) {
     _selectedCountry = value;
-
-    if (value == 'Ethiopia') {
+    if (value?.label?.toLowerCase().trim() == 'ethiopia') {
       _dropdownRegion = true;
-      _selectedRegion = 'Addis Ababa';
+      _selectedRegion = _regions
+          .firstWhere((e) => e.label?.toLowerCase().trim() == 'addis ababa');
     } else {
       _dropdownRegion = false;
     }
@@ -300,34 +148,22 @@ class ProfileDetailViewModel extends ReactiveViewModel
   }
 
   // Region
-  List<String> getRegions() => [
-        'Addis Ababa',
-        'Afar',
-        'Amhara',
-        'Benishangul-Gumuz',
-        'Central Ethiopia',
-        'Dire Dawa',
-        'Gambela',
-        'Harari',
-        'Oromia',
-        'Sidama',
-        'Somali',
-        'South Ethiopia',
-        'South West Ethiopia Peoples',
-        'Tigray',
-      ];
+  List<FieldOption> get _regions => _onboardingService.regions;
+
+  List<FieldOption> get regions => _regions;
+
+  void setSelectedRegion(FieldOption? value) {
+    _selectedRegion = value;
+    rebuildUi();
+  }
 
   bool checkRegion({required String region, required String country}) {
-    if (country == 'Ethiopia') {
-      return getRegions().contains(region);
+    if (country.toLowerCase().contains('ethiopia')) {
+      return _regions.contains(region);
     }
     return false;
   }
 
-  void setSelectedRegion(String value) {
-    _selectedRegion = value;
-    rebuildUi();
-  }
 
   void setRegionFocus() {
     _focusRegion = true;
@@ -418,5 +254,13 @@ class ProfileDetailViewModel extends ReactiveViewModel
       Map<String, dynamic> data = {'profile_picture_url': image};
       await _apiService.updateProfileImage(data: data, userId: _user?.userId);
     }
+  }
+
+  // Profile detail fields
+  Future<void> getProfileDetailFields() async =>
+      await runBusyFuture(_getProfileDetailFields(),busyObject: StateObjects.profileDetail);
+
+  Future<void> _getProfileDetailFields() async {
+    await _onboardingService.getProfileDetailFields();
   }
 }

@@ -37,6 +37,9 @@ class User {
   @JsonKey(name: 'profile_completed')
   final bool? profileCompleted;
 
+  @JsonKey(name: 'subscription_status')
+  final String? subscriptionStatus;
+
   @JsonKey(name: 'profile_picture_url')
   final String? profilePicture;
 
@@ -55,6 +58,7 @@ class User {
     this.profilePicture,
     this.userInfoLoaded,
     this.profileCompleted,
+    this.subscriptionStatus
   });
 
   User copyWith(

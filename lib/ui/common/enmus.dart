@@ -39,6 +39,7 @@ enum StateObjects {
   learnModules,
   learnCourses,
   profileImage,
+  profileDetail,
   learnPrograms,
   courseLessons,
   profileUpdate,

@@ -7,10 +7,12 @@ import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/custom_form_label.dart';
 import 'package:yimaru_app/ui/widgets/small_app_bar.dart';
 
+import '../../../models/field_option.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 import '../../common/validators/form_validator.dart';
+import '../../widgets/custom_dropdown.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/image_picker_option.dart';
 import '../../widgets/page_loading_indicator.dart';
@@ -31,18 +33,29 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
     with $ProfileDetailView {
   const ProfileDetailView({Key? key}) : super(key: key);
 
+  void _setSelectedCountry(
+      {FieldOption? value, required ProfileDetailViewModel viewModel}) {
+    viewModel.setSelectedCountry(value);
+
+    if (viewModel.selectedCountry?.label?.toLowerCase().tr() != 'ethiopia') {
+      regionController.clear();
+      viewModel.unsetRegionFocus();
+    }
+  }
+
   Future<void> _update(ProfileDetailViewModel viewModel) async {
     Map<String, dynamic> data = {
-      'region': viewModel.dropdownRegion
-          ? viewModel.selectedRegion
-          : regionController.text,
       'gender': viewModel.selectedGender,
+      'region': viewModel.dropdownRegion
+          ? viewModel.selectedRegion?.code
+          : regionController.text,
       'last_name': lastNameController.text,
-      'country': viewModel.selectedCountry,
       'first_name': firstNameController.text,
-      'occupation': viewModel.selectedOccupation,
+      'country': viewModel.selectedCountry?.code,
+      'occupation': viewModel.selectedOccupation?.code,
       'birth_day': DateFormat('yyyy-MM-dd').format(DateTime.now()),
     };
+
 
     viewModel.addUserData(data);
 
@@ -68,10 +81,13 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   void _checkRegion(ProfileDetailViewModel viewModel) {
     bool region = viewModel.checkRegion(
-        region: viewModel.user?.region ?? 'Addis Ababa',
-        country: viewModel.user?.country ?? 'Ethiopia');
+        region: viewModel.user?.region ?? '',
+        country: viewModel.user?.country ?? '');
     if (region) {
-      viewModel.setSelectedRegion(viewModel.user?.region ?? 'Addis Ababa');
+      FieldOption? option = viewModel.regions
+          .where((e) => (e.code ?? '') == viewModel.user?.region)
+          .first;
+      viewModel.setSelectedRegion(option);
     } else {
       regionController.text = viewModel.user?.region ?? '';
     }
@@ -85,12 +101,17 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
     _checkRegion(viewModel);
     viewModel.clearUserData();
     viewModel.setSelectedGender(viewModel.user?.gender ?? '');
-    viewModel.setSelectedOccupation(viewModel.user?.occupation ?? '');
-    viewModel.setSelectedCountry(viewModel.user?.country ?? 'Ethiopia');
+    viewModel.setSelectedOccupation(viewModel.occupations
+        .where((e) => (e.code ?? '') == viewModel.user?.occupation)
+        .first);
+    viewModel.setSelectedCountry(viewModel.countries
+        .where((e) => (e.code ?? '') == viewModel.user?.country)
+        .first);
   }
 
   @override
-  void onViewModelReady(ProfileDetailViewModel viewModel) {
+  void onViewModelReady(ProfileDetailViewModel viewModel) async{
+    await viewModel.getProfileDetailFields();
     _onModelReady(viewModel);
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
@@ -113,8 +134,16 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
           required ProfileDetailViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
+        body: _buildScaffoldState(context: context, viewModel: viewModel),
       );
+
+  Widget _buildScaffoldState(
+      {required BuildContext context,
+        required ProfileDetailViewModel viewModel}) =>
+      viewModel.busy(StateObjects.profileDetail)
+          ? const PageLoadingIndicator()
+          : _buildScaffoldContainer(context: context, viewModel: viewModel);
+
 
   Widget _buildScaffoldContainer(  {required BuildContext context,
     required ProfileDetailViewModel viewModel}) => Container(
@@ -208,7 +237,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         verticalSpaceMedium,
         _buildCountryDropdownLabel(),
         verticalSpaceSmall,
-        // _buildCountryDropdown(viewModel),
+        _buildCountryDropdown(viewModel),
         verticalSpaceMedium,
         _buildRegionFormFieldWrapper(viewModel),
         verticalSpaceMedium,
@@ -533,13 +562,14 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         label: LocaleKeys.country.tr(),
       );
 
-  // Widget _buildCountryDropdown(ProfileDetailViewModel viewModel) =>
-  //     CustomDropdownPicker(
-  //       hint: 'Select country',
-  //       selectedItem: viewModel.selectedCountry,
-  //       items: (value, props) => viewModel.getCountries(),
-  //       onChanged: (value) => viewModel.setSelectedCountry(value ?? 'Ethiopia'),
-  //     );
+  Widget _buildCountryDropdown(ProfileDetailViewModel viewModel) =>
+      CustomDropdownPicker(
+          icon: _buildSearchIcon(),
+          hint: LocaleKeys.select_country.tr(),
+          selectedItem: viewModel.selectedCountry,
+          items: (value, props) => viewModel.countries,
+          onChanged: (value) =>
+              _setSelectedCountry(value: value, viewModel: viewModel));
 
   Widget _buildRegionFormFieldWrapper(ProfileDetailViewModel viewModel) =>
       Column(
@@ -571,19 +601,17 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       );
 
   Widget _buildRegionFormState(ProfileDetailViewModel viewModel) =>
-      // viewModel.dropdownRegion
-      //     ? _buildRegionDropDown(viewModel)
-      //     :
-      _buildRegionFormField(viewModel);
-  //
-  // Widget _buildRegionDropDown(ProfileDetailViewModel viewModel) =>
-  //     CustomDropdownPicker(
-  //         icon: _buildSearchIcon(),
-  //         hint:LocaleKeys.select_region.tr(),
-  //         selectedItem: viewModel.selectedRegion,
-  //         items: (value, props) => viewModel.getRegions(),
-  //         onChanged: (value) =>
-  //             viewModel.setSelectedRegion(value ?? 'Addis Ababa'));
+      viewModel.dropdownRegion
+          ? _buildRegionDropDown(viewModel)
+          : _buildRegionFormField(viewModel);
+
+  Widget _buildRegionDropDown(ProfileDetailViewModel viewModel) =>
+      CustomDropdownPicker(
+          icon: _buildSearchIcon(),
+          hint: LocaleKeys.select_region.tr(),
+          selectedItem: viewModel.selectedRegion,
+          items: (value, props) => viewModel.regions,
+          onChanged: (value) => viewModel.setSelectedRegion(value));
 
   Widget _buildRegionFormField(ProfileDetailViewModel viewModel) =>
       TextFormField(
@@ -618,7 +646,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       [
         _buildOccupationDropdownLabel(),
         verticalSpaceSmall,
-        // _buildOccupationDropdown(viewModel)
+        _buildOccupationDropdown(viewModel)
       ];
 
   Widget _buildOccupationDropdownLabel() => CustomFormLabel(
@@ -626,14 +654,14 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         label: LocaleKeys.occupation.tr(),
       );
 
-  // Widget _buildOccupationDropdown(ProfileDetailViewModel viewModel) =>
-  //     CustomDropdownPicker(
-  //         icon: _buildSearchIcon(),
-  //         hint:LocaleKeys.select_occupation.tr(),
-  //         selectedItem: viewModel.selectedOccupation,
-  //         items: (value, props) => viewModel.getOccupations(),
-  //         onChanged: (value) => viewModel.setSelectedOccupation(
-  //             value ?? 'Students (High school & University)'));
+  Widget _buildOccupationDropdown(ProfileDetailViewModel viewModel) =>
+      CustomDropdownPicker(
+          icon: _buildSearchIcon(),
+          hint: LocaleKeys.select_occupation.tr(),
+          selectedItem: viewModel.selectedOccupation,
+          items: (value, props) => viewModel.occupations,
+          onChanged: (value) => viewModel.setSelectedOccupation(value));
+
   Icon _buildSearchIcon() => const Icon(
         Icons.search,
         color: kcPrimaryColor,

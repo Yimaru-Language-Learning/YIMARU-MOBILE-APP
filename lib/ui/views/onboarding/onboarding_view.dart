@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 
 import 'package:yimaru_app/ui/views/onboarding/screens/age_group_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/challenge_form_screen.dart';
@@ -13,7 +12,6 @@ import 'package:yimaru_app/ui/views/onboarding/screens/language_goal_form_screen
 import 'package:yimaru_app/ui/views/onboarding/screens/learning_goal_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/occupation_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/topic_form_screen.dart';
-import 'package:yimaru_app/ui/views/startup/startup_view.dart';
 
 import '../../common/validators/form_validator.dart';
 import 'onboarding_viewmodel.dart';
