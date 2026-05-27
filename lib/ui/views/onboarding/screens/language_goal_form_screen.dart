@@ -5,7 +5,6 @@ import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
-import 'package:yimaru_app/ui/views/onboarding/onboarding_view.form.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_small_radio_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';

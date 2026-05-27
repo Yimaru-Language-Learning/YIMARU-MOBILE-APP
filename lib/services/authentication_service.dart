@@ -90,6 +90,8 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setBool('userInfoLoaded', true);
     await _secureService.setBool(
         'profileCompleted', data.profileCompleted ?? false);
+    await _secureService.setString(
+        'subscriptionStatus', data.subscriptionStatus ?? '');
     await _secureService.setString('email', data.email ?? '');
     await _secureService.setString('region', data.region ?? '');
     await _secureService.setString('gender', data.gender ?? '');
@@ -98,6 +100,7 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('lastName', data.lastName ?? '');
     await _secureService.setString('firstName', data.firstName ?? '');
     await _secureService.setString('occupation', data.occupation ?? '');
+
 
     _user = User(
       email: data.email,
@@ -113,6 +116,7 @@ class AuthenticationService with ListenableServiceMixin {
       accessToken: _user?.accessToken,
       refreshToken: _user?.refreshToken,
       profileCompleted: data.profileCompleted,
+      subscriptionStatus: data.subscriptionStatus,
     );
 
     notifyListeners();
@@ -169,6 +173,7 @@ class AuthenticationService with ListenableServiceMixin {
       userInfoLoaded: await _secureService.getBool('userInfoLoaded'),
       profilePicture: await _secureService.getString('profilePicture'),
       profileCompleted: await _secureService.getBool('profileCompleted'),
+      subscriptionStatus: await _secureService.getString('subscriptionStatus'),
     );
     return _user;
   }

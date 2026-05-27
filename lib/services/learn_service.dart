@@ -1,4 +1,3 @@
-import 'package:http/http.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/refresh_object.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
@@ -42,7 +41,7 @@ class LearnService with ListenableServiceMixin {
   List<LearnLesson> get lessons => _lessons;
 
   // Learn progress
-  List<ProgressSummary> _summaries = [];
+  final List<ProgressSummary> _summaries = [];
 
   List<ProgressSummary> get summaries => _summaries;
 

@@ -3,7 +3,6 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/learn_module.dart';
-import 'package:yimaru_app/models/refresh_object.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';

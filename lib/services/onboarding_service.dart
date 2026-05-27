@@ -101,4 +101,16 @@ class OnboardingService with ListenableServiceMixin {
     }
     return false;
   }
+
+  // Profile detail fields
+  Future<void> getProfileDetailFields() async {
+    _countries = await _apiService.getCountries();
+
+    _occupations = await _apiService.getOccupations();
+
+    _regions = await _apiService.getEthiopiaRegions();
+
+    notifyListeners();
+
+  }
 }

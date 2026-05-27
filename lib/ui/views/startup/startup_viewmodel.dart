@@ -89,7 +89,7 @@ class StartupViewModel extends ReactiveViewModel {
       response = {'data': true, 'status': ResponseStatus.success};
     }
     if (response['status'] == ResponseStatus.success && !response['data']) {
-      await etOnboardingFields();
+      await getOnboardingFields();
     } else if (response['status'] == ResponseStatus.success &&
         response['data']) {
       await saveProfileStatus(response['data']);
@@ -134,7 +134,7 @@ class StartupViewModel extends ReactiveViewModel {
   // Remote api call
 
   // Onboarding fields
-  Future<void> etOnboardingFields() async {
+  Future<void> getOnboardingFields() async {
     bool response = await _onboardingService.getOnboardingFields();
     if (response) {
       await replaceWithOnboarding();
