@@ -1,42 +1,30 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:yimaru_app/models/module_progress.dart';
+
+import 'access.dart';
 
 part 'course_progress.g.dart';
 
 @JsonSerializable()
 class CourseProgress {
-  final String? level;
+  final int? id;
 
-  final String? title;
+  final String? name;
 
-  final String? description;
+  final Access? access;
 
-  @JsonKey(name: 'is_locked')
-  final bool? isLocked;
+  final List<ModuleProgress>? modules;
 
-  @JsonKey(name: 'sub_course_id')
-  final int? courseId;
 
-  @JsonKey(name: 'display_order')
-  final int? displayOrder;
+  @JsonKey(name: 'program_id')
+  final int? programId;
 
-  @JsonKey(name: 'progress_status')
-  final String? progressStatus;
 
-  @JsonKey(name: 'progress_percentage')
-  final double? progressPercentage;
 
   const CourseProgress(
-      {this.level,
-      this.title,
-      this.isLocked,
-      this.courseId,
-      this.description,
-      this.displayOrder,
-      this.progressStatus,
-      this.progressPercentage});
+      {this.id,this.name,this.access,this.modules,this.programId});
 
-  factory CourseProgress.fromJson(Map<String, dynamic> json) =>
-      _$CourseProgressFromJson(json);
+  factory CourseProgress.fromJson(Map<String, dynamic> json) => _$CourseProgressFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseProgressToJson(this);
 }

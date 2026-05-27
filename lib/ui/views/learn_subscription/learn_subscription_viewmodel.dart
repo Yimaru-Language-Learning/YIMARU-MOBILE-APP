@@ -82,7 +82,6 @@ class LearnSubscriptionViewModel extends FormViewModel {
   Future<void> _getLearnSubscriptions() async {
     if (await _statusChecker.checkConnection()) {
       _subscriptions = await _apiService.getLearnSubscriptions();
-      _subscriptions = _subscriptions + _subscriptions + _subscriptions;
     }
   }
 }

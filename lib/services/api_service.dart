@@ -6,6 +6,7 @@ import 'package:yimaru_app/models/learn_program.dart';
 import 'package:yimaru_app/models/assessment_question.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
+import 'package:yimaru_app/models/refresh_object.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
@@ -20,6 +21,7 @@ import '../models/learn_question.dart';
 import '../models/learn_subscription.dart';
 import '../models/assessment.dart';
 import '../models/learn_subscription_request.dart';
+import '../models/progress_summary.dart';
 import '../ui/common/enmus.dart';
 
 class ApiService {
@@ -621,6 +623,34 @@ class ApiService {
     }
   }
 
+  // Complete profile
+  Future<Map<String, dynamic>> refreshObject(Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFilesUrl/$kRefreshUrl',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Operation successful',
+          'data': RefreshObject.fromJson(response.data['data'])
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
   // Learn learn programs
   Future<List<LearnProgram>> getLearnPrograms() async {
     try {
@@ -841,6 +871,30 @@ class ApiService {
     }
   }
 
+  // Get progress summary
+  Future<List<ProgressSummary>> getProgressSummary() async {
+    try {
+      List<ProgressSummary> summaries = [];
+
+      final Response response = await _service.dio
+          .get('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kLmsUrl/$kProgressSummary');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['programs'] as List;
+        summaries = decodedData.map(
+          (e) {
+            return ProgressSummary.fromJson(e);
+          },
+        ).toList();
+        return summaries;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
   // Complete lesson
   Future<Map<String, dynamic>> completeLearnPractice(int id) async {
     try {
@@ -897,6 +951,32 @@ class ApiService {
       Response response = await _service.dio.post(
           '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kPaymentsUrl/$kSubscribeUrl',
           data: data);
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Subscription successful!',
+          'data': LearnSubscriptionRequest.fromJson(response.data['data']),
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
+  // Verify subscription
+  Future<Map<String, dynamic>> verifySubscription(int id) async {
+    try {
+      Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kPaymentsUrl/$kVerifySubscriptionUrl/$id');
 
       if (response.statusCode == 200) {
         return {

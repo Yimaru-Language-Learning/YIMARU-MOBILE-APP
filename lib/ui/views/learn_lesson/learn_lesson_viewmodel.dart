@@ -10,6 +10,7 @@ import '../../../app/app.locator.dart';
 import '../../../models/learn_module.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
+import '../../common/helper_functions.dart';
 
 class LearnLessonViewModel extends ReactiveViewModel {
   // Dependency injection
@@ -23,6 +24,11 @@ class LearnLessonViewModel extends ReactiveViewModel {
   List<ListenableServiceMixin> get listenableServices => [_learnService];
 
   // Learn lessons
+
+  final Map<int, String> _refreshedThumbnails = {};
+
+  Map<int, String> get refreshedThumbnails => _refreshedThumbnails;
+
   List<LearnLesson> get _lessons => _learnService.lessons;
 
   List<LearnLesson> get lessons => _lessons;
@@ -55,6 +61,27 @@ class LearnLessonViewModel extends ReactiveViewModel {
   Future<void> _getLessons(int id) async {
     if (await _statusChecker.checkConnection()) {
       await _learnService.getLearnLessons(id);
+      // await refreshLessonImages(_lessons);
     }
   }
+
+  //Refresh image
+  Future<void> refreshLessonImages(List<LearnLesson> lessons) async {
+    for (final lesson in lessons) {
+      final thumbnail = lesson.thumbnail;
+
+      if (lesson.id == null || thumbnail == null || thumbnail.isEmpty) {
+        continue;
+      }
+
+      final String? refreshedUrl = await _learnService.refreshObject(thumbnail);
+
+      if (refreshedUrl != null) {
+        _refreshedThumbnails[lesson.id!] = refreshedUrl;
+      }
+    }
+  }
+
+  String getLessonImage(LearnLesson lesson) =>
+      getReadableUrl(_refreshedThumbnails[lesson.id] ?? '') ?? '';
 }

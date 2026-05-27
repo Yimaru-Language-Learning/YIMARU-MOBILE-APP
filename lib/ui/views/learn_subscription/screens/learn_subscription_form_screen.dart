@@ -6,6 +6,7 @@ import 'package:yimaru_app/ui/widgets/phone_number_prefix.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
+import '../../../widgets/learn_subscription_card.dart';
 import '../../../widgets/small_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../learn_subscription_view.form.dart';
@@ -73,11 +74,15 @@ class LearnSubscriptionFormScreen
       );
 
   List<Widget> _buildSheetChildren(LearnSubscriptionViewModel viewModel) => [
-        verticalSpaceMedium,
+        verticalSpaceSmall,
         _buildTitleWrapper(),
-        verticalSpaceTiny,
+        verticalSpaceMedium,
+        _buildFirstCard(),
+        verticalSpaceMedium,
+        _buildSecondCard(),
+        verticalSpaceLarge,
         _buildSubtitle(),
-        verticalSpaceMassive,
+        verticalSpaceMedium,
         _buildPhoneNumberWrapper(viewModel),
         if (viewModel.hasPhoneNumberValidationMessage &&
             viewModel.focusPhoneNumber)
@@ -87,9 +92,21 @@ class LearnSubscriptionFormScreen
           _buildPhoneNumberValidatorWrapper(viewModel),
         verticalSpaceLarge,
         _buildContinueButton(viewModel),
-        verticalSpaceMassive,
+        verticalSpaceMedium,
         _buildSecurePaymentWrapper()
       ];
+
+  Widget _buildFirstCard() => const LearnSubscriptionCard(
+        icon: Icons.school,
+        title: '180+ New Lessons',
+        subtitle: 'Access fresh, advanced content',
+      );
+
+  Widget _buildSecondCard() => const LearnSubscriptionCard(
+        icon: Icons.developer_board,
+        title: 'Mastery Through Practice',
+        subtitle: 'Practice All Lessons, Modules & Levels',
+      );
 
   Widget _buildTitleWrapper() => Align(
         alignment: Alignment.center,

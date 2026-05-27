@@ -3,12 +3,14 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/learn_module.dart';
+import 'package:yimaru_app/models/refresh_object.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
+import '../../common/helper_functions.dart';
 
 class LearnModuleViewModel extends ReactiveViewModel {
   // Dependency injection
@@ -22,6 +24,10 @@ class LearnModuleViewModel extends ReactiveViewModel {
   List<ListenableServiceMixin> get listenableServices => [_learnService];
 
   // Learn module
+  final Map<int, String> _refreshedIcons = {};
+
+  Map<int, String> get refreshedIcons => _refreshedIcons;
+
   List<LearnModule> get _modules => _learnService.modules;
 
   List<LearnModule> get modules => _modules;
@@ -52,6 +58,28 @@ class LearnModuleViewModel extends ReactiveViewModel {
   Future<void> _getLearnModules(int id) async {
     if (await _statusChecker.checkConnection()) {
       await _learnService.getLearnModules(id);
+      await refreshModuleImages(_modules);
     }
   }
+
+  //Refresh image
+  Future<void> refreshModuleImages(List<LearnModule> modules) async {
+    for (final module in modules) {
+      final icon = module.icon;
+
+      if (module.id == null || icon == null || icon.isEmpty) {
+        continue;
+      }
+
+      final String? refreshedUrl = await _learnService.refreshObject(icon);
+
+      if (refreshedUrl != null) {
+        _refreshedIcons[module.id!] = refreshedUrl;
+      }
+    }
+  }
+
+  String getModuleImage(LearnModule module) =>
+     getReadableUrl(_refreshedIcons[module.id] ?? '') ?? '';
+
 }

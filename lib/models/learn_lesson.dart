@@ -3,7 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'access.dart';
 
 part 'learn_lesson.g.dart';
-
 @JsonSerializable()
 class LearnLesson {
   final int? id;
@@ -35,6 +34,29 @@ class LearnLesson {
     this.sortOrder,
     this.description,
   });
+
+  LearnLesson copyWith({
+    int? id,
+    String? title,
+    int? moduleId,
+    int? sortOrder,
+    Access? access,
+    String? videoUrl,
+    String? thumbnail,
+    String? description,
+
+  }) {
+    return LearnLesson(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      access: access ?? this.access,
+      videoUrl: videoUrl ?? this.videoUrl,
+      moduleId: moduleId ?? this.moduleId,
+      sortOrder: sortOrder ?? this.sortOrder,
+      thumbnail: thumbnail ?? this.thumbnail,
+      description: description ?? this.description,
+    );
+  }
 
   factory LearnLesson.fromJson(Map<String, dynamic> json) =>
       _$LearnLessonFromJson(json);

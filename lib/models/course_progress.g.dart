@@ -8,24 +8,22 @@ part of 'course_progress.dart';
 
 CourseProgress _$CourseProgressFromJson(Map<String, dynamic> json) =>
     CourseProgress(
-      level: json['level'] as String?,
-      title: json['title'] as String?,
-      isLocked: json['is_locked'] as bool?,
-      courseId: (json['sub_course_id'] as num?)?.toInt(),
-      description: json['description'] as String?,
-      displayOrder: (json['display_order'] as num?)?.toInt(),
-      progressStatus: json['progress_status'] as String?,
-      progressPercentage: (json['progress_percentage'] as num?)?.toDouble(),
+      id: (json['id'] as num?)?.toInt(),
+      name: json['name'] as String?,
+      access: json['access'] == null
+          ? null
+          : Access.fromJson(json['access'] as Map<String, dynamic>),
+      modules: (json['modules'] as List<dynamic>?)
+          ?.map((e) => ModuleProgress.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      programId: (json['program_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CourseProgressToJson(CourseProgress instance) =>
     <String, dynamic>{
-      'level': instance.level,
-      'title': instance.title,
-      'description': instance.description,
-      'is_locked': instance.isLocked,
-      'sub_course_id': instance.courseId,
-      'display_order': instance.displayOrder,
-      'progress_status': instance.progressStatus,
-      'progress_percentage': instance.progressPercentage,
+      'id': instance.id,
+      'name': instance.name,
+      'access': instance.access,
+      'modules': instance.modules,
+      'program_id': instance.programId,
     };
