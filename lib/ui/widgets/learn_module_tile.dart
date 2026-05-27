@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -9,6 +10,7 @@ import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
 import '../common/app_colors.dart';
+import '../common/helper_functions.dart';
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
@@ -63,10 +65,10 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         subtitle: _buildContent(),
         trailing: _buildLockIcon(),
         title: _buildTitleWrapper(),
-        leading: _buildIconWrapper(),
         collapsedIconColor: kcDarkGrey,
         collapsedTextColor: kcDarkGrey,
         backgroundColor: kcBackgroundColor,
+        leading: _buildIconWrapper(viewModel),
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
         collapsedBackgroundColor: kcBackgroundColor,
@@ -87,15 +89,24 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         color: kcLightGrey,
       );
 
-  Widget _buildIconWrapper() => CircleAvatar(
+  Widget _buildIconWrapper(LearnModuleViewModel viewModel) => CircleAvatar(
         backgroundColor: kcPrimaryColor.withOpacity(0.1),
-        child: _buildIcon(),
+        child: _buildIconClipper(viewModel),
       );
 
-  Widget _buildIcon() => const Icon(
-        Icons.lightbulb_outline,
-        color: kcPrimaryColor,
+  Widget _buildIconClipper(LearnModuleViewModel viewModel)=> ClipRRect(
+    child: _buildIcon(viewModel),
+  );
+
+  Widget _buildIcon(LearnModuleViewModel viewModel) =>
+      CachedNetworkImage(
+        width: 25,
+        height: 25,
+        cacheKey: viewModel.getModuleImage(module),
+        imageUrl: viewModel.getModuleImage(module),
       );
+
+
 
   Widget _buildTitleWrapper() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),

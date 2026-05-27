@@ -15,17 +15,10 @@ class ArifPayView extends StackedView<ArifPayViewModel> {
 
   void _pop(ArifPayViewModel viewModel) => viewModel.pop;
 
-  Future<void> _error() async {
-    // await Navigator.pushNamed(context, AppRoutes.subscriptionErrorPage);
-    // Navigation.pop();
-  }
+  void _error(ArifPayViewModel viewModel) => viewModel.pop();
 
-  void _success() {
-    // Navigation.navigateTo(
-    //   AppRoutes.subscriptionSuccessPage,
-    //   arguments: widget.body,
-    // );
-  }
+  Future<void> _success(ArifPayViewModel viewModel) async =>
+      await viewModel.replaceWithHome();
 
   @override
   void onViewModelReady(ArifPayViewModel viewModel) async {
@@ -58,21 +51,12 @@ class ArifPayView extends StackedView<ArifPayViewModel> {
   Widget _buildBody(ArifPayViewModel viewModel) => InAppWebView(
         initialUrlRequest:
             URLRequest(url: WebUri(viewModel.request?.paymentUrl ?? '')),
-        onUpdateVisitedHistory: (controller, url, androidIsReload) {
-          if (url
-              .toString()
-              .contains("https://checkout.arifpay.net/canceled")) {
-            showErrorToast('Operation was cancelled');
-            // _pop();
-          } else if (url.toString().contains(kSuccessUrl)) {
-            _success();
+        onUpdateVisitedHistory: (controller, url, androidIsReload) async {
+          if (url.toString().contains(kSuccessUrl)) {
+            showSuccessToast('Subscription successful, activation in progress!');
+            _success(viewModel);
           } else if (url.toString().contains(kErrorUrl)) {
-            showErrorToast('Operation was cancelled');
-            // _pop();
-          } else if (url.toString().contains("http://x.com/elonmusk/status/")) {
-            _error();
-          } else if (url.toString().contains(kErrorUrl)) {
-            _error();
+            _error(viewModel);
           }
         },
       );

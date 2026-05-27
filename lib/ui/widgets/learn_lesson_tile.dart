@@ -59,9 +59,9 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         trailing: _buildIconState(),
         collapsedIconColor: kcDarkGrey,
         collapsedTextColor: kcDarkGrey,
-        leading: _buildLeadingWrapper(),
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
+        leading: _buildLeadingWrapper(viewModel),
         enabled: (lesson.access?.isAccessible ?? false),
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
@@ -78,10 +78,8 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         children: _buildExpansionTileChildren(viewModel),
       );
 
-  Widget _buildLeadingWrapper() => MiniThumbnail(
-      thumbnail:
-          getReadableUrl(lesson.thumbnail ?? 'assets/images/image_1.png') ??
-              'assets/images/image_1.png');
+  Widget _buildLeadingWrapper(LearnLessonViewModel viewModel) => MiniThumbnail(
+      thumbnail: getReadableUrl(lesson.thumbnail ?? '') ?? '');
 
   Widget _buildTitle() => Text(
         lesson.title ?? '',

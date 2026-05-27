@@ -223,7 +223,7 @@ static const Map<String,dynamic> _en = {
   "create_password": "Create password",
   "confirm_password": "Confirm password",
   "eight_character_minimum": "8 characters minimum",
-  "password_math": "password match",
+  "password_match": "password match",
   "sign_up_agreement": "By clicking ‘Sign Up’, you agree to our ‘Terms of Service’ and ‘Privacy Policy’",
   "terms_of_services": "Terms of Service",
   "and": "and",

@@ -13,6 +13,8 @@ Access _$AccessFromJson(Map<String, dynamic> json) => Access(
       isAccessible: json['is_accessible'] as bool?,
       completedCount: (json['completed_count'] as num?)?.toInt(),
       progressPercent: (json['progress_percent'] as num?)?.toInt(),
+      progressPercentPrecise:
+          (json['progress_percent_precise'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$AccessToJson(Access instance) => <String, dynamic>{
@@ -22,4 +24,5 @@ Map<String, dynamic> _$AccessToJson(Access instance) => <String, dynamic>{
       'is_accessible': instance.isAccessible,
       'completed_count': instance.completedCount,
       'progress_percent': instance.progressPercent,
+      'progress_percent_precise': instance.progressPercentPrecise,
     };

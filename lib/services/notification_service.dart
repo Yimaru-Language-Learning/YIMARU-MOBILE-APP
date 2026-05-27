@@ -130,7 +130,7 @@ class NotificationService {
   }
 
   Future<void> updateFCMToken() async {
-    print('DEVICE TOKEN: ${await _messaging.getToken()}');
+   // print('DEVICE TOKEN: ${await _messaging.getToken()}');
     _messaging.onTokenRefresh.listen((newToken) {
       // updateTokenOnServer(newToken);
     });

@@ -16,6 +16,7 @@ import '../../../services/audio_player_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/app_colors.dart';
+import '../../common/helper_functions.dart';
 
 class LearnPracticeViewModel extends ReactiveViewModel {
   // Dependency injection
@@ -94,9 +95,15 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   Voice? get playing => _playing;
 
   // Learn practices
+
+
   List<LearnPractice> _practices = [];
 
   List<LearnPractice> get practices => _practices;
+
+  final Map<int, String> _refreshedImages= {};
+
+  Map<int, String> get refreshedImages => _refreshedImages;
 
   // Practice questions
   List<LearnQuestion> _questions = [];
@@ -244,6 +251,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
       );
       await playVoicePrompt(_questions[index]);
     } else {
+      await completeLearnPractices();
       goTo(3);
     }
   }
@@ -260,6 +268,10 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   // Remote api call
 
+  // Refresh url
+  Future<String?> refreshUrl(String url) async =>
+      await _learnService.refreshObject(url);
+
   // Learn practice
   Future<void> getLearnPractices(
           {required int id, required LearnPractices practice}) async =>
@@ -271,14 +283,14 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     if (await _statusChecker.checkConnection()) {
       if (practice == LearnPractices.course) {
         _practices = await _apiService.getLearnCoursePractices(id);
-
+      //  await refreshPracticeImages(_practices);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else if (practice == LearnPractices.module) {
         _practices = await _apiService.getLearnModulePractices(id);
+      //  await refreshPracticeImages(_practices);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else {
         _practices = await _apiService.getLearnLessonPractices(id);
-
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       }
     }
@@ -296,6 +308,28 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   Future<void> _completeLearnPractices() async {
     if (await _statusChecker.checkConnection()) {
       await _apiService.completeLearnPractice(_practices.first.id ?? 0);
+      await _learnService.getLearnProgressSummary();
     }
   }
+
+//Refresh image
+  Future<void> refreshPracticeImages(List<LearnPractice> practices) async {
+    for (final practice in practices) {
+      final image = practice.storyImage;
+
+      if (practice.id == null || image == null || image.isEmpty) {
+        continue;
+      }
+
+      final String? refreshedUrl = await _learnService.refreshObject(image);
+
+      if (refreshedUrl != null) {
+        _refreshedImages[practice.id!] = refreshedUrl;
+      }
+    }
+  }
+
+  String getPracticeImage(LearnPractice practice) =>
+      getReadableUrl(_refreshedImages[practice.id] ?? '') ?? '';
+
 }
