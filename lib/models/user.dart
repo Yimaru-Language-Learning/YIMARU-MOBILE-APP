@@ -43,23 +43,22 @@ class User {
   @JsonKey(name: 'profile_picture_url')
   final String? profilePicture;
 
-  const User({
-    this.email,
-    this.region,
-    this.gender,
-    this.userId,
-    this.country,
-    this.lastName,
-    this.birthday,
-    this.firstName,
-    this.occupation,
-    this.accessToken,
-    this.refreshToken,
-    this.profilePicture,
-    this.userInfoLoaded,
-    this.profileCompleted,
-    this.subscriptionStatus
-  });
+  const User(
+      {this.email,
+      this.region,
+      this.gender,
+      this.userId,
+      this.country,
+      this.lastName,
+      this.birthday,
+      this.firstName,
+      this.occupation,
+      this.accessToken,
+      this.refreshToken,
+      this.profilePicture,
+      this.userInfoLoaded,
+      this.profileCompleted,
+      this.subscriptionStatus});
 
   User copyWith(
           {int? userId,
@@ -75,7 +74,8 @@ class User {
           String? refreshToken,
           bool? userInfoLoaded,
           bool? profileCompleted,
-          String? profilePicture}) =>
+          String? profilePicture,
+          String? subscriptionStatus}) =>
       User(
           email: email ?? this.email,
           userId: userId ?? this.userId,
@@ -90,7 +90,8 @@ class User {
           refreshToken: refreshToken ?? this.refreshToken,
           userInfoLoaded: userInfoLoaded ?? this.userInfoLoaded,
           profilePicture: profilePicture ?? this.profilePicture,
-          profileCompleted: profileCompleted ?? this.profileCompleted);
+          profileCompleted: profileCompleted ?? this.profileCompleted,
+          subscriptionStatus: subscriptionStatus ?? this.subscriptionStatus);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

@@ -11,13 +11,34 @@ import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
+import '../../widgets/finish_practice_sheet.dart';
 import '../../widgets/small_app_bar.dart';
 import 'learn_module_viewmodel.dart';
 
 class LearnModuleView extends StackedView<LearnModuleViewModel> {
   final LearnCourse course;
-
   const LearnModuleView({Key? key, required this.course}) : super(key: key);
+
+  Future<void> _onPractice(
+      {required BuildContext context,
+      required LearnModule module,
+      required LearnModuleViewModel viewModel}) async {
+    if (module.access?.completedCount == module.access?.totalCount) {
+      await viewModel.navigateToLearnPractice(
+          id: module.id ?? 0, module: module.name ?? '');
+    } else {
+      await _showSheet(context: context, viewModel: viewModel);
+    }
+  }
+
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        backgroundColor: kcTransparent,
+        builder: (_) => _buildSheet(viewModel),
+      );
 
   @override
   void onViewModelReady(LearnModuleViewModel viewModel) async {
@@ -35,32 +56,46 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
     LearnModuleViewModel viewModel,
     Widget? child,
   ) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(LearnModuleViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldContainer(viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffoldContainer(LearnModuleViewModel viewModel) => Container(
+  Widget _buildScaffoldContainer(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      Container(
         decoration: bgDecoration,
-        child: _buildScaffold(viewModel),
+        child: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold(LearnModuleViewModel viewModel) =>
-      SafeArea(child: _buildBody(viewModel));
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      SafeArea(child: _buildBody(context: context, viewModel: viewModel));
 
-  Widget _buildBody(LearnModuleViewModel viewModel) => Padding(
+  Widget _buildBody(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(viewModel),
+        child: _buildColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildColumn(LearnModuleViewModel viewModel) => Column(
+  Widget _buildColumn(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      Column(
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
           verticalSpaceMedium,
-          _buildModulesColumnWrapper(viewModel),
+          _buildModulesColumnWrapper(context: context, viewModel: viewModel),
         ],
       );
 
@@ -69,28 +104,41 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         showBackButton: true,
       );
 
-  Widget _buildModulesColumnWrapper(LearnModuleViewModel viewModel) =>
-      Expanded(child: _buildLevelsColumnScrollView(viewModel));
+  Widget _buildModulesColumnWrapper(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      Expanded(
+          child: _buildLevelsColumnScrollView(
+              context: context, viewModel: viewModel));
 
-  Widget _buildLevelsColumnScrollView(LearnModuleViewModel viewModel) =>
+  Widget _buildLevelsColumnScrollView(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildLevelsColumn(viewModel),
+        child: _buildLevelsColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildLevelsColumn(LearnModuleViewModel viewModel) => Column(
+  Widget _buildLevelsColumn(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: _buildLevelsColumnChildren(viewModel),
+        children:
+            _buildLevelsColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildLevelsColumnChildren(LearnModuleViewModel viewModel) => [
+  List<Widget> _buildLevelsColumnChildren(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      [
         verticalSpaceSmall,
         _buildTitle(),
         _buildSubtitle(),
         verticalSpaceMedium,
-        _buildOverallProgress(),
+        _buildOverallProgress(viewModel),
         verticalSpaceMedium,
-        _buildListViewBuilder(viewModel)
+        _buildListViewBuilder(context: context, viewModel: viewModel)
       ];
 
   Widget _buildTitle() => Text(
@@ -103,30 +151,38 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         style: style14P400,
       );
 
-  Widget _buildOverallProgress() => OverallProgress(
+  Widget _buildOverallProgress(LearnModuleViewModel viewModel) => OverallProgress(
         indicatorBackgroundColor: kcWhite,
-        progress: course.access?.progressPercent ?? 0,
-        backgroundColor: kcPrimaryColor.withOpacity(0.1),
+    backgroundColor: kcPrimaryColor.withOpacity(0.1),
+    progress:
+        (viewModel.getUpdatedLearnCourse(course.id ?? 0) ?? course).access?.progressPercent ?? 0,
       );
 
-  Widget _buildListViewBuilder(LearnModuleViewModel viewModel) =>
+  Widget _buildListViewBuilder(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
       viewModel.busy(StateObjects.learnModules)
           ? _buildProgressIndicator()
-          : _buildListView(viewModel);
+          : _buildListView(context: context, viewModel: viewModel);
 
   Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
-  Widget _buildListView(LearnModuleViewModel viewModel) => ListView.builder(
+  Widget _buildListView(
+          {required BuildContext context,
+          required LearnModuleViewModel viewModel}) =>
+      ListView.builder(
         shrinkWrap: true,
         itemCount: viewModel.modules.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           module: viewModel.modules[index],
-          onPracticeTap: () async => await viewModel.navigateToLearnPractice(
-              id: viewModel.modules[index].id ?? 0,
-              module: viewModel.modules[index].name ?? ''),
+          onPracticeTap: () async => await _onPractice(
+            context: context,
+            viewModel: viewModel,
+            module: viewModel.modules[index],
+          ),
           onModuleTap: () async =>
               await viewModel.navigateToLearnLesson(viewModel.modules[index]),
         ),
@@ -141,4 +197,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
           module: module,
           onModuleTap: onModuleTap,
           onPracticeTap: onPracticeTap);
+
+  Widget _buildSheet(LearnModuleViewModel viewModel) =>
+      FinishPracticeSheet(onTap: viewModel.pop);
 }

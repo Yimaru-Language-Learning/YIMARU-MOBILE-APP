@@ -125,7 +125,7 @@
     "open_in_telegram": "Open in Telegram",
     "search_for": "Search for",
     "current_level": "Current Level",
-    "keep_up_the_great_work": "Keep up the great work! You\\'re doing amazing.",
+    "keep_up_the_great_work": "Keep up the great work! You're doing amazing.",
     "no_practice_available": "No practice available!",
     "begin_module_practice": "Begin Module Practice",
     "lets_practice_lesson": "Let’s Practice",
@@ -182,5 +182,6 @@
     "lets_start_practice": "Let's start your practice",
     "welcome_abroad": "Welcome aboard",
     "ready_to_explore": "You’re ready to explore your personalized lessons.",
-    "finish": "Finish"
+    "finish": "Finish",
+    "finish_all_practice": "Finish all the practices in the lessons to take this practice"
   }

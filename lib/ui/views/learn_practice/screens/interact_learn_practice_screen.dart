@@ -169,6 +169,7 @@ class InteractLearnPracticeScreen
   Widget _buildSpeakingIndicator(LearnPracticeViewModel viewModel) =>
       WaveWrapper(height: 200, child: _buildSpinnerState(viewModel));
 
+
   Widget _buildSpinnerState(LearnPracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.recordLearnPracticeAnswer) ||
               viewModel.busy(StateObjects.finishLearnPracticeQuestion)

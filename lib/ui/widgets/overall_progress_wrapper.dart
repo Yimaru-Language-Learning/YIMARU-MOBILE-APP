@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
@@ -48,8 +50,8 @@ class OverallProgressWrapper extends StatelessWidget {
         backgroundColor: kcVeryLightGrey,
       );
 
-  Widget _buildSubtitle() => const Text(
-        'Keep up the great work! You\'re doing amazing.',
-        style: TextStyle(color: kcDarkGrey),
+  Widget _buildSubtitle() =>  Text(
+       LocaleKeys.keep_up_the_great_work.tr(),
+        style:style14DG400 ,
       );
 }

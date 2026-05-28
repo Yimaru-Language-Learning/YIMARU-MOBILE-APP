@@ -6,6 +6,7 @@ import 'package:yimaru_app/models/learn_module.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../models/learn_course.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
@@ -59,6 +60,11 @@ class LearnModuleViewModel extends ReactiveViewModel {
       await _learnService.getLearnModules(id);
       await refreshModuleImages(_modules);
     }
+  }
+
+  // Get course
+  LearnCourse? getUpdatedLearnCourse(int id) {
+    return _learnService.getLearnCourseById(id);
   }
 
   //Refresh image

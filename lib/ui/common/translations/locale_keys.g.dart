@@ -185,5 +185,6 @@ abstract class  LocaleKeys {
   static const welcome_abroad = 'welcome_abroad';
   static const ready_to_explore = 'ready_to_explore';
   static const finish = 'finish';
+  static const finish_all_practice = 'finish_all_practice';
 
 }

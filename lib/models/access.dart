@@ -21,7 +21,7 @@ class Access {
   final int? progressPercent;
 
   @JsonKey(name: 'progress_percent_precise')
-  final int? progressPercentPrecise;
+  final double? progressPercentPrecise;
 
   const Access({
     this.reason,
@@ -40,7 +40,7 @@ class Access {
     bool? isAccessible,
     int? completedCount,
     int? progressPercent,
-    int? progressPercentPrecise,
+    double? progressPercentPrecise,
   }) {
     return Access(
       reason: reason ?? this.reason,

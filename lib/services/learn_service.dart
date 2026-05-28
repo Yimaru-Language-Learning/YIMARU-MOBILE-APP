@@ -17,7 +17,7 @@ class LearnService with ListenableServiceMixin {
 
   // Initialization
   learnService() {
-    listenToReactiveValues([_programs, _lessons, _modules]);
+    listenToReactiveValues([_programs,_courses, _lessons, _modules]);
   }
 
   // Learn program
@@ -89,7 +89,6 @@ class LearnService with ListenableServiceMixin {
   // Learn progress
   Future<void> getLearnProgressSummary() async {
     final summaries = await _apiService.getProgressSummary();
-    print('MY SUMMARIES: ${summaries.length}');
 
     /// PROGRAM ACCESS MAP
     final Map<int, Access?> programAccessMap = {};
@@ -149,6 +148,11 @@ class LearnService with ListenableServiceMixin {
       );
     }).toList();
 
+    print('MY SUMMARIES - COMPLETED COUNT: ${_modules.first.access?.completedCount}');
+    print('PROGRESS PERCENT: ${_modules.first.access?.progressPercent}');
+
+
+
     /// UPDATE LESSONS
     _lessons = _lessons.map((lesson) {
       return lesson.copyWith(
@@ -157,5 +161,25 @@ class LearnService with ListenableServiceMixin {
     }).toList();
 
     notifyListeners();
+  }
+
+  LearnModule? getLearnModuleById(int id) {
+    try {
+      return _modules.firstWhere((e) => e.id == id);
+    } catch (_) {
+      return null;
+    }
+
+
+  }
+
+  LearnCourse? getLearnCourseById(int id) {
+    try {
+      return _courses.firstWhere((e) => e.id == id);
+    } catch (_) {
+      return null;
+    }
+
+
   }
 }

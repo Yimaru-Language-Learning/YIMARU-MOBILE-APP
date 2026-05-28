@@ -5,10 +5,13 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
 import '../../../models/learn_subscription_request.dart';
+import '../../../models/user.dart';
 import '../../../services/api_service.dart';
+import '../../../services/authentication_service.dart';
 import '../../../services/status_checker_service.dart';
+import '../../common/ui_helpers.dart';
 
-class ArifPayViewModel extends BaseViewModel {
+class ArifPayViewModel extends ReactiveViewModel {
   // Dependency injection
 
   final _apiService = locator<ApiService>();
@@ -17,6 +20,16 @@ class ArifPayViewModel extends BaseViewModel {
 
   final _navigationService = locator<NavigationService>();
 
+  final _authenticationService = locator<AuthenticationService>();
+
+  @override
+  List<ListenableServiceMixin> get listenableServices =>
+      [_authenticationService];
+
+  // Current user
+  User? get _user => _authenticationService.user;
+
+  User? get user => _user;
   // Learn subscription request
   LearnSubscriptionRequest? _request;
 
@@ -36,6 +49,7 @@ class ArifPayViewModel extends BaseViewModel {
           busyObject: StateObjects.learnSubscription);
 
   Future<void> _createLearnSubscriptionRequest(String phone) async {
+    print('MY SUMMARIES : PAYMENT');
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> data = {
         'plan_id': 1,
@@ -51,6 +65,25 @@ class ArifPayViewModel extends BaseViewModel {
         _request = response['data'];
       }
     }
+  }
+
+  // Update payment status
+  Future<void> updatePaymentStatus() async => await runBusyFuture(_updatePaymentStatus(),
+      busyObject: StateObjects.learnSubscription);
+
+  Future<void> _updatePaymentStatus() async {
+
+      Map<String, dynamic> response = {};
+
+        response = await _apiService.getProfileData(_user?.userId);
+
+        if (response['status'] == ResponseStatus.success) {
+          User user = response['data'] as User;
+          await _authenticationService.saveUserData(user);
+
+        }
+
+
   }
 
 }
