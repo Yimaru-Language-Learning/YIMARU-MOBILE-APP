@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_bottom_sheet.dart';
 
@@ -8,6 +10,7 @@ import 'custom_elevated_button.dart';
 
 class FinishPracticeSheet extends StatelessWidget {
   final GestureTapCallback? onTap;
+
   const FinishPracticeSheet({super.key, this.onTap});
 
   @override
@@ -20,6 +23,7 @@ class FinishPracticeSheet extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildColumn(),
       );
+
   Widget _buildColumn() => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: _buildSheetChildren(),
@@ -40,7 +44,7 @@ class FinishPracticeSheet extends StatelessWidget {
       );
 
   Widget _buildMessage() => Text(
-        'Finish all the practices in the lessons to take this practice',
+        LocaleKeys.finish_all_practice.tr(),
         style: style16DG600,
         textAlign: TextAlign.center,
       );
@@ -48,9 +52,9 @@ class FinishPracticeSheet extends StatelessWidget {
   Widget _buildContinueButton() => CustomElevatedButton(
         height: 55,
         onTap: onTap,
-        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
         backgroundColor: kcPrimaryColor,
       );
 }

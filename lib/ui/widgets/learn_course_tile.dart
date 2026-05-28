@@ -13,26 +13,20 @@ import 'custom_elevated_button.dart';
 class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
   final LearnCourse course;
   final GestureTapCallback? onViewTap;
-  final GestureTapCallback? onLockTap;
   final GestureTapCallback? onPracticeTap;
 
   const LearnCourseTile({
     super.key,
     this.onViewTap,
-    this.onLockTap,
     this.onPracticeTap,
     required this.course,
   });
 
   @override
   Widget build(BuildContext context, LearnCourseViewModel viewModel) =>
-      _buildExpansionTileCardWrapper(viewModel);
+      _buildExpansionTileCard(viewModel);
 
-  Widget _buildExpansionTileCardWrapper(LearnCourseViewModel viewModel) =>
-      GestureDetector(
-        onTap: !(course.access?.isAccessible ?? false) ? onLockTap : null,
-        child: _buildExpansionTileCard(viewModel),
-      );
+
 
   Widget _buildExpansionTileCard(LearnCourseViewModel viewModel) => Container(
         margin: const EdgeInsets.only(bottom: 15),

@@ -21,6 +21,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       profilePicture: json['profile_picture_url'] as String?,
       userInfoLoaded: json['userInfoLoaded'] as bool?,
       profileCompleted: json['profile_completed'] as bool?,
+      subscriptionStatus: json['subscription_status'] as String?,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -37,5 +38,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'access_token': instance.accessToken,
       'refresh_token': instance.refreshToken,
       'profile_completed': instance.profileCompleted,
+      'subscription_status': instance.subscriptionStatus,
       'profile_picture_url': instance.profilePicture,
     };

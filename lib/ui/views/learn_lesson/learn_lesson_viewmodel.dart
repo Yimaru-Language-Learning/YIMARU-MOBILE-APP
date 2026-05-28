@@ -8,6 +8,8 @@ import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/learn_module.dart';
+import '../../../models/user.dart';
+import '../../../services/authentication_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/helper_functions.dart';
@@ -20,8 +22,19 @@ class LearnLessonViewModel extends ReactiveViewModel {
 
   final _navigationService = locator<NavigationService>();
 
+  final _authenticationService = locator<AuthenticationService>();
+
+
+
+
   @override
-  List<ListenableServiceMixin> get listenableServices => [_learnService];
+  List<ListenableServiceMixin> get listenableServices => [_learnService,_authenticationService];
+
+
+  // Current user
+  User? get _user => _authenticationService.user;
+
+  User? get user => _user;
 
   // Learn lessons
 
@@ -36,6 +49,8 @@ class LearnLessonViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
+
+
   Future<void> navigateToLearnPractice(int id) async =>
       await _navigationService.navigateToLearnPracticeView(
         id: id,
@@ -44,6 +59,10 @@ class LearnLessonViewModel extends ReactiveViewModel {
         title: LocaleKeys.lets_practice_module.tr(),
         subtitle: LocaleKeys.ask_you_few_actions.tr(),
       );
+
+
+  Future<void> navigateToLearnSubscription() async =>
+      await _navigationService.navigateToLearnSubscriptionView();
 
   Future<void> navigateToLearnLessonDetail(
           {required bool hasPractice,
@@ -65,6 +84,10 @@ class LearnLessonViewModel extends ReactiveViewModel {
     }
   }
 
+  // Get module
+  LearnModule? getUpdatedLearnModule(int id) {
+    return _learnService.getLearnModuleById(id);
+  }
   //Refresh image
   Future<void> refreshLessonImages(List<LearnLesson> lessons) async {
     for (final lesson in lessons) {

@@ -21,14 +21,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
   const LearnModuleTile(
       {super.key, this.onModuleTap, this.onPracticeTap, required this.module});
 
-  Future<void> _showSheet(
-          {required BuildContext context,
-          required LearnModuleViewModel viewModel}) async =>
-      await showModalBottomSheet(
-        context: context,
-        backgroundColor: kcTransparent,
-        builder: (_) => _buildSheet(viewModel),
-      );
+
 
   @override
   Widget build(BuildContext context, LearnModuleViewModel viewModel) =>
@@ -221,9 +214,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         text: LocaleKeys.take_practice.tr(),
       );
 
-  Widget _buildSheet(LearnModuleViewModel viewModel) => FinishPracticeSheet(
-        onTap: viewModel.pop,
-      );
+
 
   Widget _buildContainerShaderState() => !(module.access?.isAccessible ?? false)
       ? _buildContainerShader()

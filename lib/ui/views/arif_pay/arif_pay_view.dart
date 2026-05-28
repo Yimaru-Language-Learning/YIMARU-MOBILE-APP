@@ -13,12 +13,16 @@ class ArifPayView extends StackedView<ArifPayViewModel> {
 
   const ArifPayView({Key? key, required this.phone}) : super(key: key);
 
-  void _pop(ArifPayViewModel viewModel) => viewModel.pop;
 
   void _error(ArifPayViewModel viewModel) => viewModel.pop();
 
-  Future<void> _success(ArifPayViewModel viewModel) async =>
-      await viewModel.replaceWithHome();
+
+  Future<void> _success(ArifPayViewModel viewModel) async {
+
+    await viewModel.updatePaymentStatus();
+
+    await viewModel.replaceWithHome();
+  }
 
   @override
   void onViewModelReady(ArifPayViewModel viewModel) async {
@@ -44,6 +48,8 @@ class ArifPayView extends StackedView<ArifPayViewModel> {
       viewModel.busy(StateObjects.learnSubscription)
           ? const PageLoadingIndicator()
           : _buildScaffold(viewModel);
+
+
 
   Widget _buildScaffold(ArifPayViewModel viewModel) =>
       SafeArea(child: _buildBody(viewModel));

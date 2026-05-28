@@ -198,7 +198,8 @@ class CodegenLoader extends AssetLoader{
   "lets_start_practice": "ልምምድህን እንጀምር",
   "welcome_abroad": "እንኳን ደህና መጣህ",
   "ready_to_explore": "የግል ትምህርቶችህን ለማሰስ ዝግጁ ነህ።",
-  "finish": "አጠናቅቅ"
+  "finish": "አጠናቅቅ",
+  "finish_all_practice": "ልምምዱን ለመውሰድ በትምህርቶቹ ውስጥ ያሉትን ሁሉንም ልምምዶች ያጠናቅቁ።"
 };
 static const Map<String,dynamic> _en = {
   "loading": "Loading",
@@ -327,7 +328,7 @@ static const Map<String,dynamic> _en = {
   "open_in_telegram": "Open in Telegram",
   "search_for": "Search for",
   "current_level": "Current Level",
-  "keep_up_the_great_work": "Keep up the great work! You\\'re doing amazing.",
+  "keep_up_the_great_work": "Keep up the great work! You're doing amazing.",
   "no_practice_available": "No practice available!",
   "begin_module_practice": "Begin Module Practice",
   "lets_practice_lesson": "Let’s Practice",
@@ -384,7 +385,8 @@ static const Map<String,dynamic> _en = {
   "lets_start_practice": "Let's start your practice",
   "welcome_abroad": "Welcome aboard",
   "ready_to_explore": "You’re ready to explore your personalized lessons.",
-  "finish": "Finish"
+  "finish": "Finish",
+  "finish_all_practice": "Finish all the practices in the lessons to take this practice"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"am": _am, "en": _en};
 }

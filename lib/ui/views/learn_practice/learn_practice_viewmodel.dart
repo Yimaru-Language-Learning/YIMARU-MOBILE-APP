@@ -96,12 +96,11 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   // Learn practices
 
-
   List<LearnPractice> _practices = [];
 
   List<LearnPractice> get practices => _practices;
 
-  final Map<int, String> _refreshedImages= {};
+  final Map<int, String> _refreshedImages = {};
 
   Map<int, String> get refreshedImages => _refreshedImages;
 
@@ -251,7 +250,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
       );
       await playVoicePrompt(_questions[index]);
     } else {
-      await completeLearnPractices();
       goTo(3);
     }
   }
@@ -283,11 +281,11 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     if (await _statusChecker.checkConnection()) {
       if (practice == LearnPractices.course) {
         _practices = await _apiService.getLearnCoursePractices(id);
-      //  await refreshPracticeImages(_practices);
+        //  await refreshPracticeImages(_practices);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else if (practice == LearnPractices.module) {
         _practices = await _apiService.getLearnModulePractices(id);
-      //  await refreshPracticeImages(_practices);
+        //  await refreshPracticeImages(_practices);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else {
         _practices = await _apiService.getLearnLessonPractices(id);
@@ -331,5 +329,4 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   String getPracticeImage(LearnPractice practice) =>
       getReadableUrl(_refreshedImages[practice.id] ?? '') ?? '';
-
 }

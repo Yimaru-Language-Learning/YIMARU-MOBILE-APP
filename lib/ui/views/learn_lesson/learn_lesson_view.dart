@@ -20,6 +20,24 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
 
   const LearnLessonView({Key? key, required this.module}) : super(key: key);
 
+  Future<void> _onPractice(
+      {required int index,
+      required LearnLesson lesson,
+      required LearnLessonViewModel viewModel}) async {
+    if (index > 1) {
+
+      print(index);
+      print(viewModel.user?.subscriptionStatus);
+      if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'subscribed') {
+        await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+      } else {
+        await viewModel.navigateToLearnSubscription();
+      }
+    } else {
+      await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+    }
+  }
+
   @override
   void onViewModelReady(LearnLessonViewModel viewModel) async {
     await viewModel.getLessons(module.id ?? 0);
@@ -124,7 +142,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         verticalSpaceTiny,
         _buildSubtitle(),
         verticalSpaceSmall,
-        _buildModuleProgress(),
+        _buildModuleProgress(viewModel),
         verticalSpaceLarge,
         _buildMotivationCard(),
         verticalSpaceLarge,
@@ -143,10 +161,19 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         style: style14DG500,
       );
 
-  Widget _buildModuleProgress() => ModuleProgress(
-        total: module.access?.totalCount ?? 0,
-        completed: module.access?.completedCount ?? 0,
-        progress: module.access?.progressPercent ?? 0,
+  Widget _buildModuleProgress(LearnLessonViewModel viewModel) => ModuleProgress(
+        total: (viewModel.getUpdatedLearnModule(module.id ?? 0) ?? module)
+                .access
+                ?.totalCount ??
+            0,
+        completed: (viewModel.getUpdatedLearnModule(module.id ?? 0) ?? module)
+                .access
+                ?.completedCount ??
+            0,
+        progress: (viewModel.getUpdatedLearnModule(module.id ?? 0) ?? module)
+                .access
+                ?.progressPercent ??
+            0,
       );
 
   Widget _buildMotivationCard() => const MotivationCard();
@@ -172,13 +199,16 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         itemBuilder: (context, index) => _buildTile(
           index: index,
           lesson: viewModel.lessons[index],
+          onPracticeTap: () async => await _onPractice(
+            index: index,
+            viewModel: viewModel,
+            lesson: viewModel.lessons[index],
+          ),
           onLessonTap: () async => await viewModel.navigateToLearnLessonDetail(
               module: module,
               lesson: viewModel.lessons[index],
               hasPractice:
                   index != viewModel.lessons.length - 1 ? true : false),
-          onPracticeTap: () async => await viewModel
-              .navigateToLearnPractice(viewModel.lessons[index].id ?? 0),
         ),
       );
 
