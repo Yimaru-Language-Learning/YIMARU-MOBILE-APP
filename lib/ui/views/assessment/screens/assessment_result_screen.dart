@@ -27,10 +27,8 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) => [
-        _buildAppBar(viewModel),
-        _buildExpandedBody(viewModel)
-      ];
+  List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
 
   Widget _buildAppBar(AssessmentViewModel viewModel) => LargeAppBar(
         showBackButton: true,

@@ -40,10 +40,8 @@ class GenderFormScreen extends ViewModelWidget<OnboardingViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) => [
-        _buildAppBar(viewModel),
-        _buildExpandedBody(viewModel)
-      ];
+  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
 
   Widget _buildExpandedBody(OnboardingViewModel viewModel) =>
       Expanded(child: _buildBodyWrapper(viewModel));

@@ -122,7 +122,7 @@ String kTelegramSupport = '@yimaruacademy2026';
 
 String kTelegramSupportLink = 'https://t.me/yimaruacademy2026';
 
-String kErrorUrl = 'https://yimaru.net/api/v1/payments/arifpay/error';
+String kErrorUrl = 'https://yimaru.net/api/v1/payments/chapa/error';
 
 String kSuccessUrl =
-    'https://api.yimaruacademy.com/api/v1/payments/arifpay/success';
+    'https://api.yimaruacademy.com/api/v1/payments/chapa/success';

@@ -178,8 +178,9 @@ class LearnSubscriptionFormScreen
             ? kcPrimaryColor
             : kcPrimaryColor.withOpacity(0.1),
         onTap: phoneNumberController.text.isNotEmpty
-            ? () async =>
-                await viewModel.navigateToArifPay(phoneNumberController.text)
+            ? () async => await viewModel.navigateToArifPay(
+                phone: phoneNumberController.text,
+                subscription: viewModel.selectedSubscription)
             : null,
       );
 

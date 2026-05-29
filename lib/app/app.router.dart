@@ -9,7 +9,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as _i37;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i46;
+import 'package:stacked_services/stacked_services.dart' as _i47;
 import 'package:yimaru_app/models/course.dart' as _i42;
 import 'package:yimaru_app/models/course_catalog.dart' as _i44;
 import 'package:yimaru_app/models/course_lesson.dart' as _i43;
@@ -17,33 +17,33 @@ import 'package:yimaru_app/models/course_module.dart' as _i45;
 import 'package:yimaru_app/models/learn_course.dart' as _i38;
 import 'package:yimaru_app/models/learn_lesson.dart' as _i40;
 import 'package:yimaru_app/models/learn_module.dart' as _i39;
+import 'package:yimaru_app/models/learn_subscription.dart' as _i46;
 import 'package:yimaru_app/ui/common/enmus.dart' as _i41;
 import 'package:yimaru_app/ui/views/account_privacy/account_privacy_view.dart'
     as _i9;
-import 'package:yimaru_app/ui/views/arif_pay/arif_pay_view.dart' as _i31;
 import 'package:yimaru_app/ui/views/assessment/assessment_view.dart' as _i29;
 import 'package:yimaru_app/ui/views/call_support/call_support_view.dart'
     as _i12;
 import 'package:yimaru_app/ui/views/course/course_view.dart' as _i27;
 import 'package:yimaru_app/ui/views/course_catalog/course_catalog_view.dart'
-    as _i32;
+    as _i31;
 import 'package:yimaru_app/ui/views/course_lesson_detail/course_lesson_detail_view.dart'
     as _i25;
 import 'package:yimaru_app/ui/views/course_module/course_module_view.dart'
-    as _i35;
+    as _i34;
 import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart'
     as _i23;
-import 'package:yimaru_app/ui/views/course_unit/course_unit_view.dart' as _i33;
+import 'package:yimaru_app/ui/views/course_unit/course_unit_view.dart' as _i32;
 import 'package:yimaru_app/ui/views/downloads/downloads_view.dart' as _i7;
 import 'package:yimaru_app/ui/views/duolingo/duolingo_view.dart' as _i26;
 import 'package:yimaru_app/ui/views/failure/failure_view.dart' as _i24;
 import 'package:yimaru_app/ui/views/forget_password/forget_password_view.dart'
     as _i20;
 import 'package:yimaru_app/ui/views/home/home_view.dart' as _i2;
-import 'package:yimaru_app/ui/views/landing/landing_view.dart' as _i34;
+import 'package:yimaru_app/ui/views/landing/landing_view.dart' as _i33;
 import 'package:yimaru_app/ui/views/language/language_view.dart' as _i13;
 import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart'
-    as _i36;
+    as _i35;
 import 'package:yimaru_app/ui/views/learn_lesson/learn_lesson_view.dart'
     as _i19;
 import 'package:yimaru_app/ui/views/learn_lesson_detail/learn_lesson_detail_view.dart'
@@ -58,6 +58,7 @@ import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_view.d
     as _i30;
 import 'package:yimaru_app/ui/views/login/login_view.dart' as _i17;
 import 'package:yimaru_app/ui/views/onboarding/onboarding_view.dart' as _i3;
+import 'package:yimaru_app/ui/views/payment/payment_view.dart' as _i36;
 import 'package:yimaru_app/ui/views/privacy_policy/privacy_policy_view.dart'
     as _i14;
 import 'package:yimaru_app/ui/views/profile/profile_view.dart' as _i5;
@@ -131,8 +132,6 @@ class Routes {
 
   static const learnSubscriptionView = '/learn-subscription-view';
 
-  static const arifPayView = '/arif-pay-view';
-
   static const courseCatalogView = '/course-catalog-view';
 
   static const courseUnitView = '/course-unit-view';
@@ -142,6 +141,8 @@ class Routes {
   static const courseModuleView = '/course-module-view';
 
   static const learnCourseView = '/learn-course-view';
+
+  static const paymentView = '/payment-view';
 
   static const all = <String>{
     homeView,
@@ -173,12 +174,12 @@ class Routes {
     learnProgramView,
     assessmentView,
     learnSubscriptionView,
-    arifPayView,
     courseCatalogView,
     courseUnitView,
     landingView,
     courseModuleView,
     learnCourseView,
+    paymentView,
   };
 }
 
@@ -301,28 +302,28 @@ class StackedRouter extends _i1.RouterBase {
       page: _i30.LearnSubscriptionView,
     ),
     _i1.RouteDef(
-      Routes.arifPayView,
-      page: _i31.ArifPayView,
-    ),
-    _i1.RouteDef(
       Routes.courseCatalogView,
-      page: _i32.CourseCatalogView,
+      page: _i31.CourseCatalogView,
     ),
     _i1.RouteDef(
       Routes.courseUnitView,
-      page: _i33.CourseUnitView,
+      page: _i32.CourseUnitView,
     ),
     _i1.RouteDef(
       Routes.landingView,
-      page: _i34.LandingView,
+      page: _i33.LandingView,
     ),
     _i1.RouteDef(
       Routes.courseModuleView,
-      page: _i35.CourseModuleView,
+      page: _i34.CourseModuleView,
     ),
     _i1.RouteDef(
       Routes.learnCourseView,
-      page: _i36.LearnCourseView,
+      page: _i35.LearnCourseView,
+    ),
+    _i1.RouteDef(
+      Routes.paymentView,
+      page: _i36.PaymentView,
     ),
   ];
 
@@ -590,52 +591,52 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i31.ArifPayView: (data) {
-      final args = data.getArgs<ArifPayViewArguments>(nullOk: false);
-      return _i37.MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            _i31.ArifPayView(key: args.key, phone: args.phone),
-        settings: data,
-      );
-    },
-    _i32.CourseCatalogView: (data) {
+    _i31.CourseCatalogView: (data) {
       final args = data.getArgs<CourseCatalogViewArguments>(
         orElse: () => const CourseCatalogViewArguments(),
       );
       return _i37.MaterialPageRoute<dynamic>(
-        builder: (context) => _i32.CourseCatalogView(key: args.key),
+        builder: (context) => _i31.CourseCatalogView(key: args.key),
         settings: data,
       );
     },
-    _i33.CourseUnitView: (data) {
+    _i32.CourseUnitView: (data) {
       final args = data.getArgs<CourseUnitViewArguments>(nullOk: false);
       return _i37.MaterialPageRoute<dynamic>(
         builder: (context) =>
-            _i33.CourseUnitView(key: args.key, catalog: args.catalog),
+            _i32.CourseUnitView(key: args.key, catalog: args.catalog),
         settings: data,
       );
     },
-    _i34.LandingView: (data) {
+    _i33.LandingView: (data) {
       final args = data.getArgs<LandingViewArguments>(
         orElse: () => const LandingViewArguments(),
       );
       return _i37.MaterialPageRoute<dynamic>(
-        builder: (context) => _i34.LandingView(key: args.key),
+        builder: (context) => _i33.LandingView(key: args.key),
         settings: data,
       );
     },
-    _i35.CourseModuleView: (data) {
+    _i34.CourseModuleView: (data) {
       final args = data.getArgs<CourseModuleViewArguments>(nullOk: false);
       return _i37.MaterialPageRoute<dynamic>(
-        builder: (context) => _i35.CourseModuleView(
+        builder: (context) => _i34.CourseModuleView(
             key: args.key, module: args.module, catalog: args.catalog),
         settings: data,
       );
     },
-    _i36.LearnCourseView: (data) {
+    _i35.LearnCourseView: (data) {
       final args = data.getArgs<LearnCourseViewArguments>(nullOk: false);
       return _i37.MaterialPageRoute<dynamic>(
-        builder: (context) => _i36.LearnCourseView(key: args.key, id: args.id),
+        builder: (context) => _i35.LearnCourseView(key: args.key, id: args.id),
+        settings: data,
+      );
+    },
+    _i36.PaymentView: (data) {
+      final args = data.getArgs<PaymentViewArguments>(nullOk: false);
+      return _i37.MaterialPageRoute<dynamic>(
+        builder: (context) => _i36.PaymentView(
+            key: args.key, phone: args.phone, subscription: args.subscription),
         settings: data,
       );
     },
@@ -1378,33 +1379,6 @@ class LearnSubscriptionViewArguments {
   }
 }
 
-class ArifPayViewArguments {
-  const ArifPayViewArguments({
-    this.key,
-    required this.phone,
-  });
-
-  final _i37.Key? key;
-
-  final String phone;
-
-  @override
-  String toString() {
-    return '{"key": "$key", "phone": "$phone"}';
-  }
-
-  @override
-  bool operator ==(covariant ArifPayViewArguments other) {
-    if (identical(this, other)) return true;
-    return other.key == key && other.phone == phone;
-  }
-
-  @override
-  int get hashCode {
-    return key.hashCode ^ phone.hashCode;
-  }
-}
-
 class CourseCatalogViewArguments {
   const CourseCatalogViewArguments({this.key});
 
@@ -1535,7 +1509,39 @@ class LearnCourseViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i46.NavigationService {
+class PaymentViewArguments {
+  const PaymentViewArguments({
+    this.key,
+    required this.phone,
+    required this.subscription,
+  });
+
+  final _i37.Key? key;
+
+  final String phone;
+
+  final _i46.LearnSubscription subscription;
+
+  @override
+  String toString() {
+    return '{"key": "$key", "phone": "$phone", "subscription": "$subscription"}';
+  }
+
+  @override
+  bool operator ==(covariant PaymentViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key &&
+        other.phone == phone &&
+        other.subscription == subscription;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode ^ phone.hashCode ^ subscription.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i47.NavigationService {
   Future<dynamic> navigateToHomeView({
     _i37.Key? key,
     int? routerId,
@@ -2030,23 +2036,6 @@ extension NavigatorStateExtension on _i46.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToArifPayView({
-    _i37.Key? key,
-    required String phone,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return navigateTo<dynamic>(Routes.arifPayView,
-        arguments: ArifPayViewArguments(key: key, phone: phone),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> navigateToCourseCatalogView({
     _i37.Key? key,
     int? routerId,
@@ -2126,6 +2115,25 @@ extension NavigatorStateExtension on _i46.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.learnCourseView,
         arguments: LearnCourseViewArguments(key: key, id: id),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToPaymentView({
+    _i37.Key? key,
+    required String phone,
+    required _i46.LearnSubscription subscription,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.paymentView,
+        arguments: PaymentViewArguments(
+            key: key, phone: phone, subscription: subscription),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2626,23 +2634,6 @@ extension NavigatorStateExtension on _i46.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithArifPayView({
-    _i37.Key? key,
-    required String phone,
-    int? routerId,
-    bool preventDuplicates = true,
-    Map<String, String>? parameters,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
-        transition,
-  }) async {
-    return replaceWith<dynamic>(Routes.arifPayView,
-        arguments: ArifPayViewArguments(key: key, phone: phone),
-        id: routerId,
-        preventDuplicates: preventDuplicates,
-        parameters: parameters,
-        transition: transition);
-  }
-
   Future<dynamic> replaceWithCourseCatalogView({
     _i37.Key? key,
     int? routerId,
@@ -2722,6 +2713,25 @@ extension NavigatorStateExtension on _i46.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.learnCourseView,
         arguments: LearnCourseViewArguments(key: key, id: id),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithPaymentView({
+    _i37.Key? key,
+    required String phone,
+    required _i46.LearnSubscription subscription,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.paymentView,
+        arguments: PaymentViewArguments(
+            key: key, phone: phone, subscription: subscription),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

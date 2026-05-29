@@ -26,13 +26,12 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
       required LearnLesson lesson,
       required BuildContext context,
       required LearnLessonViewModel viewModel}) async {
-    if (lesson.access?.isAccessible ?? false) {
+      if (lesson.access?.isAccessible ?? false) {
       await viewModel.navigateToLearnPractice(lesson.id ?? 0);
     } else {
       await _showSheet(context: context, viewModel: viewModel);
     }
-/*
-    if (index > 1) {
+/*    if (index > 1) {
       if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'subscribed') {
         if (lesson.access?.isAccessible ?? false) {
           await viewModel.navigateToLearnPractice(lesson.id ?? 0);
@@ -226,7 +225,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         itemBuilder: (context, index) => _buildTile(
           index: index,
           lesson: viewModel.lessons[index],
-          last:  index == viewModel.lessons.length - 1 ,
+          last: index == viewModel.lessons.length - 1,
           onPracticeTap: () async => await _onPractice(
             index: index,
             context: context,
@@ -252,7 +251,6 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
       LearnLessonTile(
         last: last,
         index: index,
-
         lesson: lesson,
         onLessonTap: onLessonTap,
         onPracticeTap: onPracticeTap,

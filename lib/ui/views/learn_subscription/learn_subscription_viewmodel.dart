@@ -31,6 +31,10 @@ class LearnSubscriptionViewModel extends FormViewModel {
 
   int get selectedIndex => _selectedIndex;
 
+  LearnSubscription? _selectedSubscription;
+
+  LearnSubscription? get selectedSubscription => _selectedSubscription;
+
   List<LearnSubscription> _subscriptions = [];
 
   List<LearnSubscription> get subscriptions => _subscriptions;
@@ -38,6 +42,13 @@ class LearnSubscriptionViewModel extends FormViewModel {
   // Phone number
   void setPhoneNumberFocus() {
     _focusPhoneNumber = true;
+    rebuildUi();
+  }
+  //Learn subscriptions
+
+  void setSelectedPricing(int index) {
+    _selectedIndex = index;
+    _selectedSubscription = _subscriptions[index];
     rebuildUi();
   }
 
@@ -60,16 +71,11 @@ class LearnSubscriptionViewModel extends FormViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToArifPay(String phone) async {
+  Future<void> navigateToArifPay(
+      {required String phone, required LearnSubscription? subscription}) async {
     pop();
-    await _navigationService.navigateToArifPayView(phone: phone);
-  }
-
-  //Learn subscriptions
-
-  void setSelectedPricing(int index) {
-    _selectedIndex = index;
-    rebuildUi();
+    await _navigationService.navigateToPaymentView(
+        phone: phone, subscription: subscription ?? _subscriptions[0]);
   }
 
   // Remote api call

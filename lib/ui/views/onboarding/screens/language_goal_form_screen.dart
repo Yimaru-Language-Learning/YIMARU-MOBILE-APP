@@ -25,8 +25,6 @@ class LanguageGoalFormScreens extends ViewModelWidget<OnboardingViewModel> {
     return Icons.book;
   }
 
-
-
   String getSubtitle(int index) {
     switch (index) {
       case 0:
@@ -49,7 +47,6 @@ class LanguageGoalFormScreens extends ViewModelWidget<OnboardingViewModel> {
 
     Map<String, dynamic> data = {
       'language_goal': viewModel.selectedLanguageGoal?.code,
-
     };
     viewModel.addUserData(data);
 
@@ -70,10 +67,8 @@ class LanguageGoalFormScreens extends ViewModelWidget<OnboardingViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) => [
-        _buildAppBar(viewModel),
-        _buildExpandedBody(viewModel)
-      ];
+  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
 
   Widget _buildExpandedBody(OnboardingViewModel viewModel) =>
       Expanded(child: _buildBodyScroller(viewModel));
@@ -135,12 +130,12 @@ class LanguageGoalFormScreens extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildLanguageGoals(OnboardingViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
-        itemCount:  viewModel.languageGoals.length,
+        itemCount: viewModel.languageGoals.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildLanguageGoal(
           icon: getIcon(index),
           subtitle: getSubtitle(index),
-          title:viewModel.languageGoals[index].label ?? '',
+          title: viewModel.languageGoals[index].label ?? '',
           selected:
               viewModel.isSelectedLanguageGoal(viewModel.languageGoals[index]),
           onTap: () =>

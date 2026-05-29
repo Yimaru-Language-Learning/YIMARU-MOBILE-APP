@@ -26,11 +26,11 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
   Widget build(BuildContext context, LearnCourseViewModel viewModel) =>
       _buildExpansionTileCardWrapper(viewModel);
 
-
-  Widget _buildExpansionTileCardWrapper(LearnCourseViewModel viewModel)=> GestureDetector(
-    onTap: !(course.access?.isAccessible ?? false) ? onPracticeTap:null,
-    child: _buildExpansionTileCard(viewModel),
-  );
+  Widget _buildExpansionTileCardWrapper(LearnCourseViewModel viewModel) =>
+      GestureDetector(
+        onTap: !(course.access?.isAccessible ?? false) ? onPracticeTap : null,
+        child: _buildExpansionTileCard(viewModel),
+      );
 
   Widget _buildExpansionTileCard(LearnCourseViewModel viewModel) => Container(
         margin: const EdgeInsets.only(bottom: 15),
