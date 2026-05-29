@@ -49,7 +49,6 @@ import 'package:yimaru_app/services/vimeo_service.dart';
 import 'package:yimaru_app/services/url_launcher_service.dart';
 import 'package:yimaru_app/services/phone_caller_service.dart';
 import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_view.dart';
-import 'package:yimaru_app/ui/views/arif_pay/arif_pay_view.dart';
 import 'package:yimaru_app/services/learn_service.dart';
 import 'package:yimaru_app/ui/views/course_catalog/course_catalog_view.dart';
 import 'package:yimaru_app/ui/views/course_unit/course_unit_view.dart';
@@ -58,6 +57,7 @@ import 'package:yimaru_app/ui/views/landing/landing_view.dart';
 import 'package:yimaru_app/ui/views/course_module/course_module_view.dart';
 import 'package:yimaru_app/services/onboarding_service.dart';
 import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart';
+import 'package:yimaru_app/ui/views/payment/payment_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -91,12 +91,12 @@ import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart';
     MaterialRoute(page: LearnProgramView),
     MaterialRoute(page: AssessmentView),
     MaterialRoute(page: LearnSubscriptionView),
-    MaterialRoute(page: ArifPayView),
     MaterialRoute(page: CourseCatalogView),
     MaterialRoute(page: CourseUnitView),
     MaterialRoute(page: LandingView),
     MaterialRoute(page: CourseModuleView),
     MaterialRoute(page: LearnCourseView),
+    MaterialRoute(page: PaymentView),
 // @stacked-route
   ],
   dependencies: [

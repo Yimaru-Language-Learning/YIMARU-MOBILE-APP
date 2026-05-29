@@ -183,7 +183,7 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
 
   Widget _buildSheet(CourseModuleViewModel viewModel) => FinishPracticeSheet(
         onTap: viewModel.pop,
-    practice: PracticeReason.lesson,
+        practice: PracticeReason.lesson,
       );
 
   Widget _buildCourseModules(CourseModuleViewModel viewModel) =>

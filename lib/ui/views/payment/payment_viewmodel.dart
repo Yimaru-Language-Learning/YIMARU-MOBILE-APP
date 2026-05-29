@@ -1,17 +1,17 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
+import '../../../models/learn_subscription.dart';
 import '../../../models/learn_subscription_request.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/status_checker_service.dart';
-import '../../common/ui_helpers.dart';
+import '../../common/enmus.dart';
 
-class ArifPayViewModel extends ReactiveViewModel {
+class PaymentViewModel extends ReactiveViewModel {
   // Dependency injection
 
   final _apiService = locator<ApiService>();
@@ -30,6 +30,7 @@ class ArifPayViewModel extends ReactiveViewModel {
   User? get _user => _authenticationService.user;
 
   User? get user => _user;
+
   // Learn subscription request
   LearnSubscriptionRequest? _request;
 
@@ -44,18 +45,18 @@ class ArifPayViewModel extends ReactiveViewModel {
   // Remote api call
 
   // Learn subscription
-  Future<void> createLearnSubscriptionRequest(String phone) async =>
-      await runBusyFuture(_createLearnSubscriptionRequest(phone),
+  Future<void> createLearnSubscriptionRequest({required String phone,required LearnSubscription subscription}) async =>
+      await runBusyFuture(_createLearnSubscriptionRequest(phone: phone,subscription: subscription),
           busyObject: StateObjects.learnSubscription);
 
-  Future<void> _createLearnSubscriptionRequest(String phone) async {
-    print('MY SUMMARIES : PAYMENT');
+  Future<void> _createLearnSubscriptionRequest({required String phone,required LearnSubscription subscription}) async {
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> data = {
-        'plan_id': 1,
         'provider': 'CHAPA',
         'phone': '251$phone',
         'email': 'test@gmail.com',
+        'plan_id': subscription.id,
+
       };
 
       Map<String, dynamic> response =
