@@ -23,8 +23,13 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
 
   @override
   Widget build(BuildContext context, LearnModuleViewModel viewModel) =>
-      _buildExpansionTileCard(context: context, viewModel: viewModel);
+      _buildExpansionTileCardWrapper(context: context, viewModel: viewModel);
 
+  Widget _buildExpansionTileCardWrapper( {required BuildContext context,
+    required LearnModuleViewModel viewModel})=> GestureDetector(
+    onTap: !(module.access?.isAccessible ?? false) ? onPracticeTap:null,
+    child: _buildExpansionTileCard(context: context,viewModel: viewModel),
+  );
   Widget _buildExpansionTileCard(
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>

@@ -8,6 +8,7 @@ import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
 import '../../models/course_catalog.dart';
 import '../common/app_colors.dart';
+import '../common/enmus.dart';
 import '../common/ui_helpers.dart';
 import '../views/course_unit/course_unit_viewmodel.dart';
 import 'custom_circular_progress_indicator.dart';
@@ -228,6 +229,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
 
   Widget _buildSheet(CourseUnitViewModel viewModel) => FinishPracticeSheet(
         onTap: viewModel.pop,
+        practice: PracticeReason.course,
       );
 
   Widget _buildCourseModulesState(CourseUnitViewModel viewModel) =>
@@ -240,6 +242,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         width: double.maxFinite,
         child: _buildProgressIndicator(),
       );
+
   Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );

@@ -88,7 +88,6 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           required ForgetPasswordViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
-        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 

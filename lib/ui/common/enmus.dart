@@ -25,6 +25,11 @@ enum ProgressStatuses { pending, started, completed }
 // Duolingo  types
 enum DuolingoAssessments { speaking, reading, writing, listening }
 
+
+// Practice reason
+enum PracticeReason { course, module, lesson, previousModule, previousCourse }
+
+
 // State object
 enum StateObjects {
   none,

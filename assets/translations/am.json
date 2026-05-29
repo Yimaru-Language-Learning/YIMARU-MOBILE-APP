@@ -22,7 +22,7 @@
   "confirm_password": "የይለፍ ቃል ያረጋግጡ",
   "eight_character_minimum": "ቢያንስ 8 ፊደላት",
   "password_match": "የይለፍ ቃሉ ተመሳስሏል",
-  "sign_up_agreement":  "‘ይመዝገቡ’ የሚለውን ሲጫኑ በ‘አገልግሎት ውሎች’ እና ‘በግላዊነት ፖሊሲ’ ይስማማሉ።" ,
+  "sign_up_agreement": "‘ይመዝገቡ’ የሚለውን ሲጫኑ በ‘አገልግሎት ውሎች’ እና ‘በግላዊነት ፖሊሲ’ ይስማማሉ።",
   "terms_of_services": "የአገልግሎት ውሎች",
   "and": "እና",
   "privacy_policy": "የግላዊነት ፖሊሲ",
@@ -33,9 +33,9 @@
   "code_sent_to_email": "ኮዱ ወደ ኢሜል ተልኳል",
   "resend_code_in": "ኮዱን እንደገና ለመላክ የቀረው ጊዜ",
   "reset_password": " የይለፍ ቃልን ይቀይሩ",
-  "enter_email_reset_code":  "ኢሜይልዎን ያስገቡ። የይለፍ ቃል መለወጫ ኮድ እንልክልዎታለን።" ,
+  "enter_email_reset_code": "ኢሜይልዎን ያስገቡ። የይለፍ ቃል መለወጫ ኮድ እንልክልዎታለን።",
   "please_wait": "እባክዎ ይጠብቁ",
-  "reset_code_sent": "የመቀየሪያ ኮድ በተሳካ ሁኔታ ተልኳል" ,
+  "reset_code_sent": "የመቀየሪያ ኮድ በተሳካ ሁኔታ ተልኳል",
   "reset_code": " የመቀየሪያ ኮድ ",
   "new_password": "አዲስ የይለፍ ቃል",
   "logged_in_successfully": "በተሳካ ሁኔታ ገብተዋል",
@@ -183,13 +183,10 @@
   "welcome_abroad": "እንኳን ደህና መጣህ",
   "ready_to_explore": "የግል ትምህርቶችህን ለማሰስ ዝግጁ ነህ።",
   "finish": "አጠናቅቅ",
-
-  "finish_all_practice": "ልምምዱን ለመውሰድ በትምህርቶቹ ውስጥ ያሉትን ሁሉንም ልምምዶች ያጠናቅቁ።"
-
-
-
-
-
-
+  "finish_all_practice_lesson": "ይህን ልምምድ ለመውሰድ የቀድሞውን የትምህርት ልምምድ ያጠናቅቁ",
+  "finish_all_practice_module": "የሞጁሉን ልምምድ ለመውሰድ የትምህርት ልምምዶችን ያጠናቅቁ",
+  "finish_all_practice_course": "የኮርሱን ልምምድ ለመውሰድ የሞጁል ልምምዶችን ያጠናቅቁ",
+  "finish_all_practice_previouse_module": "ይህን ልምምድ ለመውሰድ የቀድሞውን የሞጁል ልምምድ ያጠናቅቁ",
+  "finish_all_practice_previouse_course": "ይህን ለመውሰድ የቀድሞውን የኮርስ ልምምድ ያጠናቅቁ"
 }
 

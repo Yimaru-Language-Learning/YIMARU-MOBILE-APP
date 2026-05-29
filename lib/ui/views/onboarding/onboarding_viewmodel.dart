@@ -243,8 +243,7 @@ class OnboardingViewModel extends ReactiveViewModel
   bool isSelectedLearningGoal(FieldOption value) =>
       _selectedLearningGoal == value;
 
-  // Learning reason
-
+  // Language goal
   void setSelectedLanguageGoal(FieldOption value) {
     _selectedLanguageGoal = value;
 
