@@ -56,7 +56,6 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       'birth_day': DateFormat('yyyy-MM-dd').format(DateTime.now()),
     };
 
-
     viewModel.addUserData(data);
 
     await viewModel.updateProfile();
@@ -110,7 +109,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   }
 
   @override
-  void onViewModelReady(ProfileDetailViewModel viewModel) async{
+  void onViewModelReady(ProfileDetailViewModel viewModel) async {
     await viewModel.getProfileDetailFields();
     _onModelReady(viewModel);
     syncFormWithViewModel(viewModel);
@@ -138,19 +137,19 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       );
 
   Widget _buildScaffoldState(
-      {required BuildContext context,
-        required ProfileDetailViewModel viewModel}) =>
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
       viewModel.busy(StateObjects.profileDetail)
           ? const PageLoadingIndicator()
           : _buildScaffoldContainer(context: context, viewModel: viewModel);
 
-
-  Widget _buildScaffoldContainer(  {required BuildContext context,
-    required ProfileDetailViewModel viewModel}) => Container(
-    decoration: bgDecoration,
-    child: _buildScaffoldStack(context: context, viewModel: viewModel),
-  );
-
+  Widget _buildScaffoldContainer(
+          {required BuildContext context,
+          required ProfileDetailViewModel viewModel}) =>
+      Container(
+        decoration: bgDecoration,
+        child: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
 
   Widget _buildScaffoldStack(
           {required BuildContext context,

@@ -50,8 +50,8 @@ class OverallProgressWrapper extends StatelessWidget {
         backgroundColor: kcVeryLightGrey,
       );
 
-  Widget _buildSubtitle() =>  Text(
-       LocaleKeys.keep_up_the_great_work.tr(),
-        style:style14DG400 ,
+  Widget _buildSubtitle() => Text(
+        LocaleKeys.keep_up_the_great_work.tr(),
+        style: style14DG400,
       );
 }

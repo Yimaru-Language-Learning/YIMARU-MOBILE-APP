@@ -3,6 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'access.dart';
 
 part 'learn_lesson.g.dart';
+
 @JsonSerializable()
 class LearnLesson {
   final int? id;
@@ -44,7 +45,6 @@ class LearnLesson {
     String? videoUrl,
     String? thumbnail,
     String? description,
-
   }) {
     return LearnLesson(
       id: id ?? this.id,

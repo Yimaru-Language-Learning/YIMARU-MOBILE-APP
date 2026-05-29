@@ -85,6 +85,5 @@ class LearnModuleViewModel extends ReactiveViewModel {
   }
 
   String getModuleImage(LearnModule module) =>
-     getReadableUrl(_refreshedIcons[module.id] ?? '') ?? '';
-
+      getReadableUrl(_refreshedIcons[module.id] ?? '') ?? '';
 }

@@ -21,8 +21,6 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
   const LearnModuleTile(
       {super.key, this.onModuleTap, this.onPracticeTap, required this.module});
 
-
-
   @override
   Widget build(BuildContext context, LearnModuleViewModel viewModel) =>
       _buildExpansionTileCard(context: context, viewModel: viewModel);
@@ -86,19 +84,16 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         child: _buildIconClipper(viewModel),
       );
 
-  Widget _buildIconClipper(LearnModuleViewModel viewModel)=> ClipRRect(
-    child: _buildIcon(viewModel),
-  );
+  Widget _buildIconClipper(LearnModuleViewModel viewModel) => ClipRRect(
+        child: _buildIcon(viewModel),
+      );
 
-  Widget _buildIcon(LearnModuleViewModel viewModel) =>
-      CachedNetworkImage(
+  Widget _buildIcon(LearnModuleViewModel viewModel) => CachedNetworkImage(
         width: 25,
         height: 25,
         cacheKey: viewModel.getModuleImage(module),
         imageUrl: viewModel.getModuleImage(module),
       );
-
-
 
   Widget _buildTitleWrapper() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -213,8 +208,6 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         foregroundColor: kcPrimaryColor,
         text: LocaleKeys.take_practice.tr(),
       );
-
-
 
   Widget _buildContainerShaderState() => !(module.access?.isAccessible ?? false)
       ? _buildContainerShader()

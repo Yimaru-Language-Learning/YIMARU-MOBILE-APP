@@ -15,7 +15,6 @@ class LearnPracticeAppreciationScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
   const LearnPracticeAppreciationScreen({super.key});
 
-
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();

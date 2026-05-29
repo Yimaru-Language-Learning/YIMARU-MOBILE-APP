@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:yimaru_app/models/access.dart';
 
 part 'learn_module.g.dart';
+
 @JsonSerializable()
 class LearnModule {
   final int? id;
@@ -43,7 +44,6 @@ class LearnModule {
     int? programId,
     int? sortOrder,
     String? description,
-
   }) {
     return LearnModule(
       id: id ?? this.id,
@@ -54,7 +54,6 @@ class LearnModule {
       sortOrder: sortOrder ?? this.sortOrder,
       programId: programId ?? this.programId,
       description: description ?? this.description,
-
     );
   }
 

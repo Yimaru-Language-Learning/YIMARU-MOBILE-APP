@@ -16,27 +16,26 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
 
   const LearnCourseView({Key? key, required this.id}) : super(key: key);
 
-
-  Future<void> _onPractice({required BuildContext context,
-    required LearnCourse course,
-    required LearnCourseViewModel viewModel}) async {
+  Future<void> _onPractice(
+      {required BuildContext context,
+      required LearnCourse course,
+      required LearnCourseViewModel viewModel}) async {
     if (course.access?.completedCount == course.access?.totalCount) {
       await viewModel.navigateToLearnPractice(
-          id: course.id ?? 0,
-          level: course.name ?? '');
+          id: course.id ?? 0, level: course.name ?? '');
     } else {
       await _showSheet(context: context, viewModel: viewModel);
     }
   }
 
-  Future<void> _showSheet({required BuildContext context,
-    required LearnCourseViewModel viewModel}) async =>
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required LearnCourseViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         backgroundColor: kcTransparent,
         builder: (_) => _buildSheet(viewModel),
       );
-
 
   @override
   void onViewModelReady(LearnCourseViewModel viewModel) async {
@@ -49,93 +48,100 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
       LearnCourseViewModel();
 
   @override
-  Widget builder(BuildContext context,
-      LearnCourseViewModel viewModel,
-      Widget? child,) =>
-      _buildScaffoldWrapper(context: context,viewModel: viewModel);
+  Widget builder(
+    BuildContext context,
+    LearnCourseViewModel viewModel,
+    Widget? child,
+  ) =>
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper({required BuildContext context,
-    required LearnCourseViewModel viewModel}) =>
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required LearnCourseViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldContainer(context: context,viewModel: viewModel),
+        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffoldContainer({required BuildContext context,
-    required LearnCourseViewModel viewModel}) =>
+  Widget _buildScaffoldContainer(
+          {required BuildContext context,
+          required LearnCourseViewModel viewModel}) =>
       Container(
         decoration: bgDecoration,
-        child: _buildScaffold(context: context,viewModel: viewModel),
+        child: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold({required BuildContext context,
-    required LearnCourseViewModel viewModel}) =>
-      SafeArea(child: _buildBody(context: context,viewModel: viewModel));
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required LearnCourseViewModel viewModel}) =>
+      SafeArea(child: _buildBody(context: context, viewModel: viewModel));
 
-  Widget _buildBody({required BuildContext context,
-    required LearnCourseViewModel viewModel}) =>
+  Widget _buildBody(
+          {required BuildContext context,
+          required LearnCourseViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(context: context,viewModel: viewModel),
+        child: _buildColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildColumn({required BuildContext context,
-    required LearnCourseViewModel viewModel}) =>
+  Widget _buildColumn(
+          {required BuildContext context,
+          required LearnCourseViewModel viewModel}) =>
       Column(
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
           verticalSpaceMedium,
-          _buildCoursesColumnWrapper(context: context,viewModel: viewModel)
+          _buildCoursesColumnWrapper(context: context, viewModel: viewModel)
         ],
       );
 
-  Widget _buildAppBar(LearnCourseViewModel viewModel) =>
-      SmallAppBar(
+  Widget _buildAppBar(LearnCourseViewModel viewModel) => SmallAppBar(
         onPop: viewModel.pop,
         showBackButton: true,
       );
 
-  Widget _buildCoursesColumnWrapper({required BuildContext context,
-    required LearnCourseViewModel viewModel}) =>
-      Expanded(child: _buildLevelsColumnScrollView(context: context,viewModel: viewModel));
+  Widget _buildCoursesColumnWrapper(
+          {required BuildContext context,
+          required LearnCourseViewModel viewModel}) =>
+      Expanded(
+          child: _buildLevelsColumnScrollView(
+              context: context, viewModel: viewModel));
 
-  Widget _buildLevelsColumnScrollView({required BuildContext context,
-    required LearnCourseViewModel viewModel}) =>
+  Widget _buildLevelsColumnScrollView(
+          {required BuildContext context,
+          required LearnCourseViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildListViewBuilder(context: context,viewModel: viewModel),
+        child: _buildListViewBuilder(context: context, viewModel: viewModel),
       );
 
-  Widget _buildListViewBuilder({required BuildContext context,
-    required LearnCourseViewModel viewModel}) =>
+  Widget _buildListViewBuilder(
+          {required BuildContext context,
+          required LearnCourseViewModel viewModel}) =>
       viewModel.busy(StateObjects.learnCourses)
           ? _buildProgressIndicator()
-          : _buildListView(context: context,viewModel: viewModel);
+          : _buildListView(context: context, viewModel: viewModel);
 
-  Widget _buildProgressIndicator() =>
-      const Center(
+  Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
-  Widget _buildListView({required BuildContext context,
-    required LearnCourseViewModel viewModel}) =>
+  Widget _buildListView(
+          {required BuildContext context,
+          required LearnCourseViewModel viewModel}) =>
       ListView.separated(
         shrinkWrap: true,
         itemCount: viewModel.courses.length,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) =>
-            _buildTile(
-              course: viewModel.courses[index],
-
-              onPracticeTap: () async =>
-              await _onPractice(
-                  context: context,
-                  viewModel: viewModel,
-                  course: viewModel.courses[index]
-              ),
-              onViewTap: () async =>
+        itemBuilder: (context, index) => _buildTile(
+          course: viewModel.courses[index],
+          onPracticeTap: () async => await _onPractice(
+              context: context,
+              viewModel: viewModel,
+              course: viewModel.courses[index]),
+          onViewTap: () async =>
               await viewModel.navigateToLearnModule(viewModel.courses[index]),
-            ),
+        ),
         separatorBuilder: (context, index) => verticalSpaceSmall,
       );
 
@@ -149,7 +155,6 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
         onViewTap: onViewTap,
         onPracticeTap: onPracticeTap,
       );
-
 
   Widget _buildSheet(LearnCourseViewModel viewModel) =>
       FinishPracticeSheet(onTap: viewModel.pop);

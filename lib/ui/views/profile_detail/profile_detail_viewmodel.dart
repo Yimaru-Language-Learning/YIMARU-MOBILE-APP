@@ -164,7 +164,6 @@ class ProfileDetailViewModel extends ReactiveViewModel
     return false;
   }
 
-
   void setRegionFocus() {
     _focusRegion = true;
     rebuildUi();
@@ -258,7 +257,8 @@ class ProfileDetailViewModel extends ReactiveViewModel
 
   // Profile detail fields
   Future<void> getProfileDetailFields() async =>
-      await runBusyFuture(_getProfileDetailFields(),busyObject: StateObjects.profileDetail);
+      await runBusyFuture(_getProfileDetailFields(),
+          busyObject: StateObjects.profileDetail);
 
   Future<void> _getProfileDetailFields() async {
     await _onboardingService.getProfileDetailFields();

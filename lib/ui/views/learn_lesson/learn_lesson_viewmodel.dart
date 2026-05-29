@@ -24,12 +24,9 @@ class LearnLessonViewModel extends ReactiveViewModel {
 
   final _authenticationService = locator<AuthenticationService>();
 
-
-
-
   @override
-  List<ListenableServiceMixin> get listenableServices => [_learnService,_authenticationService];
-
+  List<ListenableServiceMixin> get listenableServices =>
+      [_learnService, _authenticationService];
 
   // Current user
   User? get _user => _authenticationService.user;
@@ -49,8 +46,6 @@ class LearnLessonViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-
-
   Future<void> navigateToLearnPractice(int id) async =>
       await _navigationService.navigateToLearnPracticeView(
         id: id,
@@ -60,15 +55,17 @@ class LearnLessonViewModel extends ReactiveViewModel {
         subtitle: LocaleKeys.ask_you_few_actions.tr(),
       );
 
-
   Future<void> navigateToLearnSubscription() async =>
       await _navigationService.navigateToLearnSubscriptionView();
 
   Future<void> navigateToLearnLessonDetail(
-          {required bool hasPractice,
+          {
+            required int index,
+            required bool hasPractice,
           required LearnLesson lesson,
           required LearnModule module}) async =>
       await _navigationService.navigateToLearnLessonDetailView(
+        index: index,
           lesson: lesson, module: module, hasPractice: hasPractice);
 
   // Remote api call
@@ -88,6 +85,7 @@ class LearnLessonViewModel extends ReactiveViewModel {
   LearnModule? getUpdatedLearnModule(int id) {
     return _learnService.getLearnModuleById(id);
   }
+
   //Refresh image
   Future<void> refreshLessonImages(List<LearnLesson> lessons) async {
     for (final lesson in lessons) {

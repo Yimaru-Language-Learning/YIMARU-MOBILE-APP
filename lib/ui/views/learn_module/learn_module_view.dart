@@ -151,11 +151,14 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
         style: style14P400,
       );
 
-  Widget _buildOverallProgress(LearnModuleViewModel viewModel) => OverallProgress(
+  Widget _buildOverallProgress(LearnModuleViewModel viewModel) =>
+      OverallProgress(
         indicatorBackgroundColor: kcWhite,
-    backgroundColor: kcPrimaryColor.withOpacity(0.1),
-    progress:
-        (viewModel.getUpdatedLearnCourse(course.id ?? 0) ?? course).access?.progressPercent ?? 0,
+        backgroundColor: kcPrimaryColor.withOpacity(0.1),
+        progress: (viewModel.getUpdatedLearnCourse(course.id ?? 0) ?? course)
+                .access
+                ?.progressPercent ??
+            0,
       );
 
   Widget _buildListViewBuilder(

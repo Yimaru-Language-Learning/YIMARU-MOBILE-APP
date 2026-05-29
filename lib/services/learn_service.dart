@@ -17,7 +17,7 @@ class LearnService with ListenableServiceMixin {
 
   // Initialization
   learnService() {
-    listenToReactiveValues([_programs,_courses, _lessons, _modules]);
+    listenToReactiveValues([_programs, _courses, _lessons, _modules]);
   }
 
   // Learn program
@@ -148,10 +148,9 @@ class LearnService with ListenableServiceMixin {
       );
     }).toList();
 
-    print('MY SUMMARIES - COMPLETED COUNT: ${_modules.first.access?.completedCount}');
+    print(
+        'MY SUMMARIES - COMPLETED COUNT: ${_modules.first.access?.completedCount}');
     print('PROGRESS PERCENT: ${_modules.first.access?.progressPercent}');
-
-
 
     /// UPDATE LESSONS
     _lessons = _lessons.map((lesson) {
@@ -169,8 +168,6 @@ class LearnService with ListenableServiceMixin {
     } catch (_) {
       return null;
     }
-
-
   }
 
   LearnCourse? getLearnCourseById(int id) {
@@ -179,7 +176,5 @@ class LearnService with ListenableServiceMixin {
     } catch (_) {
       return null;
     }
-
-
   }
 }

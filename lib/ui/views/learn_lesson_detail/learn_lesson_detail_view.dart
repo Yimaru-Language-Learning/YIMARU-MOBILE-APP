@@ -15,20 +15,33 @@ import '../../widgets/small_app_bar.dart';
 import 'learn_lesson_detail_viewmodel.dart';
 
 class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
+  final int index;
   final bool hasPractice;
   final LearnModule module;
   final LearnLesson lesson;
 
   const LearnLessonDetailView(
       {Key? key,
+      required this.index,
       required this.lesson,
       required this.module,
       required this.hasPractice})
       : super(key: key);
 
-  Future<void> _navigate(LearnLessonDetailViewModel viewModel) async {
+  Future<void> _onPractice(
+      {required LearnLesson lesson,
+      required LearnLessonDetailViewModel viewModel}) async {
     await viewModel.pause();
     await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+    /*if (index > 1) {
+      if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'subscribed') {
+        await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+      } else {
+        await viewModel.navigateToLearnSubscription();
+      }
+    } else {
+      await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+    }*/
   }
 
   @override
@@ -193,6 +206,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         text: LocaleKeys.take_practice.tr(),
-        onTap: () async => await _navigate(viewModel),
+        onTap: () async =>
+            await _onPractice(lesson: lesson, viewModel: viewModel),
       );
 }

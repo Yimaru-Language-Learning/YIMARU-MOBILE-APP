@@ -12,6 +12,7 @@ import 'package:yimaru_app/ui/widgets/motivation_card.dart';
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
+import '../../widgets/finish_practice_sheet.dart';
 import '../../widgets/small_app_bar.dart';
 import 'learn_lesson_viewmodel.dart';
 
@@ -23,11 +24,15 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
   Future<void> _onPractice(
       {required int index,
       required LearnLesson lesson,
+      required BuildContext context,
       required LearnLessonViewModel viewModel}) async {
-    if (index > 1) {
+    if (lesson.access?.isAccessible ?? false) {
+      await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+    } else {
+      await _showSheet(context: context, viewModel: viewModel);
+    }
 
-      print(index);
-      print(viewModel.user?.subscriptionStatus);
+    /*   if (index > 1) {
       if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'subscribed') {
         await viewModel.navigateToLearnPractice(lesson.id ?? 0);
       } else {
@@ -35,8 +40,17 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
       }
     } else {
       await viewModel.navigateToLearnPractice(lesson.id ?? 0);
-    }
+    }*/
   }
+
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required LearnLessonViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        backgroundColor: kcTransparent,
+        builder: (_) => _buildSheet(viewModel),
+      );
 
   @override
   void onViewModelReady(LearnLessonViewModel viewModel) async {
@@ -148,7 +162,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         verticalSpaceLarge,
         _buildHeader(),
         verticalSpaceMedium,
-        _buildListViewBuilder(viewModel),
+        _buildListViewBuilder(context: context,viewModel: viewModel),
       ];
 
   Widget _buildTitle() => Text(
@@ -183,16 +197,18 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         style: style18DG700,
       );
 
-  Widget _buildListViewBuilder(LearnLessonViewModel viewModel) =>
+  Widget _buildListViewBuilder(     {required BuildContext context,
+  required LearnLessonViewModel viewModel}) =>
       viewModel.busy(StateObjects.learnLessons)
           ? _buildProgressIndicator()
-          : _buildListView(viewModel);
+          : _buildListView(context: context,viewModel: viewModel);
 
   Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
-  Widget _buildListView(LearnLessonViewModel viewModel) => ListView.builder(
+  Widget _buildListView(     {required BuildContext context,
+required LearnLessonViewModel viewModel}) => ListView.builder(
         shrinkWrap: true,
         itemCount: viewModel.lessons.length,
         physics: const NeverScrollableScrollPhysics(),
@@ -201,10 +217,12 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
           lesson: viewModel.lessons[index],
           onPracticeTap: () async => await _onPractice(
             index: index,
+            context: context,
             viewModel: viewModel,
             lesson: viewModel.lessons[index],
           ),
           onLessonTap: () async => await viewModel.navigateToLearnLessonDetail(
+              index: index,
               module: module,
               lesson: viewModel.lessons[index],
               hasPractice:
@@ -224,4 +242,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         onLessonTap: onLessonTap,
         onPracticeTap: onPracticeTap,
       );
+
+  Widget _buildSheet(LearnLessonViewModel viewModel) =>
+      FinishPracticeSheet(onTap: viewModel.pop);
 }

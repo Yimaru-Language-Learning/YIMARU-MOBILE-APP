@@ -15,16 +15,14 @@ class CourseProgress {
 
   final List<ModuleProgress>? modules;
 
-
   @JsonKey(name: 'program_id')
   final int? programId;
 
-
-
   const CourseProgress(
-      {this.id,this.name,this.access,this.modules,this.programId});
+      {this.id, this.name, this.access, this.modules, this.programId});
 
-  factory CourseProgress.fromJson(Map<String, dynamic> json) => _$CourseProgressFromJson(json);
+  factory CourseProgress.fromJson(Map<String, dynamic> json) =>
+      _$CourseProgressFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseProgressToJson(this);
 }

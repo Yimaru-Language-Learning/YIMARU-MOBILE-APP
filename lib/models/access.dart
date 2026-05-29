@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 part 'access.g.dart';
+
 @JsonSerializable()
 class Access {
   final String? reason;
@@ -48,15 +49,13 @@ class Access {
       isCompleted: isCompleted ?? this.isCompleted,
       isAccessible: isAccessible ?? this.isAccessible,
       progressPercentPrecise:
-      progressPercentPrecise ?? this.progressPercentPrecise,
+          progressPercentPrecise ?? this.progressPercentPrecise,
       completedCount: completedCount ?? this.completedCount,
       progressPercent: progressPercent ?? this.progressPercent,
-
     );
   }
 
-  factory Access.fromJson(Map<String, dynamic> json) =>
-      _$AccessFromJson(json);
+  factory Access.fromJson(Map<String, dynamic> json) => _$AccessFromJson(json);
 
   Map<String, dynamic> toJson() => _$AccessToJson(this);
 }

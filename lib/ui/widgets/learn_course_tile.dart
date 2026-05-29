@@ -26,8 +26,6 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
   Widget build(BuildContext context, LearnCourseViewModel viewModel) =>
       _buildExpansionTileCard(viewModel);
 
-
-
   Widget _buildExpansionTileCard(LearnCourseViewModel viewModel) => Container(
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
