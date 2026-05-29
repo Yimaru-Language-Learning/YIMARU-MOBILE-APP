@@ -88,7 +88,6 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
 
   List<Widget> _buildScaffoldChildren(ForgetPasswordViewModel viewModel) => [
         _buildAppBar(viewModel),
-        verticalSpaceMedium,
         _buildExpandedBody(viewModel)
       ];
 

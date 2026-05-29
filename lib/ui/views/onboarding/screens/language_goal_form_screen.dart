@@ -1,16 +1,43 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/custom_small_radio_button.dart';
+import 'package:yimaru_app/ui/widgets/custom_large_radio_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
-class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
-  const LanguageGoalFormScreen({super.key});
+class LanguageGoalFormScreens extends ViewModelWidget<OnboardingViewModel> {
+  const LanguageGoalFormScreens({super.key});
+
+  IconData getIcon(int index) {
+    switch (index) {
+      case 0:
+        return Iconsax.book;
+      case 1:
+        return Iconsax.microphone;
+      case 2:
+        return Iconsax.bag;
+    }
+    return Icons.book;
+  }
+
+
+
+  String getSubtitle(int index) {
+    switch (index) {
+      case 0:
+        return 'I know some English, but i want to learn to speak it';
+      case 1:
+        return 'I already speak English, but I want more practice.';
+      case 2:
+        return 'I want courses for IELTS, TOEFL, Duolingo, or work';
+    }
+    return '';
+  }
 
   void _pop(OnboardingViewModel viewModel) {
     viewModel.resetLanguageGoalFormScreen();
@@ -22,6 +49,7 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
     Map<String, dynamic> data = {
       'language_goal': viewModel.selectedLanguageGoal?.code,
+
     };
     viewModel.addUserData(data);
 
@@ -44,7 +72,6 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) => [
         _buildAppBar(viewModel),
-        verticalSpaceMedium,
         _buildExpandedBody(viewModel)
       ];
 
@@ -77,13 +104,10 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
       );
 
   List<Widget> _buildUpperColumnChildren(OnboardingViewModel viewModel) => [
+        verticalSpaceLarge,
+        _buildTitle(viewModel),
         verticalSpaceMedium,
-        _buildTitle(),
-        verticalSpaceSmall,
-        _buildSubtitle(),
-        verticalSpaceMedium,
-        _buildReasons(viewModel),
-        verticalSpaceMedium,
+        _buildLanguageGoals(viewModel)
       ];
 
   Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
@@ -96,23 +120,27 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
             : viewModel.selectedLanguage['code'],
       );
 
-  Widget _buildTitle() => Text(
-        LocaleKeys.language_goal.tr(),
-        style: style25DG600,
+  Widget _buildTitle(OnboardingViewModel viewModel) => Text.rich(
+        TextSpan(
+            text:
+                '${LocaleKeys.hello.tr()} ${viewModel.userData['first_name']},',
+            style: style18P600.copyWith(fontSize: 22),
+            children: [
+              TextSpan(
+                text: ' ${LocaleKeys.language_goal.tr()}',
+                style: style16DG600.copyWith(fontSize: 22),
+              )
+            ]),
       );
 
-  Widget _buildSubtitle() => Text(
-        LocaleKeys.your_goal.tr(),
-        style: style14MG400,
-      );
-
-  Widget _buildReasons(OnboardingViewModel viewModel) => ListView.builder(
+  Widget _buildLanguageGoals(OnboardingViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        itemCount: viewModel.languageGoals.length,
+        itemCount:  viewModel.languageGoals.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildLanguageGoal(
-          title: viewModel.languageGoals[index].label ?? '',
+          icon: getIcon(index),
+          subtitle: getSubtitle(index),
+          title:viewModel.languageGoals[index].label ?? '',
           selected:
               viewModel.isSelectedLanguageGoal(viewModel.languageGoals[index]),
           onTap: () =>
@@ -123,10 +151,14 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget _buildLanguageGoal(
           {required String title,
           required bool selected,
+          required IconData icon,
+          required String subtitle,
           required GestureTapCallback onTap}) =>
-      CustomSmallRadioButton(
+      CustomLargeRadioButton(
+        icon: icon,
         title: title,
         onTap: onTap,
+        subtitle: subtitle,
         selected: selected,
       );
 
@@ -137,14 +169,15 @@ class LanguageGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildContinueButton(OnboardingViewModel viewModel) =>
       CustomElevatedButton(
-          height: 55,
-          borderRadius: 12,
-          foregroundColor: kcWhite,
-          text: LocaleKeys.cont.tr(),
-          onTap: viewModel.selectedLanguageGoal != null
-              ? () => _next(viewModel)
-              : null,
-          backgroundColor: viewModel.selectedLanguageGoal != null
-              ? kcPrimaryColor
-              : kcPrimaryColor.withOpacity(0.1));
+        height: 55,
+        borderRadius: 12,
+        foregroundColor: kcWhite,
+        text: LocaleKeys.cont.tr(),
+        onTap: viewModel.selectedLanguageGoal != null
+            ? () => _next(viewModel)
+            : null,
+        backgroundColor: viewModel.selectedLanguageGoal != null
+            ? kcPrimaryColor
+            : kcPrimaryColor.withOpacity(0.1),
+      );
 }

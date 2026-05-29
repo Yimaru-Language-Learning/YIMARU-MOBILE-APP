@@ -24,17 +24,28 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
       await viewModel.navigateToLearnPractice(
           id: course.id ?? 0, level: course.name ?? '');
     } else {
-      await _showSheet(context: context, viewModel: viewModel);
+      if (course.access?.isAccessible ?? false) {
+        await _showSheet(
+            context: context,
+            viewModel: viewModel,
+            practice: PracticeReason.course);
+      } else {
+        await _showSheet(
+            context: context,
+            viewModel: viewModel,
+            practice: PracticeReason.previousCourse);
+      }
     }
   }
 
   Future<void> _showSheet(
           {required BuildContext context,
+          required PracticeReason practice,
           required LearnCourseViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         backgroundColor: kcTransparent,
-        builder: (_) => _buildSheet(viewModel),
+        builder: (_) => _buildSheet(viewModel: viewModel, practice: practice),
       );
 
   @override
@@ -156,6 +167,11 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
         onPracticeTap: onPracticeTap,
       );
 
-  Widget _buildSheet(LearnCourseViewModel viewModel) =>
-      FinishPracticeSheet(onTap: viewModel.pop);
+  Widget _buildSheet(
+          {required PracticeReason practice,
+          required LearnCourseViewModel viewModel}) =>
+      FinishPracticeSheet(
+        practice: practice,
+        onTap: viewModel.pop,
+      );
 }

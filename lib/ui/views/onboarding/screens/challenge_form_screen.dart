@@ -44,7 +44,6 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
 
   List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) => [
         _buildAppBar(viewModel),
-        verticalSpaceMedium,
         _buildExpandedBody(viewModel)
       ];
 
@@ -77,7 +76,7 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
       );
 
   List<Widget> _buildUpperColumnChildren(OnboardingViewModel viewModel) => [
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildTitle(),
         verticalSpaceSmall,
         _buildSubtitle(),

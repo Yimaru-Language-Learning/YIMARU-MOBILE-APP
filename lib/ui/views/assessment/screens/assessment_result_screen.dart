@@ -29,7 +29,6 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
 
   List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) => [
         _buildAppBar(viewModel),
-        verticalSpaceMedium,
         _buildExpandedBody(viewModel)
       ];
 

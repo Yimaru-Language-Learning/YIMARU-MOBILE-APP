@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
 import 'package:yimaru_app/models/course_module.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/course_module/course_module_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/course_lesson_tile.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
@@ -182,6 +183,7 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
 
   Widget _buildSheet(CourseModuleViewModel viewModel) => FinishPracticeSheet(
         onTap: viewModel.pop,
+    practice: PracticeReason.lesson,
       );
 
   Widget _buildCourseModules(CourseModuleViewModel viewModel) =>

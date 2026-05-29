@@ -53,8 +53,8 @@ class ArifPayViewModel extends ReactiveViewModel {
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> data = {
         'plan_id': 1,
+        'provider': 'CHAPA',
         'phone': '251$phone',
-        'provider': 'ARIFPAY',
         'email': 'test@gmail.com',
       };
 
