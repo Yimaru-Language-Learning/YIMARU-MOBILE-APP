@@ -2,7 +2,7 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const loading = 'loading';
   static const welcome_back = 'welcome_back';
   static const checking_user_info = 'checking_user_info';
@@ -161,7 +161,8 @@ abstract class  LocaleKeys {
   static const educational_background = 'educational_background';
   static const education_for_personalization = 'education_for_personalization';
   static const your_occupation = 'your_occupation';
-  static const occupation_for_personalization = 'occupation_for_personalization';
+  static const occupation_for_personalization =
+      'occupation_for_personalization';
   static const location = 'location';
   static const select_country_region = 'select_country_region';
   static const select_country = 'select_country';
@@ -186,5 +187,4 @@ abstract class  LocaleKeys {
   static const ready_to_explore = 'ready_to_explore';
   static const finish = 'finish';
   static const finish_all_practice = 'finish_all_practice';
-
 }

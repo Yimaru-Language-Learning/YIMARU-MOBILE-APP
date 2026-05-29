@@ -501,6 +501,7 @@ class StackedRouter extends _i1.RouterBase {
       return _i37.MaterialPageRoute<dynamic>(
         builder: (context) => _i21.LearnLessonDetailView(
             key: args.key,
+            index: args.index,
             lesson: args.lesson,
             module: args.module,
             hasPractice: args.hasPractice),
@@ -1083,12 +1084,15 @@ class ForgetPasswordViewArguments {
 class LearnLessonDetailViewArguments {
   const LearnLessonDetailViewArguments({
     this.key,
+    required this.index,
     required this.lesson,
     required this.module,
     required this.hasPractice,
   });
 
   final _i37.Key? key;
+
+  final int index;
 
   final _i40.LearnLesson lesson;
 
@@ -1098,13 +1102,14 @@ class LearnLessonDetailViewArguments {
 
   @override
   String toString() {
-    return '{"key": "$key", "lesson": "$lesson", "module": "$module", "hasPractice": "$hasPractice"}';
+    return '{"key": "$key", "index": "$index", "lesson": "$lesson", "module": "$module", "hasPractice": "$hasPractice"}';
   }
 
   @override
   bool operator ==(covariant LearnLessonDetailViewArguments other) {
     if (identical(this, other)) return true;
     return other.key == key &&
+        other.index == index &&
         other.lesson == lesson &&
         other.module == module &&
         other.hasPractice == hasPractice;
@@ -1113,6 +1118,7 @@ class LearnLessonDetailViewArguments {
   @override
   int get hashCode {
     return key.hashCode ^
+        index.hashCode ^
         lesson.hashCode ^
         module.hashCode ^
         hasPractice.hashCode;
@@ -1839,6 +1845,7 @@ extension NavigatorStateExtension on _i46.NavigationService {
 
   Future<dynamic> navigateToLearnLessonDetailView({
     _i37.Key? key,
+    required int index,
     required _i40.LearnLesson lesson,
     required _i39.LearnModule module,
     required bool hasPractice,
@@ -1850,7 +1857,11 @@ extension NavigatorStateExtension on _i46.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.learnLessonDetailView,
         arguments: LearnLessonDetailViewArguments(
-            key: key, lesson: lesson, module: module, hasPractice: hasPractice),
+            key: key,
+            index: index,
+            lesson: lesson,
+            module: module,
+            hasPractice: hasPractice),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2430,6 +2441,7 @@ extension NavigatorStateExtension on _i46.NavigationService {
 
   Future<dynamic> replaceWithLearnLessonDetailView({
     _i37.Key? key,
+    required int index,
     required _i40.LearnLesson lesson,
     required _i39.LearnModule module,
     required bool hasPractice,
@@ -2441,7 +2453,11 @@ extension NavigatorStateExtension on _i46.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.learnLessonDetailView,
         arguments: LearnLessonDetailViewArguments(
-            key: key, lesson: lesson, module: module, hasPractice: hasPractice),
+            key: key,
+            index: index,
+            lesson: lesson,
+            module: module,
+            hasPractice: hasPractice),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

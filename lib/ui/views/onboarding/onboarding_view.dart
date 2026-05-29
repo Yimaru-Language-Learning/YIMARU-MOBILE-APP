@@ -126,7 +126,8 @@ class OnboardingView extends StackedView<OnboardingViewModel>
 
   Widget _buildOccupationForm() => const OccupationFormScreen();
 
-  Widget _buildCountryRegionForm() => CountryRegionFormScreen(regionController: regionController);
+  Widget _buildCountryRegionForm() =>
+      CountryRegionFormScreen(regionController: regionController);
 
   Widget _buildLearningGoalForm() => const LearningGoalFormScreen();
 

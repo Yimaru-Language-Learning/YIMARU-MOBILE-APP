@@ -13,12 +13,9 @@ class ArifPayView extends StackedView<ArifPayViewModel> {
 
   const ArifPayView({Key? key, required this.phone}) : super(key: key);
 
-
   void _error(ArifPayViewModel viewModel) => viewModel.pop();
 
-
   Future<void> _success(ArifPayViewModel viewModel) async {
-
     await viewModel.updatePaymentStatus();
 
     await viewModel.replaceWithHome();
@@ -49,8 +46,6 @@ class ArifPayView extends StackedView<ArifPayViewModel> {
           ? const PageLoadingIndicator()
           : _buildScaffold(viewModel);
 
-
-
   Widget _buildScaffold(ArifPayViewModel viewModel) =>
       SafeArea(child: _buildBody(viewModel));
 
@@ -59,7 +54,8 @@ class ArifPayView extends StackedView<ArifPayViewModel> {
             URLRequest(url: WebUri(viewModel.request?.paymentUrl ?? '')),
         onUpdateVisitedHistory: (controller, url, androidIsReload) async {
           if (url.toString().contains(kSuccessUrl)) {
-            showSuccessToast('Subscription successful, activation in progress!');
+            showSuccessToast(
+                'Subscription successful, activation in progress!');
             _success(viewModel);
           } else if (url.toString().contains(kErrorUrl)) {
             _error(viewModel);

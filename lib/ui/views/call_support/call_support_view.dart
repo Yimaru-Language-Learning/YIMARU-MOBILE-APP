@@ -31,8 +31,7 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
         body: _buildScaffoldContainer(viewModel),
       );
 
-  Widget _buildScaffoldContainer(CallSupportViewModel viewModel) =>
-      Container(
+  Widget _buildScaffoldContainer(CallSupportViewModel viewModel) => Container(
         decoration: bgDecoration,
         child: _buildScaffold(viewModel),
       );

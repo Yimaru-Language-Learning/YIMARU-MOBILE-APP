@@ -68,22 +68,18 @@ class ArifPayViewModel extends ReactiveViewModel {
   }
 
   // Update payment status
-  Future<void> updatePaymentStatus() async => await runBusyFuture(_updatePaymentStatus(),
-      busyObject: StateObjects.learnSubscription);
+  Future<void> updatePaymentStatus() async =>
+      await runBusyFuture(_updatePaymentStatus(),
+          busyObject: StateObjects.learnSubscription);
 
   Future<void> _updatePaymentStatus() async {
+    Map<String, dynamic> response = {};
 
-      Map<String, dynamic> response = {};
+    response = await _apiService.getProfileData(_user?.userId);
 
-        response = await _apiService.getProfileData(_user?.userId);
-
-        if (response['status'] == ResponseStatus.success) {
-          User user = response['data'] as User;
-          await _authenticationService.saveUserData(user);
-
-        }
-
-
+    if (response['status'] == ResponseStatus.success) {
+      User user = response['data'] as User;
+      await _authenticationService.saveUserData(user);
+    }
   }
-
 }

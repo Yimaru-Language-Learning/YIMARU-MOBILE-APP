@@ -15,10 +15,10 @@ class ProgressSummary {
 
   final List<CourseProgress>? courses;
 
-  const ProgressSummary(
-      {this.id,this.name,this.access,this.courses});
+  const ProgressSummary({this.id, this.name, this.access, this.courses});
 
-  factory ProgressSummary.fromJson(Map<String, dynamic> json) => _$ProgressSummaryFromJson(json);
+  factory ProgressSummary.fromJson(Map<String, dynamic> json) =>
+      _$ProgressSummaryFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProgressSummaryToJson(this);
 }

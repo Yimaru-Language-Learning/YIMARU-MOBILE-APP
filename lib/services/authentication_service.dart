@@ -101,7 +101,6 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('firstName', data.firstName ?? '');
     await _secureService.setString('occupation', data.occupation ?? '');
 
-
     _user = User(
       email: data.email,
       gender: data.gender,

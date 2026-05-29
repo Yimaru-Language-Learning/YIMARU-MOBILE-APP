@@ -35,7 +35,6 @@ class LearnCourse {
     int? sortOrder,
     int? programId,
     String? description,
-
   }) {
     return LearnCourse(
       id: id ?? this.id,

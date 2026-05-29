@@ -27,12 +27,14 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
       required this.index,
       required this.lesson});
 
-
-
   @override
   Widget build(BuildContext context, LearnLessonViewModel viewModel) =>
-      _buildContainer(viewModel);
+      _buildContainerWrapper(viewModel);
 
+  Widget _buildContainerWrapper(LearnLessonViewModel viewModel)=> GestureDetector(
+    onTap: !(lesson.access?.isAccessible ?? false) ? onPracticeTap:null,
+    child: _buildContainer(viewModel),
+  );
   Widget _buildContainer(LearnLessonViewModel viewModel) => Container(
         width: double.maxFinite,
         margin: const EdgeInsets.only(bottom: 15),
@@ -72,7 +74,7 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
             ? kcGreen.withOpacity(0.1)
             : kcPrimaryColor.withOpacity(0.1),
         childrenPadding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-       initiallyExpanded: (lesson.access?.isAccessible ?? false) &&
+        initiallyExpanded: (lesson.access?.isAccessible ?? false) &&
             !(lesson.access?.isCompleted ?? false),
         collapsedBackgroundColor: (lesson.access?.isCompleted ?? false)
             ? kcGreen.withOpacity(0.1)
@@ -80,8 +82,8 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         children: _buildExpansionTileChildren(viewModel),
       );
 
-  Widget _buildLeadingWrapper(LearnLessonViewModel viewModel) => MiniThumbnail(
-      thumbnail: getReadableUrl(lesson.thumbnail ?? '') ?? '');
+  Widget _buildLeadingWrapper(LearnLessonViewModel viewModel) =>
+      MiniThumbnail(thumbnail: getReadableUrl(lesson.thumbnail ?? '') ?? '');
 
   Widget _buildTitle() => Text(
         lesson.title ?? '',

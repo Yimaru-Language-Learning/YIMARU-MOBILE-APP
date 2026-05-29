@@ -111,6 +111,5 @@ class OnboardingService with ListenableServiceMixin {
     _regions = await _apiService.getEthiopiaRegions();
 
     notifyListeners();
-
   }
 }

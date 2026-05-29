@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:yimaru_app/models/access.dart';
 
 part 'learn_program.g.dart';
+
 @JsonSerializable()
 class LearnProgram {
   final int? id;

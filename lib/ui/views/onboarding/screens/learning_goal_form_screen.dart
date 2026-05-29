@@ -49,7 +49,6 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
     return '';
   }
 
-
   void _pop(OnboardingViewModel viewModel) {
     viewModel.resetLearningGoalFormScreen();
     viewModel.goBack();
@@ -70,20 +69,17 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Widget build(BuildContext context, OnboardingViewModel viewModel) =>
       _buildScaffoldWrapper(viewModel);
 
-  Widget _buildScaffoldWrapper(OnboardingViewModel viewModel) =>
-      Scaffold(
+  Widget _buildScaffoldWrapper(OnboardingViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );
 
-  Widget _buildScaffold(OnboardingViewModel viewModel) =>
-      Column(
+  Widget _buildScaffold(OnboardingViewModel viewModel) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) =>
-      [
+  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) => [
         _buildAppBar(viewModel),
         verticalSpaceMedium,
         _buildExpandedBody(viewModel)
@@ -97,14 +93,12 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
         child: _buildBodyWrapper(viewModel),
       );
 
-  Widget _buildBodyWrapper(OnboardingViewModel viewModel) =>
-      Padding(
+  Widget _buildBodyWrapper(OnboardingViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildBody(viewModel),
       );
 
-  Widget _buildBody(OnboardingViewModel viewModel) =>
-      Column(
+  Widget _buildBody(OnboardingViewModel viewModel) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _buildBodyChildren(viewModel),
@@ -113,23 +107,20 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
   List<Widget> _buildBodyChildren(OnboardingViewModel viewModel) =>
       [_buildUpperColumn(viewModel), _buildContinueButtonWrapper(viewModel)];
 
-  Widget _buildUpperColumn(OnboardingViewModel viewModel) =>
-      Column(
+  Widget _buildUpperColumn(OnboardingViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildUpperColumnChildren(viewModel),
       );
 
-  List<Widget> _buildUpperColumnChildren(OnboardingViewModel viewModel) =>
-      [
+  List<Widget> _buildUpperColumnChildren(OnboardingViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(viewModel),
         verticalSpaceMedium,
         _buildLearningGoals(viewModel)
       ];
 
-  Widget _buildAppBar(OnboardingViewModel viewModel) =>
-      LargeAppBar(
+  Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
         showBackButton: true,
         showLanguageSelection: true,
         onPop: () => _pop(viewModel),
@@ -139,11 +130,10 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
             : viewModel.selectedLanguage['code'],
       );
 
-  Widget _buildTitle(OnboardingViewModel viewModel) =>
-      Text.rich(
+  Widget _buildTitle(OnboardingViewModel viewModel) => Text.rich(
         TextSpan(
             text:
-            '${LocaleKeys.hello.tr()} ${viewModel.userData['first_name']},',
+                '${LocaleKeys.hello.tr()} ${viewModel.userData['first_name']},',
             style: style18P600.copyWith(fontSize: 22),
             children: [
               TextSpan(
@@ -153,39 +143,36 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
             ]),
       );
 
-  Widget _buildLearningGoals(OnboardingViewModel viewModel) =>
-      ListView.builder(
+  Widget _buildLearningGoals(OnboardingViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
-        itemCount: 3,// viewModel.learningGoals.length,
+        itemCount: 3, // viewModel.learningGoals.length,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) =>
-            _buildLearningGoal(
-              icon: getIcon(index),
-              title: getTitles(index),
-              subtitle: getSubtitle(index),
-              selected:
+        itemBuilder: (context, index) => _buildLearningGoal(
+          icon: getIcon(index),
+          title: getTitles(index),
+          subtitle: getSubtitle(index),
+          selected:
               viewModel.isSelectedLearningGoal(viewModel.learningGoals[index]),
-              onTap: () =>
-                  viewModel.setSelectedLearningGoal(
-                      viewModel.learningGoals[index]),
-            ),
+          onTap: () =>
+              viewModel.setSelectedLearningGoal(viewModel.learningGoals[index]),
+        ),
       );
 
-  Widget _buildLearningGoal({required String title,
-    required bool selected,
-    required IconData icon,
-    required String subtitle,
-    required GestureTapCallback onTap}) =>
+  Widget _buildLearningGoal(
+          {required String title,
+          required bool selected,
+          required IconData icon,
+          required String subtitle,
+          required GestureTapCallback onTap}) =>
       CustomLargeRadioButton(
-        icon:icon,
+        icon: icon,
         title: title,
         onTap: onTap,
         subtitle: subtitle,
         selected: selected,
       );
 
-  Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) =>
-      Padding(
+  Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(viewModel),
       );
