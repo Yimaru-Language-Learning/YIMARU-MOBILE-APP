@@ -59,14 +59,14 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDbaGD47oUJOyn9n3b0pbH6ozmbGyIlOKk',
-    appId: '1:900714037062:ios:1caf8f24a4333b8e4e6f47',
+    appId: '1:900714037062:ios:45b484d79222c3ab4e6f47',
     messagingSenderId: '900714037062',
     projectId: 'yimaru-academy-5e7e2',
     storageBucket: 'yimaru-academy-5e7e2.firebasestorage.app',
     androidClientId:
         '900714037062-4trqu7ln6en4kcm6gadk0uo01qijn1mk.apps.googleusercontent.com',
     iosClientId:
-        '900714037062-35bg0hsou56hg37mbcbpiar9uti7tcku.apps.googleusercontent.com',
-    iosBundleId: 'com.yimaru.lms.app',
+        '900714037062-3qqf7urii8vg99id91nmmuvom3fm5c1u.apps.googleusercontent.com',
+    iosBundleId: 'com.yimaru.lms.testapp',
   );
 }
