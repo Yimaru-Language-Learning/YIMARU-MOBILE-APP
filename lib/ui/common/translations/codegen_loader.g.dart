@@ -202,7 +202,12 @@ class CodegenLoader extends AssetLoader {
     "welcome_abroad": "እንኳን ደህና መጣህ",
     "ready_to_explore": "የግል ትምህርቶችህን ለማሰስ ዝግጁ ነህ።",
     "finish": "አጠናቅቅ",
-    "finish_all_practice": "ልምምዱን ለመውሰድ በትምህርቶቹ ውስጥ ያሉትን ሁሉንም ልምምዶች ያጠናቅቁ።"
+    "finish_all_practice_lesson": "ይህን ልምምድ ለመውሰድ የቀድሞውን የትምህርት ልምምድ ያጠናቅቁ",
+    "finish_all_practice_module": "የሞጁሉን ልምምድ ለመውሰድ የትምህርት ልምምዶችን ያጠናቅቁ",
+    "finish_all_practice_course": "የኮርሱን ልምምድ ለመውሰድ የሞጁል ልምምዶችን ያጠናቅቁ",
+    "finish_all_practice_previouse_module":
+        "ይህን ልምምድ ለመውሰድ የቀድሞውን የሞጁል ልምምድ ያጠናቅቁ",
+    "finish_all_practice_previouse_course": "ይህን ለመውሰድ የቀድሞውን የኮርስ ልምምድ ያጠናቅቁ"
   };
   static const Map<String, dynamic> _en = {
     "loading": "Loading",
@@ -406,8 +411,16 @@ class CodegenLoader extends AssetLoader {
     "welcome_abroad": "Welcome aboard",
     "ready_to_explore": "You’re ready to explore your personalized lessons.",
     "finish": "Finish",
-    "finish_all_practice":
-        "Finish all the practices in the lessons to take this practice"
+    "finish_all_practice_lesson":
+        "Finish the previous lesson practice to take this practice",
+    "finish_all_practice_module":
+        "Finish the lesson practices to take the Module Practice",
+    "finish_all_practice_course":
+        "Finish the Module practices to take the Course practice",
+    "finish_all_practice_previouse_module":
+        "Finish the previous Module practice to take this practice",
+    "finish_all_practice_previouse_course":
+        "Finish the previous course  practice to take this"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "am": _am,

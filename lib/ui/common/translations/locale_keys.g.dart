@@ -186,5 +186,11 @@ abstract class LocaleKeys {
   static const welcome_abroad = 'welcome_abroad';
   static const ready_to_explore = 'ready_to_explore';
   static const finish = 'finish';
-  static const finish_all_practice = 'finish_all_practice';
+  static const finish_all_practice_lesson = 'finish_all_practice_lesson';
+  static const finish_all_practice_module = 'finish_all_practice_module';
+  static const finish_all_practice_course = 'finish_all_practice_course';
+  static const finish_all_practice_previouse_module =
+      'finish_all_practice_previouse_module';
+  static const finish_all_practice_previouse_course =
+      'finish_all_practice_previouse_course';
 }

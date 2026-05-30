@@ -17,6 +17,7 @@ import 'learn_module_viewmodel.dart';
 
 class LearnModuleView extends StackedView<LearnModuleViewModel> {
   final LearnCourse course;
+
   const LearnModuleView({Key? key, required this.course}) : super(key: key);
 
   Future<void> _onPractice(
@@ -27,17 +28,31 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       await viewModel.navigateToLearnPractice(
           id: module.id ?? 0, module: module.name ?? '');
     } else {
-      await _showSheet(context: context, viewModel: viewModel);
+      if (module.access?.isAccessible ?? false) {
+        print('Accessible');
+        await _showSheet(
+            context: context,
+            viewModel: viewModel,
+            practice: PracticeReason.module);
+      } else {
+        print('Inaccessible');
+
+        await _showSheet(
+            context: context,
+            viewModel: viewModel,
+            practice: PracticeReason.previousModule);
+      }
     }
   }
 
   Future<void> _showSheet(
           {required BuildContext context,
+          required PracticeReason practice,
           required LearnModuleViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         backgroundColor: kcTransparent,
-        builder: (_) => _buildSheet(viewModel),
+        builder: (_) => _buildSheet(viewModel: viewModel, practice: practice),
       );
 
   @override
@@ -201,6 +216,11 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
           onModuleTap: onModuleTap,
           onPracticeTap: onPracticeTap);
 
-  Widget _buildSheet(LearnModuleViewModel viewModel) =>
-      FinishPracticeSheet(onTap: viewModel.pop);
+  Widget _buildSheet(
+          {required PracticeReason practice,
+          required LearnModuleViewModel viewModel}) =>
+      FinishPracticeSheet(
+        practice: practice,
+        onTap: viewModel.pop,
+      );
 }

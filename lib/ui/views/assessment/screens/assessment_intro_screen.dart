@@ -10,7 +10,9 @@ import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 import '../assessment_viewmodel.dart';
 
 class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
-  const AssessmentIntroScreen({super.key});
+  final bool hasAssessments;
+
+  const AssessmentIntroScreen({super.key, required this.hasAssessments});
 
   Future<void> _next(AssessmentViewModel viewModel) async =>
       viewModel.setFirstAssessment();
@@ -29,11 +31,8 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) => [
-        _buildAppBar(viewModel),
-        verticalSpaceMedium,
-        _buildExpandedBody(viewModel)
-      ];
+  List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
 
   Widget _buildExpandedBody(AssessmentViewModel viewModel) =>
       Expanded(child: _buildBodyWrapper(viewModel));
@@ -59,7 +58,7 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   List<Widget> _buildUpperColumnChildren(AssessmentViewModel viewModel) => [
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildTitle(),
         verticalSpaceSmall,
         _buildSubtitle(),
@@ -91,7 +90,7 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   List<Widget> _buildLowerColumnChildren(AssessmentViewModel viewModel) => [
-        _buildContinueButton(viewModel),
+        if (hasAssessments) _buildContinueButton(viewModel),
         verticalSpaceSmall,
         _buildSkipButtonWrapper(viewModel)
       ];

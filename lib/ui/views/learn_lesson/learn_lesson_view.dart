@@ -26,20 +26,27 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
       required LearnLesson lesson,
       required BuildContext context,
       required LearnLessonViewModel viewModel}) async {
-    if (lesson.access?.isAccessible ?? false) {
+      if (lesson.access?.isAccessible ?? false) {
       await viewModel.navigateToLearnPractice(lesson.id ?? 0);
     } else {
       await _showSheet(context: context, viewModel: viewModel);
     }
-
-    /*   if (index > 1) {
+/*    if (index > 1) {
       if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'subscribed') {
-        await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+        if (lesson.access?.isAccessible ?? false) {
+          await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+        } else {
+          await _showSheet(context: context, viewModel: viewModel);
+        }
       } else {
         await viewModel.navigateToLearnSubscription();
       }
     } else {
-      await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+      if (lesson.access?.isAccessible ?? false) {
+        await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+      } else {
+        await _showSheet(context: context, viewModel: viewModel);
+      }
     }*/
   }
 
@@ -162,7 +169,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         verticalSpaceLarge,
         _buildHeader(),
         verticalSpaceMedium,
-        _buildListViewBuilder(context: context,viewModel: viewModel),
+        _buildListViewBuilder(context: context, viewModel: viewModel),
       ];
 
   Widget _buildTitle() => Text(
@@ -197,24 +204,28 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         style: style18DG700,
       );
 
-  Widget _buildListViewBuilder(     {required BuildContext context,
-  required LearnLessonViewModel viewModel}) =>
+  Widget _buildListViewBuilder(
+          {required BuildContext context,
+          required LearnLessonViewModel viewModel}) =>
       viewModel.busy(StateObjects.learnLessons)
           ? _buildProgressIndicator()
-          : _buildListView(context: context,viewModel: viewModel);
+          : _buildListView(context: context, viewModel: viewModel);
 
   Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
-  Widget _buildListView(     {required BuildContext context,
-required LearnLessonViewModel viewModel}) => ListView.builder(
+  Widget _buildListView(
+          {required BuildContext context,
+          required LearnLessonViewModel viewModel}) =>
+      ListView.builder(
         shrinkWrap: true,
         itemCount: viewModel.lessons.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           index: index,
           lesson: viewModel.lessons[index],
+          last: index == viewModel.lessons.length - 1,
           onPracticeTap: () async => await _onPractice(
             index: index,
             context: context,
@@ -231,18 +242,22 @@ required LearnLessonViewModel viewModel}) => ListView.builder(
       );
 
   Widget _buildTile({
+    required bool last,
     required int index,
     required LearnLesson lesson,
     required GestureTapCallback? onLessonTap,
     required GestureTapCallback? onPracticeTap,
   }) =>
       LearnLessonTile(
+        last: last,
         index: index,
         lesson: lesson,
         onLessonTap: onLessonTap,
         onPracticeTap: onPracticeTap,
       );
 
-  Widget _buildSheet(LearnLessonViewModel viewModel) =>
-      FinishPracticeSheet(onTap: viewModel.pop);
+  Widget _buildSheet(LearnLessonViewModel viewModel) => FinishPracticeSheet(
+        onTap: viewModel.pop,
+        practice: PracticeReason.lesson,
+      );
 }

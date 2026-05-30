@@ -58,11 +58,8 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) => [
-        _buildAppBar(viewModel),
-        verticalSpaceMedium,
-        _buildExpandedBody(viewModel)
-      ];
+  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
 
   Widget _buildExpandedBody(OnboardingViewModel viewModel) =>
       Expanded(child: _buildBodyWrapper(viewModel));
@@ -93,7 +90,7 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
       );
 
   List<Widget> _buildUpperColumnChildren(OnboardingViewModel viewModel) => [
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildTitle(),
         verticalSpaceSmall,
         _buildSubtitle(),

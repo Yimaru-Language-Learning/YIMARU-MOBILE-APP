@@ -1,55 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/app_constants.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
-import 'arif_pay_viewmodel.dart';
+import '../../../models/learn_subscription.dart';
+import '../../common/app_constants.dart';
+import '../../common/enmus.dart';
+import '../../common/ui_helpers.dart';
+import '../../widgets/page_loading_indicator.dart';
+import 'payment_viewmodel.dart';
 
-class ArifPayView extends StackedView<ArifPayViewModel> {
+class PaymentView extends StackedView<PaymentViewModel> {
   final String phone;
+  final LearnSubscription subscription;
 
-  const ArifPayView({Key? key, required this.phone}) : super(key: key);
+  const PaymentView({Key? key, required this.phone, required this.subscription})
+      : super(key: key);
 
-  void _error(ArifPayViewModel viewModel) => viewModel.pop();
+  void _error(PaymentViewModel viewModel) => viewModel.pop();
 
-  Future<void> _success(ArifPayViewModel viewModel) async {
+  Future<void> _success(PaymentViewModel viewModel) async {
     await viewModel.updatePaymentStatus();
 
     await viewModel.replaceWithHome();
   }
 
   @override
-  void onViewModelReady(ArifPayViewModel viewModel) async {
-    await viewModel.createLearnSubscriptionRequest(phone);
+  void onViewModelReady(PaymentViewModel viewModel) async {
+    await viewModel.createLearnSubscriptionRequest(phone: phone,subscription: subscription);
     super.onViewModelReady(viewModel);
   }
 
   @override
-  ArifPayViewModel viewModelBuilder(BuildContext context) => ArifPayViewModel();
+  PaymentViewModel viewModelBuilder(
+    BuildContext context,
+  ) =>
+      PaymentViewModel();
 
   @override
   Widget builder(
     BuildContext context,
-    ArifPayViewModel viewModel,
+    PaymentViewModel viewModel,
     Widget? child,
   ) =>
       _buildScaffoldWrapper(viewModel);
 
-  Widget _buildScaffoldWrapper(ArifPayViewModel viewModel) =>
+  Widget _buildScaffoldWrapper(PaymentViewModel viewModel) =>
       Scaffold(body: _buildScaffoldState(viewModel));
 
-  Widget _buildScaffoldState(ArifPayViewModel viewModel) =>
+  Widget _buildScaffoldState(PaymentViewModel viewModel) =>
       viewModel.busy(StateObjects.learnSubscription)
           ? const PageLoadingIndicator()
           : _buildScaffold(viewModel);
 
-  Widget _buildScaffold(ArifPayViewModel viewModel) =>
+  Widget _buildScaffold(PaymentViewModel viewModel) =>
       SafeArea(child: _buildBody(viewModel));
 
-  Widget _buildBody(ArifPayViewModel viewModel) => InAppWebView(
+  Widget _buildBody(PaymentViewModel viewModel) => InAppWebView(
         initialUrlRequest:
             URLRequest(url: WebUri(viewModel.request?.paymentUrl ?? '')),
         onUpdateVisitedHistory: (controller, url, androidIsReload) async {

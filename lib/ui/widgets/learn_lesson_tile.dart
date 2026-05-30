@@ -16,6 +16,7 @@ import 'custom_linear_progress_indicator.dart';
 
 class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
   final int index;
+  final bool last;
   final LearnLesson lesson;
   final GestureTapCallback? onLessonTap;
   final GestureTapCallback? onPracticeTap;
@@ -24,6 +25,7 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
       {super.key,
       this.onLessonTap,
       this.onPracticeTap,
+      required this.last,
       required this.index,
       required this.lesson});
 
@@ -31,10 +33,12 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
   Widget build(BuildContext context, LearnLessonViewModel viewModel) =>
       _buildContainerWrapper(viewModel);
 
-  Widget _buildContainerWrapper(LearnLessonViewModel viewModel)=> GestureDetector(
-    onTap: !(lesson.access?.isAccessible ?? false) ? onPracticeTap:null,
-    child: _buildContainer(viewModel),
-  );
+  Widget _buildContainerWrapper(LearnLessonViewModel viewModel) =>
+      GestureDetector(
+        onTap: !(lesson.access?.isAccessible ?? false) ? onPracticeTap : null,
+        child: _buildContainer(viewModel),
+      );
+
   Widget _buildContainer(LearnLessonViewModel viewModel) => Container(
         width: double.maxFinite,
         margin: const EdgeInsets.only(bottom: 15),
@@ -70,12 +74,14 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-        backgroundColor: (lesson.access?.isCompleted ?? false)
-            ? kcGreen.withOpacity(0.1)
-            : kcPrimaryColor.withOpacity(0.1),
         childrenPadding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
         initiallyExpanded: (lesson.access?.isAccessible ?? false) &&
             !(lesson.access?.isCompleted ?? false),
+        backgroundColor: last && (lesson.access?.isAccessible ?? false)
+            ? kcGreen.withOpacity(0.1)
+            : (lesson.access?.isCompleted ?? false)
+                ? kcGreen.withOpacity(0.1)
+                : kcPrimaryColor.withOpacity(0.1),
         collapsedBackgroundColor: (lesson.access?.isCompleted ?? false)
             ? kcGreen.withOpacity(0.1)
             : kcPrimaryColor.withOpacity(0.1),
@@ -92,9 +98,11 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         style: style16DG600,
       );
 
-  Widget _buildIconState() => (lesson.access?.isCompleted ?? false)
+  Widget _buildIconState() => last && (lesson.access?.isAccessible ?? false)
       ? _buildCompleteIcon()
-      : _buildPendingIcon();
+      : (lesson.access?.isCompleted ?? false)
+          ? _buildCompleteIcon()
+          : _buildPendingIcon();
 
   Widget _buildCompleteIcon() => const Icon(
         Icons.check,
@@ -128,13 +136,17 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
   Widget _buildProgress() => CustomLinearProgressIndicator(
         activeColor: kcPrimaryColor,
         backgroundColor: kcVeryLightGrey,
-        progress: (lesson.access?.progressPercent ?? 0) / 100,
+        progress: last && (lesson.access?.isAccessible ?? false)
+            ? 1
+            : (lesson.access?.progressPercent ?? 0) / 100,
       );
 
   Widget _buildProgressText() => Text(
-        (lesson.access?.isCompleted ?? false)
+        last && (lesson.access?.isAccessible ?? false)
             ? LocaleKeys.completed.tr()
-            : LocaleKeys.in_progress.tr(),
+            : (lesson.access?.isCompleted ?? false)
+                ? LocaleKeys.completed.tr()
+                : LocaleKeys.in_progress.tr(),
         style: style14P600,
       );
 

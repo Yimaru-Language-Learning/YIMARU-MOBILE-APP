@@ -183,5 +183,10 @@
     "welcome_abroad": "Welcome aboard",
     "ready_to_explore": "You’re ready to explore your personalized lessons.",
     "finish": "Finish",
-    "finish_all_practice": "Finish all the practices in the lessons to take this practice"
+    "finish_all_practice_lesson": "Finish the previous lesson practice to take this practice",
+    "finish_all_practice_module": "Finish the lesson practices to take the Module Practice",
+    "finish_all_practice_course": "Finish the Module practices to take the Course practice",
+    "finish_all_practice_previouse_module": "Finish the previous Module practice to take this practice",
+    "finish_all_practice_previouse_course": "Finish the previous course  practice to take this"
+
   }

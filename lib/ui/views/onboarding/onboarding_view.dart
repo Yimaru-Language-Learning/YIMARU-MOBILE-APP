@@ -8,8 +8,8 @@ import 'package:yimaru_app/ui/views/onboarding/screens/country_region_form_scree
 import 'package:yimaru_app/ui/views/onboarding/screens/educational_background_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/full_name_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/gender_form_screen.dart';
-import 'package:yimaru_app/ui/views/onboarding/screens/language_goal_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/learning_goal_form_screen.dart';
+import 'package:yimaru_app/ui/views/onboarding/screens/language_goal_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/occupation_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/topic_form_screen.dart';
 
@@ -129,9 +129,9 @@ class OnboardingView extends StackedView<OnboardingViewModel>
   Widget _buildCountryRegionForm() =>
       CountryRegionFormScreen(regionController: regionController);
 
-  Widget _buildLearningGoalForm() => const LearningGoalFormScreen();
+  Widget _buildLearningGoalForm() => const LanguageGoalFormScreens();
 
-  Widget _buildLanguageGoalForm() => const LanguageGoalFormScreen();
+  Widget _buildLanguageGoalForm() => const LearningGoalFormScreen();
 
   Widget _buildChallengeForm() => const ChallengeFormScreen();
 

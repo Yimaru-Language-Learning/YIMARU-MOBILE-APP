@@ -52,9 +52,9 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
       ];
 
   Widget _buildAssessmentIntroWrapper(AssessmentViewModel viewModel) =>
-      viewModel.busy(StateObjects.assessments) || viewModel.assessments.isEmpty
+      viewModel.busy(StateObjects.assessments)
           ? _buildPageLoadingIndicator(viewModel)
-          : _buildAssessmentIntro();
+          : _buildAssessmentIntro(viewModel);
 
   Widget _buildPageLoadingIndicator(AssessmentViewModel viewModel) =>
       AssessmentLoadingScreen(
@@ -64,7 +64,10 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
         onPop: viewModel.assessments.isEmpty ? viewModel.pop : null,
       );
 
-  Widget _buildAssessmentIntro() => const AssessmentIntroScreen();
+  Widget _buildAssessmentIntro(AssessmentViewModel viewModel) =>
+      AssessmentIntroScreen(
+        hasAssessments: viewModel.assessments.isNotEmpty,
+      );
 
   Widget _buildAssessment() => const AssessmentQuestionsScreen();
 

@@ -59,14 +59,15 @@ class LearnLessonViewModel extends ReactiveViewModel {
       await _navigationService.navigateToLearnSubscriptionView();
 
   Future<void> navigateToLearnLessonDetail(
-          {
-            required int index,
-            required bool hasPractice,
+          {required int index,
+          required bool hasPractice,
           required LearnLesson lesson,
           required LearnModule module}) async =>
       await _navigationService.navigateToLearnLessonDetailView(
-        index: index,
-          lesson: lesson, module: module, hasPractice: hasPractice);
+          index: index,
+          lesson: lesson,
+          module: module,
+          hasPractice: hasPractice);
 
   // Remote api call
 
