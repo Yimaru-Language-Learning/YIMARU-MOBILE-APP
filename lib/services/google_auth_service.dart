@@ -19,7 +19,6 @@ class GoogleAuthService with ListenableServiceMixin {
   Future<void> logout() async {
     await _signIn.signOut();
     _googleUser = null;
-    notifyListeners();
   }
 
   // Google authentication
@@ -30,10 +29,7 @@ class GoogleAuthService with ListenableServiceMixin {
 
         _googleUser ??=
             await _signIn.authenticate(scopeHint: ['email', 'profile']);
-        print('GOOGLE AUTH');
-        print(_googleUser?.email);
-        print(_googleUser?.displayName);
-        print(_googleUser?.authentication.idToken);
+
       });
       notifyListeners();
     } catch (e) {

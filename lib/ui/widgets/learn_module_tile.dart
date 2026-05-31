@@ -7,7 +7,6 @@ import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_module/learn_module_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_container_shader.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
-import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';

@@ -134,12 +134,20 @@ class ProfileDetailViewModel extends ReactiveViewModel
 
   List<FieldOption> get countries => _countries;
 
+  void setEthiopianRegion(String region) {
+    _dropdownRegion = true;
+    _selectedRegion =
+        _regions.firstWhere((r) => r.code?.toLowerCase() == region.toLowerCase());
+
+    rebuildUi();
+  }
+
   void setSelectedCountry(FieldOption? value) {
     _selectedCountry = value;
-    if (value?.label?.toLowerCase().trim() == 'ethiopia') {
+    if (value?.code?.toLowerCase().trim().contains('et') ?? false) {
       _dropdownRegion = true;
-      _selectedRegion = _regions
-          .firstWhere((e) => e.label?.toLowerCase().trim() == 'addis ababa');
+      _selectedRegion = _regions.firstWhere(
+          (e) => e.code?.toLowerCase().trim().contains('addis_ababa') ?? false);
     } else {
       _dropdownRegion = false;
     }

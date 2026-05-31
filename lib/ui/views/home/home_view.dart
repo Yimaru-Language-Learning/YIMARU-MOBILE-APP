@@ -2,15 +2,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
+import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../widgets/coming_soon.dart';
 import 'home_viewmodel.dart';
 
 class HomeView extends StackedView<HomeViewModel> {
   const HomeView({Key? key}) : super(key: key);
+
   @override
   void onViewModelReady(HomeViewModel viewModel) async {
     await viewModel.inAppUpdate();
@@ -23,7 +26,13 @@ class HomeView extends StackedView<HomeViewModel> {
   @override
   Widget builder(
           BuildContext context, HomeViewModel viewModel, Widget? child) =>
-      _buildScaffold(viewModel);
+      KeyedSubtree(
+          key: ValueKey(context.locale.languageCode),
+          child: _buildScaffoldStack(viewModel));
+
+  Widget _buildScaffoldStack(HomeViewModel viewModel) => Stack(
+        children: [_buildScaffold(viewModel), _buildLogoutState(viewModel)],
+      );
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(
         body: getViewForIndex(viewModel.currentPage),
@@ -77,4 +86,9 @@ class HomeView extends StackedView<HomeViewModel> {
         return const ProfileView();
     }
   }
+
+  Widget _buildLogoutState(HomeViewModel viewModel) =>
+      viewModel.state == StateObjects.logout
+          ? const PageLoadingIndicator()
+          : Container();
 }

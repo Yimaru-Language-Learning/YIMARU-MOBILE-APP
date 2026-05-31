@@ -5,6 +5,7 @@ import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/common/app_strings.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../services/authentication_service.dart';
 import '../../../services/in_app_update_service.dart';
@@ -12,8 +13,13 @@ import '../../../services/in_app_update_service.dart';
 class HomeViewModel extends ReactiveViewModel {
   // Dependency injection
   final _statusChecker = locator<StatusCheckerService>();
+
+  final _navigationService = locator<NavigationService>();
+
   final _bottomSheetService = locator<BottomSheetService>();
+
   final _inAppUpdateService = locator<InAppUpdateService>();
+
   final _authenticationService = locator<AuthenticationService>();
 
   @override
@@ -24,6 +30,11 @@ class HomeViewModel extends ReactiveViewModel {
   User? get _user => _authenticationService.user;
 
   User? get user => _user;
+
+  // Logout state
+  StateObjects get _state => _authenticationService.state;
+
+  StateObjects get state => _state;
 
   // Bottom navigation
   int _currentPage = 0;
@@ -43,6 +54,8 @@ class HomeViewModel extends ReactiveViewModel {
     _currentPage = index;
     rebuildUi();
   }
+
+
 
   // Remote api calls
 
