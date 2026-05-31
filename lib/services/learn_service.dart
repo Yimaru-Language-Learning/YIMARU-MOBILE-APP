@@ -1,4 +1,6 @@
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/models/course_progress.dart';
+import 'package:yimaru_app/models/module_progress.dart';
 import 'package:yimaru_app/models/refresh_object.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
@@ -17,8 +19,24 @@ class LearnService with ListenableServiceMixin {
 
   // Initialization
   learnService() {
-    listenToReactiveValues([_programs, _courses, _lessons, _modules]);
+    listenToReactiveValues(
+        [_programs, _courses, _lessons, _modules, _totalCount]);
   }
+
+  // Completed count
+  int _completedCount = 0;
+
+  int get completedCount => _completedCount;
+
+  // Total count
+  int _totalCount = 0;
+
+  int get totalCount => _totalCount;
+
+  // Total progress
+  int _totalProgress = 0;
+
+  int get totalProgress => _totalProgress;
 
   // Learn program
   List<LearnProgram> _programs = [];
@@ -40,10 +58,7 @@ class LearnService with ListenableServiceMixin {
 
   List<LearnLesson> get lessons => _lessons;
 
-  // Learn progress
-  final List<ProgressSummary> _summaries = [];
 
-  List<ProgressSummary> get summaries => _summaries;
 
   // Learn programs
   Future<String?> refreshObject(String url) async {
@@ -87,7 +102,7 @@ class LearnService with ListenableServiceMixin {
   }
 
   // Learn progress
-  Future<void> getLearnProgressSummary() async {
+  Future<void> getLearnProgress() async {
     final summaries = await _apiService.getProgressSummary();
 
     /// PROGRAM ACCESS MAP
@@ -148,10 +163,6 @@ class LearnService with ListenableServiceMixin {
       );
     }).toList();
 
-    print(
-        'MY SUMMARIES - COMPLETED COUNT: ${_modules.first.access?.completedCount}');
-    print('PROGRESS PERCENT: ${_modules.first.access?.progressPercent}');
-
     /// UPDATE LESSONS
     _lessons = _lessons.map((lesson) {
       return lesson.copyWith(
@@ -176,5 +187,31 @@ class LearnService with ListenableServiceMixin {
     } catch (_) {
       return null;
     }
+  }
+
+  Future<void> getProgressSummary() async {
+    final summaries = await _apiService.getProgressSummary();
+
+    for (final ProgressSummary summary in summaries) {
+      _totalCount = _totalCount + (summary.access?.totalCount ?? 0);
+      _completedCount = _completedCount + (summary.access?.completedCount ?? 0);
+
+      for (final CourseProgress course in summary.courses ?? []) {
+        _totalCount = _totalCount + (course.access?.totalCount ?? 0);
+        _completedCount =
+            _completedCount + (course.access?.completedCount ?? 0);
+
+        for (final ModuleProgress module in course.modules ?? []) {
+          _totalCount = _totalCount + (module.access?.totalCount ?? 0);
+          _completedCount =
+              _completedCount + (module.access?.completedCount ?? 0);
+        }
+      }
+    }
+
+    _totalProgress = summaries.fold(
+        0, (sum, progress) => sum + (progress.access?.progressPercent ?? 0));
+
+    notifyListeners();
   }
 }

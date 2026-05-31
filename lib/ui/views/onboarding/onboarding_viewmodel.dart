@@ -203,10 +203,10 @@ class OnboardingViewModel extends ReactiveViewModel
 
   void setSelectedCountry(FieldOption? value) {
     _selectedCountry = value;
-    if (value?.label?.toLowerCase().trim() == 'ethiopia') {
+    if (value?.code?.toLowerCase().trim() == 'et') {
       _dropdownRegion = true;
       _selectedRegion = _regions
-          .firstWhere((e) => e.label?.toLowerCase().trim() == 'addis ababa');
+          .firstWhere((e) => e.code?.toLowerCase().trim().contains('addis_ababa') ?? false);
     } else {
       _dropdownRegion = false;
     }

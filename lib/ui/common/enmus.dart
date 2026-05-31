@@ -31,6 +31,7 @@ enum PracticeReason { course, module, lesson, previousModule, previousCourse }
 // State object
 enum StateObjects {
   none,
+  logout,
   courses,
   register,
   verifyOtp,
@@ -55,6 +56,7 @@ enum StateObjects {
   loginWithGoogle,
   loadLessonVideo,
   loadCourseVideo,
+  progressSummary,
   requestResetCode,
   profileCompletion,
   learnSubscription,

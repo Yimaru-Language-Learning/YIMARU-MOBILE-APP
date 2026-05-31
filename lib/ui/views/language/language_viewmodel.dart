@@ -29,9 +29,12 @@ class LanguageViewModel extends ReactiveViewModel {
 
   Future<void> setSelectedLanguage(
           {required BuildContext context,
-          required Map<String, dynamic> title}) async =>
-      await _localizationService.setSelectedLanguage(
-          context: context, title: title);
+          required Map<String, dynamic> title}) async {
+    await _localizationService.setSelectedLanguage(
+        context: context, title: title);
+    rebuildUi();
+  }
+
 
   // Navigation
   void pop() => _navigationService.back();

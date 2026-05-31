@@ -68,10 +68,10 @@ class ProfileViewModel extends ReactiveViewModel {
     DialogResponse? response = await _dialogService.showDialog(
       barrierDismissible: true,
       cancelTitleColor: kcDarkGrey,
-      buttonTitleColor: kcPrimaryColor,
       title: LocaleKeys.logout.tr(),
       cancelTitle: LocaleKeys.no.tr(),
       buttonTitle: LocaleKeys.yes.tr(),
+      buttonTitleColor: kcPrimaryColor,
       description: LocaleKeys.want_to_quit.tr(),
     );
     return response?.confirmed;
@@ -119,7 +119,6 @@ class ProfileViewModel extends ReactiveViewModel {
   }
 
   Future<void> _logout() async {
-    await _googleAuthService.logout();
     await _authenticationService.logout();
     await navigateToLogin();
   }

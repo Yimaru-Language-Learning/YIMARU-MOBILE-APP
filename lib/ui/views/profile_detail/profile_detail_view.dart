@@ -93,6 +93,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   }
 
   void _onModelReady(ProfileDetailViewModel viewModel) {
+    print('MY RESPONSE: ${viewModel.user?.region}');
     phoneNumberController.text = '251900000000';
     emailController.text = viewModel.user?.email ?? '';
     lastNameController.text = viewModel.user?.lastName ?? '';
@@ -103,9 +104,14 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
     viewModel.setSelectedOccupation(viewModel.occupations
         .where((e) => (e.code ?? '') == viewModel.user?.occupation)
         .first);
-    viewModel.setSelectedCountry(viewModel.countries
+     viewModel.setSelectedCountry(viewModel.countries
         .where((e) => (e.code ?? '') == viewModel.user?.country)
         .first);
+    if (viewModel.user?.country?.toLowerCase() == 'et') {
+      viewModel.setEthiopianRegion(viewModel.user?.region ?? '');
+    } else {
+      regionController.text = viewModel.user?.region ?? '';
+    }
   }
 
   @override
@@ -665,6 +671,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         Icons.search,
         color: kcPrimaryColor,
       );
+
   Widget _buildLowerColumn(ProfileDetailViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         children: _buildLowerColumnChildren(viewModel),

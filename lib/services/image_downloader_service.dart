@@ -5,39 +5,53 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../app/app.locator.dart';
-import '../ui/common/app_constants.dart';
+import '../models/refresh_object.dart';
+import '../ui/common/enmus.dart';
+import 'api_service.dart';
 import 'dio_service.dart';
 
 class ImageDownloaderService {
   // Dependency injection
   final _service = locator<DioService>();
 
+  final _apiService = locator<ApiService>();
+
+  final Dio _dio = Dio();
+
   // Image downloader
-  Future<String> downloader(String? networkImage) async {
-    late File image;
+  Future<String?> downloader(String? networkImage) async {
+    try {
+      File? image;
 
-    late String profileImage;
+      String? profileImage = networkImage;
 
-    final Directory appDir = await getApplicationDocumentsDirectory();
+      final Directory appDir = await getApplicationDocumentsDirectory();
 
-    if (networkImage != null) {
-      profileImage = networkImage.contains('https://lh3.googleusercontent.com')
-          ? networkImage
-          : '$kBaseUrl$networkImage';
+      Map<String, dynamic> data = {'reference': profileImage};
+      Map<String, dynamic> response = await _apiService.refreshObject(data);
+
+      if (response['status'] == ResponseStatus.success) {
+        RefreshObject object = response['data'] as RefreshObject;
+
+        profileImage = object.url;
+      }
+
+      if (profileImage != null) {
+        final Response profileImageResponse = await _dio.get<List<int>>(
+          profileImage,
+          options: Options(
+            responseType: ResponseType.bytes,
+          ),
+        );
+        final localImagePath = join(appDir.path, 'profile.jpg');
+        image = File(localImagePath);
+        image.writeAsBytes(profileImageResponse.data);
+
+        return image.path;
+      }
+      return null;
+    } catch (e) {
+      return null;
     }
-
-    final Response profileImageResponse = await _service.dio.get(
-      profileImage,
-      options: Options(
-        followRedirects: false,
-        responseType: ResponseType.bytes,
-      ),
-    );
-    final imageName = basename(networkImage ?? '');
-    final localImagePath = join(appDir.path, imageName);
-    image = File(localImagePath);
-    image.writeAsBytes(profileImageResponse.data);
-
-    return image.path;
   }
 }

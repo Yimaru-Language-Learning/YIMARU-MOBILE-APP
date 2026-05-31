@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/ui_helpers.dart';
@@ -10,6 +12,12 @@ import 'progress_viewmodel.dart';
 
 class ProgressView extends StackedView<ProgressViewModel> {
   const ProgressView({Key? key}) : super(key: key);
+
+  @override
+  void onViewModelReady(ProgressViewModel viewModel) async {
+    await viewModel.getProgressSummary();
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   ProgressViewModel viewModelBuilder(BuildContext context) =>
@@ -54,9 +62,9 @@ class ProgressView extends StackedView<ProgressViewModel> {
       );
 
   Widget _buildAppbar(ProgressViewModel viewModel) => SmallAppBar(
-        title: 'My Progress',
         showBackButton: true,
         onPop: viewModel.pop,
+        title: LocaleKeys.my_progress.tr(),
       );
 
   Widget _buildContentScrollViewWrapper(ProgressViewModel viewModel) =>
@@ -81,12 +89,12 @@ class ProgressView extends StackedView<ProgressViewModel> {
         verticalSpaceMedium,
         _buildLearningProgressCard(),
         verticalSpaceMedium,
-        _buildCourseProgressSection()
+        //  _buildCourseProgressSection()
       ];
 
-  Widget _buildText() => const Text(
-        'Track your learning journey and see your growth over time.',
-        style: TextStyle(color: kcDarkGrey),
+  Widget _buildText() => Text(
+        LocaleKeys.track_journey.tr(),
+        style: style14DG400,
       );
 
   Widget _buildLearningProgressCard() => const LearningProgressCard();
