@@ -122,10 +122,12 @@ class StartupViewModel extends ReactiveViewModel {
 
           await _authenticationService.saveUserData(user);
 
-          String image =
+          String? image =
               await _imageDownloaderService.downloader(user.profilePicture);
 
-          await _authenticationService.saveProfilePicture(image);
+          if (image != null) {
+            await _authenticationService.saveProfilePicture(image);
+          }
         }
       }
     }

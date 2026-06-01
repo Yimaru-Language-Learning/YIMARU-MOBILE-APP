@@ -2,12 +2,17 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/secure_storage_service.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 
+import 'google_auth_service.dart';
 import 'localization_service.dart';
 
 class AuthenticationService with ListenableServiceMixin {
   // Dependency injection
+
   final _secureService = locator<SecureStorageService>();
+
+  final _googleAuthService = locator<GoogleAuthService>();
 
   final _localizationService = locator<LocalizationService>();
 
@@ -18,8 +23,14 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Initialization
   AuthenticationService() {
-    listenToReactiveValues([_user, _localizationService]);
+    listenToReactiveValues([_user,_state, _localizationService]);
   }
+
+  // Logout state
+  StateObjects _state = StateObjects.none;
+
+  StateObjects get state => _state;
+
 
   // Check user logged in
   Future<bool> userLoggedIn() async {
@@ -179,13 +190,20 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Logout
   Future<void> logout() async {
+    _state = StateObjects.logout;
+    notifyListeners();
+
     bool firstTimeInstall = await isFirstTimeInstall();
     String language = await _localizationService.selectedLanguage['code'];
 
     _user = null;
     await _secureService.clear();
+    await _googleAuthService.logout();
     await setFirstTimeInstall(firstTimeInstall);
     await _secureService.setString('language', language);
+
+
+    _state = StateObjects.none;
     notifyListeners();
   }
 }

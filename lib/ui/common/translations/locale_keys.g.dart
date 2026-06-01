@@ -2,7 +2,7 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class LocaleKeys {
+abstract class  LocaleKeys {
   static const loading = 'loading';
   static const welcome_back = 'welcome_back';
   static const checking_user_info = 'checking_user_info';
@@ -161,8 +161,7 @@ abstract class LocaleKeys {
   static const educational_background = 'educational_background';
   static const education_for_personalization = 'education_for_personalization';
   static const your_occupation = 'your_occupation';
-  static const occupation_for_personalization =
-      'occupation_for_personalization';
+  static const occupation_for_personalization = 'occupation_for_personalization';
   static const location = 'location';
   static const select_country_region = 'select_country_region';
   static const select_country = 'select_country';
@@ -189,8 +188,13 @@ abstract class LocaleKeys {
   static const finish_all_practice_lesson = 'finish_all_practice_lesson';
   static const finish_all_practice_module = 'finish_all_practice_module';
   static const finish_all_practice_course = 'finish_all_practice_course';
-  static const finish_all_practice_previouse_module =
-      'finish_all_practice_previouse_module';
-  static const finish_all_practice_previouse_course =
-      'finish_all_practice_previouse_course';
+  static const finish_all_practice_previouse_module = 'finish_all_practice_previouse_module';
+  static const finish_all_practice_previouse_course = 'finish_all_practice_previouse_course';
+  static const track_journey = 'track_journey';
+  static const learn_english = 'learn_english';
+  static const keep_momentum = 'keep_momentum';
+  static const completed_practices = 'completed_practices';
+  static const total_practices = 'total_practices';
+  static const progress_percentage = 'progress_percentage';
+
 }

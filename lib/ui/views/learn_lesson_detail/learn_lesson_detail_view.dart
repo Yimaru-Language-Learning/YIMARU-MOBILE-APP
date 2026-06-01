@@ -31,10 +31,10 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   Future<void> _onPractice(
       {required LearnLesson lesson,
       required LearnLessonDetailViewModel viewModel}) async {
-       await viewModel.pause();
+   /*    await viewModel.pause();
     await viewModel.navigateToLearnPractice(lesson.id ?? 0);
-
-/*    if (index > 1) {
+*/
+    if (index > 1) {
       if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'subscribed') {
         await viewModel.pause();
         await viewModel.navigateToLearnPractice(lesson.id ?? 0);
@@ -45,7 +45,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
     } else {
       await viewModel.pause();
       await viewModel.navigateToLearnPractice(lesson.id ?? 0);
-    }*/
+    }
   }
 
   @override
