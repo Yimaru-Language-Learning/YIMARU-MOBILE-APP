@@ -32,7 +32,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
       await _showSheet(context: context, viewModel: viewModel);
     }*/
     if (index > 1) {
-      if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'subscribed') {
+      if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
         if (lesson.access?.isAccessible ?? false) {
           await viewModel.navigateToLearnPractice(lesson.id ?? 0);
         } else {
