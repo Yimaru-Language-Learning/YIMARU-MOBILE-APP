@@ -5,7 +5,6 @@ import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../models/progress_summary.dart';
 
 class ProgressViewModel extends ReactiveViewModel {
   // Dependency injection
