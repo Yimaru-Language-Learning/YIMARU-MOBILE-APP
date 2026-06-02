@@ -35,7 +35,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
     await viewModel.navigateToLearnPractice(lesson.id ?? 0);
 */
     if (index > 1) {
-      if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'subscribed') {
+      if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
         await viewModel.pause();
         await viewModel.navigateToLearnPractice(lesson.id ?? 0);
       } else {
