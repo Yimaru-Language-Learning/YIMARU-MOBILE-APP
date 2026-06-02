@@ -112,6 +112,34 @@ class ApiService {
     }
   }
 
+  // Apple auth
+  Future<Map<String, dynamic>> appleAuth(Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kAppleAuthUrl',
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Logged in successfully',
+          'data': User.fromJson(response.data['data']),
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': '${response.data['message']}, ${response.data['error']}'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
   // Verify otp
   Future<Map<String, dynamic>> verifyOtp(Map<String, dynamic> data) async {
     try {

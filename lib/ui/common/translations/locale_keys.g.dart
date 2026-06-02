@@ -13,12 +13,14 @@ abstract class  LocaleKeys {
   static const cont = 'cont';
   static const register = 'register';
   static const login_with_google = 'login_with_google';
+  static const login_with_apple = 'login_with_apple';
   static const or = 'or';
   static const login_with_phone = 'login_with_phone';
   static const create_account = 'create_account';
   static const already_have_account = 'already_have_account';
   static const login = 'login';
   static const register_with_google = 'register_with_google';
+  static const register_with_apple = 'register_with_apple';
   static const register_with_phone = 'register_with_phone';
   static const enter_phone_number = 'enter_phone_number';
   static const login_with_email = 'login_with_email';
@@ -43,10 +45,10 @@ abstract class  LocaleKeys {
   static const reset_code = 'reset_code';
   static const new_password = 'new_password';
   static const logged_in_successfully = 'logged_in_successfully';
-  static const view_course = 'view_course';
   static const continue_learning = 'continue_learning';
   static const start_learning = 'start_learning';
   static const completed = 'completed';
+  static const view_course = 'view_course';
   static const take_practice = 'take_practice';
   static const your_current_level = 'your_current_level';
   static const overall_progress = 'overall_progress';

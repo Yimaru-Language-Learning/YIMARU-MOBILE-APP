@@ -101,6 +101,8 @@ String kLessonProgressUrl = 'api/v1/progress/videos';
 
 String kGoogleAuthUrl = 'api/v1/auth/google/android';
 
+String kAppleAuthUrl = 'api/v1/auth/apple';
+
 String kCourseProgressUrl = 'api/v1/progress/courses';
 
 String kAssessmentsUrl = 'api/v1/assessment/questions';
@@ -124,5 +126,4 @@ String kTelegramSupportLink = 'https://t.me/yimaruacademy2026';
 
 String kErrorUrl = 'https://api.yimaruacademy.com/payment/error';
 
-String kSuccessUrl =
-    'https://api.yimaruacademy.com/payment/success';
+String kSuccessUrl = 'https://api.yimaruacademy.com/payment/success';

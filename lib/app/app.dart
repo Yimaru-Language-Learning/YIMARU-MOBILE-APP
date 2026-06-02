@@ -56,6 +56,7 @@ import 'package:yimaru_app/services/localization_service.dart';
 import 'package:yimaru_app/ui/views/landing/landing_view.dart';
 import 'package:yimaru_app/ui/views/course_module/course_module_view.dart';
 import 'package:yimaru_app/services/onboarding_service.dart';
+import 'package:yimaru_app/services/apple_auth_service.dart';
 import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart';
 import 'package:yimaru_app/ui/views/payment/payment_view.dart';
 // @stacked-import
@@ -124,6 +125,7 @@ import 'package:yimaru_app/ui/views/payment/payment_view.dart';
     LazySingleton(classType: LearnService),
     LazySingleton(classType: LocalizationService),
     LazySingleton(classType: OnboardingService),
+    LazySingleton(classType: AppleAuthService),
 // @stacked-service
   ],
   bottomsheets: [

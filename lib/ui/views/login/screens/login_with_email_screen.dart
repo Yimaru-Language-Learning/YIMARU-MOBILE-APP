@@ -66,7 +66,8 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
       Stack(children: [
         _buildScaffold(context: context, viewModel: viewModel),
         _buildLoginWithEmailState(viewModel),
-        _buildLoginWithGoogleState(viewModel)
+        _buildLoginWithGoogleState(viewModel),
+        _buildLoginWithAppleState(viewModel)
       ]);
 
   Widget _buildScaffold(
@@ -232,6 +233,8 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
   List<Widget> _buildLowerColumnChildren(LoginViewModel viewModel) => [
         _buildContinueButton(viewModel),
         _buildLoginWithGoogleButton(viewModel),
+        if (viewModel.isAppleSignInAvailable)
+          _buildLoginWithAppleButton(viewModel),
         _buildOptionTextDivider(),
         _buildLoginWithPhoneButton(viewModel),
         verticalSpaceMedium
@@ -265,6 +268,18 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         onTap: () async => await viewModel.signInWithGoogle(),
       );
 
+  Widget _buildLoginWithAppleButton(LoginViewModel viewModel) =>
+      CustomElevatedButton(
+        height: 55,
+        borderRadius: 12,
+        backgroundColor: kcWhite,
+        borderColor: kcPrimaryColor,
+        foregroundColor: kcPrimaryColor,
+        text: LocaleKeys.login_with_apple.tr(),
+        leadingIcon: Icons.apple,
+        onTap: () async => await viewModel.signInWithApple(),
+      );
+
   Widget _buildOptionTextDivider() => const OptionTextDivider();
 
   Widget _buildLoginWithPhoneButton(LoginViewModel viewModel) =>
@@ -285,6 +300,11 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
 
   Widget _buildLoginWithGoogleState(LoginViewModel viewModel) =>
       viewModel.busy(StateObjects.loginWithGoogle)
+          ? const PageLoadingIndicator()
+          : Container();
+
+  Widget _buildLoginWithAppleState(LoginViewModel viewModel) =>
+      viewModel.busy(StateObjects.loginWithApple)
           ? const PageLoadingIndicator()
           : Container();
 }

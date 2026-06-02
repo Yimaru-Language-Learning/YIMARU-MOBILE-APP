@@ -5,10 +5,10 @@ enum Voice { sample, recorded }
 enum ResponseStatus { success, failure }
 
 // Login method
-enum LoginMethod { phone, email, google }
+enum LoginMethod { phone, email, google, apple }
 
 // Sign-up method
-enum SignUpMethod { phone, email, google }
+enum SignUpMethod { phone, email, google, apple }
 
 // Learn practice
 enum LearnPractices { course, module, lesson }
@@ -61,7 +61,9 @@ enum StateObjects {
   profileCompletion,
   learnSubscription,
   learnSubscriptions,
+  loginWithApple,
   registerWithGoogle,
+  registerWithApple,
   learnPracticeSample,
   learnPracticeAnswer,
   loginWithPhoneNumber,

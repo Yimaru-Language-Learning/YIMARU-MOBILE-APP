@@ -10,6 +10,7 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/user.dart';
+import '../../../services/apple_auth_service.dart';
 import '../../../services/google_auth_service.dart';
 import '../../../services/localization_service.dart';
 import '../../../services/status_checker_service.dart';
@@ -25,18 +26,22 @@ class RegisterViewModel extends ReactiveViewModel
 
   final _googleAuthService = locator<GoogleAuthService>();
 
+  final _appleAuthService = locator<AppleAuthService>();
+
   final _localizationService = locator<LocalizationService>();
 
   final _authenticationService = locator<AuthenticationService>();
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_googleAuthService, _localizationService];
+      [_googleAuthService, _appleAuthService, _localizationService];
 
   // Google user
   GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
 
   GoogleSignInAccount? get googleUser => _googleUser;
+
+  bool get isAppleSignInAvailable => _appleAuthService.isSupported;
 
   // Languages
   Map<String, dynamic> get _selectedLanguage =>
@@ -319,6 +324,50 @@ class RegisterViewModel extends ReactiveViewModel
       };
 
       Map<String, dynamic> response = await _apiService.googleAuth(data);
+
+      if (response['status'] == ResponseStatus.success) {
+        User user = response['data'] as User;
+        Map<String, dynamic> data = {
+          'userId': user.userId,
+          'accessToken': user.accessToken,
+          'refreshToken': user.refreshToken
+        };
+        await _authenticationService.saveUserCredential(data);
+        clearUserData();
+        await replaceWithStartUp();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  // Register with Apple
+  Future<void> registerWithApple() async => await runBusyFuture(_appleLogin(),
+      busyObject: StateObjects.registerWithApple);
+
+  Future<void> _appleLogin() async {
+    if (await _statusChecker.checkConnection()) {
+      await _appleAuthService.appleAuth();
+
+      final credential = _appleAuthService.appleCredential;
+      final identityToken = credential?.identityToken;
+
+      if (identityToken == null || identityToken.isEmpty) {
+        showErrorToast('Apple login failed. Please try again.');
+        return;
+      }
+
+      Map<String, dynamic> data = {
+        'id_token': identityToken,
+        'email': credential?.email,
+        'first_name': credential?.givenName,
+        'last_name': credential?.familyName,
+      };
+
+      data.removeWhere((_, value) => value == null || value == '');
+
+      Map<String, dynamic> response = await _apiService.appleAuth(data);
 
       if (response['status'] == ResponseStatus.success) {
         User user = response['data'] as User;

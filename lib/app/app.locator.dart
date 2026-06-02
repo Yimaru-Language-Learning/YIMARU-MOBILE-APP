@@ -13,6 +13,7 @@ import 'package:stacked_services/src/navigation/navigation_service.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
 import '../services/api_service.dart';
+import '../services/apple_auth_service.dart';
 import '../services/audio_player_service.dart';
 import '../services/authentication_service.dart';
 import '../services/course_service.dart';
@@ -67,4 +68,5 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => LearnService());
   locator.registerLazySingleton(() => LocalizationService());
   locator.registerLazySingleton(() => OnboardingService());
+  locator.registerLazySingleton(() => AppleAuthService());
 }

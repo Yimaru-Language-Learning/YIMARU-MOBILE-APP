@@ -65,7 +65,9 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
-          _buildRegisterWithEmailState(viewModel)
+          _buildRegisterWithEmailState(viewModel),
+          _buildRegisterWithGoogleState(viewModel),
+          _buildRegisterWithAppleState(viewModel)
         ],
       );
 
@@ -191,6 +193,8 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
   List<Widget> _buildLowerColumnChildren(RegisterViewModel viewModel) => [
         _buildContinueButton(viewModel),
         _buildRegisterWithGoogleButton(viewModel),
+        if (viewModel.isAppleSignInAvailable)
+          _buildRegisterWithAppleButton(viewModel),
         _buildOptionTextDivider(),
         _buildRegisterWithEmailButton(viewModel),
         verticalSpaceMedium
@@ -225,6 +229,18 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         onTap: () async => await viewModel.registerWithGoogle(),
       );
 
+  Widget _buildRegisterWithAppleButton(RegisterViewModel viewModel) =>
+      CustomElevatedButton(
+        height: 55,
+        borderRadius: 12,
+        backgroundColor: kcWhite,
+        borderColor: kcPrimaryColor,
+        foregroundColor: kcPrimaryColor,
+        text: LocaleKeys.register_with_apple.tr(),
+        leadingIcon: Icons.apple,
+        onTap: () async => await viewModel.registerWithApple(),
+      );
+
   Widget _buildOptionTextDivider() => const OptionTextDivider();
 
   Widget _buildRegisterWithEmailButton(RegisterViewModel viewModel) =>
@@ -241,6 +257,16 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildRegisterWithEmailState(RegisterViewModel viewModel) =>
       viewModel.busy(StateObjects.register)
+          ? const PageLoadingIndicator()
+          : Container();
+
+  Widget _buildRegisterWithGoogleState(RegisterViewModel viewModel) =>
+      viewModel.busy(StateObjects.registerWithGoogle)
+          ? const PageLoadingIndicator()
+          : Container();
+
+  Widget _buildRegisterWithAppleState(RegisterViewModel viewModel) =>
+      viewModel.busy(StateObjects.registerWithApple)
           ? const PageLoadingIndicator()
           : Container();
 }
