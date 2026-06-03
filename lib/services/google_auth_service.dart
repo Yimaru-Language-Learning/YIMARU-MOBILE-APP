@@ -29,7 +29,6 @@ class GoogleAuthService with ListenableServiceMixin {
 
         _googleUser ??=
             await _signIn.authenticate(scopeHint: ['email', 'profile']);
-
       });
       notifyListeners();
     } catch (e) {

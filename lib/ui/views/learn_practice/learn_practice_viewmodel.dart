@@ -10,6 +10,7 @@ import 'package:yimaru_app/services/voice_recorder_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../app/app.router.dart';
 import '../../../models/learn_question.dart';
 import '../../../services/api_service.dart';
 import '../../../services/audio_player_service.dart';
@@ -263,6 +264,9 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   // Navigation
   void pop() => _navigationService.back();
+
+  Future<void> navigateToLearnSubscription() async =>
+      await _navigationService.navigateToLearnSubscriptionView();
 
   // Remote api call
 

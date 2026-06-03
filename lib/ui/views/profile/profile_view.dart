@@ -166,7 +166,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
 
   List<Widget> _buildSettingsChildren(ProfileViewModel viewModel) => [
         //  _buildDownloadsCard(viewModel),
-      _buildProgressCard(viewModel),
+        _buildProgressCard(viewModel),
         _buildAccountCard(viewModel),
         _buildSupportCard(viewModel)
       ];

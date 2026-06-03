@@ -36,8 +36,8 @@ class LearnProgramViewModel extends ReactiveViewModel {
   List<LearnProgram> get learnPrograms => _learnPrograms;
 
   // Navigation
-  Future<void> navigateToLearnCourse(int id) async =>
-      _navigationService.navigateToLearnCourseView(id: id);
+  Future<void> navigateToLearnCourse({required int id,required bool first}) async =>
+      _navigationService.navigateToLearnCourseView(id: id,first: first);
 
   // Remote api call
 

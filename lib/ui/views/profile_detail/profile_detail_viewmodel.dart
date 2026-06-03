@@ -136,8 +136,8 @@ class ProfileDetailViewModel extends ReactiveViewModel
 
   void setEthiopianRegion(String region) {
     _dropdownRegion = true;
-    _selectedRegion =
-        _regions.firstWhere((r) => r.code?.toLowerCase() == region.toLowerCase());
+    _selectedRegion = _regions
+        .firstWhere((r) => r.code?.toLowerCase() == region.toLowerCase());
 
     rebuildUi();
   }
