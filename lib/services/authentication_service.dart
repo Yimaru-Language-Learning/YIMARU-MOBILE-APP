@@ -23,14 +23,13 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Initialization
   AuthenticationService() {
-    listenToReactiveValues([_user,_state, _localizationService]);
+    listenToReactiveValues([_user, _state, _localizationService]);
   }
 
   // Logout state
   StateObjects _state = StateObjects.none;
 
   StateObjects get state => _state;
-
 
   // Check user logged in
   Future<bool> userLoggedIn() async {
@@ -201,7 +200,6 @@ class AuthenticationService with ListenableServiceMixin {
     await _googleAuthService.logout();
     await setFirstTimeInstall(firstTimeInstall);
     await _secureService.setString('language', language);
-
 
     _state = StateObjects.none;
     notifyListeners();

@@ -55,8 +55,6 @@ class HomeViewModel extends ReactiveViewModel {
     rebuildUi();
   }
 
-
-
   // Remote api calls
 
   // In-app update

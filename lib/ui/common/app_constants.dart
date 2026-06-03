@@ -124,5 +124,4 @@ String kTelegramSupportLink = 'https://t.me/yimaruacademy2026';
 
 String kErrorUrl = 'https://api.yimaruacademy.com/payment/error';
 
-String kSuccessUrl =
-    'https://api.yimaruacademy.com/payment/success';
+String kSuccessUrl = 'https://api.yimaruacademy.com/payment/success';

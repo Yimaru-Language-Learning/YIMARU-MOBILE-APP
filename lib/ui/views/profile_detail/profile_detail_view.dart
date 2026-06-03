@@ -104,7 +104,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
     viewModel.setSelectedOccupation(viewModel.occupations
         .where((e) => (e.code ?? '') == viewModel.user?.occupation)
         .first);
-     viewModel.setSelectedCountry(viewModel.countries
+    viewModel.setSelectedCountry(viewModel.countries
         .where((e) => (e.code ?? '') == viewModel.user?.country)
         .first);
     if (viewModel.user?.country?.toLowerCase() == 'et') {

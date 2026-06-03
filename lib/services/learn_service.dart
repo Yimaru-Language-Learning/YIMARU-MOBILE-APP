@@ -58,8 +58,6 @@ class LearnService with ListenableServiceMixin {
 
   List<LearnLesson> get lessons => _lessons;
 
-
-
   // Learn programs
   Future<String?> refreshObject(String url) async {
     Map<String, dynamic> data = {'reference': url};
