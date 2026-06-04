@@ -17,32 +17,25 @@ import '../../widgets/small_app_bar.dart';
 import 'learn_lesson_viewmodel.dart';
 
 class LearnLessonView extends StackedView<LearnLessonViewModel> {
+  final bool first;
   final LearnModule module;
 
-  const LearnLessonView({Key? key, required this.module}) : super(key: key);
+  const LearnLessonView({Key? key, required this.first, required this.module})
+      : super(key: key);
 
   Future<void> _onPractice(
       {required int index,
       required LearnLesson lesson,
       required BuildContext context,
       required LearnLessonViewModel viewModel}) async {
-/*      if (lesson.access?.isAccessible ?? false) {
-      await viewModel.navigateToLearnPractice(lesson.id ?? 0);
-    } else {
-      await _showSheet(context: context, viewModel: viewModel);
-    }*/
-    if (index > 1) {
-      if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
-        if (lesson.access?.isAccessible ?? false) {
-          await viewModel.navigateToLearnPractice(lesson.id ?? 0);
-        } else {
-          await _showSheet(context: context, viewModel: viewModel);
-        }
+    if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
+      if (lesson.access?.isAccessible ?? false) {
+        await viewModel.navigateToLearnPractice(lesson.id ?? 0);
       } else {
-        await viewModel.navigateToLearnSubscription();
+        await _showSheet(context: context, viewModel: viewModel);
       }
     } else {
-      if (lesson.access?.isAccessible ?? false) {
+      if (first && index < 3) {
         await viewModel.navigateToLearnPractice(lesson.id ?? 0);
       } else {
         await _showSheet(context: context, viewModel: viewModel);
@@ -224,6 +217,7 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           index: index,
+          first: first && index < 3,
           lesson: viewModel.lessons[index],
           last: index == viewModel.lessons.length - 1,
           onPracticeTap: () async => await _onPractice(
@@ -244,12 +238,14 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
   Widget _buildTile({
     required bool last,
     required int index,
+    required bool first,
     required LearnLesson lesson,
     required GestureTapCallback? onLessonTap,
     required GestureTapCallback? onPracticeTap,
   }) =>
       LearnLessonTile(
         last: last,
+        first: first,
         index: index,
         lesson: lesson,
         onLessonTap: onLessonTap,

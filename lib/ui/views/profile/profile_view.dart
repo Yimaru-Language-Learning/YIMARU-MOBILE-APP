@@ -5,6 +5,7 @@ import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
+import 'package:yimaru_app/ui/widgets/notification_icon.dart';
 import 'package:yimaru_app/ui/widgets/profile_card.dart';
 import 'package:yimaru_app/ui/widgets/profile_image.dart';
 import 'package:yimaru_app/ui/widgets/view_profile_button.dart';
@@ -89,8 +90,9 @@ class ProfileView extends StackedView<ProfileViewModel> {
           required ProfileViewModel viewModel}) =>
       Column(
         children: [
+          verticalSpaceSmall,
           verticalSpaceMedium,
-          _buildNotificationIconWrapper(),
+          _buildNotificationIconWrapper(viewModel),
           _buildProfileSection(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildViewProfileButton(viewModel),
@@ -102,12 +104,10 @@ class ProfileView extends StackedView<ProfileViewModel> {
         ],
       );
 
-  Widget _buildNotificationIconWrapper() =>
-      Align(alignment: Alignment.bottomRight, child: _buildNotificationIcon());
-
-  Widget _buildNotificationIcon() => const Icon(
-        Icons.notifications_none,
-        color: kcDarkGrey,
+  Widget _buildNotificationIconWrapper(ProfileViewModel viewModel) =>
+      NotificationIcon(
+        count: viewModel.unreadCount.toString(),
+        onTap: () async => await viewModel.navigateToNotification(),
       );
 
   Widget _buildProfileSection(
@@ -166,7 +166,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
 
   List<Widget> _buildSettingsChildren(ProfileViewModel viewModel) => [
         //  _buildDownloadsCard(viewModel),
-      _buildProgressCard(viewModel),
+        _buildProgressCard(viewModel),
         _buildAccountCard(viewModel),
         _buildSupportCard(viewModel)
       ];

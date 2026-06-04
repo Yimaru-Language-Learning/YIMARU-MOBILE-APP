@@ -26,7 +26,8 @@ class PaymentView extends StackedView<PaymentViewModel> {
 
   @override
   void onViewModelReady(PaymentViewModel viewModel) async {
-    await viewModel.createLearnSubscriptionRequest(phone: phone,subscription: subscription);
+    await viewModel.createLearnSubscriptionRequest(
+        phone: phone, subscription: subscription);
     super.onViewModelReady(viewModel);
   }
 

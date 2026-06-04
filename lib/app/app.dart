@@ -35,7 +35,6 @@ import 'package:yimaru_app/ui/views/learn_practice/learn_practice_view.dart';
 import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart';
 import 'package:yimaru_app/ui/views/failure/failure_view.dart';
 import 'package:yimaru_app/ui/views/course_lesson_detail/course_lesson_detail_view.dart';
-import 'package:yimaru_app/services/notification_service.dart';
 import 'package:yimaru_app/ui/views/duolingo/duolingo_view.dart';
 import 'package:yimaru_app/services/smart_auth_service.dart';
 import 'package:yimaru_app/services/course_service.dart';
@@ -59,6 +58,9 @@ import 'package:yimaru_app/services/onboarding_service.dart';
 import 'package:yimaru_app/services/apple_auth_service.dart';
 import 'package:yimaru_app/ui/views/learn_course/learn_course_view.dart';
 import 'package:yimaru_app/ui/views/payment/payment_view.dart';
+import 'package:yimaru_app/ui/views/notification/notification_view.dart';
+import 'package:yimaru_app/services/in_app_notification_service.dart';
+import 'package:yimaru_app/services/push_notification_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -98,6 +100,7 @@ import 'package:yimaru_app/ui/views/payment/payment_view.dart';
     MaterialRoute(page: CourseModuleView),
     MaterialRoute(page: LearnCourseView),
     MaterialRoute(page: PaymentView),
+    MaterialRoute(page: NotificationView),
 // @stacked-route
   ],
   dependencies: [
@@ -113,7 +116,6 @@ import 'package:yimaru_app/ui/views/payment/payment_view.dart';
     LazySingleton(classType: ImagePickerService),
     LazySingleton(classType: GoogleAuthService),
     LazySingleton(classType: ImageDownloaderService),
-    LazySingleton(classType: NotificationService),
     LazySingleton(classType: SmartAuthService),
     LazySingleton(classType: CourseService),
     LazySingleton(classType: AudioPlayerService),
@@ -126,6 +128,8 @@ import 'package:yimaru_app/ui/views/payment/payment_view.dart';
     LazySingleton(classType: LocalizationService),
     LazySingleton(classType: OnboardingService),
     LazySingleton(classType: AppleAuthService),
+    LazySingleton(classType: InAppNotificationService),
+    LazySingleton(classType: PushNotificationService),
 // @stacked-service
   ],
   bottomsheets: [

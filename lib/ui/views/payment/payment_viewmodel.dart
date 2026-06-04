@@ -45,18 +45,22 @@ class PaymentViewModel extends ReactiveViewModel {
   // Remote api call
 
   // Learn subscription
-  Future<void> createLearnSubscriptionRequest({required String phone,required LearnSubscription subscription}) async =>
-      await runBusyFuture(_createLearnSubscriptionRequest(phone: phone,subscription: subscription),
+  Future<void> createLearnSubscriptionRequest(
+          {required String phone,
+          required LearnSubscription subscription}) async =>
+      await runBusyFuture(
+          _createLearnSubscriptionRequest(
+              phone: phone, subscription: subscription),
           busyObject: StateObjects.learnSubscription);
 
-  Future<void> _createLearnSubscriptionRequest({required String phone,required LearnSubscription subscription}) async {
+  Future<void> _createLearnSubscriptionRequest(
+      {required String phone, required LearnSubscription subscription}) async {
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> data = {
         'provider': 'CHAPA',
         'phone': '251$phone',
         'email': 'test@gmail.com',
         'plan_id': subscription.id,
-
       };
 
       Map<String, dynamic> response =

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:yimaru_app/models/app_update.dart';
+import 'package:yimaru_app/models/in_app_notification.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/models/learn_practice.dart';
 import 'package:yimaru_app/models/learn_program.dart';
@@ -380,6 +381,55 @@ class ApiService {
         'status': ResponseStatus.failure,
         'message': e.response?.data.toString(),
       };
+    }
+  }
+
+  // Mark notifications
+  Future<void> markNotificationsRead() async {
+    try {
+      await _service.dio.post(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kNotificationsUrl/$kMarkNotificationRead');
+    } catch (e) {
+      return;
+    }
+  }
+
+  // Get unread notifications
+  Future<int> getUnreadNotifications() async {
+    try {
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kNotificationsUrl/$kUnreadUrl');
+
+      if (response.statusCode == 200) {
+        return response.data['unread'];
+      }
+      return 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  // Get notifications
+  Future<List<InAppNotification>> getAllNotifications() async {
+    try {
+      List<InAppNotification> notifications = [];
+
+      final Response response = await _service.dio
+          .get('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kNotificationsUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['notifications'] as List;
+        notifications = decodedData.map(
+          (e) {
+            return InAppNotification.fromJson(e);
+          },
+        ).toList();
+        return notifications;
+      }
+      return [];
+    } catch (e) {
+      return [];
     }
   }
 

@@ -17,6 +17,7 @@ import 'custom_linear_progress_indicator.dart';
 class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
   final int index;
   final bool last;
+  final bool first;
   final LearnLesson lesson;
   final GestureTapCallback? onLessonTap;
   final GestureTapCallback? onPracticeTap;
@@ -26,6 +27,7 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
       this.onLessonTap,
       this.onPracticeTap,
       required this.last,
+      required this.first,
       required this.index,
       required this.lesson});
 
@@ -35,7 +37,13 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
 
   Widget _buildContainerWrapper(LearnLessonViewModel viewModel) =>
       GestureDetector(
-        onTap: !(lesson.access?.isAccessible ?? false) ? onPracticeTap : null,
+        onTap: viewModel.user?.subscriptionStatus?.toLowerCase() == 'active'
+            ? !(lesson.access?.isAccessible ?? false)
+                ? onPracticeTap
+                : null
+            : !first
+                ? onPracticeTap
+                : null,
         child: _buildContainer(viewModel),
       );
 
@@ -56,7 +64,7 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
   Widget _buildTileStack(LearnLessonViewModel viewModel) => Stack(
         children: [
           _buildExpansionTile(viewModel),
-          _buildContainerShaderState()
+          _buildContainerShaderState(viewModel)
         ],
       );
 
@@ -70,7 +78,6 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
         leading: _buildLeadingWrapper(viewModel),
-        enabled: (lesson.access?.isAccessible ?? false),
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
@@ -85,6 +92,7 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         collapsedBackgroundColor: (lesson.access?.isCompleted ?? false)
             ? kcGreen.withOpacity(0.1)
             : kcPrimaryColor.withOpacity(0.1),
+        enabled: first ? true : (lesson.access?.isAccessible ?? false),
         children: _buildExpansionTileChildren(viewModel),
       );
 
@@ -203,9 +211,14 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         backgroundColor: kcPrimaryColor,
       );
 
-  Widget _buildContainerShaderState() => !(lesson.access?.isAccessible ?? false)
-      ? _buildContainerShader()
-      : Container();
+  Widget _buildContainerShaderState(LearnLessonViewModel viewModel) =>
+      viewModel.user?.subscriptionStatus?.toLowerCase() == 'active'
+          ? !(lesson.access?.isAccessible ?? false)
+              ? _buildContainerShader()
+              : Container()
+          : !first
+              ? _buildContainerShader()
+              : Container();
 
   Widget _buildContainerShader() => const CustomContainerShader();
 }

@@ -3,7 +3,6 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/views/landing/screens/first_landing_screen.dart';
-import 'package:yimaru_app/ui/views/landing/screens/fourth_landing_screen.dart';
 import 'package:yimaru_app/ui/views/landing/screens/second_landing_screen.dart';
 import 'package:yimaru_app/ui/views/landing/screens/third_landing_screen.dart';
 
@@ -44,17 +43,15 @@ class LandingView extends StackedView<LandingViewModel> {
       );
 
   List<Widget> _buildScreens() => [
-        _buildFirstWelcome(),
-        _buildSecondWelcome(),
-        _buildThirdWelcome(),
-        _buildFourthWelcome()
+        _buildFirstLanding(),
+        _buildSecondLanding(),
+        _buildThirdLanding(),
       ];
 
-  Widget _buildFirstWelcome() => const FirstLandingScreen();
+  Widget _buildFirstLanding() => const FirstLandingScreen();
 
-  Widget _buildSecondWelcome() => const SecondLandingScreen();
+  Widget _buildSecondLanding() => const SecondLandingScreen();
 
-  Widget _buildThirdWelcome() => const ThirdLandingScreen();
+  Widget _buildThirdLanding() => const ThirdLandingScreen();
 
-  Widget _buildFourthWelcome() => const FourthLandingScreen();
 }

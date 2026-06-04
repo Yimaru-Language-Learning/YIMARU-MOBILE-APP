@@ -1,6 +1,6 @@
 name: yimaru_app
 publish_to: 'none'
-version: 0.1.33+35
+version: 0.1.37+39
 description: A new Flutter project.
 
 environment:
@@ -16,6 +16,7 @@ dependencies:
   path: ^1.9.1
   async: ^2.13.1
   pinput: ^6.0.1
+  badges: ^3.2.0
   stacked: ^3.4.0
   iconsax: ^0.0.8
   chewie: ^1.13.0

@@ -16,9 +16,11 @@ import '../../widgets/small_app_bar.dart';
 import 'learn_module_viewmodel.dart';
 
 class LearnModuleView extends StackedView<LearnModuleViewModel> {
+  final bool first;
   final LearnCourse course;
 
-  const LearnModuleView({Key? key, required this.course}) : super(key: key);
+  const LearnModuleView({Key? key, required this.first, required this.course})
+      : super(key: key);
 
   Future<void> _onPractice(
       {required BuildContext context,
@@ -201,8 +203,8 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
             viewModel: viewModel,
             module: viewModel.modules[index],
           ),
-          onModuleTap: () async =>
-              await viewModel.navigateToLearnLesson(viewModel.modules[index]),
+          onModuleTap: () async => await viewModel.navigateToLearnLesson(
+              first: first && index == 0, module: viewModel.modules[index]),
         ),
       );
 

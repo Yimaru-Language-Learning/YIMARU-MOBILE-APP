@@ -27,6 +27,14 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       required this.subtitle,
       required this.practice});
 
+  Future<void> _practice(LearnPracticeViewModel viewModel) async {
+    if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
+      viewModel.goTo(1);
+    } else {
+      await viewModel.navigateToLearnSubscription();
+    }
+  }
+
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -207,7 +215,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
         text: label,
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: () => viewModel.goTo(1),
         backgroundColor: kcPrimaryColor,
+        onTap: () async => await _practice(viewModel),
       );
 }

@@ -17,7 +17,6 @@ class ProgressViewModel extends ReactiveViewModel {
   @override
   List<ListenableServiceMixin> get listenableServices => [_learnService];
 
-
   // Total practice count
   int get _totalCount => _learnService.totalCount;
 
@@ -32,7 +31,6 @@ class ProgressViewModel extends ReactiveViewModel {
   int get _totalProgress => _learnService.totalProgress;
 
   int get totalProgress => _totalProgress;
-
 
   // Courses
   final List<Map<String, dynamic>> _courses = [
@@ -53,8 +51,9 @@ class ProgressViewModel extends ReactiveViewModel {
 
   // Learning progress
 
-  Future<void> getProgressSummary() async => runBusyFuture(_getProgressSummary(),
-      busyObject: StateObjects.progressSummary);
+  Future<void> getProgressSummary() async =>
+      runBusyFuture(_getProgressSummary(),
+          busyObject: StateObjects.progressSummary);
 
   Future<void> _getProgressSummary() async {
     if (await _statusCheckerService.checkConnection()) {

@@ -21,13 +21,14 @@ import '../services/dio_service.dart';
 import '../services/google_auth_service.dart';
 import '../services/image_downloader_service.dart';
 import '../services/image_picker_service.dart';
+import '../services/in_app_notification_service.dart';
 import '../services/in_app_update_service.dart';
 import '../services/learn_service.dart';
 import '../services/localization_service.dart';
-import '../services/notification_service.dart';
 import '../services/onboarding_service.dart';
 import '../services/permission_handler_service.dart';
 import '../services/phone_caller_service.dart';
+import '../services/push_notification_service.dart';
 import '../services/secure_storage_service.dart';
 import '../services/smart_auth_service.dart';
 import '../services/status_checker_service.dart';
@@ -56,7 +57,6 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => ImagePickerService());
   locator.registerLazySingleton(() => GoogleAuthService());
   locator.registerLazySingleton(() => ImageDownloaderService());
-  locator.registerLazySingleton(() => NotificationService());
   locator.registerLazySingleton(() => SmartAuthService());
   locator.registerLazySingleton(() => CourseService());
   locator.registerLazySingleton(() => AudioPlayerService());
@@ -69,4 +69,6 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => LocalizationService());
   locator.registerLazySingleton(() => OnboardingService());
   locator.registerLazySingleton(() => AppleAuthService());
+  locator.registerLazySingleton(() => InAppNotificationService());
+  locator.registerLazySingleton(() => PushNotificationService());
 }

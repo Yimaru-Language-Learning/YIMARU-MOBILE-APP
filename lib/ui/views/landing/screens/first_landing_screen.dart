@@ -49,7 +49,7 @@ class FirstLandingScreen extends ViewModelWidget<LandingViewModel> {
       );
 
   Widget _buildIcon() => SvgPicture.asset(
-        'assets/icons/logo.svg',
+        'assets/icons/logo_white.svg',
         height: 25,
       );
 
@@ -100,7 +100,7 @@ class FirstLandingScreen extends ViewModelWidget<LandingViewModel> {
       );
 
   Widget _buildImage() => Image.asset(
-        'assets/images/landing_1.jpg',
+        'assets/images/landing_1.png',
         fit: BoxFit.cover,
       );
 
@@ -126,10 +126,10 @@ class FirstLandingScreen extends ViewModelWidget<LandingViewModel> {
   Widget _buildContinueButton(LandingViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Next',
         borderRadius: 25,
-        onTap: viewModel.next,
+        text: 'Get Started',
         backgroundColor: kcWhite,
         foregroundColor: kcPrimaryColor,
+        onTap: () async => await viewModel.setFirstTimeInstall(),
       );
 }

@@ -32,8 +32,10 @@ class LearnCourseViewModel extends ReactiveViewModel {
   Future<void> navigateToLearnSubscription() async =>
       await _navigationService.navigateToLearnSubscriptionView();
 
-  Future<void> navigateToLearnModule(LearnCourse course) async =>
-      _navigationService.navigateToLearnModuleView(course: course);
+  Future<void> navigateToLearnModule(
+          {required bool first, required LearnCourse course}) async =>
+      _navigationService.navigateToLearnModuleView(
+          first: first, course: course);
 
   Future<void> navigateToLearnPractice(
           {required int id, required String level}) async =>

@@ -8,13 +8,13 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../services/authentication_service.dart';
+import '../../../services/in_app_notification_service.dart';
 import '../../../services/in_app_update_service.dart';
 
 class HomeViewModel extends ReactiveViewModel {
   // Dependency injection
   final _statusChecker = locator<StatusCheckerService>();
 
-  final _navigationService = locator<NavigationService>();
 
   final _bottomSheetService = locator<BottomSheetService>();
 
@@ -22,9 +22,11 @@ class HomeViewModel extends ReactiveViewModel {
 
   final _authenticationService = locator<AuthenticationService>();
 
+  final _inAppNotificationService = locator<InAppNotificationService>();
+
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService];
+      [_authenticationService,_inAppNotificationService];
 
   // Current user
   User? get _user => _authenticationService.user;
@@ -55,14 +57,20 @@ class HomeViewModel extends ReactiveViewModel {
     rebuildUi();
   }
 
-
-
   // Remote api calls
 
   // In-app update
   Future<void> inAppUpdate() async {
     if (await _statusChecker.checkConnection()) {
       await _inAppUpdateService.checkForUpdate();
+    }
+  }
+
+
+  // Unread notifications
+  Future<void> getUnreadNotifications() async {
+    if (await _statusChecker.checkConnection()) {
+      await _inAppNotificationService.getUnreadNotifications();
     }
   }
 }

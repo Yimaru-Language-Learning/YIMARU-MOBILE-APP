@@ -13,8 +13,10 @@ import 'learn_course_viewmodel.dart';
 
 class LearnCourseView extends StackedView<LearnCourseViewModel> {
   final int id;
+  final bool first;
 
-  const LearnCourseView({Key? key, required this.id}) : super(key: key);
+  const LearnCourseView({Key? key, required this.id, required this.first})
+      : super(key: key);
 
   Future<void> _onPractice(
       {required BuildContext context,
@@ -150,8 +152,8 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
               context: context,
               viewModel: viewModel,
               course: viewModel.courses[index]),
-          onViewTap: () async =>
-              await viewModel.navigateToLearnModule(viewModel.courses[index]),
+          onViewTap: () async => await viewModel.navigateToLearnModule(
+              first: first && index == 0, course: viewModel.courses[index]),
         ),
         separatorBuilder: (context, index) => verticalSpaceSmall,
       );
