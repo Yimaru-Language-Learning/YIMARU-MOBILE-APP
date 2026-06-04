@@ -199,4 +199,5 @@ abstract class LocaleKeys {
   static const completed_practices = 'completed_practices';
   static const total_practices = 'total_practices';
   static const progress_percentage = 'progress_percentage';
+  static const notifications = 'notifications';
 }

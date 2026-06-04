@@ -6,6 +6,7 @@ import 'package:yimaru_app/models/learn_program.dart';
 import '../../../app/app.locator.dart';
 import '../../../models/user.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/in_app_notification_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
@@ -21,14 +22,21 @@ class LearnProgramViewModel extends ReactiveViewModel {
 
   final _authenticationService = locator<AuthenticationService>();
 
+  final _inAppNotificationService = locator<InAppNotificationService>();
+
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_learnService, _authenticationService];
+      [_learnService, _authenticationService,_inAppNotificationService];
 
   // Current user
   User? get _user => _authenticationService.user;
 
   User? get user => _user;
+
+  // Notification count
+  int get _unreadCount => _inAppNotificationService.unreadCount;
+
+  int get unreadCount => _unreadCount;
 
   // Learn programs
   List<LearnProgram> get _learnPrograms => _learnService.programs;
@@ -36,8 +44,12 @@ class LearnProgramViewModel extends ReactiveViewModel {
   List<LearnProgram> get learnPrograms => _learnPrograms;
 
   // Navigation
-  Future<void> navigateToLearnCourse({required int id,required bool first}) async =>
-      _navigationService.navigateToLearnCourseView(id: id,first: first);
+  Future<void> navigateToNotification() async =>
+      await _navigationService.navigateToNotificationView();
+
+  Future<void> navigateToLearnCourse(
+          {required int id, required bool first}) async =>
+      _navigationService.navigateToLearnCourseView(id: id, first: first);
 
   // Remote api call
 

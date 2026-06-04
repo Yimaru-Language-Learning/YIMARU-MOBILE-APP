@@ -203,10 +203,8 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
             viewModel: viewModel,
             module: viewModel.modules[index],
           ),
-          onModuleTap: () async =>
-              await viewModel.navigateToLearnLesson(
-                  first: first && index == 0,
-                  module: viewModel.modules[index]),
+          onModuleTap: () async => await viewModel.navigateToLearnLesson(
+              first: first && index == 0, module: viewModel.modules[index]),
         ),
       );
 

@@ -50,6 +50,7 @@ enum StateObjects {
   profileUpdate,
   resetPassword,
   learnPractice,
+  notifications,
   courseCatalogs,
   loginWithEmail,
   coursePractice,

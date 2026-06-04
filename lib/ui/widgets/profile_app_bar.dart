@@ -7,13 +7,16 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../common/app_colors.dart';
 import '../common/translations/locale_keys.g.dart';
+import 'notification_icon.dart';
 
 class ProfileAppBar extends StatelessWidget {
   final String? name;
+  final String unreadCount;
   final String? profileImage;
+  final GestureTapCallback? onTap;
 
   const ProfileAppBar(
-      {super.key, required this.name, required this.profileImage});
+      {super.key, this.onTap, required this.name,required this.unreadCount, required this.profileImage});
 
   @override
   Widget build(BuildContext context) => _buildStack();
@@ -91,11 +94,8 @@ class ProfileAppBar extends StatelessWidget {
         style: style14DG400,
       );
 
-  Widget _buildNotificationIconWrapper() =>
-      Align(alignment: Alignment.bottomRight, child: _buildNotificationIcon());
 
-  Widget _buildNotificationIcon() => const Icon(
-        Icons.notifications_none,
-        color: kcDarkGrey,
-      );
+  Widget _buildNotificationIconWrapper() =>
+      NotificationIcon(count: unreadCount,onTap:onTap ,)
+  ;
 }

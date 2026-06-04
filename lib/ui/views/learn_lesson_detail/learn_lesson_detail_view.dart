@@ -33,7 +33,6 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
       required LearnLessonDetailViewModel viewModel}) async {
     await viewModel.pause();
     await viewModel.navigateToLearnPractice(lesson.id ?? 0);
-
   }
 
   @override

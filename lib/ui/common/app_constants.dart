@@ -13,11 +13,14 @@ String kCheckUrl = 'check';
 
 String kFilesUrl = 'files';
 
+String kUnreadUrl = 'unread';
+
 String kApiVersionUrl = 'v1';
 
 String kLevelsUrl = 'levels';
 
 String kCoursesUrl = 'courses';
+
 
 String kModulesUrl = 'modules';
 
@@ -69,6 +72,8 @@ String kQuestionSetsUrl = 'question-sets';
 
 String kRequestResetCode = 'sendResetCode';
 
+String kNotificationsUrl = 'notifications';
+
 String kSubcategoriesUrl = 'sub-categories';
 
 String kProgressSummary = 'progress-summary';
@@ -78,6 +83,8 @@ String kPublishedVideos = 'videos/published';
 String kCoursePracticeQuestions = 'questions';
 
 String kCatalogCoursesUrl = 'catalog-courses';
+
+String kMarkNotificationRead = 'mark-all-read';
 
 String kUpdateProfileImage = 'profile-picture';
 

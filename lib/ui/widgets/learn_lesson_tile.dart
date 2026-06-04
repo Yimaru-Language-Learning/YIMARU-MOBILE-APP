@@ -37,9 +37,13 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
 
   Widget _buildContainerWrapper(LearnLessonViewModel viewModel) =>
       GestureDetector(
-        onTap:      viewModel.user?.subscriptionStatus?.toLowerCase() == 'active' ? !(lesson.access?.isAccessible ?? false)
-            ? onPracticeTap
-            : null: !first ? onPracticeTap:null,
+        onTap: viewModel.user?.subscriptionStatus?.toLowerCase() == 'active'
+            ? !(lesson.access?.isAccessible ?? false)
+                ? onPracticeTap
+                : null
+            : !first
+                ? onPracticeTap
+                : null,
         child: _buildContainer(viewModel),
       );
 

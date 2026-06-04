@@ -193,5 +193,6 @@
   "keep_momentum":"Great job! Keep the momentum.",
   "completed_practices": "Completed Practices",
   "total_practices": "Total Practices",
-  "progress_percentage": "Progress Percentage"
+  "progress_percentage": "Progress Percentage",
+  "notifications": "Notifications"
 }

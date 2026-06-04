@@ -7,8 +7,8 @@ import 'package:yimaru_app/app/app.dialogs.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/services/notification_service.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/services/push_notification_service.dart';
 import 'package:yimaru_app/ui/common/translations/codegen_loader.g.dart';
 import 'firebase_options.dart';
 
@@ -17,7 +17,7 @@ Future<void> main() async {
 
   await setupLocator();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await locator<NotificationService>().initialize();
+  await locator<PushNotificationService>().initialize();
   await EasyLocalization.ensureInitialized();
   setupDialogUi();
   setupBottomSheetUi();

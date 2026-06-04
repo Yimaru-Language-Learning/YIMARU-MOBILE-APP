@@ -11,7 +11,6 @@ import 'package:yimaru_app/services/permission_handler_service.dart';
 import 'package:yimaru_app/services/image_picker_service.dart';
 import 'package:yimaru_app/services/google_auth_service.dart';
 import 'package:yimaru_app/services/image_downloader_service.dart';
-import 'package:yimaru_app/services/notification_service.dart';
 import 'package:yimaru_app/services/smart_auth_service.dart';
 import 'package:yimaru_app/services/course_service.dart';
 import 'package:yimaru_app/services/audio_player_service.dart';
@@ -23,6 +22,8 @@ import 'package:yimaru_app/services/phone_caller_service.dart';
 import 'package:yimaru_app/services/learn_service.dart';
 import 'package:yimaru_app/services/localization_service.dart';
 import 'package:yimaru_app/services/onboarding_service.dart';
+import 'package:yimaru_app/services/in_app_notification_service.dart';
+import 'package:yimaru_app/services/push_notification_service.dart';
 // @stacked-import
 
 @GenerateMocks(
@@ -57,6 +58,10 @@ import 'package:yimaru_app/services/onboarding_service.dart';
     MockSpec<LearnService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<LocalizationService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<OnboardingService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<InAppNotificationService>(
+        onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<PushNotificationService>(
+        onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
   ],
 )
@@ -88,6 +93,8 @@ void registerServices() {
   getAndRegisterLearnService();
   getAndRegisterLocalizationService();
   getAndRegisterOnboardingService();
+  getAndRegisterInAppNotificationService();
+  getAndRegisterPushNotificationService();
 // @stacked-mock-register
 }
 
@@ -208,13 +215,6 @@ MockImageDownloaderService getAndRegisterImageDownloaderService() {
   return service;
 }
 
-MockNotificationService getAndRegisterNotificationService() {
-  _removeRegistrationIfExists<NotificationService>();
-  final service = MockNotificationService();
-  locator.registerSingleton<NotificationService>(service);
-  return service;
-}
-
 MockSmartAuthService getAndRegisterSmartAuthService() {
   _removeRegistrationIfExists<SmartAuthService>();
   final service = MockSmartAuthService();
@@ -289,6 +289,20 @@ MockOnboardingService getAndRegisterOnboardingService() {
   _removeRegistrationIfExists<OnboardingService>();
   final service = MockOnboardingService();
   locator.registerSingleton<OnboardingService>(service);
+  return service;
+}
+
+MockInAppNotificationService getAndRegisterInAppNotificationService() {
+  _removeRegistrationIfExists<InAppNotificationService>();
+  final service = MockInAppNotificationService();
+  locator.registerSingleton<InAppNotificationService>(service);
+  return service;
+}
+
+MockPushNotificationService getAndRegisterPushNotificationService() {
+  _removeRegistrationIfExists<PushNotificationService>();
+  final service = MockPushNotificationService();
+  locator.registerSingleton<PushNotificationService>(service);
   return service;
 }
 // @stacked-mock-create
