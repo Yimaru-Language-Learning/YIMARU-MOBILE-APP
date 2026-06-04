@@ -61,6 +61,8 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
   Widget _buildAppBar(LearnProgramViewModel viewModel) => ProfileAppBar(
         name: viewModel.user?.firstName,
         profileImage: viewModel.user?.profilePicture,
+        unreadCount: viewModel.unreadCount.toString(),
+        onTap: () async => await viewModel.navigateToNotification(),
       );
 
   Widget _buildProgramsColumnWrapper(LearnProgramViewModel viewModel) =>

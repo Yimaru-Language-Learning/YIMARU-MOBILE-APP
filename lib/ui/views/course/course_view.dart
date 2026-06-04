@@ -51,6 +51,8 @@ class CourseView extends StackedView<CourseViewModel> {
   Widget _buildAppBar(CourseViewModel viewModel) => ProfileAppBar(
         name: viewModel.user?.firstName,
         profileImage: viewModel.user?.profilePicture,
+    unreadCount: viewModel.unreadCount.toString(),
+    onTap: () async => await viewModel.navigateToNotification(),
       );
 
   Widget _buildCategoryColumnWrapper(CourseViewModel viewModel) =>

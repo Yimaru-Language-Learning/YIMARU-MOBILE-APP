@@ -333,6 +333,12 @@ TextStyle style14LG400 = const TextStyle(
   color: kcLightGrey,
 );
 
+TextStyle style12W600 = const TextStyle(
+  fontSize: 12,
+  color: kcWhite,
+  fontWeight: FontWeight.w600
+);
+
 TextStyle style14MG400 = const TextStyle(
   color: kcMediumGrey,
 );

@@ -11,6 +11,7 @@ import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/google_auth_service.dart';
+import '../../../services/in_app_notification_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/app_colors.dart';
 
@@ -23,20 +24,25 @@ class ProfileViewModel extends ReactiveViewModel {
 
   final _navigationService = locator<NavigationService>();
 
-  final _googleAuthService = locator<GoogleAuthService>();
-
   final _imagePickerService = locator<ImagePickerService>();
 
   final _authenticationService = locator<AuthenticationService>();
 
+  final _inAppNotificationService = locator<InAppNotificationService>();
+
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService];
+      [_authenticationService,_inAppNotificationService];
 
   // Current user
   User? get _user => _authenticationService.user;
 
   User? get user => _user;
+
+  // Notification count
+  int get _unreadCount => _inAppNotificationService.unreadCount;
+
+  int get unreadCount => _unreadCount;
 
   // Image picker
   Future<void> openCamera() async =>
@@ -80,20 +86,23 @@ class ProfileViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToProfileDetail() async =>
-      await _navigationService.navigateToProfileDetailView();
-
-  Future<void> navigateToDownloads() async =>
-      await _navigationService.navigateToDownloadsView();
+  Future<void> navigateToSupport() async =>
+      await _navigationService.navigateToSupportView();
 
   Future<void> navigateToProgress() async =>
       await _navigationService.navigateToProgressView();
 
+  Future<void> navigateToDownloads() async =>
+      await _navigationService.navigateToDownloadsView();
+
+  Future<void> navigateToNotification() async =>
+      await _navigationService.navigateToNotificationView();
+
+  Future<void> navigateToProfileDetail() async =>
+      await _navigationService.navigateToProfileDetailView();
+
   Future<void> navigateToAccountPrivacy() async =>
       await _navigationService.navigateToAccountPrivacyView();
-
-  Future<void> navigateToSupport() async =>
-      await _navigationService.navigateToSupportView();
 
   Future<void> navigateToLogin() async =>
       await _navigationService.clearStackAndShow(Routes.loginView);

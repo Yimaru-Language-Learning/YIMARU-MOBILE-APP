@@ -8,6 +8,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../services/authentication_service.dart';
+import '../../../services/in_app_notification_service.dart';
 import '../../../services/in_app_update_service.dart';
 
 class HomeViewModel extends ReactiveViewModel {
@@ -22,9 +23,11 @@ class HomeViewModel extends ReactiveViewModel {
 
   final _authenticationService = locator<AuthenticationService>();
 
+  final _inAppNotificationService = locator<InAppNotificationService>();
+
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService];
+      [_authenticationService,_inAppNotificationService];
 
   // Current user
   User? get _user => _authenticationService.user;
@@ -61,6 +64,14 @@ class HomeViewModel extends ReactiveViewModel {
   Future<void> inAppUpdate() async {
     if (await _statusChecker.checkConnection()) {
       await _inAppUpdateService.checkForUpdate();
+    }
+  }
+
+
+  // Unread notifications
+  Future<void> getUnreadNotifications() async {
+    if (await _statusChecker.checkConnection()) {
+      await _inAppNotificationService.getUnreadNotifications();
     }
   }
 }

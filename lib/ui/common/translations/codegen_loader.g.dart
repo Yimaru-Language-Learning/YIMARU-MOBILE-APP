@@ -213,7 +213,8 @@ class CodegenLoader extends AssetLoader {
     "keep_momentum": "በጣም ጥሩ ስራ! በዚሁ ብርታት ይቀጥሉ።",
     "completed_practices": "የተጠናቀቁ ልምምዶች",
     "total_practices": "ጠቅላላ ልምምዶች",
-    "progress_percentage": "የእድገት መቶኛ"
+    "progress_percentage": "የእድገት መቶኛ",
+    "notifications": "ማሳወቂያዎች"
   };
   static const Map<String, dynamic> _en = {
     "loading": "Loading",
@@ -433,7 +434,8 @@ class CodegenLoader extends AssetLoader {
     "keep_momentum": "Great job! Keep the momentum.",
     "completed_practices": "Completed Practices",
     "total_practices": "Total Practices",
-    "progress_percentage": "Progress Percentage"
+    "progress_percentage": "Progress Percentage",
+    "notifications": "Notifications"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "am": _am,
