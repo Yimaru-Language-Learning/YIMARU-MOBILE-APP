@@ -15,7 +15,6 @@ class HomeViewModel extends ReactiveViewModel {
   // Dependency injection
   final _statusChecker = locator<StatusCheckerService>();
 
-  final _navigationService = locator<NavigationService>();
 
   final _bottomSheetService = locator<BottomSheetService>();
 
