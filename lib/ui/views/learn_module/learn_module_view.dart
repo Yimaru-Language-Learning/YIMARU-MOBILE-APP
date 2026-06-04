@@ -26,7 +26,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       {required BuildContext context,
       required LearnModule module,
       required LearnModuleViewModel viewModel}) async {
-    if (module.access?.completedCount == module.access?.totalCount && module.access?.totalCount != 0 ) {
+    if (module.access?.isCompleted ?? false ) {
       await viewModel.navigateToLearnPractice(
           id: module.id ?? 0, module: module.name ?? '');
     } else {
