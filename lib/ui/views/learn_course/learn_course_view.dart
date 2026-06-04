@@ -22,7 +22,7 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
       {required BuildContext context,
       required LearnCourse course,
       required LearnCourseViewModel viewModel}) async {
-    if (course.access?.completedCount == course.access?.totalCount) {
+    if (course.access?.completedCount == course.access?.totalCount && course.access?.totalCount != 0 ) {
       await viewModel.navigateToLearnPractice(
           id: course.id ?? 0, level: course.name ?? '');
     } else {
