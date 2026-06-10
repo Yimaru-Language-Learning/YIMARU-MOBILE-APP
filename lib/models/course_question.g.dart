@@ -1,0 +1,30 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'course_question.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+CourseQuestion _$CourseQuestionFromJson(Map<String, dynamic> json) =>
+    CourseQuestion(
+      id: (json['id'] as num?)?.toInt(),
+      status: json['status'] as String?,
+      points: (json['points'] as num?)?.toInt(),
+      questionType: json['question_type'] as String?,
+      difficultyLevel: json['difficulty_level'] as String?,
+      dynamicPayload: json['dynamic_payload'] == null
+          ? null
+          : DynamicPayload.fromJson(
+              json['dynamic_payload'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$CourseQuestionToJson(CourseQuestion instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'points': instance.points,
+      'status': instance.status,
+      'question_type': instance.questionType,
+      'difficulty_level': instance.difficultyLevel,
+      'dynamic_payload': instance.dynamicPayload,
+    };

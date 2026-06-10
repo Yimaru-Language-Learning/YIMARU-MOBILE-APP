@@ -53,5 +53,4 @@ class LandingView extends StackedView<LandingViewModel> {
   Widget _buildSecondLanding() => const SecondLandingScreen();
 
   Widget _buildThirdLanding() => const ThirdLandingScreen();
-
 }

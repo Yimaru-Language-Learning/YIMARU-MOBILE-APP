@@ -3,6 +3,24 @@ import 'dart:ui';
 
 import 'app_colors.dart';
 
+// Seconds to minutes
+String getSecondsToMinutes(int totalSeconds) {
+  final minutes = totalSeconds ~/ 60;
+  final seconds = totalSeconds % 60;
+
+  return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+}
+
+// Minutes
+int getMinutes(int totalSeconds) {
+  return totalSeconds ~/ 60;
+}
+
+// Seconds
+int getSeconds(int totalSeconds) {
+  return totalSeconds % 60;
+}
+
 // Split full name
 Map<String, String> splitFullName(String fullName) {
   final parts = fullName.trim().split(RegExp(r'\s+'));

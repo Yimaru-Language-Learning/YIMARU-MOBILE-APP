@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/failure/screens/first_failure_screen.dart';
 import 'package:yimaru_app/ui/views/failure/screens/second_failure_screen.dart';
 import 'package:yimaru_app/ui/views/failure/screens/third_failure_screen.dart';
 
 import '../../common/app_colors.dart';
-import '../../common/ui_helpers.dart';
-import '../../widgets/custom_circular_progress_indicator.dart';
 import 'failure_viewmodel.dart';
 
 class FailureView extends StackedView<FailureViewModel> {

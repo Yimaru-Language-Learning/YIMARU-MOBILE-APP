@@ -7,130 +7,132 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await locator<PushNotificationService>().setupFlutterNotifications();
   await locator<PushNotificationService>().showNotification(message);
 }
-class PushNotificationService { final _messaging = FirebaseMessaging.instance;
 
-bool _isFlutterLocalNotificationInitialized = false;
+class PushNotificationService {
+  final _messaging = FirebaseMessaging.instance;
 
-final _localNotifications = FlutterLocalNotificationsPlugin();
+  bool _isFlutterLocalNotificationInitialized = false;
 
-Future<void> initialize() async {
-  // Initialize FCM token
-  await updateFCMToken();
+  final _localNotifications = FlutterLocalNotificationsPlugin();
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  Future<void> initialize() async {
+    // Initialize FCM token
+    await updateFCMToken();
 
-  // Request permission
-  await _requestPermission();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  // setup message handle
-  await _setupMessageHandler();
+    // Request permission
+    await _requestPermission();
 
-  // Subscribe to all devices
-  subscribeToTopic('yimaru');
-}
+    // setup message handle
+    await _setupMessageHandler();
 
-Future<void> _requestPermission() async {
-  await _messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-      carPlay: false,
-      provisional: false,
-      announcement: false,
-      criticalAlert: false);
-}
-
-Future<void> setupFlutterNotifications() async {
-  if (_isFlutterLocalNotificationInitialized) {
-    return;
+    // Subscribe to all devices
+    subscribeToTopic('yimaru');
   }
 
-  //  Android setup
-  const channel = AndroidNotificationChannel(
-    'yimaru', // id
-    'Yimaru', // title
-    importance: Importance.high,
-  );
+  Future<void> _requestPermission() async {
+    await _messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+        carPlay: false,
+        provisional: false,
+        announcement: false,
+        criticalAlert: false);
+  }
 
-  await _localNotifications
-      .resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(channel);
+  Future<void> setupFlutterNotifications() async {
+    if (_isFlutterLocalNotificationInitialized) {
+      return;
+    }
 
-  const initializationSettingsAndroid =
-  AndroidInitializationSettings('@mipmap/ic_launcher');
-
-  // IOS setup
-  const initializationSettingsDarwin = DarwinInitializationSettings();
-
-  const initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsDarwin);
-
-  // Flutter notification setup
-  await _localNotifications.initialize(
-    settings: initializationSettings,
-    onDidReceiveNotificationResponse: (NotificationResponse response) {
-      if (response.payload == 'Page') {
-        // navigatorKey.currentState?.pushNamed('RouteName');
-      }
-    },
-  );
-
-  _isFlutterLocalNotificationInitialized = true;
-}
-
-Future<void> showNotification(RemoteMessage message) async {
-  RemoteNotification? notification = message.notification;
-  AndroidNotification? android = message.notification?.android;
-
-  if (notification != null && android != null) {
-    await _localNotifications.show(
-      id: notification.hashCode,
-      title: notification.title,
-      body: notification.body,
-      notificationDetails: const NotificationDetails(
-          android: AndroidNotificationDetails('yimaru', 'Yimaru',
-              enableVibration: true,
-              priority: Priority.high,
-              icon: '@mipmap/ic_launcher',
-              importance: Importance.high),
-          iOS: DarwinNotificationDetails(
-              presentAlert: true, presentBadge: true, presentSound: true)),
+    //  Android setup
+    const channel = AndroidNotificationChannel(
+      'yimaru', // id
+      'Yimaru', // title
+      importance: Importance.high,
     );
+
+    await _localNotifications
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    const initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    // IOS setup
+    const initializationSettingsDarwin = DarwinInitializationSettings();
+
+    const initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsDarwin);
+
+    // Flutter notification setup
+    await _localNotifications.initialize(
+      settings: initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        if (response.payload == 'Page') {
+          // navigatorKey.currentState?.pushNamed('RouteName');
+        }
+      },
+    );
+
+    _isFlutterLocalNotificationInitialized = true;
   }
-}
 
-Future<void> _setupMessageHandler() async {
-  // Foreground message
-  FirebaseMessaging.onMessage
-      .listen((RemoteMessage message) => showNotification(message));
+  Future<void> showNotification(RemoteMessage message) async {
+    RemoteNotification? notification = message.notification;
+    AndroidNotification? android = message.notification?.android;
 
-  // Background message
-  FirebaseMessaging.onMessageOpenedApp.listen(_handleBackgroundMessage);
-
-  // Opened app
-  final initialMessage = await _messaging.getInitialMessage();
-
-  if (initialMessage != null) {
-    _handleBackgroundMessage(initialMessage);
+    if (notification != null && android != null) {
+      await _localNotifications.show(
+        id: notification.hashCode,
+        title: notification.title,
+        body: notification.body,
+        notificationDetails: const NotificationDetails(
+            android: AndroidNotificationDetails('yimaru', 'Yimaru',
+                enableVibration: true,
+                priority: Priority.high,
+                icon: '@mipmap/ic_launcher',
+                importance: Importance.high),
+            iOS: DarwinNotificationDetails(
+                presentAlert: true, presentBadge: true, presentSound: true)),
+      );
+    }
   }
-}
 
-void _handleBackgroundMessage(RemoteMessage message) {
-  if (message.data['type'] == 'Page') {
-    // navigatorKey.currentState?.pushNamed('RouteName');
+  Future<void> _setupMessageHandler() async {
+    // Foreground message
+    FirebaseMessaging.onMessage
+        .listen((RemoteMessage message) => showNotification(message));
+
+    // Background message
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleBackgroundMessage);
+
+    // Opened app
+    final initialMessage = await _messaging.getInitialMessage();
+
+    if (initialMessage != null) {
+      _handleBackgroundMessage(initialMessage);
+    }
   }
-}
 
-Future<void> subscribeToTopic(String topic) async {
-  await FirebaseMessaging.instance.subscribeToTopic(topic);
-}
+  void _handleBackgroundMessage(RemoteMessage message) {
+    if (message.data['type'] == 'Page') {
+      // navigatorKey.currentState?.pushNamed('RouteName');
+    }
+  }
 
-Future<void> updateFCMToken() async {
-  // print('DEVICE TOKEN: ${await _messaging.getToken()}');
-  _messaging.onTokenRefresh.listen((newToken) {
-    // updateTokenOnServer(newToken);
-  });
-}
+  Future<void> subscribeToTopic(String topic) async {
+    await FirebaseMessaging.instance.subscribeToTopic(topic);
+  }
+
+  Future<void> updateFCMToken() async {
+    // print('DEVICE TOKEN: ${await _messaging.getToken()}');
+    _messaging.onTokenRefresh.listen((newToken) {
+      // updateTokenOnServer(newToken);
+    });
+  }
 }

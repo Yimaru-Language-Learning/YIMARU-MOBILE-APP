@@ -8,7 +8,7 @@ import 'package:yimaru_app/ui/widgets/custom_column_button.dart';
 import '../../../../models/learn_question.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
-import '../../../widgets/cancel_learn_practice_sheet.dart';
+import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/small_app_bar.dart';
 
 class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
@@ -111,8 +111,7 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
           title:
               '${LocaleKeys.practice_speaking.tr()} ($index/${viewModel.questions.length})');
 
-  Widget _buildSheet(LearnPracticeViewModel viewModel) =>
-      CancelLearnPracticeSheet(
+  Widget _buildSheet(LearnPracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',

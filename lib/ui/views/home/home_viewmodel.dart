@@ -15,7 +15,6 @@ class HomeViewModel extends ReactiveViewModel {
   // Dependency injection
   final _statusChecker = locator<StatusCheckerService>();
 
-
   final _bottomSheetService = locator<BottomSheetService>();
 
   final _inAppUpdateService = locator<InAppUpdateService>();
@@ -26,7 +25,7 @@ class HomeViewModel extends ReactiveViewModel {
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService,_inAppNotificationService];
+      [_authenticationService, _inAppNotificationService];
 
   // Current user
   User? get _user => _authenticationService.user;
@@ -65,7 +64,6 @@ class HomeViewModel extends ReactiveViewModel {
       await _inAppUpdateService.checkForUpdate();
     }
   }
-
 
   // Unread notifications
   Future<void> getUnreadNotifications() async {

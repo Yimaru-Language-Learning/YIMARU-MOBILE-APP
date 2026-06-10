@@ -9,7 +9,7 @@ import 'package:yimaru_app/ui/widgets/learn_practice_results_wrapper.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
-import '../../../widgets/cancel_learn_practice_sheet.dart';
+import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/small_app_bar.dart';
@@ -120,8 +120,7 @@ class LearnPracticeResultScreen
             await _showSheet(context: context, viewModel: viewModel),
       );
 
-  Widget _buildSheet(LearnPracticeViewModel viewModel) =>
-      CancelLearnPracticeSheet(
+  Widget _buildSheet(LearnPracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
