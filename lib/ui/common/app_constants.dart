@@ -21,7 +21,6 @@ String kLevelsUrl = 'levels';
 
 String kCoursesUrl = 'courses';
 
-
 String kModulesUrl = 'modules';
 
 String kLessonsUrl = 'lessons';

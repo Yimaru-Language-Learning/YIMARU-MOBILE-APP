@@ -5,7 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/cancel_learn_practice_sheet.dart';
+import 'package:yimaru_app/ui/widgets/cancel_practice_sheet.dart';
 import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/wave_wrapper.dart';
@@ -365,8 +365,7 @@ class InteractLearnPracticeScreen
             await _showSheet(context: context, viewModel: viewModel),
       );
 
-  Widget _buildSheet(LearnPracticeViewModel viewModel) =>
-      CancelLearnPracticeSheet(
+  Widget _buildSheet(LearnPracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',

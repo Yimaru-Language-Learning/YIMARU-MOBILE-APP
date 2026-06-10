@@ -10,7 +10,6 @@ import '../../../app/app.locator.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
-import '../../../services/google_auth_service.dart';
 import '../../../services/in_app_notification_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/app_colors.dart';
@@ -32,7 +31,7 @@ class ProfileViewModel extends ReactiveViewModel {
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService,_inAppNotificationService];
+      [_authenticationService, _inAppNotificationService];
 
   // Current user
   User? get _user => _authenticationService.user;

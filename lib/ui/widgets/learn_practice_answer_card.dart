@@ -43,7 +43,7 @@ class LearnPracticeAnswerCard extends ViewModelWidget<LearnPracticeViewModel> {
           shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
           backgroundColor: WidgetStatePropertyAll(kcPrimaryColor),
         ),
-        onPressed: () async => viewModel.busyObject == answer['busy_object'] &&
+        onPressed: () async =>
                 viewModel.player.state == PlayerState.playing
             ? await viewModel.pauseAudio()
             : await viewModel.playResult(answer: answer, voice: voice),
@@ -51,7 +51,7 @@ class LearnPracticeAnswerCard extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildButtonState(LearnPracticeViewModel viewModel) =>
-      viewModel.busyObject == answer['busy_object'] &&
+
               viewModel.playing == voice
           ? viewModel.busy(answer['busy_object'])
               ? _buildProgressIndicatorWrapper()

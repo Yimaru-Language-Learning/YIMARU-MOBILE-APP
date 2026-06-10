@@ -194,5 +194,17 @@
   "completed_practices": "Completed Practices",
   "total_practices": "Total Practices",
   "progress_percentage": "Progress Percentage",
-  "notifications": "Notifications"
+  "notifications": "Notifications",
+  "choose_course_to_improve":"Choose a course to improve your professional or exam skills.",
+  "start_course":"Start course",
+  "english_proficiency":"English Proficiency Exams",
+  "select_your_target_exam":"Select your target exam and start preparing",
+  "take_mock_exam":"Take Mock Exam",
+  "course_detail":"Course Detail",
+  "continue_course":"Continue Course",
+  "module_detail":"Module Detail",
+  "continue_module":"Continue Module",
+  "play_video":"Play Video",
+  "practice_test":"Practice Test",
+  "start_assessment":"Start assessment"
 }

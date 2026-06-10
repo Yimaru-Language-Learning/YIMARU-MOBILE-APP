@@ -5,7 +5,6 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/startup/startup_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 
 import '../../../common/translations/locale_keys.g.dart';
 import '../../../widgets/custom_circular_progress_indicator.dart';
@@ -13,29 +12,29 @@ import '../../../widgets/custom_circular_progress_indicator.dart';
 class FirstStartupScreen extends ViewModelWidget<StartupViewModel> {
   final String? label;
 
-  const FirstStartupScreen({super.key,this.label});
+  const FirstStartupScreen({super.key, this.label});
 
   @override
   Widget build(BuildContext context, StartupViewModel viewModel) =>
       _buildScaffoldWrapper();
 
-  Widget _buildScaffoldWrapper( ) => Scaffold(
+  Widget _buildScaffoldWrapper() => Scaffold(
         backgroundColor: kcPrimaryColor,
         body: _buildScaffoldPadding(),
       );
-  Widget _buildScaffoldPadding( ) => Padding(
+  Widget _buildScaffoldPadding() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildScaffold(),
       );
 
-  Widget _buildScaffold( ) => Column(
+  Widget _buildScaffold() => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _buildScaffoldChildren(),
       );
 
-  List<Widget> _buildScaffoldChildren( ) =>
+  List<Widget> _buildScaffoldChildren() =>
       [_buildUpperColumn(), _buildLowerColumnWrapper()];
 
   Widget _buildUpperColumn() => Column(
@@ -57,17 +56,17 @@ class FirstStartupScreen extends ViewModelWidget<StartupViewModel> {
         height: 25,
       );
 
-  Widget _buildLowerColumnWrapper( ) => Expanded(
+  Widget _buildLowerColumnWrapper() => Expanded(
         child: _buildLowerColumn(),
       );
 
-  Widget _buildLowerColumn( ) => Column(
+  Widget _buildLowerColumn() => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: _buildLowerColumnChildren(),
       );
 
-  List<Widget> _buildLowerColumnChildren( ) => [
+  List<Widget> _buildLowerColumnChildren() => [
         _buildTitle(),
         verticalSpaceMedium,
         _buildImageWrapper(),
@@ -108,44 +107,39 @@ class FirstStartupScreen extends ViewModelWidget<StartupViewModel> {
         fit: BoxFit.cover,
       );
 
-  Widget _buildSafeWrapper( ) =>
-      SafeArea(child: _buildContinueButtonWrapper());
+  Widget _buildSafeWrapper() => SafeArea(child: _buildContinueButtonWrapper());
 
-  Widget _buildContinueButtonWrapper( ) => Align(
+  Widget _buildContinueButtonWrapper() => Align(
         alignment: Alignment.bottomCenter,
         child: _buildLoadingTextContainer(),
       );
 
-
-
   Widget _buildLoadingTextContainer() => Padding(
-    padding: const EdgeInsets.only(bottom: 50),
-    child: _buildLoadingTextWrapper(),
-  );
+        padding: const EdgeInsets.only(bottom: 50),
+        child: _buildLoadingTextWrapper(),
+      );
 
   Widget _buildLoadingTextWrapper() => Row(
-    mainAxisSize: MainAxisSize.min,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: _buildLoadingTextChildren(),
-  );
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: _buildLoadingTextChildren(),
+      );
 
   List<Widget> _buildLoadingTextChildren() => [
-    _buildLoadingText(),
-    horizontalSpaceSmall,
-    _buildIndicatorWrapper(),
-  ];
+        _buildLoadingText(),
+        horizontalSpaceSmall,
+        _buildIndicatorWrapper(),
+      ];
 
   Widget _buildLoadingText() =>
       Text('${label ?? LocaleKeys.loading.tr()} ...', style: style16W600);
 
   Widget _buildIndicatorWrapper() => SizedBox(
-    width: 16,
-    height: 16,
-    child: _buildIndicator(),
-  );
+        width: 16,
+        height: 16,
+        child: _buildIndicator(),
+      );
 
   Widget _buildIndicator() =>
       const CustomCircularProgressIndicator(color: kcWhite);
-
-
 }

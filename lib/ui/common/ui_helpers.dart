@@ -236,6 +236,11 @@ TextStyle style14B400 = const TextStyle(
   color: kcBlue,
 );
 
+TextStyle style0Ts = const TextStyle(
+  fontSize: 0,
+  color: kcTransparent,
+);
+
 TextStyle style14P600 = const TextStyle(
   color: kcPrimaryColor,
   fontWeight: FontWeight.w600,
@@ -333,11 +338,8 @@ TextStyle style14LG400 = const TextStyle(
   color: kcLightGrey,
 );
 
-TextStyle style12W600 = const TextStyle(
-  fontSize: 12,
-  color: kcWhite,
-  fontWeight: FontWeight.w600
-);
+TextStyle style12W600 =
+    const TextStyle(fontSize: 12, color: kcWhite, fontWeight: FontWeight.w600);
 
 TextStyle style14MG400 = const TextStyle(
   color: kcMediumGrey,

@@ -1,68 +1,89 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
+import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
 
-class CustomResponseCard extends StatelessWidget {
+import '../common/enmus.dart';
+import 'custom_circular_progress_indicator.dart';
+
+class CustomResponseCard extends ViewModelWidget<CoursePracticeViewModel> {
+  final Voice voice;
   final String title;
-  final String subtitle;
 
   const CustomResponseCard(
-      {super.key, required this.title, required this.subtitle});
+      {super.key,
+        required this.voice,
+        required this.title,
+      });
 
   @override
-  Widget build(BuildContext context) => _buildContainer();
+  Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
+      _buildContainer(viewModel);
 
-  Widget _buildContainer() => Container(
-        decoration: BoxDecoration(
-          color: kcWhite,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        child: _buildRow(),
-      );
+  Widget _buildContainer(CoursePracticeViewModel viewModel) => Container(
+    decoration: BoxDecoration(
+      color: kcWhite,
+      borderRadius: BorderRadius.circular(12),
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+    child: _buildRow(viewModel),
+  );
 
-  Widget _buildRow() => Row(
-        children: [_buildPlayButton(), _buildColumnWrapper()],
-      );
+  Widget _buildRow(CoursePracticeViewModel viewModel) => Row(
+    children: [_buildPlayButton(viewModel), _buildColumnWrapper()],
+  );
 
-  Widget _buildPlayButton() => ElevatedButton(
-        onPressed: () {},
-        style: const ButtonStyle(
-          shape: WidgetStatePropertyAll(CircleBorder()),
-          padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
-          shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
-          backgroundColor: WidgetStatePropertyAll(kcPrimaryColor),
-        ),
-        child: _buildPlayIcon(),
-      );
+  Widget _buildPlayButton(CoursePracticeViewModel viewModel) => ElevatedButton(
+    style: const ButtonStyle(
+      shape: WidgetStatePropertyAll(CircleBorder()),
+      padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
+      shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
+      backgroundColor: WidgetStatePropertyAll(kcPrimaryColor),
+    ),
+    onPressed: () async =>
+    viewModel.player.state == PlayerState.playing
+        ? await viewModel.pauseAudio()
+        : await viewModel.playResult( voice),
+    child: _buildButtonState(viewModel),
+  );
+
+  Widget _buildButtonState(CoursePracticeViewModel viewModel) =>
+
+      viewModel.playing == voice
+          ? viewModel.busy(StateObjects.coursePracticeReview)
+          ? _buildProgressIndicatorWrapper()
+          : viewModel.player.state == PlayerState.playing
+          ? _buildPauseIcon()
+          : _buildPlayIcon()
+          : _buildPlayIcon();
+
+  Widget _buildProgressIndicatorWrapper() => Center(
+    child: _buildProgressIndicator(),
+  );
+
+  Widget _buildProgressIndicator() =>
+      const CustomCircularProgressIndicator(color: kcWhite);
 
   Widget _buildPlayIcon() => const Icon(
-        Icons.play_arrow_rounded,
-        size: 25,
-        color: kcWhite,
-      );
+    Icons.play_arrow_rounded,
+    size: 25,
+    color: kcWhite,
+  );
 
-  Widget _buildColumnWrapper() => Expanded(child: _buildColumn());
+  Widget _buildPauseIcon() => const Icon(
+    Icons.pause,
+    size: 25,
+    color: kcWhite,
+  );
 
-  Widget _buildColumn() => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildColumnChildren(),
-      );
-
-  List<Widget> _buildColumnChildren() => [_buildTitle(), _buildSubtitle()];
+  Widget _buildColumnWrapper() => Expanded(child: _buildTitle());
 
   Widget _buildTitle() => Text(
-        title,
-        maxLines: 1,
-        softWrap: false,
-        style: style12RP600,
-      );
-
-  Widget _buildSubtitle() => Text(
-        subtitle,
-        maxLines: 1,
-        softWrap: false,
-        style: style12RP600,
-      );
+    title,
+    maxLines: 1,
+    softWrap: false,
+    style: style12RP600,
+  );
 }

@@ -6,6 +6,8 @@ import '../models/course_catalog.dart';
 import '../models/course_lesson.dart';
 import '../models/course_module.dart';
 import '../models/course_unit.dart';
+import '../models/refresh_object.dart';
+import '../ui/common/enmus.dart';
 
 class CourseService with ListenableServiceMixin {
   // Dependency injection
@@ -75,5 +77,17 @@ class CourseService with ListenableServiceMixin {
     _lessons = await _apiService.getCourseLessons(id);
     _lessons.sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
     notifyListeners();
+  }
+
+  Future<String?> refreshObject(String url) async {
+    Map<String, dynamic> data = {'reference': url};
+    Map<String, dynamic> response = await _apiService.refreshObject(data);
+
+    if (response['status'] == ResponseStatus.success) {
+      RefreshObject object = response['data'] as RefreshObject;
+
+      return object.url ?? '';
+    }
+    return null;
   }
 }

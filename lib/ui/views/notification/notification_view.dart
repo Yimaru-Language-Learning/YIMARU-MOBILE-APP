@@ -60,8 +60,8 @@ class NotificationView extends StackedView<NotificationViewModel> {
   List<Widget> _buildColumnChildren(NotificationViewModel viewModel) => [
         verticalSpaceMedium,
         _buildAppBarWrapper(viewModel),
-    verticalSpaceMedium,
-    _buildNotificationsColumnWrapper(viewModel)
+        verticalSpaceMedium,
+        _buildNotificationsColumnWrapper(viewModel)
       ];
 
   Widget _buildAppBarWrapper(NotificationViewModel viewModel) => Padding(
@@ -75,7 +75,6 @@ class NotificationView extends StackedView<NotificationViewModel> {
         title: LocaleKeys.notifications.tr(),
       );
 
-
   Widget _buildNotificationsColumnWrapper(NotificationViewModel viewModel) =>
       Expanded(child: _buildNotificationsColumnScrollView(viewModel));
 
@@ -87,26 +86,24 @@ class NotificationView extends StackedView<NotificationViewModel> {
   Widget _buildListViewBuilder(NotificationViewModel viewModel) =>
       viewModel.busy(StateObjects.notifications)
           ? _buildProgressIndicator()
-          :  _buildListView(viewModel);
+          : _buildListView(viewModel);
 
   Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
   Widget _buildListView(NotificationViewModel viewModel) => ListView.separated(
-    shrinkWrap: true,
-    itemCount: viewModel.notifications.length,
-    physics: const NeverScrollableScrollPhysics(),
-    separatorBuilder: (context, index) => verticalSpaceSmall,
-    itemBuilder: (context, index) => _buildCard(
-      notification: viewModel.notifications[index],
-    ),
-  );
+        shrinkWrap: true,
+        itemCount: viewModel.notifications.length,
+        physics: const NeverScrollableScrollPhysics(),
+        separatorBuilder: (context, index) => verticalSpaceSmall,
+        itemBuilder: (context, index) => _buildCard(
+          notification: viewModel.notifications[index],
+        ),
+      );
 
   Widget _buildCard({
     required InAppNotification notification,
   }) =>
       NotificationCard(notification: notification);
-
-
 }

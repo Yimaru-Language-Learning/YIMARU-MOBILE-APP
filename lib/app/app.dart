@@ -60,6 +60,7 @@ import 'package:yimaru_app/ui/views/payment/payment_view.dart';
 import 'package:yimaru_app/ui/views/notification/notification_view.dart';
 import 'package:yimaru_app/services/in_app_notification_service.dart';
 import 'package:yimaru_app/services/push_notification_service.dart';
+import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -100,6 +101,7 @@ import 'package:yimaru_app/services/push_notification_service.dart';
     MaterialRoute(page: LearnCourseView),
     MaterialRoute(page: PaymentView),
     MaterialRoute(page: NotificationView),
+    MaterialRoute(page: CoursePracticeView),
 // @stacked-route
   ],
   dependencies: [

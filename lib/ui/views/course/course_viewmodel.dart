@@ -16,10 +16,9 @@ class CourseViewModel extends ReactiveViewModel {
 
   final _inAppNotificationService = locator<InAppNotificationService>();
 
-
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService,_inAppNotificationService];
+      [_authenticationService, _inAppNotificationService];
 
   // Current user
   User? get _user => _authenticationService.user;
@@ -55,6 +54,4 @@ class CourseViewModel extends ReactiveViewModel {
 
   Future<void> navigateToCourseCatalog() async =>
       await _navigationService.navigateToCourseCatalogView();
-
-
 }

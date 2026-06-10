@@ -14,6 +14,8 @@ import 'package:yimaru_app/ui/common/app_constants.dart';
 
 import '../app/app.locator.dart';
 import '../models/course_module.dart';
+import '../models/course_practice.dart';
+import '../models/course_question.dart';
 import '../models/course_unit.dart';
 import '../models/field_option.dart';
 import '../models/learn_course.dart';
@@ -903,7 +905,7 @@ class ApiService {
       print('Here');
 
       final Response response = await _service.dio.get(
-          '$kBaseUrl/api/$kApiVersionUrl/$kQuestionSetsUrl/$id/$kQuestionsUrl');
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kQuestionSetsUrl/$id/$kQuestionsUrl');
 
       if (response.statusCode == 200) {
         var data = response.data;
@@ -1137,6 +1139,55 @@ class ApiService {
           },
         ).toList();
         return lessons;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Course practices
+  Future<List<CoursePractice>> getCoursePractices(int id) async {
+    try {
+      List<CoursePractice> practices = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kExamPrepUrl/$kLessonsUrl/$id/$kPracticesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['practices'] as List;
+        practices = decodedData.map(
+          (e) {
+            return CoursePractice.fromJson(e);
+          },
+        ).toList();
+        return practices;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Get course questions
+  Future<List<CourseQuestion>> getCourseQuestions(int id) async {
+    try {
+      List<CourseQuestion> questions = [];
+      print('Here');
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kQuestionSetsUrl/$id/$kQuestionsUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data'] as List;
+        questions = decodedData.map(
+          (e) {
+            return CourseQuestion.fromJson(e);
+          },
+        ).toList();
+        return questions;
       }
       return [];
     } catch (e) {
