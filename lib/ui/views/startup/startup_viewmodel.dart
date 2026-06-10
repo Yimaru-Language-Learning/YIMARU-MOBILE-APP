@@ -8,7 +8,6 @@ import '../../../app/app.router.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/image_downloader_service.dart';
-import '../../../services/in_app_notification_service.dart';
 import '../../../services/localization_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
@@ -28,7 +27,6 @@ class StartupViewModel extends ReactiveViewModel {
   final _authenticationService = locator<AuthenticationService>();
 
   final _imageDownloaderService = locator<ImageDownloaderService>();
-
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
@@ -144,6 +142,4 @@ class StartupViewModel extends ReactiveViewModel {
       await replaceWithFailure();
     }
   }
-
-
 }

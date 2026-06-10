@@ -16,8 +16,8 @@ enum LearnPractices { course, module, lesson }
 // Voice recording state
 enum VoiceRecordingState { pending, recording }
 
-// // Levels
-// enum ProficiencyLevels { a1, a2, b1, b2, none }
+// Course practice
+enum CoursePractices { courseCatalog, unit, lesson }
 
 // Progress status
 enum ProgressStatuses { pending, started, completed }
@@ -69,10 +69,13 @@ enum StateObjects {
   learnPracticeAnswer,
   loginWithPhoneNumber,
   assessmentQuestions,
+  coursePracticeReview,
   learnPracticeQuestion,
   completeLearnPractice,
   coursePracticeQuestion,
   coursePracticeQuestions,
   recordLearnPracticeAnswer,
-  finishLearnPracticeQuestion
+  recordCoursePracticeAnswer,
+  finishLearnPracticeQuestion,
+  finishCoursePracticeQuestion
 }

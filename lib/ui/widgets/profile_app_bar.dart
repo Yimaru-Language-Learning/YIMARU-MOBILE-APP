@@ -16,7 +16,11 @@ class ProfileAppBar extends StatelessWidget {
   final GestureTapCallback? onTap;
 
   const ProfileAppBar(
-      {super.key, this.onTap, required this.name,required this.unreadCount, required this.profileImage});
+      {super.key,
+      this.onTap,
+      required this.name,
+      required this.unreadCount,
+      required this.profileImage});
 
   @override
   Widget build(BuildContext context) => _buildStack();
@@ -94,8 +98,8 @@ class ProfileAppBar extends StatelessWidget {
         style: style14DG400,
       );
 
-
-  Widget _buildNotificationIconWrapper() =>
-      NotificationIcon(count: unreadCount,onTap:onTap ,)
-  ;
+  Widget _buildNotificationIconWrapper() => NotificationIcon(
+        count: unreadCount,
+        onTap: onTap,
+      );
 }

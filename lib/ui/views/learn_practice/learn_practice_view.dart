@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_finish_screen.dart';
-import 'package:yimaru_app/ui/views/learn_practice/screens/learn_loading_screen.dart';
+import 'package:yimaru_app/ui/widgets/practice_loading_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_appreciation_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_completion_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_description_screen.dart';
@@ -12,7 +12,7 @@ import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_intro_
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../common/app_colors.dart';
-import '../../widgets/cancel_learn_practice_sheet.dart';
+import '../../widgets/cancel_practice_sheet.dart';
 import 'learn_practice_viewmodel.dart';
 
 class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
@@ -80,8 +80,7 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
           },
           child: _buildScaffoldWrapper(viewModel));
 
-  Widget _buildSheet(LearnPracticeViewModel viewModel) =>
-      CancelLearnPracticeSheet(
+  Widget _buildSheet(LearnPracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
@@ -101,7 +100,7 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
               : _buildBody(viewModel);
 
   Widget _buildPageLoadingIndicator(LearnPracticeViewModel viewModel) =>
-      LearnLoadingScreen(
+      PracticeLoadingScreen(
         isLoading: viewModel.busy(StateObjects.learnPractice),
         onTap: () async =>
             await viewModel.getLearnPractices(id: id, practice: practice),

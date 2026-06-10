@@ -26,7 +26,7 @@ class LearnProgramViewModel extends ReactiveViewModel {
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
-      [_learnService, _authenticationService,_inAppNotificationService];
+      [_learnService, _authenticationService, _inAppNotificationService];
 
   // Current user
   User? get _user => _authenticationService.user;

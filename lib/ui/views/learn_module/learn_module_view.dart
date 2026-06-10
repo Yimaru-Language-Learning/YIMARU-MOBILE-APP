@@ -26,19 +26,16 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       {required BuildContext context,
       required LearnModule module,
       required LearnModuleViewModel viewModel}) async {
-    if (module.access?.completedCount == module.access?.totalCount) {
+    if (module.access?.isCompleted ?? false) {
       await viewModel.navigateToLearnPractice(
           id: module.id ?? 0, module: module.name ?? '');
     } else {
       if (module.access?.isAccessible ?? false) {
-        print('Accessible');
         await _showSheet(
             context: context,
             viewModel: viewModel,
             practice: PracticeReason.module);
       } else {
-        print('Inaccessible');
-
         await _showSheet(
             context: context,
             viewModel: viewModel,

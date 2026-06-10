@@ -191,14 +191,14 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
         shrinkWrap: true,
         itemCount: lessons.length,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => _buildCourseModuleCard(
+        itemBuilder: (context, index) => _buildCourseLessonTile(
             lesson: lessons[index],
             onVideoTap: () async =>
                 await viewModel.navigateToCourseLessonDetail(lessons[index]),
-            onPracticeTap: () {}),
+            onPracticeTap: ()async=>await viewModel.navigateToCoursePractice(lessons[index].id ?? 0)),
       );
 
-  Widget _buildCourseModuleCard({
+  Widget _buildCourseLessonTile({
     required CourseLesson lesson,
     required GestureTapCallback onVideoTap,
     required GestureTapCallback onPracticeTap,
