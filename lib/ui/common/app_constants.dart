@@ -17,6 +17,8 @@ String kUnreadUrl = 'unread';
 
 String kApiVersionUrl = 'v1';
 
+String kVideosUrl = 'videos';
+
 String kLevelsUrl = 'levels';
 
 String kCoursesUrl = 'courses';
@@ -26,6 +28,9 @@ String kModulesUrl = 'modules';
 String kLessonsUrl = 'lessons';
 
 String kVersionUrl = 'version';
+
+String kDevicesUrl = 'devices';
+
 
 String kProgramsUrl = 'programs';
 
@@ -40,6 +45,8 @@ String kPaymentsUrl = 'payments';
 String kExamPrepUrl = 'exam-prep';
 
 String kSubscribeUrl = 'subscribe';
+
+String kHeartbeatUrl = 'heartbeat';
 
 String kPracticesUrl = 'practices';
 
@@ -56,6 +63,8 @@ String kVerifyOtpUrl = 'verify-otp';
 String kResendOtpUrl = 'resend-otp';
 
 String kGetUserUrl = 'user-profile';
+
+String kEngagementUrl = 'engagement';
 
 String kSubmodulesUrl = 'sub-modules';
 

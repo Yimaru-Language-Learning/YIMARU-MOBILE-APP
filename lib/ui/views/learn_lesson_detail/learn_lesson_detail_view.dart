@@ -39,7 +39,6 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   void onViewModelReady(LearnLessonDetailViewModel viewModel) async {
     await viewModel.initializePlayer(
       lessonId: lesson.id ?? 0,
-      moduleId: module.id ?? 0,
       url: lesson.videoUrl ?? '',
     );
     super.onViewModelReady(viewModel);
