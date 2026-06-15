@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/helper_functions.dart';
 import 'package:yimaru_app/ui/widgets/countdown_timer.dart';
 
 import '../../../common/app_colors.dart';
@@ -9,7 +8,6 @@ import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/duolingo_practice_app_bar.dart';
 import '../../../widgets/speaking_practice_review_section.dart';
-import '../../duolingo/duolingo_viewmodel.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoSpeakingPractice1Review
@@ -31,7 +29,7 @@ class DuolingoSpeakingPractice1Review
         context: context,
         isScrollControlled: true,
         backgroundColor: kcTransparent,
-        builder: (cxt) => _buildSheet(context: context, viewModel: viewModel),
+        builder: (cxt) => _buildSheet(viewModel),
       );
 
   @override
@@ -93,15 +91,14 @@ class DuolingoSpeakingPractice1Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
-        title: 'Feedback',
+
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
+        title:
+        'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-  Widget _buildSheet(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      CancelPracticeSheet(
+  Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
@@ -133,7 +130,7 @@ class DuolingoSpeakingPractice1Review
       );
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) =>
-      const CountdownTimer(time: '0:0');
+      const CountdownTimer(time: '00:00');
 
   Widget _buildTitle() => Text(
         'Speak about the photo below',
@@ -161,5 +158,9 @@ class DuolingoSpeakingPractice1Review
       );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
-      SpeakingPracticeReviewSection(onTap: viewModel.nextScreen,);
+      SpeakingPracticeReviewSection(
+        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
+            ? viewModel.nextScreen
+            : () async => await viewModel.nextQuestion(),
+      );
 }

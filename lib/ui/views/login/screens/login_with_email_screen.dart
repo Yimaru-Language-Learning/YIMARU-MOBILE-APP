@@ -250,7 +250,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         backgroundColor: emailController.text.isNotEmpty &&
                 passwordController.text.isNotEmpty
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 
   Widget _buildLoginWithGoogleButton(LoginViewModel viewModel) =>

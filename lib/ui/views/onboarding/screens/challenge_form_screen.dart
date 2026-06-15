@@ -142,5 +142,5 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
               : null,
           backgroundColor: viewModel.selectedChallenge != null
               ? kcPrimaryColor
-              : kcPrimaryColor.withOpacity(0.1));
+              : kcPrimaryColor.withValues(alpha: 0.1));
 }

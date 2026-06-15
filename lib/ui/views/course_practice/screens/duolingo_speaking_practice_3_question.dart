@@ -73,7 +73,9 @@ class DuolingoSpeakingPractice3Question
       ];
 
   Widget _buildCountdownWrapper() =>
-      const Align(alignment: Alignment.centerRight, child: CountdownTimer());
+      Align(alignment: Alignment.centerRight, child: _buildCountdown());
+
+  Widget _buildCountdown() => const CountdownTimer();
 
   Widget _buildTitle() => Text(
         'Prepare to speak about the topic below',

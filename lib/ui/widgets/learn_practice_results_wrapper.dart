@@ -19,7 +19,7 @@ class LearnPracticeResultsWrapper
   Widget _buildContainer(LearnPracticeViewModel viewModel) => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: kcPrimaryColor.withOpacity(0.1),
+          color: kcPrimaryColor.withValues(alpha: 0.1),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
         child: _buildColumn(viewModel),

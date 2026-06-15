@@ -54,8 +54,8 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
             color: (lesson.access?.isCompleted ?? false)
-                ? kcGreen.withOpacity(0.1)
-                : kcPrimaryColor.withOpacity(0.1),
+                ? kcGreen.withValues(alpha: 0.1)
+                : kcPrimaryColor.withValues(alpha: 0.1),
           ),
         ),
         child: _buildTileStack(viewModel),
@@ -85,13 +85,13 @@ class LearnLessonTile extends ViewModelWidget<LearnLessonViewModel> {
         initiallyExpanded: (lesson.access?.isAccessible ?? false) &&
             !(lesson.access?.isCompleted ?? false),
         backgroundColor: last && (lesson.access?.isAccessible ?? false)
-            ? kcGreen.withOpacity(0.1)
+            ? kcGreen.withValues(alpha: 0.1)
             : (lesson.access?.isCompleted ?? false)
-                ? kcGreen.withOpacity(0.1)
-                : kcPrimaryColor.withOpacity(0.1),
+                ? kcGreen.withValues(alpha: 0.1)
+                : kcPrimaryColor.withValues(alpha: 0.1),
         collapsedBackgroundColor: (lesson.access?.isCompleted ?? false)
-            ? kcGreen.withOpacity(0.1)
-            : kcPrimaryColor.withOpacity(0.1),
+            ? kcGreen.withValues(alpha: 0.1)
+            : kcPrimaryColor.withValues(alpha: 0.1),
         enabled: first ? true : (lesson.access?.isAccessible ?? false),
         children: _buildExpansionTileChildren(viewModel),
       );

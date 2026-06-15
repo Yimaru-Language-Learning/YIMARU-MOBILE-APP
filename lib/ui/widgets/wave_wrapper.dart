@@ -26,11 +26,11 @@ class WaveWrapper extends StatelessWidget {
             ],
             center: Alignment.center,
             colors: [
-              kcPrimaryColor.withOpacity(0.4),
-              kcPrimaryColor.withOpacity(0.4),
-              kcPrimaryColor.withOpacity(0.15),
-              kcPrimaryColor.withOpacity(0.1),
-              kcPrimaryColor.withOpacity(0.05),
+              kcPrimaryColor.withValues(alpha: 0.4),
+              kcPrimaryColor.withValues(alpha: 0.4),
+              kcPrimaryColor.withValues(alpha: 0.15),
+              kcPrimaryColor.withValues(alpha: 0.1),
+              kcPrimaryColor.withValues(alpha: 0.05),
             ],
             // quarterly spread
           ),

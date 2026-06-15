@@ -30,9 +30,12 @@ class VoiceRecorderService with ListenableServiceMixin {
 
   // Stop voice recording
   Future<void> stopRecording() async {
-    await _waveController.stopRecording();
-    _recordingState = VoiceRecordingState.pending;
-    notifyListeners();
+    if(_waveController.isRecording){
+      await _waveController.stopRecording();
+      _recordingState = VoiceRecordingState.pending;
+      notifyListeners();
+    }
+
   }
 
   // Get recorded audio

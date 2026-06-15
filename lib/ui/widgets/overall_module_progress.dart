@@ -12,7 +12,7 @@ class OverallModuleProgress extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: kcPrimaryColor.withOpacity(0.1),
+          color: kcPrimaryColor.withValues(alpha: 0.1),
         ),
         child: const OverallProgressWrapper(),
       );

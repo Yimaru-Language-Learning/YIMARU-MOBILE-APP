@@ -119,13 +119,13 @@ InputDecoration inputDecoration(
       errorBorder: errorBorder,
       enabledBorder: enabledBorder,
       focusedBorder: focusedBorder,
-      fillColor: focus || filled ? kcPrimaryColor.withOpacity(0.1) : kcWhite,
+      fillColor: focus || filled ? kcPrimaryColor.withValues(alpha: 0.09) : kcWhite,
     );
 
 Border rightBorder = Border(
   right: BorderSide(
     width: 1,
-    color: kcLightGrey.withOpacity(0.25),
+    color: kcLightGrey.withValues(alpha: 0.25),
   ),
 );
 
@@ -151,7 +151,7 @@ TextStyle defaultPinTextStyle = const TextStyle(
 BoxDecoration defaultPinDecoration = BoxDecoration(
   borderRadius: BorderRadius.circular(19),
   border: Border.all(
-    color: kcPrimaryColor.withOpacity(0.5),
+    color: kcPrimaryColor.withValues(alpha: 0.5),
   ),
 );
 

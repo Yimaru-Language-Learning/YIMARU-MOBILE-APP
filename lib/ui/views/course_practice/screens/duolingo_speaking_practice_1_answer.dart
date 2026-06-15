@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
 import 'package:yimaru_app/ui/widgets/countdown_timer.dart';
-import 'package:yimaru_app/ui/widgets/speaking_indicator.dart';
 import 'package:yimaru_app/ui/widgets/speaking_label.dart';
 
 import '../../../common/app_colors.dart';
@@ -19,6 +18,11 @@ class DuolingoSpeakingPractice1Answer
   const DuolingoSpeakingPractice1Answer({
     super.key,
   });
+
+  Future<void> _stopRecording(CoursePracticeViewModel viewModel)async{
+    await viewModel.stopRecording();
+    viewModel.setNextButton();
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -89,7 +93,7 @@ class DuolingoSpeakingPractice1Answer
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(),
+          _buildCountdownWrapper(viewModel),
         ],
       );
 
@@ -97,9 +101,10 @@ class DuolingoSpeakingPractice1Answer
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
-        title: 'Speaking practice',
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
+        title:
+        'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -128,10 +133,14 @@ class DuolingoSpeakingPractice1Answer
         _buildSpeakingIndicatorState(viewModel)
       ];
 
-  Widget _buildCountdownWrapper() =>
-       Align(alignment: Alignment.centerRight, child:_buildCountdown());
+  Widget _buildCountdownWrapper(      CoursePracticeViewModel viewModel) =>
+       Align(alignment: Alignment.centerRight, child:_buildCountdown(viewModel));
 
-  Widget _buildCountdown()=>  const CountdownTimer();
+  Widget _buildCountdown(      CoursePracticeViewModel viewModel)=>   CountdownTimer(
+    duration: viewModel.countdown,
+    onEnd: () async=> await _stopRecording(viewModel),
+
+  );
 
   Widget _buildTitle() => Text(
         'Speak about the photo below',
@@ -198,7 +207,7 @@ class DuolingoSpeakingPractice1Answer
         foregroundColor: kcWhite,
         backgroundColor: viewModel.buttonActive
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: viewModel.buttonActive ? viewModel.nextScreen : null,
         text: viewModel.buttonActive
             ? 'Summit'

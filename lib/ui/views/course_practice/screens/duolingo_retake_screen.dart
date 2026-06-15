@@ -29,7 +29,7 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
         context: context,
         isScrollControlled: true,
         backgroundColor: kcTransparent,
-        builder: (cxt) => _buildSheet(context: context, viewModel: viewModel),
+        builder: (cxt) => _buildSheet( viewModel),
       );
 
   @override
@@ -96,13 +96,16 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Widget _buildAppBar( {required BuildContext context,
     required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
+
         onClose: () async =>
         await _showSheet(context: context, viewModel: viewModel),
+          title:
+          'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+
       );
 
   Widget _buildSheet(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+     CoursePracticeViewModel viewModel) =>
       CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -138,7 +141,7 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
       ];
 
   Widget _buildPracticeButton(CoursePracticeViewModel viewModel) =>
-      CustomElevatedButton(
+      const CustomElevatedButton(
         height: 55,
         safe: false,
         borderRadius: 12,

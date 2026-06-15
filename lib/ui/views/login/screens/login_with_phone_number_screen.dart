@@ -222,7 +222,7 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
             : null,
         backgroundColor: phoneNumberController.text.isNotEmpty
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 
   Widget _buildLoginWitPhoneNumberButton(LoginViewModel viewModel) =>

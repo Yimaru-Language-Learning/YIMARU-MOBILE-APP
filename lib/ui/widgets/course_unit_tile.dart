@@ -271,7 +271,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
 
   Widget _buildContainerShader() => Container(
         decoration: BoxDecoration(
-          color: kcWhite.withOpacity(0.5),
+          color: kcWhite.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(5),
         ),
       );

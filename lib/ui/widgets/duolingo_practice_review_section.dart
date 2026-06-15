@@ -5,8 +5,9 @@ import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class DuolingoPracticeReviewSection extends StatelessWidget {
+  final String review;
   final GestureTapCallback? onTap;
-  const DuolingoPracticeReviewSection({super.key, this.onTap});
+  const DuolingoPracticeReviewSection({super.key, this.onTap,required this.review});
 
   @override
   Widget build(BuildContext context) => _buildReviewContainer();
@@ -35,8 +36,9 @@ class DuolingoPracticeReviewSection extends StatelessWidget {
       );
 
   Widget _buildSampleAnswer() => Text(
-        'The photo shows a woman sitting at a desk while working on her laptop. She appears focused and is surrounded by books and papers. The room looks bright and organized.',
-        style: style14DG400,
+          review,
+
+          style: style14DG400,
         textAlign: TextAlign.center,
       );
 

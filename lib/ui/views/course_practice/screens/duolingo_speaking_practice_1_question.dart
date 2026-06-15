@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/helper_functions.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../../common/app_colors.dart';
@@ -35,10 +34,11 @@ class DuolingoSpeakingPractice1Question
         builder: (cxt) => _buildSheet(viewModel),
       );
 
-  Future<void> _next(CoursePracticeViewModel viewModel)async{
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
     await viewModel.startRecording();
+    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
+        .dynamicPayload?.response?.first.value['seconds']);
     viewModel.nextScreen();
-
   }
 
   @override
@@ -53,13 +53,15 @@ class DuolingoSpeakingPractice1Question
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffoldStack(       {required BuildContext context,
-    required CoursePracticeViewModel viewModel})=> Stack(
-    children: [
-      _buildScaffold(context: context,viewModel: viewModel),
-      _buildStartRecState(viewModel)
-    ],
-  );
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildStartRecState(viewModel)
+        ],
+      );
 
   Widget _buildScaffold(
           {required BuildContext context,
@@ -108,9 +110,10 @@ class DuolingoSpeakingPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
-        title: 'Speaking practice',
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
+        title:
+            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -171,21 +174,10 @@ class DuolingoSpeakingPractice1Question
         spacerWidth: 0,
         enableDescriptions: false,
         timeTextStyle: style14P600,
-        onEnd: viewModel.nextScreen,
+        onEnd:()=> _next(viewModel),
         colonsTextStyle: style14P400,
         format: CountDownTimerFormat.minutesSeconds,
-        endTime: DateTime.now().add(
-          Duration(
-            minutes: getMinutes(
-              viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                  ?.stimulus?.last.value['seconds'],
-            ),
-            seconds: getSeconds(
-              viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                  ?.stimulus?.last.value['seconds'],
-            ),
-          ),
-        ),
+        endTime: viewModel.countdown ?? DateTime.now(),
       );
 
   Widget _buildSubtitle() => Text(
@@ -233,6 +225,4 @@ class DuolingoSpeakingPractice1Question
       viewModel.busy(StateObjects.recordCoursePracticeAnswer)
           ? const PageLoadingIndicator()
           : Container();
-
-
 }

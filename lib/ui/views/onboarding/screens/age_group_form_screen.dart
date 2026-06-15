@@ -136,7 +136,7 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
         text: LocaleKeys.cont.tr(),
         backgroundColor: viewModel.selectedAgeGroup != null
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
         onTap:
             viewModel.selectedAgeGroup != null ? () => _next(viewModel) : null,
       );

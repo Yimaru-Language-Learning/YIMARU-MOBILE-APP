@@ -27,7 +27,7 @@ class SupportCard extends StatelessWidget {
         subtitle: _buildSubtitle(),
         trailing: _buildTrailingIcon(),
         leading: _buildLeadingWrapper(),
-        tileColor: color.withOpacity(0.2),
+        tileColor: color.withValues(alpha: 0.2),
       );
 
   Widget _buildLeadingWrapper() =>

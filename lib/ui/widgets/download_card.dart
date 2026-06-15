@@ -29,7 +29,7 @@ class DownloadCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: kcPrimaryColor.withOpacity(0.1),
+          color: kcPrimaryColor.withValues(alpha: 0.1),
         ),
         child: _buildRow(),
       );
@@ -144,6 +144,6 @@ class DownloadCard extends StatelessWidget {
         text: 'Remove',
         borderRadius: 12,
         foregroundColor: kcRed,
-        backgroundColor: kcRed.withOpacity(0.25),
+        backgroundColor: kcRed.withValues(alpha: 0.25),
       );
 }

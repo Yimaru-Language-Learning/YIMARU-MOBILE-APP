@@ -143,6 +143,6 @@ class EducationalBackgroundFormScreen
             : null,
         backgroundColor: viewModel.selectedEducationalBackground != null
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 }

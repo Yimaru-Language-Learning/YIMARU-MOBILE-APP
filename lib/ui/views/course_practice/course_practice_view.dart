@@ -5,6 +5,8 @@ import 'package:yimaru_app/models/course_question.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_1_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_2_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_3_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_4_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_practices_screens.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_finish_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_intro_screen.dart';
@@ -45,7 +47,8 @@ import 'course_practice_viewmodel.dart';
 @FormView(fields: [
   FormTextField(name: 'practice', validator: FormValidator.validateForm),
 ])
-class CoursePracticeView extends StackedView<CoursePracticeViewModel> with $CoursePracticeView {
+class CoursePracticeView extends StackedView<CoursePracticeViewModel>
+    with $CoursePracticeView {
   final int id;
 
   final CoursePractices practice;
@@ -73,36 +76,39 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> with $Cour
       );
 
   Widget _buildQuestionScreen(CoursePracticeViewModel viewModel) {
-    String type =
-        viewModel.questions[viewModel.currentQuestion].id.toString() ?? '';
-    if (type == '636') {
+    int id = viewModel
+            .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
+        0;
+    if (id == 12) {
       return const DuolingoSpeakingPractice1Question();
-    } else if (type == 'Read, Then Speak') {
+    } else if (id == 13) {
       return const DuolingoSpeakingPractice2Question();
-    } else if (type == 'Speaking Sample') {
+    } else if (id == 0) {
       return const DuolingoSpeakingPractice3Question();
-    } else if (type == 'Interactive Speaking') {
+    } else if (id == 14) {
       return const DuolingoSpeakingPractice4Question();
-    } else if (type == 'Write About the Photo') {
+    } else if (id == 0) {
       return DuolingoWritingPractice1Question(
           practiceController: practiceController);
-    } else if (type == 'Writing Sample') {
+    } else if (id == 0) {
       return DuolingoWritingPractice2Question(
           practiceController: practiceController);
-    } else if (type == 'Interactive Writing Part 1') {
+    } else if (id == 24) {
       return DuolingoWritingPractice3Question(
           practiceController: practiceController);
-    } else if (type == 'Interactive Writing Part 2') {
+    } else if (id == 0) {
       return DuolingoWritingPractice4Question(
           practiceController: practiceController);
-    } else if (type == 'Listen and Type') {
+    } else if (id == 28) {
       return DuolingoListeningPractice1Question(
           practiceController: practiceController);
-    } else if (type == 'Interactive Listening - Part 1') {
+    } else if (id == 0) {
       return DuolingoListeningPractice2Question(
           practiceController: practiceController);
-    } else if (type == 'Interactive Listening - Part 2') {
-      return DuolingoListeningPractice3Question(
+    } else if (id == 29) {
+      return const DuolingoListeningPractice3Question();
+    } else if (id == 0) {
+      return DuolingoListeningPractice4Question(
           practiceController: practiceController);
     }
 
@@ -110,29 +116,29 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> with $Cour
   }
 
   Widget _buildAnswerScreen(CoursePracticeViewModel viewModel) {
-    String type =
-        viewModel.questions[viewModel.currentQuestion].id.toString() ?? '';
-
-    if (type == '636') {
+    int id = viewModel
+            .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
+        0;
+    if (id == 12) {
       return const DuolingoSpeakingPractice1Answer();
-    } else if (type == 'Read, Then Speak') {
+    } else if (id == 13) {
       return const DuolingoSpeakingPractice2Answer();
-    } else if (type == 'Speaking Sample') {
+    } else if (id == 0) {
       return const DuolingoSpeakingPractice3Answer();
-    } else if (type == 'Interactive Speaking') {
+    } else if (id == 14) {
       return const DuolingoSpeakingPractice4Answer();
-    } else if (type == 'Write About the Photo') {
+    } else if (id == 0) {
       return Container();
-    } else if (type == 'Writing Sample') {
+    } else if (id == 0) {
       return DuolingoWritingPractice2Answer(
           practiceController: practiceController);
-    } else if (type == 'Interactive Writing Part 1') {
+    } else if (id == 0) {
       return Container();
-    } else if (type == 'Interactive Writing Part 2') {
+    } else if (id == 0) {
       return Container();
-    } else if (type == 'Listen and Type') {
+    } else if (id == 0) {
       return Container();
-    } else if (type == 'Interactive Listening - Part 1') {
+    } else if (id == 0) {
       return Container();
     }
 
@@ -140,35 +146,37 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> with $Cour
   }
 
   Widget _buildReviewScreen(CoursePracticeViewModel viewModel) {
-    String type =
-        viewModel.questions[viewModel.currentQuestion].id.toString() ?? '';
-
-    if (type == '636') {
+    int id = viewModel
+            .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
+        0;
+    if (id == 12) {
       return const DuolingoSpeakingPractice1Review();
-    } else if (type == 'Read, Then Speak') {
+    } else if (id == 13) {
       return const DuolingoSpeakingPractice2Review();
-    } else if (type == 'Speaking Sample') {
+    } else if (id == 0) {
       return const DuolingoSpeakingPractice3Review();
-    } else if (type == 'Interactive Speaking') {
+    } else if (id == 14) {
       return const DuolingoSpeakingPractice4Review();
-    } else if (type == 'Write About the Photo') {
+    } else if (id == 0) {
       return DuolingoWritingPractice1Review(
           practiceController: practiceController);
-    } else if (type == 'Writing Sample') {
+    } else if (id == 0) {
       return DuolingoWritingPractice2Review(
           practiceController: practiceController);
-    } else if (type == 'Interactive Writing Part 1') {
+    } else if (id == 24) {
       return DuolingoWritingPractice3Review(
           practiceController: practiceController);
-    } else if (type == 'Interactive Writing Part 2') {
+    } else if (id == 0) {
       return DuolingoWritingPractice4Review(
           practiceController: practiceController);
-    } else if (type == 'Listen and Type') {
+    } else if (id == 28) {
       return DuolingoListeningPractice1Review(
           practiceController: practiceController);
-    } else if (type == 'Interactive Listening - Part 1') {
+    } else if (id == 0) {
       return DuolingoListeningPractice2Review(
           practiceController: practiceController);
+    }else if (id == 29) {
+      return const DuolingoListeningPractice3Review();
     }
 
     return Container();
@@ -176,10 +184,10 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> with $Cour
 
   @override
   void onViewModelReady(CoursePracticeViewModel viewModel) async {
+    syncFormWithViewModel(viewModel);
     await viewModel.getCoursePractices(id: id, practice: practice);
     super.onViewModelReady(viewModel);
   }
-
 
   @override
   CoursePracticeViewModel viewModelBuilder(BuildContext context) =>
@@ -248,7 +256,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> with $Cour
   Widget _buildQuestionSetView(CoursePracticeViewModel viewModel) =>
       PageView.builder(
         itemCount: viewModel.questions.length,
-        controller: viewModel.practiceController,
+        controller: viewModel.questionController,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (cotext, index) => _buildQuestionView(
             index: index + 1,
@@ -261,7 +269,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> with $Cour
           required CourseQuestion question,
           required CoursePracticeViewModel viewModel}) =>
       PageView(
-        controller: viewModel.questionController,
+        controller: viewModel.pageController,
         physics: const NeverScrollableScrollPhysics(),
         children: _buildScreens(
             index: index, viewModel: viewModel, question: question),
@@ -274,9 +282,18 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> with $Cour
       [
         _buildDuolingoIntroScreen(viewModel),
         _buildDuolingoQuestionScreen(viewModel),
-        _buildDuolingoAnswerScreen(viewModel),
+        if (viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                28 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                24 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                29)
+          _buildDuolingoAnswerScreen(viewModel),
         _buildDuolingoReviewScreen(viewModel),
-        _buildDuolingoRetakeScreen(viewModel),
+        // _buildDuolingoRetakeScreen(viewModel),
         _buildDuolingoFinishScreen(viewModel),
       ];
 
@@ -284,6 +301,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel> with $Cour
 
   Widget _buildDuolingoIntroScreen(CoursePracticeViewModel viewModel) =>
       DuolingoIntroScreen(
+          practiceController: practiceController,
           type: viewModel.selectedQuestionParam['type'],
           title: viewModel.selectedQuestionParam['intro_title'],
           subtitle: viewModel.selectedQuestionParam['intro_subtitle']);

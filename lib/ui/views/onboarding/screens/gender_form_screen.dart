@@ -139,7 +139,7 @@ class GenderFormScreen extends ViewModelWidget<OnboardingViewModel> {
         text: LocaleKeys.cont.tr(),
         backgroundColor: viewModel.selectedGender != null
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: viewModel.selectedGender != null ? () => _next(viewModel) : null,
       );
 }

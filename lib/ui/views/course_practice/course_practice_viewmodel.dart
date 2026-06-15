@@ -90,6 +90,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   VoiceRecordingState get recordingState => _recordingState;
 
+  // Counter time
+  DateTime? _countdown;
+
+  DateTime? get countdown => _countdown;
+
   // Busy object
   String? _busyObject;
 
@@ -104,7 +109,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   bool get isSpeaking => _isSpeaking;
 
-  // Course practices
+// Course practices
   bool _focusPractice = false;
 
   bool get focusPractice => _focusPractice;
@@ -118,7 +123,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   String? get refreshedUrl => _refreshedUrl;
 
-  int _currentQuestion = 0;
+  int _currentQuestion = 6;
 
   int get currentQuestion => _currentQuestion;
 
@@ -129,7 +134,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   final List<Map<String, dynamic>> _questionParams = [
     {
       'label': 'Speaking 01',
-      'type': DuolingoAssessments.speaking,
+      'type': CoursePracticeType.speaking,
       'intro_title': 'Speak About the Photo',
       'outro_title': 'Speaking Practice Completed',
       'outro_subtitle': 'You’ve finished this speaking session. Great work!',
@@ -139,7 +144,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     {
       'label': 'Speaking 02',
       'intro_title': 'Read, Then Speak',
-      'type': DuolingoAssessments.speaking,
+      'type': CoursePracticeType.speaking,
       'outro_title': 'Speaking Practice Completed',
       'intro_subtitle': 'You will speak about the given topic',
       'outro_subtitle': 'You’ve finished this speaking session. Great work!',
@@ -147,14 +152,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
     {
       'label': 'Speaking 03',
       'intro_title': 'Speaking Sample',
-      'type': DuolingoAssessments.speaking,
+      'type': CoursePracticeType.speaking,
       'outro_title': 'Speaking Practice Completed',
       'intro_subtitle': 'You’ll speak for 1–3 minutes about a given topic.',
       'outro_subtitle': 'You’ve finished this speaking session. Great work!',
     },
     {
       'label': 'Speaking 04',
-      'type': DuolingoAssessments.speaking,
+      'type': CoursePracticeType.speaking,
       'intro_title': 'Interactive Speaking',
       'outro_title': 'Speaking Practice Completed',
       'intro_subtitle': ' You’ll answer a series of short questions.',
@@ -162,7 +167,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     },
     {
       'label': 'Writing 05',
-      'type': DuolingoAssessments.writing,
+      'type': CoursePracticeType.writing,
       'intro_title': 'Write About the Photo',
       'outro_title': 'Writing Practice Completed',
       'outro_subtitle': 'You’ve finished this writing session. Great work!',
@@ -172,7 +177,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     {
       'label': 'Writing 06',
       'intro_title': 'Writing Sample',
-      'type': DuolingoAssessments.writing,
+      'type': CoursePracticeType.writing,
       'outro_title': 'Writing Practice Completed',
       'outro_subtitle': 'You’ve finished this writing session. Great work!',
       'intro_subtitle':
@@ -180,7 +185,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     },
     {
       'label': 'Writing 07',
-      'type': DuolingoAssessments.writing,
+      'type': CoursePracticeType.writing,
       'outro_title': 'Writing Practice Completed',
       'intro_title': 'Interactive Writing Part 1',
       'outro_subtitle': 'You’ve finished this writing session. Great work!',
@@ -189,7 +194,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     },
     {
       'label': 'Writing 08',
-      'type': DuolingoAssessments.writing,
+      'type': CoursePracticeType.writing,
       'intro_title': 'Interactive Writing Part 2',
       'outro_title': 'Writing Practice Completed',
       'outro_subtitle': 'You’ve finished this writing session. Great work!',
@@ -199,7 +204,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     {
       'label': 'Listening 09',
       'intro_title': 'Listen and Type',
-      'type': DuolingoAssessments.listening,
+      'type': CoursePracticeType.listening,
       'outro_title': 'Listening Practice Completed',
       'intro_subtitle':
           'You will hear a short audio clip. Type exactly what you hear.',
@@ -207,7 +212,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     },
     {
       'label': 'Listening 10',
-      'type': DuolingoAssessments.listening,
+      'type': CoursePracticeType.listening,
       'outro_title': 'Listening Practice Completed',
       'intro_title': 'Interactive Listening - Part 1',
       'intro_subtitle': ' Listen carefully and complete the missing words.',
@@ -215,7 +220,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     },
     {
       'label': 'Listening 11',
-      'type': DuolingoAssessments.listening,
+      'type': CoursePracticeType.listening,
       'outro_title': 'Listening Practice Completed',
       'intro_title': 'Interactive Listening - Part 2',
       'intro_subtitle': 'Listen and choose the correct option.',
@@ -223,7 +228,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     },
     {
       'label': 'Assessment 12',
-      'type': DuolingoAssessments.listening,
+      'type': CoursePracticeType.listening,
       'title': 'Interactive Listening - Part 3',
       'outro_title': 'Listening Practice Completed',
       'subtitle': 'Write a summary of the conversation you just had',
@@ -232,14 +237,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
     {
       'label': 'Reading 13',
       'intro_title': 'Read and Select',
-      'type': DuolingoAssessments.reading,
+      'type': CoursePracticeType.reading,
       'intro_subtitle':
           'Read the sentence and select the option that correctly completes the meaning.'
     },
     {
       'label': 'Reading 14',
       'intro_title': 'Fill in the blank',
-      'type': DuolingoAssessments.reading,
+      'type': CoursePracticeType.reading,
       'intro_subtitle': 'Complete the sentences by filling in the missing words'
     },
   ];
@@ -250,7 +255,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   Map<String, dynamic> _selectedQuestionParam = {
     'label': 'Speaking 01',
     'intro_title': 'Speak About the Photo',
-    'type': DuolingoAssessments.speaking,
+    'type': CoursePracticeType.speaking,
     'outro_title': 'Speaking Practice Completed',
     'outro_subtitle': 'You’ve finished this speaking session. Great work!',
     'intro_subtitle':
@@ -264,23 +269,53 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   List<Map<String, dynamic>> get answers => _answers;
 
+  Map<String, dynamic> _selectedOption = {};
+
+  Map<String, dynamic> get selectedOption => _selectedOption;
+
+  // Play count
+  int _playCount = 2;
+
+  int get playCount => _playCount;
+
   // Next button state
   bool _buttonActive = false;
 
   bool get buttonActive => _buttonActive;
 
   // In-app navigation
-  int _currentPage = 0;
+  final int _currentPage = 0;
 
   int get currentPage => _currentPage;
-
-  final PageController _practiceController = PageController();
-
-  PageController get practiceController => _practiceController;
 
   final PageController _questionController = PageController();
 
   PageController get questionController => _questionController;
+
+  final PageController _pageController = PageController();
+
+  PageController get pageController => _pageController;
+
+  // Counter time
+  void setCountdown(int durationInSeconds) {
+    _countdown = DateTime.now().add(
+      Duration(
+        minutes: getMinutes(durationInSeconds),
+        seconds: getSeconds(durationInSeconds),
+      ),
+    );
+  }
+
+  // Play count
+  void setPlayCount() {
+    _playCount--;
+    rebuildUi();
+  }
+
+  void resetPlayCount(int count) {
+    _playCount = count;
+    rebuildUi();
+  }
 
   // Practice
   void setPracticeFocus() {
@@ -288,9 +323,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
-  // Speaking state
-  void setSpeakingState() {
-    _isSpeaking = !_isSpeaking;
+  void resetSpeakingState() {
+    _isSpeaking = false;
     rebuildUi();
   }
 
@@ -300,47 +334,62 @@ class CoursePracticeViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
+  // Reset values
+  void resetValues() {
+    _playCount = 2;
+    _countdown = null;
+    _buttonActive = false;
+    _focusPractice = false;
+    _selectedOption.clear();
+  }
+
   // Question param
-  Future<void> setQuestionParam(String type) async {
-    print('FIRST QUESTION: $type');
-    if (type == '636') {
+  Future<void> setQuestionParam(int id) async {
+    if (id == 12) {
       // await refreshQuestionUrl(_questions[_currentQuestion]);
       _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (type == '') {
-      _selectedQuestionParam = _questionParams.elementAt(0);
+    } else if (id == 13) {
+      _selectedQuestionParam = _questionParams.elementAt(1);
+    } else if (id == 0) {
+      _selectedQuestionParam = _questionParams.elementAt(2);
+    } else if (id == 14) {
+      _selectedQuestionParam = _questionParams.elementAt(3);
+    } else if (id == 0) {
+      _selectedQuestionParam = _questionParams.elementAt(4);
+    } else if (id == 0) {
+      _selectedQuestionParam = _questionParams.elementAt(5);
+    } else if (id == 24) {
+      _selectedQuestionParam = _questionParams.elementAt(6);
+    } else if (id == 0) {
+      _selectedQuestionParam = _questionParams.elementAt(7);
+    } else if (id == 28) {
+      _selectedQuestionParam = _questionParams.elementAt(8);
+    } else if (id == 0) {
+      _selectedQuestionParam = _questionParams.elementAt(9);
+    } else if (id == 29) {
+      _selectedQuestionParam = _questionParams.elementAt(10);
+    } else if (id == 0) {
+      _selectedQuestionParam = _questionParams.elementAt(11);
+    } else if (id == 0) {
+      _selectedQuestionParam = _questionParams.elementAt(12);
     } else {
-      _selectedQuestionParam = _questionParams.elementAt(0);
+      _selectedQuestionParam = _questionParams.elementAt(13);
     }
+  }
+
+  // Selected option
+  bool isSelectedOption(Map<String, dynamic> value) =>
+      _selectedOption['id'] == value['id'];
+
+  void setSelectedOption(Map<String, dynamic> value) {
+    _selectedOption = value;
+    rebuildUi();
   }
 
   // Voice recorder
   Future<void> stopRecording() async {
-    if (_voiceRecorderService.waveController.isRecording) {
-      await _voiceRecorderService.stopRecording();
-      _recordedAudio = await _voiceRecorderService.getRecordedAudio();
-    }
+    await _voiceRecorderService.stopRecording();
+    _recordedAudio = await _voiceRecorderService.getRecordedAudio();
   }
 
   Future<void> startRecording() async => await runBusyFuture(_startRecording(),
@@ -351,6 +400,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Play practice audio
   void _listenToAudio() {
+    _audioPlayerService.stateStream.listen((state) {
+      if (PlayerState.completed == state &&
+          _isSpeaking &&
+          _questions[_currentQuestion].questionTypeDefinitionId == 14) {
+        _isSpeaking = false;
+        nextScreen();
+      }
+    });
     _audioPlayerService.durationStream.listen((dur) {
       if (dur.inMilliseconds > 0) {
         _duration = dur;
@@ -364,19 +421,21 @@ class CoursePracticeViewModel extends ReactiveViewModel
     });
   }
 
-  Future<void> playVoicePrompt(CourseQuestion question) async =>
+  Future<void> playVoicePrompt(String question) async =>
       await runBusyFuture(_playVoicePrompt(question),
-          busyObject: StateObjects.coursePracticeQuestion);
+          busyObject: StateObjects.coursePracticePrompt);
 
-  Future<void> _playVoicePrompt(CourseQuestion question) async {
-    _questionController.jumpToPage(1);
-    await _audioPlayerService
-        .playUrl(question.dynamicPayload?.stimulus?.first.value ?? '');
+  Future<void> _playVoicePrompt(String question) async {
+    _isSpeaking = true;
+    String url = await getRefreshedUrl(question) ?? '';
+    await _audioPlayerService.playUrl(url);
   }
 
   Future<void> replayVoicePrompt(CourseQuestion question) async {
-    await _audioPlayerService
-        .playUrl(question.dynamicPayload?.stimulus?.first.value ?? '');
+    String url = await getRefreshedUrl(
+            question.dynamicPayload?.stimulus?.first.value ?? '') ??
+        '';
+    await _audioPlayerService.playUrl(url);
   }
 
   Future<void> playResult(Voice voice) async {
@@ -390,7 +449,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> _playAudio(Voice voice) async {
     if (voice == Voice.recorded) {
-      print('RECORDED: ${_recordedAudio ?? ''}');
       await _audioPlayerService.playLocal(_recordedAudio ?? '');
     } else {
       String url = await getRefreshedUrl(_questions[currentQuestion]
@@ -400,12 +458,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
                   .value ??
               '') ??
           '';
-      print('REFRESHED: ${_questions[currentQuestion]
-          .dynamicPayload
-          ?.response
-          ?.last
-          .value ??
-          ''}');
+
       await _audioPlayerService.playUrl(url);
     }
   }
@@ -436,56 +489,38 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // In-app navigation
   void nextScreen() {
-    _questionController.nextPage(
+    _pageController.nextPage(
       curve: Curves.easeInOutCubic,
       duration: const Duration(milliseconds: 350),
     );
   }
 
-  void nextPage() {
-    _currentPage++;
-    rebuildUi();
+  Future<void> nextQuestion() async => await runBusyFuture(_nextQuestion(),
+      busyObject: StateObjects.coursePractice);
+
+  Future<void> _nextQuestion() async {
+    _currentQuestion++;
+    _buttonActive = false;
+    _questionController.nextPage(
+      curve: Curves.easeInOutCubic,
+      duration: const Duration(milliseconds: 350),
+    );
+    await setQuestionParam(
+        _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
   }
 
   void goTo(int page) {
-    _currentPage = page;
-    rebuildUi();
+    /*  _currentPage = page;
+    rebuildUi()*/
   }
 
   void goBack() {
-    if (_currentPage == 0) {
+/*    if (_currentPage == 0) {
       pop();
     } else {
       _currentPage--;
       rebuildUi();
-    }
-  }
-
-  Future<void> nextQuestion(
-          {required int index, required CourseQuestion question}) async =>
-      await runBusyFuture(_nextQuestion(index: index, question: question),
-          busyObject: StateObjects.finishCoursePracticeQuestion);
-
-  Future<void> _nextQuestion(
-      {required int index, required CourseQuestion question}) async {
-    await stopRecording();
-    _answers.add({
-      'busy_object': question.id.toString(),
-      'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
-      'sample_text_answer':
-          question.dynamicPayload?.response?.first.value ?? '',
-      'sample_voice_answer':
-          question.dynamicPayload?.stimulus?.first.value ?? '',
-    });
-    if (index != _questions.length) {
-      _practiceController.nextPage(
-        curve: Curves.easeInOutCubic,
-        duration: const Duration(milliseconds: 350),
-      );
-      await playVoicePrompt(_questions[index]);
-    } else {
-      goTo(3);
-    }
+    }*/
   }
 
   // Navigation
@@ -512,7 +547,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
         _practices = await _apiService.getCoursePractices(id);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
         await setQuestionParam(
-            _questions[_currentQuestion].id.toString() ?? '');
+            _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
       }
     }
   }
@@ -532,5 +567,5 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
-  String getReadableImage(String image)=> getReadableUrl(image) ?? '';
+  String getReadableImage(String image) => getReadableUrl(image) ?? '';
 }
