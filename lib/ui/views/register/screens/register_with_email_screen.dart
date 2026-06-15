@@ -210,7 +210,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         backgroundColor: emailController.text.isNotEmpty &&
                 !viewModel.hasEmailValidationMessage
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 
   Widget _buildRegisterWithGoogleButton(RegisterViewModel viewModel) =>

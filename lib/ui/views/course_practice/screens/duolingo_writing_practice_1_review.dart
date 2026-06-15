@@ -5,43 +5,43 @@ import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/duolingo_practice_app_bar.dart';
-import '../../duolingo/duolingo_viewmodel.dart';
+import '../course_practice_viewmodel.dart';
 
 class DuolingoWritingPractice1Review
-    extends ViewModelWidget<DuolingoViewModel> {
+    extends ViewModelWidget<CoursePracticeViewModel> {
   final TextEditingController practiceController;
 
   const DuolingoWritingPractice1Review(
       {super.key, required this.practiceController});
 
   @override
-  Widget build(BuildContext context, DuolingoViewModel viewModel) =>
+  Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildScaffoldWrapper(viewModel);
 
-  Widget _buildScaffoldWrapper(DuolingoViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(CoursePracticeViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );
 
-  Widget _buildScaffold(DuolingoViewModel viewModel) =>
+  Widget _buildScaffold(CoursePracticeViewModel viewModel) =>
       SafeArea(child: _buildBodyColumn(viewModel));
 
-  Widget _buildBodyColumn(DuolingoViewModel viewModel) => Column(
+  Widget _buildBodyColumn(CoursePracticeViewModel viewModel) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _buildBodyColumnChildren(viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren(DuolingoViewModel viewModel) => [
+  List<Widget> _buildBodyColumnChildren(CoursePracticeViewModel viewModel) => [
         _buildAppBarIndenter(viewModel),
         _buildExpandedBody(viewModel),
       ];
 
-  Widget _buildAppBarIndenter(DuolingoViewModel viewModel) => Padding(
+  Widget _buildAppBarIndenter(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildAppBarWrapper(viewModel),
       );
 
-  Widget _buildAppBarWrapper(DuolingoViewModel viewModel) => Column(
+  Widget _buildAppBarWrapper(CoursePracticeViewModel viewModel) => Column(
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
@@ -49,33 +49,33 @@ class DuolingoWritingPractice1Review
         ],
       );
 
-  Widget _buildAppBar(DuolingoViewModel viewModel) => DuolingoPracticeAppBar(
+  Widget _buildAppBar(CoursePracticeViewModel viewModel) => const DuolingoPracticeAppBar(
         title: 'Feedback',
-        onClose: () => viewModel.goTo(0),
+       // onClose: () => viewModel.goTo(0),
       );
 
-  Widget _buildExpandedBody(DuolingoViewModel viewModel) =>
+  Widget _buildExpandedBody(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildBodyScroller(viewModel));
 
-  Widget _buildBodyScroller(DuolingoViewModel viewModel) =>
+  Widget _buildBodyScroller(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(
         child: _buildQuestionWrapper(viewModel),
       );
 
-  Widget _buildQuestionWrapper(DuolingoViewModel viewModel) => Column(
+  Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: _buildQuestionChildren(viewModel),
       );
 
-  List<Widget> _buildQuestionChildren(DuolingoViewModel viewModel) => [
+  List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         _buildTitle(),
         verticalSpaceSmall,
         _buildImageContainer(),
         verticalSpaceMedium,
-        _buildAssessmentFormFieldWrapper(viewModel),
+        _buildPracticeFormFieldWrapper(viewModel),
         verticalSpaceMedium,
-        _buildAssessmentReviewSection(viewModel)
+        _buildPracticeReviewSection(viewModel)
       ];
 
   Widget _buildTitle() => Text(
@@ -101,13 +101,13 @@ class DuolingoWritingPractice1Review
         width: double.maxFinite,
       );
 
-  Widget _buildAssessmentFormFieldWrapper(DuolingoViewModel viewModel) =>
+  Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildAssessmentFormField(viewModel),
+        child: _buildPracticeFormField(viewModel),
       );
 
-  Widget _buildAssessmentFormField(DuolingoViewModel viewModel) =>
+  Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
       TextFormField(
         maxLines: 5,
         enabled: false,
@@ -119,6 +119,9 @@ class DuolingoWritingPractice1Review
             filled: practiceController.text.isNotEmpty),
       );
 
-  Widget _buildAssessmentReviewSection(DuolingoViewModel viewModel) =>
-      DuolingoPracticeReviewSection(onTap: () => viewModel.goTo(5));
+  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+      DuolingoPracticeReviewSection(
+          review: '',
+
+          onTap: (){});
 }

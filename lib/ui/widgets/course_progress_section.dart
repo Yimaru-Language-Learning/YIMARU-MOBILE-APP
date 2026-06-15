@@ -19,7 +19,7 @@ class CourseProgressSection extends ViewModelWidget<ProgressViewModel> {
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: kcPrimaryColor.withOpacity(0.1),
+          color: kcPrimaryColor.withValues(alpha: 0.1),
         ),
         child: _buildColumn(viewModel),
       );
@@ -72,7 +72,7 @@ class CourseProgressSection extends ViewModelWidget<ProgressViewModel> {
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
-        shape: Border.all(color: kcPrimaryColor.withOpacity(0.2)),
+        shape: Border.all(color: kcPrimaryColor.withValues(alpha: 0.2)),
         children: _buildExpansionTileChildren(),
       );
 

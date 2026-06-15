@@ -5,7 +5,7 @@ import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/duolingo_practice_app_bar.dart';
-import '../../../widgets/listenable_practice_card.dart';
+import '../../../widgets/listenable_repetitive_practice_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice2Review
@@ -110,7 +110,7 @@ class DuolingoListeningPractice2Review
         child: _buildQuestion(),
       );
 
-  Widget _buildQuestion() => const ListenablePracticeCard();
+  Widget _buildQuestion() => const ListenableRepetitivePracticeCard();
 
   Widget _buildLabelWrapper(String question) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -140,5 +140,7 @@ class DuolingoListeningPractice2Review
       );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
-      DuolingoPracticeReviewSection(onTap: () => viewModel.goTo(5));
+      DuolingoPracticeReviewSection(
+          review: '',
+          onTap: () => viewModel.goTo(5));
 }

@@ -25,7 +25,7 @@ class CourseCatalogTile extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color: kcPrimaryColor.withOpacity(0.2),
+            color: kcPrimaryColor.withValues(alpha: 0.2),
           ),
         ),
         child: _buildExpansionTile(),
@@ -41,10 +41,10 @@ class CourseCatalogTile extends StatelessWidget {
         collapsedTextColor: kcDarkGrey,
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
-        backgroundColor: kcPrimaryColor.withOpacity(0.1),
+        backgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
-        collapsedBackgroundColor: kcPrimaryColor.withOpacity(0.1),
+        collapsedBackgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
         childrenPadding: const EdgeInsets.symmetric(horizontal: 15),
         children: _buildExpansionTileChildren(),
       );

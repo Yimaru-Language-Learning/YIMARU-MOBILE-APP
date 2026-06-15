@@ -132,6 +132,6 @@ class OccupationFormScreen extends ViewModelWidget<OnboardingViewModel> {
             : null,
         backgroundColor: viewModel.selectedOccupation != null
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 }

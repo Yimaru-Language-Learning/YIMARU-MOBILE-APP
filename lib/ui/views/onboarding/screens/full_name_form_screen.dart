@@ -137,7 +137,7 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
         backgroundColor: fullNameController.text.isNotEmpty &&
                 !viewModel.hasFullNameValidationMessage
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: fullNameController.text.isNotEmpty &&
                 !viewModel.hasFullNameValidationMessage
             ? () => _next(viewModel)

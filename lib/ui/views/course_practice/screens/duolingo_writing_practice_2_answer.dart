@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/views/duolingo/duolingo_view.form.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/helper_functions.dart';
 import '../../../common/ui_helpers.dart';
+import '../../../widgets/cancel_practice_sheet.dart';
+import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/duolingo_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/duolingo_practice_question_card.dart';
 import '../course_practice_viewmodel.dart';
+import '../course_practice_view.form.dart';
 
 class DuolingoWritingPractice2Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
@@ -16,45 +19,108 @@ class DuolingoWritingPractice2Answer
   const DuolingoWritingPractice2Answer(
       {super.key, required this.practiceController});
 
+  void _setButton(CoursePracticeViewModel viewModel)=>
+    viewModel.setNextButton();
+
+
+  Future<void> _cancel(CoursePracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
+    viewModel.pop();
+    viewModel.pop();
+  }
+
+
+
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: kcTransparent,
+        builder: (cxt) => _buildSheet(viewModel),
+      );
+
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(CoursePracticeViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold(CoursePracticeViewModel viewModel) =>
-      SafeArea(child: _buildBodyColumnWrapper(viewModel));
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SafeArea(
+          child:
+              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildBodyColumnWrapper(CoursePracticeViewModel viewModel) => Padding(
+  Widget _buildBodyColumnWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(viewModel),
+        child: _buildBodyColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBodyColumn(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildBodyColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyColumnChildren(viewModel),
+        children:
+            _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren(CoursePracticeViewModel viewModel) => [
-        _buildAppBarWrapper(viewModel),
+  List<Widget> _buildBodyColumnChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
+        _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildQuestionWrapper(viewModel),
         _buildContinueButtonWrapper(viewModel)
       ];
 
-  Widget _buildAppBarWrapper(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildAppBarWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(viewModel),
+          _buildAppBar(context: context, viewModel: viewModel),
+          verticalSpaceSmall,
+          _buildCountdownWrapper(viewModel),
         ],
       );
 
-  Widget _buildAppBar(CoursePracticeViewModel viewModel) =>
+  Widget _buildAppBar(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
-        title: 'Writing Assessment',
-        onClose: () => viewModel.goTo(0),
+        onClose: () async =>
+            await _showSheet(context: context, viewModel: viewModel),
+        title:
+            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+      );
+
+  Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
+        onClose: viewModel.pop,
+        onContinue: viewModel.pop,
+        user: viewModel.user?.firstName ?? '',
+        onCancel: () async => await _cancel(viewModel),
+      );
+
+  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
+      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+
+  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
+    onEnd:()=> _setButton(viewModel),
+        duration: viewModel.countdown,
       );
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
@@ -64,21 +130,19 @@ class DuolingoWritingPractice2Answer
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
-        _buildTitle(),
+        _buildTitle(viewModel),
         verticalSpaceMedium,
         _buildQuestion(),
         verticalSpaceMedium,
-        _buildAssessmentFormField(viewModel),
-        if (viewModel.hasAssessmentValidationMessage &&
-            viewModel.focusPractice)
+        _buildPracticeFormField(viewModel),
+        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           verticalSpaceTiny,
-        if (viewModel.hasAssessmentValidationMessage &&
-            viewModel.focusPractice)
-          _buildAssessmentWrapper(viewModel),
+        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
+          _buildPracticeWrapper(viewModel),
       ];
 
-  Widget _buildTitle() => Text(
-        'Write about the topic below for 5 minutes',
+  Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
+        'Write about the topic below for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes ${getSeconds(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} seconds.',
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -87,11 +151,12 @@ class DuolingoWritingPractice2Answer
       subtitle:
           'Describe a memorable experience from your school or work life and explain why it was meaningful to you.');
 
-  Widget _buildAssessmentFormField(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
       TextFormField(
         maxLines: 5,
         maxLength: 250,
         controller: practiceController,
+        enabled: !viewModel.buttonActive,
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,
@@ -99,13 +164,13 @@ class DuolingoWritingPractice2Answer
             filled: practiceController.text.isNotEmpty),
       );
 
-  Widget _buildAssessmentWrapper(CoursePracticeViewModel viewModel) =>
-      viewModel.hasAssessmentValidationMessage
-          ? _buildAssessmentValidator(viewModel)
+  Widget _buildPracticeWrapper(CoursePracticeViewModel viewModel) =>
+      viewModel.hasPracticeValidationMessage
+          ? _buildPracticeValidator(viewModel)
           : Container();
 
-  Widget _buildAssessmentValidator(CoursePracticeViewModel viewModel) => Text(
-        viewModel.assessmentValidationMessage!,
+  Widget _buildPracticeValidator(CoursePracticeViewModel viewModel) => Text(
+        viewModel.practiceValidationMessage!,
         style: style12R700,
       );
 
@@ -121,7 +186,13 @@ class DuolingoWritingPractice2Answer
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: () => viewModel.goTo(4),
-        backgroundColor: kcPrimaryColor,
+        backgroundColor: practiceController.text.isNotEmpty &&
+                !viewModel.hasPracticeValidationMessage
+            ? kcPrimaryColor
+            : kcPrimaryColor.withValues(alpha: 0.1),
+        onTap: practiceController.text.isNotEmpty &&
+                !viewModel.hasPracticeValidationMessage
+            ? viewModel.nextScreen
+            : null,
       );
 }

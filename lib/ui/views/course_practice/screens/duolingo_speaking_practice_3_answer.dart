@@ -9,41 +9,41 @@ import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/speaking_indicator.dart';
 import '../../../widgets/speaking_label.dart';
-import '../../duolingo/duolingo_viewmodel.dart';
+import '../course_practice_viewmodel.dart';
 
 class DuolingoSpeakingPractice3Answer
-    extends ViewModelWidget<DuolingoViewModel> {
+    extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoSpeakingPractice3Answer({super.key});
 
   @override
-  Widget build(BuildContext context, DuolingoViewModel viewModel) =>
+  Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildScaffoldWrapper(viewModel);
 
-  Widget _buildScaffoldWrapper(DuolingoViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(CoursePracticeViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );
 
-  Widget _buildScaffold(DuolingoViewModel viewModel) =>
+  Widget _buildScaffold(CoursePracticeViewModel viewModel) =>
       SafeArea(child: _buildBodyColumnWrapper(viewModel));
 
-  Widget _buildBodyColumnWrapper(DuolingoViewModel viewModel) => Padding(
+  Widget _buildBodyColumnWrapper(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildBodyColumn(viewModel),
       );
 
-  Widget _buildBodyColumn(DuolingoViewModel viewModel) => Column(
+  Widget _buildBodyColumn(CoursePracticeViewModel viewModel) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _buildBodyColumnChildren(viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren(DuolingoViewModel viewModel) => [
+  List<Widget> _buildBodyColumnChildren(CoursePracticeViewModel viewModel) => [
         _buildAppBarWrapper(viewModel),
         _buildSpeakingIndicatorWrapper(viewModel),
         _buildContinueButtonWrapper(viewModel)
       ];
 
-  Widget _buildAppBarWrapper(DuolingoViewModel viewModel) => Column(
+  Widget _buildAppBarWrapper(CoursePracticeViewModel viewModel) => Column(
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
@@ -52,12 +52,12 @@ class DuolingoSpeakingPractice3Answer
         ],
       );
 
-  Widget _buildAppBar(DuolingoViewModel viewModel) => DuolingoPracticeAppBar(
+  Widget _buildAppBar(CoursePracticeViewModel viewModel) => DuolingoPracticeAppBar(
         title: 'Speaking practice',
         onClose: () => viewModel.goTo(0),
       );
 
-  Widget _buildSpeakingIndicatorWrapper(DuolingoViewModel viewModel) => Column(
+  Widget _buildSpeakingIndicatorWrapper(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: _buildSpeakingIndicatorChildren(),
@@ -72,7 +72,10 @@ class DuolingoSpeakingPractice3Answer
       ];
 
   Widget _buildCountdownWrapper() =>
-      const Align(alignment: Alignment.centerRight, child: CountdownTimer());
+       Align(alignment: Alignment.centerRight, child:_buildCountdown() );
+
+  Widget _buildCountdown ()=>  const CountdownTimer(
+);
 
   Widget _buildQuestion() => const DuolingoPracticeQuestionCard(
         subtitle:
@@ -85,12 +88,12 @@ class DuolingoSpeakingPractice3Answer
         size: 25,
       );
 
-  Widget _buildContinueButtonWrapper(DuolingoViewModel viewModel) => Padding(
+  Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(viewModel),
       );
 
-  Widget _buildContinueButton(DuolingoViewModel viewModel) =>
+  Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',

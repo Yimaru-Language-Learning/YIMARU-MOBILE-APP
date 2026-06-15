@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/dwarf_tile.dart';
-import 'package:yimaru_app/ui/widgets/listenable_practice_card.dart';
+import 'package:yimaru_app/ui/widgets/listenable_one_time_practice_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
+import '../../../widgets/cancel_practice_sheet.dart';
+import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_small_radio_button.dart';
 import '../../../widgets/duolingo_practice_app_bar.dart';
@@ -12,52 +14,116 @@ import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice3Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  final TextEditingController practiceController;
+  const DuolingoListeningPractice3Question({super.key});
 
-  const DuolingoListeningPractice3Question(
-      {super.key, required this.practiceController});
+  void _setOption(
+      {required Map<String, dynamic> option,
+      required CoursePracticeViewModel viewModel}) {
+    if (!viewModel.buttonActive) {
+      viewModel.setSelectedOption(option);
+    }
+  }
+
+  Future<void> _cancel(CoursePracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
+    viewModel.pop();
+    viewModel.pop();
+  }
+
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: kcTransparent,
+        builder: (cxt) => _buildSheet(viewModel),
+      );
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(CoursePracticeViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold(CoursePracticeViewModel viewModel) =>
-      SafeArea(child: _buildBodyColumn(viewModel));
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
-  Widget _buildBodyColumn(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildBodyColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
-        children: _buildBodyColumnChildren(viewModel),
+        children:
+            _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren(CoursePracticeViewModel viewModel) => [
-        _buildAppBarWrapper(viewModel),
+  List<Widget> _buildBodyColumnChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
+        _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildExpandedBody(viewModel),
       ];
 
-  Widget _buildAppBarWrapper(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildAppBarWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
-        children: _buildAppBarChildren(viewModel),
+        children: _buildAppBarChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildAppBarChildren(CoursePracticeViewModel viewModel) => [
+  List<Widget> _buildAppBarChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
-        _buildAppBarIndenter(viewModel),
+        _buildAppBarIndenter(context: context, viewModel: viewModel),
+        verticalSpaceSmall,
+        _buildCountdownWrapper(viewModel),
+        verticalSpaceSmall,
       ];
 
-  Widget _buildAppBarIndenter(CoursePracticeViewModel viewModel) => Padding(
+  Widget _buildAppBarIndenter(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildAppBar(viewModel),
+        child: _buildAppBar(context: context, viewModel: viewModel),
       );
 
-  Widget _buildAppBar(CoursePracticeViewModel viewModel) =>
+  Widget _buildAppBar(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
-        title: 'Listening practice',
-        onClose: () => viewModel.goTo(0),
+        onClose: () async =>
+            await _showSheet(context: context, viewModel: viewModel),
+        title:
+            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+      );
+
+  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
+      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+
+  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
+        duration: viewModel.countdown,
+        onEnd: viewModel.setNextButton,
+      );
+
+  Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
+        onClose: viewModel.pop,
+        onContinue: viewModel.pop,
+        user: viewModel.user?.firstName ?? '',
+        onCancel: () async => await _cancel(viewModel),
       );
 
   Widget _buildExpandedBody(CoursePracticeViewModel viewModel) =>
@@ -87,8 +153,8 @@ class DuolingoListeningPractice3Question
         _buildQuestion(),
         verticalSpaceLarge,
         _buildLabel(),
-        verticalSpaceTiny,
-       // _buildPracticeQuestions(viewModel),
+        verticalSpaceSmall,
+        _buildPracticeQuestions(viewModel),
         verticalSpaceMedium,
         _buildContinueButtonWrapper(viewModel)
       ];
@@ -103,27 +169,35 @@ class DuolingoListeningPractice3Question
       DwarfTile(small: true, child: _buildListenablePracticeCard());
 
   Widget _buildListenablePracticeCard() =>
-      const Expanded(child: ListenablePracticeCard());
+      const Expanded(child: ListenableOneTimePracticeCard());
 
   Widget _buildLabel() => Text(
         'Select the best response',
-        style: style14MG400,
+        style: style16DG600,
         textAlign: TextAlign.center,
       );
 
-  // Widget _buildPracticeQuestions(CoursePracticeViewModel viewModel) =>
-  //     ListView.builder(
-  //       shrinkWrap: true,
-  //       physics: const NeverScrollableScrollPhysics(),
-  //       itemCount: viewModel.questions.length,
-  //       itemBuilder: (context, index) => _buildAssessmentCard(
-  //         title: viewModel.listeningAssessments[index],
-  //         selected: viewModel.isSelectedListeningAssessment(
-  //             viewModel.listeningAssessments[index]),
-  //         onTap: () => viewModel.setSelectedListeningAssessment(
-  //             viewModel.listeningAssessments[index]),
-  //       ),
-  //     );
+  Widget _buildPracticeQuestions(CoursePracticeViewModel viewModel) =>
+      ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?.last.value['options'].length,
+        itemBuilder: (context, index) => _buildPracticeCard(
+          selected: viewModel.isSelectedOption(viewModel
+              .questions[viewModel.currentQuestion]
+              .dynamicPayload
+              ?.response
+              ?.last
+              .value['options'][index]),
+          onTap: () => _setOption(
+              viewModel: viewModel,
+              option: viewModel.questions[viewModel.currentQuestion]
+                  .dynamicPayload?.response?.last.value['options'][index]),
+          title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?.last.value['options'][index]['text'],
+        ),
+      );
 
   Widget _buildPracticeCard(
           {required String title,
@@ -147,7 +221,7 @@ class DuolingoListeningPractice3Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: () => viewModel.goTo(4),
+        onTap: viewModel.nextScreen,
         backgroundColor: kcPrimaryColor,
       );
 }

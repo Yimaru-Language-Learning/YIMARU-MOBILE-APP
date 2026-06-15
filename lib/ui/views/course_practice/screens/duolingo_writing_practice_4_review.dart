@@ -117,5 +117,7 @@ class DuolingoWritingPractice4Review
       );
 
   Widget _buildAssessmentReviewSection(CoursePracticeViewModel viewModel) =>
-      DuolingoPracticeReviewSection(onTap: () => viewModel.goTo(5));
+      DuolingoPracticeReviewSection(
+          review: '',
+          onTap: () => viewModel.goTo(5));
 }

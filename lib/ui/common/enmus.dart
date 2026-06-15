@@ -23,7 +23,7 @@ enum CoursePractices { courseCatalog, unit, lesson }
 enum ProgressStatuses { pending, started, completed }
 
 // Duolingo  types
-enum DuolingoAssessments { speaking, reading, writing, listening }
+enum CoursePracticeType { speaking, reading, writing, listening }
 
 // Practice reason
 enum PracticeReason { course, module, lesson, previousModule, previousCourse }
@@ -65,6 +65,7 @@ enum StateObjects {
   registerWithGoogle,
   learnPracticeSample,
   learnPracticeAnswer,
+  coursePracticePrompt,
   loginWithPhoneNumber,
   assessmentQuestions,
   coursePracticeReview,

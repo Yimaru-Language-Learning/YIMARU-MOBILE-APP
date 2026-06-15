@@ -38,7 +38,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: kcPrimaryColor.withOpacity(0.1)),
+          border: Border.all(color: kcPrimaryColor.withValues(alpha: 0.1)),
         ),
         child: _buildTileStack(context: context, viewModel: viewModel),
       );
@@ -86,7 +86,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       );
 
   Widget _buildIconWrapper(LearnModuleViewModel viewModel) => CircleAvatar(
-        backgroundColor: kcPrimaryColor.withOpacity(0.1),
+        backgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
         child: _buildIconClipper(viewModel),
       );
 

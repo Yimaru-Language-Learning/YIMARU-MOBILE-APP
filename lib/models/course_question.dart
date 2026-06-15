@@ -1,3 +1,4 @@
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yimaru_app/models/dynamic_payload.dart';
 
@@ -20,13 +21,17 @@ class CourseQuestion {
   @JsonKey(name: 'dynamic_payload')
   final DynamicPayload? dynamicPayload;
 
+  @JsonKey(name: 'question_type_definition_id')
+  final int? questionTypeDefinitionId;
+
   const CourseQuestion(
       {this.id,
       this.status,
       this.points,
       this.questionType,
+      this.dynamicPayload,
       this.difficultyLevel,
-      this.dynamicPayload});
+      this.questionTypeDefinitionId});
 
   factory CourseQuestion.fromJson(Map<String, dynamic> json) =>
       _$CourseQuestionFromJson(json);

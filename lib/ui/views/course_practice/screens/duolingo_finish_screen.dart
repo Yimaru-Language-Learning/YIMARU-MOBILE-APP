@@ -23,37 +23,45 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
   }
 
   Future<void> _showSheet(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) async =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: kcTransparent,
-        builder: (cxt) => _buildSheet(context: context, viewModel: viewModel),
+        builder: (cxt) => _buildSheet(viewModel),
       );
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildSafeWrapper(context: context, viewModel: viewModel),
       );
 
-  Widget _buildSafeWrapper({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildSafeWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SafeArea(child: _buildScaffold(context: context, viewModel: viewModel));
 
-  Widget _buildScaffold({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Column(
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildScaffoldChildren(context: context, viewModel: viewModel),
+        children:
+            _buildScaffoldChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => [
+  List<Widget> _buildScaffoldChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         _buildAppBar(context: context, viewModel: viewModel),
         verticalSpaceMedium,
         _buildExpandedBody(viewModel)
@@ -92,17 +100,18 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
         _buildSubtitle(),
       ];
 
-  Widget _buildAppBar({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildAppBar(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
         onClose: () async =>
-        await _showSheet(context: context, viewModel: viewModel),
+            await _showSheet(context: context, viewModel: viewModel),
+        title:
+        'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+
       );
 
-  Widget _buildSheet(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
-      CancelPracticeSheet(
+  Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
@@ -136,9 +145,9 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
         height: 55,
         text: 'Continue',
         borderRadius: 12,
-        onTap: viewModel.pop,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
+        onTap: () async => await viewModel.nextQuestion(),
       );
 }

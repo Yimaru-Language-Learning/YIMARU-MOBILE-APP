@@ -12,11 +12,13 @@ CourseQuestion _$CourseQuestionFromJson(Map<String, dynamic> json) =>
       status: json['status'] as String?,
       points: (json['points'] as num?)?.toInt(),
       questionType: json['question_type'] as String?,
-      difficultyLevel: json['difficulty_level'] as String?,
       dynamicPayload: json['dynamic_payload'] == null
           ? null
           : DynamicPayload.fromJson(
               json['dynamic_payload'] as Map<String, dynamic>),
+      difficultyLevel: json['difficulty_level'] as String?,
+      questionTypeDefinitionId:
+          (json['question_type_definition_id'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CourseQuestionToJson(CourseQuestion instance) =>
@@ -27,4 +29,5 @@ Map<String, dynamic> _$CourseQuestionToJson(CourseQuestion instance) =>
       'question_type': instance.questionType,
       'difficulty_level': instance.difficultyLevel,
       'dynamic_payload': instance.dynamicPayload,
+      'question_type_definition_id': instance.questionTypeDefinitionId,
     };

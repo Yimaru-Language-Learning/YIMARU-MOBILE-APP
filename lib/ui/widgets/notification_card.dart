@@ -19,12 +19,12 @@ class NotificationCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color: (notification.isRead ?? false)
-              ? kcGreen.withOpacity(0.05)
-              : kcPrimaryColor.withOpacity(0.05),
+              ? kcGreen.withValues(alpha: 0.05)
+              : kcPrimaryColor.withValues(alpha: 0.05),
           border: Border.all(
             color: (notification.isRead ?? false)
-                ? kcGreen.withOpacity(0.1)
-                : kcPrimaryColor.withOpacity(0.1),
+                ? kcGreen.withValues(alpha: 0.1)
+                : kcPrimaryColor.withValues(alpha: 0.1),
           ),
         ),
         child: _buildRow(),

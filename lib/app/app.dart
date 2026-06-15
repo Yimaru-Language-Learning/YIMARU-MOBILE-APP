@@ -35,7 +35,6 @@ import 'package:yimaru_app/ui/views/learn_practice/learn_practice_view.dart';
 import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart';
 import 'package:yimaru_app/ui/views/failure/failure_view.dart';
 import 'package:yimaru_app/ui/views/course_lesson_detail/course_lesson_detail_view.dart';
-import 'package:yimaru_app/ui/views/duolingo/duolingo_view.dart';
 import 'package:yimaru_app/services/smart_auth_service.dart';
 import 'package:yimaru_app/services/course_service.dart';
 import 'package:yimaru_app/ui/views/course/course_view.dart';
@@ -89,7 +88,6 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
     MaterialRoute(page: CoursePaymentView),
     MaterialRoute(page: FailureView),
     MaterialRoute(page: CourseLessonDetailView),
-    MaterialRoute(page: DuolingoView),
     MaterialRoute(page: CourseView),
     MaterialRoute(page: LearnProgramView),
     MaterialRoute(page: AssessmentView),

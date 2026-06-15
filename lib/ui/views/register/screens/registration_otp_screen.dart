@@ -279,7 +279,7 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
         backgroundColor:
             otpController.text.length == 6 && !viewModel.hasOtpValidationMessage
                 ? kcPrimaryColor
-                : kcPrimaryColor.withOpacity(0.1),
+                : kcPrimaryColor.withValues(alpha: 0.1),
         onTap:
             otpController.text.length == 6 && !viewModel.hasOtpValidationMessage
                 ? () async => await _verifyOtp(viewModel)

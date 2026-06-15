@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/views/duolingo/duolingo_view.form.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/duolingo_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../course_practice_viewmodel.dart';
+import '../course_practice_view.form.dart';
 
 class DuolingoWritingPractice1Question
     extends ViewModelWidget<CoursePracticeViewModel> {
@@ -51,7 +51,7 @@ class DuolingoWritingPractice1Question
 
   Widget _buildAppBar(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeAppBar(
-        title: 'Writing Assessment',
+        title: 'Writing practice',
         onClose: () => viewModel.goTo(0),
       );
 
@@ -66,13 +66,13 @@ class DuolingoWritingPractice1Question
         verticalSpaceSmall,
         _buildImageContainer(),
         verticalSpaceMedium,
-        _buildAssessmentFormField(viewModel),
-        if (viewModel.hasAssessmentValidationMessage &&
+        _buildPracticeFormField(viewModel),
+        if (viewModel.hasPracticeValidationMessage &&
             viewModel.focusPractice)
           verticalSpaceTiny,
-        if (viewModel.hasAssessmentValidationMessage &&
+        if (viewModel.hasPracticeValidationMessage &&
             viewModel.focusPractice)
-          _buildAssessmentWrapper(viewModel),
+          _buildPracticeWrapper(viewModel),
       ];
 
   Widget _buildTitle() => Text(
@@ -98,7 +98,7 @@ class DuolingoWritingPractice1Question
         width: double.maxFinite,
       );
 
-  Widget _buildAssessmentFormField(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
       TextFormField(
         maxLines: 5,
         maxLength: 250,
@@ -110,13 +110,13 @@ class DuolingoWritingPractice1Question
             filled: practiceController.text.isNotEmpty),
       );
 
-  Widget _buildAssessmentWrapper(CoursePracticeViewModel viewModel) =>
-      viewModel.hasAssessmentValidationMessage
-          ? _buildAssessmentValidator(viewModel)
+  Widget _buildPracticeWrapper(CoursePracticeViewModel viewModel) =>
+      viewModel.hasPracticeValidationMessage
+          ? _buildPracticeValidator(viewModel)
           : Container();
 
-  Widget _buildAssessmentValidator(CoursePracticeViewModel viewModel) => Text(
-        viewModel.assessmentValidationMessage!,
+  Widget _buildPracticeValidator(CoursePracticeViewModel viewModel) => Text(
+        viewModel.practiceValidationMessage!,
         style: style12R700,
       );
 

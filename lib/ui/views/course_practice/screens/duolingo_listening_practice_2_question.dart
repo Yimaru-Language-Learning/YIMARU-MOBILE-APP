@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/listenable_practice_card.dart';
+import 'package:yimaru_app/ui/widgets/listenable_repetitive_practice_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
@@ -107,7 +107,7 @@ class DuolingoListeningPractice2Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestion() => const ListenablePracticeCard();
+  Widget _buildQuestion() => const ListenableRepetitivePracticeCard();
 
   Widget _buildLabel(String question) => Text(
         question,

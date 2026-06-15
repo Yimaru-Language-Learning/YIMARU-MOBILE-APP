@@ -17,7 +17,7 @@ class LearnPracticeTipSection extends ViewModelWidget<LearnPracticeViewModel> {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: kcBlue.withOpacity(0.1),
+          color: kcBlue.withValues(alpha: 0.1),
         ),
         child: _buildColumn(viewModel),
       );

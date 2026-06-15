@@ -208,7 +208,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         backgroundColor: emailController.text.isNotEmpty &&
                 !viewModel.hasEmailValidationMessage
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 
   Widget _buildRequestResetCodeState(ForgetPasswordViewModel viewModel) =>
