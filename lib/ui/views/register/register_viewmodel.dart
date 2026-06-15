@@ -12,6 +12,7 @@ import '../../../app/app.locator.dart';
 import '../../../models/user.dart';
 import '../../../services/google_auth_service.dart';
 import '../../../services/localization_service.dart';
+import '../../../services/push_notification_service.dart';
 import '../../../services/status_checker_service.dart';
 
 class RegisterViewModel extends ReactiveViewModel
@@ -28,6 +29,8 @@ class RegisterViewModel extends ReactiveViewModel
   final _localizationService = locator<LocalizationService>();
 
   final _authenticationService = locator<AuthenticationService>();
+
+  final _pushNotificationService = locator<PushNotificationService>();
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
@@ -328,6 +331,7 @@ class RegisterViewModel extends ReactiveViewModel
           'refreshToken': user.refreshToken
         };
         await _authenticationService.saveUserCredential(data);
+        await _registerDevice();
         clearUserData();
         await replaceWithStartUp();
         showSuccessToast(response['message']);
@@ -345,18 +349,34 @@ class RegisterViewModel extends ReactiveViewModel
       Map<String, dynamic> response = await _apiService.verifyOtp(_userData);
       if (response['status'] == ResponseStatus.success) {
         User user = response['data'] as User;
-        Map<String, dynamic> data = {
+        Map<String, dynamic> userData = {
           'userId': user.userId,
           'accessToken': user.accessToken,
           'refreshToken': user.refreshToken
         };
 
-        await _authenticationService.saveUserCredential(data);
+        await _authenticationService.saveUserCredential(userData);
+        await _registerDevice();
         await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
         showErrorToast(response['message']);
       }
+    }
+  }
+
+
+  // Register device
+  Future<void> _registerDevice() async {
+    String? token = await _pushNotificationService.getDeviceToken();
+    print('DEVICE TOKEN: $token');
+
+    if (token != null) {
+      Map<String, dynamic> deviceData = {
+        "platform": "android",
+        'device_token': token,
+      };
+      await _apiService.registerDevice(deviceData);
     }
   }
 

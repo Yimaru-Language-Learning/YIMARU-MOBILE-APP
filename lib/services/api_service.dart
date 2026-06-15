@@ -142,6 +142,17 @@ class ApiService {
     }
   }
 
+  Future<void> registerDevice(Map<String, dynamic> data) async {
+    try {
+      await _service.dio.post(
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kDevicesUrl/$kRegisterUrl',
+        data: data,
+      );
+    } on DioException catch (e) {
+      rethrow;
+    }
+  }
+
   // Resend otp
   Future<Map<String, dynamic>> resendOtp(Map<String, dynamic> data) async {
     try {
@@ -848,29 +859,15 @@ class ApiService {
     }
   }
 
-  // Complete lesson
-  Future<Map<String, dynamic>> completeLearnLesson(int id) async {
+  // Mark lesson progress
+  Future<void> markLessonProgress(Map<String, dynamic> data) async {
     try {
-      Response response = await _service.dio.post(
-        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kLessonsUrl/$id/$kCompleteUrl',
+      await _service.dio.post(
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kVideosUrl/$kEngagementUrl/$kHeartbeatUrl',
+        data: data,
       );
-
-      if (response.statusCode == 200 && response.data['success']) {
-        return {
-          'message': 'Lesson completed',
-          'status': ResponseStatus.success,
-        };
-      } else {
-        return {
-          'status': ResponseStatus.failure,
-          'message': 'Unknown Error Occurred'
-        };
-      }
     } on DioException catch (e) {
-      return {
-        'status': ResponseStatus.failure,
-        'message': e.response?.data.toString(),
-      };
+      rethrow;
     }
   }
 

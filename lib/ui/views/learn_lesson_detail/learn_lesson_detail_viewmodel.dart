@@ -45,7 +45,11 @@ class LearnLessonDetailViewModel extends ReactiveViewModel {
   List<LearnLesson> get lessons => _lessons;
 
   // Video player config
+  int _lastCheckpoint = 0;
+
   bool _lessonCompleted = false;
+
+  bool _isUpdatingProgress = false;
 
   ChewieController? _chewieController;
 
@@ -65,18 +69,15 @@ class LearnLessonDetailViewModel extends ReactiveViewModel {
     await _chewieController?.pause();
   }
 
-  Future<void> initializePlayer(
-          {required String url,
-          required int lessonId,
-          required int moduleId}) async =>
-      await runBusyFuture(
-          _initializePlayer(url: url, moduleId: moduleId, lessonId: lessonId),
-          busyObject: StateObjects.loadLessonVideo);
+  Future<void> initializePlayer({
+    required String url,
+    required int lessonId,
+  }) async {
+    // Reset tracking state
+    _lessonCompleted = false;
+    _isUpdatingProgress = false;
+    _lastCheckpoint = 0;
 
-  Future<void> _initializePlayer(
-      {required String url,
-      required int lessonId,
-      required int moduleId}) async {
     final playableUrl = await _vimeoService.getVideoUrl(url);
 
     if (playableUrl == null) {
@@ -86,30 +87,67 @@ class LearnLessonDetailViewModel extends ReactiveViewModel {
     _videoPlayerController =
         VideoPlayerController.networkUrl(Uri.parse(playableUrl));
 
-    await _videoPlayerController?.initialize();
+    await _videoPlayerController!.initialize();
 
-    // Listen for video completion
-    _videoPlayerController?.addListener(() async {
+    _videoPlayerController!.addListener(() async {
       final controller = _videoPlayerController;
 
-      if (controller == null || _lessonCompleted) return;
+      if (controller == null || !controller.value.isInitialized) {
+        return;
+      }
 
       final position = controller.value.position.inSeconds;
       final duration = controller.value.duration.inSeconds;
 
       if (duration <= 0) return;
 
-      // Calculate watched percentage
-      final progress = position / duration;
+      // ===========================
+      // Every 10 seconds
+      // ===========================
+      final checkpoint = position ~/ 10;
 
-      // Mark complete at 95%
-      if (progress >= 0.95) {
+      if (checkpoint > 0 &&
+          checkpoint > _lastCheckpoint &&
+          !_isUpdatingProgress) {
+        _isUpdatingProgress = true;
+        _lastCheckpoint = checkpoint;
+
+        try {
+          Map<String, dynamic> data = {
+            "ended": false,
+            "content_id": lessonId,
+            "position_sec": position,
+            "duration_sec": duration,
+            "content_kind": "lms_lesson",
+          };
+          await markLessonProgress(data);
+        } finally {
+          _isUpdatingProgress = false;
+        }
+      }
+
+      // ===========================
+      // Video completed
+      // ===========================
+      final isCompleted =
+          position >= duration - 1 && !controller.value.isPlaying;
+
+      if (isCompleted && !_lessonCompleted && !_isUpdatingProgress) {
         _lessonCompleted = true;
+        _isUpdatingProgress = true;
 
-        await completeLearnLesson(
-          lessonId: lessonId,
-          moduleId: moduleId,
-        );
+        try {
+          Map<String, dynamic> data = {
+            "ended": true,
+            "content_id": lessonId,
+            "position_sec": position,
+            "duration_sec": duration,
+            "content_kind": "lms_lesson",
+          };
+          await markLessonProgress(data);
+        } finally {
+          _isUpdatingProgress = false;
+        }
       }
     });
 
@@ -147,20 +185,13 @@ class LearnLessonDetailViewModel extends ReactiveViewModel {
   // Remote api call
 
   // Mark lesson
-  Future<void> completeLearnLesson(
-          {required int lessonId, required int moduleId}) async =>
-      await runBusyFuture(
-          _completeLearnLesson(lessonId: lessonId, moduleId: moduleId),
+  Future<void> markLessonProgress(Map<String, dynamic> data) async =>
+      await runBusyFuture(_markVideoProgress(data),
           busyObject: StateObjects.learnLessons);
 
-  Future<void> _completeLearnLesson(
-      {required int lessonId, required int moduleId}) async {
+  Future<void> _markVideoProgress(Map<String, dynamic> data) async {
     if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response =
-          await _apiService.completeLearnLesson(lessonId);
-      if (response['status'] == ResponseStatus.success) {
-        await _learnService.getLearnLessons(moduleId);
-      }
+      await _apiService.markLessonProgress(data);
     }
   }
 }
