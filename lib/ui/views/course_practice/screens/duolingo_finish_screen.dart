@@ -145,9 +145,9 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
         height: 55,
         text: 'Continue',
         borderRadius: 12,
+        onTap: viewModel.pop,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.nextQuestion(),
       );
 }
