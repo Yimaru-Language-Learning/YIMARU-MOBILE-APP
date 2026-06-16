@@ -132,7 +132,7 @@ class DuolingoWritingPractice2Answer
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         _buildTitle(viewModel),
         verticalSpaceMedium,
-        _buildQuestion(),
+        _buildQuestion(viewModel),
         verticalSpaceMedium,
         _buildPracticeFormField(viewModel),
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
@@ -147,9 +147,9 @@ class DuolingoWritingPractice2Answer
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestion() => const DuolingoPracticeQuestionCard(
-      subtitle:
-          'Describe a memorable experience from your school or work life and explain why it was meaningful to you.');
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>  DuolingoPracticeQuestionCard(
+    title:viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value ,
+  );
 
   Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
       TextFormField(

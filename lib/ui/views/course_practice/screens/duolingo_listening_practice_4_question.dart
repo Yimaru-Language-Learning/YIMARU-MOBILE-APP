@@ -145,8 +145,7 @@ class DuolingoListeningPractice4Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-      'Write about the topic below for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes ${getSeconds(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} seconds.',
-
+      'Write summary of the conversation you just had.',
         style: style18DG700,
         textAlign: TextAlign.center,
       );

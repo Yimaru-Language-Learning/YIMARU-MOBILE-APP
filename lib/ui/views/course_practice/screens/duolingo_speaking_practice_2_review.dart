@@ -148,8 +148,6 @@ required CoursePracticeViewModel viewModel}) => Column(
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>  DuolingoPracticeQuestionCard(
     title: '',
     subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-        ?.stimulus?.first.value+ viewModel.questions[viewModel.currentQuestion].dynamicPayload
-        ?.stimulus?.first.value+ viewModel.questions[viewModel.currentQuestion].dynamicPayload
         ?.stimulus?.first.value,     );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
