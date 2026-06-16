@@ -7,6 +7,7 @@ import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_p
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_2_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_3_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_4_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_4_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_practices_screens.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_finish_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_intro_screen.dart';
@@ -79,35 +80,35 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     int id = viewModel
             .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
-    if (id == 12) {
+    if (id == 12 /*Speak about the photo*/) {
       return const DuolingoSpeakingPractice1Question();
-    } else if (id == 13) {
+    } else if (id == 13 /*Read then speak*/) {
       return const DuolingoSpeakingPractice2Question();
-    } else if (id == 0) {
+    } else if (id == 0 /*Speaking sample*/) {
       return const DuolingoSpeakingPractice3Question();
-    } else if (id == 14) {
+    } else if (id == 14 /*Interactive speaking*/) {
       return const DuolingoSpeakingPractice4Question();
-    } else if (id == 0) {
+    } else if (id == 0 /*Speak about the photo*/) {
       return DuolingoWritingPractice1Question(
           practiceController: practiceController);
-    } else if (id == 0) {
+    } else if (id == 0 /*Writing sample*/) {
       return DuolingoWritingPractice2Question(
           practiceController: practiceController);
-    } else if (id == 24) {
+    } else if (id == 24 /*Interactive writing part 1*/) {
       return DuolingoWritingPractice3Question(
           practiceController: practiceController);
-    } else if (id == 0) {
+    } else if (id == 0 /*Interactive writing part 2*/) {
       return DuolingoWritingPractice4Question(
           practiceController: practiceController);
-    } else if (id == 28) {
+    } else if (id == 28 /*Listen and type*/) {
       return DuolingoListeningPractice1Question(
           practiceController: practiceController);
-    } else if (id == 0) {
+    } else if (id == 0 /*Interactive listening part 1*/) {
       return DuolingoListeningPractice2Question(
           practiceController: practiceController);
-    } else if (id == 29) {
+    } else if (id == 29 /*Interactive listening part 2*/) {
       return const DuolingoListeningPractice3Question();
-    } else if (id == 0) {
+    } else if (id == 0 /*Interactive listening part 3*/) {
       return DuolingoListeningPractice4Question(
           practiceController: practiceController);
     }
@@ -119,64 +120,58 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     int id = viewModel
             .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
-    if (id == 12) {
+    if (id == 12 /*Speak about the photo*/) {
       return const DuolingoSpeakingPractice1Answer();
-    } else if (id == 13) {
+    } else if (id == 13 /*Read then speak*/) {
       return const DuolingoSpeakingPractice2Answer();
-    } else if (id == 0) {
+    } else if (id == 0 /*Speaking sample*/) {
       return const DuolingoSpeakingPractice3Answer();
-    } else if (id == 14) {
+    } else if (id == 14 /*Interactive speaking*/) {
       return const DuolingoSpeakingPractice4Answer();
-    } else if (id == 0) {
-      return Container();
-    } else if (id == 0) {
+    } else if (id == 0 /*Writing sample*/) {
       return DuolingoWritingPractice2Answer(
           practiceController: practiceController);
-    } else if (id == 0) {
-      return Container();
-    } else if (id == 0) {
-      return Container();
-    } else if (id == 0) {
-      return Container();
-    } else if (id == 0) {
+    } else {
       return Container();
     }
-
-    return Container();
   }
 
   Widget _buildReviewScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
             .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
-    if (id == 12) {
+    if (id == 12 /*Speak about the photo*/) {
       return const DuolingoSpeakingPractice1Review();
-    } else if (id == 13) {
+    } else if (id == 13 /*Read then speak*/) {
       return const DuolingoSpeakingPractice2Review();
-    } else if (id == 0) {
+    } else if (id == 0 /*Speaking sample*/) {
       return const DuolingoSpeakingPractice3Review();
-    } else if (id == 14) {
+    } else if (id == 14 /*Interactive speaking*/) {
       return const DuolingoSpeakingPractice4Review();
-    } else if (id == 0) {
+    } else if (id == 0 /*Speak about the photo*/) {
       return DuolingoWritingPractice1Review(
           practiceController: practiceController);
-    } else if (id == 0) {
+    } else if (id == 0 /*Writing sample*/) {
       return DuolingoWritingPractice2Review(
           practiceController: practiceController);
-    } else if (id == 24) {
+    } else if (id == 24 /*Interactive writing part 1*/) {
       return DuolingoWritingPractice3Review(
           practiceController: practiceController);
-    } else if (id == 0) {
+    } else if (id == 0 /*Interactive writing part 2*/) {
       return DuolingoWritingPractice4Review(
           practiceController: practiceController);
-    } else if (id == 28) {
+    } else if (id == 28 /*Listen and type*/) {
       return DuolingoListeningPractice1Review(
           practiceController: practiceController);
-    } else if (id == 0) {
+    } else if (id == 0 /*Interactive listening part 1*/) {
       return DuolingoListeningPractice2Review(
           practiceController: practiceController);
-    }else if (id == 29) {
+    } else if (id == 29 /*Interactive listening part 2*/) {
       return const DuolingoListeningPractice3Review();
+    } else if (id == 29 /*Interactive listening part 3*/) {
+      return DuolingoListeningPractice4Review(
+        practiceController: practiceController,
+      );
     }
 
     return Container();

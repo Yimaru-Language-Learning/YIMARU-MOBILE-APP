@@ -3,10 +3,13 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_question_card.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
+import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/duolingo_practice_app_bar.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoSpeakingPractice3Question
@@ -15,61 +18,112 @@ class DuolingoSpeakingPractice3Question
     super.key,
   });
 
+
+  Future<void> _cancel(CoursePracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
+    viewModel.pop();
+    viewModel.pop();
+  }
+
+  Future<void> _showSheet(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: kcTransparent,
+        builder: (cxt) => _buildSheet(viewModel),
+      );
+
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.startRecording();
+    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
+        .dynamicPayload?.response?.first.value['seconds']);
+    viewModel.nextScreen();
+  }
+
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(CoursePracticeViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper({required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold(CoursePracticeViewModel viewModel) =>
-      SafeArea(child: _buildBodyColumnWrapper(viewModel));
+  Widget _buildScaffoldStack(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildStartRecState(viewModel)
+        ],
+      );
 
-  Widget _buildBodyColumnWrapper(CoursePracticeViewModel viewModel) => Padding(
+  Widget _buildScaffold({required BuildContext context,
+    required CoursePracticeViewModel viewModel}) =>
+      SafeArea(child: _buildBodyColumnWrapper(context: context, viewModel: viewModel));
+
+  Widget _buildBodyColumnWrapper({required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(viewModel),
+        child: _buildBodyColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBodyColumn(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildBodyColumn({required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyColumnChildren(viewModel),
+        children: _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren(CoursePracticeViewModel viewModel) => [
-        _buildAppBarWrapper(viewModel),
+  List<Widget> _buildBodyColumnChildren({required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => [
+        _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildSpeakingIndicatorWrapper(viewModel),
         _buildContinueButtonWrapper(viewModel)
       ];
 
-  Widget _buildAppBarWrapper(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildAppBarWrapper({required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(viewModel),
+          _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownWrapper(),
         ],
       );
 
-  Widget _buildAppBar(CoursePracticeViewModel viewModel) =>
+  Widget _buildAppBar(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
-        title: 'Speaking practice',
-        onClose: () => viewModel.goTo(0),
+        onClose: () async =>
+        await _showSheet(context: context, viewModel: viewModel),
+        title:
+        'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
+  Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
+    onClose: viewModel.pop,
+    onContinue: viewModel.pop,
+    user: viewModel.user?.firstName ?? '',
+    onCancel: () async => await _cancel(viewModel),
+  );
 
   Widget _buildSpeakingIndicatorWrapper(CoursePracticeViewModel viewModel) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildSpeakingIndicatorChildren(),
+        children: _buildSpeakingIndicatorChildren(viewModel),
       );
 
-  List<Widget> _buildSpeakingIndicatorChildren() => [
+  List<Widget> _buildSpeakingIndicatorChildren(CoursePracticeViewModel viewModel) => [
         _buildTitle(),
-        _buildSubtitle(),
+        _buildSubtitle(viewModel),
         verticalSpaceMedium,
-        _buildQuestion(),
+        _buildQuestion(viewModel),
       ];
 
   Widget _buildCountdownWrapper() =>
@@ -83,15 +137,17 @@ class DuolingoSpeakingPractice3Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSubtitle() => Text(
-        'You will have 3 minutes to speak',
-        style: style14DG400,
-        textAlign: TextAlign.center,
-      );
+  Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
+    'You will have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value['seconds']} seconds to speak',
+    style: style14DG400,
+    textAlign: TextAlign.center,
+  );
 
-  Widget _buildQuestion() => const DuolingoPracticeQuestionCard(
-        subtitle:
-            'What values of beliefs did you learn from living in your hometown? How will your hometown influence your future?',
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
+      DuolingoPracticeQuestionCard(
+        title: '',
+        subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value ,
       );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
@@ -106,7 +162,12 @@ class DuolingoSpeakingPractice3Question
         borderRadius: 12,
         text: 'Start Speaking',
         foregroundColor: kcWhite,
-        onTap: () => viewModel.goTo(3),
+        onTap: () => _next(viewModel),
         backgroundColor: kcPrimaryColor,
       );
+
+  Widget _buildStartRecState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.recordCoursePracticeAnswer)
+          ? const PageLoadingIndicator()
+          : Container();
 }

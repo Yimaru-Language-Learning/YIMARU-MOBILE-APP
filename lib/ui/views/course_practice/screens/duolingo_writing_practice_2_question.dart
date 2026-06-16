@@ -89,7 +89,6 @@ class DuolingoWritingPractice2Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-       //   _buildCountdownWrapper(viewModel),
         ],
       );
 
@@ -110,14 +109,7 @@ class DuolingoWritingPractice2Question
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
-  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-
-    onEnd: viewModel.nextScreen,
-    duration: viewModel.countdown,
-  );
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -162,7 +154,7 @@ class DuolingoWritingPractice2Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
         onTap:viewModel.nextScreen,
+        backgroundColor: kcPrimaryColor,
       );
 }

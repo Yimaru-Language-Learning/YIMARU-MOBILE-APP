@@ -3,7 +3,9 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/helper_functions.dart';
 import '../../../common/ui_helpers.dart';
+import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/duolingo_practice_app_bar.dart';
 import '../../../widgets/duolingo_practice_question_card.dart';
 import '../course_practice_viewmodel.dart';
@@ -15,46 +17,83 @@ class DuolingoWritingPractice4Review
   const DuolingoWritingPractice4Review(
       {super.key, required this.practiceController});
 
+
+
+  Future<void> _cancel(CoursePracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
+    viewModel.pop();
+    viewModel.pop();
+  }
+
+  Future<void> _showSheet(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: kcTransparent,
+        builder: (cxt) => _buildSheet(viewModel),
+      );
+
+
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(CoursePracticeViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper( {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold(CoursePracticeViewModel viewModel) =>
-      SafeArea(child: _buildBodyColumn(viewModel));
+  Widget _buildScaffold( {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) =>
+      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
-  Widget _buildBodyColumn(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildBodyColumn( {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyColumnChildren(viewModel),
+        children: _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren(CoursePracticeViewModel viewModel) => [
-        _buildAppBarIndenter(viewModel),
+  List<Widget> _buildBodyColumnChildren( {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => [
+        _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildExpandedBody(viewModel),
       ];
 
-  Widget _buildAppBarIndenter(CoursePracticeViewModel viewModel) => Padding(
+  Widget _buildAppBarIndenter( {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildAppBarWrapper(viewModel),
+        child: _buildAppBarWrapper(context: context, viewModel: viewModel),
       );
 
-  Widget _buildAppBarWrapper(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildAppBarWrapper( {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(viewModel),
+          _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
         ],
       );
 
-  Widget _buildAppBar(CoursePracticeViewModel viewModel) =>
+  Widget _buildAppBar(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
-        title: 'Feedback',
-        onClose: () => viewModel.goTo(0),
+        onClose: () async =>
+        await _showSheet(context: context, viewModel: viewModel),
+        title:
+        'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
+  Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
+    onClose: viewModel.pop,
+    onContinue: viewModel.pop,
+    user: viewModel.user?.firstName ?? '',
+    onCancel: () async => await _cancel(viewModel),
+  );
+
 
   Widget _buildExpandedBody(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildBodyScroller(viewModel));
@@ -75,30 +114,31 @@ class DuolingoWritingPractice4Review
           CoursePracticeViewModel viewModel) =>
       [
         verticalSpaceLarge,
-        _buildTitle(),
+        _buildTitle(viewModel),
         verticalSpaceMedium,
-        _buildQuestionWrapper(),
+        _buildQuestionWrapper(viewModel),
         verticalSpaceLarge,
-        _buildAssessmentFormFieldWrapper(viewModel),
+        _buildPracticeFormFieldWrapper(viewModel),
         verticalSpaceLarge,
-        _buildAssessmentReviewSection(viewModel)
+        _buildPracticeReviewSection(viewModel)
       ];
 
-  Widget _buildTitle() => Text(
-        'Write a follow-up response for 3 minutes',
+  Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
+    'Write a follow-up response for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes',
         style: style18DG700,
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestionWrapper() => Padding(
+  Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildQuestion(),
+        child: _buildQuestion(viewModel),
       );
 
-  Widget _buildQuestion() => const DuolingoPracticeQuestionCard(
-      title: 'Can you tell me about your favorite type of music?');
 
-  Widget _buildAssessmentFormFieldWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>  DuolingoPracticeQuestionCard(
+    title:viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value ,
+  );
+  Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildAssessmentFormField(viewModel),
@@ -115,9 +155,11 @@ class DuolingoWritingPractice4Review
             hint: 'Start writing here...',
             filled: practiceController.text.isNotEmpty),
       );
-
-  Widget _buildAssessmentReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
-          review: '',
-          onTap: () => viewModel.goTo(5));
+        review: viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.response?.first.value,
+        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
+            ? viewModel.nextScreen
+            : () async => await viewModel.nextQuestion(),);
 }

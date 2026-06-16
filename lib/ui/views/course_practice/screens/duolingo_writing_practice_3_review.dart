@@ -57,7 +57,7 @@ class DuolingoWritingPractice3Review
   List<Widget> _buildBodyColumnChildren(   {required BuildContext context,
     required CoursePracticeViewModel viewModel}) => [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-    _build_buildQuestionSectionExpandedWrapper(viewModel),
+    _buildQuestionSectionExpandedWrapper(viewModel),
       ];
 
   Widget _buildAppBarIndenter(   {required BuildContext context,
@@ -92,7 +92,7 @@ class DuolingoWritingPractice3Review
     onCancel: () async => await _cancel(viewModel),
   );
 
-  Widget _build_buildQuestionSectionExpandedWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionSectionExpandedWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionSectionScrollerWrapper(viewModel));
 
   Widget _buildQuestionSectionScrollerWrapper(CoursePracticeViewModel viewModel) =>
@@ -115,9 +115,9 @@ class DuolingoWritingPractice3Review
         verticalSpaceMedium,
         _buildQuestionWrapper(viewModel),
         verticalSpaceLarge,
-        _buildAssessmentFormFieldWrapper(viewModel),
+        _buildPracticeFormFieldWrapper(viewModel),
         verticalSpaceLarge,
-        _buildAssessmentReviewSection(viewModel)
+        _buildPracticeReviewSection(viewModel)
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
@@ -135,7 +135,7 @@ class DuolingoWritingPractice3Review
       title: viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.first.value);
 
-  Widget _buildAssessmentFormFieldWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildAssessmentFormField(viewModel),
@@ -153,7 +153,7 @@ class DuolingoWritingPractice3Review
             filled: practiceController.text.isNotEmpty),
       );
 
-  Widget _buildAssessmentReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
         review: viewModel.questions[viewModel.currentQuestion]
             .dynamicPayload?.response?.first.value,

@@ -123,7 +123,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   String? get refreshedUrl => _refreshedUrl;
 
-  int _currentQuestion = 6;
+  int _currentQuestion = 0;
 
   int get currentQuestion => _currentQuestion;
 
