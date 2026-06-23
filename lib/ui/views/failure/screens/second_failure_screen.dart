@@ -128,22 +128,11 @@ class SecondFailureScreen extends ViewModelWidget<FailureViewModel> {
 
   List<Widget> _buildLoadingTextChildren() => [
         _buildLoadingText(),
-        horizontalSpaceSmall,
-        _buildIndicatorWrapper(),
-        verticalSpaceSmall,
+    horizontalSpaceSmall,
         _buildRetryButtonWrapper()
       ];
 
   Widget _buildLoadingText() => Text('$label...', style: style16P600);
-
-  Widget _buildIndicatorWrapper() => SizedBox(
-        width: 16,
-        height: 16,
-        child: _buildIndicator(),
-      );
-
-  Widget _buildIndicator() =>
-      const CustomCircularProgressIndicator(color: kcPrimaryColor);
 
   Widget _buildRetryButtonWrapper() => GestureDetector(
         onTap: onTap,

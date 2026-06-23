@@ -108,6 +108,8 @@ class DuolingoSpeakingPractice4Question
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownState(viewModel),
+          verticalSpaceSmall,
+
         ],
       );
 

@@ -55,6 +55,7 @@ class NotificationCard extends StatelessWidget {
 
   Widget _buildTitle() => Text(
         notification.payload?.headline ?? '',
+        maxLines: 1,
         style: style16DG600,
       );
 
