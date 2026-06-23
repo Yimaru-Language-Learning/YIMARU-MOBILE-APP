@@ -188,8 +188,9 @@ class DuolingoSpeakingPractice2Question
         borderRadius: 12,
         text: 'Start Speaking',
         foregroundColor: kcWhite,
-        onTap: () => _next(viewModel),
         backgroundColor: kcPrimaryColor,
+        onTap: ()async => await  _next(viewModel),
+
       );
 
   Widget _buildStartRecState(CoursePracticeViewModel viewModel) =>

@@ -91,7 +91,9 @@ class DuolingoSpeakingPractice3Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(),
+          _buildCountdownWrapper(viewModel),
+          verticalSpaceSmall,
+
         ],
       );
 
@@ -111,7 +113,13 @@ class DuolingoSpeakingPractice3Question
     user: viewModel.user?.firstName ?? '',
     onCancel: () async => await _cancel(viewModel),
   );
+  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
+      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
+  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
+    duration: viewModel.countdown,
+    onEnd: () async => await _next(viewModel),
+  );
   Widget _buildSpeakingIndicatorWrapper(CoursePracticeViewModel viewModel) =>
       Column(
         mainAxisSize: MainAxisSize.min,
@@ -126,10 +134,7 @@ class DuolingoSpeakingPractice3Question
         _buildQuestion(viewModel),
       ];
 
-  Widget _buildCountdownWrapper() =>
-      Align(alignment: Alignment.centerRight, child: _buildCountdown());
 
-  Widget _buildCountdown() => const CountdownTimer();
 
   Widget _buildTitle() => Text(
         'Prepare to speak about the topic below',
@@ -162,8 +167,9 @@ class DuolingoSpeakingPractice3Question
         borderRadius: 12,
         text: 'Start Speaking',
         foregroundColor: kcWhite,
-        onTap: () => _next(viewModel),
         backgroundColor: kcPrimaryColor,
+        onTap: ()async => await  _next(viewModel),
+
       );
 
   Widget _buildStartRecState(CoursePracticeViewModel viewModel) =>

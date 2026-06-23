@@ -6,6 +6,7 @@ import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
+import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/duolingo_practice_app_bar.dart';
 import '../course_practice_viewmodel.dart';
 
@@ -71,6 +72,8 @@ class DuolingoWritingPractice1Review
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
+          _buildCountdownWrapper(viewModel),
+          verticalSpaceSmall
         ],
       );
 
@@ -91,6 +94,14 @@ class DuolingoWritingPractice1Review
     onCancel: () async => await _cancel(viewModel),
   );
 
+  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
+    alignment: Alignment.centerRight,
+    child: _buildCountdown(viewModel),
+  );
+
+  Widget _buildCountdown(CoursePracticeViewModel viewModel) =>
+      const CountdownTimer(time: '00:00');
+
   Widget _buildExpandedBody(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildBodyScroller(viewModel));
 
@@ -106,7 +117,9 @@ class DuolingoWritingPractice1Review
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
-        _buildTitle(viewModel),
+    verticalSpaceMedium,
+
+    _buildTitleWrapper(viewModel),
         verticalSpaceSmall,
         _buildImageContainer(viewModel),
         verticalSpaceMedium,
@@ -114,9 +127,13 @@ class DuolingoWritingPractice1Review
         verticalSpaceMedium,
         _buildPracticeReviewSection(viewModel)
       ];
+  Widget _buildTitleWrapper(CoursePracticeViewModel viewModel)=>
+  Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 15),
+  child: _buildTitle(viewModel),);
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-    'Write a description of the image below for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value['seconds']} seconds',
+    'Write a description of the image below for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds',
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -163,7 +180,7 @@ class DuolingoWritingPractice1Review
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
         review: viewModel.questions[viewModel.currentQuestion]
-            .dynamicPayload?.response?.first.value,
+            .dynamicPayload?.response?.last.value,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),);

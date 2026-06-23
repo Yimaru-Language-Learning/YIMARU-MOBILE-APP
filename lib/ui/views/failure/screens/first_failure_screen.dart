@@ -128,21 +128,11 @@ class FirstFailureScreen extends ViewModelWidget<FailureViewModel> {
   List<Widget> _buildLoadingTextChildren() => [
         _buildLoadingText(),
         horizontalSpaceSmall,
-        _buildIndicatorWrapper(),
-        horizontalSpaceSmall,
         _buildRetryButtonWrapper()
       ];
 
   Widget _buildLoadingText() => Text('$label...', style: style16W600);
 
-  Widget _buildIndicatorWrapper() => SizedBox(
-        width: 16,
-        height: 16,
-        child: _buildIndicator(),
-      );
-
-  Widget _buildIndicator() =>
-      const CustomCircularProgressIndicator(color: kcWhite);
 
   Widget _buildRetryButtonWrapper() => GestureDetector(
         onTap: onTap,

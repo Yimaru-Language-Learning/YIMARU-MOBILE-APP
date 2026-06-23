@@ -40,7 +40,7 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       int stimulusLastSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.last.value['seconds'];
       viewModel.setCountdown(stimulusLastSec);
-    } else if (id == 0 /*Speaking sample*/) {
+    } else if (id == 36 /*Speaking sample*/) {
       int stimulusLastSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.last.value['seconds'];
       viewModel.setCountdown(stimulusLastSec);
@@ -49,10 +49,10 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
           .dynamicPayload?.stimulus?.last.value['seconds'];
       viewModel.resetSpeakingState();
       viewModel.setCountdown(stimulusLastSec);
-    }else if(id == 0/*Speak about the photo*/){
-      int responseLastSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.response?.last.value['seconds'];
-      viewModel.setCountdown(responseLastSec);
+    }else if(id == 22/*Speak about the photo*/){
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setCountdown(responseFirstSec);
     }else if (id == 0/*Writing sample*/ ) {
       int responseLastSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.last.value['seconds'];
@@ -237,6 +237,6 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         foregroundColor: kcWhite,
         text: 'Start preparation',
         backgroundColor: kcPrimaryColor,
-        onTap: () => _nextScreen(viewModel),
+        onTap: ()async => await _nextScreen(viewModel),
       );
 }

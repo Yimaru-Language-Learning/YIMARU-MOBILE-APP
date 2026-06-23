@@ -19,7 +19,7 @@ class DuolingoSpeakingPractice2Answer
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
-    viewModel.setNextButton();
+    viewModel.nextScreen();
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -113,13 +113,12 @@ class DuolingoSpeakingPractice2Answer
         onCancel: () async => await _cancel(viewModel),
       );
 
-
   Widget _buildSpeakingIndicatorExpandedWrapper(
-      CoursePracticeViewModel viewModel) =>
+          CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildSpeakingIndicatorScrollerWrapper(viewModel));
 
   Widget _buildSpeakingIndicatorScrollerWrapper(
-      CoursePracticeViewModel viewModel) =>
+          CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(child: _buildSpeakingIndicatorColumn(viewModel));
 
   Widget _buildSpeakingIndicatorColumn(CoursePracticeViewModel viewModel) =>
@@ -148,9 +147,8 @@ class DuolingoSpeakingPractice2Answer
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
-    onEnd: () async => await _stopRecording(viewModel),
-
-  );
+        onEnd: () async => await _stopRecording(viewModel),
+      );
 
   Widget _buildTitle() => Text(
         'Speak about the topic below',
@@ -200,21 +198,17 @@ class DuolingoSpeakingPractice2Answer
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
-        padding: const EdgeInsets.only(top: 25,bottom: 50),
+        padding: const EdgeInsets.only(top: 25, bottom: 50),
         child: _buildContinueButton(viewModel),
       );
 
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        text: 'Summit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor: viewModel.buttonActive
-            ? kcPrimaryColor
-            : kcPrimaryColor.withValues(alpha: 0.1),
-        onTap: viewModel.buttonActive ? viewModel.nextScreen : null,
-        text: viewModel.buttonActive
-            ? 'Summit'
-            : 'You can submit after ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']}sec',
+        onTap: viewModel.nextScreen,
+        backgroundColor: kcPrimaryColor,
       );
 }

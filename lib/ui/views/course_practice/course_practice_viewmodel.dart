@@ -345,30 +345,30 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Question param
   Future<void> setQuestionParam(int id) async {
-    if (id == 12) {
+    if (id == 12 /*Speak about the photo*/) {
       // await refreshQuestionUrl(_questions[_currentQuestion]);
       _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (id == 13) {
+    } else if (id == 13 /*Read then speak*/) {
       _selectedQuestionParam = _questionParams.elementAt(1);
-    } else if (id == 0) {
+    } else if (id == 36 /*Speaking sample*/) {
       _selectedQuestionParam = _questionParams.elementAt(2);
-    } else if (id == 14) {
+    } else if (id == 14 /*Interactive speaking*/) {
       _selectedQuestionParam = _questionParams.elementAt(3);
-    } else if (id == 0) {
+    } else if (id == 22 /*Speak about the photo*/) {
       _selectedQuestionParam = _questionParams.elementAt(4);
-    } else if (id == 0) {
+    } else if (id == 0/*Writing sample*/) {
       _selectedQuestionParam = _questionParams.elementAt(5);
-    } else if (id == 24) {
+    } else if (id == 24/*Interactive writing part 1*/) {
       _selectedQuestionParam = _questionParams.elementAt(6);
-    } else if (id == 0) {
+    } else if (id == 0 /*Interactive writing part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(7);
-    } else if (id == 28) {
+    } else if (id == 28/*Listen and type*/) {
       _selectedQuestionParam = _questionParams.elementAt(8);
-    } else if (id == 0) {
+    } else if (id == 0/*Interactive listening part 1*/) {
       _selectedQuestionParam = _questionParams.elementAt(9);
-    } else if (id == 29) {
+    } else if (id == 29/*Interactive listening part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(10);
-    } else if (id == 0) {
+    } else if (id == 0/*Interactive listening part 3*/) {
       _selectedQuestionParam = _questionParams.elementAt(11);
     } else if (id == 0) {
       _selectedQuestionParam = _questionParams.elementAt(12);
