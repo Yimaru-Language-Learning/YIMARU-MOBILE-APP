@@ -19,13 +19,18 @@ class InAppUpdateService {
 
   Future<void> checkForUpdate() async {
     try {
-      final info = await InAppUpdate.checkForUpdate();
-      final String version = await _statusCheckerService.getAppVersion();
+      final String? deviceVersion = await _statusCheckerService.getAppVersion();
 
-      if (version != info.availableVersionCode.toString()) {
+      final remoteVersion = await InAppUpdate.checkForUpdate();
+      print('IN-APP UPDATE REMOTE VERSION CODE: $deviceVersion');
+      print('IN-APP UPDATE DEVICE VERSION COD ${remoteVersion.availableVersionCode.toString()}');
+
+
+
+      if (deviceVersion != remoteVersion.availableVersionCode.toString()) {
         Map<String, dynamic> data = {
           'platform': 'ANDROID',
-          'version_code': info.availableVersionCode
+          'version_code': remoteVersion.availableVersionCode,
         };
         Map<String, dynamic> response = await _apiService.checkUpdate(data);
 

@@ -8,34 +8,32 @@ class StatusCheckerService {
   // Dependency injection
   final storage = locator<SecureStorageService>();
 
-  // Initialization
-  bool _previousConnection = true;
-
-  bool get previousConnection => _previousConnection;
-
   // Check internet connection
   Future<bool> checkConnection() async {
     if (await InternetConnection().hasInternetAccess) {
-      _previousConnection = true;
       return true;
     } else {
-      if (_previousConnection) {
-        _previousConnection = false;
-      }
 
       return false;
     }
   }
 
   // Get app version
-  Future<String> getAppVersion() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  Future<String?> getAppVersion() async {
+    try{
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    String version = packageInfo.version; // e.g. 1.0.0
-    String buildNumber = packageInfo.buildNumber; // version code
+      String version = packageInfo.version; // e.g. 1.0.0
+      String versionCode = packageInfo.buildNumber; // version code
 
-    print("Version: $version");
-    print("Build Number: $buildNumber");
-    return buildNumber;
+      print("Version: $version");
+      print("Build Number: $versionCode");
+      return versionCode;
+
+    }catch(e){
+      print('IN-APP UPDATE EXCEPTION: ${e.toString()}');
+      return null;
+    }
+
   }
 }
