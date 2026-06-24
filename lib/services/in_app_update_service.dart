@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/services.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -19,11 +21,11 @@ class InAppUpdateService {
 
   Future<void> checkForUpdate() async {
     try {
-      final String? deviceVersion = await _statusCheckerService.getAppVersion();
 
+      final String? deviceVersion = await _statusCheckerService.getAppVersion();
+      log('IN-APP UPDATE DEVICE VERSION CODE: $deviceVersion');
       final remoteVersion = await InAppUpdate.checkForUpdate();
-      print('IN-APP UPDATE REMOTE VERSION CODE: $deviceVersion');
-      print('IN-APP UPDATE DEVICE VERSION COD ${remoteVersion.availableVersionCode.toString()}');
+      log('IN-APP UPDATE REMOTE VERSION CODE ${remoteVersion.availableVersionCode.toString()}');
 
 
 
@@ -33,6 +35,7 @@ class InAppUpdateService {
           'version_code': remoteVersion.availableVersionCode,
         };
         Map<String, dynamic> response = await _apiService.checkUpdate(data);
+        log('IN-APP UPDATE RESPONSE $response');
 
         if (response['status'] == ResponseStatus.success) {
           AppUpdate update = response['data'] as AppUpdate;
