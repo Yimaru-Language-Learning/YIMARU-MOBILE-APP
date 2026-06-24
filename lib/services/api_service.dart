@@ -1193,11 +1193,10 @@ class ApiService {
   }
 
   // Check update
-  Future<Map<String, dynamic>> checkUpdate(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> checkUpdate(String versionCode) async {
     try {
       Response response = await _service.dio.get(
-        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kAppUrl/$kApiVersionUrl/$kCheckUrl',
-        data: data,
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kAppUrl/$kVersionUrl/$kCheckUrl?platform=ANDROID&version_code=$versionCode',
       );
 
       if (response.statusCode == 200) {
