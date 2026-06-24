@@ -19,73 +19,80 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) async =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: kcTransparent,
-        builder: (cxt) => _buildSheet( viewModel),
+        builder: (cxt) => _buildSheet(viewModel),
       );
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildSafeWrapper(context: context, viewModel: viewModel),
       );
 
-  Widget _buildSafeWrapper({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildSafeWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SafeArea(child: _buildScaffold(context: context, viewModel: viewModel));
 
-  Widget _buildScaffold({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Column(
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildScaffoldChildren(context: context, viewModel: viewModel),
+        children:
+            _buildScaffoldChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => [
+  List<Widget> _buildScaffoldChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         _buildAppBar(context: context, viewModel: viewModel),
         verticalSpaceMedium,
         _buildExpandedBody(viewModel)
       ];
 
-  Widget _buildExpandedBody(  CoursePracticeViewModel viewModel) =>
+  Widget _buildExpandedBody(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildBodyWrapper(viewModel));
 
-  Widget _buildBodyWrapper( CoursePracticeViewModel viewModel) => Padding(
+  Widget _buildBodyWrapper(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildBody(viewModel),
       );
 
-  Widget _buildBody( CoursePracticeViewModel viewModel) => Column(
+  Widget _buildBody(CoursePracticeViewModel viewModel) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _buildBodyChildren(viewModel),
       );
 
-  List<Widget> _buildBodyChildren(
-     CoursePracticeViewModel viewModel) =>
+  List<Widget> _buildBodyChildren(CoursePracticeViewModel viewModel) =>
       [_buildUpperColumn(viewModel), _buildLowerColumn(viewModel)];
 
-  Widget _buildUpperColumn(  CoursePracticeViewModel viewModel) => Column(
+  Widget _buildUpperColumn(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: _buildUpperColumnChildren(viewModel),
       );
 
-  List<Widget> _buildUpperColumnChildren( CoursePracticeViewModel viewModel) => [
-    verticalSpaceMassive,
+  List<Widget> _buildUpperColumnChildren(CoursePracticeViewModel viewModel) => [
+        verticalSpaceMassive,
         _buildIcon(),
         verticalSpaceMedium,
         _buildTitle(),
@@ -93,20 +100,17 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
         _buildSubtitle(),
       ];
 
-  Widget _buildAppBar( {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildAppBar(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
-
         onClose: () async =>
-        await _showSheet(context: context, viewModel: viewModel),
-          title:
-          'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
-
+            await _showSheet(context: context, viewModel: viewModel),
+        title:
+            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-  Widget _buildSheet(
-     CoursePracticeViewModel viewModel) =>
-      CancelPracticeSheet(
+  Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
@@ -147,7 +151,7 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
         borderRadius: 12,
         text: 'Practice Again',
         foregroundColor: kcWhite,
-      //  onTap: () => viewModel.goTo(0),
+        //  onTap: () => viewModel.goTo(0),
         backgroundColor: kcPrimaryColor,
       );
 

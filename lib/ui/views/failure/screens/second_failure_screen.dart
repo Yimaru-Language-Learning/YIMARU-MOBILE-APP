@@ -126,11 +126,8 @@ class SecondFailureScreen extends ViewModelWidget<FailureViewModel> {
         children: _buildLoadingTextChildren(),
       );
 
-  List<Widget> _buildLoadingTextChildren() => [
-        _buildLoadingText(),
-    horizontalSpaceSmall,
-        _buildRetryButtonWrapper()
-      ];
+  List<Widget> _buildLoadingTextChildren() =>
+      [_buildLoadingText(), horizontalSpaceSmall, _buildRetryButtonWrapper()];
 
   Widget _buildLoadingText() => Text('$label...', style: style16P600);
 

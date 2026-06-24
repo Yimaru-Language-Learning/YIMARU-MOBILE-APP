@@ -7,7 +7,8 @@ import 'custom_elevated_button.dart';
 class DuolingoPracticeReviewSection extends StatelessWidget {
   final String review;
   final GestureTapCallback? onTap;
-  const DuolingoPracticeReviewSection({super.key, this.onTap,required this.review});
+  const DuolingoPracticeReviewSection(
+      {super.key, this.onTap, required this.review});
 
   @override
   Widget build(BuildContext context) => _buildReviewContainer();
@@ -36,9 +37,8 @@ class DuolingoPracticeReviewSection extends StatelessWidget {
       );
 
   Widget _buildSampleAnswer() => Text(
-          review,
-
-          style: style14DG400,
+        review,
+        style: style14DG400,
         textAlign: TextAlign.center,
       );
 

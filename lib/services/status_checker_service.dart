@@ -13,14 +13,13 @@ class StatusCheckerService {
     if (await InternetConnection().hasInternetAccess) {
       return true;
     } else {
-
       return false;
     }
   }
 
   // Get app version
   Future<String?> getAppVersion() async {
-    try{
+    try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
       String version = packageInfo.version; // e.g. 1.0.0
@@ -29,11 +28,9 @@ class StatusCheckerService {
       print("Version: $version");
       print("Build Number: $versionCode");
       return versionCode;
-
-    }catch(e){
+    } catch (e) {
       print('IN-APP UPDATE EXCEPTION: ${e.toString()}');
       return null;
     }
-
   }
 }

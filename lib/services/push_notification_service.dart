@@ -129,7 +129,7 @@ class PushNotificationService {
     await FirebaseMessaging.instance.subscribeToTopic(topic);
   }
 
-  Future<String?> getDeviceToken()async => await _messaging.getToken();
+  Future<String?> getDeviceToken() async => await _messaging.getToken();
 
   Future<void> updateFCMToken() async {
     _messaging.onTokenRefresh.listen((newToken) {

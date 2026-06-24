@@ -195,7 +195,8 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
             lesson: lessons[index],
             onVideoTap: () async =>
                 await viewModel.navigateToCourseLessonDetail(lessons[index]),
-            onPracticeTap: ()async=>await viewModel.navigateToCoursePractice(lessons[index].id ?? 0)),
+            onPracticeTap: () async => await viewModel
+                .navigateToCoursePractice(lessons[index].id ?? 0)),
       );
 
   Widget _buildCourseLessonTile({

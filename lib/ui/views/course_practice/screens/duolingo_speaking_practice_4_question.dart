@@ -25,13 +25,12 @@ class DuolingoSpeakingPractice4Question
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds']);
     await viewModel.playVoicePrompt(stimulus);
-
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
@@ -109,7 +108,6 @@ class DuolingoSpeakingPractice4Question
           verticalSpaceSmall,
           _buildCountdownState(viewModel),
           verticalSpaceSmall,
-
         ],
       );
 

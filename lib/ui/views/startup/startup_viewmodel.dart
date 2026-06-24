@@ -151,7 +151,6 @@ class StartupViewModel extends ReactiveViewModel {
   // In-app update
   Future<void> initialization() async {
     if (await _statusChecker.checkConnection()) {
-
       await _inAppUpdateService.checkForUpdate();
     }
   }

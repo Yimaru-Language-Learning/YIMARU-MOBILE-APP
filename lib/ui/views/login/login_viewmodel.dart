@@ -240,8 +240,6 @@ class LoginViewModel extends ReactiveViewModel
     }
   }
 
-
-
   // Login with phone
   Future<void> loginWithPhoneNumber() async =>
       await runBusyFuture(_loginWithPhoneNumber(),
@@ -260,7 +258,6 @@ class LoginViewModel extends ReactiveViewModel
   }
 
   // Verify otp
-
 
   Future<void> verifyOtp() async =>
       await runBusyFuture(_verifyOtp(), busyObject: StateObjects.verifyOtp);
@@ -285,7 +282,6 @@ class LoginViewModel extends ReactiveViewModel
       }
     }
   }
-
 
   // Register device
   Future<void> _registerDevice() async {

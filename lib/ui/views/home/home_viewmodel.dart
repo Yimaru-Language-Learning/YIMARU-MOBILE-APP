@@ -62,6 +62,4 @@ class HomeViewModel extends ReactiveViewModel {
       await _inAppNotificationService.getUnreadNotifications();
     }
   }
-
-
 }

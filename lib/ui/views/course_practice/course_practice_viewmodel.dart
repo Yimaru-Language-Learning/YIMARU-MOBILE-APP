@@ -284,7 +284,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   bool get buttonActive => _buttonActive;
 
   // In-app navigation
-  final int _currentPage = 0;
+  int _currentPage = 0;
 
   int get currentPage => _currentPage;
 
@@ -356,19 +356,19 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(3);
     } else if (id == 22 /*Speak about the photo*/) {
       _selectedQuestionParam = _questionParams.elementAt(4);
-    } else if (id == 0/*Writing sample*/) {
+    } else if (id == 0 /*Writing sample*/) {
       _selectedQuestionParam = _questionParams.elementAt(5);
-    } else if (id == 24/*Interactive writing part 1*/) {
+    } else if (id == 24 /*Interactive writing part 1*/) {
       _selectedQuestionParam = _questionParams.elementAt(6);
     } else if (id == 0 /*Interactive writing part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(7);
-    } else if (id == 28/*Listen and type*/) {
+    } else if (id == 28 /*Listen and type*/) {
       _selectedQuestionParam = _questionParams.elementAt(8);
-    } else if (id == 0/*Interactive listening part 1*/) {
+    } else if (id == 0 /*Interactive listening part 1*/) {
       _selectedQuestionParam = _questionParams.elementAt(9);
-    } else if (id == 29/*Interactive listening part 2*/) {
+    } else if (id == 29 /*Interactive listening part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(10);
-    } else if (id == 0/*Interactive listening part 3*/) {
+    } else if (id == 0 /*Interactive listening part 3*/) {
       _selectedQuestionParam = _questionParams.elementAt(11);
     } else if (id == 0) {
       _selectedQuestionParam = _questionParams.elementAt(12);
@@ -515,12 +515,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   void goBack() {
-/*    if (_currentPage == 0) {
+    if (_currentPage == 0) {
       pop();
     } else {
       _currentPage--;
       rebuildUi();
-    }*/
+    }
   }
 
   // Navigation
@@ -529,31 +529,29 @@ class CoursePracticeViewModel extends ReactiveViewModel
   // Remote api call
 
   // Learn practice
-  Future<void> getCoursePractices(
-          {required int id, required CoursePractices practice}) async =>
-      await runBusyFuture(_getCoursePractices(id: id, practice: practice),
+  Future<void> getCoursePractices(int id) async =>
+      await runBusyFuture(_getCoursePractices(id),
           busyObject: StateObjects.coursePractice);
 
-  Future<void> _getCoursePractices(
-      {required int id, required CoursePractices practice}) async {
+  Future<void> _getCoursePractices(int id) async {
     if (await _statusChecker.checkConnection()) {
-      if (practice == CoursePractices.courseCatalog) {
-        _practices = await _apiService.getCoursePractices(id);
-        //  await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
-      } else if (practice == CoursePractices.unit) {
-        _practices = await _apiService.getCoursePractices(id);
-        // await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
-      } else {
-        _practices = await _apiService.getCoursePractices(id);
-        await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
-        await setQuestionParam(
-            _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
-      }
+      _practices = await _apiService.getCoursePractices(id);
+      print('PRACTICES ${_practices.length}');
     }
   }
 
-  Future<void> _getLearnPracticeQuestions(int id) async {
+  // Course practice questions
+  Future<void> getCoursePracticeQuestions(int id) async =>
+      await runBusyFuture(_getCoursePracticeQuestions(id),
+          busyObject: StateObjects.coursePractice);
+
+  Future<void> _getCoursePracticeQuestions(int id) async {
+    _currentQuestion = 0;
     _questions = await _apiService.getCourseQuestions(id);
+    await setQuestionParam(
+        _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
+    _currentPage = 1;
+
   }
 
   // Refresh url

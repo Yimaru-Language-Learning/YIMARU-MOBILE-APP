@@ -52,18 +52,15 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     with $CoursePracticeView {
   final int id;
 
-  final CoursePractices practice;
-
   const CoursePracticeView({
     Key? key,
     required this.id,
-    required this.practice,
   }) : super(key: key);
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
@@ -151,7 +148,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 22 /*Speak about the photo*/) {
       return DuolingoWritingPractice1Review(
           practiceController: practiceController);
-  } else if (id == 0 /*Writing sample*/) {
+    } else if (id == 0 /*Writing sample*/) {
       return DuolingoWritingPractice2Review(
           practiceController: practiceController);
     } else if (id == 24 /*Interactive writing part 1*/) {
@@ -180,7 +177,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
   @override
   void onViewModelReady(CoursePracticeViewModel viewModel) async {
     syncFormWithViewModel(viewModel);
-    await viewModel.getCoursePractices(id: id, practice: practice);
+    await viewModel.getCoursePractices(id);
     super.onViewModelReady(viewModel);
   }
 
@@ -224,29 +221,27 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.coursePractice)
           ? const PageLoadingIndicator()
-          : viewModel.practices.isEmpty || viewModel.questions.isEmpty
+          : viewModel.practices.isEmpty
               ? _buildPageLoadingIndicator(viewModel)
               : _buildBody(viewModel);
 
   Widget _buildPageLoadingIndicator(CoursePracticeViewModel viewModel) =>
       PracticeLoadingScreen(
+        isEmpty: viewModel.practices.isEmpty,
         isLoading: viewModel.busy(StateObjects.coursePractice),
-        onTap: () async =>
-            await viewModel.getCoursePractices(id: id, practice: practice),
+        onTap: () async => await viewModel.getCoursePractices(id),
         onPop: viewModel.practices.isEmpty || viewModel.questions.isEmpty
             ? viewModel.pop
             : null,
-        isEmpty: viewModel.practices.isEmpty || viewModel.questions.isEmpty,
       );
 
   Widget _buildBody(CoursePracticeViewModel viewModel) => IndexedStack(
       index: viewModel.currentPage, children: _buildBodyChildren(viewModel));
 
-  List<Widget> _buildBodyChildren(CoursePracticeViewModel viewModel) => [
-        if (practice != CoursePractices.lesson)
-          _buildDuolingoAssessmentsScreen(),
-        _buildQuestionSetView(viewModel)
-      ];
+  List<Widget> _buildBodyChildren(CoursePracticeViewModel viewModel) =>
+      [_buildDuolingoAssessmentsScreen(), _buildQuestionSetView(viewModel)];
+
+  Widget _buildDuolingoAssessmentsScreen() => const DuolingoPracticesScreens();
 
   Widget _buildQuestionSetView(CoursePracticeViewModel viewModel) =>
       PageView.builder(
@@ -285,17 +280,15 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
                 24 &&
             viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
-                29&&
+                29 &&
             viewModel.questions[viewModel.currentQuestion]
-                .questionTypeDefinitionId !=
+                    .questionTypeDefinitionId !=
                 22)
           _buildDuolingoAnswerScreen(viewModel),
         _buildDuolingoReviewScreen(viewModel),
         // _buildDuolingoRetakeScreen(viewModel),
         _buildDuolingoFinishScreen(viewModel),
       ];
-
-  Widget _buildDuolingoAssessmentsScreen() => const DuolingoPracticesScreens();
 
   Widget _buildDuolingoIntroScreen(CoursePracticeViewModel viewModel) =>
       DuolingoIntroScreen(

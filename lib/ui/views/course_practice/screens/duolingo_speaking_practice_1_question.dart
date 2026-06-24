@@ -21,7 +21,7 @@ class DuolingoSpeakingPractice1Question
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
@@ -174,7 +174,7 @@ class DuolingoSpeakingPractice1Question
         spacerWidth: 0,
         enableDescriptions: false,
         timeTextStyle: style14P600,
-        onEnd:()=> _next(viewModel),
+        onEnd: () => _next(viewModel),
         colonsTextStyle: style14P400,
         format: CountDownTimerFormat.minutesSeconds,
         endTime: viewModel.countdown ?? DateTime.now(),
@@ -218,8 +218,7 @@ class DuolingoSpeakingPractice1Question
         text: 'Start Speaking',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: ()async => await  _next(viewModel),
-
+        onTap: () async => await _next(viewModel),
       );
 
   Widget _buildStartRecState(CoursePracticeViewModel viewModel) =>

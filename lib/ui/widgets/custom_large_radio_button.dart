@@ -38,7 +38,9 @@ class CustomLargeRadioButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
           color: selected ? kcPrimaryColor.withValues(alpha: 0.1) : kcWhite,
           border: Border.all(
-            color: selected ? kcPrimaryColor : kcPrimaryColor.withValues(alpha: 0.75),
+            color: selected
+                ? kcPrimaryColor
+                : kcPrimaryColor.withValues(alpha: 0.75),
           ),
         ),
         child: _buildButtonColumnWrapper(),

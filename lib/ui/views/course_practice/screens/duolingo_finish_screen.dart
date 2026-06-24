@@ -19,7 +19,7 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
@@ -107,8 +107,7 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-        'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
-
+            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(

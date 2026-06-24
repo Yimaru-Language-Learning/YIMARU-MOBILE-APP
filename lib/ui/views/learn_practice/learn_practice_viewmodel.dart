@@ -130,8 +130,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   // Voice recorder
   Future<void> stopRecording() async {
-      await _voiceRecorderService.stopRecording();
-
+    await _voiceRecorderService.stopRecording();
   }
 
   Future<void> startRecording() async => await runBusyFuture(_startRecording(),
