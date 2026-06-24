@@ -119,7 +119,8 @@ InputDecoration inputDecoration(
       errorBorder: errorBorder,
       enabledBorder: enabledBorder,
       focusedBorder: focusedBorder,
-      fillColor: focus || filled ? kcPrimaryColor.withValues(alpha: 0.09) : kcWhite,
+      fillColor:
+          focus || filled ? kcPrimaryColor.withValues(alpha: 0.09) : kcWhite,
     );
 
 Border rightBorder = Border(

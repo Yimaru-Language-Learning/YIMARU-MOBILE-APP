@@ -9,7 +9,6 @@ import '../../../widgets/duolingo_practice_app_bar.dart';
 import '../course_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_view.form.dart';
 
-
 class DuolingoListeningPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   final TextEditingController practiceController;
@@ -73,31 +72,25 @@ class DuolingoListeningPractice2Question
         _buildLabel('1. Focus of the conference:'),
         verticalSpaceTiny,
         _buildPracticeFormField(viewModel),
-        if (viewModel.hasPracticeValidationMessage &&
-            viewModel.focusPractice)
+        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           verticalSpaceTiny,
-        if (viewModel.hasPracticeValidationMessage &&
-            viewModel.focusPractice)
+        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
         verticalSpaceSmall,
         _buildLabel('2. Number of presentations:'),
         verticalSpaceTiny,
         _buildPracticeFormField(viewModel),
-        if (viewModel.hasPracticeValidationMessage &&
-            viewModel.focusPractice)
+        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           verticalSpaceTiny,
-        if (viewModel.hasPracticeValidationMessage &&
-            viewModel.focusPractice)
+        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
         verticalSpaceSmall,
         _buildLabel('3. Keynote speaker’s field:'),
         verticalSpaceTiny,
         _buildPracticeFormField(viewModel),
-        if (viewModel.hasPracticeValidationMessage &&
-            viewModel.focusPractice)
+        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           verticalSpaceTiny,
-        if (viewModel.hasPracticeValidationMessage &&
-            viewModel.focusPractice)
+        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
       ];
 

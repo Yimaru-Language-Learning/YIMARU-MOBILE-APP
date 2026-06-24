@@ -19,7 +19,7 @@ class DuolingoSpeakingPractice2Question
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
@@ -129,7 +129,7 @@ class DuolingoSpeakingPractice2Question
       Expanded(child: _buildSpeakingIndicatorScrollerWrapper(viewModel));
 
   Widget _buildSpeakingIndicatorScrollerWrapper(
-      CoursePracticeViewModel viewModel) =>
+          CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(child: _buildSpeakingIndicatorWrapper(viewModel));
 
   Widget _buildSpeakingIndicatorWrapper(CoursePracticeViewModel viewModel) =>
@@ -173,12 +173,12 @@ class DuolingoSpeakingPractice2Question
       DuolingoPracticeQuestionCard(
         title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                ?.stimulus?.first.value ,
+            ?.stimulus?.first.value,
       );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
-        padding: const EdgeInsets.only(top:25,bottom: 50),
+        padding: const EdgeInsets.only(top: 25, bottom: 50),
         child: _buildContinueButton(viewModel),
       );
 
@@ -189,8 +189,7 @@ class DuolingoSpeakingPractice2Question
         text: 'Start Speaking',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: ()async => await  _next(viewModel),
-
+        onTap: () async => await _next(viewModel),
       );
 
   Widget _buildStartRecState(CoursePracticeViewModel viewModel) =>

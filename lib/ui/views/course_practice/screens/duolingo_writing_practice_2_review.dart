@@ -19,12 +19,12 @@ class DuolingoWritingPractice2Review
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) async =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -32,69 +32,82 @@ class DuolingoWritingPractice2Review
         builder: (cxt) => _buildSheet(viewModel),
       );
 
-
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(   {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Scaffold(
-    backgroundColor: kcBackgroundColor,
-    body: _buildScaffold(context: context, viewModel: viewModel),
-  );
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Scaffold(
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffold(context: context, viewModel: viewModel),
+      );
 
-  Widget _buildScaffold(   {required BuildContext context,
-  required CoursePracticeViewModel viewModel}) =>
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
-  Widget _buildBodyColumn(   {required BuildContext context,
-required CoursePracticeViewModel viewModel}) => Column(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: _buildBodyColumnChildren(context: context, viewModel: viewModel),
-  );
+  Widget _buildBodyColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children:
+            _buildBodyColumnChildren(context: context, viewModel: viewModel),
+      );
 
-  List<Widget> _buildBodyColumnChildren(   {required BuildContext context,
-required CoursePracticeViewModel viewModel}) => [
-    _buildAppBarIndenter(context: context, viewModel: viewModel),
-    _buildQuestionSectionScrollerExpandedWrapper(viewModel),
-  ];
+  List<Widget> _buildBodyColumnChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
+        _buildAppBarIndenter(context: context, viewModel: viewModel),
+        _buildQuestionSectionScrollerExpandedWrapper(viewModel),
+      ];
 
-  Widget _buildAppBarIndenter(   {required BuildContext context,
-required CoursePracticeViewModel viewModel}) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildAppBarWrapper(context: context, viewModel: viewModel),
-  );
+  Widget _buildAppBarIndenter(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildAppBarWrapper(context: context, viewModel: viewModel),
+      );
 
-  Widget _buildAppBarWrapper(   {required BuildContext context,
-required CoursePracticeViewModel viewModel}) => Column(
-    children: [
-      verticalSpaceMedium,
-      _buildAppBar(context: context, viewModel: viewModel),
-      verticalSpaceSmall,
-    ],
-  );
+  Widget _buildAppBarWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
+        children: [
+          verticalSpaceMedium,
+          _buildAppBar(context: context, viewModel: viewModel),
+          verticalSpaceSmall,
+        ],
+      );
 
   Widget _buildAppBar(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeAppBar(
         onClose: () async =>
-        await _showSheet(context: context, viewModel: viewModel),
+            await _showSheet(context: context, viewModel: viewModel),
         title:
-        'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
-    onClose: viewModel.pop,
-    onContinue: viewModel.pop,
-    user: viewModel.user?.firstName ?? '',
-    onCancel: () async => await _cancel(viewModel),
-  );
+        onClose: viewModel.pop,
+        onContinue: viewModel.pop,
+        user: viewModel.user?.firstName ?? '',
+        onCancel: () async => await _cancel(viewModel),
+      );
 
-  Widget _buildQuestionSectionScrollerExpandedWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionSectionScrollerExpandedWrapper(
+          CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionSectionScrollerWrapper(viewModel));
 
-  Widget _buildQuestionSectionScrollerWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionSectionScrollerWrapper(
+          CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(
         child: _buildQuestionSectionWrapper(viewModel),
       );
@@ -107,7 +120,7 @@ required CoursePracticeViewModel viewModel}) => Column(
       );
 
   List<Widget> _buildQuestionQuestionSectionChildren(
-      CoursePracticeViewModel viewModel) =>
+          CoursePracticeViewModel viewModel) =>
       [
         verticalSpaceLarge,
         _buildTitle(viewModel),
@@ -119,20 +132,21 @@ required CoursePracticeViewModel viewModel}) => Column(
         _buildPracticeReviewSection(viewModel)
       ];
 
-  Widget _buildTitle( CoursePracticeViewModel viewModel) => Text(
-    'Write about the topic below for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes ${getSeconds(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} seconds.',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
+  Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
+        'Write about the topic below for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes ${getSeconds(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} seconds.',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
-  Widget _buildQuestionWrapper( CoursePracticeViewModel viewModel) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildQuestion(viewModel),
-  );
+  Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildQuestion(viewModel),
+      );
 
-  Widget _buildQuestion( CoursePracticeViewModel viewModel) =>  DuolingoPracticeQuestionCard(
-      subtitle: viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.first.value);
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
+      DuolingoPracticeQuestionCard(
+          subtitle: viewModel.questions[viewModel.currentQuestion]
+              .dynamicPayload?.stimulus?.first.value);
   Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -153,8 +167,8 @@ required CoursePracticeViewModel viewModel}) => Column(
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
-        review: viewModel.questions[viewModel.currentQuestion]
-            .dynamicPayload?.response?.first.value,
+        review: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?.first.value,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),

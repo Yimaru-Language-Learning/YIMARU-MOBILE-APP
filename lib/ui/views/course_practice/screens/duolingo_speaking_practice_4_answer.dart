@@ -17,12 +17,12 @@ class DuolingoSpeakingPractice4Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoSpeakingPractice4Answer({super.key});
 
-  Future<void> _startRecording(CoursePracticeViewModel viewModel)async{
-    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion].dynamicPayload
-        ?.response?.first.value['seconds']);
-  await  viewModel.startRecording();
-
+  Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
+    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
+        .dynamicPayload?.response?.first.value['seconds']);
+    await viewModel.startRecording();
   }
+
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.setNextButton();
@@ -31,7 +31,7 @@ class DuolingoSpeakingPractice4Answer
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(

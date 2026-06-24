@@ -21,7 +21,7 @@ class DuolingoWritingPractice1Question
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
@@ -117,12 +117,10 @@ class DuolingoWritingPractice1Question
         duration: viewModel.countdown,
       );
 
-  Widget _buildQuestionExpandedWrapper(
-      CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionScrollerWrapper(viewModel));
 
-  Widget _buildQuestionScrollerWrapper(
-      CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(child: _buildQuestionWrapper(viewModel));
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
@@ -132,7 +130,7 @@ class DuolingoWritingPractice1Question
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
-    verticalSpaceMedium,
+        verticalSpaceMedium,
         _buildTitle(viewModel),
         verticalSpaceSmall,
         _buildImageContainer(viewModel),

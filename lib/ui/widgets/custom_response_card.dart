@@ -12,78 +12,76 @@ class CustomResponseCard extends ViewModelWidget<CoursePracticeViewModel> {
   final Voice voice;
   final String title;
 
-  const CustomResponseCard(
-      {super.key,
-        required this.voice,
-        required this.title,
-      });
+  const CustomResponseCard({
+    super.key,
+    required this.voice,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildContainer(viewModel);
 
   Widget _buildContainer(CoursePracticeViewModel viewModel) => Container(
-    decoration: BoxDecoration(
-      color: kcWhite,
-      borderRadius: BorderRadius.circular(12),
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-    child: _buildRow(viewModel),
-  );
+        decoration: BoxDecoration(
+          color: kcWhite,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        child: _buildRow(viewModel),
+      );
 
   Widget _buildRow(CoursePracticeViewModel viewModel) => Row(
-    children: [_buildPlayButton(viewModel), _buildColumnWrapper()],
-  );
+        children: [_buildPlayButton(viewModel), _buildColumnWrapper()],
+      );
 
   Widget _buildPlayButton(CoursePracticeViewModel viewModel) => ElevatedButton(
-    style: const ButtonStyle(
-      shape: WidgetStatePropertyAll(CircleBorder()),
-      padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
-      shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
-      backgroundColor: WidgetStatePropertyAll(kcPrimaryColor),
-    ),
-    onPressed: () async =>
-    viewModel.player.state == PlayerState.playing
-        ? await viewModel.pauseAudio()
-        : await viewModel.playResult( voice),
-    child: _buildButtonState(viewModel),
-  );
+        style: const ButtonStyle(
+          shape: WidgetStatePropertyAll(CircleBorder()),
+          padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
+          shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
+          backgroundColor: WidgetStatePropertyAll(kcPrimaryColor),
+        ),
+        onPressed: () async => viewModel.player.state == PlayerState.playing
+            ? await viewModel.pauseAudio()
+            : await viewModel.playResult(voice),
+        child: _buildButtonState(viewModel),
+      );
 
   Widget _buildButtonState(CoursePracticeViewModel viewModel) =>
-
       viewModel.playing == voice
           ? viewModel.busy(StateObjects.coursePracticeReview)
-          ? _buildProgressIndicatorWrapper()
-          : viewModel.player.state == PlayerState.playing
-          ? _buildPauseIcon()
-          : _buildPlayIcon()
+              ? _buildProgressIndicatorWrapper()
+              : viewModel.player.state == PlayerState.playing
+                  ? _buildPauseIcon()
+                  : _buildPlayIcon()
           : _buildPlayIcon();
 
   Widget _buildProgressIndicatorWrapper() => Center(
-    child: _buildProgressIndicator(),
-  );
+        child: _buildProgressIndicator(),
+      );
 
   Widget _buildProgressIndicator() =>
       const CustomCircularProgressIndicator(color: kcWhite);
 
   Widget _buildPlayIcon() => const Icon(
-    Icons.play_arrow_rounded,
-    size: 25,
-    color: kcWhite,
-  );
+        Icons.play_arrow_rounded,
+        size: 25,
+        color: kcWhite,
+      );
 
   Widget _buildPauseIcon() => const Icon(
-    Icons.pause,
-    size: 25,
-    color: kcWhite,
-  );
+        Icons.pause,
+        size: 25,
+        color: kcWhite,
+      );
 
   Widget _buildColumnWrapper() => Expanded(child: _buildTitle());
 
   Widget _buildTitle() => Text(
-    title,
-    maxLines: 1,
-    softWrap: false,
-    style: style12RP600,
-  );
+        title,
+        maxLines: 1,
+        softWrap: false,
+        style: style12RP600,
+      );
 }

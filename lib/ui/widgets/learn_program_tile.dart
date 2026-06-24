@@ -93,7 +93,6 @@ class LearnProgramTile extends ViewModelWidget<LearnProgramViewModel> {
 
   Widget _buildTitle() => Text(
         program.name ?? '',
-
         style: (program.access?.isAccessible ?? false)
             ? style16P600
             : style16DG600,

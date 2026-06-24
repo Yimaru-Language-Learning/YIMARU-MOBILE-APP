@@ -22,7 +22,7 @@ class DuolingoListeningPractice4Question
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
@@ -86,7 +86,8 @@ class DuolingoListeningPractice4Question
       Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(context: context, viewModel: viewModel),     verticalSpaceSmall,
+          _buildAppBar(context: context, viewModel: viewModel),
+          verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
         ],
@@ -109,21 +110,18 @@ class DuolingoListeningPractice4Question
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildCountdownWrapper(      CoursePracticeViewModel viewModel) =>
-      Align(alignment: Alignment.centerRight, child:_buildCountdown(viewModel));
+  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
+      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
-  Widget _buildCountdown(      CoursePracticeViewModel viewModel)=>   CountdownTimer(
-    onEnd: viewModel.setNextButton,
-    duration:viewModel.countdown,
-  );
+  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
+        onEnd: viewModel.setNextButton,
+        duration: viewModel.countdown,
+      );
 
-
-  Widget _buildQuestionExpandedWrapper(
-      CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionScrollerWrapper(viewModel));
 
-  Widget _buildQuestionScrollerWrapper(
-      CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(child: _buildQuestionWrapper(viewModel));
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
@@ -145,13 +143,15 @@ class DuolingoListeningPractice4Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-      'Write summary of the conversation you just had.',
+        'Write summary of the conversation you just had.',
         style: style18DG700,
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>  DuolingoPracticeQuestionCard(
-        title:viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value ,
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
+      DuolingoPracticeQuestionCard(
+        title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value,
       );
 
   Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
@@ -179,7 +179,7 @@ class DuolingoListeningPractice4Question
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
-        padding: const EdgeInsets.only(top:25,bottom: 50),
+        padding: const EdgeInsets.only(top: 25, bottom: 50),
         child: _buildContinueButton(viewModel),
       );
 
@@ -189,11 +189,17 @@ class DuolingoListeningPractice4Question
         text: 'Summit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor:!viewModel.buttonActive? practiceController.text.isNotEmpty &&
-            !viewModel.hasPracticeValidationMessage
-            ? kcPrimaryColor
-            : kcPrimaryColor.withValues(alpha: 0.1):kcPrimaryColor,
-        onTap:!viewModel.buttonActive ?practiceController.text.isNotEmpty &&
-            !viewModel.hasPracticeValidationMessage ? viewModel.nextScreen : null:viewModel.nextScreen ,
+        backgroundColor: !viewModel.buttonActive
+            ? practiceController.text.isNotEmpty &&
+                    !viewModel.hasPracticeValidationMessage
+                ? kcPrimaryColor
+                : kcPrimaryColor.withValues(alpha: 0.1)
+            : kcPrimaryColor,
+        onTap: !viewModel.buttonActive
+            ? practiceController.text.isNotEmpty &&
+                    !viewModel.hasPracticeValidationMessage
+                ? viewModel.nextScreen
+                : null
+            : viewModel.nextScreen,
       );
 }

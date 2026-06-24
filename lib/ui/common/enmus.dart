@@ -71,7 +71,6 @@ enum StateObjects {
   coursePracticeReview,
   learnPracticeQuestion,
   completeLearnPractice,
-  coursePracticeQuestion,
   coursePracticeQuestions,
   recordLearnPracticeAnswer,
   recordCoursePracticeAnswer,

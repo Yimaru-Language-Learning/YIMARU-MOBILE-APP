@@ -19,17 +19,14 @@ class DuolingoWritingPractice2Answer
   const DuolingoWritingPractice2Answer(
       {super.key, required this.practiceController});
 
-  void _setButton(CoursePracticeViewModel viewModel)=>
-    viewModel.setNextButton();
-
+  void _setButton(CoursePracticeViewModel viewModel) =>
+      viewModel.setNextButton();
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
-
-
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -119,7 +116,7 @@ class DuolingoWritingPractice2Answer
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-    onEnd:()=> _setButton(viewModel),
+        onEnd: () => _setButton(viewModel),
         duration: viewModel.countdown,
       );
 
@@ -147,9 +144,11 @@ class DuolingoWritingPractice2Answer
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>  DuolingoPracticeQuestionCard(
-    title:viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value ,
-  );
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
+      DuolingoPracticeQuestionCard(
+        title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value,
+      );
 
   Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
       TextFormField(

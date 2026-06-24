@@ -15,11 +15,10 @@ class DuolingoListeningPractice3Review
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoListeningPractice3Review({super.key});
 
-
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
@@ -116,7 +115,6 @@ class DuolingoListeningPractice3Review
         child: _buildQuestionWrapper(viewModel),
       );
 
-
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -126,21 +124,21 @@ class DuolingoListeningPractice3Review
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         verticalSpaceLarge,
-    _buildTitlePadding(),
+        _buildTitlePadding(),
         verticalSpaceMedium,
         _buildQuestionPadding(),
         verticalSpaceLarge,
         _buildLabelPadding(),
         verticalSpaceSmall,
-    _buildPracticeQuestionsPadding(viewModel),
+        _buildPracticeQuestionsPadding(viewModel),
         verticalSpaceMedium,
-    _buildPracticeReviewSection(viewModel)
+        _buildPracticeReviewSection(viewModel)
       ];
 
-  Widget _buildTitlePadding() =>   Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildTitle(),
-  );
+  Widget _buildTitlePadding() => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildTitle(),
+      );
 
   Widget _buildTitle() => Text(
         'Listen closely! Audio clips only play once',
@@ -148,12 +146,10 @@ class DuolingoListeningPractice3Review
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestionPadding() =>
-      Padding(
+  Widget _buildQuestionPadding() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestion(),
       );
-
 
   Widget _buildQuestion() =>
       DwarfTile(small: true, child: _buildListenablePracticeCard());
@@ -161,10 +157,10 @@ class DuolingoListeningPractice3Review
   Widget _buildListenablePracticeCard() =>
       const Expanded(child: ListenableOneTimePracticeCard());
 
-  Widget _buildLabelPadding() =>  Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildLabel(),
-  );
+  Widget _buildLabelPadding() => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildLabel(),
+      );
 
   Widget _buildLabel() => Text(
         'Select the best response',
@@ -172,11 +168,11 @@ class DuolingoListeningPractice3Review
         textAlign: TextAlign.center,
       );
 
-
-  Widget _buildPracticeQuestionsPadding(CoursePracticeViewModel viewModel) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildPracticeQuestions(viewModel),
-  );
+  Widget _buildPracticeQuestionsPadding(CoursePracticeViewModel viewModel) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildPracticeQuestions(viewModel),
+      );
 
   Widget _buildPracticeQuestions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
@@ -207,8 +203,7 @@ class DuolingoListeningPractice3Review
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),
-          review:'Correct: ${(viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value['options'] as List)
-              .firstWhere((e) => e['is_correct'])['text']}' ,
-       );
+        review:
+            'Correct: ${(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['options'] as List).firstWhere((e) => e['is_correct'])['text']}',
+      );
 }

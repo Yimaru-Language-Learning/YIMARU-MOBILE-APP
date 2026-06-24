@@ -38,14 +38,14 @@ class SpeakingPracticeReviewSection extends StatelessWidget {
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSampleAnswer() =>
-       const CustomResponseCard(
-        title: 'Sample Answer',         voice: Voice.sample,
+  Widget _buildSampleAnswer() => const CustomResponseCard(
+        title: 'Sample Answer',
+        voice: Voice.sample,
       );
 
-  Widget _buildYourResponse() =>
-       const CustomResponseCard(
-        title: 'Your Response',         voice: Voice.recorded,
+  Widget _buildYourResponse() => const CustomResponseCard(
+        title: 'Your Response',
+        voice: Voice.recorded,
       );
 
   Widget _buildContinueButton() => CustomElevatedButton(

@@ -32,13 +32,13 @@ class DuolingoPracticesScreens
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
-          verticalSpaceMedium,
           _buildPracticeColumnWrapper(viewModel),
         ],
       );
 
-  Widget _buildAppBar(CoursePracticeViewModel viewModel) => const SmallAppBar(
-        showBackButton: false,
+  Widget _buildAppBar(CoursePracticeViewModel viewModel) => SmallAppBar(
+        showBackButton: true,
+        onPop: viewModel.goBack,
       );
 
   Widget _buildPracticeColumnWrapper(CoursePracticeViewModel viewModel) =>
@@ -80,15 +80,14 @@ class DuolingoPracticesScreens
         itemCount: viewModel.practices.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildCard(
-            title: viewModel.practices[index].title ?? '', onTap: () {}
-            // onTap: () => viewModel.setSelectedAssessment(
-            //     page: 1, assessment: viewModel.assessments[index])
-            ),
+            title: viewModel.practices[index].title ?? '',
+            onTap: () async => await viewModel.getCoursePracticeQuestions(
+                viewModel.practices[index].questionSetId ?? 0)),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 15,
           crossAxisSpacing: 15,
-          childAspectRatio: 1.45,
+          childAspectRatio: 1.5,
         ),
       );
 

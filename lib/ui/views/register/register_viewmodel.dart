@@ -365,7 +365,6 @@ class RegisterViewModel extends ReactiveViewModel
     }
   }
 
-
   // Register device
   Future<void> _registerDevice() async {
     String? token = await _pushNotificationService.getDeviceToken();

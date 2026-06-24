@@ -18,12 +18,10 @@ class DuolingoWritingPractice2Question
   const DuolingoWritingPractice2Question(
       {super.key, required this.practiceController});
 
-
-
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
-    viewModel.pop();
+    viewModel.goBack();
   }
 
   Future<void> _showSheet(
@@ -109,8 +107,6 @@ class DuolingoWritingPractice2Question
         onCancel: () async => await _cancel(viewModel),
       );
 
-
-
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -154,7 +150,7 @@ class DuolingoWritingPractice2Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap:viewModel.nextScreen,
+        onTap: viewModel.nextScreen,
         backgroundColor: kcPrimaryColor,
       );
 }

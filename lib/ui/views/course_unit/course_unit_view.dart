@@ -132,10 +132,12 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
         itemCount: viewModel.units.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
-            index: index,
-            unit: viewModel.units[index],
-            onPracticeTap: () {},
-            onViewTap: () {}),
+          index: index,
+          onViewTap: () {},
+          unit: viewModel.units[index],
+          onPracticeTap: () async => await viewModel
+              .navigateToCoursePractice(viewModel.units[index].id ?? 0),
+        ),
       );
 
   Widget _buildTile({

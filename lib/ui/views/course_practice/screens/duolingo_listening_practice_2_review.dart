@@ -140,7 +140,5 @@ class DuolingoListeningPractice2Review
       );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
-      DuolingoPracticeReviewSection(
-          review: '',
-          onTap: () => viewModel.goTo(5));
+      DuolingoPracticeReviewSection(review: '', onTap: () => viewModel.goTo(5));
 }
