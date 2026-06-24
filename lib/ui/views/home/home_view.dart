@@ -17,9 +17,7 @@ class HomeView extends StackedView<HomeViewModel> {
 
   @override
   void onViewModelReady(HomeViewModel viewModel) async {
-    await viewModel.inAppUpdate();
-    await viewModel.getUnreadNotifications();
-
+    await viewModel.initInAppNotification();
     super.onViewModelReady(viewModel);
   }
 

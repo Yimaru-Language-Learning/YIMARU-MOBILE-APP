@@ -17,8 +17,6 @@ class HomeViewModel extends ReactiveViewModel {
 
   final _bottomSheetService = locator<BottomSheetService>();
 
-  final _inAppUpdateService = locator<InAppUpdateService>();
-
   final _authenticationService = locator<AuthenticationService>();
 
   final _inAppNotificationService = locator<InAppNotificationService>();
@@ -59,16 +57,11 @@ class HomeViewModel extends ReactiveViewModel {
   // Remote api calls
 
   // In-app update
-  Future<void> inAppUpdate() async {
-    if (await _statusChecker.checkConnection()) {
-      await _inAppUpdateService.checkForUpdate();
-    }
-  }
-
-  // Unread notifications
-  Future<void> getUnreadNotifications() async {
+  Future<void> initInAppNotification() async {
     if (await _statusChecker.checkConnection()) {
       await _inAppNotificationService.getUnreadNotifications();
     }
   }
+
+
 }
