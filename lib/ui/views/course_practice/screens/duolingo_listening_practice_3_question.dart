@@ -19,9 +19,9 @@ class DuolingoListeningPractice3Question
   void _setOption(
       {required Map<String, dynamic> option,
       required CoursePracticeViewModel viewModel}) {
-    if (!viewModel.buttonActive) {
+
       viewModel.setSelectedOption(option);
-    }
+
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -115,9 +115,9 @@ class DuolingoListeningPractice3Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        duration: viewModel.countdown,
-        onEnd: viewModel.setNextButton,
-      );
+        onEnd: viewModel.nextScreen,
+    duration: viewModel.countdown,
+  );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
