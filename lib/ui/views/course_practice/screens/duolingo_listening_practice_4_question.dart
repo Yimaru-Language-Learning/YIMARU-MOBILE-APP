@@ -113,7 +113,7 @@ class DuolingoListeningPractice4Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.setNextButton,
+        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
       );
 

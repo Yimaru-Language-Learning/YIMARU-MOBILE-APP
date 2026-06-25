@@ -14,6 +14,7 @@ import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_intro_scree
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_2_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_3_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_retake_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_answer.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_question.dart';
@@ -105,9 +106,11 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           practiceController: practiceController);
     } else if (id == 29 /*Interactive listening part 2*/) {
       return const DuolingoListeningPractice3Question();
-    } else if (id == 0 /*Interactive listening part 3*/) {
+    } else if (id == 57 /*Interactive listening part 3*/) {
       return DuolingoListeningPractice4Question(
           practiceController: practiceController);
+    } else if (id == 3 /*Interactive listening part 3*/) {
+      return const DuolingoReadingPractice1Question();
     }
 
     return Container();
@@ -165,7 +168,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           practiceController: practiceController);
     } else if (id == 29 /*Interactive listening part 2*/) {
       return const DuolingoListeningPractice3Review();
-    } else if (id == 29 /*Interactive listening part 3*/) {
+    } else if (id == 57 /*Interactive listening part 3*/) {
       return DuolingoListeningPractice4Review(
         practiceController: practiceController,
       );
@@ -285,8 +288,11 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
                     .questionTypeDefinitionId !=
                 28 &&
             viewModel.questions[viewModel.currentQuestion]
-                    .questionTypeDefinitionId !=
-                29)
+                .questionTypeDefinitionId !=
+                29 &&
+            viewModel.questions[viewModel.currentQuestion]
+                .questionTypeDefinitionId !=
+                57)
           _buildDuolingoAnswerScreen(viewModel),
         _buildDuolingoReviewScreen(viewModel),
         // _buildDuolingoRetakeScreen(viewModel),

@@ -368,7 +368,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(9);
     } else if (id == 29 /*Interactive listening part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(10);
-    } else if (id == 0 /*Interactive listening part 3*/) {
+    } else if (id == 57 /*Interactive listening part 3*/) {
       _selectedQuestionParam = _questionParams.elementAt(11);
     } else if (id == 0) {
       _selectedQuestionParam = _questionParams.elementAt(12);
