@@ -81,8 +81,8 @@ class HomeView extends StackedView<HomeViewModel> {
       case 0:
         return const LearnProgramView();
       case 1:
-        return const ComingSoon();
-      //  return const CourseView();
+       // return const ComingSoon();
+        return const CourseView();
 
       default:
         return const ProfileView();
