@@ -14,7 +14,8 @@ import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_intro_scree
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_2_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_3_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_1_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_2_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_2_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_retake_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_answer.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_question.dart';
@@ -109,8 +110,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 57 /*Interactive listening part 3*/) {
       return DuolingoListeningPractice4Question(
           practiceController: practiceController);
-    } else if (id == 3 /*Interactive listening part 3*/) {
-      return const DuolingoReadingPractice1Question();
+    } else if (id == 3 /*Fill in the blank*/) {
+      return const DuolingoReadingPractice2Question();
     }
 
     return Container();
@@ -172,6 +173,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return DuolingoListeningPractice4Review(
         practiceController: practiceController,
       );
+    }else if (id == 3 /*Fill in the blank*/) {
+      return const DuolingoReadingPractice2Review();
     }
 
     return Container();
@@ -276,6 +279,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
         _buildDuolingoIntroScreen(viewModel),
         _buildDuolingoQuestionScreen(viewModel),
         if (viewModel.questions[viewModel.currentQuestion]
+            .questionTypeDefinitionId !=
+            3 &&viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
                 22 &&
             viewModel.questions[viewModel.currentQuestion]

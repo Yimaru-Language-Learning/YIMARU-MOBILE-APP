@@ -149,8 +149,8 @@ class DuolingoListeningPractice4Question
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeQuestionCard(
-        title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.first.value,
+        subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value,
       );
 
   Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
@@ -188,17 +188,13 @@ class DuolingoListeningPractice4Question
         text: 'Summit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor: !viewModel.buttonActive
-            ? practiceController.text.isNotEmpty &&
-                    !viewModel.hasPracticeValidationMessage
-                ? kcPrimaryColor
-                : kcPrimaryColor.withValues(alpha: 0.1)
-            : kcPrimaryColor,
-        onTap: !viewModel.buttonActive
-            ? practiceController.text.isNotEmpty &&
-                    !viewModel.hasPracticeValidationMessage
-                ? viewModel.nextScreen
-                : null
-            : viewModel.nextScreen,
+        onTap: practiceController.text.isNotEmpty &&
+                !viewModel.hasPracticeValidationMessage
+            ? viewModel.nextScreen
+            : null,
+        backgroundColor: practiceController.text.isNotEmpty &&
+                !viewModel.hasPracticeValidationMessage
+            ? kcPrimaryColor
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 }

@@ -143,8 +143,8 @@ class DuolingoListeningPractice4Review
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeQuestionCard(
-        title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.first.value,
+        subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value,
       );
   Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
@@ -166,7 +166,7 @@ class DuolingoListeningPractice4Review
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
         review: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.first.value,
+            ?.response?.last.value,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),

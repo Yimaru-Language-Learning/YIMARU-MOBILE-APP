@@ -12,9 +12,9 @@ import '../../../widgets/custom_elevated_button.dart';
 import '../course_practice_viewmodel.dart';
 import '../course_practice_view.form.dart';
 
-class DuolingoReadingPractice1Question
+class DuolingoReadingPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const DuolingoReadingPractice1Question({super.key});
+  const DuolingoReadingPractice2Question({super.key});
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -131,7 +131,7 @@ class DuolingoReadingPractice1Question
         _buildTitle(viewModel),
         verticalSpaceSmall,
         _buildQuestion(viewModel),
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildContinueButtonWrapper(viewModel)
       ];
 

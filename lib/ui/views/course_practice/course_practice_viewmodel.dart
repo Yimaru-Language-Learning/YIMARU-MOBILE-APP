@@ -227,25 +227,31 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Listening session. Great work!',
     },
     {
-      'label': 'Assessment 12',
+      'label': 'Listening 12',
       'type': CoursePracticeType.listening,
-      'title': 'Interactive Listening - Part 3',
       'outro_title': 'Listening Practice Completed',
-      'subtitle': 'Write a summary of the conversation you just had',
+      'intro_title': 'Interactive Listening - Part 3',
+      'intro_subtitle': 'Write a summary of the conversation you just had',
       'outro_subtitle': 'You’ve finished this Listening session. Great work!',
     },
     {
       'label': 'Reading 13',
       'intro_title': 'Read and Select',
       'type': CoursePracticeType.reading,
+      'outro_title': 'Reading Practice Completed',
+      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
       'intro_subtitle':
-          'Read the sentence and select the option that correctly completes the meaning.'
+      'Read the sentence and select the option that correctly completes the meaning.',
     },
     {
       'label': 'Reading 14',
       'intro_title': 'Fill in the blank',
       'type': CoursePracticeType.reading,
-      'intro_subtitle': 'Complete the sentences by filling in the missing words'
+      'outro_title': 'Reading Practice Completed',
+      'intro_subtitle':
+          'Complete the sentences by filling in the missing words',
+      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+
     },
   ];
 
@@ -274,7 +280,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   Map<String, dynamic> get selectedOption => _selectedOption;
 
   // Play count
-  int _playCount = 2;
+  int _playCount = 3;
 
   int get playCount => _playCount;
 
@@ -336,7 +342,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Reset values
   void resetValues() {
-    _playCount = 2;
+    _playCount = 3;
     _countdown = null;
     _buttonActive = false;
     _focusPractice = false;
@@ -345,6 +351,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Question param
   Future<void> setQuestionParam(int id) async {
+    print('ID: $id');
     if (id == 12 /*Speak about the photo*/) {
       // await refreshQuestionUrl(_questions[_currentQuestion]);
       _selectedQuestionParam = _questionParams.elementAt(0);
@@ -370,10 +377,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(10);
     } else if (id == 57 /*Interactive listening part 3*/) {
       _selectedQuestionParam = _questionParams.elementAt(11);
-    } else if (id == 0) {
+    } else if (id == 0 /*Read and speak*/) {
       _selectedQuestionParam = _questionParams.elementAt(12);
-    } else {
+    } else if (id == 3 /*Fill in the blank*/) {
       _selectedQuestionParam = _questionParams.elementAt(13);
+    } else {
+      // _selectedQuestionParam = _questionParams.elementAt(13);
     }
   }
 
@@ -546,12 +555,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
           busyObject: StateObjects.coursePractice);
 
   Future<void> _getCoursePracticeQuestions(int id) async {
-    _currentQuestion = 0;
+    _currentQuestion = 9;
     _questions = await _apiService.getCourseQuestions(id);
     await setQuestionParam(
         _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     _currentPage = 1;
-
   }
 
   // Refresh url

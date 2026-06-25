@@ -9,20 +9,29 @@ class DuolingoMissingWordQuestion
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildWrap(viewModel);
+      _buildSentence(viewModel);
 
-  Widget _buildWrap(CoursePracticeViewModel viewModel) => Wrap(
-        children: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                ?.stimulus?.last.value['segments'] as List)
-            .map((e) =>
-                _buildText(e['type'] == 'text' ? e['value'] : '...........'))
-            .toList(),
-      );
+  Widget _buildSentence(CoursePracticeViewModel viewModel) => RichText(
+    text: TextSpan(
+      style:style14MG400,
+      children: (viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload
+          ?.stimulus
+          ?.last
+          .value['segments'] as List)
+          .map<TextSpan>(
+            (e) => TextSpan(
+          text: e['type'] == 'text'
+              ? e['value']
+              : ' __________ ',
 
-  Widget _buildText(String text) => Text(
-        text,
-        style: style14DG400,
-      );
+        ),
+      )
+          .toList(),
+    ),
+  );
+
+
 
 
 }
