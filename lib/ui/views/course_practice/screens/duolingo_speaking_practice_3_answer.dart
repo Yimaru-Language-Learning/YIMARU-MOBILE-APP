@@ -10,7 +10,6 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/duolingo_practice_app_bar.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/speaking_indicator.dart';
 import '../../../widgets/speaking_label.dart';
 import '../course_practice_viewmodel.dart';
 

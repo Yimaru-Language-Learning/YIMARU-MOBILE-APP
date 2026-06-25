@@ -356,11 +356,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(3);
     } else if (id == 22 /*Speak about the photo*/) {
       _selectedQuestionParam = _questionParams.elementAt(4);
-    } else if (id == 0 /*Writing sample*/) {
+    } else if (id == 23 /*Writing sample*/) {
       _selectedQuestionParam = _questionParams.elementAt(5);
     } else if (id == 24 /*Interactive writing part 1*/) {
       _selectedQuestionParam = _questionParams.elementAt(6);
-    } else if (id == 0 /*Interactive writing part 2*/) {
+    } else if (id == 25 /*Interactive writing part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(7);
     } else if (id == 28 /*Listen and type*/) {
       _selectedQuestionParam = _questionParams.elementAt(8);

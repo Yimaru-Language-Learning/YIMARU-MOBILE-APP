@@ -89,8 +89,7 @@ class DuolingoWritingPractice4Question
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
-          verticalSpaceSmall,
-        ],
+          verticalSpaceSmall,        ],
       );
 
   Widget _buildAppBar(
@@ -114,9 +113,10 @@ class DuolingoWritingPractice4Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.setNextButton,
-        duration: viewModel.countdown,
-      );
+    onEnd: viewModel.nextScreen,
+    duration: viewModel.countdown,
+
+  );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionScrollerWrapper(viewModel));
@@ -150,7 +150,7 @@ class DuolingoWritingPractice4Question
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeQuestionCard(
-        title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+        subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.first.value,
       );
 
@@ -159,7 +159,6 @@ class DuolingoWritingPractice4Question
         maxLines: 5,
         maxLength: 250,
         controller: practiceController,
-        enabled: !viewModel.buttonActive,
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,
@@ -189,17 +188,13 @@ class DuolingoWritingPractice4Question
         text: 'Summit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor: !viewModel.buttonActive
-            ? practiceController.text.isNotEmpty &&
-                    !viewModel.hasPracticeValidationMessage
-                ? kcPrimaryColor
-                : kcPrimaryColor.withValues(alpha: 0.1)
-            : kcPrimaryColor,
-        onTap: !viewModel.buttonActive
-            ? practiceController.text.isNotEmpty &&
-                    !viewModel.hasPracticeValidationMessage
-                ? viewModel.nextScreen
-                : null
-            : viewModel.nextScreen,
+        onTap: practiceController.text.isNotEmpty &&
+                !viewModel.hasPracticeValidationMessage
+            ? viewModel.nextScreen
+            : null,
+        backgroundColor: practiceController.text.isNotEmpty &&
+                !viewModel.hasPracticeValidationMessage
+            ? kcPrimaryColor
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 }

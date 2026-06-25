@@ -25,7 +25,7 @@ class DuolingoSpeakingPractice4Answer
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
-    viewModel.setNextButton();
+    viewModel.nextScreen();
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -237,14 +237,11 @@ class DuolingoSpeakingPractice4Answer
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        text: 'Summit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor: viewModel.buttonActive
-            ? kcPrimaryColor
-            : kcPrimaryColor.withValues(alpha: 0.1),
-        onTap: viewModel.buttonActive ? viewModel.nextScreen : null,
-        text: viewModel.buttonActive
-            ? 'Summit'
-            : 'You can submit after ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']}sec',
+        onTap:  viewModel.nextScreen,
+        backgroundColor: kcPrimaryColor
+        ,
       );
 }

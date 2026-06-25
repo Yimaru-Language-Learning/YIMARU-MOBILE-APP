@@ -85,16 +85,16 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return const DuolingoSpeakingPractice3Question();
     } else if (id == 14 /*Interactive speaking*/) {
       return const DuolingoSpeakingPractice4Question();
-    } else if (id == 22 /*Speak about the photo*/) {
+    } else if (id == 22 /*Write about the photo*/) {
       return DuolingoWritingPractice1Question(
           practiceController: practiceController);
-    } else if (id == 0 /*Writing sample*/) {
+    } else if (id == 23 /*Writing sample*/) {
       return DuolingoWritingPractice2Question(
           practiceController: practiceController);
     } else if (id == 24 /*Interactive writing part 1*/) {
       return DuolingoWritingPractice3Question(
           practiceController: practiceController);
-    } else if (id == 0 /*Interactive writing part 2*/) {
+    } else if (id == 25 /*Interactive writing part 2*/) {
       return DuolingoWritingPractice4Question(
           practiceController: practiceController);
     } else if (id == 28 /*Listen and type*/) {
@@ -125,7 +125,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return const DuolingoSpeakingPractice3Answer();
     } else if (id == 14 /*Interactive speaking*/) {
       return const DuolingoSpeakingPractice4Answer();
-    } else if (id == 0 /*Writing sample*/) {
+    } else if (id == 23 /*Writing sample*/) {
       return DuolingoWritingPractice2Answer(
           practiceController: practiceController);
     } else {
@@ -145,16 +145,16 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return const DuolingoSpeakingPractice3Review();
     } else if (id == 14 /*Interactive speaking*/) {
       return const DuolingoSpeakingPractice4Review();
-    } else if (id == 22 /*Speak about the photo*/) {
+    } else if (id == 22 /*Write about the photo*/) {
       return DuolingoWritingPractice1Review(
           practiceController: practiceController);
-    } else if (id == 0 /*Writing sample*/) {
+    } else if (id == 23 /*Writing sample*/) {
       return DuolingoWritingPractice2Review(
           practiceController: practiceController);
     } else if (id == 24 /*Interactive writing part 1*/) {
       return DuolingoWritingPractice3Review(
           practiceController: practiceController);
-    } else if (id == 0 /*Interactive writing part 2*/) {
+    } else if (id == 25 /*Interactive writing part 2*/) {
       return DuolingoWritingPractice4Review(
           practiceController: practiceController);
     } else if (id == 28 /*Listen and type*/) {
@@ -274,16 +274,19 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
         _buildDuolingoQuestionScreen(viewModel),
         if (viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
-                28 &&
+                22 &&
             viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
                 24 &&
             viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
-                29 &&
+                25 &&
             viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
-                22)
+                28 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                29)
           _buildDuolingoAnswerScreen(viewModel),
         _buildDuolingoReviewScreen(viewModel),
         // _buildDuolingoRetakeScreen(viewModel),
