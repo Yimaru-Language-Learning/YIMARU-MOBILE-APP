@@ -19,8 +19,6 @@ class DuolingoWritingPractice2Answer
   const DuolingoWritingPractice2Answer(
       {super.key, required this.practiceController});
 
-  void _setButton(CoursePracticeViewModel viewModel) =>
-      viewModel.setNextButton();
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -92,6 +90,8 @@ class DuolingoWritingPractice2Answer
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
+          verticalSpaceSmall,
+
         ],
       );
 
@@ -116,7 +116,7 @@ class DuolingoWritingPractice2Answer
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: () => _setButton(viewModel),
+        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
       );
 
@@ -146,8 +146,8 @@ class DuolingoWritingPractice2Answer
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeQuestionCard(
-        title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.first.value,
+        subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value,
       );
 
   Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
@@ -155,7 +155,6 @@ class DuolingoWritingPractice2Answer
         maxLines: 5,
         maxLength: 250,
         controller: practiceController,
-        enabled: !viewModel.buttonActive,
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,

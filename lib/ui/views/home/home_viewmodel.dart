@@ -9,7 +9,6 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../services/authentication_service.dart';
 import '../../../services/in_app_notification_service.dart';
-import '../../../services/in_app_update_service.dart';
 
 class HomeViewModel extends ReactiveViewModel {
   // Dependency injection

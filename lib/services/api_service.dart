@@ -148,7 +148,7 @@ class ApiService {
         '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kDevicesUrl/$kRegisterUrl',
         data: data,
       );
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }
@@ -866,7 +866,7 @@ class ApiService {
         '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kVideosUrl/$kEngagementUrl/$kHeartbeatUrl',
         data: data,
       );
-    } on DioException catch (e) {
+    } on DioException {
       rethrow;
     }
   }

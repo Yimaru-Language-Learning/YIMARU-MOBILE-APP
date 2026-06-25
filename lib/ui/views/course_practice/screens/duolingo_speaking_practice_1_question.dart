@@ -18,6 +18,13 @@ class DuolingoSpeakingPractice1Question
     super.key,
   });
 
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.startRecording();
+    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
+        .dynamicPayload?.response?.first.value['seconds']);
+    viewModel.nextScreen();
+  }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -34,12 +41,7 @@ class DuolingoSpeakingPractice1Question
         builder: (cxt) => _buildSheet(viewModel),
       );
 
-  Future<void> _next(CoursePracticeViewModel viewModel) async {
-    await viewModel.startRecording();
-    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
-        .dynamicPayload?.response?.first.value['seconds']);
-    viewModel.nextScreen();
-  }
+
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>

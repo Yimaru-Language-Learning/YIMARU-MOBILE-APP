@@ -19,7 +19,7 @@ class DuolingoListeningPractice1Question
       {super.key, required this.practiceController});
 
   void _next(CoursePracticeViewModel viewModel) {
-    viewModel.setPlayCount();
+    viewModel.resetPlayCount(2);
     viewModel.nextScreen();
   }
 
@@ -117,7 +117,7 @@ class DuolingoListeningPractice1Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.setNextButton,
+        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
       );
 

@@ -76,7 +76,6 @@ class DuolingoWritingPractice1Question
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(viewModel),
-        _buildContinueButtonWrapper(viewModel)
       ];
 
   Widget _buildAppBarWrapper(
@@ -140,7 +139,11 @@ class DuolingoWritingPractice1Question
           verticalSpaceTiny,
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
-      ];
+    verticalSpaceMedium,
+
+    _buildContinueButtonWrapper(viewModel)
+
+  ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
         'Write a description of the image below for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds',
@@ -201,13 +204,13 @@ class DuolingoWritingPractice1Question
         text: 'Summit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor: practiceController.text.isNotEmpty &&
-                !viewModel.hasPracticeValidationMessage
-            ? kcPrimaryColor
-            : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
             ? viewModel.nextScreen
             : null,
+        backgroundColor: practiceController.text.isNotEmpty &&
+            !viewModel.hasPracticeValidationMessage
+            ? kcPrimaryColor
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 }

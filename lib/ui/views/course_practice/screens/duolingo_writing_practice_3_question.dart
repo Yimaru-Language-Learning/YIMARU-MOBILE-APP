@@ -114,8 +114,8 @@ class DuolingoWritingPractice3Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.setNextButton,
         duration: viewModel.countdown,
+        onEnd: viewModel.nextScreen,
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -150,7 +150,7 @@ class DuolingoWritingPractice3Question
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeQuestionCard(
-        title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+        subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.first.value,
       );
 

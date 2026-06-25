@@ -144,7 +144,7 @@ class DuolingoWritingPractice4Review
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeQuestionCard(
-        title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+        subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.first.value,
       );
   Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>

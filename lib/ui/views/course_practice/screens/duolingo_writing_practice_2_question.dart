@@ -18,6 +18,12 @@ class DuolingoWritingPractice2Question
   const DuolingoWritingPractice2Question(
       {super.key, required this.practiceController});
 
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
+        .dynamicPayload?.response?.last.value['seconds']);
+    viewModel.nextScreen();
+  }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -87,6 +93,8 @@ class DuolingoWritingPractice2Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
+          _buildCountdownWrapper(viewModel),
+          verticalSpaceSmall,
         ],
       );
 
@@ -106,6 +114,14 @@ class DuolingoWritingPractice2Question
         user: viewModel.user?.firstName ?? '',
         onCancel: () async => await _cancel(viewModel),
       );
+
+  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
+      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+
+  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
+    duration: viewModel.countdown,
+    onEnd: () async => await _next(viewModel),
+  );
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -136,7 +152,7 @@ class DuolingoWritingPractice2Question
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeQuestionCard(
           subtitle: viewModel.questions[viewModel.currentQuestion]
-              .dynamicPayload?.stimulus?.first.value);
+              .dynamicPayload?.stimulus?.last.value);
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
@@ -150,7 +166,8 @@ class DuolingoWritingPractice2Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: viewModel.nextScreen,
         backgroundColor: kcPrimaryColor,
+        onTap: () async => await _next(viewModel),
+
       );
 }
