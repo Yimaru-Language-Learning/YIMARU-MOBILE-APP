@@ -32,9 +32,11 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
             .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
     if (id == 12 /*Speak about the photo*/) {
-      int stimulusLastSec = viewModel.questions[viewModel.currentQuestion]
+      print('VALUE: ${viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.stimulus?.last.value['seconds']}');
+      int stimulusFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.last.value['seconds'];
-      viewModel.setCountdown(stimulusLastSec);
+      viewModel.setCountdown(stimulusFirstSec);
     } else if (id == 13 /*Read then speak*/) {
       int stimulusLastSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.last.value['seconds'];
@@ -81,6 +83,11 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       viewModel.setCountdown(responseFirstSec);
       viewModel.resetPlayCount(1);
     } else if (id == 57 /*Interactive listening part 3*/) {
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setCountdown(responseFirstSec);
+    }
+    else if (id == 3 /*Fill in the blank*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);

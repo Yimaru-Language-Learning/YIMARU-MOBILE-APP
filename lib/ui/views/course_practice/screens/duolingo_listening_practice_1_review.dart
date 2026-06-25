@@ -64,6 +64,8 @@ class DuolingoListeningPractice1Review
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildExpandedBody(viewModel),
+        _buildPracticeReviewSection(viewModel)
+
       ];
 
   Widget _buildAppBarIndenter(
@@ -127,8 +129,7 @@ class DuolingoListeningPractice1Review
         _buildLabelWrapper(),
         verticalSpaceSmall,
         _buildAssessmentFormFieldWrapper(viewModel),
-        verticalSpaceLarge,
-        _buildAssessmentReviewSection(viewModel)
+        verticalSpaceMedium,
       ];
 
   Widget _buildTitleWrapper() => Padding(
@@ -179,7 +180,7 @@ class DuolingoListeningPractice1Review
             filled: practiceController.text.isNotEmpty),
       );
 
-  Widget _buildAssessmentReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
         review: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?.last.value,

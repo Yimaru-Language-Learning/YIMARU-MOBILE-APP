@@ -63,6 +63,7 @@ class DuolingoListeningPractice3Review
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildExpandedBody(viewModel),
+
       ];
 
   Widget _buildAppBarWrapper(
@@ -131,9 +132,10 @@ class DuolingoListeningPractice3Review
         _buildLabelPadding(),
         verticalSpaceSmall,
         _buildPracticeQuestionsPadding(viewModel),
-        verticalSpaceMedium,
-        _buildPracticeReviewSection(viewModel)
-      ];
+    verticalSpaceLarge,
+    _buildPracticeReviewSection(viewModel)
+
+  ];
 
   Widget _buildTitlePadding() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

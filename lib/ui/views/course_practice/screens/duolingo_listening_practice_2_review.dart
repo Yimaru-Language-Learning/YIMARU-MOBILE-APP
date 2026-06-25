@@ -35,7 +35,9 @@ class DuolingoListeningPractice2Review
   List<Widget> _buildBodyColumnChildren(CoursePracticeViewModel viewModel) => [
         _buildAppBarIndenter(viewModel),
         _buildExpandedBody(viewModel),
-      ];
+    _buildPracticeReviewSection(viewModel)
+
+  ];
 
   Widget _buildAppBarIndenter(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -90,8 +92,7 @@ class DuolingoListeningPractice2Review
         _buildLabelWrapper('3. Keynote speaker’s field:'),
         verticalSpaceTiny,
         _buildPracticeFormFieldWrapper(viewModel),
-        verticalSpaceLarge,
-        _buildPracticeReviewSection(viewModel)
+        verticalSpaceMedium,
       ];
 
   Widget _buildTitleWrapper() => Padding(
