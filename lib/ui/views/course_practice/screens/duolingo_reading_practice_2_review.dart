@@ -147,6 +147,9 @@ class DuolingoReadingPractice2Review
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
+        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
+            ? viewModel.nextScreen
+            : () async => await viewModel.nextQuestion(),
         review: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
                 ?.stimulus?.last.value['word_bank'] as List)
             .map(
