@@ -40,7 +40,7 @@ class InAppUpdateService {
               if (result == AppUpdateResult.userDeniedUpdate) {
                 showErrorToast(
                     'An update is required to continue using this app.');
-                _navigationService.popRepeated(2);
+                _navigationService.popRepeated(3);
               }
             } else {
               await InAppUpdate.startFlexibleUpdate();

@@ -16,6 +16,8 @@ import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_p
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_3_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_2_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_2_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_3_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_3_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_retake_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_answer.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_question.dart';
@@ -110,8 +112,12 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 57 /*Interactive listening part 3*/) {
       return DuolingoListeningPractice4Question(
           practiceController: practiceController);
+    } else if (id == 0 /*Read and select*/) {
+      return  Container();
     } else if (id == 3 /*Fill in the blank*/) {
       return const DuolingoReadingPractice2Question();
+    } else if (id == 51 /*Interactive reading - complete the sentence*/) {
+      return const DuolingoReadingPractice3Question();
     }
 
     return Container();
@@ -173,8 +179,12 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return DuolingoListeningPractice4Review(
         practiceController: practiceController,
       );
+    }else if (id == 0 /*Read and select*/) {
+      return  Container();
     }else if (id == 3 /*Fill in the blank*/) {
       return const DuolingoReadingPractice2Review();
+    } else if (id == 51 /*Interactive reading - complete the sentence*/) {
+      return  const DuolingoReadingPractice3Review();
     }
 
     return Container();
@@ -295,6 +305,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
             viewModel.questions[viewModel.currentQuestion]
                 .questionTypeDefinitionId !=
                 29 &&
+            viewModel.questions[viewModel.currentQuestion]
+                .questionTypeDefinitionId !=
+                51 &&
             viewModel.questions[viewModel.currentQuestion]
                 .questionTypeDefinitionId !=
                 57)

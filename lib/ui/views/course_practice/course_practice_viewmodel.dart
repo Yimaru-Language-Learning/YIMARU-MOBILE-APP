@@ -241,7 +241,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_title': 'Reading Practice Completed',
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
       'intro_subtitle':
-      'Read the sentence and select the option that correctly completes the meaning.',
+          'Read the sentence and select the option that correctly completes the meaning.',
     },
     {
       'label': 'Reading 14',
@@ -251,7 +251,15 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'intro_subtitle':
           'Complete the sentences by filling in the missing words',
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
-
+    },
+    {
+      'label': 'Reading 15',
+      'type': CoursePracticeType.reading,
+      'outro_title': 'Reading Practice Completed',
+      'intro_title': 'Interactive Reading Complete the Sentence',
+      'intro_subtitle':
+          'Read the passage and complete the interactive activities.',
+      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
     },
   ];
 
@@ -381,6 +389,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(12);
     } else if (id == 3 /*Fill in the blank*/) {
       _selectedQuestionParam = _questionParams.elementAt(13);
+    } else if (id == 51 /*Interactive reading - complete the sentence*/) {
+      _selectedQuestionParam = _questionParams.elementAt(14);
     } else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
     }
@@ -392,6 +402,24 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   void setSelectedOption(Map<String, dynamic> value) {
     _selectedOption = value;
+    rebuildUi();
+  }
+
+  // Selected option
+  bool isSelectedChoice({
+    required String question,
+    required Map<String, dynamic> answer,
+  }) =>
+      _selectedOption[question] == answer;
+
+  void setSelectedChoice({
+    required String question,
+    required Map<String, dynamic> answer,
+  }) {
+    Map<String, dynamic> option = {question: answer};
+
+    _selectedOption.addAll(option);
+
     rebuildUi();
   }
 
@@ -555,7 +583,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           busyObject: StateObjects.coursePractice);
 
   Future<void> _getCoursePracticeQuestions(int id) async {
-    _currentQuestion = 9;
+    _currentQuestion = 11;
     _questions = await _apiService.getCourseQuestions(id);
     await setQuestionParam(
         _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
