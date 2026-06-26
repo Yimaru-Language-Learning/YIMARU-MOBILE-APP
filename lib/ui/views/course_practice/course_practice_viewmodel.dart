@@ -583,7 +583,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           busyObject: StateObjects.coursePractice);
 
   Future<void> _getCoursePracticeQuestions(int id) async {
-    _currentQuestion = 11;
+    _currentQuestion = 0;
     _questions = await _apiService.getCourseQuestions(id);
     await setQuestionParam(
         _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
