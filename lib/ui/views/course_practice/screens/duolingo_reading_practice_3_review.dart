@@ -49,11 +49,7 @@ class DuolingoReadingPractice3Review
   Widget _buildScaffold(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-              _buildBodyColumn(context: context, viewModel: viewModel));
-
-
+      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
   Widget _buildBodyColumn(
           {required BuildContext context,
@@ -71,12 +67,11 @@ class DuolingoReadingPractice3Review
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(viewModel),
         _buildPracticeReviewSection(viewModel)
-
       ];
 
   Widget _buildAppBarIndenter(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildAppBarWrapper(context: context, viewModel: viewModel),
@@ -90,7 +85,6 @@ class DuolingoReadingPractice3Review
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-
         ],
       );
 
@@ -117,9 +111,7 @@ class DuolingoReadingPractice3Review
   Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(child: _buildQuestionIndenter(viewModel));
 
-
-  Widget _buildQuestionIndenter(CoursePracticeViewModel viewModel) =>
-      Padding(
+  Widget _buildQuestionIndenter(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestionWrapper(viewModel),
       );
@@ -127,6 +119,7 @@ class DuolingoReadingPractice3Review
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildQuestionChildren(viewModel),
       );
 
@@ -134,8 +127,9 @@ class DuolingoReadingPractice3Review
         verticalSpaceMedium,
         _buildTitle(viewModel),
         verticalSpaceSmall,
-        _buildQuestion(viewModel),      verticalSpaceMedium,
-    _buildPracticeOptions(viewModel),
+        _buildQuestion(viewModel),
+        verticalSpaceMedium,
+        _buildPracticeOptions(viewModel),
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
@@ -147,13 +141,12 @@ class DuolingoReadingPractice3Review
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       const DuolingoMissingWordQuestion();
 
-
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: (viewModel.questions[viewModel.currentQuestion]
-            .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
+                .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
             .length,
         itemBuilder: (context, index) => _buildPracticeCard(
           index,
@@ -161,9 +154,9 @@ class DuolingoReadingPractice3Review
       );
 
   Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
-    enabled: false,
-    question: (index + 1).toString(),
-  );
+        enabled: false,
+        question: (index + 1).toString(),
+      );
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
@@ -174,6 +167,7 @@ class DuolingoReadingPractice3Review
             .map(
               (e) => ' ${e['text']} ',
             )
-            .toList().toString(),
+            .toList()
+            .toString(),
       );
 }

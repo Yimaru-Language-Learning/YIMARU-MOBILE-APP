@@ -139,11 +139,9 @@ class DuolingoWritingPractice1Question
           verticalSpaceTiny,
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
-    verticalSpaceMedium,
-
-    _buildContinueButtonWrapper(viewModel)
-
-  ];
+        verticalSpaceMedium,
+        _buildContinueButtonWrapper(viewModel)
+      ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
         'Write a description of the image below for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds',
@@ -209,7 +207,7 @@ class DuolingoWritingPractice1Question
             ? viewModel.nextScreen
             : null,
         backgroundColor: practiceController.text.isNotEmpty &&
-            !viewModel.hasPracticeValidationMessage
+                !viewModel.hasPracticeValidationMessage
             ? kcPrimaryColor
             : kcPrimaryColor.withValues(alpha: 0.1),
       );

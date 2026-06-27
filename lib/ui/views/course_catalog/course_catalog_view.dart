@@ -109,7 +109,8 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
         itemCount: viewModel.catalogs.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
-          onPracticeTap: ()async =>await viewModel.navigateToCoursePractice(viewModel.catalogs[index].id ?? 0),
+          onPracticeTap: () async => await viewModel
+              .navigateToCoursePractice(viewModel.catalogs[index].id ?? 0),
           catalog: viewModel.catalogs[index],
           onCourseTap: () async =>
               await viewModel.navigateToCourseUnit(viewModel.catalogs[index]),

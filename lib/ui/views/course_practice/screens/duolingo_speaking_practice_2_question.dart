@@ -16,7 +16,6 @@ class DuolingoSpeakingPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoSpeakingPractice2Question({super.key});
 
-
   Future<void> _next(CoursePracticeViewModel viewModel) async {
     await viewModel.startRecording();
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
@@ -39,7 +38,6 @@ class DuolingoSpeakingPractice2Question
         backgroundColor: kcTransparent,
         builder: (cxt) => _buildSheet(viewModel),
       );
-
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>

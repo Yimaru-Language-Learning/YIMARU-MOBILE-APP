@@ -65,7 +65,6 @@ class DuolingoListeningPractice1Review
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildExpandedBody(viewModel),
         _buildPracticeReviewSection(viewModel)
-
       ];
 
   Widget _buildAppBarIndenter(

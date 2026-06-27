@@ -31,9 +31,8 @@ class DuolingoPracticeCard extends StatelessWidget {
         _buildTitle(),
         verticalSpaceSmall,
         _buildStartButtonWrapper(),
-    verticalSpaceSmall,
-
-  ];
+        verticalSpaceSmall,
+      ];
 
   Widget _buildTitle() => Text(
         title,

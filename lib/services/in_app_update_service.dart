@@ -27,8 +27,8 @@ class InAppUpdateService {
       log('IN-APP UPDATE REMOTE VERSION CODE ${remoteVersion.availableVersionCode.toString()}');
 
       if (deviceVersion != remoteVersion.availableVersionCode.toString()) {
-        Map<String, dynamic> response = await _apiService
-            .checkUpdate(deviceVersion ?? '');
+        Map<String, dynamic> response =
+            await _apiService.checkUpdate(deviceVersion ?? '');
         log('IN-APP UPDATE RESPONSE $response');
 
         if (response['status'] == ResponseStatus.success) {

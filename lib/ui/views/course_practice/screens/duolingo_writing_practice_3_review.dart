@@ -146,8 +146,8 @@ class DuolingoWritingPractice3Review
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeQuestionCard(
-          subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.stimulus?.first.value);
+          subtitle: viewModel.questions[viewModel.currentQuestion]
+              .dynamicPayload?.stimulus?.first.value);
 
   Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>
       Padding(

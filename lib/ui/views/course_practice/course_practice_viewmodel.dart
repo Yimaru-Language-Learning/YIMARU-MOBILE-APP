@@ -261,6 +261,51 @@ class CoursePracticeViewModel extends ReactiveViewModel
           'Read the passage and complete the interactive activities.',
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
     },
+    {
+      'label': 'Reading 16',
+      'type': CoursePracticeType.reading,
+      'outro_title': 'Reading Practice Completed',
+      'intro_title': 'Interactive Reading Complete the Passage',
+      'intro_subtitle':
+          'Read the passage and complete the interactive activities.',
+      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+    },
+    {
+      'label': 'Reading 17',
+      'type': CoursePracticeType.reading,
+      'outro_title': 'Reading Practice Completed',
+      'intro_title': 'Interactive Reading Identify the Idea',
+      'intro_subtitle':
+          'Read the passage and complete the interactive activities.',
+      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+    },
+    {
+      'label': 'Reading 18',
+      'type': CoursePracticeType.reading,
+      'outro_title': 'Reading Practice Completed',
+      'intro_title': 'Interactive Reading Title the Passage',
+      'intro_subtitle':
+          'Read the passage and complete the interactive activities.',
+      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+    },
+    {
+      'label': 'Reading 19',
+      'type': CoursePracticeType.reading,
+      'outro_title': 'Reading Practice Completed',
+      'intro_title': 'Interactive Reading Highlight the Answer',
+      'intro_subtitle':
+          'Read the passage and complete the interactive activities.',
+      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+    },
+    {
+      'label': 'Reading 20',
+      'type': CoursePracticeType.reading,
+      'intro_title': 'Read and Complete',
+      'outro_title': 'Reading Practice Completed',
+      'intro_subtitle':
+          'Read the passage and complete the interactive activities.',
+      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+    },
   ];
 
   List<Map<String, dynamic>> get questionParams => _questionParams;
@@ -391,6 +436,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(13);
     } else if (id == 51 /*Interactive reading - complete the sentence*/) {
       _selectedQuestionParam = _questionParams.elementAt(14);
+    } else if (id == 52 /*Interactive reading - complete the passage*/) {
+      _selectedQuestionParam = _questionParams.elementAt(15);
+    } else if (id == 53 /*Interactive reading - identify the idea*/) {
+      _selectedQuestionParam = _questionParams.elementAt(16);
+    } else if (id == 54 /*Interactive reading - title the passage*/) {
+      _selectedQuestionParam = _questionParams.elementAt(17);
+    } else if (id == 55 /*Interactive reading - highlight the answer*/) {
+      _selectedQuestionParam = _questionParams.elementAt(18);
+    } else if (id == 50 /*Read and complete*/) {
+      _selectedQuestionParam = _questionParams.elementAt(19);
     } else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
     }
@@ -566,14 +621,22 @@ class CoursePracticeViewModel extends ReactiveViewModel
   // Remote api call
 
   // Learn practice
-  Future<void> getCoursePractices(int id) async =>
-      await runBusyFuture(_getCoursePractices(id),
+  Future<void> getCoursePractices(
+          {required int id, required CoursePractices practice}) async =>
+      await runBusyFuture(_getCoursePractices(id: id, practice: practice),
           busyObject: StateObjects.coursePractice);
 
-  Future<void> _getCoursePractices(int id) async {
+  Future<void> _getCoursePractices(
+      {required int id, required CoursePractices practice}) async {
     if (await _statusChecker.checkConnection()) {
-      _practices = await _apiService.getCoursePractices(id);
-      print('PRACTICES ${_practices.length}');
+
+      if (practice == CoursePractices.courseCatalog) {
+        _practices = await _apiService.getCourseCatalogPractices(id);
+      } else if (practice == CoursePractices.unit) {
+        _practices = await _apiService.getCourseUnitPractices(id);
+      } else {
+        _practices = await _apiService.getCourseLessonPractices(id);
+      }
     }
   }
 
