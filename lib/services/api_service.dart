@@ -1143,8 +1143,56 @@ class ApiService {
     }
   }
 
-  // Course practices
-  Future<List<CoursePractice>> getCoursePractices(int id) async {
+  // Course catalog practices
+  Future<List<CoursePractice>> getCourseCatalogPractices(int id) async {
+    try {
+      List<CoursePractice> practices = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kExamPrepUrl/$kCatalogCoursesUrl/$id/$kPracticesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['practices'] as List;
+        practices = decodedData.map(
+          (e) {
+            return CoursePractice.fromJson(e);
+          },
+        ).toList();
+        return practices;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Course unit practices
+  Future<List<CoursePractice>> getCourseUnitPractices(int id) async {
+    try {
+      List<CoursePractice> practices = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kExamPrepUrl/$kUnitsUrl/$id/$kPracticesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['practices'] as List;
+        practices = decodedData.map(
+          (e) {
+            return CoursePractice.fromJson(e);
+          },
+        ).toList();
+        return practices;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Course lesson practices
+  Future<List<CoursePractice>> getCourseLessonPractices(int id) async {
     try {
       List<CoursePractice> practices = [];
 

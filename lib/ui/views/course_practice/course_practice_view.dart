@@ -18,6 +18,13 @@ import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_pra
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_2_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_3_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_3_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_4_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_5_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_6_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_7_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_7_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_8_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_8_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_retake_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_answer.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_question.dart';
@@ -55,11 +62,10 @@ import 'course_practice_viewmodel.dart';
 class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     with $CoursePracticeView {
   final int id;
+  final CoursePractices practice;
 
-  const CoursePracticeView({
-    Key? key,
-    required this.id,
-  }) : super(key: key);
+  const CoursePracticeView({Key? key, required this.id, required this.practice})
+      : super(key: key);
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -113,11 +119,21 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return DuolingoListeningPractice4Question(
           practiceController: practiceController);
     } else if (id == 0 /*Read and select*/) {
-      return  Container();
+      return Container();
     } else if (id == 3 /*Fill in the blank*/) {
       return const DuolingoReadingPractice2Question();
     } else if (id == 51 /*Interactive reading - complete the sentence*/) {
       return const DuolingoReadingPractice3Question();
+    } else if (id == 52 /*Interactive reading - complete the passage*/) {
+      return const DuolingoReadingPractice4Question();
+    } else if (id == 53 /*Interactive reading - identify the idea*/) {
+      return const DuolingoReadingPractice5Question();
+    } else if (id == 54 /*Interactive reading - title the passage*/) {
+      return const DuolingoReadingPractice6Question();
+    } else if (id == 55 /*Interactive reading - highlight the answer*/) {
+      return const DuolingoReadingPractice7Question();
+    } else if (id == 50 /*Read and complete*/) {
+      return const DuolingoReadingPractice8Question();
     }
 
     return Container();
@@ -179,12 +195,16 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return DuolingoListeningPractice4Review(
         practiceController: practiceController,
       );
-    }else if (id == 0 /*Read and select*/) {
-      return  Container();
-    }else if (id == 3 /*Fill in the blank*/) {
+    } else if (id == 0 /*Read and select*/) {
+      return Container();
+    } else if (id == 3 /*Fill in the blank*/) {
       return const DuolingoReadingPractice2Review();
     } else if (id == 51 /*Interactive reading - complete the sentence*/) {
-      return  const DuolingoReadingPractice3Review();
+      return const DuolingoReadingPractice3Review();
+    } else if (id == 55 /*Interactive reading - highlight the answer*/) {
+      return const DuolingoReadingPractice7Review();
+    } else if (id == 50 /*Read and complete*/) {
+      return const DuolingoReadingPractice8Review();
     }
 
     return Container();
@@ -193,7 +213,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
   @override
   void onViewModelReady(CoursePracticeViewModel viewModel) async {
     syncFormWithViewModel(viewModel);
-    await viewModel.getCoursePractices(id);
+    await viewModel.getCoursePractices(id: id, practice: practice);
     super.onViewModelReady(viewModel);
   }
 
@@ -245,7 +265,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       PracticeLoadingScreen(
         isEmpty: viewModel.practices.isEmpty,
         isLoading: viewModel.busy(StateObjects.coursePractice),
-        onTap: () async => await viewModel.getCoursePractices(id),
+        onTap: () async =>
+            await viewModel.getCoursePractices(id: id, practice: practice),
         onPop: viewModel.practices.isEmpty || viewModel.questions.isEmpty
             ? viewModel.pop
             : null,
@@ -289,8 +310,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
         _buildDuolingoIntroScreen(viewModel),
         _buildDuolingoQuestionScreen(viewModel),
         if (viewModel.questions[viewModel.currentQuestion]
-            .questionTypeDefinitionId !=
-            3 &&viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                3 &&
+            viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
                 22 &&
             viewModel.questions[viewModel.currentQuestion]
@@ -303,16 +325,40 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
                     .questionTypeDefinitionId !=
                 28 &&
             viewModel.questions[viewModel.currentQuestion]
-                .questionTypeDefinitionId !=
+                    .questionTypeDefinitionId !=
                 29 &&
             viewModel.questions[viewModel.currentQuestion]
-                .questionTypeDefinitionId !=
+                    .questionTypeDefinitionId !=
+                50 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
                 51 &&
             viewModel.questions[viewModel.currentQuestion]
-                .questionTypeDefinitionId !=
+                    .questionTypeDefinitionId !=
+                52 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                53 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                54 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                55 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
                 57)
           _buildDuolingoAnswerScreen(viewModel),
-        _buildDuolingoReviewScreen(viewModel),
+        if (viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                52 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                53 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                54)
+          _buildDuolingoReviewScreen(viewModel),
         // _buildDuolingoRetakeScreen(viewModel),
         _buildDuolingoFinishScreen(viewModel),
       ];

@@ -4,7 +4,6 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/failure/failure_viewmodel.dart';
 
-
 class SecondFailureScreen extends ViewModelWidget<FailureViewModel> {
   final String label;
   final GestureTapCallback onTap;

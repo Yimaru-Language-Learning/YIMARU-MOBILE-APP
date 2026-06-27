@@ -119,9 +119,9 @@ class DuolingoWritingPractice2Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-    duration: viewModel.countdown,
-    onEnd: () async => await _next(viewModel),
-  );
+        duration: viewModel.countdown,
+        onEnd: () async => await _next(viewModel),
+      );
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -168,6 +168,5 @@ class DuolingoWritingPractice2Question
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _next(viewModel),
-
       );
 }

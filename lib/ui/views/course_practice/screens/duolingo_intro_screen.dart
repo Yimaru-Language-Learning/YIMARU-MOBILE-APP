@@ -32,8 +32,6 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
             .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
     if (id == 12 /*Speak about the photo*/) {
-      print('VALUE: ${viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.last.value['seconds']}');
       int stimulusFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.last.value['seconds'];
       viewModel.setCountdown(stimulusFirstSec);
@@ -77,7 +75,6 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       await viewModel.playVoicePrompt(stimulusFirst);
     } else if (id == 0 /*Interactive listening part 1*/) {
     } else if (id == 29 /*Interactive listening part 2*/) {
-
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
@@ -86,15 +83,32 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
-    }  else if (id == 0 /*Read and select*/) {
-
-    }
-    else if (id == 3 /*Fill in the blank*/) {
+    } else if (id == 0 /*Read and select*/) {
+    } else if (id == 3 /*Fill in the blank*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
-    }
-    else if (id == 51 /*Interactive reading - complete the sentence*/) {
+    } else if (id == 51 /*Interactive reading - complete the sentence*/) {
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setCountdown(responseFirstSec);
+    } else if (id == 52 /*Interactive reading - complete the passage*/) {
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setCountdown(responseFirstSec);
+    } else if (id == 53 /*Interactive reading - identify the idea*/) {
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setCountdown(responseFirstSec);
+    } else if (id == 54 /*Interactive reading - title the passage*/) {
+      int responseLastSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.last.value['seconds'];
+      viewModel.setCountdown(responseLastSec);
+    } else if (id == 55 /*Interactive reading - highlight the answer*/) {
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setCountdown(responseFirstSec);
+    } else if (id == 50 /*Read and complete*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);

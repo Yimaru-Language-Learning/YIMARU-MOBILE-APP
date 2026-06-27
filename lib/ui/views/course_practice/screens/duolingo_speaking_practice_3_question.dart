@@ -41,8 +41,6 @@ class DuolingoSpeakingPractice3Question
         builder: (cxt) => _buildSheet(viewModel),
       );
 
-
-
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);

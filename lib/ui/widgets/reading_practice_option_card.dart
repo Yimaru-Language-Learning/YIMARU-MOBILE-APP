@@ -12,7 +12,7 @@ class ReadingPracticeOptionCard
   final String question;
 
   const ReadingPracticeOptionCard(
-      {super.key,required this.enabled,  required this.question});
+      {super.key, required this.enabled, required this.question});
 
   void _setOption(
       {required String question,
@@ -76,12 +76,18 @@ class ReadingPracticeOptionCard
                 .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
             .length,
         itemBuilder: (context, index) => _buildOptionDetector(
-          onTap:enabled ? () => _setOption(
-            question: question,
-            viewModel: viewModel,
-            answer: viewModel.questions[viewModel.currentQuestion]
-                .dynamicPayload?.stimulus?.last.value['word_bank'][index],
-          ):null,
+          onTap: enabled
+              ? () => _setOption(
+                    question: question,
+                    viewModel: viewModel,
+                    answer: viewModel
+                        .questions[viewModel.currentQuestion]
+                        .dynamicPayload
+                        ?.stimulus
+                        ?.last
+                        .value['word_bank'][index],
+                  )
+              : null,
           selected: viewModel.isSelectedChoice(
               question: question,
               answer: viewModel.questions[viewModel.currentQuestion]
@@ -94,7 +100,7 @@ class ReadingPracticeOptionCard
   Widget _buildOptionDetector(
           {required String title,
           required bool selected,
-           GestureTapCallback? onTap}) =>
+          GestureTapCallback? onTap}) =>
       GestureDetector(
         onTap: onTap,
         child: _buildOption(title: title, selected: selected, onTap: onTap),
@@ -103,7 +109,7 @@ class ReadingPracticeOptionCard
   Widget _buildOption(
           {required String title,
           required bool selected,
-           GestureTapCallback? onTap}) =>
+          GestureTapCallback? onTap}) =>
       Container(
         height: 35,
         padding: const EdgeInsets.symmetric(horizontal: 10),

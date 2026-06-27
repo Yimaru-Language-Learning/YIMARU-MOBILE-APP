@@ -654,8 +654,8 @@ class StackedRouter extends _i1.RouterBase {
     _i37.CoursePracticeView: (data) {
       final args = data.getArgs<CoursePracticeViewArguments>(nullOk: false);
       return _i38.MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            _i37.CoursePracticeView(key: args.key, id: args.id),
+        builder: (context) => _i37.CoursePracticeView(
+            key: args.key, id: args.id, practice: args.practice),
         settings: data,
       );
     },
@@ -1573,26 +1573,29 @@ class CoursePracticeViewArguments {
   const CoursePracticeViewArguments({
     this.key,
     required this.id,
+    required this.practice,
   });
 
   final _i38.Key? key;
 
   final int id;
 
+  final _i42.CoursePractices practice;
+
   @override
   String toString() {
-    return '{"key": "$key", "id": "$id"}';
+    return '{"key": "$key", "id": "$id", "practice": "$practice"}';
   }
 
   @override
   bool operator ==(covariant CoursePracticeViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.id == id;
+    return other.key == key && other.id == id && other.practice == practice;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ id.hashCode;
+    return key.hashCode ^ id.hashCode ^ practice.hashCode;
   }
 }
 
@@ -2203,6 +2206,7 @@ extension NavigatorStateExtension on _i48.NavigationService {
   Future<dynamic> navigateToCoursePracticeView({
     _i38.Key? key,
     required int id,
+    required _i42.CoursePractices practice,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2210,7 +2214,8 @@ extension NavigatorStateExtension on _i48.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.coursePracticeView,
-        arguments: CoursePracticeViewArguments(key: key, id: id),
+        arguments:
+            CoursePracticeViewArguments(key: key, id: id, practice: practice),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2823,6 +2828,7 @@ extension NavigatorStateExtension on _i48.NavigationService {
   Future<dynamic> replaceWithCoursePracticeView({
     _i38.Key? key,
     required int id,
+    required _i42.CoursePractices practice,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2830,7 +2836,8 @@ extension NavigatorStateExtension on _i48.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.coursePracticeView,
-        arguments: CoursePracticeViewArguments(key: key, id: id),
+        arguments:
+            CoursePracticeViewArguments(key: key, id: id, practice: practice),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

@@ -89,7 +89,8 @@ class DuolingoWritingPractice4Question
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
-          verticalSpaceSmall,        ],
+          verticalSpaceSmall,
+        ],
       );
 
   Widget _buildAppBar(
@@ -113,10 +114,9 @@ class DuolingoWritingPractice4Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-    onEnd: viewModel.nextScreen,
-    duration: viewModel.countdown,
-
-  );
+        onEnd: viewModel.nextScreen,
+        duration: viewModel.countdown,
+      );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionScrollerWrapper(viewModel));

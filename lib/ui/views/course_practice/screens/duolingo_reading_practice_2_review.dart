@@ -48,11 +48,7 @@ class DuolingoReadingPractice2Review
   Widget _buildScaffold(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-              _buildBodyColumn(context: context, viewModel: viewModel));
-
-
+      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
   Widget _buildBodyColumn(
           {required BuildContext context,
@@ -70,12 +66,11 @@ class DuolingoReadingPractice2Review
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(viewModel),
         _buildPracticeReviewSection(viewModel)
-
       ];
 
   Widget _buildAppBarIndenter(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildAppBarWrapper(context: context, viewModel: viewModel),
@@ -89,7 +84,6 @@ class DuolingoReadingPractice2Review
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-
         ],
       );
 
@@ -116,9 +110,7 @@ class DuolingoReadingPractice2Review
   Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(child: _buildQuestionIndenter(viewModel));
 
-
-  Widget _buildQuestionIndenter(CoursePracticeViewModel viewModel) =>
-      Padding(
+  Widget _buildQuestionIndenter(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestionWrapper(viewModel),
       );
@@ -155,6 +147,7 @@ class DuolingoReadingPractice2Review
             .map(
               (e) => ' ${e['text']} ',
             )
-            .toList().toString(),
+            .toList()
+            .toString(),
       );
 }

@@ -75,7 +75,6 @@ class DuolingoReadingPractice2Question
         _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(viewModel),
         _buildContinueButtonWrapper(viewModel)
-
       ];
 
   Widget _buildAppBarWrapper(

@@ -19,7 +19,6 @@ class DuolingoWritingPractice2Answer
   const DuolingoWritingPractice2Answer(
       {super.key, required this.practiceController});
 
-
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -91,7 +90,6 @@ class DuolingoWritingPractice2Answer
           verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
-
         ],
       );
 

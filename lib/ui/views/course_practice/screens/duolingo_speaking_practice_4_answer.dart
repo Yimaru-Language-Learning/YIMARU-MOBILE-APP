@@ -240,8 +240,7 @@ class DuolingoSpeakingPractice4Answer
         text: 'Summit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap:  viewModel.nextScreen,
-        backgroundColor: kcPrimaryColor
-        ,
+        onTap: viewModel.nextScreen,
+        backgroundColor: kcPrimaryColor,
       );
 }

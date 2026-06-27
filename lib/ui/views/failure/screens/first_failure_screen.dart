@@ -5,7 +5,6 @@ import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/failure/failure_viewmodel.dart';
 
-
 class FirstFailureScreen extends ViewModelWidget<FailureViewModel> {
   final String label;
   final GestureTapCallback onTap;

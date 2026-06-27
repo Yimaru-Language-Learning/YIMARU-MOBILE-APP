@@ -86,7 +86,7 @@ class DuolingoReadingPractice3Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          //    _buildCountdownWrapper(viewModel),
+          _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
         ],
       );
@@ -160,7 +160,7 @@ class DuolingoReadingPractice3Question
       );
 
   Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
-    enabled: true,
+        enabled: true,
         question: (index + 1).toString(),
       );
 
