@@ -92,7 +92,7 @@ class DuolingoSpeakingPractice3Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildSpeakingIndicatorWrapper(viewModel),
+        _buildSpeakingIndicatorExpandedWrapper(viewModel),
         _buildContinueButtonWrapper(viewModel)
       ];
 
@@ -132,6 +132,15 @@ class DuolingoSpeakingPractice3Question
         duration: viewModel.countdown,
         onEnd: () async => await _next(viewModel),
       );
+
+  Widget _buildSpeakingIndicatorExpandedWrapper(
+      CoursePracticeViewModel viewModel) =>
+      Expanded(child: _buildSpeakingIndicatorScrollerWrapper(viewModel));
+
+  Widget _buildSpeakingIndicatorScrollerWrapper(
+      CoursePracticeViewModel viewModel) =>
+      SingleChildScrollView(child: _buildSpeakingIndicatorWrapper(viewModel));
+
   Widget _buildSpeakingIndicatorWrapper(CoursePracticeViewModel viewModel) =>
       Column(
         mainAxisSize: MainAxisSize.min,

@@ -36,7 +36,7 @@ class CourseLessonDetailViewmodel extends ReactiveViewModel {
   // Video player
   void close() {
     _videoPlayerController?.dispose();
-    _chewieController?.dispose();
+   _chewieController?.dispose();
   }
 
   Future<void> pause() async {
@@ -109,7 +109,7 @@ class CourseLessonDetailViewmodel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToCoursePractice(int id) async =>
-      await _navigationService.navigateToCoursePracticeView(
+  Future<void> replaceWithCoursePractice(int id) async =>
+      await _navigationService.replaceWithCoursePracticeView(
           id: id, practice: CoursePractices.lesson);
 }
