@@ -7,8 +7,9 @@ import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class SpeakingPracticeReviewSection extends StatelessWidget {
+  final String response;
   final GestureTapCallback? onTap;
-  const SpeakingPracticeReviewSection({super.key, this.onTap});
+  const SpeakingPracticeReviewSection({super.key, this.onTap,required this.response});
 
   @override
   Widget build(BuildContext context) => _buildReviewContainer();

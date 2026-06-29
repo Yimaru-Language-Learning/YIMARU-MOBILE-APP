@@ -1,6 +1,9 @@
 // Practice voice
 enum Voice { sample, recorded }
 
+// Course  type
+enum CourseType { ielts, duolingo }
+
 // Response status
 enum ResponseStatus { success, failure }
 
@@ -23,7 +26,7 @@ enum CoursePractices { courseCatalog, unit, lesson }
 enum ProgressStatuses { pending, started, completed }
 
 // Duolingo  types
-enum CoursePracticeType { speaking, reading, writing, listening }
+enum CoursePracticeType { ielts, speaking, reading, writing, listening }
 
 // Practice reason
 enum PracticeReason { course, module, lesson, previousModule, previousCourse }
@@ -36,6 +39,7 @@ enum StateObjects {
   register,
   verifyOtp,
   resendOtp,
+  cacheImage,
   courseUnits,
   assessments,
   startupView,

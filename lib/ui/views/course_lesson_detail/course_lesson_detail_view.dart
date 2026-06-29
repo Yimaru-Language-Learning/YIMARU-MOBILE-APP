@@ -21,7 +21,7 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
 
   Future<void> _navigate(CourseLessonDetailViewmodel viewModel) async {
     await viewModel.pause();
-    // await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+     await viewModel.navigateToCoursePractice(lesson.id ?? 0);
   }
 
   @override

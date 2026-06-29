@@ -129,8 +129,8 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
       [
         _buildProgressRowWrapper(),
         verticalSpaceSmall,
-        _buildActionButtonWrapper(context: context, viewModel: viewModel),
-        verticalSpaceMedium,
+        // _buildActionButtonWrapper(context: context, viewModel: viewModel),
+        // verticalSpaceMedium,
         _buildCourseModules(viewModel)
       ];
 

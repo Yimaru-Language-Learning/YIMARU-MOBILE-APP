@@ -11,9 +11,11 @@ import 'custom_circular_progress_indicator.dart';
 class CustomResponseCard extends ViewModelWidget<CoursePracticeViewModel> {
   final Voice voice;
   final String title;
+  final String? response;
 
   const CustomResponseCard({
     super.key,
+    this.response,
     required this.voice,
     required this.title,
   });
@@ -44,7 +46,7 @@ class CustomResponseCard extends ViewModelWidget<CoursePracticeViewModel> {
         ),
         onPressed: () async => viewModel.player.state == PlayerState.playing
             ? await viewModel.pauseAudio()
-            : await viewModel.playResult(voice),
+            : await viewModel.playResult(voice:voice,response: response),
         child: _buildButtonState(viewModel),
       );
 

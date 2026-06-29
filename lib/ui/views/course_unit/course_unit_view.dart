@@ -91,8 +91,8 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
         _buildCourseModuleBanner(),
         verticalSpaceMedium,
         _buildOverallProgress(),
-        verticalSpaceTiny,
-        _buildContinueButton(viewModel),
+        // verticalSpaceTiny,
+        // _buildContinueButton(viewModel),
         verticalSpaceMedium,
         _buildListViewBuilder(viewModel)
       ];

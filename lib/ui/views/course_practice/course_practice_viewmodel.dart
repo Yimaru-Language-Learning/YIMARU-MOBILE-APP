@@ -11,6 +11,7 @@ import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/audio_player_service.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/cache_image_service.dart';
 import '../../../services/course_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../../services/voice_recorder_service.dart';
@@ -28,6 +29,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
   final _dialogService = locator<DialogService>();
 
   final _courseService = locator<CourseService>();
+
+  final _cacheImageService = locator<CacheImageService>();
 
   final _statusChecker = locator<StatusCheckerService>();
 
@@ -133,7 +136,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   final List<Map<String, dynamic>> _questionParams = [
     {
-      'label': 'Speaking 01',
+      'label': 'Duolingo Speaking 01',
       'type': CoursePracticeType.speaking,
       'intro_title': 'Speak About the Photo',
       'outro_title': 'Speaking Practice Completed',
@@ -142,7 +145,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           'Prepare to speak for at least 30 seconds about the photo you are shown'
     },
     {
-      'label': 'Speaking 02',
+      'label': 'Duolingo Speaking 02',
       'intro_title': 'Read, Then Speak',
       'type': CoursePracticeType.speaking,
       'outro_title': 'Speaking Practice Completed',
@@ -150,7 +153,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this speaking session. Great work!',
     },
     {
-      'label': 'Speaking 03',
+      'label': 'Duolingo Speaking 03',
       'intro_title': 'Speaking Sample',
       'type': CoursePracticeType.speaking,
       'outro_title': 'Speaking Practice Completed',
@@ -158,7 +161,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this speaking session. Great work!',
     },
     {
-      'label': 'Speaking 04',
+      'label': 'Duolingo Speaking 04',
       'type': CoursePracticeType.speaking,
       'intro_title': 'Interactive Speaking',
       'outro_title': 'Speaking Practice Completed',
@@ -166,7 +169,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this speaking session. Great work!',
     },
     {
-      'label': 'Writing 05',
+      'label': 'Duolingo Writing 05',
       'type': CoursePracticeType.writing,
       'intro_title': 'Write About the Photo',
       'outro_title': 'Writing Practice Completed',
@@ -175,7 +178,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           'You will see a picture and write a short description based on what you observe. Focus on clear, simple sentences.'
     },
     {
-      'label': 'Writing 06',
+      'label': 'Duolingo Writing 06',
       'intro_title': 'Writing Sample',
       'type': CoursePracticeType.writing,
       'outro_title': 'Writing Practice Completed',
@@ -184,7 +187,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           'You will write a longer response based on a given question. Your writing will be shared with institutions as part of your score.'
     },
     {
-      'label': 'Writing 07',
+      'label': 'Duolingo Writing 07',
       'type': CoursePracticeType.writing,
       'outro_title': 'Writing Practice Completed',
       'intro_title': 'Interactive Writing Part 1',
@@ -193,7 +196,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ' You will write short and simple sentences.  Focus on basic ideas and clear meaning.  Write naturally and manage your time.'
     },
     {
-      'label': 'Writing 08',
+      'label': 'Duolingo Writing 08',
       'type': CoursePracticeType.writing,
       'intro_title': 'Interactive Writing Part 2',
       'outro_title': 'Writing Practice Completed',
@@ -202,7 +205,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ' You will continue writing on a related idea.  Add more details using clear sentences.  Stay focused and complete your response within the time.'
     },
     {
-      'label': 'Listening 09',
+      'label': 'Duolingo Listening 09',
       'intro_title': 'Listen and Type',
       'type': CoursePracticeType.listening,
       'outro_title': 'Listening Practice Completed',
@@ -211,7 +214,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Listening session. Great work!',
     },
     {
-      'label': 'Listening 10',
+      'label': 'Duolingo Listening 10',
       'type': CoursePracticeType.listening,
       'outro_title': 'Listening Practice Completed',
       'intro_title': 'Interactive Listening - Part 1',
@@ -219,7 +222,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Listening session. Great work!',
     },
     {
-      'label': 'Listening 11',
+      'label': 'Duolingo Listening 11',
       'type': CoursePracticeType.listening,
       'outro_title': 'Listening Practice Completed',
       'intro_title': 'Interactive Listening - Part 2',
@@ -227,7 +230,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Listening session. Great work!',
     },
     {
-      'label': 'Listening 12',
+      'label': 'Duolingo Listening 12',
       'type': CoursePracticeType.listening,
       'outro_title': 'Listening Practice Completed',
       'intro_title': 'Interactive Listening - Part 3',
@@ -235,7 +238,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Listening session. Great work!',
     },
     {
-      'label': 'Reading 13',
+      'label': 'Duolingo Reading 13',
       'intro_title': 'Read and Select',
       'type': CoursePracticeType.reading,
       'outro_title': 'Reading Practice Completed',
@@ -244,7 +247,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           'Read the sentence and select the option that correctly completes the meaning.',
     },
     {
-      'label': 'Reading 14',
+      'label': 'Duolingo Reading 14',
       'intro_title': 'Fill in the blank',
       'type': CoursePracticeType.reading,
       'outro_title': 'Reading Practice Completed',
@@ -253,7 +256,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
     },
     {
-      'label': 'Reading 15',
+      'label': 'Duolingo Reading 15',
       'type': CoursePracticeType.reading,
       'outro_title': 'Reading Practice Completed',
       'intro_title': 'Interactive Reading Complete the Sentence',
@@ -262,7 +265,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
     },
     {
-      'label': 'Reading 16',
+      'label': 'Duolingo Reading 16',
       'type': CoursePracticeType.reading,
       'outro_title': 'Reading Practice Completed',
       'intro_title': 'Interactive Reading Complete the Passage',
@@ -271,7 +274,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
     },
     {
-      'label': 'Reading 17',
+      'label': 'Duolingo Reading 17',
       'type': CoursePracticeType.reading,
       'outro_title': 'Reading Practice Completed',
       'intro_title': 'Interactive Reading Identify the Idea',
@@ -280,7 +283,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
     },
     {
-      'label': 'Reading 18',
+      'label': 'Duolingo Reading 18',
       'type': CoursePracticeType.reading,
       'outro_title': 'Reading Practice Completed',
       'intro_title': 'Interactive Reading Title the Passage',
@@ -289,7 +292,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
     },
     {
-      'label': 'Reading 19',
+      'label': 'Duolingo Reading 19',
       'type': CoursePracticeType.reading,
       'outro_title': 'Reading Practice Completed',
       'intro_title': 'Interactive Reading Highlight the Answer',
@@ -298,7 +301,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
     },
     {
-      'label': 'Reading 20',
+      'label': 'Duolingo Reading 20',
       'type': CoursePracticeType.reading,
       'intro_title': 'Read and Complete',
       'outro_title': 'Reading Practice Completed',
@@ -306,13 +309,41 @@ class CoursePracticeViewModel extends ReactiveViewModel
           'Read the passage and complete the interactive activities.',
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
     },
+    {
+      'label': 'Duolingo Reading 20',
+      'type': CoursePracticeType.reading,
+      'intro_title': 'Read and Complete',
+      'outro_title': 'Reading Practice Completed',
+      'intro_subtitle':
+          'Read the passage and complete the interactive activities.',
+      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+    },
+    {
+      'label': 'IELTS Speaking 21',
+      'type': CoursePracticeType.ielts,
+      'subtitle': '4–5 minutes',
+      'instruction_title': 'What to expect:',
+      'title': 'IELTS Speaking – Interview',
+      'instruction_subtitle':
+          ' You’ll answer simple questions about everyday topics',
+    },
+    {
+      'label': 'IELTS Speaking 22',
+      'type': CoursePracticeType.ielts,
+      'instruction_title': 'What to expect:',
+      'title': 'IELTS Speaking – Cue Card Part 1',
+      'instruction_subtitle':
+          ' You’ll answer simple questions about everyday topics',
+      'subtitle':
+          '1 minute to prepare and make notes. Then you speak for 1–2 minutes on the topic.',
+    },
   ];
 
   List<Map<String, dynamic>> get questionParams => _questionParams;
 
   // Selected question param
   Map<String, dynamic> _selectedQuestionParam = {
-    'label': 'Speaking 01',
+    'label': 'Duolingo Speaking 01',
     'intro_title': 'Speak About the Photo',
     'type': CoursePracticeType.speaking,
     'outro_title': 'Speaking Practice Completed',
@@ -530,25 +561,20 @@ class CoursePracticeViewModel extends ReactiveViewModel
     await _audioPlayerService.playUrl(url);
   }
 
-  Future<void> playResult(Voice voice) async {
+  Future<void> playResult({required Voice voice,required String? response}) async {
     setBusyObject(voice);
-    await playAudio(voice);
+    await playAudio(voice:voice,response: response);
   }
 
-  Future<void> playAudio(Voice voice) async =>
-      await runBusyFuture(_playAudio(voice),
+  Future<void> playAudio({required Voice voice,required String? response}) async =>
+      await runBusyFuture(_playAudio(voice:voice,response: response),
           busyObject: StateObjects.coursePracticeReview);
 
-  Future<void> _playAudio(Voice voice) async {
+  Future<void> _playAudio({required Voice voice,required String? response}) async {
     if (voice == Voice.recorded) {
       await _audioPlayerService.playLocal(_recordedAudio ?? '');
     } else {
-      String url = await getRefreshedUrl(_questions[currentQuestion]
-                  .dynamicPayload
-                  ?.response
-                  ?.last
-                  .value ??
-              '') ??
+      String url = await getRefreshedUrl(response ?? '') ??
           '';
 
       await _audioPlayerService.playUrl(url);
@@ -578,6 +604,17 @@ class CoursePracticeViewModel extends ReactiveViewModel
     );
     return response?.confirmed;
   }
+
+  // Cache image
+  Future<void> cacheNetworkImage(
+          {required String image, required BuildContext context}) async =>
+      await runBusyFuture(_cacheNetworkImage(image: image, context: context),
+          busyObject: StateObjects.cacheImage);
+
+  Future<void> _cacheNetworkImage(
+          {required String image, required BuildContext context}) async =>
+      await _cacheImageService.cacheNetworkImage(
+          image: image, context: context);
 
   // In-app navigation
   void nextScreen() {
@@ -629,7 +666,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
   Future<void> _getCoursePractices(
       {required int id, required CoursePractices practice}) async {
     if (await _statusChecker.checkConnection()) {
-
       if (practice == CoursePractices.courseCatalog) {
         _practices = await _apiService.getCourseCatalogPractices(id);
       } else if (practice == CoursePractices.unit) {
