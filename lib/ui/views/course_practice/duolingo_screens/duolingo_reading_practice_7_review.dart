@@ -131,6 +131,7 @@ class DuolingoReadingPractice7Review
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildTitle(viewModel),
       );
+
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
         'Passage',
         style: style16DG600,
@@ -141,10 +142,26 @@ class DuolingoReadingPractice7Review
         child: _buildQuestion(viewModel),
       );
 
-  Widget _buildQuestion(CoursePracticeViewModel viewModel) => Text(
-        viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?[1].value,
-        style: style14DG400,
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) => RichText(
+        text: TextSpan(
+          style: style14DG400,
+          children: [
+            TextSpan(
+                text: viewModel.questions[viewModel.currentQuestion]
+                    .dynamicPayload?.stimulus?[1].value
+                    .substring(0, viewModel.start)),
+            TextSpan(
+              text: viewModel.questions[viewModel.currentQuestion]
+                  .dynamicPayload?.stimulus?[1].value
+                  .substring(viewModel.start, viewModel.end),
+              style: style14P400,
+            ),
+            TextSpan(
+                text: viewModel.questions[viewModel.currentQuestion]
+                    .dynamicPayload?.stimulus?[1].value
+                    .substring(viewModel.end)),
+          ],
+        ),
       );
 
   Widget _buildSubtitledWrapper(CoursePracticeViewModel viewModel) => Padding(

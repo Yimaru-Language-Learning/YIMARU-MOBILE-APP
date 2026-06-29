@@ -7,6 +7,7 @@ import 'package:yimaru_app/models/course_practice.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/course_question.dart';
+import '../../../models/refresh_object.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/audio_player_service.dart';
@@ -113,6 +114,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
   bool get isSpeaking => _isSpeaking;
 
 // Course practices
+  String? _cachedImage;
+
+  String? get cachedImage => _cachedImage;
+
   bool _focusPractice = false;
 
   bool get focusPractice => _focusPractice;
@@ -363,6 +368,15 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Map<String, dynamic> get selectedOption => _selectedOption;
 
+  //
+  int _start = 0;
+
+  int get start => _start;
+
+  int _end = 0;
+
+  int get end => _end;
+
   // Play count
   int _playCount = 3;
 
@@ -394,6 +408,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
         seconds: getSeconds(durationInSeconds),
       ),
     );
+  }
+
+  void resetCountdown() {
+    _countdown = null;
   }
 
   // Play count
@@ -428,6 +446,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   void resetValues() {
     _playCount = 3;
     _countdown = null;
+    _cachedImage = null;
     _buttonActive = false;
     _focusPractice = false;
     _selectedOption.clear();
@@ -511,8 +530,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Voice recorder
   Future<void> stopRecording() async {
-    await _voiceRecorderService.stopRecording();
-    _recordedAudio = await _voiceRecorderService.getRecordedAudio();
+    try {
+      await _voiceRecorderService.stopRecording();
+      _recordedAudio = await _voiceRecorderService.getRecordedAudio();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> startRecording() async => await runBusyFuture(_startRecording(),
@@ -561,21 +584,23 @@ class CoursePracticeViewModel extends ReactiveViewModel
     await _audioPlayerService.playUrl(url);
   }
 
-  Future<void> playResult({required Voice voice,required String? response}) async {
+  Future<void> playResult(
+      {required Voice voice, required String? response}) async {
     setBusyObject(voice);
-    await playAudio(voice:voice,response: response);
+    await playAudio(voice: voice, response: response);
   }
 
-  Future<void> playAudio({required Voice voice,required String? response}) async =>
-      await runBusyFuture(_playAudio(voice:voice,response: response),
+  Future<void> playAudio(
+          {required Voice voice, required String? response}) async =>
+      await runBusyFuture(_playAudio(voice: voice, response: response),
           busyObject: StateObjects.coursePracticeReview);
 
-  Future<void> _playAudio({required Voice voice,required String? response}) async {
+  Future<void> _playAudio(
+      {required Voice voice, required String? response}) async {
     if (voice == Voice.recorded) {
       await _audioPlayerService.playLocal(_recordedAudio ?? '');
     } else {
-      String url = await getRefreshedUrl(response ?? '') ??
-          '';
+      String url = await getRefreshedUrl(response ?? '') ?? '';
 
       await _audioPlayerService.playUrl(url);
     }
@@ -605,6 +630,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
     return response?.confirmed;
   }
 
+  // Set highlight
+  void setHighlight({required int end, required int start}) {
+    _end = end;
+    _start = start;
+  }
+
   // Cache image
   Future<void> cacheNetworkImage(
           {required String image, required BuildContext context}) async =>
@@ -612,9 +643,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
           busyObject: StateObjects.cacheImage);
 
   Future<void> _cacheNetworkImage(
-          {required String image, required BuildContext context}) async =>
+      {required String image, required BuildContext context}) async {
+    Map<String, dynamic> data = {'reference': image};
+    Map<String, dynamic> response = await _apiService.refreshObject(data);
+    if (response['status'] == ResponseStatus.success) {
+      RefreshObject object = response['data'] as RefreshObject;
+      _cachedImage = object.url;
       await _cacheImageService.cacheNetworkImage(
-          image: image, context: context);
+          image: _cachedImage ?? '', context: context);
+    }
+  }
 
   // In-app navigation
   void nextScreen() {
@@ -682,7 +720,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           busyObject: StateObjects.coursePractice);
 
   Future<void> _getCoursePracticeQuestions(int id) async {
-    _currentQuestion = 0;
+    _currentQuestion = 16;
     _questions = await _apiService.getCourseQuestions(id);
     await setQuestionParam(
         _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
