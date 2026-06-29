@@ -140,10 +140,17 @@ class DuolingoReadingPractice7Question
         style: style16DG600,
       );
 
-  Widget _buildQuestion(CoursePracticeViewModel viewModel) => Text(
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) => SelectableText(
         viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[1].value,
         style: style14DG400,
+    selectionColor: kcPrimaryColor,
+    onSelectionChanged: (cause,selection){
+      print(cause.start);
+      print(cause.end);
+
+    },
+
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
@@ -161,7 +168,7 @@ class DuolingoReadingPractice7Question
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Summit',
+        text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: viewModel.nextScreen,

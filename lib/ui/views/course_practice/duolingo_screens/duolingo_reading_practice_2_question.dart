@@ -8,6 +8,7 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/reading_practice_option_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoReadingPractice2Question
@@ -72,7 +73,6 @@ class DuolingoReadingPractice2Question
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(viewModel),
-        _buildContinueButtonWrapper(viewModel)
       ];
 
   Widget _buildAppBarWrapper(
@@ -130,8 +130,12 @@ class DuolingoReadingPractice2Question
         _buildTitle(viewModel),
         verticalSpaceSmall,
         _buildQuestion(viewModel),
-        verticalSpaceLarge,
-      ];
+    verticalSpaceMedium,
+    _buildPracticeOptions(viewModel),
+    verticalSpaceLarge,
+    _buildContinueButtonWrapper(viewModel)
+
+  ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
         'Complete the sentence with correct word',
@@ -142,6 +146,24 @@ class DuolingoReadingPractice2Question
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       const DuolingoMissingWordQuestion();
 
+  Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
+      ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: (viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
+            .length,
+        itemBuilder: (context, index) => _buildPracticeCard(
+          index,
+        ),
+      );
+
+  Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
+    enabled: true,
+    question: (index + 1).toString(),
+  );
+
+
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
@@ -151,7 +173,7 @@ class DuolingoReadingPractice2Question
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
           height: 55,
-          text: 'Summit',
+          text: 'Submit',
           borderRadius: 12,
           foregroundColor: kcWhite,
           onTap: viewModel.nextScreen,

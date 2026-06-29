@@ -203,7 +203,7 @@ class DuolingoWritingPractice1Question
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Summit',
+        text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: practiceController.text.isNotEmpty &&
