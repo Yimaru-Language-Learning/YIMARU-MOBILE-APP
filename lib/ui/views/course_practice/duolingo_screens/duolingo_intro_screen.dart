@@ -54,9 +54,12 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
           .dynamicPayload?.stimulus?.last.value['seconds'];
       viewModel.resetSpeakingState();
       viewModel.setCountdown(stimulusLastSec);
-    } else if (id == 22 /*Speak about the photo*/) {
+    } else if (id == 22 /*Write about the photo*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
+      String image = viewModel.questions[viewModel.currentQuestion].dynamicPayload
+          ?.stimulus?.first.value;
+      await viewModel.cacheNetworkImage(image: image, context: context);
       viewModel.setCountdown(responseFirstSec);
     } else if (id == 23 /*Writing sample*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]

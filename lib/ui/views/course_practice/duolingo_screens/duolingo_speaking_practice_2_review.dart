@@ -129,6 +129,7 @@ class DuolingoSpeakingPractice2Review
         _buildSubtitle(viewModel),
         verticalSpaceMedium,
         _buildQuestion(viewModel),
+    verticalSpaceMedium
       ];
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
