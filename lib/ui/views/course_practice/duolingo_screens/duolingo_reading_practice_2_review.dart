@@ -7,6 +7,7 @@ import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/duolingo_practice_review_section.dart';
+import '../../../widgets/reading_practice_option_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoReadingPractice2Review
@@ -122,6 +123,9 @@ class DuolingoReadingPractice2Review
         _buildTitle(viewModel),
         verticalSpaceSmall,
         _buildQuestion(viewModel),
+    verticalSpaceMedium,
+    _buildPracticeOptions(viewModel),
+    verticalSpaceMedium,
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
@@ -132,6 +136,25 @@ class DuolingoReadingPractice2Review
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       const DuolingoMissingWordQuestion();
+
+
+
+  Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
+      ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: (viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
+            .length,
+        itemBuilder: (context, index) => _buildPracticeCard(
+          index,
+        ),
+      );
+
+  Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
+    enabled: true,
+    question: (index + 1).toString(),
+  );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
