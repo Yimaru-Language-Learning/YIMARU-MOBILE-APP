@@ -3,50 +3,52 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:yimaru_app/models/course_question.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_1_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_2_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_3_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_4_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_4_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_practices_screens.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_finish_screen.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_intro_screen.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_1_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_2_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_listening_practice_3_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_2_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_2_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_3_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_3_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_4_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_5_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_6_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_7_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_7_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_8_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_reading_practice_8_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_retake_screen.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_answer.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_1_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_2_answer.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_2_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_2_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_3_answer.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_3_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_3_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_4_answer.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_4_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_speaking_practice_4_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_writing_practice_1_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_writing_practice_1_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_writing_practice_2_answer.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_writing_practice_2_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_writing_practice_2_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_writing_practice_3_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_writing_practice_3_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_writing_practice_4_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/duolingo_writing_practice_4_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_1_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_2_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_3_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_4_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_4_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_practices_screens.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_finish_screen.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_intro_screen.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_1_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_2_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_3_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_2_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_2_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_3_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_3_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_4_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_5_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_6_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_7_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_7_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_8_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_8_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_retake_screen.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_1_answer.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_1_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_1_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_2_answer.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_2_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_2_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_3_answer.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_3_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_3_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_4_answer.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_4_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_4_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_1_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_1_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_2_answer.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_2_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_2_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_3_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_3_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_4_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_4_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/ielts_speaking_practice_1_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_intro_screen.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/validators/form_validator.dart';
@@ -83,7 +85,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
         builder: (_) => _buildSheet(viewModel),
       );
 
-  Widget _buildQuestionScreen(CoursePracticeViewModel viewModel) {
+  Widget _buildDuolingoQuestionScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
             .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
@@ -139,7 +141,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     return Container();
   }
 
-  Widget _buildAnswerScreen(CoursePracticeViewModel viewModel) {
+  Widget _buildDuolingoAnswerScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
             .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
@@ -159,7 +161,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     }
   }
 
-  Widget _buildReviewScreen(CoursePracticeViewModel viewModel) {
+  Widget _buildDuolingoReviewScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
             .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
@@ -210,6 +212,39 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     return Container();
   }
 
+  Widget _buildIeltsQuestionScreen(CoursePracticeViewModel viewModel) {
+    int id = viewModel
+            .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
+        0;
+    if (id == 17 /*IELTS Speaking – Interview*/) {
+      return const IeltsSpeakingPractice1Question();
+    } else if (id == 13 /*Read then speak*/) {
+      return const DuolingoSpeakingPractice2Question();
+    }
+
+    return Container();
+  }
+
+  Widget _buildIeltsAnswerScreen(CoursePracticeViewModel viewModel) {
+    int id = viewModel
+            .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
+        0;
+    if (id == 17 /*IELTS Speaking – Interview*/) {
+      return const DuolingoSpeakingPractice1Answer();
+    } else if (id == 13 /*Read then speak*/) {
+      return const DuolingoSpeakingPractice2Answer();
+    } else if (id == 36 /*Speaking sample*/) {
+      return const DuolingoSpeakingPractice3Answer();
+    } else if (id == 14 /*Interactive speaking*/) {
+      return const DuolingoSpeakingPractice4Answer();
+    } else if (id == 23 /*Writing sample*/) {
+      return DuolingoWritingPractice2Answer(
+          practiceController: practiceController);
+    } else {
+      return Container();
+    }
+  }
+
   @override
   void onViewModelReady(CoursePracticeViewModel viewModel) async {
     syncFormWithViewModel(viewModel);
@@ -256,6 +291,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.coursePractice)
+
           ? const PageLoadingIndicator()
           : viewModel.practices.isEmpty
               ? _buildPageLoadingIndicator(viewModel)
@@ -298,17 +334,27 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       PageView(
         controller: viewModel.pageController,
         physics: const NeverScrollableScrollPhysics(),
-        children: _buildScreens(
-            index: index, viewModel: viewModel, question: question),
+        children: _buildQuestionScreens(
+            index: index, question: question, viewModel: viewModel),
       );
 
-  List<Widget> _buildScreens(
+  List<Widget> _buildQuestionScreens(
+          {required int index,
+          required CourseQuestion question,
+          required CoursePracticeViewModel viewModel}) =>
+      viewModel.selectedQuestionParam['type'] != CoursePracticeType.ielts
+          ? _buildDuolingoScreens(
+              index: index, viewModel: viewModel, question: question)
+          : _buildIeltsScreens(
+              index: index, viewModel: viewModel, question: question);
+
+  List<Widget> _buildDuolingoScreens(
           {required int index,
           required CourseQuestion question,
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildDuolingoIntroScreen(viewModel),
-        _buildDuolingoQuestionScreen(viewModel),
+        _buildDuolingoQuestionScreenWrapper(viewModel),
         if (viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
                 3 &&
@@ -348,7 +394,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
             viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
                 57)
-          _buildDuolingoAnswerScreen(viewModel),
+          _buildDuolingoAnswerScreenWrapper(viewModel),
         if (viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
                 52 &&
@@ -358,9 +404,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
             viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
                 54)
-          _buildDuolingoReviewScreen(viewModel),
+          _buildDuolingoReviewScreenWrapper(viewModel),
         // _buildDuolingoRetakeScreen(viewModel),
-        _buildDuolingoFinishScreen(viewModel),
+        _buildDuolingoFinishScreenWrapper(viewModel),
       ];
 
   Widget _buildDuolingoIntroScreen(CoursePracticeViewModel viewModel) =>
@@ -370,22 +416,52 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           title: viewModel.selectedQuestionParam['intro_title'],
           subtitle: viewModel.selectedQuestionParam['intro_subtitle']);
 
-  Widget _buildDuolingoQuestionScreen(CoursePracticeViewModel viewModel) =>
-      _buildQuestionScreen(viewModel);
+  Widget _buildDuolingoQuestionScreenWrapper(
+          CoursePracticeViewModel viewModel) =>
+      _buildDuolingoQuestionScreen(viewModel);
 
-  Widget _buildDuolingoAnswerScreen(CoursePracticeViewModel viewModel) =>
-      _buildAnswerScreen(viewModel);
+  Widget _buildDuolingoAnswerScreenWrapper(CoursePracticeViewModel viewModel) =>
+      _buildDuolingoAnswerScreen(viewModel);
 
-  Widget _buildDuolingoReviewScreen(CoursePracticeViewModel viewModel) =>
-      _buildReviewScreen(viewModel);
+  Widget _buildDuolingoReviewScreenWrapper(CoursePracticeViewModel viewModel) =>
+      _buildDuolingoReviewScreen(viewModel);
 
-  Widget _buildDuolingoRetakeScreen(CoursePracticeViewModel viewModel) =>
+  Widget _buildDuolingoRetakeScreenWrapper(CoursePracticeViewModel viewModel) =>
       DuolingoRetakeScreen(
           title: viewModel.selectedQuestionParam['outro_title'],
           subtitle: viewModel.selectedQuestionParam['outro_subtitle']);
 
-  Widget _buildDuolingoFinishScreen(CoursePracticeViewModel viewModel) =>
+  Widget _buildDuolingoFinishScreenWrapper(CoursePracticeViewModel viewModel) =>
       DuolingoFinishScreen(
           title: viewModel.selectedQuestionParam['outro_title'],
           subtitle: viewModel.selectedQuestionParam['outro_subtitle']);
+
+  List<Widget> _buildIeltsScreens(
+          {required int index,
+          required CourseQuestion question,
+          required CoursePracticeViewModel viewModel}) =>
+      [
+        _buildIeltsIntroScreen(viewModel),
+        _buildIeltsQuestionScreenWrapper(viewModel),
+        _buildIeltsAnswerScreenWrapper(viewModel),
+        _buildDuolingoReviewScreenWrapper(viewModel),
+        // _buildDuolingoRetakeScreen(viewModel),
+        //_buildDuolingoFinishScreenWrapper(viewModel),
+      ];
+
+  Widget _buildIeltsIntroScreen(CoursePracticeViewModel viewModel) =>
+      IeltsIntroScreen(
+        practiceController: practiceController,
+        title: viewModel.selectedQuestionParam['title'],
+        subtitle: viewModel.selectedQuestionParam['subtitle'],
+        instructionTitle: viewModel.selectedQuestionParam['instruction_title'],
+        instructionSubtitle:
+            viewModel.selectedQuestionParam['instruction_subtitle'],
+      );
+
+  Widget _buildIeltsQuestionScreenWrapper(CoursePracticeViewModel viewModel) =>
+      _buildIeltsQuestionScreen(viewModel);
+
+  Widget _buildIeltsAnswerScreenWrapper(CoursePracticeViewModel viewModel) =>
+      _buildDuolingoAnswerScreen(viewModel);
 }

@@ -194,7 +194,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
       );
 
   Widget _buildLessonButtonWrapper(CourseUnitViewModel viewModel) => Expanded(
-        child: _buildLessonButton(viewModel),
+        child: Container(),
       );
 
   Widget _buildLessonButton(CourseUnitViewModel viewModel) =>

@@ -4,8 +4,6 @@ import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
 
-import 'custom_small_radio_button.dart';
-
 class ReadingPracticeOptionCard
     extends ViewModelWidget<CoursePracticeViewModel> {
   final bool enabled;
@@ -127,7 +125,7 @@ class ReadingPracticeOptionCard
       );
 
   Widget _buildButtonRowWrapper(
-          {required String title, required bool selected, p}) =>
+          {required String title, required bool selected}) =>
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: _buildButtonRowChildren(title: title, selected: selected),
