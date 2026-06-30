@@ -19,13 +19,10 @@ class IeltsSpeakingPractice3Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsSpeakingPractice3Question({super.key});
 
-  void _next(CoursePracticeViewModel viewModel) {
-    viewModel.resetSpeakingState();
-    viewModel.nextScreen();
-  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();
+    await viewModel.stopRecording();    viewModel.resetValues();
+
     viewModel.pop();
     viewModel.goBack();
   }
@@ -92,7 +89,7 @@ class IeltsSpeakingPractice3Question
         children: [
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
-          verticalSpaceMedium,
+          verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
         ],

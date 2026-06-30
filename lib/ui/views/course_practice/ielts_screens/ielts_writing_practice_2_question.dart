@@ -27,6 +27,7 @@ class IeltsWritingPractice2Question
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
+    viewModel.resetValues();
     viewModel.pop();
     viewModel.goBack();
   }

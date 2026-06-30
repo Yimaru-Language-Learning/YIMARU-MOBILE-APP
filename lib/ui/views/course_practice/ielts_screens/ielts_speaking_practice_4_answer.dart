@@ -23,7 +23,8 @@ class IeltsSpeakingPractice4Answer
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();
+    await viewModel.stopRecording();    viewModel.resetValues();
+
     viewModel.pop();
     viewModel.goBack();
   }
@@ -92,7 +93,7 @@ class IeltsSpeakingPractice4Answer
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
-          verticalSpaceMedium,
+          verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
         ],

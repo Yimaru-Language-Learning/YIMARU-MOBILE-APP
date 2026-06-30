@@ -47,6 +47,8 @@ import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_wr
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_3_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_4_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_4_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_listening_practice_1_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_listening_practice_3_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_1_answer.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_intro_screen.dart';
@@ -65,6 +67,7 @@ import '../../widgets/page_loading_indicator.dart';
 import '../../widgets/practice_loading_screen.dart';
 import 'course_practice_view.form.dart';
 import 'course_practice_viewmodel.dart';
+import 'ielts_screens/ielts_listening_practice_2_question.dart';
 import 'ielts_screens/ielts_speaking_practice_1_review.dart';
 import 'ielts_screens/ielts_speaking_practice_3_answer.dart';
 import 'ielts_screens/ielts_speaking_practice_3_question.dart';
@@ -245,8 +248,16 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 27 /*IELTS Writing – Part 2*/) {
       return IeltsWritingPractice2Question(
           practiceController: practiceController);
+    } else if (id == 40 /*Form completion*/) {
+      return IeltsListeningPractice1Question(
+          practiceController: practiceController);
+    } else if (id == 42 /*Note completion*/) {
+      return IeltsListeningPractice2Question(
+          practiceController: practiceController);
+    } else if (id == 4 /*Short Answer*/) {
+      return IeltsListeningPractice3Question(
+          practiceController: practiceController);
     }
-
     return Container();
   }
 
@@ -356,7 +367,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
   List<Widget> _buildBodyChildren(CoursePracticeViewModel viewModel) =>
       [_buildDuolingoAssessmentsScreen(), _buildQuestionSetView(viewModel)];
 
-  Widget _buildDuolingoAssessmentsScreen() => const DuolingoPracticesScreens();
+  Widget _buildDuolingoAssessmentsScreen() =>  DuolingoPracticesScreens(practiceController: practiceController);
 
   Widget _buildQuestionSetView(CoursePracticeViewModel viewModel) =>
       PageView.builder(
@@ -483,7 +494,15 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           required CourseQuestion question,
           required CoursePracticeViewModel viewModel}) =>
       [
-        _buildIeltsIntroScreen(viewModel),
+        if (viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                40 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                42&& viewModel.questions[viewModel.currentQuestion]
+            .questionTypeDefinitionId !=
+            4)
+          _buildIeltsIntroScreen(viewModel),
         _buildIeltsQuestionScreenWrapper(viewModel),
         if (viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=

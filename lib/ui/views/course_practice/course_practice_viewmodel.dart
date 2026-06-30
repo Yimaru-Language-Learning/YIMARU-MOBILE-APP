@@ -368,6 +368,29 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_title': 'What to expect:',
       'instruction_subtitle':
           'Give your opinion with reasons.  Write ~ 250 words.',
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Form Completion',
+      'label': 'IELTS Listening 27',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Note Completion',
+      'label': 'IELTS Listening 27',
+      'type': CoursePracticeType.ielts,
+    },   {
+      'subtitle': '',
+      'title': 'Short Answer',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Listening 28',
+      'type': CoursePracticeType.ielts,
     }
   ];
 
@@ -536,7 +559,21 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(24);
     } else if (id == 27 /*IELTS Writing – Part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(25);
-    } else {
+    } else if (id == 40 /*Form Completion*/) {
+      _selectedQuestionParam = _questionParams.elementAt(26);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      setCountdown(responseFirstSec);
+
+    } else if (id == 42 /*Note Completion*/) {
+      _selectedQuestionParam = _questionParams.elementAt(27);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      setCountdown(responseFirstSec);
+    } else if (id == 4 /*Short Answer*/) {
+      _selectedQuestionParam = _questionParams.elementAt(28);
+
+    }  else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
     }
   }

@@ -9,7 +9,21 @@ import '../course_practice_viewmodel.dart';
 
 class DuolingoPracticesScreens
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const DuolingoPracticesScreens({super.key});
+  final TextEditingController practiceController;
+
+  const DuolingoPracticesScreens({super.key, required this.practiceController});
+
+  void _reset( CoursePracticeViewModel viewModel){
+    viewModel.resetValues();
+    practiceController.clear();
+  }
+
+  Future<void> _getPracticeQuestions(
+      {required int index, required CoursePracticeViewModel viewModel}) async {
+    _reset(viewModel);
+    await viewModel.getCoursePracticeQuestions(
+        viewModel.practices[index].questionSetId ?? 0);
+  }
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
@@ -80,9 +94,10 @@ class DuolingoPracticesScreens
         itemCount: viewModel.practices.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildCard(
-            title: viewModel.practices[index].title ?? '',
-            onTap: () async => await viewModel.getCoursePracticeQuestions(
-                viewModel.practices[index].questionSetId ?? 0)),
+          title: viewModel.practices[index].title ?? '',
+          onTap: () async =>
+              await _getPracticeQuestions(index: index, viewModel: viewModel),
+        ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 15,

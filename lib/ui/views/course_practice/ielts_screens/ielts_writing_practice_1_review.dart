@@ -21,7 +21,8 @@ class IeltsWritingPractice1Review
   });
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();
+    await viewModel.stopRecording();    viewModel.resetValues();
+
     viewModel.pop();
     viewModel.goBack();
   }

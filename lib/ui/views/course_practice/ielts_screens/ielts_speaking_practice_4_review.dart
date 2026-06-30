@@ -14,7 +14,8 @@ class IeltsSpeakingPractice4Review
   const IeltsSpeakingPractice4Review({super.key});
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();
+    await viewModel.stopRecording();    viewModel.resetValues();
+
     viewModel.pop();
     viewModel.goBack();
   }
@@ -78,7 +79,7 @@ class IeltsSpeakingPractice4Review
         children: [
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
-          verticalSpaceMedium,
+          verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
         ],
