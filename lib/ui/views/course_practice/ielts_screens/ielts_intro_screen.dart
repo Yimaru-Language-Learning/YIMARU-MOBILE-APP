@@ -8,6 +8,7 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/wave_wrapper.dart';
 import '../course_practice_viewmodel.dart';
 
@@ -35,13 +36,31 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
             .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
     if (id == 17 /*IELTS Speaking – Interview*/) {
+      String stimulus = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.stimulus?.last.value ??
+          '';
+      await viewModel.playVoicePrompt(stimulus);
+    } else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
       int stimulusFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.first.value['seconds'];
       viewModel.setCountdown(stimulusFirstSec);
-    } else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
-      int stimulusLastSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.last.value['seconds'];
-      viewModel.setCountdown(stimulusLastSec);
+    }
+    else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      String stimulus = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.stimulus?.first.value ??
+          '';
+      await viewModel.playVoicePrompt(stimulus);
+      viewModel.setCountdown(responseFirstSec);
+    }    else if (id == 21 /*IELTS Speaking – Discussion*/) {
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      String stimulus = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.stimulus?.first.value ??
+          '';
+      await viewModel.playVoicePrompt(stimulus);
+      viewModel.setCountdown(responseFirstSec);
     }
 
     viewModel.nextScreen();
@@ -72,7 +91,18 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+
+  Widget _buildScaffoldStack(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -184,10 +214,16 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        text: 'Start preparation',
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _nextScreen(viewModel),
       );
+
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.coursePracticePrompt)
+          ? const PageLoadingIndicator()
+          : Container();
 }

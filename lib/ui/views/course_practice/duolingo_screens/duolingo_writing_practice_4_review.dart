@@ -7,7 +7,7 @@ import '../../../common/helper_functions.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
-import '../../../widgets/duolingo_practice_question_card.dart';
+import '../../../widgets/course_practice_question_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoWritingPractice4Review
@@ -143,7 +143,7 @@ class DuolingoWritingPractice4Review
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      DuolingoPracticeQuestionCard(
+      CoursePracticeQuestionCard(
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.first.value,
       );

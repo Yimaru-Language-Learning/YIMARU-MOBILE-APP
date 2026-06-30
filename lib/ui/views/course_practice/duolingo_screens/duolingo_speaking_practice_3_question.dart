@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/duolingo_practice_question_card.dart';
+import 'package:yimaru_app/ui/widgets/course_practice_question_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
@@ -170,7 +170,7 @@ class DuolingoSpeakingPractice3Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      DuolingoPracticeQuestionCard(
+      CoursePracticeQuestionCard(
         title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.first.value,

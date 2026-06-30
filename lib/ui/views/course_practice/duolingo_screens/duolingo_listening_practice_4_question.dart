@@ -7,7 +7,7 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/duolingo_practice_question_card.dart';
+import '../../../widgets/course_practice_question_card.dart';
 import '../course_practice_viewmodel.dart';
 import '../course_practice_view.form.dart';
 
@@ -148,7 +148,7 @@ class DuolingoListeningPractice4Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      DuolingoPracticeQuestionCard(
+      CoursePracticeQuestionCard(
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value,
       );

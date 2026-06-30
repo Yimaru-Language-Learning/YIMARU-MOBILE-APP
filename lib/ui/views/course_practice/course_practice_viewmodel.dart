@@ -315,32 +315,40 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'outro_subtitle': 'You’ve finished this Reading session. Great work!',
     },
     {
-      'label': 'Duolingo Reading 20',
-      'type': CoursePracticeType.reading,
-      'intro_title': 'Read and Complete',
-      'outro_title': 'Reading Practice Completed',
-      'intro_subtitle':
-          'Read the passage and complete the interactive activities.',
-      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
-    },
-    {
+      'subtitle': '4–5 minutes',
       'label': 'IELTS Speaking 21',
       'type': CoursePracticeType.ielts,
-      'subtitle': '4–5 minutes',
       'instruction_title': 'What to expect:',
       'title': 'IELTS Speaking – Interview',
       'instruction_subtitle':
           ' You’ll answer simple questions about everyday topics',
     },
     {
+      'instruction_title': '',
+      'instruction_subtitle': '',
       'label': 'IELTS Speaking 22',
       'type': CoursePracticeType.ielts,
-      'instruction_title': 'What to expect:',
       'title': 'IELTS Speaking – Cue Card Part 1',
-      'instruction_subtitle':
-          ' You’ll answer simple questions about everyday topics',
       'subtitle':
           '1 minute to prepare and make notes. Then you speak for 1–2 minutes on the topic.',
+    },
+    {
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Speaking 23',
+      'type': CoursePracticeType.ielts,
+      'title': 'IELTS Speaking – Cue Card Part 2',
+      'subtitle':
+          'The examiner asks related questions. You answer with more detail and opinions.',
+    },
+    {
+      'label': 'IELTS Speaking 24',
+      'type': CoursePracticeType.ielts,
+      'title': 'IELTS Speaking – Discussion',
+      'instruction_title': 'What to expect:',
+      'subtitle': 'The discussion lasts about 4–5 minutes.',
+      'instruction_subtitle':
+          'This is a two-way discussion with the examiner, linked to your Part 2 topic. You’ll talk about more abstract ideas and opinions. ',
     },
   ];
 
@@ -446,6 +454,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   void resetValues() {
     _playCount = 3;
     _countdown = null;
+    _isSpeaking = false;
     _cachedImage = null;
     _buttonActive = false;
     _focusPractice = false;
@@ -454,7 +463,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Question param
   Future<void> setQuestionParam(int id) async {
-    print('ID: $id');
+    print('QUESTION TYPE ID: $id');
     if (id == 12 /*Speak about the photo*/) {
       // await refreshQuestionUrl(_questions[_currentQuestion]);
       _selectedQuestionParam = _questionParams.elementAt(0);
@@ -496,6 +505,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(18);
     } else if (id == 50 /*Read and complete*/) {
       _selectedQuestionParam = _questionParams.elementAt(19);
+    } else if (id == 17 /*IELTS Speaking – Interview*/) {
+      _selectedQuestionParam = _questionParams.elementAt(20);
+    } else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
+      _selectedQuestionParam = _questionParams.elementAt(21);
+    } else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
+      _selectedQuestionParam = _questionParams.elementAt(22);
+    } else if (id == 21 /*IELTS Speaking – Discussion*/) {
+      _selectedQuestionParam = _questionParams.elementAt(23);
     } else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
     }
@@ -549,9 +566,18 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _audioPlayerService.stateStream.listen((state) {
       if (PlayerState.completed == state &&
           _isSpeaking &&
-          _questions[_currentQuestion].questionTypeDefinitionId == 14) {
+          (_questions[_currentQuestion].questionTypeDefinitionId == 14 ||
+              _questions[_currentQuestion].questionTypeDefinitionId == 17 ||
+              _questions[_currentQuestion].questionTypeDefinitionId == 20||
+              _questions[_currentQuestion].questionTypeDefinitionId == 21)) {
         _isSpeaking = false;
-        nextScreen();
+        if (_questions[_currentQuestion].questionTypeDefinitionId == 20 ||
+            _questions[_currentQuestion].questionTypeDefinitionId == 21) {
+          startRecording();
+          nextScreen();
+        } else {
+          nextScreen();
+        }
       }
     });
     _audioPlayerService.durationStream.listen((dur) {

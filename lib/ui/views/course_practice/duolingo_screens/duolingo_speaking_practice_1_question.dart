@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/widgets/circular_countdown_timer.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../../common/app_colors.dart';
@@ -148,36 +149,9 @@ class DuolingoSpeakingPractice1Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildTimerStackWrapper(CoursePracticeViewModel viewModel) => SizedBox(
-        height: 50,
-        child: _buildTimerStack(viewModel),
-      );
-
-  Widget _buildTimerStack(CoursePracticeViewModel viewModel) => Stack(
-        alignment: Alignment.center,
-        children: _buildTimerStackChildren(viewModel),
-      );
-
-  List<Widget> _buildTimerStackChildren(CoursePracticeViewModel viewModel) =>
-      [_buildTimer(), _buildCountdownTime(viewModel)];
-
-  Widget _buildTimer() => const CircularProgressIndicator(
-        value: 1.0,
-        strokeWidth: 5,
-        color: kcPrimaryColor,
-        padding: EdgeInsets.zero,
-        constraints: BoxConstraints(minWidth: 50, minHeight: 50),
-      );
-
-  Widget _buildCountdownTime(CoursePracticeViewModel viewModel) =>
-      TimerCountdown(
-        spacerWidth: 0,
-        enableDescriptions: false,
-        timeTextStyle: style14P600,
+  Widget _buildTimerStackWrapper(CoursePracticeViewModel viewModel) =>
+      CircularCountdownTimer(
         onEnd: () => _next(viewModel),
-        colonsTextStyle: style14P400,
-        format: CountDownTimerFormat.minutesSeconds,
-        endTime: viewModel.countdown ?? DateTime.now(),
       );
 
   Widget _buildSubtitle() => Text(

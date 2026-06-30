@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
-import 'package:yimaru_app/ui/widgets/duolingo_practice_question_card.dart';
+import 'package:yimaru_app/ui/widgets/course_practice_question_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
@@ -163,7 +163,7 @@ class DuolingoSpeakingPractice2Answer
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      DuolingoPracticeQuestionCard(
+      CoursePracticeQuestionCard(
         title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.first.value,
@@ -174,7 +174,7 @@ class DuolingoSpeakingPractice2Answer
           ? _buildSpeakerLabel()
           : const SizedBox(height: 20);
 
-  Widget _buildSpeakerLabel() => const SpeakingLabel();
+  Widget _buildSpeakerLabel() =>  const SpeakingLabel(label: 'You are speaking...');
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState

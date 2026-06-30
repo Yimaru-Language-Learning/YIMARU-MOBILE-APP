@@ -47,8 +47,14 @@ import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_wr
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_3_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_4_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_4_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/ielts_speaking_practice_1_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_1_answer.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_intro_screen.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_2_answer.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_2_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_2_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_3_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_4_answer.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/validators/form_validator.dart';
@@ -57,6 +63,11 @@ import '../../widgets/page_loading_indicator.dart';
 import '../../widgets/practice_loading_screen.dart';
 import 'course_practice_view.form.dart';
 import 'course_practice_viewmodel.dart';
+import 'ielts_screens/ielts_speaking_practice_1_review.dart';
+import 'ielts_screens/ielts_speaking_practice_3_answer.dart';
+import 'ielts_screens/ielts_speaking_practice_3_question.dart';
+import 'ielts_screens/ielts_speaking_practice_4_question.dart';
+import 'ielts_screens/ielts_speaking_practice_4_review.dart';
 
 @FormView(fields: [
   FormTextField(name: 'practice', validator: FormValidator.validateForm),
@@ -218,8 +229,12 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
         0;
     if (id == 17 /*IELTS Speaking – Interview*/) {
       return const IeltsSpeakingPractice1Question();
-    } else if (id == 13 /*Read then speak*/) {
-      return const DuolingoSpeakingPractice2Question();
+    } else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
+      return const IeltsSpeakingPractice2Question();
+    } else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
+      return const IeltsSpeakingPractice3Question();
+    } else if (id == 21 /*IELTS Speaking – Discussion*/) {
+      return const IeltsSpeakingPractice4Question();
     }
 
     return Container();
@@ -230,17 +245,31 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
             .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
     if (id == 17 /*IELTS Speaking – Interview*/) {
-      return const DuolingoSpeakingPractice1Answer();
-    } else if (id == 13 /*Read then speak*/) {
-      return const DuolingoSpeakingPractice2Answer();
-    } else if (id == 36 /*Speaking sample*/) {
-      return const DuolingoSpeakingPractice3Answer();
-    } else if (id == 14 /*Interactive speaking*/) {
-      return const DuolingoSpeakingPractice4Answer();
-    } else if (id == 23 /*Writing sample*/) {
-      return DuolingoWritingPractice2Answer(
-          practiceController: practiceController);
+      return const IeltsSpeakingPractice1Answer();
+    }else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
+      return const IeltsSpeakingPractice2Answer();
+    }else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
+      return const IeltsSpeakingPractice3Answer();
+    }else if (id == 21 /*IELTS Speaking – Discussion*/) {
+      return const IeltsSpeakingPractice4Answer();
     } else {
+      return Container();
+    }
+  }
+
+  Widget _buildIeltsReviewScreen(CoursePracticeViewModel viewModel) {
+    int id = viewModel
+        .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
+        0;
+    if (id == 17 /*IELTS Speaking – Interview*/) {
+      return const IeltsSpeakingPractice1Review();
+    }else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
+      return const IeltsSpeakingPractice2Review();
+    }else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
+      return const IeltsSpeakingPractice3Review();
+    }else if (id == 21 /*IELTS Speaking – Discussion*/) {
+      return const IeltsSpeakingPractice4Review();
+    }else {
       return Container();
     }
   }
@@ -444,9 +473,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
         _buildIeltsIntroScreen(viewModel),
         _buildIeltsQuestionScreenWrapper(viewModel),
         _buildIeltsAnswerScreenWrapper(viewModel),
-        _buildDuolingoReviewScreenWrapper(viewModel),
-        // _buildDuolingoRetakeScreen(viewModel),
-        //_buildDuolingoFinishScreenWrapper(viewModel),
+        _buildIeltsReviewScreenWrapper(viewModel),
+
       ];
 
   Widget _buildIeltsIntroScreen(CoursePracticeViewModel viewModel) =>
@@ -454,14 +482,18 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
         practiceController: practiceController,
         title: viewModel.selectedQuestionParam['title'],
         subtitle: viewModel.selectedQuestionParam['subtitle'],
-        instructionTitle: viewModel.selectedQuestionParam['instruction_title'],
         instructionSubtitle:
             viewModel.selectedQuestionParam['instruction_subtitle'],
+        instructionTitle: viewModel.selectedQuestionParam['instruction_title'],
+
       );
 
   Widget _buildIeltsQuestionScreenWrapper(CoursePracticeViewModel viewModel) =>
       _buildIeltsQuestionScreen(viewModel);
 
   Widget _buildIeltsAnswerScreenWrapper(CoursePracticeViewModel viewModel) =>
-      _buildDuolingoAnswerScreen(viewModel);
+      _buildIeltsAnswerScreen(viewModel);
+
+  Widget _buildIeltsReviewScreenWrapper(CoursePracticeViewModel viewModel) =>
+      _buildIeltsReviewScreen(viewModel);
 }
