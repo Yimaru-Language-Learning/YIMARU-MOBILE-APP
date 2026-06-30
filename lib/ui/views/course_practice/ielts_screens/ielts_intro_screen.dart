@@ -7,6 +7,7 @@ import 'package:yimaru_app/ui/widgets/course_practice_app_bar.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
+import '../../../widgets/custom_circular_progress_indicator.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/wave_wrapper.dart';
@@ -28,7 +29,9 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
     required this.instructionSubtitle,
   });
 
-  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async {
+  Future<void> _nextScreen(
+      {required BuildContext context,
+      required CoursePracticeViewModel viewModel}) async {
     viewModel.resetValues();
     practiceController.clear();
 
@@ -37,32 +40,41 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         0;
     if (id == 17 /*IELTS Speaking – Interview*/) {
       String stimulus = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.last.value ??
+              .dynamicPayload?.stimulus?.last.value ??
           '';
       await viewModel.playVoicePrompt(stimulus);
     } else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
       int stimulusFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.first.value['seconds'];
       viewModel.setCountdown(stimulusFirstSec);
-    }
-    else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
+    } else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       String stimulus = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.first.value ??
+              .dynamicPayload?.stimulus?.first.value ??
           '';
       await viewModel.playVoicePrompt(stimulus);
       viewModel.setCountdown(responseFirstSec);
-    }    else if (id == 21 /*IELTS Speaking – Discussion*/) {
+    } else if (id == 21 /*IELTS Speaking – Discussion*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       String stimulus = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.first.value ??
+              .dynamicPayload?.stimulus?.first.value ??
           '';
       await viewModel.playVoicePrompt(stimulus);
       viewModel.setCountdown(responseFirstSec);
+    } else if (id == 26 /*IELTS Writing – Part 1*/) {
+      int responseLastSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.last.value['seconds'];
+      String image = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.stimulus?.first.value;
+      await viewModel.cacheNetworkImage(image: image, context: context);
+      viewModel.setCountdown(responseLastSec);
+    } else if (id == 27 /*IELTS Writing – Part 2*/) {
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setCountdown(responseFirstSec);
     }
-
     viewModel.nextScreen();
   }
 
@@ -94,10 +106,9 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
-
   Widget _buildScaffoldStack(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
@@ -135,7 +146,7 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildSpeakingIndicatorWrapper(viewModel),
-        _buildContinueButtonWrapper(viewModel)
+        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
 
   Widget _buildAppBarWrapper(
@@ -205,22 +216,34 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         textAlign: TextAlign.center,
       );
 
-  Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildContinueButtonWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
+        child:
+            _buildContinueButtonState(context: context, viewModel: viewModel),
       );
 
-  Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
+  Widget _buildContinueButtonState(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      viewModel.busy(StateObjects.cacheImage)
+          ? const CustomCircularProgressIndicator(color: kcPrimaryColor)
+          : _buildContinueButton(context: context, viewModel: viewModel);
+
+  Widget _buildContinueButton(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await _nextScreen(viewModel),
+        onTap: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
-
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.coursePracticePrompt)

@@ -19,7 +19,7 @@ class DuolingoWritingPractice2Answer
   const DuolingoWritingPractice2Answer(
       {super.key, required this.practiceController});
 
-  void _nextScreen(CoursePracticeViewModel viewModel){
+  void _nextScreen(CoursePracticeViewModel viewModel) {
     FocusManager.instance.primaryFocus?.unfocus();
     viewModel.nextScreen();
   }
@@ -119,7 +119,7 @@ class DuolingoWritingPractice2Answer
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: ()=> _nextScreen(viewModel),
+        onEnd: () => _nextScreen(viewModel),
         duration: viewModel.countdown,
       );
 
@@ -193,7 +193,7 @@ class DuolingoWritingPractice2Answer
             : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? ()=> _nextScreen(viewModel)
+            ? () => _nextScreen(viewModel)
             : null,
       );
 }

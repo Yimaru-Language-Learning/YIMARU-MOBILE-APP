@@ -162,8 +162,7 @@ class DuolingoWritingPractice1Review
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-      imageUrl: viewModel.cachedImage ?? '',
-
+        imageUrl: viewModel.cachedImage ?? '',
       );
 
   Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>

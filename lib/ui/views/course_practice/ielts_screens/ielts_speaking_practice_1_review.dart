@@ -102,22 +102,17 @@ class IeltsSpeakingPractice1Review
       );
 
   Widget _buildTitle() => Text(
-    'Interview',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
-
-
-
-
+        'Interview',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       SpeakingPracticeReviewSection(
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
-          response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value ??
-              ''
-      );
+          onTap: viewModel.currentQuestion == viewModel.questions.length - 1
+              ? viewModel.nextScreen
+              : () async => await viewModel.nextQuestion(),
+          response: viewModel.questions[viewModel.currentQuestion]
+                  .dynamicPayload?.response?.last.value ??
+              '');
 }

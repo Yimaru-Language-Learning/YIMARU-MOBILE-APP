@@ -17,8 +17,6 @@ class IeltsSpeakingPractice3Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsSpeakingPractice3Answer({super.key});
 
-
-
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.nextScreen();
@@ -118,12 +116,10 @@ class IeltsSpeakingPractice3Answer
       );
 
   Widget _buildTitle() => Text(
-    'Part 2: Follow up',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
-
-
+        'Part 2: Follow up',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
@@ -153,18 +149,13 @@ class IeltsSpeakingPractice3Answer
         verticalSpaceMedium,
       ];
 
-
-
-
-
-
-
   Widget _buildSpeakerLabelState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState
           ? _buildSpeakerLabel()
           : const SizedBox(height: 20);
 
-  Widget _buildSpeakerLabel() =>   const SpeakingLabel(label: 'You are speaking...');
+  Widget _buildSpeakerLabel() =>
+      const SpeakingLabel(label: 'You are speaking...');
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState
@@ -186,8 +177,6 @@ class IeltsSpeakingPractice3Answer
         controller: viewModel.waveController,
       );
 
-
-
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
@@ -201,7 +190,6 @@ class IeltsSpeakingPractice3Answer
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: ()async => await _stopRecording(viewModel),
-
+        onTap: () async => await _stopRecording(viewModel),
       );
 }

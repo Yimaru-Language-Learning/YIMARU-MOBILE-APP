@@ -63,7 +63,6 @@ class IeltsSpeakingPractice2Review
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(viewModel),
         _buildPracticeReviewSection(viewModel)
-
       ];
 
   Widget _buildAppBarIndenter(
@@ -105,49 +104,38 @@ class IeltsSpeakingPractice2Review
       );
 
   Widget _buildTitle() => Text(
-    'Part 1: Cue Card',
-    style: style18DG600,
-    textAlign: TextAlign.center,
+        'Part 1: Cue Card',
+        style: style18DG600,
+        textAlign: TextAlign.center,
+      );
 
-  );
-
-
-  Widget _buildQuestionExpandedWrapper(
-      CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionScrollerWrapper(viewModel));
 
-  Widget _buildQuestionScrollerWrapper(
-      CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(child: _buildQuestionColumn(viewModel));
 
-  Widget _buildQuestionColumn(CoursePracticeViewModel viewModel) =>
-      Column(
+  Widget _buildQuestionColumn(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: _buildSpeakingIndicatorChildren(viewModel),
       );
 
   List<Widget> _buildSpeakingIndicatorChildren(
-      CoursePracticeViewModel viewModel) =>
+          CoursePracticeViewModel viewModel) =>
       [
-
         verticalSpaceLarge,
         _buildQuestionPaddingWrapper(viewModel),
-
       ];
 
-
-  Widget _buildQuestionPaddingWrapper(CoursePracticeViewModel viewModel) => Padding(
+  Widget _buildQuestionPaddingWrapper(CoursePracticeViewModel viewModel) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestionAlignmentWrapper(viewModel),
       );
 
-
-
   Widget _buildQuestionAlignmentWrapper(CoursePracticeViewModel viewModel) =>
       Center(child: _buildQuestion(viewModel));
-
-
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeQuestionCard(
@@ -156,14 +144,12 @@ class IeltsSpeakingPractice2Review
             ?.stimulus?.last.value,
       );
 
-
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       SpeakingPracticeReviewSection(
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
-          response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value ??
-              ''
-      );
+          onTap: viewModel.currentQuestion == viewModel.questions.length - 1
+              ? viewModel.nextScreen
+              : () async => await viewModel.nextQuestion(),
+          response: viewModel.questions[viewModel.currentQuestion]
+                  .dynamicPayload?.response?.last.value ??
+              '');
 }

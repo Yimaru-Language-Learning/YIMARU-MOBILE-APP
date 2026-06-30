@@ -55,6 +55,8 @@ import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_2_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_3_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_4_answer.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_writing_practice_1_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_writing_practice_1_review.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/validators/form_validator.dart';
@@ -68,6 +70,8 @@ import 'ielts_screens/ielts_speaking_practice_3_answer.dart';
 import 'ielts_screens/ielts_speaking_practice_3_question.dart';
 import 'ielts_screens/ielts_speaking_practice_4_question.dart';
 import 'ielts_screens/ielts_speaking_practice_4_review.dart';
+import 'ielts_screens/ielts_writing_practice_2_question.dart';
+import 'ielts_screens/ielts_writing_practice_2_review.dart';
 
 @FormView(fields: [
   FormTextField(name: 'practice', validator: FormValidator.validateForm),
@@ -235,6 +239,12 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return const IeltsSpeakingPractice3Question();
     } else if (id == 21 /*IELTS Speaking – Discussion*/) {
       return const IeltsSpeakingPractice4Question();
+    } else if (id == 26 /*IELTS Writing – Part 1*/) {
+      return IeltsWritingPractice1Question(
+          practiceController: practiceController);
+    } else if (id == 27 /*IELTS Writing – Part 2*/) {
+      return IeltsWritingPractice2Question(
+          practiceController: practiceController);
     }
 
     return Container();
@@ -246,11 +256,11 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
         0;
     if (id == 17 /*IELTS Speaking – Interview*/) {
       return const IeltsSpeakingPractice1Answer();
-    }else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
+    } else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
       return const IeltsSpeakingPractice2Answer();
-    }else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
+    } else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
       return const IeltsSpeakingPractice3Answer();
-    }else if (id == 21 /*IELTS Speaking – Discussion*/) {
+    } else if (id == 21 /*IELTS Speaking – Discussion*/) {
       return const IeltsSpeakingPractice4Answer();
     } else {
       return Container();
@@ -259,17 +269,21 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
 
   Widget _buildIeltsReviewScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
-        .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
+            .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
     if (id == 17 /*IELTS Speaking – Interview*/) {
       return const IeltsSpeakingPractice1Review();
-    }else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
+    } else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
       return const IeltsSpeakingPractice2Review();
-    }else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
+    } else if (id == 20 /*IELTS Speaking – Cue Card Part 2*/) {
       return const IeltsSpeakingPractice3Review();
-    }else if (id == 21 /*IELTS Speaking – Discussion*/) {
+    } else if (id == 21 /*IELTS Speaking – Discussion*/) {
       return const IeltsSpeakingPractice4Review();
-    }else {
+    } else if (id == 26 /*IELTS Writing – Part 1*/) {
+      return const IeltsWritingPractice1Review();
+    } else if (id == 27 /*IELTS Writing – Part 2*/) {
+      return const IeltsWritingPractice2Review();
+    } else {
       return Container();
     }
   }
@@ -320,7 +334,6 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.coursePractice)
-
           ? const PageLoadingIndicator()
           : viewModel.practices.isEmpty
               ? _buildPageLoadingIndicator(viewModel)
@@ -472,9 +485,14 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       [
         _buildIeltsIntroScreen(viewModel),
         _buildIeltsQuestionScreenWrapper(viewModel),
-        _buildIeltsAnswerScreenWrapper(viewModel),
+        if (viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                26 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                27)
+          _buildIeltsAnswerScreenWrapper(viewModel),
         _buildIeltsReviewScreenWrapper(viewModel),
-
       ];
 
   Widget _buildIeltsIntroScreen(CoursePracticeViewModel viewModel) =>
@@ -485,7 +503,6 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
         instructionSubtitle:
             viewModel.selectedQuestionParam['instruction_subtitle'],
         instructionTitle: viewModel.selectedQuestionParam['instruction_title'],
-
       );
 
   Widget _buildIeltsQuestionScreenWrapper(CoursePracticeViewModel viewModel) =>

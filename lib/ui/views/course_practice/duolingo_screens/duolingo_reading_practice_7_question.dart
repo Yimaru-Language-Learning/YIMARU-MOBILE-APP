@@ -144,7 +144,6 @@ class DuolingoReadingPractice7Question
         viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[1].value,
         style: style14DG400,
-
         selectionColor: kcPrimaryColor,
         onSelectionChanged: (cause, selection) =>
             viewModel.setHighlight(end: cause.end, start: cause.start),

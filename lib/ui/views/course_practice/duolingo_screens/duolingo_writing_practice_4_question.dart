@@ -19,7 +19,7 @@ class DuolingoWritingPractice4Question
   const DuolingoWritingPractice4Question(
       {super.key, required this.practiceController});
 
-  void _nextScreen(CoursePracticeViewModel viewModel){
+  void _nextScreen(CoursePracticeViewModel viewModel) {
     FocusManager.instance.primaryFocus?.unfocus();
     viewModel.nextScreen();
   }
@@ -119,7 +119,7 @@ class DuolingoWritingPractice4Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: ()=> _nextScreen(viewModel),
+        onEnd: () => _nextScreen(viewModel),
         duration: viewModel.countdown,
       );
 
@@ -183,7 +183,7 @@ class DuolingoWritingPractice4Question
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
-        padding: const EdgeInsets.only(top:25,bottom: 50),
+        padding: const EdgeInsets.only(top: 25, bottom: 50),
         child: _buildContinueButton(viewModel),
       );
 
@@ -195,7 +195,7 @@ class DuolingoWritingPractice4Question
         foregroundColor: kcWhite,
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? ()=> _nextScreen(viewModel)
+            ? () => _nextScreen(viewModel)
             : null,
         backgroundColor: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage

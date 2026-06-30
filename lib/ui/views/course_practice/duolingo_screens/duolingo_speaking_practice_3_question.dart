@@ -134,11 +134,11 @@ class DuolingoSpeakingPractice3Question
       );
 
   Widget _buildSpeakingIndicatorExpandedWrapper(
-      CoursePracticeViewModel viewModel) =>
+          CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildSpeakingIndicatorScrollerWrapper(viewModel));
 
   Widget _buildSpeakingIndicatorScrollerWrapper(
-      CoursePracticeViewModel viewModel) =>
+          CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(child: _buildSpeakingIndicatorWrapper(viewModel));
 
   Widget _buildSpeakingIndicatorWrapper(CoursePracticeViewModel viewModel) =>

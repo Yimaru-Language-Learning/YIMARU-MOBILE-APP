@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
+import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/course_practice.dart';
 
 import '../../../app/app.locator.dart';
@@ -348,8 +349,26 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_title': 'What to expect:',
       'subtitle': 'The discussion lasts about 4–5 minutes.',
       'instruction_subtitle':
-          'This is a two-way discussion with the examiner, linked to your Part 2 topic. You’ll talk about more abstract ideas and opinions. ',
+          'This is a two-way discussion with the examiner, linked to your Part 2 topic. You’ll talk about more abstract ideas and opinions.',
     },
+    {
+      'subtitle': '',
+      'label': 'IELTS Writing 25',
+      'type': CoursePracticeType.ielts,
+      'title': 'IELTS Writing – Part 1',
+      'instruction_title': 'What to expect:',
+      'instruction_subtitle':
+          'Summarize a graph or chart in ~150 words with a formal style.',
+    },
+    {
+      'subtitle': '',
+      'label': 'IELTS Writing 26',
+      'type': CoursePracticeType.ielts,
+      'title': 'IELTS Writing – Part 2',
+      'instruction_title': 'What to expect:',
+      'instruction_subtitle':
+          'Give your opinion with reasons.  Write ~ 250 words.',
+    }
   ];
 
   List<Map<String, dynamic>> get questionParams => _questionParams;
@@ -513,6 +532,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(22);
     } else if (id == 21 /*IELTS Speaking – Discussion*/) {
       _selectedQuestionParam = _questionParams.elementAt(23);
+    } else if (id == 26 /*IELTS Writing – Part 1*/) {
+      _selectedQuestionParam = _questionParams.elementAt(24);
+    } else if (id == 27 /*IELTS Writing – Part 2*/) {
+      _selectedQuestionParam = _questionParams.elementAt(25);
     } else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
     }
@@ -568,7 +591,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           _isSpeaking &&
           (_questions[_currentQuestion].questionTypeDefinitionId == 14 ||
               _questions[_currentQuestion].questionTypeDefinitionId == 17 ||
-              _questions[_currentQuestion].questionTypeDefinitionId == 20||
+              _questions[_currentQuestion].questionTypeDefinitionId == 20 ||
               _questions[_currentQuestion].questionTypeDefinitionId == 21)) {
         _isSpeaking = false;
         if (_questions[_currentQuestion].questionTypeDefinitionId == 20 ||
@@ -718,6 +741,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Navigation
   void pop() => _navigationService.back();
+
+  Future<void> navigateToPdf(String url) async =>
+      await _navigationService.navigateToPdfView(url: url);
 
   // Remote api call
 
