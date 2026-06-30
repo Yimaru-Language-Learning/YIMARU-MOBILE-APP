@@ -20,6 +20,11 @@ class IeltsWritingPractice1Question
   const IeltsWritingPractice1Question(
       {super.key, required this.practiceController});
 
+  void _reset(CoursePracticeViewModel viewModel) {
+    practiceController.clear();
+    viewModel.resetValues();
+  }
+
   void _nextScreen(CoursePracticeViewModel viewModel) {
     FocusManager.instance.primaryFocus?.unfocus();
     viewModel.nextScreen();
@@ -27,6 +32,7 @@ class IeltsWritingPractice1Question
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
+    _reset(viewModel);
     viewModel.pop();
     viewModel.goBack();
   }

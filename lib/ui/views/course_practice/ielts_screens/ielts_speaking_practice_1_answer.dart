@@ -17,6 +17,8 @@ class IeltsSpeakingPractice1Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsSpeakingPractice1Answer({super.key});
 
+
+
   Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
     int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds'];
@@ -31,6 +33,7 @@ class IeltsSpeakingPractice1Answer
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
+    viewModel.resetValues();
     viewModel.pop();
     viewModel.goBack();
   }
@@ -99,7 +102,8 @@ class IeltsSpeakingPractice1Answer
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
-          verticalSpaceMedium,
+          verticalSpaceSmall,
+
           _buildTitle(),
           verticalSpaceSmall,
         ],

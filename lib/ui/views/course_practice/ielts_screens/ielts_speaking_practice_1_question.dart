@@ -21,6 +21,8 @@ class IeltsSpeakingPractice1Question
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
+    viewModel.resetValues();
+
     viewModel.pop();
     viewModel.goBack();
   }
@@ -87,7 +89,7 @@ class IeltsSpeakingPractice1Question
         children: [
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
-          verticalSpaceMedium,
+          verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
         ],

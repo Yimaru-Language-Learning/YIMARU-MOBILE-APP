@@ -14,6 +14,9 @@ class CourseQuestion {
   @JsonKey(name: 'question_type')
   final String? questionType;
 
+  @JsonKey(name: 'question_text')
+  final String? questionText;
+
   @JsonKey(name: 'difficulty_level')
   final String? difficultyLevel;
 
@@ -28,6 +31,7 @@ class CourseQuestion {
       this.status,
       this.points,
       this.questionType,
+      this.questionText,
       this.dynamicPayload,
       this.difficultyLevel,
       this.questionTypeDefinitionId});
