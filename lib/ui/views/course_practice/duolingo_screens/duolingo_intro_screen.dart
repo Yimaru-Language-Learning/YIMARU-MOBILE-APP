@@ -18,27 +18,27 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
   final CoursePracticeType type;
   final TextEditingController practiceController;
 
-  const DuolingoIntroScreen({super.key,
-    required this.type,
-    required this.title,
-    required this.subtitle,
-    required this.practiceController});
+  const DuolingoIntroScreen(
+      {super.key,
+      required this.type,
+      required this.title,
+      required this.subtitle,
+      required this.practiceController});
 
-  Future<void> _nextScreen({
-    required BuildContext context,
-    required CoursePracticeViewModel viewModel}) async {
+  Future<void> _nextScreen(
+      {required BuildContext context,
+      required CoursePracticeViewModel viewModel}) async {
     viewModel.resetValues();
     practiceController.clear();
 
     int id = viewModel
-        .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
+            .questions[viewModel.currentQuestion].questionTypeDefinitionId ??
         0;
     if (id == 12 /*Speak about the photo*/) {
+      String image = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.stimulus?.first.value;
       int stimulusFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.last.value['seconds'];
-      String image = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload
-          ?.stimulus?.first.value;
       await viewModel.cacheNetworkImage(image: image, context: context);
       viewModel.setCountdown(stimulusFirstSec);
     } else if (id == 13 /*Read then speak*/) {
@@ -57,8 +57,8 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
     } else if (id == 22 /*Write about the photo*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
-      String image = viewModel.questions[viewModel.currentQuestion].dynamicPayload
-          ?.stimulus?.first.value;
+      String image = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.stimulus?.first.value;
       await viewModel.cacheNetworkImage(image: image, context: context);
       viewModel.setCountdown(responseFirstSec);
     } else if (id == 23 /*Writing sample*/) {
@@ -77,13 +77,13 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       String stimulusFirst = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.first.value ??
+              .dynamicPayload?.stimulus?.first.value ??
           '';
       viewModel.setCountdown(responseFirstSec);
       viewModel.setPlayCount();
       await viewModel.playVoicePrompt(stimulusFirst);
-    } else if (id == 0 /*Interactive listening part 1*/) {} else
-    if (id == 29 /*Interactive listening part 2*/) {
+    } else if (id == 0 /*Interactive listening part 1*/) {
+    } else if (id == 29 /*Interactive listening part 2*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
@@ -92,8 +92,8 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
-    } else if (id == 0 /*Read and select*/) {} else
-    if (id == 3 /*Fill in the blank*/) {
+    } else if (id == 0 /*Read and select*/) {
+    } else if (id == 3 /*Fill in the blank*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
@@ -144,8 +144,9 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
     viewModel.goBack();
   }
 
-  Future<void> _showSheet({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) async =>
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -157,44 +158,50 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SafeArea(
           child:
-          _buildBodyColumnWrapper(context: context, viewModel: viewModel));
+              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildBodyColumnWrapper({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildBodyColumnWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildBodyColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBodyColumn({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildBodyColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:
-        _buildBodyColumnChildren(context: context, viewModel: viewModel),
+            _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  List<Widget> _buildBodyColumnChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildSpeakingIndicatorWrapper(viewModel),
         _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildAppBarWrapper({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildAppBarWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         children: [
           verticalSpaceMedium,
@@ -203,18 +210,17 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         ],
       );
 
-  Widget _buildAppBar({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildAppBar(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CoursePracticeAppBar(
         onClose: () async =>
-        await _showSheet(context: context, viewModel: viewModel),
+            await _showSheet(context: context, viewModel: viewModel),
         title:
-        'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel
-            .questions.length})',
+            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-  Widget _buildSheet(CoursePracticeViewModel viewModel) =>
-      CancelPracticeSheet(
+  Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
@@ -228,23 +234,20 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         children: _buildSpeakingIndicatorChildren(),
       );
 
-  List<Widget> _buildSpeakingIndicatorChildren() =>
-      [
+  List<Widget> _buildSpeakingIndicatorChildren() => [
         _buildSpeakingIconWrapper(),
         verticalSpaceMedium,
         _buildTitle(),
         _buildSubtitle(),
       ];
 
-  Widget _buildTitle() =>
-      Text(
+  Widget _buildTitle() => Text(
         title,
         style: style18DG700,
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSubtitle() =>
-      Text(
+  Widget _buildSubtitle() => Text(
         subtitle,
         style: style14DG400,
         textAlign: TextAlign.center,
@@ -253,31 +256,31 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Widget _buildSpeakingIconWrapper() =>
       WaveWrapper(height: 125, child: _buildSpeakingIcon());
 
-  Widget _buildSpeakingIcon() =>
-      Icon(
+  Widget _buildSpeakingIcon() => Icon(
         _getIcon(),
         size: 30,
         color: kcPrimaryColor,
       );
 
-  Widget _buildContinueButtonWrapper({
-    required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildContinueButtonWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child:_buildContinueButtonState(context: context, viewModel: viewModel),
+        child:
+            _buildContinueButtonState(context: context, viewModel: viewModel),
       );
 
-  Widget _buildContinueButtonState({
-    required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildContinueButtonState(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       viewModel.busy(StateObjects.cacheImage)
           ? const CustomCircularProgressIndicator(color: kcPrimaryColor)
           : _buildContinueButton(context: context, viewModel: viewModel);
 
-  Widget _buildContinueButton({
-    required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildContinueButton(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
@@ -285,13 +288,6 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         text: 'Start preparation',
         backgroundColor: kcPrimaryColor,
         onTap: () async =>
-        await _nextScreen(context: context, viewModel:
-
-        viewModel
-
-        )
-
-        ,
-
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 }

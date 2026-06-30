@@ -4,7 +4,7 @@ import '../common/ui_helpers.dart';
 
 class SpeakingLabel extends StatelessWidget {
   final String label;
-  const SpeakingLabel({super.key,required this.label});
+  const SpeakingLabel({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) => _buildSpeakerLabel();

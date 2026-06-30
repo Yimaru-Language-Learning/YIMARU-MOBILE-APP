@@ -161,8 +161,7 @@ class DuolingoSpeakingPractice1Answer
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-      imageUrl: viewModel.cachedImage ?? '',
-
+        imageUrl: viewModel.cachedImage ?? '',
       );
 
   Widget _buildSpeakerLabelState(CoursePracticeViewModel viewModel) =>
@@ -170,7 +169,8 @@ class DuolingoSpeakingPractice1Answer
           ? _buildSpeakerLabel()
           : const SizedBox(height: 20);
 
-  Widget _buildSpeakerLabel() =>  const SpeakingLabel(label: 'You are speaking...');
+  Widget _buildSpeakerLabel() =>
+      const SpeakingLabel(label: 'You are speaking...');
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState
@@ -206,6 +206,5 @@ class DuolingoSpeakingPractice1Answer
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _stopRecording(viewModel),
-
       );
 }

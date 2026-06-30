@@ -20,8 +20,8 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
   }) : super(key: key);
 
   Future<void> _navigate(CourseLessonDetailViewmodel viewModel) async {
-     viewModel.close();
-     await viewModel.replaceWithCoursePractice(lesson.id ?? 0);
+    viewModel.close();
+    await viewModel.replaceWithCoursePractice(lesson.id ?? 0);
   }
 
   @override

@@ -124,11 +124,11 @@ class DuolingoWritingPractice2Question
       );
 
   Widget _buildQuestionSectionScrollerExpandedWrapper(
-      CoursePracticeViewModel viewModel) =>
+          CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionSectionScrollerWrapper(viewModel));
 
   Widget _buildQuestionSectionScrollerWrapper(
-      CoursePracticeViewModel viewModel) =>
+          CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(
         child: _buildQuestionWrapper(viewModel),
       );
@@ -166,7 +166,7 @@ class DuolingoWritingPractice2Question
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
-        padding: const EdgeInsets.only(top:25,bottom: 50),
+        padding: const EdgeInsets.only(top: 25, bottom: 50),
         child: _buildContinueButton(viewModel),
       );
 

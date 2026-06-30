@@ -123,9 +123,9 @@ class DuolingoReadingPractice2Review
         _buildTitle(viewModel),
         verticalSpaceSmall,
         _buildQuestion(viewModel),
-    verticalSpaceMedium,
-    _buildPracticeOptions(viewModel),
-    verticalSpaceMedium,
+        verticalSpaceMedium,
+        _buildPracticeOptions(viewModel),
+        verticalSpaceMedium,
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
@@ -137,14 +137,12 @@ class DuolingoReadingPractice2Review
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       const DuolingoMissingWordQuestion();
 
-
-
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: (viewModel.questions[viewModel.currentQuestion]
-            .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
+                .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
             .length,
         itemBuilder: (context, index) => _buildPracticeCard(
           index,
@@ -152,9 +150,9 @@ class DuolingoReadingPractice2Review
       );
 
   Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
-    enabled: true,
-    question: (index + 1).toString(),
-  );
+        enabled: true,
+        question: (index + 1).toString(),
+      );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(

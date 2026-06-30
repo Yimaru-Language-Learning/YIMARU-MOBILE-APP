@@ -36,7 +36,7 @@ class CourseLessonDetailViewmodel extends ReactiveViewModel {
   // Video player
   void close() {
     _videoPlayerController?.dispose();
-   _chewieController?.dispose();
+    _chewieController?.dispose();
   }
 
   Future<void> pause() async {

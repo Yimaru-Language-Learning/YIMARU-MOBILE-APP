@@ -102,23 +102,17 @@ class IeltsSpeakingPractice3Review
       );
 
   Widget _buildTitle() => Text(
-    'Part 2: Follow up',
-    style: style18DG600,
-    textAlign: TextAlign.center,
-
-  );
-
-
-
-
+        'Part 2: Follow up',
+        style: style18DG600,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       SpeakingPracticeReviewSection(
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
-          response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value ??
-              ''
-      );
+          onTap: viewModel.currentQuestion == viewModel.questions.length - 1
+              ? viewModel.nextScreen
+              : () async => await viewModel.nextQuestion(),
+          response: viewModel.questions[viewModel.currentQuestion]
+                  .dynamicPayload?.response?.last.value ??
+              '');
 }

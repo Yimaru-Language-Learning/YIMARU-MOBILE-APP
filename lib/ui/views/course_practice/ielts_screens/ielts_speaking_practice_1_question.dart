@@ -19,8 +19,6 @@ class IeltsSpeakingPractice1Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsSpeakingPractice1Question({super.key});
 
-
-
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -49,16 +47,12 @@ class IeltsSpeakingPractice1Question
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-
-
   Widget _buildScaffold(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       SafeArea(
           child:
               _buildBodyColumnWrapper(context: context, viewModel: viewModel));
-
-
 
   Widget _buildBodyColumnWrapper(
           {required BuildContext context,
@@ -96,7 +90,6 @@ class IeltsSpeakingPractice1Question
           verticalSpaceMedium,
           _buildTitle(),
           verticalSpaceSmall,
-
         ],
       );
 
@@ -118,11 +111,10 @@ class IeltsSpeakingPractice1Question
       );
 
   Widget _buildTitle() => Text(
-    'Interview',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
-
+        'Interview',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildSpeakingIndicatorColumn(CoursePracticeViewModel viewModel) =>
       Column(
@@ -133,20 +125,10 @@ class IeltsSpeakingPractice1Question
 
   List<Widget> _buildSpeakingIndicatorChildren(
           CoursePracticeViewModel viewModel) =>
-      [
-        _buildSpeakerLabel(),
-        verticalSpaceMedium,
-        _buildSpeakingIndicator()
-      ];
+      [_buildSpeakerLabel(), verticalSpaceMedium, _buildSpeakingIndicator()];
 
-
-
-  Widget _buildSpeakerLabel() => const    SpeakingLabel(label: 'Examiner is speaking...');
+  Widget _buildSpeakerLabel() =>
+      const SpeakingLabel(label: 'Examiner is speaking...');
 
   Widget _buildSpeakingIndicator() => const SpeakingIndicator(size: 75);
-
-
-
-
-
 }

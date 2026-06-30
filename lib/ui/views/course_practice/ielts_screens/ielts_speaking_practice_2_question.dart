@@ -19,14 +19,12 @@ class IeltsSpeakingPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsSpeakingPractice2Question({super.key});
 
-
   Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
     int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds'];
     await viewModel.startRecording();
     viewModel.nextScreen();
     viewModel.setCountdown(responseFirstSec);
-
   }
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
@@ -127,10 +125,10 @@ class IeltsSpeakingPractice2Question
       );
 
   Widget _buildTitle() => Text(
-    'Part 1: Cue Card',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
+        'Part 1: Cue Card',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
@@ -154,7 +152,6 @@ class IeltsSpeakingPractice2Question
 
   List<Widget> _buildAnswerSectionChildren(CoursePracticeViewModel viewModel) =>
       [
-
         _buildQuestion(viewModel),
         verticalSpaceLarge,
         _buildTimerStackWrapper(viewModel),
@@ -166,8 +163,6 @@ class IeltsSpeakingPractice2Question
         _buildMicButton(viewModel)
       ];
 
-
-
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeQuestionCard(
         title: '',
@@ -175,36 +170,31 @@ class IeltsSpeakingPractice2Question
             ?.stimulus?.last.value,
       );
 
-
   Widget _buildTimerStackWrapper(CoursePracticeViewModel viewModel) =>
       CircularCountdownTimer(
-        onEnd: ()async =>await _startRecording(viewModel),
+        onEnd: () async => await _startRecording(viewModel),
       );
 
   Widget _buildSubtitle() => Text(
-    'Prep time',
-    style: style16DG400,
-    textAlign: TextAlign.center,
-  );
-
-
-
+        'Prep time',
+        style: style16DG400,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildActionLabel() => Text(
-    'Tap the microphone to speak',
-    style: style14DG400,
-    textAlign: TextAlign.center,
-  );
-
-
-
+        'Tap the microphone to speak',
+        style: style14DG400,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildMicButton(CoursePracticeViewModel viewModel) => ElevatedButton(
         style: const ButtonStyle(
           shadowColor: WidgetStatePropertyAll(kcWhite),
           shape: WidgetStatePropertyAll(CircleBorder()),
           padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
-          backgroundColor: WidgetStatePropertyAll(kcPrimaryColor,),
+          backgroundColor: WidgetStatePropertyAll(
+            kcPrimaryColor,
+          ),
         ),
         onPressed: () async => await _startRecording(viewModel),
         child: _buildMicIcon(),
@@ -215,8 +205,4 @@ class IeltsSpeakingPractice2Question
         size: 50,
         color: kcWhite,
       );
-
-
-
-
 }

@@ -174,7 +174,8 @@ class DuolingoSpeakingPractice2Answer
           ? _buildSpeakerLabel()
           : const SizedBox(height: 20);
 
-  Widget _buildSpeakerLabel() =>  const SpeakingLabel(label: 'You are speaking...');
+  Widget _buildSpeakerLabel() =>
+      const SpeakingLabel(label: 'You are speaking...');
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState
@@ -210,6 +211,5 @@ class DuolingoSpeakingPractice2Answer
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _stopRecording(viewModel),
-
       );
 }

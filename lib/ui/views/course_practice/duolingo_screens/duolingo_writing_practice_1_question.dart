@@ -18,10 +18,11 @@ class DuolingoWritingPractice1Question
   const DuolingoWritingPractice1Question(
       {super.key, required this.practiceController});
 
-  void _nextScreen(CoursePracticeViewModel viewModel){
+  void _nextScreen(CoursePracticeViewModel viewModel) {
     FocusManager.instance.primaryFocus?.unfocus();
     viewModel.nextScreen();
   }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -116,7 +117,7 @@ class DuolingoWritingPractice1Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd:()=>_nextScreen(viewModel),
+        onEnd: () => _nextScreen(viewModel),
         duration: viewModel.countdown,
       );
 
@@ -167,8 +168,7 @@ class DuolingoWritingPractice1Question
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-      imageUrl: viewModel.cachedImage ?? '',
-
+        imageUrl: viewModel.cachedImage ?? '',
       );
 
   Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
@@ -207,7 +207,7 @@ class DuolingoWritingPractice1Question
         foregroundColor: kcWhite,
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? ()=> _nextScreen(viewModel)
+            ? () => _nextScreen(viewModel)
             : null,
         backgroundColor: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage

@@ -130,12 +130,11 @@ class DuolingoReadingPractice2Question
         _buildTitle(viewModel),
         verticalSpaceSmall,
         _buildQuestion(viewModel),
-    verticalSpaceMedium,
-    _buildPracticeOptions(viewModel),
-    verticalSpaceLarge,
-    _buildContinueButtonWrapper(viewModel)
-
-  ];
+        verticalSpaceMedium,
+        _buildPracticeOptions(viewModel),
+        verticalSpaceLarge,
+        _buildContinueButtonWrapper(viewModel)
+      ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
         'Complete the sentence with correct word',
@@ -151,7 +150,7 @@ class DuolingoReadingPractice2Question
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: (viewModel.questions[viewModel.currentQuestion]
-            .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
+                .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
             .length,
         itemBuilder: (context, index) => _buildPracticeCard(
           index,
@@ -159,10 +158,9 @@ class DuolingoReadingPractice2Question
       );
 
   Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
-    enabled: true,
-    question: (index + 1).toString(),
-  );
-
+        enabled: true,
+        question: (index + 1).toString(),
+      );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(

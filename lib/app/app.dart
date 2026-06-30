@@ -61,6 +61,7 @@ import 'package:yimaru_app/services/in_app_notification_service.dart';
 import 'package:yimaru_app/services/push_notification_service.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
 import 'package:yimaru_app/services/cache_image_service.dart';
+import 'package:yimaru_app/ui/views/pdf/pdf_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -101,6 +102,7 @@ import 'package:yimaru_app/services/cache_image_service.dart';
     MaterialRoute(page: PaymentView),
     MaterialRoute(page: NotificationView),
     MaterialRoute(page: CoursePracticeView),
+    MaterialRoute(page: PdfView),
 // @stacked-route
   ],
   dependencies: [

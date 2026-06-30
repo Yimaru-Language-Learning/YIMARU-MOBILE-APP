@@ -36,6 +36,7 @@ enum StateObjects {
   none,
   logout,
   courses,
+  openPdf,
   register,
   verifyOtp,
   resendOtp,

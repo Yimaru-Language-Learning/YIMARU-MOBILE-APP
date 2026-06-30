@@ -46,7 +46,7 @@ class CustomResponseCard extends ViewModelWidget<CoursePracticeViewModel> {
         ),
         onPressed: () async => viewModel.player.state == PlayerState.playing
             ? await viewModel.pauseAudio()
-            : await viewModel.playResult(voice:voice,response: response),
+            : await viewModel.playResult(voice: voice, response: response),
         child: _buildButtonState(viewModel),
       );
 

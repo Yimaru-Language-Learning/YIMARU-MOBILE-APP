@@ -119,11 +119,10 @@ class DuolingoSpeakingPractice4Review
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       SpeakingPracticeReviewSection(
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
-          response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value ??
-              ''
-      );
+          onTap: viewModel.currentQuestion == viewModel.questions.length - 1
+              ? viewModel.nextScreen
+              : () async => await viewModel.nextQuestion(),
+          response: viewModel.questions[viewModel.currentQuestion]
+                  .dynamicPayload?.response?.last.value ??
+              '');
 }

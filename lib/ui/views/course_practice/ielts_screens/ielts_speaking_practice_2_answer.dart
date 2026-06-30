@@ -17,13 +17,11 @@ class IeltsSpeakingPractice2Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsSpeakingPractice2Answer({super.key});
 
-
   Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
     int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds'];
     await viewModel.startRecording();
     viewModel.setCountdown(responseFirstSec);
-
   }
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
@@ -46,8 +44,6 @@ class IeltsSpeakingPractice2Answer
         backgroundColor: kcTransparent,
         builder: (cxt) => _buildSheet(viewModel),
       );
-
-
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
@@ -127,10 +123,10 @@ class IeltsSpeakingPractice2Answer
       );
 
   Widget _buildTitle() => Text(
-    'Part 1: Cue Card ',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
+        'Part 1: Cue Card ',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
@@ -158,20 +154,15 @@ class IeltsSpeakingPractice2Answer
         verticalSpaceSmall,
         _buildSpeakingIndicatorState(viewModel),
         verticalSpaceMedium,
-
       ];
-
-
-
-
-
 
   Widget _buildSpeakerLabelState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState
           ? _buildSpeakerLabel()
           : const SizedBox(height: 20);
 
-  Widget _buildSpeakerLabel() =>   const SpeakingLabel(label: 'You are speaking...');
+  Widget _buildSpeakerLabel() =>
+      const SpeakingLabel(label: 'You are speaking...');
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState
@@ -193,8 +184,6 @@ class IeltsSpeakingPractice2Answer
         controller: viewModel.waveController,
       );
 
-
-
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
@@ -208,7 +197,6 @@ class IeltsSpeakingPractice2Answer
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: ()async => await _stopRecording(viewModel),
-
+        onTap: () async => await _stopRecording(viewModel),
       );
 }

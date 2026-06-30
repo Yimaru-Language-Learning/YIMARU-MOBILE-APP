@@ -17,13 +17,11 @@ class IeltsSpeakingPractice1Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsSpeakingPractice1Answer({super.key});
 
-
   Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
     int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds'];
     await viewModel.startRecording();
     viewModel.setCountdown(responseFirstSec);
-
   }
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
@@ -125,10 +123,10 @@ class IeltsSpeakingPractice1Answer
       );
 
   Widget _buildTitle() => Text(
-    'Interview',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
+        'Interview',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
@@ -152,7 +150,6 @@ class IeltsSpeakingPractice1Answer
 
   List<Widget> _buildAnswerSectionChildren(CoursePracticeViewModel viewModel) =>
       [
-
         _buildSpeakerLabelState(viewModel),
         verticalSpaceSmall,
         _buildSpeakingIndicatorState(viewModel),
@@ -161,7 +158,6 @@ class IeltsSpeakingPractice1Answer
         verticalSpaceMedium,
         _buildMicButtonWrapper(viewModel)
       ];
-
 
   Widget _buildActionLabelState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState
@@ -185,7 +181,8 @@ class IeltsSpeakingPractice1Answer
           ? _buildSpeakerLabel()
           : const SizedBox(height: 20);
 
-  Widget _buildSpeakerLabel() =>   const SpeakingLabel(label: 'You are speaking...');
+  Widget _buildSpeakerLabel() =>
+      const SpeakingLabel(label: 'You are speaking...');
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState
@@ -216,18 +213,17 @@ class IeltsSpeakingPractice1Answer
           shape: const WidgetStatePropertyAll(CircleBorder()),
           padding: const WidgetStatePropertyAll(EdgeInsets.all(15)),
           backgroundColor: WidgetStatePropertyAll(
-
-                    VoiceRecordingState.recording == viewModel.recordingState ||
+            VoiceRecordingState.recording == viewModel.recordingState ||
                     viewModel.busy(StateObjects.recordCoursePracticeAnswer)
                 ? kcPrimaryColor.withValues(alpha: 0.5)
                 : kcPrimaryColor,
           ),
         ),
         onPressed: () async =>
-                VoiceRecordingState.recording == viewModel.recordingState ||
-                viewModel.busy(StateObjects.recordCoursePracticeAnswer)
-            ? null
-            : await _startRecording(viewModel),
+            VoiceRecordingState.recording == viewModel.recordingState ||
+                    viewModel.busy(StateObjects.recordCoursePracticeAnswer)
+                ? null
+                : await _startRecording(viewModel),
         child: _buildMicIcon(),
       );
 
@@ -250,7 +246,6 @@ class IeltsSpeakingPractice1Answer
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: ()async => await _stopRecording(viewModel),
-
+        onTap: () async => await _stopRecording(viewModel),
       );
 }
