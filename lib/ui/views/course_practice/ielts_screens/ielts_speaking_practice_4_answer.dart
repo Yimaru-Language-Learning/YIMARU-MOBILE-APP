@@ -13,15 +13,11 @@ import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/speaking_label.dart';
 import '../course_practice_viewmodel.dart';
 
-class IeltsSpeakingPractice1Answer
+class IeltsSpeakingPractice4Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const IeltsSpeakingPractice1Answer({super.key});
+  const IeltsSpeakingPractice4Answer({super.key});
 
-  Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
-    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
-        .dynamicPayload?.response?.first.value['seconds']);
-    await viewModel.startRecording();
-  }
+
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -98,6 +94,9 @@ class IeltsSpeakingPractice1Answer
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
+          verticalSpaceMedium,
+          _buildTitle(),
+          verticalSpaceSmall,
         ],
       );
 
@@ -117,6 +116,14 @@ class IeltsSpeakingPractice1Answer
         user: viewModel.user?.firstName ?? '',
         onCancel: () async => await _cancel(viewModel),
       );
+
+  Widget _buildTitle() => Text(
+    'Discussion',
+    style: style18DG700,
+    textAlign: TextAlign.center,
+  );
+
+
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
@@ -140,43 +147,24 @@ class IeltsSpeakingPractice1Answer
 
   List<Widget> _buildAnswerSectionChildren(CoursePracticeViewModel viewModel) =>
       [
-        if (VoiceRecordingState.recording != viewModel.recordingState)
-          _buildDwarf(),
         _buildSpeakerLabelState(viewModel),
         verticalSpaceSmall,
         _buildSpeakingIndicatorState(viewModel),
         verticalSpaceMedium,
-        _buildActionLabelState(viewModel),
-        verticalSpaceMedium,
-        _buildMicButtonWrapper(viewModel)
       ];
 
-  Widget _buildDwarf() => Image.asset('assets/icons/dwarf.png');
 
-  Widget _buildActionLabelState(CoursePracticeViewModel viewModel) =>
-      VoiceRecordingState.recording == viewModel.recordingState ||
-              viewModel.buttonActive
-          ? _buildResponseLabel()
-          : _buildActionLabel();
 
-  Widget _buildResponseLabel() => Text(
-        'Thank you for the response',
-        style: style14DG400,
-        textAlign: TextAlign.center,
-      );
 
-  Widget _buildActionLabel() => Text(
-        'Tap the microphone to speak',
-        style: style14DG400,
-        textAlign: TextAlign.center,
-      );
+
+
 
   Widget _buildSpeakerLabelState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState
           ? _buildSpeakerLabel()
           : const SizedBox(height: 20);
 
-  Widget _buildSpeakerLabel() => const SpeakingLabel();
+  Widget _buildSpeakerLabel() =>   const SpeakingLabel(label: 'You are speaking...');
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState
@@ -198,35 +186,7 @@ class IeltsSpeakingPractice1Answer
         controller: viewModel.waveController,
       );
 
-  Widget _buildMicButtonWrapper(CoursePracticeViewModel viewModel) =>
-      WaveWrapper(height: 125, child: _buildMicButton(viewModel));
 
-  Widget _buildMicButton(CoursePracticeViewModel viewModel) => ElevatedButton(
-        style: ButtonStyle(
-          shadowColor: const WidgetStatePropertyAll(kcWhite),
-          shape: const WidgetStatePropertyAll(CircleBorder()),
-          padding: const WidgetStatePropertyAll(EdgeInsets.all(15)),
-          backgroundColor: WidgetStatePropertyAll(
-            viewModel.buttonActive ||
-                    VoiceRecordingState.recording == viewModel.recordingState ||
-                    viewModel.busy(StateObjects.recordCoursePracticeAnswer)
-                ? kcPrimaryColor.withValues(alpha: 0.5)
-                : kcPrimaryColor,
-          ),
-        ),
-        onPressed: () async => viewModel.buttonActive ||
-                VoiceRecordingState.recording == viewModel.recordingState ||
-                viewModel.busy(StateObjects.recordCoursePracticeAnswer)
-            ? null
-            : await _startRecording(viewModel),
-        child: _buildMicIcon(),
-      );
-
-  Widget _buildMicIcon() => const Icon(
-        Icons.mic,
-        size: 50,
-        color: kcWhite,
-      );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
@@ -240,7 +200,8 @@ class IeltsSpeakingPractice1Answer
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: viewModel.nextScreen,
         backgroundColor: kcPrimaryColor,
+        onTap: ()async => await _stopRecording(viewModel),
+
       );
 }

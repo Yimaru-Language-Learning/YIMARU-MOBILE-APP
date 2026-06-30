@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
-import 'package:yimaru_app/ui/widgets/duolingo_practice_question_card.dart';
+import 'package:yimaru_app/ui/widgets/wave_wrapper.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
+import '../../../widgets/circular_countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/course_practice_question_card.dart';
 import '../../../widgets/speaking_label.dart';
 import '../course_practice_viewmodel.dart';
 
-class IeltsSpeakingPractice1Question
+class IeltsSpeakingPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const IeltsSpeakingPractice1Question({super.key});
+  const IeltsSpeakingPractice2Question({super.key});
+
+
+  Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
+    int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+        .dynamicPayload?.response?.first.value['seconds'];
+    await viewModel.startRecording();
+    viewModel.nextScreen();
+    viewModel.setCountdown(responseFirstSec);
+
+  }
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -69,7 +81,6 @@ class IeltsSpeakingPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:
             _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
@@ -79,8 +90,8 @@ class IeltsSpeakingPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildSpeakingIndicatorExpandedWrapper(viewModel),
-        _buildContinueButtonWrapper(viewModel)
+        _buildAnswerSectionWrapper(viewModel),
+        verticalSpaceMassive
       ];
 
   Widget _buildAppBarWrapper(
@@ -90,6 +101,10 @@ class IeltsSpeakingPractice1Question
         children: [
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
+          verticalSpaceSmall,
+          _buildCountdownWrapper(viewModel),
+          verticalSpaceMedium,
+          _buildTitle(),
           verticalSpaceSmall,
         ],
       );
@@ -111,68 +126,97 @@ class IeltsSpeakingPractice1Question
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildSpeakingIndicatorExpandedWrapper(
-          CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildSpeakingIndicatorScrollerWrapper(viewModel));
+  Widget _buildTitle() => Text(
+    'Part 1: Cue Card',
+    style: style18DG700,
+    textAlign: TextAlign.center,
+  );
 
-  Widget _buildSpeakingIndicatorScrollerWrapper(
-          CoursePracticeViewModel viewModel) =>
-      SingleChildScrollView(child: _buildSpeakingIndicatorColumn(viewModel));
+  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
+      alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
 
-  Widget _buildSpeakingIndicatorColumn(CoursePracticeViewModel viewModel) =>
+  Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
+      VoiceRecordingState.recording == viewModel.recordingState
+          ? _buildCountdown(viewModel)
+          : Container();
+
+  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
+        duration: viewModel.countdown,
+        onEnd: () async => await _stopRecording(viewModel),
+      );
+
+  Widget _buildAnswerSectionWrapper(CoursePracticeViewModel viewModel) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildSpeakingIndicatorChildren(viewModel),
+        children: _buildAnswerSectionChildren(viewModel),
       );
 
-  List<Widget> _buildSpeakingIndicatorChildren(
-          CoursePracticeViewModel viewModel) =>
+  List<Widget> _buildAnswerSectionChildren(CoursePracticeViewModel viewModel) =>
       [
+
+        _buildQuestion(viewModel),
         verticalSpaceLarge,
-        _buildTitle(),
-        verticalSpaceLarge,
-        _buildSpeakerLabel(),
+        _buildTimerStackWrapper(viewModel),
         verticalSpaceSmall,
-        _buildSpeakingIndicatorWrapper(viewModel)
+        _buildSubtitle(),
+        verticalSpaceLarge,
+        _buildActionLabel(),
+        verticalSpaceMedium,
+        _buildMicButton(viewModel)
       ];
 
-  Widget _buildTitle() => Text(
-        'Interview',
-        style: style18DG700,
-        textAlign: TextAlign.center,
+
+
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
+      CoursePracticeQuestionCard(
+        title: '',
+        subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value,
       );
 
-  Widget _buildSpeakerLabel() => const SpeakingLabel();
 
-  Widget _buildSpeakingIndicatorWrapper(CoursePracticeViewModel viewModel) =>
-      Container(
-        width: 100,
-        padding: const EdgeInsets.only(right: 15),
-        child: _buildSpeakingIndicator(viewModel),
+  Widget _buildTimerStackWrapper(CoursePracticeViewModel viewModel) =>
+      CircularCountdownTimer(
+        onEnd: ()async =>await _startRecording(viewModel),
       );
 
-  Widget _buildSpeakingIndicator(CoursePracticeViewModel viewModel) =>
-      WaveformRecorder(
-        height: 35,
-        waveColor: kcPrimaryColor,
-        durationTextStyle: style0Ts,
-        controller: viewModel.waveController,
+  Widget _buildSubtitle() => Text(
+    'Prep time',
+    style: style16DG400,
+    textAlign: TextAlign.center,
+  );
+
+
+
+
+  Widget _buildActionLabel() => Text(
+    'Tap the microphone to speak',
+    style: style14DG400,
+    textAlign: TextAlign.center,
+  );
+
+
+
+
+  Widget _buildMicButton(CoursePracticeViewModel viewModel) => ElevatedButton(
+        style: const ButtonStyle(
+          shadowColor: WidgetStatePropertyAll(kcWhite),
+          shape: WidgetStatePropertyAll(CircleBorder()),
+          padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
+          backgroundColor: WidgetStatePropertyAll(kcPrimaryColor,),
+        ),
+        onPressed: () async => await _startRecording(viewModel),
+        child: _buildMicIcon(),
       );
 
-  Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
-      Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
+  Widget _buildMicIcon() => const Icon(
+        Icons.mic,
+        size: 50,
+        color: kcWhite,
       );
 
-  Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
-      CustomElevatedButton(
-        height: 55,
-        text: 'Submit',
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        onTap: viewModel.nextScreen,
-        backgroundColor: kcPrimaryColor,
-      );
+
+
+
 }

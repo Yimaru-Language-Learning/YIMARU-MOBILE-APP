@@ -1,13 +1,17 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="TODO">
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
-
+        android:required="false"
+        tools:targetApi="5" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="Yimaru Academy"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
