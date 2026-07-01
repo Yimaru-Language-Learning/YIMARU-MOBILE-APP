@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/duolingo_missing_word_question.dart';
+import 'package:yimaru_app/ui/widgets/course_missing_word_question.dart';
 import 'package:yimaru_app/ui/widgets/reading_practice_option_card.dart';
 
 import '../../../common/app_colors.dart';
@@ -142,7 +142,7 @@ class DuolingoReadingPractice3Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      const DuolingoMissingWordQuestion();
+      const CourseMissingWordQuestion();
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(

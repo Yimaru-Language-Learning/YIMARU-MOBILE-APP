@@ -70,6 +70,8 @@ import '../../widgets/practice_loading_screen.dart';
 import 'course_practice_view.form.dart';
 import 'course_practice_viewmodel.dart';
 import 'ielts_screens/ielts_listening_practice_2_question.dart';
+import 'ielts_screens/ielts_listening_practice_9_question.dart';
+import 'ielts_screens/ielts_reading_practice_1_question.dart';
 import 'ielts_screens/ielts_speaking_practice_1_review.dart';
 import 'ielts_screens/ielts_speaking_practice_3_answer.dart';
 import 'ielts_screens/ielts_speaking_practice_3_question.dart';
@@ -269,6 +271,12 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return Container();
     } else if (id == 33 /*Matching*/) {
       return const IeltsSpeakingPractice8Question();
+    } else if (id == 34 /*Summary completion*/) {
+      return const IeltsListeningPractice9Question();
+    }else if (id == 0 /*Sentence completion*/) {
+      return  Container();
+    }else if (id == 46 /*Paragraph choice*/) {
+      return const IeltsReadingPractice1Question();
     }
     return Container();
   }
@@ -521,7 +529,13 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
                 31 &&
             viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
-                33)
+                33 &&
+            viewModel.questions[viewModel.currentQuestion]
+                .questionTypeDefinitionId !=
+                34&&
+            viewModel.questions[viewModel.currentQuestion]
+                .questionTypeDefinitionId !=
+                46)
           _buildIeltsIntroScreen(viewModel),
         _buildIeltsQuestionScreenWrapper(viewModel),
         if (viewModel.questions[viewModel.currentQuestion]

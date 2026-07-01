@@ -3,9 +3,9 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
 
-class DuolingoMissingWordQuestion
+class CourseMissingWordQuestion
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const DuolingoMissingWordQuestion({super.key});
+  const CourseMissingWordQuestion({super.key});
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
