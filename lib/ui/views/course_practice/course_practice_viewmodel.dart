@@ -110,6 +110,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Voice? get playing => _playing;
 
+  // Text field controllers
+  Map<String, String> _controllers = {};
+
+  Map<String, String> get controllers => _controllers;
+
+  void updateAnswer(String id, String value) {
+    _controllers[id] = value;
+    notifyListeners();
+  }
+
   // Speaking state
   bool _isSpeaking = false;
 
@@ -433,6 +443,29 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_subtitle': '',
       'label': 'IELTS Listening 32',
       'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Summary completion',
+      'label': 'IELTS Listening 32',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Listening 33',
+      'title': 'Sentence completion',
+      'type': CoursePracticeType.ielts,
+    }, {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Paragraph choice',
+      'label': 'IELTS Listening 34',
+      'type': CoursePracticeType.ielts,
     }
   ];
 
@@ -626,20 +659,44 @@ class CoursePracticeViewModel extends ReactiveViewModel
     } else if (id == 31 /*Diagram labeling*/) {
       _selectedQuestionParam = _questionParams.elementAt(30);
       int responseLastSec = _questions[_currentQuestion]
-          .dynamicPayload?.response?.last.value['seconds'];
-      String image = _questions[_currentQuestion]
-          .dynamicPayload?.stimulus?.first.value;
+          .dynamicPayload
+          ?.response
+          ?.last
+          .value['seconds'];
+      String image =
+          _questions[_currentQuestion].dynamicPayload?.stimulus?.first.value;
       await cacheNetworkImage(image: image);
       setCountdown(responseLastSec);
     } else if (id == 0 /*Multiple choice*/) {
       _selectedQuestionParam = _questionParams.elementAt(31);
-    }else if (id == 33 /*Matching*/) {
+    } else if (id == 33 /*Matching*/) {
       _selectedQuestionParam = _questionParams.elementAt(32);
       int responseLastSec = _questions[_currentQuestion]
-          .dynamicPayload?.response?.last.value['seconds'];
+          .dynamicPayload
+          ?.response
+          ?.last
+          .value['seconds'];
       setCountdown(responseLastSec);
+    } else if (id == 34 /*Summary completion*/) {
+      _selectedQuestionParam = _questionParams.elementAt(33);
+      int responseLastSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.last
+          .value['seconds'];
+      setCountdown(responseLastSec);
+    } else if (id == 0 /*Sentence completion*/) {
+      _selectedQuestionParam = _questionParams.elementAt(34);
 
-    }  else {
+    }  else if (id == 46 /*Paragraph choice*/) {
+      _selectedQuestionParam = _questionParams.elementAt(35);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
+    }else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
     }
   }
@@ -676,7 +733,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
   void setSelectedDropdown(
     Map<String, dynamic> answer,
   ) {
-
     _selectedOption.addAll(answer);
 
     rebuildUi();
@@ -801,12 +857,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Cache image
   Future<void> cacheNetworkImage(
-          {required String image,  BuildContext? context}) async =>
+          {required String image, BuildContext? context}) async =>
       await runBusyFuture(_cacheNetworkImage(image: image, context: context),
           busyObject: StateObjects.cacheImage);
 
   Future<void> _cacheNetworkImage(
-      {required String image,  BuildContext? context}) async {
+      {required String image, BuildContext? context}) async {
     Map<String, dynamic> data = {'reference': image};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
     if (response['status'] == ResponseStatus.success) {
@@ -828,14 +884,21 @@ class CoursePracticeViewModel extends ReactiveViewModel
       busyObject: StateObjects.coursePractice);
 
   Future<void> _nextQuestion() async {
-    _currentQuestion++;
-    _buttonActive = false;
-    _questionController.nextPage(
-      curve: Curves.easeInOutCubic,
-      duration: const Duration(milliseconds: 350),
-    );
-    await setQuestionParam(
-        _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
+
+    if(_currentQuestion == _questions.length - 1){
+      pop();
+    }else{
+      _currentQuestion++;
+      _buttonActive = false;
+      _questionController.nextPage(
+        curve: Curves.easeInOutCubic,
+        duration: const Duration(milliseconds: 350),
+      );
+      await setQuestionParam(
+          _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
+
+    }
+
   }
 
   void goTo(int page) {
