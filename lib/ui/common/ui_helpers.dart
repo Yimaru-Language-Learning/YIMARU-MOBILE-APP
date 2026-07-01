@@ -144,6 +144,15 @@ OutlineInputBorder focusedBorder =
 UnderlineInputBorder searchBorder =
     const UnderlineInputBorder(borderSide: BorderSide(color: kcPrimaryColor));
 
+OutlineInputBorder dropdownBorder = OutlineInputBorder(
+  borderSide: const BorderSide(
+    width: 1,
+    color: kcVeryLightGrey,
+  ),
+  borderRadius: BorderRadius.circular(15),
+
+);
+
 TextStyle defaultPinTextStyle = const TextStyle(
   fontSize: 22,
   color: kcDarkGrey,

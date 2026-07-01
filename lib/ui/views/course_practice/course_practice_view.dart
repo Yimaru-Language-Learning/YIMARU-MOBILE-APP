@@ -57,6 +57,8 @@ import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_2_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_3_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_4_answer.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_6_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_8_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_writing_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_writing_practice_1_review.dart';
 
@@ -257,6 +259,16 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 4 /*Short Answer*/) {
       return IeltsListeningPractice3Question(
           practiceController: practiceController);
+    } else if (id == 0 /*Table completion*/) {
+      return Container();
+    } else if (id == 0 /*Diagram completion*/) {
+      return Container();
+    } else if (id == 31 /*Diagram labeling*/) {
+      return const IeltsSpeakingPractice6Question();
+    } else if (id == 0 /*Multiple choice*/) {
+      return Container();
+    } else if (id == 33 /*Matching*/) {
+      return const IeltsSpeakingPractice8Question();
     }
     return Container();
   }
@@ -367,7 +379,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
   List<Widget> _buildBodyChildren(CoursePracticeViewModel viewModel) =>
       [_buildDuolingoAssessmentsScreen(), _buildQuestionSetView(viewModel)];
 
-  Widget _buildDuolingoAssessmentsScreen() =>  DuolingoPracticesScreens(practiceController: practiceController);
+  Widget _buildDuolingoAssessmentsScreen() =>
+      DuolingoPracticesScreens(practiceController: practiceController);
 
   Widget _buildQuestionSetView(CoursePracticeViewModel viewModel) =>
       PageView.builder(
@@ -499,9 +512,16 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
                 40 &&
             viewModel.questions[viewModel.currentQuestion]
                     .questionTypeDefinitionId !=
-                42&& viewModel.questions[viewModel.currentQuestion]
-            .questionTypeDefinitionId !=
-            4)
+                42 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                4 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                31 &&
+            viewModel.questions[viewModel.currentQuestion]
+                    .questionTypeDefinitionId !=
+                33)
           _buildIeltsIntroScreen(viewModel),
         _buildIeltsQuestionScreenWrapper(viewModel),
         if (viewModel.questions[viewModel.currentQuestion]
