@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
@@ -384,12 +385,53 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'title': 'Note Completion',
       'label': 'IELTS Listening 27',
       'type': CoursePracticeType.ielts,
-    },   {
+    },
+    {
       'subtitle': '',
       'title': 'Short Answer',
       'instruction_title': '',
       'instruction_subtitle': '',
       'label': 'IELTS Listening 28',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Table completion',
+      'label': 'IELTS Listening 29',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Diagram completion',
+      'label': 'IELTS Listening 30',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Diagram labeling',
+      'label': 'IELTS Listening 31',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Multiple choice',
+      'label': 'IELTS Listening 32',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'title': 'Matching',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Listening 32',
       'type': CoursePracticeType.ielts,
     }
   ];
@@ -562,16 +604,40 @@ class CoursePracticeViewModel extends ReactiveViewModel
     } else if (id == 40 /*Form Completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(26);
       int responseFirstSec = _questions[_currentQuestion]
-          .dynamicPayload?.response?.first.value['seconds'];
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
       setCountdown(responseFirstSec);
-
     } else if (id == 42 /*Note Completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(27);
       int responseFirstSec = _questions[_currentQuestion]
-          .dynamicPayload?.response?.first.value['seconds'];
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
       setCountdown(responseFirstSec);
     } else if (id == 4 /*Short Answer*/) {
       _selectedQuestionParam = _questionParams.elementAt(28);
+    } else if (id == 0 /*Table completion*/) {
+      _selectedQuestionParam = _questionParams.elementAt(29);
+    } else if (id == 0 /*Diagram completion*/) {
+      _selectedQuestionParam = _questionParams.elementAt(29);
+    } else if (id == 31 /*Diagram labeling*/) {
+      _selectedQuestionParam = _questionParams.elementAt(30);
+      int responseLastSec = _questions[_currentQuestion]
+          .dynamicPayload?.response?.last.value['seconds'];
+      String image = _questions[_currentQuestion]
+          .dynamicPayload?.stimulus?.first.value;
+      await cacheNetworkImage(image: image);
+      setCountdown(responseLastSec);
+    } else if (id == 0 /*Multiple choice*/) {
+      _selectedQuestionParam = _questionParams.elementAt(31);
+    }else if (id == 33 /*Matching*/) {
+      _selectedQuestionParam = _questionParams.elementAt(32);
+      int responseLastSec = _questions[_currentQuestion]
+          .dynamicPayload?.response?.last.value['seconds'];
+      setCountdown(responseLastSec);
 
     }  else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
@@ -601,6 +667,17 @@ class CoursePracticeViewModel extends ReactiveViewModel
     Map<String, dynamic> option = {question: answer};
 
     _selectedOption.addAll(option);
+
+    print(_selectedOption);
+
+    rebuildUi();
+  }
+
+  void setSelectedDropdown(
+    Map<String, dynamic> answer,
+  ) {
+
+    _selectedOption.addAll(answer);
 
     rebuildUi();
   }
@@ -724,19 +801,18 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Cache image
   Future<void> cacheNetworkImage(
-          {required String image, required BuildContext context}) async =>
+          {required String image,  BuildContext? context}) async =>
       await runBusyFuture(_cacheNetworkImage(image: image, context: context),
           busyObject: StateObjects.cacheImage);
 
   Future<void> _cacheNetworkImage(
-      {required String image, required BuildContext context}) async {
+      {required String image,  BuildContext? context}) async {
     Map<String, dynamic> data = {'reference': image};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
     if (response['status'] == ResponseStatus.success) {
       RefreshObject object = response['data'] as RefreshObject;
       _cachedImage = object.url;
-      await _cacheImageService.cacheNetworkImage(
-          image: _cachedImage ?? '', context: context);
+      await _cacheImageService.cacheImage(_cachedImage ?? '');
     }
   }
 
