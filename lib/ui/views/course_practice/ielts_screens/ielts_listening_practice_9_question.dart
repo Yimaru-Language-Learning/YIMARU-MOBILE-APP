@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/course_missing_word_question.dart';
 import 'package:yimaru_app/ui/widgets/fill_in_the_blanks_question.dart';
+import 'package:yimaru_app/ui/widgets/instruction_card.dart';
 import 'package:yimaru_app/ui/widgets/reading_practice_option_card.dart';
 
 import '../../../common/app_colors.dart';
@@ -109,10 +110,10 @@ class IeltsListeningPractice9Question
       );
 
   Widget _buildTitle() => Text(
-    'Summary Completion',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
+        'Summary Completion',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
@@ -136,26 +137,25 @@ class IeltsListeningPractice9Question
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         verticalSpaceMedium,
-    _buildInstruction(viewModel),
+        _buildInstruction(viewModel),
         verticalSpaceMedium,
         _buildQuestion(viewModel),
         verticalSpaceMedium,
-    _buildQuestion(viewModel),
+        _buildQuestion(viewModel),
         verticalSpaceLarge,
         _buildContinueButtonWrapper(viewModel)
       ];
 
-  Widget _buildInstruction(CoursePracticeViewModel viewModel) => Text(
-    viewModel.questions[viewModel.currentQuestion]
-        .dynamicPayload?.stimulus?.last.value,
-        style: style14MG400,
-      );
+  Widget _buildInstruction(CoursePracticeViewModel viewModel) =>
+      InstructionCard(
+          instruction: viewModel.questions[viewModel.currentQuestion]
+              .dynamicPayload?.stimulus?.last.value);
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-       FillInTheBlanksQuestion(question: (viewModel.questions[viewModel.currentQuestion]
-           .dynamicPayload?.stimulus?.first.value['segments'] as List),);
-
-
+      FillInTheBlanksQuestion(
+        question: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value['segments'] as List),
+      );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
@@ -165,11 +165,11 @@ class IeltsListeningPractice9Question
 
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
-          height: 55,
-          text: 'Submit',
-          borderRadius: 12,
-          foregroundColor: kcWhite,
-          backgroundColor: kcPrimaryColor,
-        onTap:() async => await viewModel.nextQuestion(),
+        height: 55,
+        text: 'Submit',
+        borderRadius: 12,
+        foregroundColor: kcWhite,
+        backgroundColor: kcPrimaryColor,
+        onTap: () async => await viewModel.nextQuestion(),
       );
 }

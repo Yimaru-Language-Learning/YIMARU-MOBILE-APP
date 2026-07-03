@@ -92,7 +92,7 @@ class IeltsSpeakingPractice6Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(viewModel),
+         // _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
@@ -249,7 +249,7 @@ class IeltsSpeakingPractice6Question
             : '',
         onSelected: (value) {
           Map<String, dynamic> answer = {question: value};
-          viewModel.setSelectedChoice(question: question, answer: answer);
+          viewModel.setSelectedChoice(number: question, answer: answer);
         },
         showTrailingIcon: false,
         inputDecorationTheme: InputDecorationTheme(

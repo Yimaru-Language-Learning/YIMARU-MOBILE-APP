@@ -7,16 +7,16 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.da
 class ReadingPracticeOptionCard
     extends ViewModelWidget<CoursePracticeViewModel> {
   final bool enabled;
-  final String question;
+  final String number;
 
   const ReadingPracticeOptionCard(
-      {super.key, required this.enabled, required this.question});
+      {super.key, required this.enabled, required this.number});
 
   void _setOption(
-      {required String question,
+      {
       required Map<String, dynamic> answer,
       required CoursePracticeViewModel viewModel}) {
-    viewModel.setSelectedChoice(question: question, answer: answer);
+    viewModel.setSelectedChoice(number: number, answer: answer);
   }
 
   @override
@@ -58,7 +58,7 @@ class ReadingPracticeOptionCard
       );
 
   Widget _buildNumber() => Text(
-        question,
+        number,
         style: style14DG600,
         textAlign: TextAlign.center,
       );
@@ -76,7 +76,6 @@ class ReadingPracticeOptionCard
         itemBuilder: (context, index) => _buildOptionDetector(
           onTap: enabled
               ? () => _setOption(
-                    question: question,
                     viewModel: viewModel,
                     answer: viewModel
                         .questions[viewModel.currentQuestion]
@@ -87,7 +86,7 @@ class ReadingPracticeOptionCard
                   )
               : null,
           selected: viewModel.isSelectedChoice(
-              question: question,
+              number: number,
               answer: viewModel.questions[viewModel.currentQuestion]
                   .dynamicPayload?.stimulus?.last.value['word_bank'][index]),
           title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
