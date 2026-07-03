@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/course_missing_word_question.dart';
-import 'package:yimaru_app/ui/widgets/paragraph_choice_card.dart';
+import 'package:yimaru_app/ui/widgets/paragraph_option_card.dart';
 import 'package:yimaru_app/ui/widgets/reading_practice_option_card.dart';
 
 import '../../../common/app_colors.dart';
@@ -154,7 +154,7 @@ class IeltsReadingPractice1Question
       );
 
   Widget _buildQuestion1(CoursePracticeViewModel viewModel) =>
-      ParagraphChoiceCard(
+      ParagraphOptionCard(
         number: '1',
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[1].value,
@@ -163,7 +163,7 @@ class IeltsReadingPractice1Question
       );
 
   Widget _buildQuestion2(CoursePracticeViewModel viewModel) =>
-      ParagraphChoiceCard(
+      ParagraphOptionCard(
         number: '2',
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[2].value,
@@ -172,7 +172,7 @@ class IeltsReadingPractice1Question
       );
 
   Widget _buildQuestion3(CoursePracticeViewModel viewModel) =>
-      ParagraphChoiceCard(
+      ParagraphOptionCard(
         number: '3',
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[3].value,

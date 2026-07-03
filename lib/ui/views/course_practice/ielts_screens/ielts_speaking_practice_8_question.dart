@@ -262,7 +262,7 @@ class IeltsSpeakingPractice8Question
             : '',
         onSelected: (value) {
           Map<String, dynamic> answer = {question: value};
-          viewModel.setSelectedChoice(question: question, answer: answer);
+          viewModel.setSelectedChoice(number: question, answer: answer);
         },
         showTrailingIcon: false,
         inputDecorationTheme: InputDecorationTheme(

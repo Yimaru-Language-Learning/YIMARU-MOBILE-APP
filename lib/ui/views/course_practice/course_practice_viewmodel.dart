@@ -466,7 +466,30 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'title': 'Paragraph choice',
       'label': 'IELTS Listening 34',
       'type': CoursePracticeType.ielts,
-    }
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Listening 35',
+      'type': CoursePracticeType.ielts,
+      'title': 'Reading diagram labeling',
+    },
+     {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Listening 36',
+      'type': CoursePracticeType.ielts,
+       'title': 'Sentence Ending Matching',
+     },   {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Listening 37',
+      'type': CoursePracticeType.ielts,
+      'title': 'True / False / Not Given',
+    },
   ];
 
   List<Map<String, dynamic>> get questionParams => _questionParams;
@@ -696,6 +719,33 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
+    }else if(id == 58 /*Reading diagram labeling*/){
+      _selectedQuestionParam = _questionParams.elementAt(30);
+      int responseLastSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.last
+          .value['seconds'];
+      String image =
+          _questions[_currentQuestion].dynamicPayload?.stimulus?[1].value;
+      await cacheNetworkImage(image: image);
+      setCountdown(responseLastSec);
+    }else if(id == 47 /*Sentence Ending Matching*/){
+      _selectedQuestionParam = _questionParams.elementAt(31);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
+    }else if(id == 48 /*True / False / Not Given*/){
+      _selectedQuestionParam = _questionParams.elementAt(31);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
     }else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
     }
@@ -712,21 +762,25 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Selected option
   bool isSelectedChoice({
-    required String question,
-    required Map<String, dynamic> answer,
-  }) =>
-      _selectedOption[question] == answer;
-
-  void setSelectedChoice({
-    required String question,
+    required String number,
     required Map<String, dynamic> answer,
   }) {
-    Map<String, dynamic> option = {question: answer};
+    // Single
+    print('Single');
+    print(answer);
+    print(_selectedOption[number]);
+    print(_selectedOption[number] == answer);
+   return _selectedOption[number] == answer;
+
+  }
+
+  void setSelectedChoice({
+    required String number,
+    required Map<String, dynamic> answer,
+  }) {
+    Map<String, dynamic> option = {number: answer};
 
     _selectedOption.addAll(option);
-
-    print(_selectedOption);
-
     rebuildUi();
   }
 

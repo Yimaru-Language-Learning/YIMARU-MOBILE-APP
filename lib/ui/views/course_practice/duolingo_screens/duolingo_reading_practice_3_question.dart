@@ -158,7 +158,7 @@ class DuolingoReadingPractice3Question
 
   Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
         enabled: true,
-        question: (index + 1).toString(),
+        number: (index + 1).toString(),
       );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>

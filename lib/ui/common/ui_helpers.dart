@@ -354,6 +354,9 @@ TextStyle style12W600 =
 TextStyle style14MG400 = const TextStyle(
   color: kcMediumGrey,
 );
+
+TextStyle style14W400 = const TextStyle(color: kcWhite);
+
 TextStyle style14DG400 = const TextStyle(color: kcDarkGrey);
 
 TextStyle style14DG500 =
