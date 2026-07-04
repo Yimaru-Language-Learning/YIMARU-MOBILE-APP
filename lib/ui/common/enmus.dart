@@ -1,6 +1,9 @@
 // Practice voice
 enum Voice { sample, recorded }
 
+// Course  type
+enum CourseType { ielts, duolingo }
+
 // Response status
 enum ResponseStatus { success, failure }
 
@@ -23,7 +26,7 @@ enum CoursePractices { courseCatalog, unit, lesson }
 enum ProgressStatuses { pending, started, completed }
 
 // Duolingo  types
-enum DuolingoAssessments { speaking, reading, writing, listening }
+enum CoursePracticeType { ielts, speaking, reading, writing, listening }
 
 // Practice reason
 enum PracticeReason { course, module, lesson, previousModule, previousCourse }
@@ -33,9 +36,11 @@ enum StateObjects {
   none,
   logout,
   courses,
+  openPdf,
   register,
   verifyOtp,
   resendOtp,
+  cacheImage,
   courseUnits,
   assessments,
   startupView,
@@ -67,12 +72,12 @@ enum StateObjects {
   registerWithApple,
   learnPracticeSample,
   learnPracticeAnswer,
+  coursePracticePrompt,
   loginWithPhoneNumber,
   assessmentQuestions,
   coursePracticeReview,
   learnPracticeQuestion,
   completeLearnPractice,
-  coursePracticeQuestion,
   coursePracticeQuestions,
   recordLearnPracticeAnswer,
   recordCoursePracticeAnswer,

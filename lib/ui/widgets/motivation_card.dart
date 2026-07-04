@@ -15,7 +15,7 @@ class MotivationCard extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: kcPrimaryColor.withOpacity(0.1),
+          color: kcPrimaryColor.withValues(alpha: 0.1),
         ),
         child: _buildRow(),
       );
@@ -25,7 +25,7 @@ class MotivationCard extends StatelessWidget {
       );
 
   Widget _buildIconWrapper() => CircleAvatar(
-        backgroundColor: kcPrimaryColor.withOpacity(0.25),
+        backgroundColor: kcPrimaryColor.withValues(alpha: 0.25),
         child: _buildIcon(),
       );
 

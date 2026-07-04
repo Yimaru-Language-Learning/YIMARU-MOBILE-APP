@@ -47,12 +47,12 @@ class PrivacyPolicyTile extends StatelessWidget {
         collapsedTextColor: kcDarkGrey,
         expandedAlignment: Alignment.centerLeft,
         childrenPadding: const EdgeInsets.all(15),
-        backgroundColor: kcPrimaryColor.withOpacity(0.1),
+        backgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
-        collapsedBackgroundColor: kcPrimaryColor.withOpacity(0.1),
-        shape: Border.all(color: kcPrimaryColor.withOpacity(0.2)),
+        collapsedBackgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
+        shape: Border.all(color: kcPrimaryColor.withValues(alpha: 0.2)),
         children: _buildExpansionTileChildren(),
       );
 

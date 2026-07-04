@@ -291,7 +291,7 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
                 viewModel.length &&
                 viewModel.passwordMatch
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 
   Widget _buildResetPasswordState(ForgetPasswordViewModel viewModel) =>

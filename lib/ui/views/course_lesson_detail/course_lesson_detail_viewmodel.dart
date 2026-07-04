@@ -5,6 +5,7 @@ import 'package:video_player/video_player.dart';
 import 'package:yimaru_app/services/api_service.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../app/app.router.dart';
 import '../../../services/status_checker_service.dart';
 import '../../../services/vimeo_service.dart';
 import '../../common/enmus.dart';
@@ -107,4 +108,8 @@ class CourseLessonDetailViewmodel extends ReactiveViewModel {
 
   // Navigation
   void pop() => _navigationService.back();
+
+  Future<void> replaceWithCoursePractice(int id) async =>
+      await _navigationService.replaceWithCoursePracticeView(
+          id: id, practice: CoursePractices.lesson);
 }

@@ -268,7 +268,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
                 viewModel.passwordMatch &&
                 viewModel.agree
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 
   Widget _buildRegistrationState(RegisterViewModel viewModel) =>

@@ -5,8 +5,6 @@ import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/failure/failure_viewmodel.dart';
 
-import '../../../widgets/custom_circular_progress_indicator.dart';
-
 class FirstFailureScreen extends ViewModelWidget<FailureViewModel> {
   final String label;
   final GestureTapCallback onTap;
@@ -125,24 +123,10 @@ class FirstFailureScreen extends ViewModelWidget<FailureViewModel> {
         children: _buildLoadingTextChildren(),
       );
 
-  List<Widget> _buildLoadingTextChildren() => [
-        _buildLoadingText(),
-        horizontalSpaceSmall,
-        _buildIndicatorWrapper(),
-        horizontalSpaceSmall,
-        _buildRetryButtonWrapper()
-      ];
+  List<Widget> _buildLoadingTextChildren() =>
+      [_buildLoadingText(), horizontalSpaceSmall, _buildRetryButtonWrapper()];
 
   Widget _buildLoadingText() => Text('$label...', style: style16W600);
-
-  Widget _buildIndicatorWrapper() => SizedBox(
-        width: 16,
-        height: 16,
-        child: _buildIndicator(),
-      );
-
-  Widget _buildIndicator() =>
-      const CustomCircularProgressIndicator(color: kcWhite);
 
   Widget _buildRetryButtonWrapper() => GestureDetector(
         onTap: onTap,

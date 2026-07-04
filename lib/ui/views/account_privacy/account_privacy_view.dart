@@ -156,6 +156,6 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
         borderRadius: 12,
         foregroundColor: kcRed,
         text: LocaleKeys.delete_account.tr(),
-        backgroundColor: kcRed.withOpacity(0.25),
+        backgroundColor: kcRed.withValues(alpha: 0.25),
       );
 }

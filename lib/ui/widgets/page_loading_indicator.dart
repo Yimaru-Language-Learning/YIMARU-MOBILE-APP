@@ -20,7 +20,7 @@ class PageLoadingIndicator extends StatelessWidget {
   Widget _buildContainer(BuildContext context) => Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: kcBlack.withOpacity(0.3),
+        color: kcBlack.withValues(alpha: 0.3),
         child: _buildBoxContainerWrapper(),
       );
 

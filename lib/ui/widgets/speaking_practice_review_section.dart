@@ -7,8 +7,11 @@ import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class SpeakingPracticeReviewSection extends StatelessWidget {
+  final String response;
   final GestureTapCallback? onTap;
-  const SpeakingPracticeReviewSection({super.key, this.onTap});
+
+  const SpeakingPracticeReviewSection(
+      {super.key, this.onTap, required this.response});
 
   @override
   Widget build(BuildContext context) => _buildReviewContainer();
@@ -32,20 +35,22 @@ class SpeakingPracticeReviewSection extends StatelessWidget {
           verticalSpaceMedium,
         ],
       );
+
   Widget _buildTitle() => Text(
         'Review Sample Answer:',
         style: style18G700,
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSampleAnswer() =>
-       const CustomResponseCard(
-        title: 'Sample Answer',         voice: Voice.sample,
+  Widget _buildSampleAnswer() => CustomResponseCard(
+        title: 'Sample Answer',
+        voice: Voice.sample,
+        response: response,
       );
 
-  Widget _buildYourResponse() =>
-       const CustomResponseCard(
-        title: 'Your Response',         voice: Voice.recorded,
+  Widget _buildYourResponse() => const CustomResponseCard(
+        title: 'Your Response',
+        voice: Voice.recorded,
       );
 
   Widget _buildContinueButton() => CustomElevatedButton(

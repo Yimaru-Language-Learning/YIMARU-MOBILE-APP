@@ -36,7 +36,7 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: kcPrimaryColor.withOpacity(0.1)),
+          border: Border.all(color: kcPrimaryColor.withValues(alpha: 0.1)),
         ),
         child: _buildExpansionTile(viewModel),
       );
@@ -50,14 +50,14 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
         enabled: (course.access?.isAccessible ?? false),
-        backgroundColor: kcPrimaryColor.withOpacity(0.1),
+        backgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
         controlAffinity: ListTileControlAffinity.trailing,
         tilePadding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         showTrailingIcon: (course.access?.isAccessible ?? false),
         initiallyExpanded: (course.access?.isAccessible ?? false),
         collapsedBackgroundColor: (course.access?.isAccessible ?? false)
-            ? kcPrimaryColor.withOpacity(0.1)
+            ? kcPrimaryColor.withValues(alpha: 0.1)
             : kcBackgroundColor,
         children: _buildExpansionTileChildren(viewModel),
       );

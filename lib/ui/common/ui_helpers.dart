@@ -119,13 +119,14 @@ InputDecoration inputDecoration(
       errorBorder: errorBorder,
       enabledBorder: enabledBorder,
       focusedBorder: focusedBorder,
-      fillColor: focus || filled ? kcPrimaryColor.withOpacity(0.1) : kcWhite,
+      fillColor:
+          focus || filled ? kcPrimaryColor.withValues(alpha: 0.09) : kcWhite,
     );
 
 Border rightBorder = Border(
   right: BorderSide(
     width: 1,
-    color: kcLightGrey.withOpacity(0.25),
+    color: kcLightGrey.withValues(alpha: 0.25),
   ),
 );
 
@@ -143,6 +144,15 @@ OutlineInputBorder focusedBorder =
 UnderlineInputBorder searchBorder =
     const UnderlineInputBorder(borderSide: BorderSide(color: kcPrimaryColor));
 
+OutlineInputBorder dropdownBorder = OutlineInputBorder(
+  borderSide: const BorderSide(
+    width: 1,
+    color: kcVeryLightGrey,
+  ),
+  borderRadius: BorderRadius.circular(15),
+
+);
+
 TextStyle defaultPinTextStyle = const TextStyle(
   fontSize: 22,
   color: kcDarkGrey,
@@ -151,7 +161,7 @@ TextStyle defaultPinTextStyle = const TextStyle(
 BoxDecoration defaultPinDecoration = BoxDecoration(
   borderRadius: BorderRadius.circular(19),
   border: Border.all(
-    color: kcPrimaryColor.withOpacity(0.5),
+    color: kcPrimaryColor.withValues(alpha: 0.5),
   ),
 );
 
@@ -344,6 +354,9 @@ TextStyle style12W600 =
 TextStyle style14MG400 = const TextStyle(
   color: kcMediumGrey,
 );
+
+TextStyle style14W400 = const TextStyle(color: kcWhite);
+
 TextStyle style14DG400 = const TextStyle(color: kcDarkGrey);
 
 TextStyle style14DG500 =

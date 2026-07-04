@@ -141,7 +141,7 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         backgroundColor: viewModel.selectedAnswers
                 .containsKey('${viewModel.currentQuestionIndex + 1}')
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: viewModel.selectedAnswers
                 .containsKey('${viewModel.currentQuestionIndex + 1}')
             ? () => viewModel.nextQuestion()

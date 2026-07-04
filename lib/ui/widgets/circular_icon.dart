@@ -12,7 +12,7 @@ class CircularIcon extends StatelessWidget {
 
   Widget _buildIconWrapper() => CircleAvatar(
         radius: size,
-        backgroundColor: color.withOpacity(0.25),
+        backgroundColor: color.withValues(alpha: 0.25),
         child: _buildIcon(),
       );
 

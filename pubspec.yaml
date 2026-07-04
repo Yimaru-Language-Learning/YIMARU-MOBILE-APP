@@ -1,6 +1,6 @@
 name: yimaru_app
 publish_to: 'none'
-version: 0.1.43+45
+version: 0.1.71+73
 description: A new Flutter project.
 
 environment:
@@ -47,6 +47,7 @@ dependencies:
   permission_handler: ^12.0.1
   firebase_messaging: ^16.1.1
   cached_network_image: ^3.4.1
+  flutter_cache_manager: ^3.4.1
   flutter_native_splash: ^2.4.7
   change_app_package_name: ^1.5.0
   flutter_secure_storage: ^10.0.0
@@ -54,7 +55,8 @@ dependencies:
   flutter_carousel_widget: ^3.1.0
   flutter_inappwebview: ^6.2.0-beta.3
   flutter_phone_direct_caller: ^2.2.1
-  flutter_local_notifications: ^20.1.0
+  flutter_local_notifications: ^22.0.1
+  syncfusion_flutter_pdfviewer: ^33.2.15
   internet_connection_checker_plus: ^2.9.1+2
   sign_in_with_apple: ^8.0.0
 

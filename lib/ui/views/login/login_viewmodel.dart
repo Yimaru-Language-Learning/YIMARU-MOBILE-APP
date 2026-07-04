@@ -11,6 +11,7 @@ import '../../../services/apple_auth_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/google_auth_service.dart';
 import '../../../services/localization_service.dart';
+import '../../../services/push_notification_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
@@ -31,6 +32,8 @@ class LoginViewModel extends ReactiveViewModel
   final _localizationService = locator<LocalizationService>();
 
   final _authenticationService = locator<AuthenticationService>();
+
+  final _pushNotificationService = locator<PushNotificationService>();
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
@@ -200,6 +203,7 @@ class LoginViewModel extends ReactiveViewModel
         };
 
         await _authenticationService.saveUserCredential(data);
+        await _registerDevice();
         clearUserData();
         await replaceWithStartUp();
         showSuccessToast(response['message']);
@@ -210,6 +214,9 @@ class LoginViewModel extends ReactiveViewModel
   }
 
   // Sign-in with google
+  Future<void> signInWithGoogle() async => await runBusyFuture(_googleAuth(),
+      busyObject: StateObjects.loginWithGoogle);
+
   Future<void> _googleAuth() async {
     if (await _statusChecker.checkConnection()) {
       await _googleAuthService.googleAuth();
@@ -228,6 +235,7 @@ class LoginViewModel extends ReactiveViewModel
           'refreshToken': user.refreshToken
         };
         await _authenticationService.saveUserCredential(data);
+        await _registerDevice();
         clearUserData();
         await replaceWithStartUp();
         showSuccessToast(response['message']);
@@ -236,9 +244,6 @@ class LoginViewModel extends ReactiveViewModel
       }
     }
   }
-
-  Future<void> signInWithGoogle() async => await runBusyFuture(_googleAuth(),
-      busyObject: StateObjects.loginWithGoogle);
 
   // Sign-in with Apple
   Future<void> _appleAuth() async {
@@ -272,6 +277,7 @@ class LoginViewModel extends ReactiveViewModel
           'refreshToken': user.refreshToken
         };
         await _authenticationService.saveUserCredential(data);
+        await _registerDevice();
         clearUserData();
         await replaceWithStartUp();
         showSuccessToast(response['message']);
@@ -302,6 +308,10 @@ class LoginViewModel extends ReactiveViewModel
   }
 
   // Verify otp
+
+  Future<void> verifyOtp() async =>
+      await runBusyFuture(_verifyOtp(), busyObject: StateObjects.verifyOtp);
+
   Future<void> _verifyOtp() async {
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> response = await _apiService.verifyOtp(_userData);
@@ -314,6 +324,7 @@ class LoginViewModel extends ReactiveViewModel
         };
 
         await _authenticationService.saveUserCredential(data);
+        await _registerDevice();
         await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
@@ -322,8 +333,18 @@ class LoginViewModel extends ReactiveViewModel
     }
   }
 
-  Future<void> verifyOtp() async =>
-      await runBusyFuture(_verifyOtp(), busyObject: StateObjects.verifyOtp);
+  // Register device
+  Future<void> _registerDevice() async {
+    String? token = await _pushNotificationService.getDeviceToken();
+    print('DEVICE TOKEN: $token');
+    if (token != null) {
+      Map<String, dynamic> deviceData = {
+        "platform": "android",
+        'device_token': token,
+      };
+      await _apiService.registerDevice(deviceData);
+    }
+  }
 
   // Resend otp
   Future<void> _resendOtp() async {

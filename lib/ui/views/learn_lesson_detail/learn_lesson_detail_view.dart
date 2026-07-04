@@ -32,14 +32,13 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
       {required LearnLesson lesson,
       required LearnLessonDetailViewModel viewModel}) async {
     await viewModel.pause();
-    await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+    await viewModel.replaceWithLearnPractice(lesson.id ?? 0);
   }
 
   @override
   void onViewModelReady(LearnLessonDetailViewModel viewModel) async {
     await viewModel.initializePlayer(
       lessonId: lesson.id ?? 0,
-      moduleId: module.id ?? 0,
       url: lesson.videoUrl ?? '',
     );
     super.onViewModelReady(viewModel);

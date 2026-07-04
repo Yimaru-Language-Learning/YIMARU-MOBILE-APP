@@ -85,7 +85,6 @@ class DioService {
     debugPrint('❌ ${error.response?.data} ${error.requestOptions.uri}');
     debugPrint('❌ ${error.response?.statusCode} ${error.requestOptions.uri}');
     debugPrint('❌❌❌❌FINALIZING ERROR❌❌❌❌');
-
     if (error.response?.statusCode == 401 &&
         !_isRefreshRequest(error.requestOptions)) {
       return _handle401(error, handler);

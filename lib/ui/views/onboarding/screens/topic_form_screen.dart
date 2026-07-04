@@ -144,5 +144,5 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
               : null,
           backgroundColor: viewModel.selectedTopic != null
               ? kcPrimaryColor
-              : kcPrimaryColor.withOpacity(0.1));
+              : kcPrimaryColor.withValues(alpha: 0.1));
 }

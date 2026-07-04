@@ -8,6 +8,7 @@ import '../../../app/app.router.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/image_downloader_service.dart';
+import '../../../services/in_app_update_service.dart';
 import '../../../services/localization_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
@@ -21,6 +22,8 @@ class StartupViewModel extends ReactiveViewModel {
   final _navigationService = locator<NavigationService>();
 
   final _onboardingService = locator<OnboardingService>();
+
+  final _inAppUpdateService = locator<InAppUpdateService>();
 
   final _localizationService = locator<LocalizationService>();
 
@@ -44,6 +47,8 @@ class StartupViewModel extends ReactiveViewModel {
     final loggedIn = await _authenticationService.userLoggedIn();
 
     final firstTimeInstall = await _authenticationService.isFirstTimeInstall();
+
+    await initialization();
 
     if (firstTimeInstall) {
       await _navigationService.replaceWithLandingView();
@@ -140,6 +145,13 @@ class StartupViewModel extends ReactiveViewModel {
       await replaceWithOnboarding();
     } else {
       await replaceWithFailure();
+    }
+  }
+
+  // In-app update
+  Future<void> initialization() async {
+    if (await _statusChecker.checkConnection()) {
+      await _inAppUpdateService.checkForUpdate();
     }
   }
 }

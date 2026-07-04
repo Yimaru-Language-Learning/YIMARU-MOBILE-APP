@@ -28,9 +28,11 @@ class CustomSmallRadioButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: selected ? kcPrimaryColor.withOpacity(0.1) : kcWhite,
+          color: selected ? kcPrimaryColor.withValues(alpha: 0.1) : kcWhite,
           border: Border.all(
-            color: selected ? kcPrimaryColor : kcPrimaryColor.withOpacity(0.75),
+            color: selected
+                ? kcPrimaryColor
+                : kcPrimaryColor.withValues(alpha: 0.75),
           ),
         ),
         child: _buildButtonRowWrapper(),

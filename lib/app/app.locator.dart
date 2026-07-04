@@ -16,6 +16,7 @@ import '../services/api_service.dart';
 import '../services/apple_auth_service.dart';
 import '../services/audio_player_service.dart';
 import '../services/authentication_service.dart';
+import '../services/cache_image_service.dart';
 import '../services/course_service.dart';
 import '../services/dio_service.dart';
 import '../services/google_auth_service.dart';
@@ -71,4 +72,5 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => AppleAuthService());
   locator.registerLazySingleton(() => InAppNotificationService());
   locator.registerLazySingleton(() => PushNotificationService());
+  locator.registerLazySingleton(() => CacheImageService());
 }

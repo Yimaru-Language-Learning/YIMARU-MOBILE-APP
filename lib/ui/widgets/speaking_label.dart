@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import '../common/ui_helpers.dart';
 
 class SpeakingLabel extends StatelessWidget {
-  const SpeakingLabel({super.key});
+  final String label;
+  const SpeakingLabel({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) => _buildSpeakerLabel();
 
   Widget _buildSpeakerLabel() => Text(
-        'You are speaking...',
+        label,
         style: style14P400,
         textAlign: TextAlign.center,
       );

@@ -129,8 +129,8 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
       [
         _buildProgressRowWrapper(),
         verticalSpaceSmall,
-        _buildActionButtonWrapper(context: context, viewModel: viewModel),
-        verticalSpaceMedium,
+        // _buildActionButtonWrapper(context: context, viewModel: viewModel),
+        // verticalSpaceMedium,
         _buildCourseModules(viewModel)
       ];
 
@@ -195,7 +195,8 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
             lesson: lessons[index],
             onVideoTap: () async =>
                 await viewModel.navigateToCourseLessonDetail(lessons[index]),
-            onPracticeTap: ()async=>await viewModel.navigateToCoursePractice(lessons[index].id ?? 0)),
+            onPracticeTap: () async => await viewModel
+                .navigateToCoursePractice(lessons[index].id ?? 0)),
       );
 
   Widget _buildCourseLessonTile({

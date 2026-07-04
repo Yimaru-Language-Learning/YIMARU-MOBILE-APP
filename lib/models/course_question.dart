@@ -14,19 +14,27 @@ class CourseQuestion {
   @JsonKey(name: 'question_type')
   final String? questionType;
 
+  @JsonKey(name: 'question_text')
+  final String? questionText;
+
   @JsonKey(name: 'difficulty_level')
   final String? difficultyLevel;
 
   @JsonKey(name: 'dynamic_payload')
   final DynamicPayload? dynamicPayload;
 
+  @JsonKey(name: 'question_type_definition_id')
+  final int? questionTypeDefinitionId;
+
   const CourseQuestion(
       {this.id,
       this.status,
       this.points,
       this.questionType,
+      this.questionText,
+      this.dynamicPayload,
       this.difficultyLevel,
-      this.dynamicPayload});
+      this.questionTypeDefinitionId});
 
   factory CourseQuestion.fromJson(Map<String, dynamic> json) =>
       _$CourseQuestionFromJson(json);

@@ -176,7 +176,7 @@ class LearnSubscriptionFormScreen
         text: 'Proceed to Payment',
         backgroundColor: phoneNumberController.text.isNotEmpty
             ? kcPrimaryColor
-            : kcPrimaryColor.withOpacity(0.1),
+            : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: phoneNumberController.text.isNotEmpty
             ? () async => await viewModel.navigateToArifPay(
                 phone: phoneNumberController.text,

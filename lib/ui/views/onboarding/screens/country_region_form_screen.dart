@@ -198,10 +198,10 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
             ? !viewModel.dropdownRegion
                 ? regionController.text.isNotEmpty
                     ? kcPrimaryColor
-                    : kcPrimaryColor.withOpacity(0.1)
+                    : kcPrimaryColor.withValues(alpha: 0.1)
                 : viewModel.selectedRegion != null
                     ? kcPrimaryColor
-                    : kcPrimaryColor.withOpacity(0.1)
-            : kcPrimaryColor.withOpacity(0.1),
+                    : kcPrimaryColor.withValues(alpha: 0.1)
+            : kcPrimaryColor.withValues(alpha: 0.1),
       );
 }

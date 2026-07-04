@@ -27,6 +27,10 @@ class CourseCatalogViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
+  Future<void> navigateToCoursePractice(int id) async =>
+      await _navigationService.navigateToCoursePracticeView(
+          id: id, practice: CoursePractices.courseCatalog);
+
   Future<void> navigateToCourseUnit(CourseCatalog catalog) async =>
       await _navigationService.navigateToCourseUnitView(catalog: catalog);
 

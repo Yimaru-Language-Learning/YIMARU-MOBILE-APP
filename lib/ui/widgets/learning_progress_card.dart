@@ -30,7 +30,7 @@ class LearningProgressCard extends ViewModelWidget<ProgressViewModel> {
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: kcPrimaryColor.withOpacity(0.1),
+          color: kcPrimaryColor.withValues(alpha: 0.1),
         ),
         child: _buildColumn(viewModel),
       );

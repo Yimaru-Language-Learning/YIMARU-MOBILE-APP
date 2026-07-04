@@ -97,7 +97,7 @@ class CustomDropdownPicker extends StatelessWidget {
         enabledBorder: border,
         disabledBorder: border,
         hintStyle: style14MG400,
-        fillColor: kcPrimaryColor.withOpacity(0.1),
+        fillColor: kcPrimaryColor.withValues(alpha: 0.1),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       );

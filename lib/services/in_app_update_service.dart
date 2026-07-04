@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/services.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -19,15 +21,15 @@ class InAppUpdateService {
 
   Future<void> checkForUpdate() async {
     try {
-      final info = await InAppUpdate.checkForUpdate();
-      final String version = await _statusCheckerService.getAppVersion();
+      final String? deviceVersion = await _statusCheckerService.getAppVersion();
+      log('IN-APP UPDATE DEVICE VERSION CODE: $deviceVersion');
+      final remoteVersion = await InAppUpdate.checkForUpdate();
+      log('IN-APP UPDATE REMOTE VERSION CODE ${remoteVersion.availableVersionCode.toString()}');
 
-      if (version != info.availableVersionCode.toString()) {
-        Map<String, dynamic> data = {
-          'platform': 'ANDROID',
-          'version_code': info.availableVersionCode
-        };
-        Map<String, dynamic> response = await _apiService.checkUpdate(data);
+      if (deviceVersion != remoteVersion.availableVersionCode.toString()) {
+        Map<String, dynamic> response =
+            await _apiService.checkUpdate(deviceVersion ?? '');
+        log('IN-APP UPDATE RESPONSE $response');
 
         if (response['status'] == ResponseStatus.success) {
           AppUpdate update = response['data'] as AppUpdate;
@@ -38,7 +40,7 @@ class InAppUpdateService {
               if (result == AppUpdateResult.userDeniedUpdate) {
                 showErrorToast(
                     'An update is required to continue using this app.');
-                _navigationService.back();
+                _navigationService.popRepeated(3);
               }
             } else {
               await InAppUpdate.startFlexibleUpdate();

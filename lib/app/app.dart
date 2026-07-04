@@ -35,7 +35,6 @@ import 'package:yimaru_app/ui/views/learn_practice/learn_practice_view.dart';
 import 'package:yimaru_app/ui/views/course_payment/course_payment_view.dart';
 import 'package:yimaru_app/ui/views/failure/failure_view.dart';
 import 'package:yimaru_app/ui/views/course_lesson_detail/course_lesson_detail_view.dart';
-import 'package:yimaru_app/ui/views/duolingo/duolingo_view.dart';
 import 'package:yimaru_app/services/smart_auth_service.dart';
 import 'package:yimaru_app/services/course_service.dart';
 import 'package:yimaru_app/ui/views/course/course_view.dart';
@@ -62,6 +61,8 @@ import 'package:yimaru_app/ui/views/notification/notification_view.dart';
 import 'package:yimaru_app/services/in_app_notification_service.dart';
 import 'package:yimaru_app/services/push_notification_service.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
+import 'package:yimaru_app/services/cache_image_service.dart';
+import 'package:yimaru_app/ui/views/pdf/pdf_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -90,7 +91,6 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
     MaterialRoute(page: CoursePaymentView),
     MaterialRoute(page: FailureView),
     MaterialRoute(page: CourseLessonDetailView),
-    MaterialRoute(page: DuolingoView),
     MaterialRoute(page: CourseView),
     MaterialRoute(page: LearnProgramView),
     MaterialRoute(page: AssessmentView),
@@ -103,6 +103,7 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
     MaterialRoute(page: PaymentView),
     MaterialRoute(page: NotificationView),
     MaterialRoute(page: CoursePracticeView),
+    MaterialRoute(page: PdfView),
 // @stacked-route
   ],
   dependencies: [
@@ -132,6 +133,7 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
     LazySingleton(classType: AppleAuthService),
     LazySingleton(classType: InAppNotificationService),
     LazySingleton(classType: PushNotificationService),
+    LazySingleton(classType: CacheImageService),
 // @stacked-service
   ],
   bottomsheets: [

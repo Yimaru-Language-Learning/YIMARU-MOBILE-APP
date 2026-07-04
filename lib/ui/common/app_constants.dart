@@ -17,6 +17,8 @@ String kUnreadUrl = 'unread';
 
 String kApiVersionUrl = 'v1';
 
+String kVideosUrl = 'videos';
+
 String kLevelsUrl = 'levels';
 
 String kCoursesUrl = 'courses';
@@ -26,6 +28,8 @@ String kModulesUrl = 'modules';
 String kLessonsUrl = 'lessons';
 
 String kVersionUrl = 'version';
+
+String kDevicesUrl = 'devices';
 
 String kProgramsUrl = 'programs';
 
@@ -40,6 +44,8 @@ String kPaymentsUrl = 'payments';
 String kExamPrepUrl = 'exam-prep';
 
 String kSubscribeUrl = 'subscribe';
+
+String kHeartbeatUrl = 'heartbeat';
 
 String kPracticesUrl = 'practices';
 
@@ -56,6 +62,8 @@ String kVerifyOtpUrl = 'verify-otp';
 String kResendOtpUrl = 'resend-otp';
 
 String kGetUserUrl = 'user-profile';
+
+String kEngagementUrl = 'engagement';
 
 String kSubmodulesUrl = 'sub-modules';
 
@@ -133,3 +141,32 @@ String kTelegramSupportLink = 'https://t.me/yimaruacademy2026';
 String kErrorUrl = 'https://api.yimaruacademy.com/payment/error';
 
 String kSuccessUrl = 'https://api.yimaruacademy.com/payment/success';
+
+final Map<int, String> alphabet = {
+  1: 'A',
+  2: 'B',
+  3: 'C',
+  4: 'D',
+  5: 'E',
+  6: 'F',
+  7: 'G',
+  8: 'H',
+  9: 'I',
+  10: 'J',
+  11: 'K',
+  12: 'L',
+  13: 'M',
+  14: 'N',
+  15: 'O',
+  16: 'P',
+  17: 'Q',
+  18: 'R',
+  19: 'S',
+  20: 'T',
+  21: 'U',
+  22: 'V',
+  23: 'W',
+  24: 'X',
+  25: 'Y',
+  26: 'Z',
+};

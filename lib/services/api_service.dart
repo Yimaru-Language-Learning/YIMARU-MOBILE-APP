@@ -170,6 +170,17 @@ class ApiService {
     }
   }
 
+  Future<void> registerDevice(Map<String, dynamic> data) async {
+    try {
+      await _service.dio.post(
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kDevicesUrl/$kRegisterUrl',
+        data: data,
+      );
+    } on DioException {
+      rethrow;
+    }
+  }
+
   // Resend otp
   Future<Map<String, dynamic>> resendOtp(Map<String, dynamic> data) async {
     try {
@@ -876,29 +887,15 @@ class ApiService {
     }
   }
 
-  // Complete lesson
-  Future<Map<String, dynamic>> completeLearnLesson(int id) async {
+  // Mark lesson progress
+  Future<void> markLessonProgress(Map<String, dynamic> data) async {
     try {
-      Response response = await _service.dio.post(
-        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kLessonsUrl/$id/$kCompleteUrl',
+      await _service.dio.post(
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kVideosUrl/$kEngagementUrl/$kHeartbeatUrl',
+        data: data,
       );
-
-      if (response.statusCode == 200 && response.data['success']) {
-        return {
-          'message': 'Lesson completed',
-          'status': ResponseStatus.success,
-        };
-      } else {
-        return {
-          'status': ResponseStatus.failure,
-          'message': 'Unknown Error Occurred'
-        };
-      }
-    } on DioException catch (e) {
-      return {
-        'status': ResponseStatus.failure,
-        'message': e.response?.data.toString(),
-      };
+    } on DioException {
+      rethrow;
     }
   }
 
@@ -1174,8 +1171,56 @@ class ApiService {
     }
   }
 
-  // Course practices
-  Future<List<CoursePractice>> getCoursePractices(int id) async {
+  // Course catalog practices
+  Future<List<CoursePractice>> getCourseCatalogPractices(int id) async {
+    try {
+      List<CoursePractice> practices = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kExamPrepUrl/$kCatalogCoursesUrl/$id/$kPracticesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['practices'] as List;
+        practices = decodedData.map(
+          (e) {
+            return CoursePractice.fromJson(e);
+          },
+        ).toList();
+        return practices;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Course unit practices
+  Future<List<CoursePractice>> getCourseUnitPractices(int id) async {
+    try {
+      List<CoursePractice> practices = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kExamPrepUrl/$kUnitsUrl/$id/$kPracticesUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data']['practices'] as List;
+        practices = decodedData.map(
+          (e) {
+            return CoursePractice.fromJson(e);
+          },
+        ).toList();
+        return practices;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Course lesson practices
+  Future<List<CoursePractice>> getCourseLessonPractices(int id) async {
     try {
       List<CoursePractice> practices = [];
 
@@ -1224,11 +1269,10 @@ class ApiService {
   }
 
   // Check update
-  Future<Map<String, dynamic>> checkUpdate(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> checkUpdate(String versionCode) async {
     try {
       Response response = await _service.dio.get(
-        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kAppUrl/$kApiVersionUrl/$kCheckUrl',
-        data: data,
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kAppUrl/$kVersionUrl/$kCheckUrl?platform=ANDROID&version_code=$versionCode',
       );
 
       if (response.statusCode == 200) {

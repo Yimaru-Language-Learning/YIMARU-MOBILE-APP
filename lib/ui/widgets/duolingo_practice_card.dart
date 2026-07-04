@@ -14,12 +14,12 @@ class DuolingoPracticeCard extends StatelessWidget {
   Widget build(BuildContext context) => _buildContainer();
 
   Widget _buildContainer() => Container(
-        height: 200,
+        height: 175,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: kcPrimaryColor.withValues(alpha: 0.25),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildColumn(),
       );
 
@@ -27,15 +27,17 @@ class DuolingoPracticeCard extends StatelessWidget {
       Column(mainAxisSize: MainAxisSize.min, children: _buildColumnChildren());
 
   List<Widget> _buildColumnChildren() => [
-        verticalSpaceTiny,
+        verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceSmall,
-        _buildStartButtonWrapper()
+        _buildStartButtonWrapper(),
+        verticalSpaceSmall,
       ];
 
   Widget _buildTitle() => Text(
         title,
-        style: style18DG700,
+        maxLines: 1,
+        style: style14DG400,
       );
 
   Widget _buildStartButtonWrapper() => SizedBox(

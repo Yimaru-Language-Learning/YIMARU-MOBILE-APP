@@ -35,8 +35,8 @@ class CustomColumnButton extends StatelessWidget {
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: color.withOpacity(0.1),
-            border: Border.all(color: color.withOpacity(0.75))),
+            color: color.withValues(alpha: 0.1),
+            border: Border.all(color: color.withValues(alpha: 0.75))),
         child: _buildIcon(),
       );
 

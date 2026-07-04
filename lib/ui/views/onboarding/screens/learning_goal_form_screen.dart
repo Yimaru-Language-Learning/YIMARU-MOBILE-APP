@@ -143,5 +143,5 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
               : null,
           backgroundColor: viewModel.selectedLearningGoal != null
               ? kcPrimaryColor
-              : kcPrimaryColor.withOpacity(0.1));
+              : kcPrimaryColor.withValues(alpha: 0.1));
 }
