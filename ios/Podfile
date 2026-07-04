@@ -43,4 +43,16 @@ post_install do |installer|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
     end
   end
+
+  # Flutter generates this SPM manifest with iOS 13.0 by default, but Firebase
+  # requires iOS 15.0+. Keep it aligned with the deployment target above.
+  package_swift = File.expand_path(
+    'Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift',
+    __dir__,
+  )
+  if File.exist?(package_swift)
+    contents = File.read(package_swift)
+    updated = contents.sub(/\.iOS\("\d+\.\d+"\)/, '.iOS("15.0")')
+    File.write(package_swift, updated) if contents != updated
+  end
 end
