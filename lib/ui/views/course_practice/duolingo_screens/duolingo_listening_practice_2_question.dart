@@ -4,6 +4,8 @@ import 'package:yimaru_app/ui/widgets/listenable_repetitive_practice_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
+import '../../../widgets/cancel_practice_sheet.dart';
+import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../course_practice_viewmodel.dart';
@@ -11,50 +13,132 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_view.form.da
 
 class DuolingoListeningPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  final TextEditingController practiceController;
+  const DuolingoListeningPractice2Question({super.key});
 
-  const DuolingoListeningPractice2Question(
-      {super.key, required this.practiceController});
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.setListeningAnswer(
+      response: viewModel.controllers['0'] ?? '',
+      sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+          ?.response?[1].value,
+    );
+    await viewModel.setListeningAnswer(
+      response: viewModel.controllers['1'] ?? '',
+      sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+          ?.response?[2].value,
+    );
+    await viewModel.setListeningAnswer(
+      response: viewModel.controllers['2'] ?? '',
+      sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+          ?.response?[3].value,
+    );
+    viewModel.nextScreen();
+  }
+
+  Future<void> _cancel(CoursePracticeViewModel viewModel) async {
+    await viewModel.stopRecording();
+    viewModel.pop();
+    viewModel.goBack();
+  }
+
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: kcTransparent,
+        builder: (cxt) => _buildSheet(viewModel),
+      );
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper(CoursePracticeViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold(CoursePracticeViewModel viewModel) =>
-      SafeArea(child: _buildBodyColumnWrapper(viewModel));
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SafeArea(
+          child:
+              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildBodyColumnWrapper(CoursePracticeViewModel viewModel) => Padding(
+  Widget _buildBodyColumnWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(viewModel),
+        child: _buildBodyColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBodyColumn(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildBodyColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyColumnChildren(viewModel),
+        children:
+            _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren(CoursePracticeViewModel viewModel) => [
-        _buildAppBarWrapper(viewModel),
+  List<Widget> _buildBodyColumnChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
+        _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildQuestionWrapper(viewModel),
         _buildContinueButtonWrapper(viewModel)
       ];
 
-  Widget _buildAppBarWrapper(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildAppBarWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(viewModel),
+          _buildAppBarIndenter(context: context, viewModel: viewModel),
+          verticalSpaceSmall,
+          _buildCountdownWrapper(viewModel),
+          verticalSpaceSmall,
         ],
       );
 
-  Widget _buildAppBar(CoursePracticeViewModel viewModel) =>
+  Widget _buildAppBarIndenter(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildAppBar(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildAppBar(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CoursePracticeAppBar(
-        title: 'Listening practice',
-        onClose: () => viewModel.goTo(0),
+        onClose: () async =>
+            await _showSheet(context: context, viewModel: viewModel),
+        title:
+            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+      );
+
+  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
+      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+
+  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
+        duration: viewModel.countdown,
+        onEnd: () async => await _next(viewModel),
+      );
+
+  Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
+        onClose: viewModel.pop,
+        onContinue: viewModel.pop,
+        user: viewModel.user?.firstName ?? '',
+        onCancel: () async => await _cancel(viewModel),
       );
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
@@ -67,31 +151,23 @@ class DuolingoListeningPractice2Question
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         _buildTitle(),
         verticalSpaceMedium,
-        _buildQuestion(),
-        verticalSpaceLarge,
-        _buildLabel('1. Focus of the conference:'),
+        _buildQuestion(viewModel),
+        verticalSpaceMedium,
+        _buildLabel(
+            '1. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value}'),
         verticalSpaceTiny,
-        _buildPracticeFormField(viewModel),
-        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
-          verticalSpaceTiny,
-        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
-          _buildPracticeWrapper(viewModel),
+        _buildTextField(value: '0', viewModel: viewModel),
+        verticalSpaceMedium,
+        _buildLabel(
+            '2. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[2].value}'),
+        verticalSpaceTiny,
+        _buildTextField(value: '1', viewModel: viewModel),
+        verticalSpaceMedium,
+        _buildLabel(
+            '3. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[3].value}'),
+        verticalSpaceTiny,
+        _buildTextField(value: '2', viewModel: viewModel),
         verticalSpaceSmall,
-        _buildLabel('2. Number of presentations:'),
-        verticalSpaceTiny,
-        _buildPracticeFormField(viewModel),
-        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
-          verticalSpaceTiny,
-        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
-          _buildPracticeWrapper(viewModel),
-        verticalSpaceSmall,
-        _buildLabel('3. Keynote speaker’s field:'),
-        verticalSpaceTiny,
-        _buildPracticeFormField(viewModel),
-        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
-          verticalSpaceTiny,
-        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
-          _buildPracticeWrapper(viewModel),
       ];
 
   Widget _buildTitle() => Text(
@@ -100,7 +176,11 @@ class DuolingoListeningPractice2Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestion() =>  ListenableRepetitivePracticeCard(audio: '',);
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
+      ListenableRepetitivePracticeCard(
+          audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.stimulus?.first.value ??
+              '');
 
   Widget _buildLabel(String question) => Text(
         question,
@@ -108,24 +188,14 @@ class DuolingoListeningPractice2Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
-      TextFormField(
-        controller: practiceController,
-        onTap: viewModel.setPracticeFocus,
+  Widget _buildTextField(
+          {required String value,
+          required CoursePracticeViewModel viewModel}) =>
+      TextField(
+        style: style14MG400,
         decoration: inputDecoration(
-            focus: true,
-            hint: 'Start writing here...',
-            filled: practiceController.text.isNotEmpty),
-      );
-
-  Widget _buildPracticeWrapper(CoursePracticeViewModel viewModel) =>
-      viewModel.hasPracticeValidationMessage
-          ? _buildPracticeValidator(viewModel)
-          : Container();
-
-  Widget _buildPracticeValidator(CoursePracticeViewModel viewModel) => Text(
-        viewModel.practiceValidationMessage!,
-        style: style12R700,
+            focus: true, filled: true, hint: 'Start writing here...'),
+        onChanged: (change) => viewModel.updateAnswer(value, change),
       );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>

@@ -14,11 +14,13 @@ class CourseMissingWordQuestion
   Widget _buildSentence(CoursePracticeViewModel viewModel) => RichText(
         text: TextSpan(
           style: style14MG400.copyWith(height: 1.75),
-          children: (viewModel.questions[viewModel.currentQuestion]
+          children:
+
+          (viewModel.questions[viewModel.currentQuestion]
                   .dynamicPayload?.stimulus?.last.value['segments'] as List)
               .map<TextSpan>(
                 (e) => TextSpan(
-                  text: e['type'] == 'text' ? e['value'] : ' __________ ',
+                  text: e['type'] == 'text' ? e['value'] : ' _________________ ',
                 ),
               )
               .toList(),
