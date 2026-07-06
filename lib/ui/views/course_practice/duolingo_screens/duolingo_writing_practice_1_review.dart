@@ -130,7 +130,7 @@ class DuolingoWritingPractice1Review
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitleWrapper(viewModel),
-        verticalSpaceSmall,
+    verticalSpaceMedium,
         _buildImageContainer(viewModel),
         verticalSpaceMedium,
         _buildPracticeFormFieldWrapper(viewModel),
@@ -185,10 +185,10 @@ class DuolingoWritingPractice1Review
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
-        review: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),
+        review: viewModel.answers,
+
       );
 }

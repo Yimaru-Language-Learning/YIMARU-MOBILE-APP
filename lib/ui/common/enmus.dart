@@ -63,6 +63,7 @@ enum StateObjects {
   loadLessonVideo,
   loadCourseVideo,
   progressSummary,
+  speaking4Variant,
   requestResetCode,
   profileCompletion,
   learnSubscription,

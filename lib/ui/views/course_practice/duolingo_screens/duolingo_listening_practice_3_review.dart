@@ -204,6 +204,6 @@ class DuolingoListeningPractice3Review
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),
         review:
-            'Correct: ${(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['options'] as List).firstWhere((e) => e['is_correct'])['text']}',
+            viewModel.answers,
       );
 }

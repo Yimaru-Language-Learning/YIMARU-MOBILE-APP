@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/circular_countdown_timer.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
@@ -139,7 +138,7 @@ class DuolingoSpeakingPractice1Question
         _buildTimerStackWrapper(viewModel),
         verticalSpaceSmall,
         _buildSubtitle(),
-        verticalSpaceSmall,
+        verticalSpaceMedium,
         _buildImageContainer(viewModel),
       ];
 

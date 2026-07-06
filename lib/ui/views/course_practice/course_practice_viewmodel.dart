@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:path/path.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
@@ -80,11 +79,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     return _position.inMilliseconds / _duration.inMilliseconds;
   }
 
-  // Voice recorder
-  String? _recordedAudio;
-
-  String? get recordedAudio => _recordedAudio;
-
   WaveformRecorderController get _waveController =>
       _voiceRecorderService.waveController;
 
@@ -111,7 +105,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   Voice? get playing => _playing;
 
   // Text field controllers
-  Map<String, String> _controllers = {};
+  final Map<String, String> _controllers = {};
 
   Map<String, String> get controllers => _controllers;
 
@@ -459,7 +453,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'label': 'IELTS Listening 33',
       'title': 'Sentence completion',
       'type': CoursePracticeType.ielts,
-    }, {
+    },
+    {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
@@ -475,20 +470,37 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'type': CoursePracticeType.ielts,
       'title': 'Reading diagram labeling',
     },
-     {
+    {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
       'label': 'IELTS Listening 36',
       'type': CoursePracticeType.ielts,
-       'title': 'Sentence Ending Matching',
-     },   {
+      'title': 'Sentence Ending Matching',
+    },
+    {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
       'label': 'IELTS Listening 37',
       'type': CoursePracticeType.ielts,
       'title': 'True / False / Not Given',
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'title': 'Multiple choice',
+      'instruction_subtitle': '',
+      'label': 'IELTS Listening 38',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Listening 39',
+      'title': 'Yes / No / Not Given',
+      'type': CoursePracticeType.ielts,
     },
   ];
 
@@ -540,13 +552,21 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   int get currentPage => _currentPage;
 
+  final PageController _questionsController = PageController();
+
+  PageController get questionsController => _questionsController;
+
   final PageController _questionController = PageController();
 
   PageController get questionController => _questionController;
 
-  final PageController _pageController = PageController();
+  int _variants = 0;
 
-  PageController get pageController => _pageController;
+  int get variants => _variants;
+
+  int _variant = 0;
+
+  int get variant => _variant;
 
   // Counter time
   void setCountdown(int durationInSeconds) {
@@ -579,6 +599,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
+  void resetPracticeFocus() {
+    _focusPractice = false;
+    rebuildUi();
+  }
+
   void resetSpeakingState() {
     _isSpeaking = false;
     rebuildUi();
@@ -592,13 +617,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Reset values
   void resetValues() {
+    _variant = 0;
     _playCount = 3;
+    _variants = 0;
     _countdown = null;
     _isSpeaking = false;
     _cachedImage = null;
     _buttonActive = false;
     _focusPractice = false;
     _selectedOption.clear();
+    rebuildUi();
   }
 
   // Question param
@@ -710,8 +738,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       setCountdown(responseLastSec);
     } else if (id == 0 /*Sentence completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(34);
-
-    }  else if (id == 46 /*Paragraph choice*/) {
+    } else if (id == 46 /*Paragraph choice*/) {
       _selectedQuestionParam = _questionParams.elementAt(35);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -719,7 +746,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    }else if(id == 58 /*Reading diagram labeling*/){
+    } else if (id == 58 /*Reading diagram labeling*/) {
       _selectedQuestionParam = _questionParams.elementAt(30);
       int responseLastSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -730,7 +757,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           _questions[_currentQuestion].dynamicPayload?.stimulus?[1].value;
       await cacheNetworkImage(image: image);
       setCountdown(responseLastSec);
-    }else if(id == 47 /*Sentence Ending Matching*/){
+    } else if (id == 47 /*Sentence Ending Matching*/) {
       _selectedQuestionParam = _questionParams.elementAt(31);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -738,7 +765,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    }else if(id == 48 /*True / False / Not Given*/){
+    } else if (id == 48 /*True / False / Not Given*/) {
       _selectedQuestionParam = _questionParams.elementAt(31);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -746,7 +773,23 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    }else {
+    } else if (id == 1 /*Multiple choice*/) {
+      _selectedQuestionParam = _questionParams.elementAt(31);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
+    } else if (id == 59 /*Yes / No / Not Given*/) {
+      _selectedQuestionParam = _questionParams.elementAt(32);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
+    } else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
     }
   }
@@ -770,8 +813,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     print(answer);
     print(_selectedOption[number]);
     print(_selectedOption[number] == answer);
-   return _selectedOption[number] == answer;
-
+    return _selectedOption[number] == answer;
   }
 
   void setSelectedChoice({
@@ -795,8 +837,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
   // Voice recorder
   Future<void> stopRecording() async {
     try {
+      await _audioPlayerService.stop();
       await _voiceRecorderService.stopRecording();
-      _recordedAudio = await _voiceRecorderService.getRecordedAudio();
     } catch (e) {
       rethrow;
     }
@@ -811,19 +853,21 @@ class CoursePracticeViewModel extends ReactiveViewModel
   // Play practice audio
   void _listenToAudio() {
     _audioPlayerService.stateStream.listen((state) {
-      if (PlayerState.completed == state &&
-          _isSpeaking &&
-          (_questions[_currentQuestion].questionTypeDefinitionId == 14 ||
-              _questions[_currentQuestion].questionTypeDefinitionId == 17 ||
-              _questions[_currentQuestion].questionTypeDefinitionId == 20 ||
-              _questions[_currentQuestion].questionTypeDefinitionId == 21)) {
-        _isSpeaking = false;
-        if (_questions[_currentQuestion].questionTypeDefinitionId == 20 ||
-            _questions[_currentQuestion].questionTypeDefinitionId == 21) {
-          startRecording();
-          nextScreen();
-        } else {
-          nextScreen();
+      if (PlayerState.completed == state) {
+        if (_isSpeaking) {
+          _isSpeaking = false;
+
+          if (_questions[_currentQuestion].questionTypeDefinitionId == 20 ||
+              _questions[_currentQuestion].questionTypeDefinitionId == 21) {
+            startRecording();
+            nextScreen();
+          } else if (_questions[_currentQuestion].questionTypeDefinitionId ==
+              14) {
+            nextVariantScreen();
+          } else if (_questions[_currentQuestion].questionTypeDefinitionId ==
+              17) {
+            nextScreen();
+          }
         }
       }
     });
@@ -858,24 +902,24 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   Future<void> playResult(
-      {required Voice voice, required String? response}) async {
-    setBusyObject(voice);
-    await playAudio(voice: voice, response: response);
+      {required Voice voice, required Map<String, dynamic> answer}) async {
+    setBusyObject(playing: voice, object: answer['busy_object']);
+
+    await playAudio(voice: voice, answer: answer);
   }
 
   Future<void> playAudio(
-          {required Voice voice, required String? response}) async =>
-      await runBusyFuture(_playAudio(voice: voice, response: response),
-          busyObject: StateObjects.coursePracticeReview);
+          {required Map<String, dynamic> answer, required Voice voice}) async =>
+      await runBusyFuture(_playAudio(voice: voice, answer: answer),
+          busyObject: answer['busy_object']);
 
   Future<void> _playAudio(
-      {required Voice voice, required String? response}) async {
+      {required Map<String, dynamic> answer, required Voice voice}) async {
     if (voice == Voice.recorded) {
-      await _audioPlayerService.playLocal(_recordedAudio ?? '');
+      print(answer['recorded_voice_answer']);
+      await _audioPlayerService.playLocal(answer['recorded_voice_answer']);
     } else {
-      String url = await getRefreshedUrl(response ?? '') ?? '';
-
-      await _audioPlayerService.playUrl(url);
+      await _audioPlayerService.playUrl(answer['sample_voice_answer']);
     }
   }
 
@@ -884,8 +928,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Set busy object
-  void setBusyObject(Voice playing) {
+  void setBusyObject({required String object, required Voice playing}) {
     _playing = playing;
+    _busyObject = object;
     rebuildUi();
   }
 
@@ -927,8 +972,72 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // In-app navigation
+  Future<void> setSpeakingAnswer(
+      {required String sample, required String question}) async {
+    _answers.add({
+      'question': question,
+      'busy_object': question,
+      'sample_voice_answer': sample,
+      'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
+    });
+
+    print('ANSWER: $_answers');
+  }
+
+  Future<void> setSpeakingAnswer4(
+      {required int duration,
+        required String sample,
+        required String stimulus,
+        required String question}) async =>
+      await runBusyFuture(_setSpeakingAnswer4(sample: sample,question: question,duration: duration,stimulus: stimulus),
+          busyObject: StateObjects.speaking4Variant);
+
+  Future<void> _setSpeakingAnswer4(
+      {required int duration,
+      required String sample,
+      required String stimulus,
+      required String question}) async {
+    _answers.add({
+      'question': question,
+      'busy_object': question,
+      'sample_voice_answer': sample,
+      'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
+    });
+    await stopRecording();
+    _isSpeaking = false;
+    if (_variants == 2) {
+      nextScreen();
+    } else {
+      _variants++;
+      _variant = 0;
+      setCountdown(duration);
+      await playVoicePrompt(stimulus);
+    }
+  }
+
+  Future<void> setListeningAnswer(
+      {required String sample, required String response}) async {
+    _answers.add({'sample': sample, 'response': response});
+  }
+
+  Future<void> setWritingAnswer(
+      {required String sample, required String response}) async {
+    _answers.add({'sample': sample, 'response': response});
+  }
+
+  void nextVariant() async {
+    _variants++;
+    _variant = 0;
+    rebuildUi();
+  }
+
+  void nextVariantScreen() {
+    _variant++;
+    rebuildUi();
+  }
+
   void nextScreen() {
-    _pageController.nextPage(
+    _questionController.nextPage(
       curve: Curves.easeInOutCubic,
       duration: const Duration(milliseconds: 350),
     );
@@ -938,21 +1047,18 @@ class CoursePracticeViewModel extends ReactiveViewModel
       busyObject: StateObjects.coursePractice);
 
   Future<void> _nextQuestion() async {
-
-    if(_currentQuestion == _questions.length - 1){
+    if (_currentQuestion == _questions.length - 1) {
       pop();
-    }else{
+    } else {
       _currentQuestion++;
       _buttonActive = false;
-      _questionController.nextPage(
+      _questionsController.nextPage(
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 350),
       );
       await setQuestionParam(
           _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
-
     }
-
   }
 
   void goTo(int page) {

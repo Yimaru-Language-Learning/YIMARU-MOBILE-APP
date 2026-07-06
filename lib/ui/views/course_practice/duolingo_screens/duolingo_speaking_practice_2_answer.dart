@@ -19,6 +19,11 @@ class DuolingoSpeakingPractice2Answer
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
+    await viewModel.setSpeakingAnswer(
+      question: '1',
+      sample: viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.last.value ??
+          '');
     viewModel.nextScreen();
   }
 
@@ -157,7 +162,7 @@ class DuolingoSpeakingPractice2Answer
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        'You will have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value['seconds']} seconds to speak',
+        'You will have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds to speak',
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -166,7 +171,7 @@ class DuolingoSpeakingPractice2Answer
       CoursePracticeQuestionCard(
         title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.first.value,
+            ?.stimulus?.last.value,
       );
 
   Widget _buildSpeakerLabelState(CoursePracticeViewModel viewModel) =>

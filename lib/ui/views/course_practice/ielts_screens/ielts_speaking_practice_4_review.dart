@@ -6,7 +6,6 @@ import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/speaking_practice_review_section.dart';
-import '../../../widgets/dwarf_tile.dart';
 import '../course_practice_viewmodel.dart';
 
 class IeltsSpeakingPractice4Review
@@ -113,7 +112,7 @@ class IeltsSpeakingPractice4Review
           onTap: viewModel.currentQuestion == viewModel.questions.length - 1
               ? viewModel.pop
               : () async => await viewModel.nextQuestion(),
-          response: viewModel.questions[viewModel.currentQuestion]
+          answers: viewModel.questions[viewModel.currentQuestion]
                   .dynamicPayload?.response?.last.value ??
               '');
 }

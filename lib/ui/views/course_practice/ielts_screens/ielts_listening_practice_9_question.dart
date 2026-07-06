@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/course_missing_word_question.dart';
 import 'package:yimaru_app/ui/widgets/fill_in_the_blanks_question.dart';
 import 'package:yimaru_app/ui/widgets/instruction_card.dart';
-import 'package:yimaru_app/ui/widgets/reading_practice_option_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';

@@ -121,18 +121,18 @@ class DuolingoWritingPractice4Review
   List<Widget> _buildQuestionQuestionSectionChildren(
           CoursePracticeViewModel viewModel) =>
       [
-        verticalSpaceLarge,
-        _buildTitle(viewModel),
         verticalSpaceMedium,
-        _buildQuestionWrapper(viewModel),
+        _buildTitle(viewModel),
         verticalSpaceLarge,
+        _buildQuestionWrapper(viewModel),
+        verticalSpaceMedium,
         _buildPracticeFormFieldWrapper(viewModel),
         verticalSpaceLarge,
         _buildPracticeReviewSection(viewModel)
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write a follow-up response for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes',
+        'Write a follow-up response for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds',
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -166,8 +166,7 @@ class DuolingoWritingPractice4Review
       );
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
-        review: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.first.value,
+        review: viewModel.answers,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),

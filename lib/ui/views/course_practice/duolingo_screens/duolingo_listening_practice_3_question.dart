@@ -16,6 +16,16 @@ class DuolingoListeningPractice3Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoListeningPractice3Question({super.key});
 
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.setListeningAnswer(
+      response: viewModel.selectedOption.toString(),
+      sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?.last.value['options'] as List)
+          .firstWhere((e) => e['is_correct'])['text'],
+    );
+    viewModel.nextScreen();
+  }
+
   void _setOption(
       {required Map<String, dynamic> option,
       required CoursePracticeViewModel viewModel}) {
@@ -113,9 +123,9 @@ class DuolingoListeningPractice3Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
-      );
+    onEnd: () async => await _next(viewModel),
+  );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -219,7 +229,7 @@ class DuolingoListeningPractice3Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: viewModel.nextScreen,
+        onTap: () async => await _next(viewModel),
         backgroundColor: kcPrimaryColor,
       );
 }

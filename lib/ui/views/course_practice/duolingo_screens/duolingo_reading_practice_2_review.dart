@@ -159,12 +159,6 @@ class DuolingoReadingPractice2Review
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),
-        review: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                ?.stimulus?.last.value['word_bank'] as List)
-            .map(
-              (e) => ' ${e['text']} ',
-            )
-            .toList()
-            .toString(),
+        review: viewModel.answers,
       );
 }

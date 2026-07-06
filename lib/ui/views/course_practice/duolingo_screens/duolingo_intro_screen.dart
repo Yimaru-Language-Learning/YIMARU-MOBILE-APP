@@ -36,22 +36,22 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         0;
     if (id == 12 /*Speak about the photo*/) {
       String image = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.first.value;
+          .dynamicPayload?.stimulus?.last.value;
       int stimulusFirstSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.last.value['seconds'];
+          .dynamicPayload?.stimulus?.first.value['seconds'];
       await viewModel.cacheNetworkImage(image: image, context: context);
       viewModel.setCountdown(stimulusFirstSec);
     } else if (id == 13 /*Read then speak*/) {
-      int stimulusLastSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.last.value['seconds'];
-      viewModel.setCountdown(stimulusLastSec);
+      int stimulusFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.stimulus?.first.value['seconds'];
+      viewModel.setCountdown(stimulusFirstSec);
     } else if (id == 36 /*Speaking sample*/) {
-      int stimulusLastSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.last.value['seconds'];
-      viewModel.setCountdown(stimulusLastSec);
+      int stimulusFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.stimulus?.first.value['seconds'];
+      viewModel.setCountdown(stimulusFirstSec);
     } else if (id == 14 /*Interactive speaking*/) {
       int stimulusLastSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.last.value['seconds'];
+          .dynamicPayload?.stimulus?.first.value['seconds'];
       viewModel.resetSpeakingState();
       viewModel.setCountdown(stimulusLastSec);
     } else if (id == 22 /*Write about the photo*/) {
@@ -62,17 +62,17 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       await viewModel.cacheNetworkImage(image: image, context: context);
       viewModel.setCountdown(responseFirstSec);
     } else if (id == 23 /*Writing sample*/) {
-      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+      int stimulusFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.first.value['seconds'];
-      viewModel.setCountdown(responseFirstSec);
+      viewModel.setCountdown(stimulusFirstSec);
     } else if (id == 24 /*Interactive writing part 1*/) {
-      int responseLastSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.response?.last.value['seconds'];
-      viewModel.setCountdown(responseLastSec);
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setCountdown(responseFirstSec);
     } else if (id == 25 /*Interactive writing part 2*/) {
-      int responseLastSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.response?.last.value['seconds'];
-      viewModel.setCountdown(responseLastSec);
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setCountdown(responseFirstSec);
     } else if (id == 28 /*Listen and type*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
@@ -274,7 +274,7 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Widget _buildContinueButtonState(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      viewModel.busy(StateObjects.cacheImage)
+      viewModel.busy(StateObjects.cacheImage) ||  viewModel.busy(StateObjects.coursePracticePrompt)
           ? const CustomCircularProgressIndicator(color: kcPrimaryColor)
           : _buildContinueButton(context: context, viewModel: viewModel);
 

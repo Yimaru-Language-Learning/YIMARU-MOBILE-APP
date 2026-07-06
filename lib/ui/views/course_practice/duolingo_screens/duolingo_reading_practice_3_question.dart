@@ -15,6 +15,19 @@ class DuolingoReadingPractice3Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoReadingPractice3Question({super.key});
 
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.setListeningAnswer(
+        response: viewModel.selectedOption.toString(),
+        sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                ?.stimulus?.last.value['word_bank'] as List)
+            .map(
+              (e) => ' ${e['text']} ',
+            )
+            .toList()
+            .toString());
+    viewModel.nextScreen();
+  }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -109,8 +122,8 @@ class DuolingoReadingPractice3Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -169,10 +182,11 @@ class DuolingoReadingPractice3Question
 
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
-          height: 55,
-          text: 'Submit',
-          borderRadius: 12,
-          foregroundColor: kcWhite,
-          onTap: viewModel.nextScreen,
-          backgroundColor: kcPrimaryColor);
+        height: 55,
+        text: 'Submit',
+        borderRadius: 12,
+        foregroundColor: kcWhite,
+        backgroundColor: kcPrimaryColor,
+        onTap: () async => await _next(viewModel),
+      );
 }

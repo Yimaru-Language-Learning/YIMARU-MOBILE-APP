@@ -84,6 +84,7 @@ class DuolingoSpeakingPractice1Review
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
+          verticalSpaceSmall
         ],
       );
 
@@ -156,11 +157,9 @@ class DuolingoSpeakingPractice1Review
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       SpeakingPracticeReviewSection(
+        answers: viewModel.answers,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),
-        response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                ?.response?.last.value ??
-            '',
       );
 }

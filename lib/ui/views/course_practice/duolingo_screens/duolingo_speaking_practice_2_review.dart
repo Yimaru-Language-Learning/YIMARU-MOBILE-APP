@@ -147,7 +147,7 @@ class DuolingoSpeakingPractice2Review
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        'You will have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value['seconds']} seconds to speak',
+        'You will have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds to speak',
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -156,15 +156,14 @@ class DuolingoSpeakingPractice2Review
       CoursePracticeQuestionCard(
         title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.first.value,
+            ?.stimulus?.last.value,
       );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       SpeakingPracticeReviewSection(
+          answers:viewModel.answers,
           onTap: viewModel.currentQuestion == viewModel.questions.length - 1
               ? viewModel.nextScreen
               : () async => await viewModel.nextQuestion(),
-          response: viewModel.questions[viewModel.currentQuestion]
-                  .dynamicPayload?.response?.last.value ??
-              '');
+         );
 }

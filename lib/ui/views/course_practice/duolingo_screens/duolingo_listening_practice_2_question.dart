@@ -100,7 +100,7 @@ class DuolingoListeningPractice2Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestion() => const ListenableRepetitivePracticeCard();
+  Widget _buildQuestion() =>  ListenableRepetitivePracticeCard(audio: '',);
 
   Widget _buildLabel(String question) => Text(
         question,

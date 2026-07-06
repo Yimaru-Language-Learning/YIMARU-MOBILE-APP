@@ -10,22 +10,37 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/speaking_label.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoSpeakingPractice4Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const DuolingoSpeakingPractice4Answer({super.key});
+  final int question;
+  final int duration;
+  final String stimulus;
+  final String response;
+
+  const DuolingoSpeakingPractice4Answer(
+      {super.key,
+      required this.stimulus,
+      required this.response,
+      required this.question,
+      required this.duration});
 
   Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
-    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
-        .dynamicPayload?.response?.first.value['seconds']);
+    viewModel.setCountdown(duration);
     await viewModel.startRecording();
   }
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();
-    viewModel.nextScreen();
+
+    await viewModel.setSpeakingAnswer4(
+      sample: response,
+      duration: duration,
+      stimulus: stimulus,
+      question: question.toString(),
+    );
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -53,7 +68,17 @@ class DuolingoSpeakingPractice4Answer
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -98,6 +123,7 @@ class DuolingoSpeakingPractice4Answer
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
+          verticalSpaceSmall,
         ],
       );
 
@@ -244,4 +270,9 @@ class DuolingoSpeakingPractice4Answer
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _stopRecording(viewModel),
       );
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.speaking4Variant)
+          ? const PageLoadingIndicator()
+          : Container();
 }
