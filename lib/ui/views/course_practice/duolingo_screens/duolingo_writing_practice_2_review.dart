@@ -133,7 +133,7 @@ class DuolingoWritingPractice2Review
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write about the topic below for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes ${getSeconds(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} seconds.',
+        'Write about the topic below for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds.',
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -167,8 +167,7 @@ class DuolingoWritingPractice2Review
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
-        review: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.first.value,
+        review: viewModel.answers,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),

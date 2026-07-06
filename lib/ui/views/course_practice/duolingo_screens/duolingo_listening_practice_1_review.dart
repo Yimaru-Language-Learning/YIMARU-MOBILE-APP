@@ -6,6 +6,7 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
+import '../../../widgets/course_practice_question_card.dart';
 import '../../../widgets/listenable_repetitive_practice_card.dart';
 import '../course_practice_viewmodel.dart';
 
@@ -64,7 +65,6 @@ class DuolingoListeningPractice1Review
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildExpandedBody(viewModel),
-        _buildPracticeReviewSection(viewModel)
       ];
 
   Widget _buildAppBarIndenter(
@@ -121,14 +121,35 @@ class DuolingoListeningPractice1Review
   List<Widget> _buildQuestionQuestionSectionChildren(
           CoursePracticeViewModel viewModel) =>
       [
+        verticalSpaceLarge,
         _buildTitleWrapper(),
         verticalSpaceMedium,
         _buildQuestionWrapper(),
         verticalSpaceLarge,
         _buildLabelWrapper(),
         verticalSpaceSmall,
-        _buildAssessmentFormFieldWrapper(viewModel),
+        _buildPracticeResponsesWrapper(
+            number: '1',
+            answer: viewModel.answers[0]['response']),
+        verticalSpaceSmall,
+        _buildPracticeResponsesWrapper(
+            number: '2',
+            answer: viewModel.answers[1]['response']),
+        verticalSpaceSmall,
+        _buildPracticeResponsesWrapper(
+            number: '3',
+            answer: viewModel.answers[2]['response']),
+        verticalSpaceSmall,
+        _buildPracticeResponsesWrapper(
+            number: '4',
+            answer: viewModel.answers[3]['response']),
+        verticalSpaceSmall,
+        _buildPracticeResponsesWrapper(
+            number: '5',
+            answer: viewModel.answers[4]['response']),
         verticalSpaceMedium,
+        _buildPracticeReviewSection(viewModel)
+
       ];
 
   Widget _buildTitleWrapper() => Padding(
@@ -147,7 +168,7 @@ class DuolingoListeningPractice1Review
         child: _buildQuestion(),
       );
 
-  Widget _buildQuestion() => const ListenableRepetitivePracticeCard();
+  Widget _buildQuestion() =>  const ListenableRepetitivePracticeCard(audio: '');
 
   Widget _buildLabelWrapper() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -160,29 +181,27 @@ class DuolingoListeningPractice1Review
         textAlign: TextAlign.center,
       );
 
-  Widget _buildAssessmentFormFieldWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeResponsesWrapper(
+          {
+            required String number,
+            required String answer,
+       }) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildAssessmentFormField(viewModel),
+        child: _buildPracticeResponses(number: number,answer: answer),
       );
 
-  Widget _buildAssessmentFormField(CoursePracticeViewModel viewModel) =>
-      TextFormField(
-        maxLines: 5,
-        maxLength: 250,
-        enabled: false,
-        controller: practiceController,
-        onTap: viewModel.setPracticeFocus,
-        decoration: inputDecoration(
-            focus: true,
-            hint: 'Start writing here...',
-            filled: practiceController.text.isNotEmpty),
+  Widget _buildPracticeResponses(   {
+    required String number,
+    required String answer,
+    }) =>
+      CoursePracticeQuestionCard(
+        subtitle: '$number. $answer',
       );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
       DuolingoPracticeReviewSection(
-        review: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value,
+        review: viewModel.answers,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),

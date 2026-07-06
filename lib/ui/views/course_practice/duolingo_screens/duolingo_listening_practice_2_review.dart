@@ -110,7 +110,7 @@ class DuolingoListeningPractice2Review
         child: _buildQuestion(),
       );
 
-  Widget _buildQuestion() => const ListenableRepetitivePracticeCard();
+  Widget _buildQuestion() =>  ListenableRepetitivePracticeCard(audio: '',);
 
   Widget _buildLabelWrapper(String question) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -140,5 +140,5 @@ class DuolingoListeningPractice2Review
       );
 
   Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
-      DuolingoPracticeReviewSection(review: '', onTap: () => viewModel.goTo(5));
+      DuolingoPracticeReviewSection(review: [], onTap: () => viewModel.goTo(5));
 }

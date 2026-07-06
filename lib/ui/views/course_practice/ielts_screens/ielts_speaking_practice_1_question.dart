@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:waveform_recorder/waveform_recorder.dart';
-import 'package:yimaru_app/ui/widgets/course_practice_question_card.dart';
 
 import '../../../common/app_colors.dart';
-import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
-import '../../../widgets/countdown_timer.dart';
-import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/speaking_indicator.dart';
 import '../../../widgets/speaking_label.dart';
 import '../course_practice_viewmodel.dart';

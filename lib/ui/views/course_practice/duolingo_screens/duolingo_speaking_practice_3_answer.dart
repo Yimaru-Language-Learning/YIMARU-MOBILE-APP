@@ -19,6 +19,11 @@ class DuolingoSpeakingPractice3Answer
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
+    await viewModel.setSpeakingAnswer(
+        question: '1',
+        sample: viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.response?.last.value ??
+            '');
     viewModel.nextScreen();
   }
 
@@ -133,7 +138,7 @@ class DuolingoSpeakingPractice3Answer
       [
         verticalSpaceLarge,
         _buildQuestion(viewModel),
-        verticalSpaceSmall,
+        verticalSpaceMedium,
         _buildSpeakerLabelState(viewModel),
         verticalSpaceSmall,
         _buildSpeakingIndicatorState(viewModel)
@@ -151,7 +156,7 @@ class DuolingoSpeakingPractice3Answer
       CoursePracticeQuestionCard(
         title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.first.value,
+            ?.stimulus?.last.value,
       );
 
   Widget _buildSpeakerLabelState(CoursePracticeViewModel viewModel) =>

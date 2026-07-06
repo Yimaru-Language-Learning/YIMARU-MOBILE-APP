@@ -19,8 +19,12 @@ class DuolingoWritingPractice4Question
   const DuolingoWritingPractice4Question(
       {super.key, required this.practiceController});
 
-  void _nextScreen(CoursePracticeViewModel viewModel) {
+  Future<void> _nextScreen(CoursePracticeViewModel viewModel)async {
     FocusManager.instance.primaryFocus?.unfocus();
+    await viewModel.setWritingAnswer(
+        response:practiceController.text,
+        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?.last.value);
     viewModel.nextScreen();
   }
 
@@ -119,7 +123,7 @@ class DuolingoWritingPractice4Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: () => _nextScreen(viewModel),
+        onEnd: ()async =>await _nextScreen(viewModel),
         duration: viewModel.countdown,
       );
 
@@ -136,8 +140,9 @@ class DuolingoWritingPractice4Question
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
+    verticalSpaceMedium,
         _buildTitle(viewModel),
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildQuestion(viewModel),
         verticalSpaceMedium,
         _buildPracticeFormField(viewModel),
@@ -148,7 +153,7 @@ class DuolingoWritingPractice4Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write a follow-up response for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes',
+        'Write a follow-up response for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds',
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -195,7 +200,7 @@ class DuolingoWritingPractice4Question
         foregroundColor: kcWhite,
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? () => _nextScreen(viewModel)
+            ? () async=>await _nextScreen(viewModel)
             : null,
         backgroundColor: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage

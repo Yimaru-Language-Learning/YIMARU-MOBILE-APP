@@ -5,7 +5,7 @@ import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class DuolingoPracticeReviewSection extends StatelessWidget {
-  final String review;
+  final List review;
   final GestureTapCallback? onTap;
   const DuolingoPracticeReviewSection(
       {super.key, this.onTap, required this.review});
@@ -24,7 +24,7 @@ class DuolingoPracticeReviewSection extends StatelessWidget {
         children: [
           _buildTitle(),
           verticalSpaceMedium,
-          _buildSampleAnswer(),
+          _buildSampleAnswers(),
           verticalSpaceMedium,
           _buildContinueButton(),
           verticalSpaceMedium,
@@ -36,8 +36,21 @@ class DuolingoPracticeReviewSection extends StatelessWidget {
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSampleAnswer() => Text(
-        review,
+  Widget _buildSampleAnswers() => ListView.separated(
+    shrinkWrap: true,
+    itemCount:review.length,
+    physics: const NeverScrollableScrollPhysics(),
+    separatorBuilder: (context, index) => verticalSpaceSmall,
+    itemBuilder: (context, index) =>_buildSampleAnswer(
+        number: index + 1,
+        answer: review[index]['sample']),
+  );
+
+  Widget _buildSampleAnswer({
+    required int number,
+    required String answer,
+}) => Text(
+        '$number. $answer',
         style: style14DG400,
         textAlign: TextAlign.center,
       );

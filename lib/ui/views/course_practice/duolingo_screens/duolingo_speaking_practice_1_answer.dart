@@ -21,6 +21,12 @@ class DuolingoSpeakingPractice1Answer
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
+    await viewModel.setSpeakingAnswer(
+      question: '1',
+      sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+          ?.response?.last.value ??
+          '',
+    );
     viewModel.nextScreen();
   }
 
@@ -94,6 +100,7 @@ class DuolingoSpeakingPractice1Answer
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
+          verticalSpaceSmall
         ],
       );
 

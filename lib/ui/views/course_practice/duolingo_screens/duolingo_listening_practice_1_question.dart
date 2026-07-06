@@ -13,14 +13,35 @@ import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice1Question
     extends ViewModelWidget<CoursePracticeViewModel> {
+  final int question;
+  final int duration;
+  final String audio;
+  final String response;
   final TextEditingController practiceController;
 
   const DuolingoListeningPractice1Question(
-      {super.key, required this.practiceController});
+      {super.key,
+      required this.audio,
+      required this.question,
+      required this.duration,
+      required this.response,
+      required this.practiceController});
 
-  void _next(CoursePracticeViewModel viewModel) {
-    viewModel.resetPlayCount(2);
-    viewModel.nextScreen();
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.setListeningAnswer(
+      sample: response,
+      response: practiceController.text,
+    );
+    if (question == 5) {
+      viewModel.nextScreen();
+    } else {
+      viewModel.nextVariant();
+      practiceController.clear();
+      viewModel.resetPlayCount(2);
+      viewModel.resetPracticeFocus();
+      viewModel.setCountdown(duration);
+      await viewModel.playVoicePrompt(audio);
+    }
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -92,7 +113,9 @@ class DuolingoListeningPractice1Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
+          verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
+          verticalSpaceSmall,
         ],
       );
 
@@ -117,8 +140,8 @@ class DuolingoListeningPractice1Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
@@ -148,7 +171,7 @@ class DuolingoListeningPractice1Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestion() => const ListenableRepetitivePracticeCard();
+  Widget _buildQuestion() => ListenableRepetitivePracticeCard(audio: audio);
 
   Widget _buildLabel() => Text(
         'Your Answer',

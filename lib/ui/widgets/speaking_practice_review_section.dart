@@ -1,40 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:yimaru_app/ui/widgets/custom_response_card.dart';
+import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
 
 import '../common/app_colors.dart';
 import '../common/enmus.dart';
 import '../common/ui_helpers.dart';
+import 'course_practice_result_card.dart';
 import 'custom_elevated_button.dart';
 
-class SpeakingPracticeReviewSection extends StatelessWidget {
-  final String response;
+class SpeakingPracticeReviewSection
+    extends ViewModelWidget<CoursePracticeViewModel> {
+  final List answers;
   final GestureTapCallback? onTap;
 
   const SpeakingPracticeReviewSection(
-      {super.key, this.onTap, required this.response});
+      {super.key, this.onTap, required this.answers});
 
   @override
-  Widget build(BuildContext context) => _buildReviewContainer();
+  Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
+      _buildReviewContainer(viewModel);
 
-  Widget _buildReviewContainer() => Container(
+  Widget _buildReviewContainer(CoursePracticeViewModel viewModel) => Container(
         width: double.maxFinite,
         color: kcDeepGreen.withValues(alpha: 0.1),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: _buildReviewColumn(),
+        child: _buildReview(viewModel),
       );
 
-  Widget _buildReviewColumn() => Column(
-        children: [
-          _buildTitle(),
-          verticalSpaceMedium,
-          _buildSampleAnswer(),
-          verticalSpaceSmall,
-          _buildYourResponse(),
-          verticalSpaceMedium,
-          _buildContinueButton(),
-          verticalSpaceMedium,
-        ],
+  Widget _buildReview(CoursePracticeViewModel viewModel) => Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: _buildBodyChildren(viewModel),
       );
+
+  List<Widget> _buildBodyChildren(CoursePracticeViewModel viewModel) => [
+        _buildTitle(),
+        verticalSpaceMedium,
+        _buildResults(viewModel),
+        verticalSpaceLarge,
+        _buildContinueButton()
+      ];
 
   Widget _buildTitle() => Text(
         'Review Sample Answer:',
@@ -42,16 +47,20 @@ class SpeakingPracticeReviewSection extends StatelessWidget {
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSampleAnswer() => CustomResponseCard(
-        title: 'Sample Answer',
-        voice: Voice.sample,
-        response: response,
+  Widget _buildResults(CoursePracticeViewModel viewModel) => ListView.separated(
+        shrinkWrap: true,
+        itemCount: answers.length,
+        physics: const NeverScrollableScrollPhysics(),
+        separatorBuilder: (context, index) => verticalSpaceSmall,
+        itemBuilder: (context, index) => _buildResult(
+            question: (index + 1).toString(),
+            answer: viewModel.answers[index]),
       );
 
-  Widget _buildYourResponse() => const CustomResponseCard(
-        title: 'Your Response',
-        voice: Voice.recorded,
-      );
+  Widget _buildResult({
+    required String question,
+    required Map<String, dynamic> answer}) =>
+      CoursePracticeResultCard(answer: answer,question:question ,);
 
   Widget _buildContinueButton() => CustomElevatedButton(
         height: 55,

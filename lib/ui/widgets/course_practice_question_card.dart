@@ -12,6 +12,7 @@ class CoursePracticeQuestionCard extends StatelessWidget {
   Widget build(BuildContext context) => _buildContainer();
 
   Widget _buildContainer() => Container(
+    width: double.maxFinite,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
