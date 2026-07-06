@@ -82,7 +82,15 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       viewModel.setCountdown(responseFirstSec);
       viewModel.setPlayCount();
       await viewModel.playVoicePrompt(stimulusFirst);
-    } else if (id == 0 /*Interactive listening part 1*/) {
+    } else if (id == 56 /*Interactive listening part 1*/) {
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      String stimulusFirst = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.stimulus?.first.value ??
+          '';
+      viewModel.setCountdown(responseFirstSec);
+      viewModel.setPlayCount();
+      await viewModel.playVoicePrompt(stimulusFirst);
     } else if (id == 29 /*Interactive listening part 2*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];

@@ -142,7 +142,7 @@ class DuolingoReadingPractice3Review
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: (viewModel.questions[viewModel.currentQuestion]
-                .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
+            .dynamicPayload?.stimulus?.last.value['segments'] as List).where((e)=> e['type']=='blank').toList()
             .length,
         itemBuilder: (context, index) => _buildPracticeCard(
           index,

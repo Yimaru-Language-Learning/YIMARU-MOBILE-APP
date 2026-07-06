@@ -651,7 +651,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(7);
     } else if (id == 28 /*Listen and type*/) {
       _selectedQuestionParam = _questionParams.elementAt(8);
-    } else if (id == 0 /*Interactive listening part 1*/) {
+    } else if (id == 56 /*Interactive listening part 1*/) {
       _selectedQuestionParam = _questionParams.elementAt(9);
     } else if (id == 29 /*Interactive listening part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(10);
@@ -809,10 +809,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     required Map<String, dynamic> answer,
   }) {
     // Single
-    print('Single');
-    print(answer);
-    print(_selectedOption[number]);
-    print(_selectedOption[number] == answer);
     return _selectedOption[number] == answer;
   }
 
@@ -823,6 +819,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
     Map<String, dynamic> option = {number: answer};
 
     _selectedOption.addAll(option);
+    print(_selectedOption);
+
     rebuildUi();
   }
 

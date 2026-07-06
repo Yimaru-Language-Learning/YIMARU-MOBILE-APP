@@ -83,6 +83,7 @@ class DuolingoListeningPractice1Review
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
+
         ],
       );
   Widget _buildAppBar(

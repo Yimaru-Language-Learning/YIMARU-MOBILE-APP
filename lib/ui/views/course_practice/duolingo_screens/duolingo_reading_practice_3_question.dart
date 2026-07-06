@@ -96,7 +96,7 @@ class DuolingoReadingPractice3Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(viewModel),
+         // _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
         ],
       );
@@ -151,7 +151,7 @@ class DuolingoReadingPractice3Question
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
         'Read the passage below and answer the questions that follow.',
-        style: style14MG400,
+        style: style16DG600,
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
@@ -162,7 +162,7 @@ class DuolingoReadingPractice3Question
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: (viewModel.questions[viewModel.currentQuestion]
-                .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
+                .dynamicPayload?.stimulus?.last.value['segments'] as List).where((e)=> e['type']=='blank').toList()
             .length,
         itemBuilder: (context, index) => _buildPracticeCard(
           index,
