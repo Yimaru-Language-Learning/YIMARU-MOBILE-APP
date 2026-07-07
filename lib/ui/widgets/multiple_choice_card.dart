@@ -3,9 +3,8 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/true_false_option.dart';
 
-import 'custom_small_radio_button.dart';
+import 'custom_small_trailing_radio_button.dart';
 
 class MultipleChoiceCard extends ViewModelWidget<CoursePracticeViewModel> {
   final String number;
@@ -106,5 +105,5 @@ class MultipleChoiceCard extends ViewModelWidget<CoursePracticeViewModel> {
     required bool selected,
     required GestureTapCallback onTap,
   }) =>
-      CustomSmallRadioButton(onTap: onTap, title: title, selected: selected);
+      CustomSmallTrailingRadioButton(onTap: onTap, title: title, selected: selected);
 }

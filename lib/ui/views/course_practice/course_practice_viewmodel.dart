@@ -604,6 +604,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
+  void setSpeakingState() {
+    _isSpeaking = true;
+    rebuildUi();
+  }
+
   void resetSpeakingState() {
     _isSpeaking = false;
     rebuildUi();
@@ -618,11 +623,13 @@ class CoursePracticeViewModel extends ReactiveViewModel
   // Reset values
   void resetValues() {
     _variant = 0;
-    _playCount = 3;
     _variants = 0;
+    _playCount = 3;
+    _answers.clear();
     _countdown = null;
     _isSpeaking = false;
     _cachedImage = null;
+    _controllers.clear();
     _buttonActive = false;
     _focusPractice = false;
     _selectedOption.clear();
@@ -853,7 +860,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _audioPlayerService.stateStream.listen((state) {
       if (PlayerState.completed == state) {
         if (_isSpeaking) {
-          _isSpeaking = false;
+          // _isSpeaking = false;
 
           if (_questions[_currentQuestion].questionTypeDefinitionId == 20 ||
               _questions[_currentQuestion].questionTypeDefinitionId == 21) {
@@ -861,7 +868,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
             nextScreen();
           } else if (_questions[_currentQuestion].questionTypeDefinitionId ==
               14) {
-            nextVariantScreen();
+            nextSpeakingVariantScreen();
           } else if (_questions[_currentQuestion].questionTypeDefinitionId ==
               17) {
             nextScreen();
@@ -886,18 +893,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
       await runBusyFuture(_playVoicePrompt(question),
           busyObject: StateObjects.coursePracticePrompt);
 
-  Future<void> _playVoicePrompt(String question) async {
-    _isSpeaking = true;
-    String url = await getRefreshedUrl(question) ?? '';
-    await _audioPlayerService.playUrl(url);
-  }
+  Future<void> _playVoicePrompt(String question) async =>
+      await _audioPlayerService.playUrl(question);
 
-  Future<void> replayVoicePrompt(CourseQuestion question) async {
-    String url = await getRefreshedUrl(
-            question.dynamicPayload?.stimulus?.first.value ?? '') ??
-        '';
-    await _audioPlayerService.playUrl(url);
-  }
+  Future<void> replayVoicePrompt(CourseQuestion question) async =>
+      await _audioPlayerService
+          .playUrl(question.dynamicPayload?.stimulus?.first.value ?? '');
 
   Future<void> playResult(
       {required Voice voice, required Map<String, dynamic> answer}) async {
@@ -971,50 +972,91 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // In-app navigation
   Future<void> setSpeakingAnswer(
-      {required String sample, required String question}) async {
-    _answers.add({
-      'question': question,
-      'busy_object': question,
-      'sample_voice_answer': sample,
-      'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
-    });
+          {required String sample, required String question}) async =>
+      _answers.add({
+        'question': question,
+        'busy_object': question,
+        'sample_voice_answer': sample,
+        'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
+      });
 
-    print('ANSWER: $_answers');
-  }
-
-  Future<void> setSpeakingAnswer4(
-      {required int duration,
-        required String sample,
-        required String stimulus,
-        required String question}) async =>
-      await runBusyFuture(_setSpeakingAnswer4(sample: sample,question: question,duration: duration,stimulus: stimulus),
+  Future<void> setSpeakingAnswer4({
+    required String audio,
+    required int duration,
+    required String sample,
+  }) async =>
+      await runBusyFuture(
+          _setSpeakingAnswer4(
+            audio: audio,
+            sample: sample,
+            duration: duration,
+          ),
           busyObject: StateObjects.speaking4Variant);
 
-  Future<void> _setSpeakingAnswer4(
-      {required int duration,
-      required String sample,
-      required String stimulus,
-      required String question}) async {
+  Future<void> _setSpeakingAnswer4({
+    required String audio,
+    required int duration,
+    required String sample,
+  }) async {
+    int variants = _variants + 1;
+    await stopRecording();
     _answers.add({
-      'question': question,
-      'busy_object': question,
       'sample_voice_answer': sample,
+      'question': variants.toString(),
+      'busy_object': variants.toString(),
       'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
     });
-    await stopRecording();
-    _isSpeaking = false;
     if (_variants == 2) {
       nextScreen();
     } else {
+    //  nextVariant();
       _variants++;
       _variant = 0;
+      _isSpeaking = true;
       setCountdown(duration);
-      await playVoicePrompt(stimulus);
+      await playVoicePrompt(audio);
     }
   }
 
-  Future<void> setListeningAnswer(
-      {required String sample, required String response}) async {
+  Future<void> setListeningAnswer1({
+    required String audio,
+    required int duration,
+    required String sample,
+    required String answer,
+
+  }) async =>
+      await runBusyFuture(
+          _setListeningAnswer1(
+            audio: audio,
+            answer: answer,
+            sample: sample,
+            duration: duration,
+          ),
+          busyObject: StateObjects.listening1Variant);
+
+  Future<void> _setListeningAnswer1({
+
+    required String audio,
+    required int duration,
+    required String sample,
+    required String answer,
+  }) async {
+    int variants = _variants + 1;
+    await stopRecording();
+    _answers.add(
+        {'sample': sample, 'response': answer, 'question': variants.toString()});
+    if (_variants == 4) {
+      nextScreen();
+    } else {
+      _variants++;
+      _playCount = 2;
+      _focusPractice = false;
+      setCountdown(duration);
+      await playVoicePrompt(audio);
+    }
+  }
+
+  Future<void> setListeningAnswer({String? sample, String? response}) async {
     _answers.add({'sample': sample, 'response': response});
   }
 
@@ -1023,15 +1065,15 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _answers.add({'sample': sample, 'response': response});
   }
 
-  void nextVariant() async {
+ /* void nextVariant() async {
     _variants++;
     _variant = 0;
     rebuildUi();
-  }
+  }*/
 
-  void nextVariantScreen() {
+  void nextSpeakingVariantScreen() {
     _variant++;
-    rebuildUi();
+    _isSpeaking = false;
   }
 
   void nextScreen() {

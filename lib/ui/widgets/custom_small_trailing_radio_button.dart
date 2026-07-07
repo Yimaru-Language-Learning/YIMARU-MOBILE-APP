@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 
-class CustomSmallRadioButton extends StatelessWidget {
+class CustomSmallTrailingRadioButton extends StatelessWidget {
   final String title;
   final bool selected;
   final GestureTapCallback? onTap;
 
-  const CustomSmallRadioButton(
+  const CustomSmallTrailingRadioButton(
       {super.key, required this.title, required this.selected, this.onTap});
 
   @override

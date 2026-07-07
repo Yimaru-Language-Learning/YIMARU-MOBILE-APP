@@ -5,25 +5,33 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.da
 
 class CourseMissingWordQuestion
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const CourseMissingWordQuestion({super.key});
+  final bool showNumber;
+  final dynamic segment;
+  const CourseMissingWordQuestion({super.key,required this.segment, required this.showNumber});
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildSentence(viewModel);
+      _buildSentenceWrapper(viewModel);
 
-  Widget _buildSentence(CoursePracticeViewModel viewModel) => RichText(
-        text: TextSpan(
-          style: style14MG400.copyWith(height: 1.75),
-          children:
+  Widget _buildSentenceWrapper(CoursePracticeViewModel viewModel) {
+    int blank = 1;
+    return _buildSentence(blank: blank,viewModel: viewModel);
+  }
 
-          (viewModel.questions[viewModel.currentQuestion]
-                  .dynamicPayload?.stimulus?.last.value['segments'] as List)
-              .map<TextSpan>(
-                (e) => TextSpan(
-                  text: e['type'] == 'text' ? e['value'] : ' _________________ ',
-                ),
-              )
-              .toList(),
+  Widget _buildSentence({
+    required int blank,
+    required CoursePracticeViewModel viewModel})=> RichText(
+    text: TextSpan(
+      style: style14MG400.copyWith(height: 1.75),
+      children:
+
+      (segment as List)
+          .map<TextSpan>(
+            (e) => TextSpan(
+          text: e['type'] == 'text' ? e['value'] : ' ${showNumber?blank++:''}_ _ _ _ _ _ _ _ _ _ _ _ ',
         ),
-      );
+      )
+          .toList(),
+    ),
+  );
 }

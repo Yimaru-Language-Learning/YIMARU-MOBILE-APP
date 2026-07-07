@@ -111,6 +111,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   List<LearnQuestion> get questions => _questions;
 
   // Practice answers
+  
   final List<Map<String, dynamic>> _answers = [];
 
   List<Map<String, dynamic>> get answers => _answers;

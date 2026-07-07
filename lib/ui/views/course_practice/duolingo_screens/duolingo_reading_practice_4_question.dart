@@ -5,7 +5,9 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
-import '../../../widgets/custom_small_radio_button.dart';
+import '../../../widgets/course_missing_word_question.dart';
+import '../../../widgets/custom_small_leading_radio_button.dart';
+import '../../../widgets/custom_small_trailing_radio_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../course_practice_viewmodel.dart';
@@ -13,6 +15,14 @@ import '../course_practice_viewmodel.dart';
 class DuolingoReadingPractice4Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoReadingPractice4Question({super.key});
+
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+      viewModel.nextScreen();
+    } else {
+      await viewModel.nextQuestion();
+    }
+  }
 
   void _setOption(
       {required Map<String, dynamic> option,
@@ -115,9 +125,7 @@ class DuolingoReadingPractice4Question
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
-        onEnd: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -151,10 +159,11 @@ class DuolingoReadingPractice4Question
         style: style16DG600,
       );
 
-  Widget _buildQuestion(CoursePracticeViewModel viewModel) => Text(
-        viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus
-            ?.last.value,
-        style: style14DG400,
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
+      CourseMissingWordQuestion(
+        showNumber: false,
+        segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value['segments'],
       );
 
   Widget _buildSubtitle() => Text(
@@ -188,7 +197,7 @@ class DuolingoReadingPractice4Question
           {required String title,
           required bool selected,
           required GestureTapCallback onTap}) =>
-      CustomSmallRadioButton(
+      CustomSmallLeadingRadioButton(
         title: title,
         onTap: onTap,
         selected: selected,
@@ -207,8 +216,6 @@ class DuolingoReadingPractice4Question
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+        onTap: () async => await _next(viewModel),
       );
 }

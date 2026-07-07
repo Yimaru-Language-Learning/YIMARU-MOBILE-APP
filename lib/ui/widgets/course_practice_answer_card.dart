@@ -7,7 +7,6 @@ import '../common/app_colors.dart';
 import '../common/enmus.dart';
 import '../common/ui_helpers.dart';
 import '../views/course_practice/course_practice_viewmodel.dart';
-import '../views/learn_practice/learn_practice_viewmodel.dart';
 
 class CoursePracticeAnswerCard extends ViewModelWidget<CoursePracticeViewModel> {
 

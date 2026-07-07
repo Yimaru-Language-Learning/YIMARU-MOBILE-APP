@@ -5,7 +5,8 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
-import '../../../widgets/custom_small_radio_button.dart';
+import '../../../widgets/custom_small_leading_radio_button.dart';
+import '../../../widgets/custom_small_trailing_radio_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../course_practice_viewmodel.dart';
@@ -13,6 +14,15 @@ import '../course_practice_viewmodel.dart';
 class DuolingoReadingPractice6Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoReadingPractice6Question({super.key});
+
+
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+      viewModel.nextScreen();
+    } else {
+      await viewModel.nextQuestion();
+    }
+  }
 
   void _setOption(
       {required Map<String, dynamic> option,
@@ -115,9 +125,7 @@ class DuolingoReadingPractice6Question
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
-        onEnd: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+        onEnd: () async=> await _next(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -167,20 +175,20 @@ class DuolingoReadingPractice6Question
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.first.value['options'].length,
+            ?.response?.last.value['options'].length,
         itemBuilder: (context, index) => _buildPracticeCard(
           selected: viewModel.isSelectedOption(viewModel
               .questions[viewModel.currentQuestion]
               .dynamicPayload
               ?.response
-              ?.first
+              ?.last
               .value['options'][index]),
           onTap: () => _setOption(
               viewModel: viewModel,
               option: viewModel.questions[viewModel.currentQuestion]
-                  .dynamicPayload?.response?.first.value['options'][index]),
+                  .dynamicPayload?.response?.last.value['options'][index]),
           title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.first.value['options'][index]['text'],
+              ?.response?.last.value['options'][index]['text'],
         ),
       );
 
@@ -188,7 +196,7 @@ class DuolingoReadingPractice6Question
           {required String title,
           required bool selected,
           required GestureTapCallback onTap}) =>
-      CustomSmallRadioButton(
+      CustomSmallLeadingRadioButton(
         title: title,
         onTap: onTap,
         selected: selected,
@@ -207,8 +215,6 @@ class DuolingoReadingPractice6Question
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+        onTap:  () async=> await _next(viewModel),
       );
 }

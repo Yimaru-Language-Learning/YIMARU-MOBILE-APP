@@ -123,8 +123,8 @@ class DuolingoReadingPractice2Question
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
-    onEnd:  () async => await _next(viewModel),
-  );
+        onEnd: () async => await _next(viewModel),
+      );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionScrollerWrapper(viewModel));
@@ -156,7 +156,11 @@ class DuolingoReadingPractice2Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      const CourseMissingWordQuestion();
+      CourseMissingWordQuestion(
+        showNumber: false,
+        segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value['segments'],
+      );
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(

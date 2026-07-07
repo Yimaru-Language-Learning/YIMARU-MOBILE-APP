@@ -16,16 +16,14 @@ import '../course_practice_viewmodel.dart';
 
 class DuolingoSpeakingPractice4Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
-  final int question;
   final int duration;
-  final String stimulus;
+  final String audio;
   final String response;
 
   const DuolingoSpeakingPractice4Answer(
       {super.key,
-      required this.stimulus,
+      required this.audio,
       required this.response,
-      required this.question,
       required this.duration});
 
   Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
@@ -36,10 +34,9 @@ class DuolingoSpeakingPractice4Answer
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
 
     await viewModel.setSpeakingAnswer4(
+      audio: audio,
       sample: response,
       duration: duration,
-      stimulus: stimulus,
-      question: question.toString(),
     );
   }
 

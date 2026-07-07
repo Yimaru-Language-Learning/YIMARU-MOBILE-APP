@@ -4,16 +4,17 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_view.form.da
 import 'package:yimaru_app/ui/widgets/listenable_repetitive_practice_card.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice1Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  final int question;
   final int duration;
   final String audio;
   final String response;
@@ -22,26 +23,19 @@ class DuolingoListeningPractice1Question
   const DuolingoListeningPractice1Question(
       {super.key,
       required this.audio,
-      required this.question,
       required this.duration,
       required this.response,
       required this.practiceController});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
-    await viewModel.setListeningAnswer(
+    String answer = practiceController.text;
+    practiceController.clear();
+    await viewModel.setListeningAnswer1(
+      audio: audio,
+      answer: answer,
       sample: response,
-      response: practiceController.text,
+      duration: duration,
     );
-    if (question == 5) {
-      viewModel.nextScreen();
-    } else {
-      viewModel.nextVariant();
-      practiceController.clear();
-      viewModel.resetPlayCount(2);
-      viewModel.resetPracticeFocus();
-      viewModel.setCountdown(duration);
-      await viewModel.playVoicePrompt(audio);
-    }
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -69,7 +63,18 @@ class DuolingoListeningPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+
+  Widget _buildScaffoldStack(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -220,7 +225,12 @@ class DuolingoListeningPractice1Question
             : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? () => _next(viewModel)
+            ? () async=>await _next(viewModel)
             : null,
       );
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.listening1Variant)
+          ? const PageLoadingIndicator()
+          : Container();
 }

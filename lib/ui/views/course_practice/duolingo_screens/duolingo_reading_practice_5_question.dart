@@ -5,7 +5,8 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
-import '../../../widgets/custom_small_radio_button.dart';
+import '../../../widgets/custom_small_leading_radio_button.dart';
+import '../../../widgets/custom_small_trailing_radio_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../course_practice_viewmodel.dart';
@@ -14,6 +15,15 @@ class DuolingoReadingPractice5Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoReadingPractice5Question({super.key});
 
+
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+      viewModel.nextScreen();
+    } else {
+      await viewModel.nextQuestion();
+    }
+  }
+  
   void _setOption(
       {required Map<String, dynamic> option,
       required CoursePracticeViewModel viewModel}) {
@@ -115,9 +125,7 @@ class DuolingoReadingPractice5Question
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
-        onEnd: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+        onEnd: ()async=>await _next(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -153,7 +161,7 @@ class DuolingoReadingPractice5Question
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => Text(
         viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus
-            ?.last.value,
+            ?.first.value,
         style: style14DG400,
       );
 
@@ -188,7 +196,7 @@ class DuolingoReadingPractice5Question
           {required String title,
           required bool selected,
           required GestureTapCallback onTap}) =>
-      CustomSmallRadioButton(
+      CustomSmallLeadingRadioButton(
         title: title,
         onTap: onTap,
         selected: selected,
@@ -207,8 +215,6 @@ class DuolingoReadingPractice5Question
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+        onTap: () async=> await _next(viewModel),
       );
 }

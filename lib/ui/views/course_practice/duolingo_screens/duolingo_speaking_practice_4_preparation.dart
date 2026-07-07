@@ -1,7 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/dwarf_tile.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
@@ -11,7 +10,6 @@ import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/page_loading_indicator.dart';
-import '../../../widgets/speaking_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoSpeakingPractice4Preparation
@@ -22,12 +20,10 @@ class DuolingoSpeakingPractice4Preparation
   Future<void> _start(CoursePracticeViewModel viewModel) async {
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion].dynamicPayload
         ?.response?[0].value['seconds']);
-    viewModel.resetValues();
     viewModel.nextScreen();
+    viewModel.setSpeakingState();
     await viewModel.playVoicePrompt( viewModel.questions[viewModel.currentQuestion].dynamicPayload
         ?.stimulus?[1].value);
-
-
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
