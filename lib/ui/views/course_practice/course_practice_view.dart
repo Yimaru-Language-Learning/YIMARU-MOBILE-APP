@@ -12,7 +12,6 @@ import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_li
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/course_practices_screens.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_finish_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_intro_screen.dart';
-import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_2_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_3_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_2_question.dart';
@@ -36,7 +35,6 @@ import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_sp
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_3_answer.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_3_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_3_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_4_answer.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_4_preparation.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_4_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_4_variant.dart';

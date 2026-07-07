@@ -67,6 +67,7 @@ enum StateObjects {
   requestResetCode,
   profileCompletion,
   learnSubscription,
+  listening1Variant,
   learnSubscriptions,
   registerWithGoogle,
   learnPracticeSample,

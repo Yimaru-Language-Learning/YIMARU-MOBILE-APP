@@ -118,9 +118,9 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
     } else if (id == 54 /*Interactive reading - title the passage*/) {
-      int responseLastSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.response?.last.value['seconds'];
-      viewModel.setCountdown(responseLastSec);
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setCountdown(responseFirstSec);
     } else if (id == 55 /*Interactive reading - highlight the answer*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];

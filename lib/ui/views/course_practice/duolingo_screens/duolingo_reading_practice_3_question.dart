@@ -16,15 +16,16 @@ class DuolingoReadingPractice3Question
   const DuolingoReadingPractice3Question({super.key});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
-    await viewModel.setListeningAnswer(
-        response: viewModel.selectedOption.toString(),
-        sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                ?.stimulus?.last.value['word_bank'] as List)
-            .map(
-              (e) => ' ${e['text']} ',
-            )
-            .toList()
-            .toString());
+    List samples = (viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.response?.last.value['blanks'] as List)
+        .map(
+          (e) => e['text'],
+        )
+        .toList();
+    for (String sample in samples) {
+      await viewModel.setListeningAnswer(sample: sample);
+    }
+
     viewModel.nextScreen();
   }
 
@@ -96,7 +97,7 @@ class DuolingoReadingPractice3Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-         // _buildCountdownWrapper(viewModel),
+          // _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
         ],
       );
@@ -155,14 +156,17 @@ class DuolingoReadingPractice3Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      const CourseMissingWordQuestion();
+        CourseMissingWordQuestion(showNumber: true,  segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value['segments'],);
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: (viewModel.questions[viewModel.currentQuestion]
-                .dynamicPayload?.stimulus?.last.value['segments'] as List).where((e)=> e['type']=='blank').toList()
+                .dynamicPayload?.stimulus?.last.value['segments'] as List)
+            .where((e) => e['type'] == 'blank')
+            .toList()
             .length,
         itemBuilder: (context, index) => _buildPracticeCard(
           index,

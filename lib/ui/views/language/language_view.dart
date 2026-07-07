@@ -5,7 +5,7 @@ import 'package:stacked/stacked.dart';
 import '../../common/app_colors.dart';
 import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
-import '../../widgets/custom_small_radio_button.dart';
+import '../../widgets/custom_small_trailing_radio_button.dart';
 import '../../widgets/small_app_bar.dart';
 import 'language_viewmodel.dart';
 
@@ -141,7 +141,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
           {required String title,
           required bool selected,
           required GestureTapCallback onTap}) =>
-      CustomSmallRadioButton(
+      CustomSmallTrailingRadioButton(
         title: title,
         onTap: onTap,
         selected: selected,

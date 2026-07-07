@@ -6,7 +6,7 @@ import 'package:yimaru_app/ui/widgets/listenable_one_time_practice_card.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
-import '../../../widgets/custom_small_radio_button.dart';
+import '../../../widgets/custom_small_trailing_radio_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/duolingo_practice_review_section.dart';
 import '../course_practice_viewmodel.dart';
@@ -193,7 +193,7 @@ class DuolingoListeningPractice3Review
       );
 
   Widget _buildPracticeCard({required String title, required bool selected}) =>
-      CustomSmallRadioButton(
+      CustomSmallTrailingRadioButton(
         title: title,
         selected: selected,
       );

@@ -9,28 +9,21 @@ import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../course_practice_viewmodel.dart';
-import 'package:yimaru_app/ui/views/course_practice/course_practice_view.form.dart';
 
 class DuolingoListeningPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoListeningPractice2Question({super.key});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
-    await viewModel.setListeningAnswer(
-      response: viewModel.controllers['0'] ?? '',
-      sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-          ?.response?[1].value,
-    );
-    await viewModel.setListeningAnswer(
-      response: viewModel.controllers['1'] ?? '',
-      sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-          ?.response?[2].value,
-    );
-    await viewModel.setListeningAnswer(
-      response: viewModel.controllers['2'] ?? '',
-      sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-          ?.response?[3].value,
-    );
+
+    for ( int i=0; i< viewModel.controllers.length; i++) {
+      await viewModel.setListeningAnswer(
+        response: viewModel.controllers['$i'] ?? '',
+        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?[i+1].value,
+      );
+    }
+
     viewModel.nextScreen();
   }
 
