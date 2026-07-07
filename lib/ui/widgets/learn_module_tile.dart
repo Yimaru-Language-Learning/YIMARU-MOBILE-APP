@@ -31,6 +31,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         onTap: !(module.access?.isAccessible ?? false) ? onPracticeTap : null,
         child: _buildExpansionTileCard(context: context, viewModel: viewModel),
       );
+
   Widget _buildExpansionTileCard(
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>
@@ -49,7 +50,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       Stack(
         children: [
           _buildExpansionTile(context: context, viewModel: viewModel),
-          _buildContainerShaderState()
+          if (!(module.access?.isAccessible ?? false))
+            _buildContainerShader()
         ],
       );
 
@@ -68,7 +70,9 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
         collapsedBackgroundColor: kcBackgroundColor,
-        enabled: (module.access?.isAccessible ?? false),
+        /* Due to the now learn locking logic
+        enabled: (program.access?.isAccessible ?? false)
+        */
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
@@ -97,8 +101,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
   Widget _buildIcon(LearnModuleViewModel viewModel) => CachedNetworkImage(
         width: 25,
         height: 25,
-        cacheKey: viewModel.getModuleImage(module),
-        imageUrl: viewModel.getModuleImage(module),
+        imageUrl: module.icon ?? '',
+        // cacheKey: viewModel.getModuleImage(module),
       );
 
   Widget _buildTitleWrapper() => Padding(
@@ -215,9 +219,6 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         text: LocaleKeys.take_practice.tr(),
       );
 
-  Widget _buildContainerShaderState() => !(module.access?.isAccessible ?? false)
-      ? _buildContainerShader()
-      : Container();
 
   Widget _buildContainerShader() => const CustomContainerShader();
 }

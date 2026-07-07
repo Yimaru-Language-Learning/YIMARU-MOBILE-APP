@@ -271,8 +271,8 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   // Remote api call
 
   // Refresh url
-  Future<String?> refreshUrl(String url) async =>
-      await _learnService.refreshObject(url);
+  /*Future<String?> refreshUrl(String url) async =>
+      await _learnService.refreshObject(url);*/
 
   // Learn practice
   Future<void> getLearnPractices(
@@ -314,8 +314,8 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     }
   }
 
-//Refresh image
-  Future<void> refreshPracticeImages(List<LearnPractice> practices) async {
+  //Refresh image
+  /*Future<void> refreshPracticeImages(List<LearnPractice> practices) async {
     for (final practice in practices) {
       final image = practice.storyImage;
 
@@ -332,5 +332,5 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   }
 
   String getPracticeImage(LearnPractice practice) =>
-      getReadableUrl(_refreshedImages[practice.id] ?? '') ?? '';
+      getReadableUrl(_refreshedImages[practice.id] ?? '') ?? '';*/
 }

@@ -14,7 +14,7 @@ class PdfView extends StackedView<PdfViewModel> {
 
   @override
   void onViewModelReady(PdfViewModel viewModel) async {
-    await viewModel.openPdf(url);
+   // await viewModel.openPdf(url);
     super.onViewModelReady(viewModel);
   }
 
@@ -70,6 +70,6 @@ class PdfView extends StackedView<PdfViewModel> {
       );
 
   Widget _buildPdfViewer(PdfViewModel viewModel) => SfPdfViewer.network(
-        viewModel.url ?? '',
+        url,
       );
 }

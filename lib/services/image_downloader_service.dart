@@ -23,9 +23,11 @@ class ImageDownloaderService {
     try {
       File? image;
 
-      String? profileImage = networkImage;
+
 
       final Directory appDir = await getApplicationDocumentsDirectory();
+
+      /*     String? profileImage = networkImage;
 
       Map<String, dynamic> data = {'reference': profileImage};
       Map<String, dynamic> response = await _apiService.refreshObject(data);
@@ -34,11 +36,11 @@ class ImageDownloaderService {
         RefreshObject object = response['data'] as RefreshObject;
 
         profileImage = object.url;
-      }
+      }*/
 
-      if (profileImage != null) {
+      if (networkImage != null) {
         final Response profileImageResponse = await _dio.get<List<int>>(
-          profileImage,
+          networkImage,
           options: Options(
             responseType: ResponseType.bytes,
           ),

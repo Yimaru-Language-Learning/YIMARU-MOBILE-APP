@@ -79,7 +79,7 @@ class CourseService with ListenableServiceMixin {
     notifyListeners();
   }
 
-  Future<String?> refreshObject(String url) async {
+  /*Future<String?> refreshObject(String url) async {
     Map<String, dynamic> data = {'reference': url};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
 
@@ -89,5 +89,5 @@ class CourseService with ListenableServiceMixin {
       return object.url ?? '';
     }
     return null;
-  }
+  }*/
 }

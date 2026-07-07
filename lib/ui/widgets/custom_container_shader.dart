@@ -9,8 +9,12 @@ class CustomContainerShader extends StatelessWidget {
   Widget build(BuildContext context) => _buildContainerShaderWrapper();
 
   Widget _buildContainerShaderWrapper() => Positioned.fill(
-        child: _buildContainerShader(),
+        child: _buildContainerShaderIgnoreWrapper(),
       );
+
+  Widget _buildContainerShaderIgnoreWrapper()=> IgnorePointer(
+    child:_buildContainerShader(),
+  );
 
   Widget _buildContainerShader() => Container(
         decoration: BoxDecoration(

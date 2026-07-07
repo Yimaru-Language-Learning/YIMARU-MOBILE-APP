@@ -49,11 +49,16 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
         collapsedTextColor: kcDarkGrey,
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
-        enabled: (course.access?.isAccessible ?? false),
-        backgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
+        /* Due to the now learn locking logic
+        enabled: (program.access?.isAccessible ?? false),
+         backgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
+        */
         controlAffinity: ListTileControlAffinity.trailing,
         tilePadding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        backgroundColor: (course.access?.isAccessible ?? false)
+            ? kcPrimaryColor.withValues(alpha: 0.1)
+            : kcBackgroundColor,
         showTrailingIcon: (course.access?.isAccessible ?? false),
         initiallyExpanded: (course.access?.isAccessible ?? false),
         collapsedBackgroundColor: (course.access?.isAccessible ?? false)
