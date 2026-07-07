@@ -686,8 +686,8 @@ class ApiService {
     }
   }
 
-  // Complete profile
-  Future<Map<String, dynamic>> refreshObject(Map<String, dynamic> data) async {
+  // Refresh object
+  /*Future<Map<String, dynamic>> refreshObject(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
         '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFilesUrl/$kRefreshUrl',
@@ -712,7 +712,7 @@ class ApiService {
         'message': e.response?.data.toString(),
       };
     }
-  }
+  }*/
 
   // Learn learn programs
   Future<List<LearnProgram>> getLearnPrograms() async {

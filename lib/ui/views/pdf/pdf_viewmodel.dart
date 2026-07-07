@@ -14,16 +14,16 @@ class PdfViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
 
   // Url
-   String? _url;
+   /*String? _url;
 
-   String? get url => _url;
+   String? get url => _url;*/
 
 
   // Navigation
   void pop() => _navigationService.back();
 
   // Remote api
-  Future<void> openPdf(
+  /*Future<void> openPdf(
  String url) async =>
       await runBusyFuture(_openPdf(url),
           busyObject: StateObjects.openPdf);
@@ -37,5 +37,5 @@ class PdfViewModel extends BaseViewModel {
       _url = object.url;
 
     }
-  }
+  }*/
 }

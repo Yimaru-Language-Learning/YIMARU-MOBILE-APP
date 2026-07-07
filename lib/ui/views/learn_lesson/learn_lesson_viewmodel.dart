@@ -88,7 +88,7 @@ class LearnLessonViewModel extends ReactiveViewModel {
   }
 
   //Refresh image
-  Future<void> refreshLessonImages(List<LearnLesson> lessons) async {
+  /*Future<void> refreshLessonImages(List<LearnLesson> lessons) async {
     for (final lesson in lessons) {
       final thumbnail = lesson.thumbnail;
 
@@ -105,5 +105,5 @@ class LearnLessonViewModel extends ReactiveViewModel {
   }
 
   String getLessonImage(LearnLesson lesson) =>
-      getReadableUrl(_refreshedThumbnails[lesson.id] ?? '') ?? '';
+      getReadableUrl(_refreshedThumbnails[lesson.id] ?? '') ?? '';*/
 }

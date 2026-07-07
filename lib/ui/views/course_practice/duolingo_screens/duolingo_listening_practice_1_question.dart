@@ -66,10 +66,9 @@ class DuolingoListeningPractice1Question
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
-
   Widget _buildScaffoldStack(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
@@ -142,10 +141,16 @@ class DuolingoListeningPractice1Question
       );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+      alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
+
+  Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.listening1Variant)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(viewModel);
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
+        key: ValueKey(viewModel.countdown),
         onEnd: () async => await _next(viewModel),
       );
 
@@ -225,7 +230,7 @@ class DuolingoListeningPractice1Question
             : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? () async=>await _next(viewModel)
+            ? () async => await _next(viewModel)
             : null,
       );
 

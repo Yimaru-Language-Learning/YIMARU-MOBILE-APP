@@ -59,7 +59,7 @@ class LearnService with ListenableServiceMixin {
   List<LearnLesson> get lessons => _lessons;
 
   // Learn programs
-  Future<String?> refreshObject(String url) async {
+  /*Future<String?> refreshObject(String url) async {
     Map<String, dynamic> data = {'reference': url};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
 
@@ -69,7 +69,7 @@ class LearnService with ListenableServiceMixin {
       return object.url ?? '';
     }
     return null;
-  }
+  }*/
 
   // Learn programs
   Future<void> getLearnPrograms() async {

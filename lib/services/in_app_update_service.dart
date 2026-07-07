@@ -22,14 +22,11 @@ class InAppUpdateService {
   Future<void> checkForUpdate() async {
     try {
       final String? deviceVersion = await _statusCheckerService.getAppVersion();
-      log('IN-APP UPDATE DEVICE VERSION CODE: $deviceVersion');
       final remoteVersion = await InAppUpdate.checkForUpdate();
-      log('IN-APP UPDATE REMOTE VERSION CODE ${remoteVersion.availableVersionCode.toString()}');
 
       if (deviceVersion != remoteVersion.availableVersionCode.toString()) {
         Map<String, dynamic> response =
             await _apiService.checkUpdate(deviceVersion ?? '');
-        log('IN-APP UPDATE RESPONSE $response');
 
         if (response['status'] == ResponseStatus.success) {
           AppUpdate update = response['data'] as AppUpdate;
@@ -40,7 +37,7 @@ class InAppUpdateService {
               if (result == AppUpdateResult.userDeniedUpdate) {
                 showErrorToast(
                     'An update is required to continue using this app.');
-                _navigationService.popRepeated(3);
+                SystemNavigator.pop();
               }
             } else {
               await InAppUpdate.startFlexibleUpdate();

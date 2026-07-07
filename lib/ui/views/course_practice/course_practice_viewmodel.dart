@@ -576,6 +576,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
         seconds: getSeconds(durationInSeconds),
       ),
     );
+    // rebuildUi();
   }
 
   void resetCountdown() {
@@ -902,36 +903,55 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> playResult(
       {required Voice voice, required Map<String, dynamic> answer}) async {
-    setBusyObject(playing: voice, object: answer['busy_object']);
+    setResultBusyObject(playing: voice, object: answer['busy_object']);
 
-    await playAudio(voice: voice, answer: answer);
+    await playResultAudio(voice: voice, answer: answer);
   }
 
-  Future<void> playAudio(
+  Future<void> playResultAudio(
           {required Map<String, dynamic> answer, required Voice voice}) async =>
-      await runBusyFuture(_playAudio(voice: voice, answer: answer),
+      await runBusyFuture(_playResultAudio(voice: voice, answer: answer),
           busyObject: answer['busy_object']);
 
-  Future<void> _playAudio(
+  Future<void> _playResultAudio(
       {required Map<String, dynamic> answer, required Voice voice}) async {
     if (voice == Voice.recorded) {
-      print(answer['recorded_voice_answer']);
       await _audioPlayerService.playLocal(answer['recorded_voice_answer']);
     } else {
       await _audioPlayerService.playUrl(answer['sample_voice_answer']);
     }
   }
 
+  Future<void> playReview(
+      {required String audio, required String busyObject}) async {
+    setReviewBusyObject( busyObject);
+
+    await playReviewAudio(audio: audio, busyObject: busyObject);
+  }
+
+  Future<void> playReviewAudio(
+          {required String audio, required String busyObject}) async =>
+      await runBusyFuture(_playReview(audio), busyObject: busyObject);
+
+  Future<void> _playReview(String audio) async =>
+      await _audioPlayerService.playUrl(audio);
+
   Future<void> pauseAudio() async {
     await _audioPlayerService.pause();
   }
 
   // Set busy object
-  void setBusyObject({required String object, required Voice playing}) {
+  void setResultBusyObject({required String object, required Voice playing}) {
     _playing = playing;
     _busyObject = object;
     rebuildUi();
   }
+
+  void setReviewBusyObject(String object) {
+    _busyObject = object;
+    rebuildUi();
+  }
+
 
   // Dialogue
   Future<bool?> showAbortDialog() async {
@@ -961,13 +981,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> _cacheNetworkImage(
       {required String image, BuildContext? context}) async {
-    Map<String, dynamic> data = {'reference': image};
+    await _cacheImageService.cacheImage(_cachedImage ?? '');
+    /* Map<String, dynamic> data = {'reference': image};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
     if (response['status'] == ResponseStatus.success) {
       RefreshObject object = response['data'] as RefreshObject;
       _cachedImage = object.url;
       await _cacheImageService.cacheImage(_cachedImage ?? '');
-    }
+    }*/
   }
 
   // In-app navigation
@@ -1009,7 +1030,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     if (_variants == 2) {
       nextScreen();
     } else {
-    //  nextVariant();
+      //  nextVariant();
       _variants++;
       _variant = 0;
       _isSpeaking = true;
@@ -1023,7 +1044,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     required int duration,
     required String sample,
     required String answer,
-
   }) async =>
       await runBusyFuture(
           _setListeningAnswer1(
@@ -1035,16 +1055,18 @@ class CoursePracticeViewModel extends ReactiveViewModel
           busyObject: StateObjects.listening1Variant);
 
   Future<void> _setListeningAnswer1({
-
     required String audio,
     required int duration,
     required String sample,
     required String answer,
   }) async {
-    int variants = _variants + 1;
     await stopRecording();
-    _answers.add(
-        {'sample': sample, 'response': answer, 'question': variants.toString()});
+    _answers.add({
+      'audio': audio,
+      'sample': sample,
+      'response': answer,
+      'question': audio,
+    });
     if (_variants == 4) {
       nextScreen();
     } else {
@@ -1065,7 +1087,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _answers.add({'sample': sample, 'response': response});
   }
 
- /* void nextVariant() async {
+  /* void nextVariant() async {
     _variants++;
     _variant = 0;
     rebuildUi();
@@ -1156,7 +1178,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Refresh url
-  Future<String?> getRefreshedUrl(String value) async {
+  /*Future<String?> getRefreshedUrl(String value) async {
     final String? refreshedUrl = await _courseService.refreshObject(value);
 
     if (refreshedUrl != null) {
@@ -1164,7 +1186,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     } else {
       return null;
     }
-  }
+  }*/
 
   String getReadableImage(String image) => getReadableUrl(image) ?? '';
 }
