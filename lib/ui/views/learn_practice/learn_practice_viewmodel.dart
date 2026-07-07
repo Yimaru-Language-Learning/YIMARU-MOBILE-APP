@@ -161,6 +161,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   Future<void> _playVoicePrompt(LearnQuestion question) async {
     _questionController.jumpToPage(1);
+    print('URL:   ${question.voicePrompt}');
     await _audioPlayerService.playUrl(question.voicePrompt ?? '');
   }
 
