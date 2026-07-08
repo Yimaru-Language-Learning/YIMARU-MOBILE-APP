@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'course_question.dart';
+part of 'practice_question.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CourseQuestion _$CourseQuestionFromJson(Map<String, dynamic> json) =>
-    CourseQuestion(
+PracticeQuestion _$PracticeQuestionFromJson(Map<String, dynamic> json) =>
+    PracticeQuestion(
       id: (json['id'] as num?)?.toInt(),
       status: json['status'] as String?,
       points: (json['points'] as num?)?.toInt(),
@@ -22,7 +22,7 @@ CourseQuestion _$CourseQuestionFromJson(Map<String, dynamic> json) =>
           (json['question_type_definition_id'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$CourseQuestionToJson(CourseQuestion instance) =>
+Map<String, dynamic> _$PracticeQuestionToJson(PracticeQuestion instance) =>
     <String, dynamic>{
       'id': instance.id,
       'points': instance.points,

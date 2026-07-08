@@ -2,9 +2,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../models/refresh_object.dart';
 import '../../../services/api_service.dart';
-import '../../common/enmus.dart';
 
 class PdfViewModel extends BaseViewModel {
   // Dependency injection

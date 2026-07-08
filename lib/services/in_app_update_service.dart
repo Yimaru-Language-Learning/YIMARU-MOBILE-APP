@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:in_app_update/in_app_update.dart';

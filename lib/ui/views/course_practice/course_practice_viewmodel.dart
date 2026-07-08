@@ -7,8 +7,7 @@ import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/course_practice.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../models/course_question.dart';
-import '../../../models/refresh_object.dart';
+import '../../../models/practice_question.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/audio_player_service.dart';
@@ -141,9 +140,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   int get currentQuestion => _currentQuestion;
 
-  List<CourseQuestion> _questions = [];
+  List<PracticeQuestion> _questions = [];
 
-  List<CourseQuestion> get questions => _questions;
+  List<PracticeQuestion> get questions => _questions;
 
   final List<Map<String, dynamic>> _questionParams = [
     {
@@ -897,7 +896,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   Future<void> _playVoicePrompt(String question) async =>
       await _audioPlayerService.playUrl(question);
 
-  Future<void> replayVoicePrompt(CourseQuestion question) async =>
+  Future<void> replayVoicePrompt(PracticeQuestion question) async =>
       await _audioPlayerService
           .playUrl(question.dynamicPayload?.stimulus?.first.value ?? '');
 

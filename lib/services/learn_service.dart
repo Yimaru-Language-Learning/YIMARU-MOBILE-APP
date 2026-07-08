@@ -1,8 +1,6 @@
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_progress.dart';
 import 'package:yimaru_app/models/module_progress.dart';
-import 'package:yimaru_app/models/refresh_object.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../app/app.locator.dart';
 import '../models/access.dart';
