@@ -12,7 +12,6 @@ import '../../../models/user.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
-import '../../common/helper_functions.dart';
 
 class LearnLessonViewModel extends ReactiveViewModel {
   // Dependency injection

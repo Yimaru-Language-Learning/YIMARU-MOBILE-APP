@@ -8,7 +8,6 @@ import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/course_practice_question_card.dart';
-import '../../../widgets/listenable_repetitive_practice_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice1Review

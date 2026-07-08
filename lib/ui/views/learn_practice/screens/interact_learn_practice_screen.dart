@@ -10,7 +10,7 @@ import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/wave_wrapper.dart';
 
-import '../../../../models/learn_question.dart';
+import '../../../../models/practice_question.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
 import '../../../common/translations/locale_keys.g.dart';
@@ -21,7 +21,7 @@ import '../../../widgets/small_app_bar.dart';
 class InteractLearnPracticeScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
   final int index;
-  final LearnQuestion question;
+  final PracticeQuestion question;
 
   const InteractLearnPracticeScreen(
       {super.key, required this.index, required this.question});

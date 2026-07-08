@@ -7,7 +7,6 @@ import 'package:yimaru_app/models/learn_program.dart';
 import 'package:yimaru_app/models/assessment_question.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
-import 'package:yimaru_app/models/refresh_object.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
@@ -15,12 +14,11 @@ import 'package:yimaru_app/ui/common/app_constants.dart';
 import '../app/app.locator.dart';
 import '../models/course_module.dart';
 import '../models/course_practice.dart';
-import '../models/course_question.dart';
+import '../models/practice_question.dart';
 import '../models/course_unit.dart';
 import '../models/field_option.dart';
 import '../models/learn_course.dart';
 import '../models/learn_module.dart';
-import '../models/learn_question.dart';
 import '../models/learn_subscription.dart';
 import '../models/assessment.dart';
 import '../models/learn_subscription_request.dart';
@@ -896,9 +894,9 @@ class ApiService {
   }
 
   // Get learn questions
-  Future<List<LearnQuestion>> getLearnQuestions(int id) async {
+  Future<List<PracticeQuestion>> getLearnQuestions(int id) async {
     try {
-      List<LearnQuestion> questions = [];
+      List<PracticeQuestion> questions = [];
       print('Here');
 
       final Response response = await _service.dio.get(
@@ -909,7 +907,7 @@ class ApiService {
         var decodedData = data['data'] as List;
         questions = decodedData.map(
           (e) {
-            return LearnQuestion.fromJson(e);
+            return PracticeQuestion.fromJson(e);
           },
         ).toList();
         return questions;
@@ -1216,9 +1214,9 @@ class ApiService {
   }
 
   // Get course questions
-  Future<List<CourseQuestion>> getCourseQuestions(int id) async {
+  Future<List<PracticeQuestion>> getCourseQuestions(int id) async {
     try {
-      List<CourseQuestion> questions = [];
+      List<PracticeQuestion> questions = [];
       print('Here');
 
       final Response response = await _service.dio.get(
@@ -1229,7 +1227,7 @@ class ApiService {
         var decodedData = data['data'] as List;
         questions = decodedData.map(
           (e) {
-            return CourseQuestion.fromJson(e);
+            return PracticeQuestion.fromJson(e);
           },
         ).toList();
         return questions;

@@ -5,7 +5,7 @@ import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_column_button.dart';
 
-import '../../../../models/learn_question.dart';
+import '../../../../models/practice_question.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
@@ -13,7 +13,7 @@ import '../../../widgets/small_app_bar.dart';
 
 class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
   final int index;
-  final LearnQuestion question;
+  final PracticeQuestion question;
 
   const StartLearnPracticeScreen(
       {super.key, required this.index, required this.question});

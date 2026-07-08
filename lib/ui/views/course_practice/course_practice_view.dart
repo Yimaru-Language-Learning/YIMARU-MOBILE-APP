@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
-import 'package:yimaru_app/models/course_question.dart';
+import 'package:yimaru_app/models/practice_question.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_1_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_1_variant.dart';
@@ -511,7 +511,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
 
   Widget _buildQuestionView(
           {required int index,
-          required CourseQuestion question,
+          required PracticeQuestion question,
           required CoursePracticeViewModel viewModel}) =>
       PageView(
         controller: viewModel.questionController,
@@ -522,7 +522,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
 
   List<Widget> _buildQuestionScreens(
           {required int index,
-          required CourseQuestion question,
+          required PracticeQuestion question,
           required CoursePracticeViewModel viewModel}) =>
       viewModel.selectedQuestionParam['type'] != CoursePracticeType.ielts
           ? _buildDuolingoScreens(
@@ -532,7 +532,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
 
   List<Widget> _buildDuolingoScreens(
           {required int index,
-          required CourseQuestion question,
+          required PracticeQuestion question,
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildDuolingoIntroScreen(viewModel),
@@ -565,7 +565,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
   // Ielts section
   List<Widget> _buildIeltsScreens(
           {required int index,
-          required CourseQuestion question,
+          required PracticeQuestion question,
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildIeltsIntroScreenWrapper(viewModel),

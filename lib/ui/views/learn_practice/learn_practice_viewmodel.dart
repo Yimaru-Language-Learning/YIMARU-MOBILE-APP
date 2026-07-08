@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
+import 'package:yimaru_app/models/practice_question.dart';
 import 'package:yimaru_app/models/learn_practice.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
@@ -11,13 +12,11 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
-import '../../../models/learn_question.dart';
 import '../../../services/api_service.dart';
 import '../../../services/audio_player_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/app_colors.dart';
-import '../../common/helper_functions.dart';
 
 class LearnPracticeViewModel extends ReactiveViewModel {
   // Dependency injection
@@ -106,9 +105,9 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   Map<int, String> get refreshedImages => _refreshedImages;
 
   // Practice questions
-  List<LearnQuestion> _questions = [];
+  List<PracticeQuestion> _questions = [];
 
-  List<LearnQuestion> get questions => _questions;
+  List<PracticeQuestion> get questions => _questions;
 
   // Practice answers
   
@@ -155,18 +154,17 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     });
   }
 
-  Future<void> playVoicePrompt(LearnQuestion question) async =>
+  Future<void> playVoicePrompt(PracticeQuestion question) async =>
       await runBusyFuture(_playVoicePrompt(question),
           busyObject: StateObjects.learnPracticeQuestion);
 
-  Future<void> _playVoicePrompt(LearnQuestion question) async {
+  Future<void> _playVoicePrompt(PracticeQuestion question) async {
     _questionController.jumpToPage(1);
-    print('URL:   ${question.voicePrompt}');
-    await _audioPlayerService.playUrl(question.voicePrompt ?? '');
+    await _audioPlayerService.playUrl(question.dynamicPayload?.stimulus?[1].value ?? '');
   }
 
-  Future<void> replayVoicePrompt(LearnQuestion question) async {
-    await _audioPlayerService.playUrl(question.voicePrompt ?? '');
+  Future<void> replayVoicePrompt(PracticeQuestion question) async {
+    await _audioPlayerService.playUrl(question.dynamicPayload?.stimulus?[1].value ?? '');
   }
 
   Future<void> playResult(
@@ -231,17 +229,17 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   }
 
   Future<void> nextQuestion(
-          {required int index, required LearnQuestion question}) async =>
+          {required int index, required PracticeQuestion question}) async =>
       await runBusyFuture(_nextQuestion(index: index, question: question),
           busyObject: StateObjects.finishLearnPracticeQuestion);
 
   Future<void> _nextQuestion(
-      {required int index, required LearnQuestion question}) async {
+      {required int index, required PracticeQuestion question}) async {
     await stopRecording();
     _answers.add({
       'busy_object': question.id.toString(),
       'question_text': question.questionText,
-      'sample_voice_answer': question.sampleAnswerVoicePrompt,
+      'sample_voice_answer': question.dynamicPayload?.response?.first.value,
       'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
     });
     if (index != _questions.length) {
@@ -249,7 +247,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 350),
       );
-      await playVoicePrompt(_questions[index]);
+      await playVoicePrompt(_questions[index].dynamicPayload?.stimulus?[1].value ?? '');
     } else {
       goTo(3);
     }
