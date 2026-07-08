@@ -238,7 +238,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     await stopRecording();
     _answers.add({
       'busy_object': question.id.toString(),
-      'question_text': question.questionText,
+      'question_text': question.dynamicPayload?.stimulus?.first.value,
       'sample_voice_answer': question.dynamicPayload?.response?.first.value,
       'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
     });
