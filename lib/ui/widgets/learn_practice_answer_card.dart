@@ -21,7 +21,7 @@ class LearnPracticeAnswerCard extends ViewModelWidget<LearnPracticeViewModel> {
 
   Widget _getButtonState( LearnPracticeViewModel viewModel){
 
-    if(   answer['question'] == viewModel.busyObject){
+    if(   answer['busy_object'] == viewModel.busyObject){
       if(viewModel.playing == voice){
         if(viewModel.busy(answer['busy_object'])){
           return _buildProgressIndicatorWrapper();

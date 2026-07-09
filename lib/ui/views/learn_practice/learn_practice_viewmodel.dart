@@ -247,7 +247,8 @@ class LearnPracticeViewModel extends ReactiveViewModel {
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 350),
       );
-      await playVoicePrompt(_questions[index].dynamicPayload?.stimulus?[1].value ?? '');
+      print('PROMPT: ${_questions[index].dynamicPayload?.stimulus?[1].value}');
+      await playVoicePrompt(_questions[index]);
     } else {
       goTo(3);
     }
