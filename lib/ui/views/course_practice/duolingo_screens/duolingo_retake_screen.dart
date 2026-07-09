@@ -147,7 +147,7 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Widget _buildPracticeButton(CoursePracticeViewModel viewModel) =>
       const CustomElevatedButton(
         height: 55,
-        safe: false,
+        bottom: false,
         borderRadius: 12,
         text: 'Practice Again',
         foregroundColor: kcWhite,

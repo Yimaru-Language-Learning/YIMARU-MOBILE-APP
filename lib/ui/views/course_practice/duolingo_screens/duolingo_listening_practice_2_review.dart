@@ -162,7 +162,7 @@ class DuolingoListeningPractice2Review
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       ListenableRepetitivePracticeCard(
-          audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+          question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
                   ?.stimulus?.first.value ??
               '');
 

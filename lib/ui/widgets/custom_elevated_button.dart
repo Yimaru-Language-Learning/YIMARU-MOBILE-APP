@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomElevatedButton extends StatelessWidget {
-  final bool safe;
+  final bool top;
+  final bool bottom;
   final String text;
   final double width;
   final double height;
@@ -18,13 +19,14 @@ class CustomElevatedButton extends StatelessWidget {
   const CustomElevatedButton({
     super.key,
     this.onTap,
+    this.top = true,
     this.leadingIcon,
     this.borderColor,
-    this.safe = true,
     this.leadingImage,
     this.trailingIcon,
     required this.text,
     this.trailingImage,
+    this.bottom = true,
     required this.height,
     this.borderRadius = 0,
     required this.backgroundColor,
@@ -36,7 +38,7 @@ class CustomElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) => _buildSafeWrapper();
 
   Widget _buildSafeWrapper() =>
-      SafeArea(bottom: safe, child: _buildButtonWrapper());
+      SafeArea(top: top, bottom: bottom, child: _buildButtonWrapper());
 
   Widget _buildButtonWrapper() =>
       SizedBox(height: 50, width: width, child: _buildButton());

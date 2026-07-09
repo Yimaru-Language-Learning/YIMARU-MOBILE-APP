@@ -664,7 +664,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(10);
     } else if (id == 57 /*Interactive listening part 3*/) {
       _selectedQuestionParam = _questionParams.elementAt(11);
-    } else if (id == 0 /*Read and speak*/) {
+    } else if (id == 49 /*Read and select*/) {
       _selectedQuestionParam = _questionParams.elementAt(12);
     } else if (id == 3 /*Fill in the blank*/) {
       _selectedQuestionParam = _questionParams.elementAt(13);
@@ -809,6 +809,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _selectedOption = value;
     rebuildUi();
   }
+
+
 
   // Selected option
   bool isSelectedChoice({
@@ -1038,32 +1040,34 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   Future<void> setListeningAnswer1({
-    required String audio,
     required int duration,
     required String sample,
     required String answer,
+    required String question
+
   }) async =>
       await runBusyFuture(
           _setListeningAnswer1(
-            audio: audio,
             answer: answer,
             sample: sample,
             duration: duration,
+            question: question,
+
           ),
           busyObject: StateObjects.listening1Variant);
 
   Future<void> _setListeningAnswer1({
-    required String audio,
     required int duration,
     required String sample,
     required String answer,
+    required String question
+
   }) async {
     await stopRecording();
     _answers.add({
-      'audio': audio,
       'sample': sample,
       'response': answer,
-      'question': audio,
+      'question': question,
     });
     if (_variants == 4) {
       nextScreen();
@@ -1072,7 +1076,88 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _playCount = 2;
       _focusPractice = false;
       setCountdown(duration);
-      await playVoicePrompt(audio);
+    }
+  }
+
+
+  Future<void> setListeningAnswer3({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+
+  }) async =>
+      await runBusyFuture(
+          _setListeningAnswer3(
+            answer: answer,
+            sample: sample,
+            duration: duration,
+            question: question,
+          ),
+          busyObject: StateObjects.listening3Variant);
+
+  Future<void> _setListeningAnswer3({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+
+  }) async {
+    await stopRecording();
+    _answers.add({
+      'sample': sample,
+      'response': answer,
+      'question': question,
+
+    });
+    if (_variants == 4) {
+      nextScreen();
+    } else {
+      _variants++;
+      _playCount = 1;
+      setCountdown(duration);
+      _selectedOption.clear();
+    }
+  }
+
+
+  Future<void> setReadingAnswer1({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+
+  }) async =>
+      await runBusyFuture(
+          _setReadingAnswer1(
+            answer: answer,
+            sample: sample,
+            duration: duration,
+            question: question,
+          ),
+          busyObject: StateObjects.reading1Variant);
+
+  Future<void> _setReadingAnswer1({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+
+  }) async {
+    await stopRecording();
+    _answers.add({
+      'sample': sample,
+      'response': answer,
+      'question': question,
+
+    });
+    if (_variants == 4) {
+      nextScreen();
+    } else {
+      _variants++;
+      _playCount = 1;
+      setCountdown(duration);
+      _selectedOption.clear();
     }
   }
 

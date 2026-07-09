@@ -16,13 +16,13 @@ import '../course_practice_viewmodel.dart';
 class DuolingoListeningPractice1Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   final int duration;
-  final String audio;
+  final String question;
   final String response;
   final TextEditingController practiceController;
 
   const DuolingoListeningPractice1Question(
       {super.key,
-      required this.audio,
+      required this.question,
       required this.duration,
       required this.response,
       required this.practiceController});
@@ -31,10 +31,10 @@ class DuolingoListeningPractice1Question
     String answer = practiceController.text;
     practiceController.clear();
     await viewModel.setListeningAnswer1(
-      audio: audio,
       answer: answer,
       sample: response,
       duration: duration,
+        question:question
     );
   }
 
@@ -181,7 +181,7 @@ class DuolingoListeningPractice1Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestion() => ListenableRepetitivePracticeCard(audio: audio);
+  Widget _buildQuestion() => ListenableRepetitivePracticeCard(question: question);
 
   Widget _buildLabel() => Text(
         'Your Answer',

@@ -98,7 +98,7 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
   Widget _buildContinueButton(AssessmentViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        safe: false,
+        bottom: false,
         borderRadius: 12,
         foregroundColor: kcWhite,
         text: LocaleKeys.cont.tr(),

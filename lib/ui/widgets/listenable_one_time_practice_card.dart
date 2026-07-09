@@ -12,17 +12,12 @@ import 'custom_circular_progress_indicator.dart';
 
 class ListenableOneTimePracticeCard
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const ListenableOneTimePracticeCard({super.key});
+  final String question;
+  const ListenableOneTimePracticeCard({super.key,required this.question});
 
   Future<void> _play(CoursePracticeViewModel viewModel) async {
     viewModel.setPlayCount();
-    await viewModel.playVoicePrompt(viewModel
-            .questions[viewModel.currentQuestion]
-            .dynamicPayload
-            ?.stimulus
-            ?.first
-            .value ??
-        '');
+    await viewModel.playVoicePrompt(question);
   }
 
   @override

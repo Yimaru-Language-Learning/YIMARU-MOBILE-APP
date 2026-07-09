@@ -4,16 +4,45 @@ import 'package:yimaru_app/ui/widgets/dwarf_tile.dart';
 import 'package:yimaru_app/ui/widgets/listenable_one_time_practice_card.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
+import '../../../widgets/countdown_timer.dart';
+import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_small_trailing_radio_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
-import '../../../widgets/duolingo_practice_review_section.dart';
 import '../course_practice_viewmodel.dart';
 
-class DuolingoListeningPractice3Review
+class DuolingoReadingPractice1Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const DuolingoListeningPractice3Review({super.key});
+  final int duration;
+  final List options;
+  final String question;
+
+
+  const DuolingoReadingPractice1Question({
+    super.key,
+    required this.options,
+    required this.duration,
+    required this.question,
+  });
+
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.setListeningAnswer3(
+      question: question,
+      duration: duration,
+      answer: viewModel.selectedOption.toString(),
+      sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?.last.value['options'] as List)
+          .firstWhere((e) => e['is_correct'])['text'],
+    );
+  }
+
+  void _setOption(
+      {required Map<String, dynamic> option,
+      required CoursePracticeViewModel viewModel}) {
+    viewModel.setSelectedOption(option);
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -79,7 +108,9 @@ class DuolingoListeningPractice3Review
       [
         verticalSpaceMedium,
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-        verticalSpaceSmall
+        verticalSpaceSmall,
+        _buildCountdownWrapper(viewModel),
+        verticalSpaceSmall,
       ];
 
   Widget _buildAppBarIndenter(
@@ -97,7 +128,22 @@ class DuolingoListeningPractice3Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+      );
+
+  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
+      alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
+
+
+  Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.reading1Variant)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(viewModel);
+
+  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
+        duration: viewModel.countdown,
+        key: ValueKey(viewModel.countdown),
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -112,6 +158,11 @@ class DuolingoListeningPractice3Review
 
   Widget _buildBodyScroller(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(
+        child: _buildQuestionIndenter(viewModel),
+      );
+
+  Widget _buildQuestionIndenter(CoursePracticeViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestionWrapper(viewModel),
       );
 
@@ -124,85 +175,59 @@ class DuolingoListeningPractice3Review
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         verticalSpaceLarge,
-        _buildTitlePadding(),
+
+        _buildQuestion(),
+        verticalSpaceLarge,
+        _buildPracticeQuestions(viewModel),
         verticalSpaceMedium,
-        _buildQuestionPadding(),
-        verticalSpaceLarge,
-        _buildLabelPadding(),
-        verticalSpaceSmall,
-        _buildPracticeQuestionsPadding(viewModel),
-        verticalSpaceLarge,
-        _buildPracticeReviewSection(viewModel)
+        _buildContinueButtonWrapper(viewModel)
       ];
 
-  Widget _buildTitlePadding() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildTitle(),
-      );
 
-  Widget _buildTitle() => Text(
-        'Listen closely! Audio clips only play once',
-        style: style18DG700,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildQuestionPadding() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildQuestion(),
-      );
 
   Widget _buildQuestion() =>
-      DwarfTile(small: true, child: _buildListenablePracticeCard());
+ Text(
+question,
+    style: style14DG400,
+  );
 
-  Widget _buildListenablePracticeCard() =>
-      const Expanded(child: ListenableOneTimePracticeCard());
 
-  Widget _buildLabelPadding() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildLabel(),
-      );
-
-  Widget _buildLabel() => Text(
-        'Select the best response',
-        style: style16DG600,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildPracticeQuestionsPadding(CoursePracticeViewModel viewModel) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildPracticeQuestions(viewModel),
-      );
 
   Widget _buildPracticeQuestions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value['options'].length,
+        itemCount: options.length,
         itemBuilder: (context, index) => _buildPracticeCard(
-          selected: viewModel.isSelectedOption(viewModel
-              .questions[viewModel.currentQuestion]
-              .dynamicPayload
-              ?.response
-              ?.last
-              .value['options'][index]),
-          title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value['options'][index]['text'],
+          title: options[index]['text'],
+          selected: viewModel.isSelectedOption(options[index]),
+          onTap: () => _setOption(viewModel: viewModel, option: options[index]),
         ),
       );
 
-  Widget _buildPracticeCard({required String title, required bool selected}) =>
+  Widget _buildPracticeCard(
+          {required String title,
+          required bool selected,
+          required GestureTapCallback onTap}) =>
       CustomSmallTrailingRadioButton(
         title: title,
+        onTap: onTap,
         selected: selected,
       );
 
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
-      DuolingoPracticeReviewSection(
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
-        review: viewModel.answers,
+  Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
+      Padding(
+        padding: const EdgeInsets.only(bottom: 50),
+        child: _buildContinueButton(viewModel),
+      );
+
+  Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
+      CustomElevatedButton(
+        height: 55,
+        text: 'Submit',
+        borderRadius: 12,
+        foregroundColor: kcWhite,
+        backgroundColor: kcPrimaryColor,
+        onTap: () async => await _next(viewModel),
       );
 }
