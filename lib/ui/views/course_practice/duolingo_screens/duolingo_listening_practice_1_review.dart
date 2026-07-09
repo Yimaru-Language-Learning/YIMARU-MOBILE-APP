@@ -12,10 +12,9 @@ import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice1Review
     extends ViewModelWidget<CoursePracticeViewModel> {
-  final TextEditingController practiceController;
 
   const DuolingoListeningPractice1Review(
-      {super.key, required this.practiceController});
+      {super.key});
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();

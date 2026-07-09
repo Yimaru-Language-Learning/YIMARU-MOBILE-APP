@@ -6,7 +6,6 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_1_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_1_variant.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_2_review.dart';
-import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_3_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_4_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_4_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/course_practices_screens.dart';
@@ -14,6 +13,7 @@ import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_fi
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_intro_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_2_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_3_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_1_variant.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_2_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_2_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_3_question.dart';
@@ -70,6 +70,7 @@ import '../../widgets/page_loading_indicator.dart';
 import '../../widgets/practice_loading_screen.dart';
 import 'course_practice_view.form.dart';
 import 'course_practice_viewmodel.dart';
+import 'duolingo_screens/duolingo_listening_practice_3_variant.dart';
 import 'ielts_screens/ielts_reading_practice_2_question.dart';
 import 'ielts_screens/ielts_listening_practice_2_question.dart';
 import 'ielts_screens/ielts_listening_practice_9_question.dart';
@@ -142,12 +143,12 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 56 /*Interactive listening part 1*/) {
       return const DuolingoListeningPractice2Question();
     } else if (id == 29 /*Interactive listening part 2*/) {
-      return const DuolingoListeningPractice3Question();
+      return const DuolingoListeningPractice3Variant();
     } else if (id == 57 /*Interactive listening part 3*/) {
       return DuolingoListeningPractice4Question(
           practiceController: practiceController);
-    } else if (id == 0 /*Read and select*/) {
-      return Container();
+    } else if (id == 49 /*Read and select*/) {
+      return const DuolingoReadingPractice1Variant();
     } else if (id == 3 /*Fill in the blank*/) {
       return const DuolingoReadingPractice2Question();
     } else if (id == 51 /*Interactive reading - complete the sentence*/) {
@@ -180,6 +181,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           28 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           29 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          49 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           50 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
@@ -221,6 +224,12 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           CoursePracticeViewModel viewModel) =>
       viewModel
               .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          29 &&
+      viewModel
+              .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          49 &&
+      viewModel
+              .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           52 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           53 &&
@@ -252,17 +261,12 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return DuolingoWritingPractice4Review(
           practiceController: practiceController);
     } else if (id == 28 /*Listen and type*/) {
-      return DuolingoListeningPractice1Review(
-          practiceController: practiceController);
+      return const DuolingoListeningPractice1Review();
     } else if (id == 56 /*Interactive listening part 1*/) {
       return const DuolingoListeningPractice2Review();
-    } else if (id == 29 /*Interactive listening part 2*/) {
-      return const DuolingoListeningPractice3Review();
     } else if (id == 57 /*Interactive listening part 3*/) {
       return DuolingoListeningPractice4Review(
           practiceController: practiceController);
-    } else if (id == 0 /*Read and select*/) {
-      return Container();
     } else if (id == 3 /*Fill in the blank*/) {
       return const DuolingoReadingPractice2Review();
     } else if (id == 51 /*Interactive reading - complete the sentence*/) {

@@ -39,12 +39,13 @@ class DuolingoListeningPractice1Variant
 
   Widget _buildVariant1(CoursePracticeViewModel viewModel) => _buildVariant(
         viewModel: viewModel,
+        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[0].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[1].value,
         duration: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[2].value['seconds'],
-        audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?[1].value,
+
         /*  audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
               ?.stimulus?[0].value,*/
 
@@ -54,8 +55,8 @@ class DuolingoListeningPractice1Variant
 
   Widget _buildVariant2(CoursePracticeViewModel viewModel) => _buildVariant(
         viewModel: viewModel,
-        audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?[2].value,
+        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[1].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[3].value,
         duration: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -69,8 +70,8 @@ class DuolingoListeningPractice1Variant
 
   Widget _buildVariant3(CoursePracticeViewModel viewModel) => _buildVariant(
         viewModel: viewModel,
-        audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?[3].value,
+        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[2].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[5].value,
         duration: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -84,8 +85,8 @@ class DuolingoListeningPractice1Variant
 
   Widget _buildVariant4(CoursePracticeViewModel viewModel) => _buildVariant(
         viewModel: viewModel,
-        audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?[4].value,
+        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[3].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[7].value,
         duration: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -99,7 +100,7 @@ class DuolingoListeningPractice1Variant
 
   Widget _buildVariant5(CoursePracticeViewModel viewModel) => _buildVariant(
         viewModel: viewModel,
-        audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[4].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[9].value,
@@ -108,12 +109,12 @@ class DuolingoListeningPractice1Variant
       );
 
   Widget _buildVariant(
-          {required String audio,
-          required int duration,
+          {required int duration,
           required String response,
+          required String question,
           required CoursePracticeViewModel viewModel}) =>
       DuolingoListeningPractice1Question(
-        audio: audio,
+        question: question,
         response: response,
         duration: duration,
         practiceController: practiceController,
