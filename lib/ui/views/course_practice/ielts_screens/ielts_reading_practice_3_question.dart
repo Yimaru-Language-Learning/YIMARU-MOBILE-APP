@@ -201,7 +201,6 @@ class IeltsReadingPractice3Question
               .toList()[index],
           title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
               ?.response?.last.value['options'][index]['text'],
-
         ),
       );
 

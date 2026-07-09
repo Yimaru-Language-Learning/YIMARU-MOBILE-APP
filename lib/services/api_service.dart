@@ -1019,6 +1019,34 @@ class ApiService {
     }
   }
 
+  // Create direct payment
+  Future<Map<String, dynamic>> createDirectPaymentRequest(
+      Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kPaymentsUrl/$kChapaUrl/$kDirectUrl',
+          data: data);
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Subscription successful!',
+          'data': LearnSubscriptionRequest.fromJson(response.data['data']),
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
   // Verify subscription
   Future<Map<String, dynamic>> verifySubscription(int id) async {
     try {

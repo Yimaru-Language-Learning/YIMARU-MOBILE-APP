@@ -18,10 +18,10 @@ class DuolingoWritingPractice1Question
   const DuolingoWritingPractice1Question(
       {super.key, required this.practiceController});
 
-  Future<void> _nextScreen(CoursePracticeViewModel viewModel)async {
+  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.setWritingAnswer(
-        response:practiceController.text,
+        response: practiceController.text,
         sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?.last.value);
     viewModel.nextScreen();
@@ -121,7 +121,7 @@ class DuolingoWritingPractice1Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: () async=>await _nextScreen(viewModel),
+        onEnd: () async => await _nextScreen(viewModel),
         duration: viewModel.countdown,
       );
 
@@ -140,7 +140,7 @@ class DuolingoWritingPractice1Question
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(viewModel),
-    verticalSpaceMedium,
+        verticalSpaceMedium,
         _buildImageContainer(viewModel),
         verticalSpaceMedium,
         _buildPracticeFormField(viewModel),
@@ -211,7 +211,7 @@ class DuolingoWritingPractice1Question
         foregroundColor: kcWhite,
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? ()async => await _nextScreen(viewModel)
+            ? () async => await _nextScreen(viewModel)
             : null,
         backgroundColor: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage

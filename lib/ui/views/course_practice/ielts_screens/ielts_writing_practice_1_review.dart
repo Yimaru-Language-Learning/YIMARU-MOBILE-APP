@@ -16,7 +16,8 @@ class IeltsWritingPractice1Review
   });
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();    viewModel.resetValues();
+    await viewModel.stopRecording();
+    viewModel.resetValues();
 
     viewModel.pop();
     viewModel.goBack();
@@ -112,8 +113,14 @@ class IeltsWritingPractice1Review
         children: _buildSpeakingIndicatorChildren(viewModel),
       );
 
-  List<Widget> _buildSpeakingIndicatorChildren(CoursePracticeViewModel viewModel) =>
-      [_buildTitle(), _buildSubtitle(), verticalSpaceLarge, _buildPdfCard(viewModel)];
+  List<Widget> _buildSpeakingIndicatorChildren(
+          CoursePracticeViewModel viewModel) =>
+      [
+        _buildTitle(),
+        _buildSubtitle(),
+        verticalSpaceLarge,
+        _buildPdfCard(viewModel)
+      ];
 
   Widget _buildTitle() => Text(
         'Your Writing Feedback Report Is Ready',
@@ -127,11 +134,14 @@ class IeltsWritingPractice1Review
         textAlign: TextAlign.center,
       );
 
-  Widget _buildPdfCard(CoursePracticeViewModel viewModel) =>  DownloadPdfCard(
-    
-    onTap:() async=> await viewModel.navigateToPdf(viewModel.questions[viewModel.currentQuestion]
-        .dynamicPayload?.response?.first.value) ,
-  );
+  Widget _buildPdfCard(CoursePracticeViewModel viewModel) => DownloadPdfCard(
+        onTap: () async => await viewModel.navigateToPdf(viewModel
+            .questions[viewModel.currentQuestion]
+            .dynamicPayload
+            ?.response
+            ?.first
+            .value),
+      );
 
   Widget _buildContinueButtonWrapper(
           {required BuildContext context,

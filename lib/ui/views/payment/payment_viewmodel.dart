@@ -45,13 +45,27 @@ class PaymentViewModel extends ReactiveViewModel {
   // Remote api call
 
   // Learn subscription
-  Future<void> createLearnSubscriptionRequest(
+
+  Future<void> initiate(
           {required String phone,
+          required PaymentMethod method,
           required LearnSubscription subscription}) async =>
       await runBusyFuture(
-          _createLearnSubscriptionRequest(
-              phone: phone, subscription: subscription),
+          _initiate(phone: phone, method: method, subscription: subscription),
           busyObject: StateObjects.learnSubscription);
+
+  Future<void> _initiate(
+      {required String phone,
+      required PaymentMethod method,
+      required LearnSubscription subscription}) async {
+    if (method == PaymentMethod.sdk) {
+      await _createLearnSubscriptionRequest(
+          phone: phone, subscription: subscription);
+    } else {
+      await _createLearnDirectPaymentRequest(
+          phone: phone, subscription: subscription);
+    }
+  }
 
   Future<void> _createLearnSubscriptionRequest(
       {required String phone, required LearnSubscription subscription}) async {
@@ -65,6 +79,34 @@ class PaymentViewModel extends ReactiveViewModel {
 
       Map<String, dynamic> response =
           await _apiService.createSubscriptionRequest(data);
+
+      if (response['status'] == ResponseStatus.success) {
+        _request = response['data'];
+      }
+    }
+  }
+
+// Create direct payment
+  Future<void> createDirectPaymentRequest(
+          {required String phone,
+          required LearnSubscription subscription}) async =>
+      await runBusyFuture(
+          _createLearnDirectPaymentRequest(
+              phone: phone, subscription: subscription),
+          busyObject: StateObjects.learnSubscription);
+
+  Future<void> _createLearnDirectPaymentRequest(
+      {required String phone, required LearnSubscription subscription}) async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> data = {
+        'phone': '251$phone',
+        'email': 'test@gmail.com',
+        'plan_id': subscription.id,
+        'payment_method':'telebirr',
+      };
+
+      Map<String, dynamic> response =
+          await _apiService.createDirectPaymentRequest(data);
 
       if (response['status'] == ResponseStatus.success) {
         _request = response['data'];

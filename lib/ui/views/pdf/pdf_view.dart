@@ -14,7 +14,7 @@ class PdfView extends StackedView<PdfViewModel> {
 
   @override
   void onViewModelReady(PdfViewModel viewModel) async {
-   // await viewModel.openPdf(url);
+    // await viewModel.openPdf(url);
     super.onViewModelReady(viewModel);
   }
 
@@ -41,8 +41,6 @@ class PdfView extends StackedView<PdfViewModel> {
         ],
       );
 
-
-
   Widget _buildSafeBackButton(PdfViewModel viewModel) => SafeArea(
         child: _buildBackButtonWrapper(viewModel),
       );
@@ -62,7 +60,7 @@ class PdfView extends StackedView<PdfViewModel> {
 
   Widget _buildPdfViewerState(PdfViewModel viewModel) =>
       viewModel.busy(StateObjects.openPdf)
-          ?  _buildLoadingIndicator()
+          ? _buildLoadingIndicator()
           : _buildPdfViewer(viewModel);
 
   Widget _buildLoadingIndicator() => const Center(

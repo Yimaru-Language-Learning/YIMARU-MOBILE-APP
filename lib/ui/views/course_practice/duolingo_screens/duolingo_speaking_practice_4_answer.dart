@@ -32,7 +32,6 @@ class DuolingoSpeakingPractice4Answer
   }
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
-
     await viewModel.setSpeakingAnswer4(
       audio: audio,
       sample: response,
@@ -69,8 +68,8 @@ class DuolingoSpeakingPractice4Answer
       );
 
   Widget _buildScaffoldStack(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),

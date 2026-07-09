@@ -37,19 +37,19 @@ class DuolingoPracticeReviewSection extends StatelessWidget {
       );
 
   Widget _buildSampleAnswers() => ListView.separated(
-    shrinkWrap: true,
-    itemCount:review.length,
-    physics: const NeverScrollableScrollPhysics(),
-    separatorBuilder: (context, index) => verticalSpaceSmall,
-    itemBuilder: (context, index) =>_buildSampleAnswer(
-        number: index + 1,
-        answer: review[index]['sample']),
-  );
+        shrinkWrap: true,
+        itemCount: review.length,
+        physics: const NeverScrollableScrollPhysics(),
+        separatorBuilder: (context, index) => verticalSpaceSmall,
+        itemBuilder: (context, index) => _buildSampleAnswer(
+            number: index + 1, answer: review[index]['sample']),
+      );
 
   Widget _buildSampleAnswer({
     required int number,
     required String answer,
-}) => Text(
+  }) =>
+      Text(
         '$number. $answer',
         style: style14DG400,
         textAlign: TextAlign.center,

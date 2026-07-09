@@ -18,7 +18,7 @@ class MultipleChoiceCard extends ViewModelWidget<CoursePracticeViewModel> {
       required this.question});
 
   void _onTap({
-    required Map<String,dynamic> answer,
+    required Map<String, dynamic> answer,
     required CoursePracticeViewModel viewModel,
   }) {
     viewModel.setSelectedChoice(number: number, answer: answer);
@@ -66,44 +66,50 @@ class MultipleChoiceCard extends ViewModelWidget<CoursePracticeViewModel> {
       Expanded(child: _buildQuestionColumn(viewModel));
 
   Widget _buildQuestionColumn(CoursePracticeViewModel viewModel) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-        children:_buildQuestionColumnChildren(viewModel),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _buildQuestionColumnChildren(viewModel),
       );
-  
-  List<Widget> _buildQuestionColumnChildren(CoursePracticeViewModel viewModel)=> [
-    verticalSpaceTiny,_buildText(), verticalSpaceMedium, _buildOptions(viewModel)];
+
+  List<Widget> _buildQuestionColumnChildren(
+          CoursePracticeViewModel viewModel) =>
+      [
+        verticalSpaceTiny,
+        _buildText(),
+        verticalSpaceMedium,
+        _buildOptions(viewModel)
+      ];
 
   Widget _buildText() => Text(
         question,
         style: style14DG400,
       );
 
-
-
-
   Widget _buildOptions(CoursePracticeViewModel viewModel) => ListView.builder(
-    shrinkWrap: true,
-    padding: EdgeInsets.zero,
-    physics: const NeverScrollableScrollPhysics(),
-    itemCount:  (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-        ?.response?.last.value['options'] as List).length,
-    itemBuilder: (context, index) => _buildOption(
-      title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-          ?.response?.last.value['options'][index]['text'],
-      onTap: () => _onTap(answer: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-          ?.response?.last.value['options'][index], viewModel: viewModel),
-      selected: viewModel.isSelectedChoice(number: number, answer: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-          ?.response?.last.value['options'][index]),
-    ),
-  );
-
-
-
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: (viewModel.questions[viewModel.currentQuestion]
+                .dynamicPayload?.response?.last.value['options'] as List)
+            .length,
+        itemBuilder: (context, index) => _buildOption(
+          title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?.last.value['options'][index]['text'],
+          onTap: () => _onTap(
+              answer: viewModel.questions[viewModel.currentQuestion]
+                  .dynamicPayload?.response?.last.value['options'][index],
+              viewModel: viewModel),
+          selected: viewModel.isSelectedChoice(
+              number: number,
+              answer: viewModel.questions[viewModel.currentQuestion]
+                  .dynamicPayload?.response?.last.value['options'][index]),
+        ),
+      );
 
   Widget _buildOption({
     required String title,
     required bool selected,
     required GestureTapCallback onTap,
   }) =>
-      CustomSmallTrailingRadioButton(onTap: onTap, title: title, selected: selected);
+      CustomSmallTrailingRadioButton(
+          onTap: onTap, title: title, selected: selected);
 }

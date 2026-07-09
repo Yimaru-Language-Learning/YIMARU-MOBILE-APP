@@ -13,16 +13,12 @@ class DuolingoListeningPractice1Variant
     if (viewModel.variants == 0) {
       return _buildVariant1(viewModel);
     } else if (viewModel.variants == 1) {
-
       return _buildVariant2(viewModel);
     } else if (viewModel.variants == 2) {
-
       return _buildVariant3(viewModel);
     } else if (viewModel.variants == 3) {
-
       return _buildVariant4(viewModel);
     } else if (viewModel.variants == 4) {
-
       return _buildVariant5(viewModel);
     } else {
       return Container();

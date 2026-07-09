@@ -13,9 +13,9 @@ class IeltsSpeakingPractice3Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsSpeakingPractice3Question({super.key});
 
-
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();    viewModel.resetValues();
+    await viewModel.stopRecording();
+    viewModel.resetValues();
 
     viewModel.pop();
     viewModel.goBack();

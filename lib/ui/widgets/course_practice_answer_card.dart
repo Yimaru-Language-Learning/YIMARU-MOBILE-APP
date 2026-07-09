@@ -8,38 +8,35 @@ import '../common/enmus.dart';
 import '../common/ui_helpers.dart';
 import '../views/course_practice/course_practice_viewmodel.dart';
 
-class CoursePracticeAnswerCard extends ViewModelWidget<CoursePracticeViewModel> {
-
+class CoursePracticeAnswerCard
+    extends ViewModelWidget<CoursePracticeViewModel> {
   final Voice voice;
   final String title;
   final Map<String, dynamic> answer;
 
-  const CoursePracticeAnswerCard(
-      {super.key,
-      required this.voice,
-      required this.title,
-      required this.answer,
-    });
+  const CoursePracticeAnswerCard({
+    super.key,
+    required this.voice,
+    required this.title,
+    required this.answer,
+  });
 
-  Widget _getButtonState( CoursePracticeViewModel viewModel){
-
-    if(   answer['question'] == viewModel.busyObject){
-      if(viewModel.playing == voice){
-        if(viewModel.busy(answer['busy_object'])){
+  Widget _getButtonState(CoursePracticeViewModel viewModel) {
+    if (answer['question'] == viewModel.busyObject) {
+      if (viewModel.playing == voice) {
+        if (viewModel.busy(answer['busy_object'])) {
           return _buildProgressIndicatorWrapper();
-        }else if(viewModel.player.state == PlayerState.playing){
+        } else if (viewModel.player.state == PlayerState.playing) {
           return _buildPauseIcon();
         }
-      }else{
+      } else {
         return _buildPlayIcon();
       }
 
       return _buildPlayIcon();
-
-    }else{
+    } else {
       return _buildPlayIcon();
     }
-
   }
 
   @override
@@ -73,7 +70,7 @@ class CoursePracticeAnswerCard extends ViewModelWidget<CoursePracticeViewModel> 
       );
 
   Widget _buildButtonState(CoursePracticeViewModel viewModel) =>
-     _getButtonState(viewModel);
+      _getButtonState(viewModel);
 
   Widget _buildProgressIndicatorWrapper() => Center(
         child: _buildProgressIndicator(),

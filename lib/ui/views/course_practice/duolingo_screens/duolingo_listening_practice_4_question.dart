@@ -15,8 +15,6 @@ class DuolingoListeningPractice4Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   final TextEditingController practiceController;
 
-
-
   const DuolingoListeningPractice4Question(
       {super.key, required this.practiceController});
 
@@ -124,9 +122,8 @@ class DuolingoListeningPractice4Question
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
-    onEnd:() async=>await _next(viewModel),
-
-  );
+        onEnd: () async => await _next(viewModel),
+      );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionScrollerWrapper(viewModel));
@@ -141,9 +138,8 @@ class DuolingoListeningPractice4Question
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
-    verticalSpaceMedium,
-
-    _buildTitle(viewModel),
+        verticalSpaceMedium,
+        _buildTitle(viewModel),
         verticalSpaceMedium,
         _buildQuestion(viewModel),
         verticalSpaceMedium,
@@ -203,7 +199,7 @@ class DuolingoListeningPractice4Question
         foregroundColor: kcWhite,
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? () async=>await _next(viewModel)
+            ? () async => await _next(viewModel)
             : null,
         backgroundColor: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage

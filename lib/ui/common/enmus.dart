@@ -1,3 +1,6 @@
+// Payment method
+enum PaymentMethod { ussd, sdk }
+
 // Practice voice
 enum Voice { sample, recorded }
 

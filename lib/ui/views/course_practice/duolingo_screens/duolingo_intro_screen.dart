@@ -86,7 +86,7 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       String stimulusFirst = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.first.value ??
+              .dynamicPayload?.stimulus?.first.value ??
           '';
       viewModel.setCountdown(responseFirstSec);
       viewModel.setPlayCount();
@@ -282,7 +282,8 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Widget _buildContinueButtonState(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      viewModel.busy(StateObjects.cacheImage) ||  viewModel.busy(StateObjects.coursePracticePrompt)
+      viewModel.busy(StateObjects.cacheImage) ||
+              viewModel.busy(StateObjects.coursePracticePrompt)
           ? const CustomCircularProgressIndicator(color: kcPrimaryColor)
           : _buildContinueButton(context: context, viewModel: viewModel);
 

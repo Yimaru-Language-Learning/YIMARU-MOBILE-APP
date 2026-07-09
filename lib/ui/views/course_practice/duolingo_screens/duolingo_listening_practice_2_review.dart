@@ -14,7 +14,6 @@ class DuolingoListeningPractice2Review
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoListeningPractice2Review({super.key});
 
-
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -22,8 +21,8 @@ class DuolingoListeningPractice2Review
   }
 
   Future<void> _showSheet(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) async =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -35,36 +34,50 @@ class DuolingoListeningPractice2Review
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
-      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel),);
-
-  Widget _buildBodyColumn({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyColumnChildren(context: context, viewModel: viewModel),
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SafeArea(
+        child: _buildBodyColumn(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => [
+  Widget _buildBodyColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children:
+            _buildBodyColumnChildren(context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildBodyColumnChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildExpandedBody(viewModel),
       ];
 
-  Widget _buildAppBarIndenter({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Padding(
+  Widget _buildAppBarIndenter(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildAppBarWrapper(context: context, viewModel: viewModel),
       );
 
-  Widget _buildAppBarWrapper({required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Column(
+  Widget _buildAppBarWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         children: [
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
@@ -73,22 +86,21 @@ class DuolingoListeningPractice2Review
       );
 
   Widget _buildAppBar(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CoursePracticeAppBar(
         onClose: () async =>
-        await _showSheet(context: context, viewModel: viewModel),
+            await _showSheet(context: context, viewModel: viewModel),
         title:
-        'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
-    onClose: viewModel.pop,
-    onContinue: viewModel.pop,
-    user: viewModel.user?.firstName ?? '',
-    onCancel: () async => await _cancel(viewModel),
-  );
+        onClose: viewModel.pop,
+        onContinue: viewModel.pop,
+        user: viewModel.user?.firstName ?? '',
+        onCancel: () async => await _cancel(viewModel),
+      );
 
   Widget _buildExpandedBody(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildBodyScroller(viewModel));
@@ -117,20 +129,17 @@ class DuolingoListeningPractice2Review
         _buildLabelWrapper(
             '1. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value}'),
         verticalSpaceTiny,
-        _buildPracticeResponsesWrapper(
-          viewModel.answers[0]['response']),
+        _buildPracticeResponsesWrapper(viewModel.answers[0]['response']),
         verticalSpaceMedium,
         _buildLabelWrapper(
             '2. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[2].value}'),
         verticalSpaceTiny,
-        _buildPracticeResponsesWrapper(
-           viewModel.answers[1]['response']),
+        _buildPracticeResponsesWrapper(viewModel.answers[1]['response']),
         verticalSpaceMedium,
         _buildLabelWrapper(
             '3. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[3].value}'),
         verticalSpaceTiny,
-        _buildPracticeResponsesWrapper(
-          viewModel.answers[2]['response']),
+        _buildPracticeResponsesWrapper(viewModel.answers[2]['response']),
         verticalSpaceMedium,
         _buildPracticeReviewSection(viewModel),
       ];
@@ -157,17 +166,16 @@ class DuolingoListeningPractice2Review
                   ?.stimulus?.first.value ??
               '');
 
-
   Widget _buildLabelWrapper(String question) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildLabel(question),
-  );
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildLabel(question),
+      );
 
   Widget _buildLabel(String question) => Text(
-    question,
-    style: style14MG400,
-    textAlign: TextAlign.center,
-  );
+        question,
+        style: style14MG400,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildPracticeResponsesWrapper(String answer) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

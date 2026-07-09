@@ -21,107 +21,111 @@ class LearnProgramTile extends ViewModelWidget<LearnProgramViewModel> {
       _buildExpansionTileCard(viewModel);
 
   Widget _buildExpansionTileCard(LearnProgramViewModel viewModel) => Container(
-    margin: const EdgeInsets.only(bottom: 15),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5),
-      border: Border.all(color: kcPrimaryColor.withValues(alpha: 0.1)),
-    ),
-    child: _buildExpansionTile(viewModel),
-  );
+        margin: const EdgeInsets.only(bottom: 15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(color: kcPrimaryColor.withValues(alpha: 0.1)),
+        ),
+        child: _buildExpansionTile(viewModel),
+      );
 
   Widget _buildExpansionTile(LearnProgramViewModel viewModel) => ExpansionTile(
-    textColor: kcDarkGrey,
-    subtitle: _buildContent(),
-    title: _buildTitleWrapper(),
-    collapsedIconColor: kcDarkGrey,
-    collapsedTextColor: kcDarkGrey,
-    shape: Border.all(color: kcTransparent),
-    expandedAlignment: Alignment.centerLeft,
-    /* Due to the now learn locking logic
+        textColor: kcDarkGrey,
+        subtitle: _buildContent(),
+        title: _buildTitleWrapper(),
+        collapsedIconColor: kcDarkGrey,
+        collapsedTextColor: kcDarkGrey,
+        shape: Border.all(color: kcTransparent),
+        expandedAlignment: Alignment.centerLeft,
+        /* Due to the now learn locking logic
         enabled: (program.access?.isAccessible ?? false),
          backgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
         */
-    controlAffinity: ListTileControlAffinity.trailing,
-    tilePadding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
-    expandedCrossAxisAlignment: CrossAxisAlignment.start,
-    backgroundColor: (program.access?.isAccessible ?? false)
-        ? kcPrimaryColor.withValues(alpha: 0.1)
-        : kcBackgroundColor,
-    showTrailingIcon: (program.access?.isAccessible ?? false),
-    initiallyExpanded: (program.access?.isAccessible ?? false),
-    collapsedBackgroundColor: (program.access?.isAccessible ?? false)
-        ? kcPrimaryColor.withValues(alpha: 0.1)
-        : kcBackgroundColor,
-    children: _buildExpansionTileChildren(viewModel),
-  );
+        controlAffinity: ListTileControlAffinity.trailing,
+        tilePadding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
+        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        backgroundColor: (program.access?.isAccessible ?? false)
+            ? kcPrimaryColor.withValues(alpha: 0.1)
+            : kcBackgroundColor,
+        showTrailingIcon: (program.access?.isAccessible ?? false),
+        initiallyExpanded: (program.access?.isAccessible ?? false),
+        collapsedBackgroundColor: (program.access?.isAccessible ?? false)
+            ? kcPrimaryColor.withValues(alpha: 0.1)
+            : kcBackgroundColor,
+        children: _buildExpansionTileChildren(viewModel),
+      );
 
   List<Widget> _buildExpansionTileChildren(LearnProgramViewModel viewModel) => [
-    _buildDivider(),
-    verticalSpaceSmall,
-    _buildActionButtonWrapper(viewModel),
-    verticalSpaceMedium,
-  ];
+        _buildDivider(),
+        verticalSpaceSmall,
+        _buildActionButtonWrapper(viewModel),
+        verticalSpaceMedium,
+      ];
 
   Widget _buildTitleWrapper() => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 10),
-    child: _buildTitleState(),
-  );
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: _buildActiveTitleWrapper(),
+      );
 
-  Widget _buildTitleState() => (program.access?.isAccessible ?? false)
+/*  Due to the now learn locking logic
+ Widget _buildTitleState() => (program.access?.isAccessible ?? false)
       ? _buildActiveTitleWrapper()
-      : _buildInactiveTitleWrapper();
+      : _buildInactiveTitleWrapper();*/
 
   Widget _buildInactiveTitleWrapper() => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: _buildInactiveTitleChildren(),
-  );
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _buildInactiveTitleChildren(),
+      );
 
   List<Widget> _buildInactiveTitleChildren() => [
-    _buildLockIcon(),
-    verticalSpaceSmall,
-    _buildTitle(),
-  ];
+        _buildLockIcon(),
+        verticalSpaceSmall,
+        _buildTitle(),
+      ];
 
   Widget _buildLockIcon() => const Icon(
-    Icons.lock_outline_rounded,
-    color: kcLightGrey,
-  );
+        Icons.lock_outline_rounded,
+        color: kcLightGrey,
+      );
 
   Widget _buildActiveTitleWrapper() => Row(
-    mainAxisSize: MainAxisSize.min,
-    children: _buildActiveTitleChildren(),
-  );
+        mainAxisSize: MainAxisSize.min,
+        children: _buildActiveTitleChildren(),
+      );
 
-  List<Widget> _buildActiveTitleChildren() =>
-      [_buildTitle(), horizontalSpaceSmall, _buildProgressStatus()];
+  List<Widget> _buildActiveTitleChildren() => [
+        _buildTitle(),
+        horizontalSpaceSmall,
+        if ((program.access?.isAccessible ?? false)) _buildProgressStatus()
+      ];
 
   Widget _buildTitle() => Text(
-    program.name ?? '',
-    style: (program.access?.isAccessible ?? false)
-        ? style16P600
-        : style16DG600,
-  );
+        program.name ?? '',
+        style: (program.access?.isAccessible ?? false)
+            ? style16P600
+            : style16DG600,
+      );
 
   Widget _buildProgressStatus() => ProgressStatus(
-    color: kcPrimaryColor,
-    status: (program.access?.isCompleted ?? false)
-        ? LocaleKeys.completed.tr()
-        : LocaleKeys.in_progress.tr(),
-  );
+        color: kcPrimaryColor,
+        status: (program.access?.isCompleted ?? false)
+            ? LocaleKeys.completed.tr()
+            : LocaleKeys.in_progress.tr(),
+      );
 
   Widget _buildContent() => Text(
-    program.description ?? '',
-    maxLines: 2,
-    style: style14DG400,
-  );
+        program.description ?? '',
+        maxLines: 2,
+        style: style14DG400,
+      );
 
   Widget _buildDivider() => const Divider(color: kcVeryLightGrey);
 
   Widget _buildActionButtonWrapper(LearnProgramViewModel viewModel) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildActionButton(viewModel),
-  );
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildActionButton(viewModel),
+      );
 
   Widget _buildActionButton(LearnProgramViewModel viewModel) =>
       CustomElevatedButton(

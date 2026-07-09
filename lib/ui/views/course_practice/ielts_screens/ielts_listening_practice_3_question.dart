@@ -18,10 +18,11 @@ class IeltsListeningPractice3Question
   const IeltsListeningPractice3Question(
       {super.key, required this.practiceController});
 
-  void _reset(CoursePracticeViewModel viewModel){
+  void _reset(CoursePracticeViewModel viewModel) {
     practiceController.clear();
     viewModel.resetValues();
   }
+
   void _nextScreen(CoursePracticeViewModel viewModel) {
     FocusManager.instance.primaryFocus?.unfocus();
     _reset(viewModel);
@@ -100,7 +101,8 @@ class IeltsListeningPractice3Question
           /*_buildCountdownWrapper(viewModel),
           verticalSpaceSmall,*/
           _buildTitle(),
-          verticalSpaceSmall,        ],
+          verticalSpaceSmall,
+        ],
       );
 
   Widget _buildAppBar(
@@ -121,24 +123,23 @@ class IeltsListeningPractice3Question
       );
 
   Widget _buildTitle() => Text(
-    'Short Answer',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
+        'Short Answer',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         onEnd: () => _nextScreen(viewModel),
-        duration:viewModel.countdown,
+        duration: viewModel.countdown,
       );
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildQuestionScrollerWrapper(viewModel));
 
   Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(child: _buildQuestionWrapper(viewModel));
-
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
@@ -155,15 +156,14 @@ class IeltsListeningPractice3Question
           verticalSpaceTiny,
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
-    verticalSpaceLarge,        _buildContinueButtonWrapper(viewModel)
-
-  ];
-
-
+        verticalSpaceLarge,
+        _buildContinueButtonWrapper(viewModel)
+      ];
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeQuestionCard(
-        subtitle: viewModel.questions[viewModel.currentQuestion].questionText ?? '',
+        subtitle:
+            viewModel.questions[viewModel.currentQuestion].questionText ?? '',
       );
 
   Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>

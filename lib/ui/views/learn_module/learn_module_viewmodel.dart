@@ -60,7 +60,7 @@ class LearnModuleViewModel extends ReactiveViewModel {
   Future<void> _getLearnModules(int id) async {
     if (await _statusChecker.checkConnection()) {
       await _learnService.getLearnModules(id);
-     // await refreshModuleImages(_modules);
+      // await refreshModuleImages(_modules);
     }
   }
 

@@ -14,7 +14,6 @@ class DuolingoReadingPractice5Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoReadingPractice5Question({super.key});
 
-
   Future<void> _next(CoursePracticeViewModel viewModel) async {
     if (viewModel.currentQuestion == viewModel.questions.length - 1) {
       viewModel.nextScreen();
@@ -22,7 +21,7 @@ class DuolingoReadingPractice5Question
       await viewModel.nextQuestion();
     }
   }
-  
+
   void _setOption(
       {required Map<String, dynamic> option,
       required CoursePracticeViewModel viewModel}) {
@@ -124,7 +123,7 @@ class DuolingoReadingPractice5Question
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
-        onEnd: ()async=>await _next(viewModel),
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -214,6 +213,6 @@ class DuolingoReadingPractice5Question
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async=> await _next(viewModel),
+        onTap: () async => await _next(viewModel),
       );
 }

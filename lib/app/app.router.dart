@@ -646,7 +646,10 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<PaymentViewArguments>(nullOk: false);
       return _i39.MaterialPageRoute<dynamic>(
         builder: (context) => _i35.PaymentView(
-            key: args.key, phone: args.phone, subscription: args.subscription),
+            key: args.key,
+            phone: args.phone,
+            method: args.method,
+            subscription: args.subscription),
         settings: data,
       );
     },
@@ -1534,6 +1537,7 @@ class PaymentViewArguments {
   const PaymentViewArguments({
     this.key,
     required this.phone,
+    required this.method,
     required this.subscription,
   });
 
@@ -1541,11 +1545,13 @@ class PaymentViewArguments {
 
   final String phone;
 
+  final _i43.PaymentMethod method;
+
   final _i48.LearnSubscription subscription;
 
   @override
   String toString() {
-    return '{"key": "$key", "phone": "$phone", "subscription": "$subscription"}';
+    return '{"key": "$key", "phone": "$phone", "method": "$method", "subscription": "$subscription"}';
   }
 
   @override
@@ -1553,12 +1559,16 @@ class PaymentViewArguments {
     if (identical(this, other)) return true;
     return other.key == key &&
         other.phone == phone &&
+        other.method == method &&
         other.subscription == subscription;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ phone.hashCode ^ subscription.hashCode;
+    return key.hashCode ^
+        phone.hashCode ^
+        method.hashCode ^
+        subscription.hashCode;
   }
 }
 
@@ -2213,6 +2223,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   Future<dynamic> navigateToPaymentView({
     _i39.Key? key,
     required String phone,
+    required _i43.PaymentMethod method,
     required _i48.LearnSubscription subscription,
     int? routerId,
     bool preventDuplicates = true,
@@ -2222,7 +2233,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.paymentView,
         arguments: PaymentViewArguments(
-            key: key, phone: phone, subscription: subscription),
+            key: key, phone: phone, method: method, subscription: subscription),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2852,6 +2863,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   Future<dynamic> replaceWithPaymentView({
     _i39.Key? key,
     required String phone,
+    required _i43.PaymentMethod method,
     required _i48.LearnSubscription subscription,
     int? routerId,
     bool preventDuplicates = true,
@@ -2861,7 +2873,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.paymentView,
         arguments: PaymentViewArguments(
-            key: key, phone: phone, subscription: subscription),
+            key: key, phone: phone, method: method, subscription: subscription),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

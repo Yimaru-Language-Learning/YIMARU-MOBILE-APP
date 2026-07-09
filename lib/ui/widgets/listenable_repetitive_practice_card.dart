@@ -13,7 +13,7 @@ import 'custom_circular_progress_indicator.dart';
 class ListenableRepetitivePracticeCard
     extends ViewModelWidget<CoursePracticeViewModel> {
   final String audio;
-  const ListenableRepetitivePracticeCard({super.key,required this.audio});
+  const ListenableRepetitivePracticeCard({super.key, required this.audio});
 
   Future<void> _play(CoursePracticeViewModel viewModel) async {
     viewModel.setPlayCount();
