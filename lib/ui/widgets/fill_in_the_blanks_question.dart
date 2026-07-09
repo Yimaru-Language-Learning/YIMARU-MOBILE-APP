@@ -12,51 +12,50 @@ class FillInTheBlanksQuestion extends ViewModelWidget<CoursePracticeViewModel> {
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildSentence(viewModel);
 
-  Widget _buildSentence(CoursePracticeViewModel viewModel) =>
-      RichText(
+  Widget _buildSentence(CoursePracticeViewModel viewModel) => RichText(
         text: TextSpan(
           style: style14MG400,
           children: question.map<InlineSpan>((e) {
             if (e['type'] == 'text') {
-              return _buildText( e['value']);
+              return _buildText(e['value']);
             }
 
-            return _buildTextFieldSpan(value:e['id'],viewModel: viewModel);
+            return _buildTextFieldSpan(value: e['id'], viewModel: viewModel);
           }).toList(),
         ),
       );
 
-
   TextSpan _buildText(String text) => TextSpan(
-    text:text,
-    style: style14MG400.copyWith(height: 1.75),
-  );
-
-
-
-
-  WidgetSpan _buildTextFieldSpan(
-      {required String value,
-        required CoursePracticeViewModel viewModel}) =>
-      WidgetSpan(
-        alignment: PlaceholderAlignment.middle,
-        child:_buildTextFieldWrapper(value: value, viewModel: viewModel) ,
+        text: text,
+        style: style14MG400.copyWith(height: 1.75),
       );
 
-  Widget _buildTextFieldWrapper({required String value,
-    required CoursePracticeViewModel viewModel})=> SizedBox(
-    width: 100,
-    height: 32,
-    child: _buildTextField(value: value,viewModel: viewModel),
-  );
+  WidgetSpan _buildTextFieldSpan(
+          {required String value,
+          required CoursePracticeViewModel viewModel}) =>
+      WidgetSpan(
+        alignment: PlaceholderAlignment.middle,
+        child: _buildTextFieldWrapper(value: value, viewModel: viewModel),
+      );
 
-  Widget _buildTextField( {required String value,
-    required CoursePracticeViewModel viewModel})=> TextField(
-    style:  style14MG400,
-    decoration:const InputDecoration(
-      isDense: true,
-      contentPadding: EdgeInsets.zero,
-    ),
-    onChanged: (change) => viewModel.updateAnswer(value, change),
-  );
+  Widget _buildTextFieldWrapper(
+          {required String value,
+          required CoursePracticeViewModel viewModel}) =>
+      SizedBox(
+        width: 100,
+        height: 32,
+        child: _buildTextField(value: value, viewModel: viewModel),
+      );
+
+  Widget _buildTextField(
+          {required String value,
+          required CoursePracticeViewModel viewModel}) =>
+      TextField(
+        style: style14MG400,
+        decoration: const InputDecoration(
+          isDense: true,
+          contentPadding: EdgeInsets.zero,
+        ),
+        onChanged: (change) => viewModel.updateAnswer(value, change),
+      );
 }

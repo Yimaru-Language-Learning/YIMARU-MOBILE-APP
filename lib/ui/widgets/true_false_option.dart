@@ -17,23 +17,21 @@ class TrueFalseOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _buildContainerWrapper();
 
-  Widget _buildContainerWrapper()=> GestureDetector(
-    onTap: onTap,
-    child: _buildContainer(),
-  );
+  Widget _buildContainerWrapper() => GestureDetector(
+        onTap: onTap,
+        child: _buildContainer(),
+      );
   Widget _buildContainer() => Container(
-    alignment: Alignment.center,
+        alignment: Alignment.center,
         margin: const EdgeInsets.symmetric(horizontal: 5),
-    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-
-    decoration: BoxDecoration(
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
           color:
               selected ? kcPrimaryColor.withValues(alpha: 0.1) : kcTransparent,
           border: Border.all(
-            color: selected
-                ? kcPrimaryColor
-                : kcDarkGrey.withValues(alpha: 0.1),
+            color:
+                selected ? kcPrimaryColor : kcDarkGrey.withValues(alpha: 0.1),
           ),
         ),
         child: _buildLabel(),

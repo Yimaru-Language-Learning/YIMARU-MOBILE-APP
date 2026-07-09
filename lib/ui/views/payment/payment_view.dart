@@ -11,9 +11,14 @@ import 'payment_viewmodel.dart';
 
 class PaymentView extends StackedView<PaymentViewModel> {
   final String phone;
+  final PaymentMethod method;
   final LearnSubscription subscription;
 
-  const PaymentView({Key? key, required this.phone, required this.subscription})
+  const PaymentView(
+      {Key? key,
+      required this.phone,
+      required this.method,
+      required this.subscription})
       : super(key: key);
 
   void _error(PaymentViewModel viewModel) => viewModel.pop();
@@ -26,8 +31,8 @@ class PaymentView extends StackedView<PaymentViewModel> {
 
   @override
   void onViewModelReady(PaymentViewModel viewModel) async {
-    await viewModel.createLearnSubscriptionRequest(
-        phone: phone, subscription: subscription);
+    await viewModel.initiate(
+        phone: phone,method: method, subscription: subscription);
     super.onViewModelReady(viewModel);
   }
 

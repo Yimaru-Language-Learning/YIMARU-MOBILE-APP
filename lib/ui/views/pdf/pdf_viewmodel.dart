@@ -8,14 +8,12 @@ class PdfViewModel extends BaseViewModel {
   // Dependency injection
   final _apiService = locator<ApiService>();
 
-
   final _navigationService = locator<NavigationService>();
 
   // Url
-   /*String? _url;
+  /*String? _url;
 
    String? get url => _url;*/
-
 
   // Navigation
   void pop() => _navigationService.back();

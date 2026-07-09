@@ -14,16 +14,18 @@ import '../course_practice_viewmodel.dart';
 
 class DuolingoSpeakingPractice4Preparation
     extends ViewModelWidget<CoursePracticeViewModel> {
-
   const DuolingoSpeakingPractice4Preparation({super.key});
 
   Future<void> _start(CoursePracticeViewModel viewModel) async {
-    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion].dynamicPayload
-        ?.response?[0].value['seconds']);
+    viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
+        .dynamicPayload?.response?[0].value['seconds']);
     viewModel.nextScreen();
     viewModel.setSpeakingState();
-    await viewModel.playVoicePrompt( viewModel.questions[viewModel.currentQuestion].dynamicPayload
-        ?.stimulus?[1].value);
+    await viewModel.playVoicePrompt(viewModel
+        .questions[viewModel.currentQuestion]
+        .dynamicPayload
+        ?.stimulus?[1]
+        .value);
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -127,7 +129,6 @@ class DuolingoSpeakingPractice4Preparation
         onCancel: () async => await _cancel(viewModel),
       );
 
-
   Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
       viewModel.player.state == PlayerState.playing && viewModel.isSpeaking
           ? Container()
@@ -137,10 +138,10 @@ class DuolingoSpeakingPractice4Preparation
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-    duration: viewModel.countdown,
-    onEnd: () => WidgetsBinding.instance
-        .addPostFrameCallback((_) async => await _start(viewModel)),
-  );
+        duration: viewModel.countdown,
+        onEnd: () => WidgetsBinding.instance
+            .addPostFrameCallback((_) async => await _start(viewModel)),
+      );
 
   Widget _buildQuestionSectionWrapper(CoursePracticeViewModel viewModel) =>
       Column(
@@ -158,7 +159,6 @@ class DuolingoSpeakingPractice4Preparation
         _buildQuestion(),
       ];
 
-
   Widget _buildTitle() => Text(
         'Prepare to have a conversation',
         style: style18DG700,
@@ -166,16 +166,12 @@ class DuolingoSpeakingPractice4Preparation
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        'You will listen to questions and have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.first.value['seconds']} seconds to answer each',
+        'You will listen to questions and have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds to answer each',
         style: style14DG400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildQuestion() => Image.asset('assets/icons/dwarf.png');
-
-
-
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(

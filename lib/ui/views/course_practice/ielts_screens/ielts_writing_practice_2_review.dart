@@ -112,8 +112,14 @@ class IeltsWritingPractice2Review
         children: _buildSpeakingIndicatorChildren(viewModel),
       );
 
-  List<Widget> _buildSpeakingIndicatorChildren(CoursePracticeViewModel viewModel) =>
-      [_buildTitle(), _buildSubtitle(), verticalSpaceLarge, _buildPdfCard(viewModel)];
+  List<Widget> _buildSpeakingIndicatorChildren(
+          CoursePracticeViewModel viewModel) =>
+      [
+        _buildTitle(),
+        _buildSubtitle(),
+        verticalSpaceLarge,
+        _buildPdfCard(viewModel)
+      ];
 
   Widget _buildTitle() => Text(
         'Your Writing Feedback Report Is Ready',
@@ -127,11 +133,14 @@ class IeltsWritingPractice2Review
         textAlign: TextAlign.center,
       );
 
-  Widget _buildPdfCard(CoursePracticeViewModel viewModel) =>  DownloadPdfCard(
-
-    onTap:() async=> await viewModel.navigateToPdf(viewModel.questions[viewModel.currentQuestion]
-        .dynamicPayload?.response?.last.value) ,
-  );
+  Widget _buildPdfCard(CoursePracticeViewModel viewModel) => DownloadPdfCard(
+        onTap: () async => await viewModel.navigateToPdf(viewModel
+            .questions[viewModel.currentQuestion]
+            .dynamicPayload
+            ?.response
+            ?.last
+            .value),
+      );
   Widget _buildContinueButtonWrapper(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>

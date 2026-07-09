@@ -44,6 +44,7 @@ class LearnSubscriptionViewModel extends FormViewModel {
     _focusPhoneNumber = true;
     rebuildUi();
   }
+
   //Learn subscriptions
 
   void setSelectedPricing(int index) {
@@ -71,11 +72,15 @@ class LearnSubscriptionViewModel extends FormViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToArifPay(
-      {required String phone, required LearnSubscription? subscription}) async {
+  Future<void> navigateToPayment(
+      {required String phone,
+      required PaymentMethod method,
+      required LearnSubscription? subscription}) async {
     pop();
     await _navigationService.navigateToPaymentView(
-        phone: phone, subscription: subscription ?? _subscriptions[0]);
+        phone: phone,
+        method: method,
+        subscription: subscription ?? _subscriptions[0]);
   }
 
   // Remote api call

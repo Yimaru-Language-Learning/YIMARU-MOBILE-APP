@@ -106,8 +106,6 @@ class DuolingoReadingPractice3Review
   Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(child: _buildQuestionColumn(viewModel));
 
-
-
   Widget _buildQuestionColumn(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -121,7 +119,7 @@ class DuolingoReadingPractice3Review
         verticalSpaceSmall,
         _buildQuestionWrapper(viewModel),
         verticalSpaceMedium,
-    _buildPracticeOptionsWrapper(viewModel),
+        _buildPracticeOptionsWrapper(viewModel),
         verticalSpaceMedium,
         _buildPracticeReviewSection(viewModel)
       ];
@@ -143,9 +141,11 @@ class DuolingoReadingPractice3Review
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-       CourseMissingWordQuestion(showNumber: true,
+      CourseMissingWordQuestion(
+        showNumber: true,
         segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.last.value['segments'],);
+            ?.stimulus?.last.value['segments'],
+      );
 
   Widget _buildPracticeOptionsWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
@@ -166,8 +166,6 @@ class DuolingoReadingPractice3Review
           index,
         ),
       );
-
-
 
   Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
         enabled: false,

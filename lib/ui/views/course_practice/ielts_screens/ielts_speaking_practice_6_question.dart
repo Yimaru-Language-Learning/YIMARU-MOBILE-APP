@@ -89,7 +89,7 @@ class IeltsSpeakingPractice6Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-         // _buildCountdownWrapper(viewModel),
+          // _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
@@ -140,7 +140,7 @@ class IeltsSpeakingPractice6Question
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
-    verticalSpaceMedium,
+        verticalSpaceMedium,
         _buildImageContainer(viewModel),
         verticalSpaceMedium,
         _buildSubtitle(),
@@ -207,12 +207,8 @@ class IeltsSpeakingPractice6Question
         physics: const NeverScrollableScrollPhysics(),
         itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value['left'].length,
-        itemBuilder: (context, index) => _buildColumnItemWrapper('${index+1}. ${viewModel
-            .questions[viewModel.currentQuestion]
-            .dynamicPayload
-            ?.stimulus
-            ?.last
-            .value['left'][index]['text']}'),
+        itemBuilder: (context, index) => _buildColumnItemWrapper(
+            '${index + 1}. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value['left'][index]['text']}'),
       );
 
   Widget _buildAnswerColumnWrapper(CoursePracticeViewModel viewModel) =>
@@ -255,14 +251,13 @@ class IeltsSpeakingPractice6Question
           enabledBorder: dropdownBorder,
           focusedBorder: dropdownBorder,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 5, vertical: 7.5),
+              const EdgeInsets.symmetric(horizontal: 5, vertical: 7.5),
         ),
         dropdownMenuEntries: (viewModel.questions[viewModel.currentQuestion]
                 .dynamicPayload?.stimulus?.last.value['left'] as List)
             .map((e) => e['text'])
             .map(
               (option) => DropdownMenuEntry<String>(
-
                 value: option,
                 label: option,
               ),
@@ -292,12 +287,8 @@ class IeltsSpeakingPractice6Question
         physics: const NeverScrollableScrollPhysics(),
         itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value['right'].length,
-        itemBuilder: (context, index) => _buildColumnItemWrapper('${alphabet[index+1]}. ${viewModel
-            .questions[viewModel.currentQuestion]
-            .dynamicPayload
-            ?.stimulus
-            ?.last
-            .value['right'][index]['text']}'),
+        itemBuilder: (context, index) => _buildColumnItemWrapper(
+            '${alphabet[index + 1]}. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value['right'][index]['text']}'),
       );
 
   Widget _buildColumnItemWrapper(String title) => SizedBox(

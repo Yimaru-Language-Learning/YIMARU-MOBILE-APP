@@ -130,7 +130,7 @@ class DuolingoWritingPractice1Review
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitleWrapper(viewModel),
-    verticalSpaceMedium,
+        verticalSpaceMedium,
         _buildImageContainer(viewModel),
         verticalSpaceMedium,
         _buildPracticeFormFieldWrapper(viewModel),
@@ -189,6 +189,5 @@ class DuolingoWritingPractice1Review
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),
         review: viewModel.answers,
-
       );
 }

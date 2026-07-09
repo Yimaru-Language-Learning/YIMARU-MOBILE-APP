@@ -150,7 +150,6 @@ OutlineInputBorder dropdownBorder = OutlineInputBorder(
     color: kcVeryLightGrey,
   ),
   borderRadius: BorderRadius.circular(15),
-
 );
 
 TextStyle defaultPinTextStyle = const TextStyle(

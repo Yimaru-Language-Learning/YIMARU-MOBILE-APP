@@ -110,7 +110,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   List<PracticeQuestion> get questions => _questions;
 
   // Practice answers
-  
+
   final List<Map<String, dynamic>> _answers = [];
 
   List<Map<String, dynamic>> get answers => _answers;
@@ -160,11 +160,13 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   Future<void> _playVoicePrompt(PracticeQuestion question) async {
     _questionController.jumpToPage(1);
-    await _audioPlayerService.playUrl(question.dynamicPayload?.stimulus?[1].value ?? '');
+    await _audioPlayerService
+        .playUrl(question.dynamicPayload?.stimulus?[1].value ?? '');
   }
 
   Future<void> replayVoicePrompt(PracticeQuestion question) async {
-    await _audioPlayerService.playUrl(question.dynamicPayload?.stimulus?[1].value ?? '');
+    await _audioPlayerService
+        .playUrl(question.dynamicPayload?.stimulus?[1].value ?? '');
   }
 
   Future<void> playResult(

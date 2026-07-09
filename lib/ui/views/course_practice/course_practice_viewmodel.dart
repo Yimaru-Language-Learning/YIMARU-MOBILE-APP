@@ -923,7 +923,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> playReview(
       {required String audio, required String busyObject}) async {
-    setReviewBusyObject( busyObject);
+    setReviewBusyObject(busyObject);
 
     await playReviewAudio(audio: audio, busyObject: busyObject);
   }
@@ -950,7 +950,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _busyObject = object;
     rebuildUi();
   }
-
 
   // Dialogue
   Future<bool?> showAbortDialog() async {

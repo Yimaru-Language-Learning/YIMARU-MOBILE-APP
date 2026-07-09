@@ -168,7 +168,7 @@ class IeltsReadingPractice4Question
         _buildQuestion1(viewModel),
         verticalSpaceSmall,
         _buildQuestion2(viewModel),
-    verticalSpaceSmall,
+        verticalSpaceSmall,
       ];
 
   Widget _buildInstruction(CoursePracticeViewModel viewModel) => Text(

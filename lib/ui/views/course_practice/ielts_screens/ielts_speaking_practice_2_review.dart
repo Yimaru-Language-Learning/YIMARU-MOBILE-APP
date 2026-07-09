@@ -14,7 +14,8 @@ class IeltsSpeakingPractice2Review
   const IeltsSpeakingPractice2Review({super.key});
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();    viewModel.resetValues();
+    await viewModel.stopRecording();
+    viewModel.resetValues();
 
     viewModel.pop();
     viewModel.goBack();
@@ -149,7 +150,7 @@ class IeltsSpeakingPractice2Review
           onTap: viewModel.currentQuestion == viewModel.questions.length - 1
               ? viewModel.nextScreen
               : () async => await viewModel.nextQuestion(),
-          answers: viewModel.questions[viewModel.currentQuestion]
-                  .dynamicPayload?.response?.last.value ??
+          answers: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.last.value ??
               '');
 }

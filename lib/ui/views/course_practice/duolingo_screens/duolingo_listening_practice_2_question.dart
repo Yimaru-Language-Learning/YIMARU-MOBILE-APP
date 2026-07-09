@@ -15,12 +15,11 @@ class DuolingoListeningPractice2Question
   const DuolingoListeningPractice2Question({super.key});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
-
-    for ( int i=0; i< viewModel.controllers.length; i++) {
+    for (int i = 0; i < viewModel.controllers.length; i++) {
       await viewModel.setListeningAnswer(
         response: viewModel.controllers['$i'] ?? '',
         sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?[i+1].value,
+            ?.response?[i + 1].value,
       );
     }
 

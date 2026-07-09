@@ -124,8 +124,8 @@ class DuolingoListeningPractice3Question
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
-    onEnd: () async => await _next(viewModel),
-  );
+        onEnd: () async => await _next(viewModel),
+      );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,

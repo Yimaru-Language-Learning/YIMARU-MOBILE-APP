@@ -7,13 +7,12 @@ import '../../../widgets/duolingo_practice_card.dart';
 import '../../../widgets/small_app_bar.dart';
 import '../course_practice_viewmodel.dart';
 
-class CoursePracticesScreens
-    extends ViewModelWidget<CoursePracticeViewModel> {
+class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
   final TextEditingController practiceController;
 
   const CoursePracticesScreens({super.key, required this.practiceController});
 
-  void _reset( CoursePracticeViewModel viewModel){
+  void _reset(CoursePracticeViewModel viewModel) {
     viewModel.resetValues();
     practiceController.clear();
   }

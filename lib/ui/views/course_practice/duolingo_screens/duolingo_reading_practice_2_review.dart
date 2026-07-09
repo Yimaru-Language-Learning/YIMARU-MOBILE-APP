@@ -135,8 +135,11 @@ class DuolingoReadingPractice2Review
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-       CourseMissingWordQuestion(showNumber: false,  segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-           ?.stimulus?.last.value['segments'],);
+      CourseMissingWordQuestion(
+        showNumber: false,
+        segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value['segments'],
+      );
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(

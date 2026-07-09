@@ -38,7 +38,7 @@ class SpeakingPracticeReviewSection
         _buildResults(viewModel),
         verticalSpaceLarge,
         _buildContinueButton(),
-    verticalSpaceMedium
+        verticalSpaceMedium
       ];
 
   Widget _buildTitle() => Text(
@@ -53,14 +53,15 @@ class SpeakingPracticeReviewSection
         physics: const NeverScrollableScrollPhysics(),
         separatorBuilder: (context, index) => verticalSpaceSmall,
         itemBuilder: (context, index) => _buildResult(
-            question: (index + 1).toString(),
-            answer: viewModel.answers[index]),
+            question: (index + 1).toString(), answer: viewModel.answers[index]),
       );
 
-  Widget _buildResult({
-    required String question,
-    required Map<String, dynamic> answer}) =>
-      CoursePracticeResultCard(answer: answer,question:question ,);
+  Widget _buildResult(
+          {required String question, required Map<String, dynamic> answer}) =>
+      CoursePracticeResultCard(
+        answer: answer,
+        question: question,
+      );
 
   Widget _buildContinueButton() => CustomElevatedButton(
         height: 55,

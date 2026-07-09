@@ -76,12 +76,13 @@ class LearnCourseTile extends ViewModelWidget<LearnCourseViewModel> {
 
   Widget _buildTitleWrapper() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
-        child: _buildTitleState(),
+        child: _buildActiveTitleWrapper(),
       );
 
-  Widget _buildTitleState() => (course.access?.isAccessible ?? false)
+  /* Due to the now learn locking logic
+ Widget _buildTitleState() => (course.access?.isAccessible ?? false)
       ? _buildActiveTitleWrapper()
-      : _buildInactiveTitleWrapper();
+      : _buildInactiveTitleWrapper();*/
 
   Widget _buildInactiveTitleWrapper() => Column(
         mainAxisSize: MainAxisSize.min,

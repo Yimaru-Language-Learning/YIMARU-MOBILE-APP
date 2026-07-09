@@ -203,7 +203,6 @@ class DuolingoListeningPractice3Review
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
             : () async => await viewModel.nextQuestion(),
-        review:
-            viewModel.answers,
+        review: viewModel.answers,
       );
 }

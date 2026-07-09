@@ -29,7 +29,7 @@ class CustomSmallLeadingRadioButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color:kcWhite,
+          color: kcWhite,
           border: Border.all(
             color: selected
                 ? kcPrimaryColor.withValues(alpha: 0.5)
@@ -44,7 +44,7 @@ class CustomSmallLeadingRadioButton extends StatelessWidget {
       );
 
   List<Widget> _buildButtonRowChildren() =>
-      [_buildIconState(),horizontalSpaceSmall,_buildTextWrapper()];
+      [_buildIconState(), horizontalSpaceSmall, _buildTextWrapper()];
 
   Widget _buildTextWrapper() => Expanded(
         child: _buildText(),
@@ -56,15 +56,16 @@ class CustomSmallLeadingRadioButton extends StatelessWidget {
         style: const TextStyle(color: kcDarkGrey),
       );
 
-  Widget _buildIconState()=> selected ?  _buildFilledIcon(): _buildUnfilledIcon();
+  Widget _buildIconState() =>
+      selected ? _buildFilledIcon() : _buildUnfilledIcon();
 
   Widget _buildFilledIcon() => const Icon(
         Icons.check_circle,
         color: kcPrimaryColor,
       );
 
-  Widget _buildUnfilledIcon() =>  Icon(
-    Icons.circle_outlined,
-    color: kcMediumGrey.withValues(alpha: 0.75),
-  );
+  Widget _buildUnfilledIcon() => Icon(
+        Icons.circle_outlined,
+        color: kcMediumGrey.withValues(alpha: 0.75),
+      );
 }

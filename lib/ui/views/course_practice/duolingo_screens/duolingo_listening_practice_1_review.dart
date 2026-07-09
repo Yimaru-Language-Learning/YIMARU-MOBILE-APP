@@ -184,7 +184,7 @@ class DuolingoListeningPractice1Review
         children: [
           _buildQuestionNumber(number),
           horizontalSpaceSmall,
-          _buildQuestionWrapper(number: number,question: question)
+          _buildQuestionWrapper(number: number, question: question)
         ],
       );
 

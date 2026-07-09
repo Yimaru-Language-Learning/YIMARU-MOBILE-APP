@@ -50,8 +50,9 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       Stack(
         children: [
           _buildExpansionTile(context: context, viewModel: viewModel),
-          if (!(module.access?.isAccessible ?? false))
-            _buildContainerShader()
+          /*  Due to the now learn locking logic
+         if (!(module.access?.isAccessible ?? false))
+          _buildContainerShader()*/
         ],
       );
 
@@ -61,7 +62,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       ExpansionTile(
         textColor: kcDarkGrey,
         subtitle: _buildContent(),
-        trailing: _buildLockIcon(),
+        /* Due to the now learn locking logic
+         trailing: _buildLockIcon(),*/
         title: _buildTitleWrapper(),
         collapsedIconColor: kcDarkGrey,
         collapsedTextColor: kcDarkGrey,
@@ -78,8 +80,9 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
         childrenPadding: const EdgeInsets.fromLTRB(70, 0, 15, 15),
         initiallyExpanded: (module.access?.isAccessible ?? false),
-        showTrailingIcon:
-            !(module.access?.isAccessible ?? false) ? true : false,
+        /* Due to the now learn locking logic
+       showTrailingIcon:
+            !(module.access?.isAccessible ?? false) ? true : false,*/
         children:
             _buildExpansionTileChildren(context: context, viewModel: viewModel),
       );
@@ -218,7 +221,6 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         foregroundColor: kcPrimaryColor,
         text: LocaleKeys.take_practice.tr(),
       );
-
 
   Widget _buildContainerShader() => const CustomContainerShader();
 }

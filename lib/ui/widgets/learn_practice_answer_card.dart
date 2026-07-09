@@ -19,27 +19,23 @@ class LearnPracticeAnswerCard extends ViewModelWidget<LearnPracticeViewModel> {
       required this.title,
       required this.answer});
 
-  Widget _getButtonState( LearnPracticeViewModel viewModel){
-
-    if(   answer['busy_object'] == viewModel.busyObject){
-      if(viewModel.playing == voice){
-        if(viewModel.busy(answer['busy_object'])){
+  Widget _getButtonState(LearnPracticeViewModel viewModel) {
+    if (answer['busy_object'] == viewModel.busyObject) {
+      if (viewModel.playing == voice) {
+        if (viewModel.busy(answer['busy_object'])) {
           return _buildProgressIndicatorWrapper();
-        }else if(viewModel.player.state == PlayerState.playing){
+        } else if (viewModel.player.state == PlayerState.playing) {
           return _buildPauseIcon();
         }
-      }else{
+      } else {
         return _buildPlayIcon();
       }
 
       return _buildPlayIcon();
-
-    }else{
+    } else {
       return _buildPlayIcon();
     }
-
   }
-
 
   @override
   Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
@@ -72,7 +68,7 @@ class LearnPracticeAnswerCard extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildButtonState(LearnPracticeViewModel viewModel) =>
-    _getButtonState(viewModel);
+      _getButtonState(viewModel);
 
   Widget _buildProgressIndicatorWrapper() => Center(
         child: _buildProgressIndicator(),

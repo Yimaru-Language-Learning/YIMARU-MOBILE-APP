@@ -163,18 +163,17 @@ class IeltsReadingPractice6Question
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         verticalSpaceMedium,
-    _buildInstructionWrapper(viewModel),
+        _buildInstructionWrapper(viewModel),
         verticalSpaceMedium,
         _buildQuestion1(viewModel),
         verticalSpaceSmall,
         _buildQuestion2(viewModel),
-    verticalSpaceSmall,
+        verticalSpaceSmall,
       ];
-  Widget  _buildInstructionWrapper(CoursePracticeViewModel viewModel) => Padding(
-
-    padding:const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildInstruction(viewModel),
-  );
+  Widget _buildInstructionWrapper(CoursePracticeViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildInstruction(viewModel),
+      );
 
   Widget _buildInstruction(CoursePracticeViewModel viewModel) => Text(
         viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus
@@ -200,7 +199,6 @@ class IeltsReadingPractice6Question
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[2].value,
       );
-
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(

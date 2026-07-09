@@ -18,10 +18,11 @@ class IeltsListeningPractice1Question
   const IeltsListeningPractice1Question(
       {super.key, required this.practiceController});
 
-  void _reset(CoursePracticeViewModel viewModel){
+  void _reset(CoursePracticeViewModel viewModel) {
     practiceController.clear();
     viewModel.resetValues();
   }
+
   void _nextScreen(CoursePracticeViewModel viewModel) {
     FocusManager.instance.primaryFocus?.unfocus();
     _reset(viewModel);
@@ -100,7 +101,8 @@ class IeltsListeningPractice1Question
           _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
           _buildTitle(),
-          verticalSpaceSmall,        ],
+          verticalSpaceSmall,
+        ],
       );
 
   Widget _buildAppBar(
@@ -121,17 +123,17 @@ class IeltsListeningPractice1Question
       );
 
   Widget _buildTitle() => Text(
-    'Form Completion',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
+        'Form Completion',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         onEnd: () => _nextScreen(viewModel),
-        duration:viewModel.countdown,
+        duration: viewModel.countdown,
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -155,11 +157,9 @@ class IeltsListeningPractice1Question
           verticalSpaceTiny,
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
-    verticalSpaceLarge,        _buildContinueButtonWrapper(viewModel)
-
-  ];
-
-
+        verticalSpaceLarge,
+        _buildContinueButtonWrapper(viewModel)
+      ];
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeQuestionCard(

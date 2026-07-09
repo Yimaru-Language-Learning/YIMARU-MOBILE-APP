@@ -21,8 +21,6 @@ class ImageDownloaderService {
     try {
       File? image;
 
-
-
       final Directory appDir = await getApplicationDocumentsDirectory();
 
       /*     String? profileImage = networkImage;

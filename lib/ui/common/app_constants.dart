@@ -7,11 +7,15 @@ String kAppUrl = 'app';
 
 String kApiUrl = 'api';
 
+String kChapaUrl = 'chapa';
+
 String kUnitsUrl = 'units';
 
 String kCheckUrl = 'check';
 
 String kFilesUrl = 'files';
+
+String kDirectUrl = 'direct';
 
 String kUnreadUrl = 'unread';
 

@@ -13,8 +13,7 @@ class ReadingPracticeOptionCard
       {super.key, required this.enabled, required this.number});
 
   void _setOption(
-      {
-      required Map<String, dynamic> answer,
+      {required Map<String, dynamic> answer,
       required CoursePracticeViewModel viewModel}) {
     viewModel.setSelectedChoice(number: number, answer: answer);
   }
