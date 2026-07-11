@@ -61,7 +61,7 @@ class IeltsSpeakingPractice4Review
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-        _buildPracticeReviewSection(viewModel)
+        _buildPracticeReviewSection(context: context,viewModel: viewModel)
       ];
 
   Widget _buildAppBarIndenter(
@@ -108,11 +108,12 @@ class IeltsSpeakingPractice4Review
         textAlign: TextAlign.center,
       );
 
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection(    {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) =>
       SpeakingPracticeReviewSection(
           onTap: viewModel.currentQuestion == viewModel.questions.length - 1
               ? viewModel.pop
-              : () async => await viewModel.nextQuestion(),
+              : () async => await viewModel.nextQuestion(context),
           answers: viewModel.questions[viewModel.currentQuestion].dynamicPayload
                   ?.response?.last.value ??
               '');

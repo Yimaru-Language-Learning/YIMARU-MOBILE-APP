@@ -16,6 +16,12 @@ class DuolingoSpeakingPractice1Review
     super.key,
   });
 
+
+  Future<void> _next(CoursePracticeViewModel viewModel)async{
+    await viewModel.stopAudio();
+    viewModel.nextScreen();
+  }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -63,8 +69,8 @@ class DuolingoSpeakingPractice1Review
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-        _buildImageSectionIndenter(viewModel),
-        _buildPracticeReviewSection(viewModel)
+        _buildImageSectionIndenter(context: context,viewModel: viewModel),
+        _buildPracticeReviewSection(context: context,viewModel: viewModel)
       ];
 
   Widget _buildAppBarIndenter(
@@ -105,23 +111,23 @@ class DuolingoSpeakingPractice1Review
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildImageSectionIndenter(CoursePracticeViewModel viewModel) =>
+  Widget _buildImageSectionIndenter({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildImageSectionWrapper(viewModel),
+        child: _buildImageSectionWrapper(context: context,viewModel: viewModel),
       );
 
-  Widget _buildImageSectionWrapper(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildImageSectionWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildImageSectionChildren(viewModel),
+        children: _buildImageSectionChildren(context: context,viewModel: viewModel),
       );
 
-  List<Widget> _buildImageSectionChildren(CoursePracticeViewModel viewModel) =>
+  List<Widget> _buildImageSectionChildren({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
       [
         _buildTitle(),
         verticalSpaceMedium,
-        _buildImageContainer(viewModel),
+        _buildImageContainer(context: context,viewModel: viewModel),
       ];
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
@@ -138,28 +144,28 @@ class DuolingoSpeakingPractice1Review
         textAlign: TextAlign.center,
       );
 
-  Widget _buildImageContainer(CoursePracticeViewModel viewModel) => SizedBox(
+  Widget _buildImageContainer({required BuildContext context, required CoursePracticeViewModel viewModel}) => SizedBox(
         width: 150,
         height: 200,
-        child: _buildImageWrapper(viewModel),
+        child: _buildImageWrapper(context: context,viewModel: viewModel),
       );
 
-  Widget _buildImageWrapper(CoursePracticeViewModel viewModel) => ClipRRect(
+  Widget _buildImageWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) => ClipRRect(
         borderRadius: BorderRadius.circular(5),
-        child: _buildImage(viewModel),
+        child: _buildImage(context: context,viewModel: viewModel),
       );
 
-  Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
+  Widget _buildImage({required BuildContext context, required CoursePracticeViewModel viewModel}) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
         imageUrl: viewModel.cachedImage ?? '',
       );
 
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
       SpeakingPracticeReviewSection(
         answers: viewModel.answers,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+            ? ()async => await _next(viewModel)
+            : () async => await viewModel.nextQuestion(context),
       );
 }

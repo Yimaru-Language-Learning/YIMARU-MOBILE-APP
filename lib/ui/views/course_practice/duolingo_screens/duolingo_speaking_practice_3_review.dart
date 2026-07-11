@@ -14,6 +14,11 @@ class DuolingoSpeakingPractice3Review
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoSpeakingPractice3Review({super.key});
 
+  Future<void> _next(CoursePracticeViewModel viewModel)async{
+    await viewModel.stopAudio();
+    viewModel.nextScreen();
+  }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -62,7 +67,7 @@ class DuolingoSpeakingPractice3Review
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildQuestionSectionWrapperExpandedWrapper(viewModel),
-        _buildPracticeReviewSection(viewModel)
+        _buildPracticeReviewSection(context: context,viewModel: viewModel)
       ];
 
   Widget _buildAppBarIndenter(
@@ -131,11 +136,11 @@ class DuolingoSpeakingPractice3Review
             ?.stimulus?.last.value,
       );
 
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
       SpeakingPracticeReviewSection(
         answers: viewModel.answers,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+            ? () async => await _next(viewModel)
+            : () async => await viewModel.nextQuestion(context),
       );
 }

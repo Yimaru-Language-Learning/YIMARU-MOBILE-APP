@@ -15,9 +15,9 @@ class IeltsReadingPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsReadingPractice2Question({super.key});
 
-  void _nextScreen(CoursePracticeViewModel viewModel) {
+  void _nextScreen({required BuildContext context, required CoursePracticeViewModel viewModel}) {
     FocusManager.instance.primaryFocus?.unfocus();
-    viewModel.nextQuestion();
+    viewModel.nextQuestion(context);
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -78,7 +78,7 @@ class IeltsReadingPractice2Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildQuestionExpandedWrapper(viewModel),
+        _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarWrapper(
@@ -89,7 +89,7 @@ class IeltsReadingPractice2Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(viewModel),
+          _buildCountdownWrapper(context: context, viewModel: viewModel),
           verticalSpaceSmall,
         ],
       );
@@ -111,32 +111,32 @@ class IeltsReadingPractice2Question
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+  Widget _buildCountdownWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) => Align(
+      alignment: Alignment.centerRight, child: _buildCountdown(context: context, viewModel: viewModel));
 
-  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: () => _nextScreen(viewModel),
+  Widget _buildCountdown({required BuildContext context, required CoursePracticeViewModel viewModel}) => CountdownTimer(
+        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
         duration: viewModel.countdown,
       );
 
-  Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildQuestionScrollerWrapper(viewModel));
+  Widget _buildQuestionExpandedWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+      Expanded(child: _buildQuestionScrollerWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
-      SingleChildScrollView(child: _buildQuestionColumn(viewModel));
+  Widget _buildQuestionScrollerWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+      SingleChildScrollView(child: _buildQuestionColumn(context: context, viewModel: viewModel));
 
-  Widget _buildQuestionColumn(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildQuestionColumn({required BuildContext context, required CoursePracticeViewModel viewModel}) => Column(
         mainAxisSize: MainAxisSize.min,
-        children: _buildQuestionColumnChildren(viewModel),
+        children: _buildQuestionColumnChildren(context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildQuestionColumnChildren(
-          CoursePracticeViewModel viewModel) =>
+      {required BuildContext context, required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceSmall,
         _buildQuestionContainerWrapper(viewModel),
         verticalSpaceLarge,
-        _buildContinueButtonWrapper(viewModel),
+        _buildContinueButtonWrapper(context: context, viewModel: viewModel),
       ];
 
   Widget _buildQuestionContainerWrapper(CoursePracticeViewModel viewModel) =>
@@ -226,18 +226,18 @@ class IeltsReadingPractice2Question
             ?.stimulus?.last.value['left'],
       );
 
-  Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildContinueButtonWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
+        child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
-  Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
+  Widget _buildContinueButton({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
           height: 55,
           borderRadius: 12,
           text: 'Submit Task',
           foregroundColor: kcWhite,
           backgroundColor: kcPrimaryColor,
-          onTap: () => _nextScreen(viewModel));
+          onTap: () => _nextScreen(context: context, viewModel: viewModel));
 }

@@ -43,6 +43,7 @@ enum StateObjects {
   register,
   verifyOtp,
   resendOtp,
+  stopAudio,
   cacheImage,
   courseUnits,
   assessments,
