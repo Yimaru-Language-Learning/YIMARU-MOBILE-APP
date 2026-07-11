@@ -162,6 +162,6 @@ class IeltsWritingPractice1Review
         backgroundColor: kcPrimaryColor,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.pop
-            : () async => await viewModel.nextQuestion(),
+            : () async => await viewModel.nextQuestion(context),
       );
 }

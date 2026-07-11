@@ -3,9 +3,11 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/listenable_repetitive_practice_card.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
+import '../../../widgets/custom_circular_progress_indicator.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../course_practice_viewmodel.dart';
@@ -15,6 +17,7 @@ class DuolingoListeningPractice2Question
   const DuolingoListeningPractice2Question({super.key});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.stopAudio();
     for (int i = 0; i < viewModel.controllers.length; i++) {
       await viewModel.setListeningAnswer(
         response: viewModel.controllers['$i'] ?? '',
@@ -193,8 +196,20 @@ class DuolingoListeningPractice2Question
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
+        child: _buildContinueButtonState(viewModel),
       );
+
+  Widget _buildContinueButtonState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.stopAudio)
+          ? _buildProgressIndicatorWrapper()
+          : _buildContinueButton(viewModel);
+
+  Widget _buildProgressIndicatorWrapper()=> SizedBox(
+    height: 55,
+    child: _buildProgressIndicator(),
+  );
+
+  Widget _buildProgressIndicator()=> const CustomCircularProgressIndicator(color: kcPrimaryColor);
 
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
@@ -202,7 +217,7 @@ class DuolingoListeningPractice2Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: () => viewModel.goTo(4),
         backgroundColor: kcPrimaryColor,
+        onTap: ()async =>await _next(viewModel),
       );
 }

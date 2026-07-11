@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
+import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
@@ -37,7 +39,7 @@ class SpeakingPracticeReviewSection
         verticalSpaceMedium,
         _buildResults(viewModel),
         verticalSpaceLarge,
-        _buildContinueButton(),
+    _buildContinueButtonState(viewModel),
         verticalSpaceMedium
       ];
 
@@ -62,6 +64,18 @@ class SpeakingPracticeReviewSection
         answer: answer,
         question: question,
       );
+
+  Widget _buildContinueButtonState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.stopAudio)
+          ? _buildProgressIndicatorWrapper()
+          : _buildContinueButton();
+
+  Widget _buildProgressIndicatorWrapper()=> SizedBox(
+    height: 55,
+    child: _buildProgressIndicator(),
+  );
+
+  Widget _buildProgressIndicator()=> const CustomCircularProgressIndicator(color: kcPrimaryColor);
 
   Widget _buildContinueButton() => CustomElevatedButton(
         height: 55,

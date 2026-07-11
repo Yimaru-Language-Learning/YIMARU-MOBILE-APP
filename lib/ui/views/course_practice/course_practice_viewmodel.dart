@@ -637,7 +637,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Question param
-  Future<void> setQuestionParam(int id) async {
+  Future<void> setQuestionParam(
+      {required int id, required BuildContext context}) async {
     print('QUESTION TYPE ID: $id');
     if (id == 12 /*Speak about the photo*/) {
       // await refreshQuestionUrl(_questions[_currentQuestion]);
@@ -723,7 +724,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           .value['seconds'];
       String image =
           _questions[_currentQuestion].dynamicPayload?.stimulus?.first.value;
-      await cacheNetworkImage(image: image);
+      await cacheNetworkImage(image: image, context: context);
       setCountdown(responseLastSec);
     } else if (id == 0 /*Multiple choice*/) {
       _selectedQuestionParam = _questionParams.elementAt(31);
@@ -762,7 +763,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           .value['seconds'];
       String image =
           _questions[_currentQuestion].dynamicPayload?.stimulus?[1].value;
-      await cacheNetworkImage(image: image);
+      await cacheNetworkImage(image: image, context: context);
       setCountdown(responseLastSec);
     } else if (id == 47 /*Sentence Ending Matching*/) {
       _selectedQuestionParam = _questionParams.elementAt(31);
@@ -810,8 +811,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
-
-
   // Selected option
   bool isSelectedChoice({
     required String number,
@@ -851,11 +850,21 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
+  Future<void> stopAudio() async => await runBusyFuture(_stopAudio(),
+      busyObject: StateObjects.stopAudio);
+
+  Future<void> _stopAudio() async =>
+    await _audioPlayerService.stop();
+
+
   Future<void> startRecording() async => await runBusyFuture(_startRecording(),
       busyObject: StateObjects.recordCoursePracticeAnswer);
 
-  Future<void> _startRecording() async =>
-      await _voiceRecorderService.startRecording();
+  Future<void> _startRecording() async {
+    await _audioPlayerService.stop();
+    await _voiceRecorderService.startRecording();
+  }
+
 
   // Play practice audio
   void _listenToAudio() {
@@ -975,13 +984,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Cache image
   Future<void> cacheNetworkImage(
-          {required String image, BuildContext? context}) async =>
+          {required String image, required BuildContext context}) async =>
       await runBusyFuture(_cacheNetworkImage(image: image, context: context),
           busyObject: StateObjects.cacheImage);
 
   Future<void> _cacheNetworkImage(
-      {required String image, BuildContext? context}) async {
-    await _cacheImageService.cacheImage(_cachedImage ?? '');
+      {required String image, required BuildContext context}) async {
+    await _cacheImageService.cacheNetworkImage(
+        context: context, image: _cachedImage ?? '');
     /* Map<String, dynamic> data = {'reference': image};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
     if (response['status'] == ResponseStatus.success) {
@@ -1039,30 +1049,25 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
-  Future<void> setListeningAnswer1({
-    required int duration,
-    required String sample,
-    required String answer,
-    required String question
-
-  }) async =>
+  Future<void> setListeningAnswer1(
+          {required int duration,
+          required String sample,
+          required String answer,
+          required String question}) async =>
       await runBusyFuture(
           _setListeningAnswer1(
             answer: answer,
             sample: sample,
             duration: duration,
             question: question,
-
           ),
           busyObject: StateObjects.listening1Variant);
 
-  Future<void> _setListeningAnswer1({
-    required int duration,
-    required String sample,
-    required String answer,
-    required String question
-
-  }) async {
+  Future<void> _setListeningAnswer1(
+      {required int duration,
+      required String sample,
+      required String answer,
+      required String question}) async {
     await stopRecording();
     _answers.add({
       'sample': sample,
@@ -1079,13 +1084,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
-
   Future<void> setListeningAnswer3({
     required int duration,
     required String sample,
     required String answer,
     required String question,
-
   }) async =>
       await runBusyFuture(
           _setListeningAnswer3(
@@ -1101,14 +1104,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
     required String sample,
     required String answer,
     required String question,
-
   }) async {
     await stopRecording();
     _answers.add({
       'sample': sample,
       'response': answer,
       'question': question,
-
     });
     if (_variants == 4) {
       nextScreen();
@@ -1120,13 +1121,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
-
   Future<void> setReadingAnswer1({
     required int duration,
     required String sample,
     required String answer,
     required String question,
-
   }) async =>
       await runBusyFuture(
           _setReadingAnswer1(
@@ -1142,14 +1141,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
     required String sample,
     required String answer,
     required String question,
-
   }) async {
     await stopRecording();
     _answers.add({
       'sample': sample,
       'response': answer,
       'question': question,
-
     });
     if (_variants == 4) {
       nextScreen();
@@ -1188,10 +1185,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
     );
   }
 
-  Future<void> nextQuestion() async => await runBusyFuture(_nextQuestion(),
-      busyObject: StateObjects.coursePractice);
+  Future<void> nextQuestion(BuildContext context) async =>
+      await runBusyFuture(_nextQuestion(context),
+          busyObject: StateObjects.coursePractice);
 
-  Future<void> _nextQuestion() async {
+  Future<void> _nextQuestion(BuildContext context) async {
     if (_currentQuestion == _questions.length - 1) {
       pop();
     } else {
@@ -1202,7 +1200,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
         duration: const Duration(milliseconds: 350),
       );
       await setQuestionParam(
-          _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
+          context: context,
+          id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     }
   }
 
@@ -1248,15 +1247,18 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Course practice questions
-  Future<void> getCoursePracticeQuestions(int id) async =>
-      await runBusyFuture(_getCoursePracticeQuestions(id),
+  Future<void> getCoursePracticeQuestions(
+          {required int id, required BuildContext context}) async =>
+      await runBusyFuture(_getCoursePracticeQuestions(id: id, context: context),
           busyObject: StateObjects.coursePractice);
 
-  Future<void> _getCoursePracticeQuestions(int id) async {
+  Future<void> _getCoursePracticeQuestions(
+      {required int id, required BuildContext context}) async {
     _currentQuestion = 0;
     _questions = await _apiService.getCourseQuestions(id);
     await setQuestionParam(
-        _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
+        context: context,
+        id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     _currentPage = 1;
   }
 

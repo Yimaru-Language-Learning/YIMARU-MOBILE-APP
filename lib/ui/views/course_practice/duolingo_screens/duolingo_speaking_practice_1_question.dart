@@ -19,6 +19,7 @@ class DuolingoSpeakingPractice1Question
   });
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+
     await viewModel.startRecording();
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds']);
