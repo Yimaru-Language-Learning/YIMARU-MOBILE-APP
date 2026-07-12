@@ -158,7 +158,8 @@ class DuolingoSpeakingPractice1Review
   Widget _buildImage({required BuildContext context, required CoursePracticeViewModel viewModel}) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl: viewModel.cachedImage ?? '',
+        imageUrl:  viewModel
+            .questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value,
       );
 
   Widget _buildPracticeReviewSection({required BuildContext context, required CoursePracticeViewModel viewModel}) =>

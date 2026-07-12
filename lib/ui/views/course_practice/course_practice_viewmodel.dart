@@ -991,7 +991,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   Future<void> _cacheNetworkImage(
       {required String image, required BuildContext context}) async {
     await _cacheImageService.cacheNetworkImage(
-        context: context, image: _cachedImage ?? '');
+        context: context, image: image);
     /* Map<String, dynamic> data = {'reference': image};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
     if (response['status'] == ResponseStatus.success) {
