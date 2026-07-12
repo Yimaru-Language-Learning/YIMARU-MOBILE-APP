@@ -168,7 +168,7 @@ class IeltsWritingPractice1Question
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl: viewModel.cachedImage ?? '',
+        imageUrl: '',
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
