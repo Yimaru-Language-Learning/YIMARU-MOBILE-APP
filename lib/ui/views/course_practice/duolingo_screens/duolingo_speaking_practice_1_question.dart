@@ -174,7 +174,8 @@ class DuolingoSpeakingPractice1Question
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl: viewModel.cachedImage ?? '',
+        imageUrl: viewModel
+            .questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value,
       );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
