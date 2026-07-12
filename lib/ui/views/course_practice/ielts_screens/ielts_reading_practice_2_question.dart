@@ -194,7 +194,7 @@ class IeltsReadingPractice2Question
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl: viewModel.cachedImage ?? '',
+        imageUrl:  viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value,
       );
 
   Widget _buildDiagramLabelingChoicesWrapper(

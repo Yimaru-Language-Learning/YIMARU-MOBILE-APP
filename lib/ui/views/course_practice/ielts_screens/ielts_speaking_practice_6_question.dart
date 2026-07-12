@@ -171,7 +171,7 @@ class IeltsSpeakingPractice6Question
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl: viewModel.cachedImage ?? '',
+        imageUrl: viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value,
       );
 
   Widget _buildSubtitle() => Text(

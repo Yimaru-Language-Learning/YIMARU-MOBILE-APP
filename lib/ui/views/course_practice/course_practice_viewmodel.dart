@@ -119,10 +119,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
   bool get isSpeaking => _isSpeaking;
 
 // Course practices
-  String? _cachedImage;
-
-  String? get cachedImage => _cachedImage;
-
   bool _focusPractice = false;
 
   bool get focusPractice => _focusPractice;
@@ -537,7 +533,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   int get end => _end;
 
   // Play count
-  int _playCount = 3;
+  int _playCount = 2;
 
   int get playCount => _playCount;
 
@@ -624,11 +620,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
   void resetValues() {
     _variant = 0;
     _variants = 0;
-    _playCount = 3;
+    _playCount = 2;
     _answers.clear();
     _countdown = null;
     _isSpeaking = false;
-    _cachedImage = null;
     _controllers.clear();
     _buttonActive = false;
     _focusPractice = false;
