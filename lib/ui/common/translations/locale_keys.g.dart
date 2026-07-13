@@ -189,6 +189,8 @@ abstract class LocaleKeys {
   static const finish_all_practice_lesson = 'finish_all_practice_lesson';
   static const finish_all_practice_module = 'finish_all_practice_module';
   static const finish_all_practice_course = 'finish_all_practice_course';
+  static const finish_all_practice_previouse_unit =
+      'finish_all_practice_previouse_unit';
   static const finish_all_practice_previouse_module =
       'finish_all_practice_previouse_module';
   static const finish_all_practice_previouse_course =

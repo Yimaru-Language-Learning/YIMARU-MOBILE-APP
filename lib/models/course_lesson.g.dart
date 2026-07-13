@@ -9,6 +9,9 @@ part of 'course_lesson.dart';
 CourseLesson _$CourseLessonFromJson(Map<String, dynamic> json) => CourseLesson(
       id: (json['id'] as num?)?.toInt(),
       title: json['title'] as String?,
+      access: json['access'] == null
+          ? null
+          : Access.fromJson(json['access'] as Map<String, dynamic>),
       videoUrl: json['video_url'] as String?,
       sortOrder: (json['sort_order'] as num?)?.toInt(),
       thumbnail: json['thumbnail'] as String?,
@@ -21,6 +24,7 @@ Map<String, dynamic> _$CourseLessonToJson(CourseLesson instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
+      'access': instance.access,
       'thumbnail': instance.thumbnail,
       'description': instance.description,
       'video_url': instance.videoUrl,

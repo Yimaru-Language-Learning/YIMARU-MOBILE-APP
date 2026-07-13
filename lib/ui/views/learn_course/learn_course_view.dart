@@ -35,7 +35,7 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
         await _showSheet(
             context: context,
             viewModel: viewModel,
-            practice: PracticeReason.previousCourse);
+            practice: PracticeReason.course);
       }
     }
   }

@@ -93,7 +93,7 @@ class LearnSubscriptionFormScreen
           _buildPhoneNumberValidatorWrapper(viewModel),
         verticalSpaceLarge,
         _buildPaymentElevatedButton(viewModel),
-       /* verticalSpaceSmall,
+        /* verticalSpaceSmall,
         _buildPaymentTextButton(viewModel),*/
         verticalSpaceMedium,
         _buildSecurePaymentWrapper()
@@ -200,9 +200,10 @@ class LearnSubscriptionFormScreen
 
   Widget _buildPaymentText() => Text(
         'Proceed with telebirr',
-        style:phoneNumberController.text.isNotEmpty
+        style: phoneNumberController.text.isNotEmpty
             ? style16P600
-            : style16P600.copyWith(color:kcPrimaryColor.withValues(alpha: 0.25) ) ,
+            : style16P600.copyWith(
+                color: kcPrimaryColor.withValues(alpha: 0.25)),
       );
 
   Widget _buildSecurePaymentWrapper() => Align(

@@ -32,7 +32,7 @@ class PaymentView extends StackedView<PaymentViewModel> {
   @override
   void onViewModelReady(PaymentViewModel viewModel) async {
     await viewModel.initiate(
-        phone: phone,method: method, subscription: subscription);
+        phone: phone, method: method, subscription: subscription);
     super.onViewModelReady(viewModel);
   }
 

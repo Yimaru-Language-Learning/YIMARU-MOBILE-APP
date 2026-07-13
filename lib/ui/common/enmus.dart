@@ -32,7 +32,15 @@ enum ProgressStatuses { pending, started, completed }
 enum CoursePracticeType { ielts, speaking, reading, writing, listening }
 
 // Practice reason
-enum PracticeReason { course, module, lesson, previousModule, previousCourse }
+enum PracticeReason {
+  unit,
+  course,
+  module,
+  lesson,
+  previousUnit,
+  previousModule,
+  previousCourse,
+}
 
 // State object
 enum StateObjects {
@@ -68,6 +76,8 @@ enum StateObjects {
   loadCourseVideo,
   progressSummary,
   reading1Variant,
+  reading7Variant,
+  reading8Variant,
   speaking4Variant,
   requestResetCode,
   profileCompletion,

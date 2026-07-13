@@ -630,7 +630,10 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CourseModuleViewArguments>(nullOk: false);
       return _i39.MaterialPageRoute<dynamic>(
         builder: (context) => _i33.CourseModuleView(
-            key: args.key, module: args.module, catalog: args.catalog),
+            key: args.key,
+            first: args.first,
+            module: args.module,
+            catalog: args.catalog),
         settings: data,
       );
     },
@@ -1474,11 +1477,14 @@ class LandingViewArguments {
 class CourseModuleViewArguments {
   const CourseModuleViewArguments({
     this.key,
+    required this.first,
     required this.module,
     required this.catalog,
   });
 
   final _i39.Key? key;
+
+  final bool first;
 
   final _i47.CourseModule? module;
 
@@ -1486,20 +1492,21 @@ class CourseModuleViewArguments {
 
   @override
   String toString() {
-    return '{"key": "$key", "module": "$module", "catalog": "$catalog"}';
+    return '{"key": "$key", "first": "$first", "module": "$module", "catalog": "$catalog"}';
   }
 
   @override
   bool operator ==(covariant CourseModuleViewArguments other) {
     if (identical(this, other)) return true;
     return other.key == key &&
+        other.first == first &&
         other.module == module &&
         other.catalog == catalog;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ module.hashCode ^ catalog.hashCode;
+    return key.hashCode ^ first.hashCode ^ module.hashCode ^ catalog.hashCode;
   }
 }
 
@@ -2185,6 +2192,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
 
   Future<dynamic> navigateToCourseModuleView({
     _i39.Key? key,
+    required bool first,
     required _i47.CourseModule? module,
     required _i46.CourseCatalog catalog,
     int? routerId,
@@ -2195,7 +2203,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.courseModuleView,
         arguments: CourseModuleViewArguments(
-            key: key, module: module, catalog: catalog),
+            key: key, first: first, module: module, catalog: catalog),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2825,6 +2833,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
 
   Future<dynamic> replaceWithCourseModuleView({
     _i39.Key? key,
+    required bool first,
     required _i47.CourseModule? module,
     required _i46.CourseCatalog catalog,
     int? routerId,
@@ -2835,7 +2844,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.courseModuleView,
         arguments: CourseModuleViewArguments(
-            key: key, module: module, catalog: catalog),
+            key: key, first: first, module: module, catalog: catalog),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

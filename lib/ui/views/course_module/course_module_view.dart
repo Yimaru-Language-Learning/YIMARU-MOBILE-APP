@@ -12,11 +12,15 @@ import '../../widgets/small_app_bar.dart';
 import 'course_module_viewmodel.dart';
 
 class CourseModuleView extends StackedView<CourseModuleViewModel> {
+  final bool first;
   final CourseModule? module;
   final CourseCatalog catalog;
 
   const CourseModuleView(
-      {Key? key, required this.module, required this.catalog})
+      {Key? key,
+      required this.first,
+      required this.module,
+      required this.catalog})
       : super(key: key);
 
   @override
@@ -106,8 +110,9 @@ class CourseModuleView extends StackedView<CourseModuleViewModel> {
       );
 
   Widget _buildTile(CourseModuleViewModel viewModel) => CourseModuleTileLarge(
+        first: first,
         module: module,
-        lessons: viewModel.lessons,
         onContinueTap: () {},
+        lessons: viewModel.lessons,
       );
 }

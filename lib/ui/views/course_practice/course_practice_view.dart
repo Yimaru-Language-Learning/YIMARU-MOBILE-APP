@@ -23,8 +23,10 @@ import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_re
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_6_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_7_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_7_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_7_variant.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_8_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_8_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_8_variant.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_retake_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_1_answer.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_1_question.dart';
@@ -160,9 +162,10 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 54 /*Interactive reading - title the passage*/) {
       return const DuolingoReadingPractice6Question();
     } else if (id == 55 /*Interactive reading - highlight the answer*/) {
-      return const DuolingoReadingPractice7Question();
+      return const DuolingoReadingPractice7Variant();
     } else if (id == 50 /*Read and complete*/) {
-      return const DuolingoReadingPractice8Question();
+      return DuolingoReadingPractice8Variant(
+          practiceController: practiceController);
     }
 
     return Container();

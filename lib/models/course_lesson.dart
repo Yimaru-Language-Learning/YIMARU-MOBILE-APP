@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'access.dart';
+
 part 'course_lesson.g.dart';
 
 @JsonSerializable()
@@ -7,6 +9,8 @@ class CourseLesson {
   final int? id;
 
   final String? title;
+
+  final Access? access;
 
   final String? thumbnail;
 
@@ -27,6 +31,7 @@ class CourseLesson {
   const CourseLesson(
       {this.id,
       this.title,
+      this.access,
       this.videoUrl,
       this.sortOrder,
       this.thumbnail,

@@ -25,6 +25,15 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       required this.subtitle,
       required this.practiceController});
 
+  Future<void> _practice(  {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) async {
+   // if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
+        await _nextScreen(context: context, viewModel: viewModel);
+   /* } else {
+      await viewModel.navigateToLearnSubscription();
+    }*/
+  }
+
   Future<void> _nextScreen(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
@@ -75,7 +84,7 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       viewModel.setCountdown(responseFirstSec);
     } else if (id == 28 /*Listen and type*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.response?.first.value['seconds'];
+          .dynamicPayload?.response?[0].value['seconds'];
       viewModel.setCountdown(responseFirstSec);
       viewModel.setPlayCount();
     } else if (id == 56 /*Interactive listening part 1*/) {
@@ -296,6 +305,6 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         text: 'Start preparation',
         backgroundColor: kcPrimaryColor,
         onTap: () async =>
-            await _nextScreen(context: context, viewModel: viewModel),
+            await _practice(context: context, viewModel: viewModel),
       );
 }

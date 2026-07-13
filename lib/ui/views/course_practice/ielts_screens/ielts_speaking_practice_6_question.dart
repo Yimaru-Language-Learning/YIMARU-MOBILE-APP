@@ -15,8 +15,9 @@ class IeltsSpeakingPractice6Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsSpeakingPractice6Question({super.key});
 
-  void _nextScreen(    {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) {
+  void _nextScreen(
+      {required BuildContext context,
+      required CoursePracticeViewModel viewModel}) {
     FocusManager.instance.primaryFocus?.unfocus();
     viewModel.nextQuestion(context);
   }
@@ -79,7 +80,7 @@ class IeltsSpeakingPractice6Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildQuestionExpandedWrapper(context: context,viewModel: viewModel),
+        _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarWrapper(
@@ -120,33 +121,48 @@ class IeltsSpeakingPractice6Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildCountdownWrapper(    {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(context: context,viewModel: viewModel));
+  Widget _buildCountdownWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Align(
+          alignment: Alignment.centerRight,
+          child: _buildCountdown(context: context, viewModel: viewModel));
 
-  Widget _buildCountdown(    {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => CountdownTimer(
-        onEnd: () => _nextScreen(context: context,viewModel: viewModel),
+  Widget _buildCountdown(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      CountdownTimer(
+        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
         duration: viewModel.countdown,
       );
 
-  Widget _buildQuestionExpandedWrapper(    {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
-      Expanded(child: _buildQuestionScrollerWrapper(context: context,viewModel: viewModel));
+  Widget _buildQuestionExpandedWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildQuestionScrollerWrapper(
+              context: context, viewModel: viewModel));
 
-  Widget _buildQuestionScrollerWrapper(    {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
-      SingleChildScrollView(child: _buildQuestionWrapper(context: context,viewModel: viewModel));
+  Widget _buildQuestionScrollerWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SingleChildScrollView(
+          child: _buildQuestionWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildQuestionWrapper(    {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Column(
+  Widget _buildQuestionWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildQuestionChildren(context: context,viewModel: viewModel),
+        children:
+            _buildQuestionChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildQuestionChildren(    {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => [
+  List<Widget> _buildQuestionChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
         _buildImageContainer(viewModel),
         verticalSpaceMedium,
@@ -154,7 +170,7 @@ class IeltsSpeakingPractice6Question
         verticalSpaceMedium,
         _buildQuestionColumns(viewModel),
         verticalSpaceLarge,
-        _buildContinueButtonWrapper(context: context,viewModel: viewModel),
+        _buildContinueButtonWrapper(context: context, viewModel: viewModel),
       ];
 
   Widget _buildImageContainer(CoursePracticeViewModel viewModel) => SizedBox(
@@ -171,7 +187,8 @@ class IeltsSpeakingPractice6Question
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl: viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value,
+        imageUrl: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value,
       );
 
   Widget _buildSubtitle() => Text(
@@ -308,20 +325,22 @@ class IeltsSpeakingPractice6Question
         style: style14MG400,
       );
 
-  Widget _buildContinueButtonWrapper(    {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildContinueButtonWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(context: context,viewModel: viewModel),
+        child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
-  Widget _buildContinueButton(    {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildContinueButton(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
           height: 55,
           borderRadius: 12,
           text: 'Submit Task',
           foregroundColor: kcWhite,
           backgroundColor: kcPrimaryColor,
-          onTap: () => _nextScreen(context: context,viewModel: viewModel));
+          onTap: () => _nextScreen(context: context, viewModel: viewModel));
 }

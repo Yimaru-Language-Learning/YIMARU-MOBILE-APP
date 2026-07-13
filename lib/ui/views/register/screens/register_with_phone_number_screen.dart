@@ -221,13 +221,12 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
 
   List<Widget> _buildLowerColumnChildren(RegisterViewModel viewModel) => [
         _buildContinueButton(viewModel),
-    verticalSpaceMedium,
+        verticalSpaceMedium,
         _buildOptionTextDivider(),
-    verticalSpaceMedium,
+        verticalSpaceMedium,
         _buildRegisterWitPhoneNumberButton(viewModel),
         verticalSpaceMedium
       ];
-
 
   Widget _buildContinueButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(
@@ -245,7 +244,6 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
       );
 
   Widget _buildOptionTextDivider() => const OptionTextDivider();
-
 
   Widget _buildRegisterWitPhoneNumberButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(

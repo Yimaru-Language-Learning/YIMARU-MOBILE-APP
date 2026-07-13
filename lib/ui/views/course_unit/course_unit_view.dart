@@ -10,6 +10,7 @@ import '../../common/ui_helpers.dart';
 import '../../widgets/course_module_banner.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
 import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/finish_practice_sheet.dart';
 import '../../widgets/overall_progress.dart';
 import '../../widgets/small_app_bar.dart';
 import 'course_unit_viewmodel.dart';
@@ -18,6 +19,40 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
   final CourseCatalog catalog;
 
   const CourseUnitView({Key? key, required this.catalog}) : super(key: key);
+
+  Future<void> _onPractice(
+      {required CourseUnit unit,
+      required BuildContext context,
+      required CourseUnitViewModel viewModel}) async {
+
+    await viewModel.navigateToCoursePractice(unit.id ?? 0);
+
+/*    if (unit.access?.isCompleted ?? false) {
+      await viewModel.navigateToCoursePractice(unit.id ?? 0);
+    } else {
+      if (unit.access?.isAccessible ?? false) {
+        await _showSheet(
+            context: context,
+            viewModel: viewModel,
+            practice: PracticeReason.unit);
+      } else {
+        await _showSheet(
+            context: context,
+            viewModel: viewModel,
+            practice: PracticeReason.previousUnit);
+      }
+    }*/
+  }
+
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required PracticeReason practice,
+          required CourseUnitViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        backgroundColor: kcTransparent,
+        builder: (_) => _buildSheet(viewModel: viewModel, practice: practice),
+      );
 
   @override
   void onViewModelReady(CourseUnitViewModel viewModel) async {
@@ -134,23 +169,37 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
         itemBuilder: (context, index) => _buildTile(
           index: index,
           onViewTap: () {},
+          first: index == 0,
           unit: viewModel.units[index],
-          onPracticeTap: () async => await viewModel
-              .navigateToCoursePractice(viewModel.units[index].id ?? 0),
+          onPracticeTap: () async => await _onPractice(
+            context: context,
+            viewModel: viewModel,
+            unit: viewModel.units[index],
+          ),
         ),
       );
 
   Widget _buildTile({
     required int index,
+    required bool first,
     required CourseUnit unit,
     required GestureTapCallback onViewTap,
     required GestureTapCallback onPracticeTap,
   }) =>
       CourseUnitTile(
         unit: unit,
+        first: first,
         index: index,
         catalog: catalog,
         onLessonTap: onViewTap,
         onPracticeTap: onPracticeTap,
+      );
+
+  Widget _buildSheet(
+          {required PracticeReason practice,
+          required CourseUnitViewModel viewModel}) =>
+      FinishPracticeSheet(
+        practice: practice,
+        onTap: viewModel.pop,
       );
 }

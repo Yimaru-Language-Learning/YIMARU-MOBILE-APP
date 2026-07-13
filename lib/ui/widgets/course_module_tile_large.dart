@@ -13,6 +13,7 @@ import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
 
 class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
+  final bool first;
   final CourseModule? module;
   final List<CourseLesson> lessons;
   final GestureTapCallback? onContinueTap;
@@ -20,8 +21,31 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
   const CourseModuleTileLarge(
       {super.key,
       this.onContinueTap,
+      required this.first,
       required this.module,
       required this.lessons});
+
+  Future<void> _onPractice(
+      {required int index,
+      required CourseLesson lesson,
+      required BuildContext context,
+      required CourseModuleViewModel viewModel}) async {
+    await viewModel.navigateToCoursePractice(lesson.id ?? 0);
+
+    /* if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
+      if (lesson.access?.isAccessible ?? false) {
+        await viewModel.navigateToCoursePractice(lesson.id ?? 0);
+      } else {
+        await _showSheet(context: context, viewModel: viewModel);
+      }
+    } else {
+      if (first && index < 3) {
+        await viewModel.navigateToCoursePractice(lesson.id ?? 0);
+      } else {
+        await _showSheet(context: context, viewModel: viewModel);
+      }
+    }*/
+  }
 
   Future<void> _showSheet(
           {required BuildContext context,
@@ -195,8 +219,12 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
             lesson: lessons[index],
             onVideoTap: () async =>
                 await viewModel.navigateToCourseLessonDetail(lessons[index]),
-            onPracticeTap: () async => await viewModel
-                .navigateToCoursePractice(lessons[index].id ?? 0)),
+            onPracticeTap: () async => await _onPractice(
+              index: index,
+              context: context,
+              viewModel: viewModel,
+              lesson: viewModel.lessons[index],
+            )),
       );
 
   Widget _buildCourseLessonTile({
@@ -209,4 +237,6 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
         onVideoTap: onVideoTap,
         onPracticeTap: onPracticeTap,
       );
+
+
 }
