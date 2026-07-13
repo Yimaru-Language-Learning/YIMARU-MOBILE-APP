@@ -996,10 +996,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // In-app navigation
   Future<void> setSpeakingAnswer(
-          {required String sample, required String question}) async =>
+          {required String sample, required String number}) async =>
       _answers.add({
-        'question': question,
-        'busy_object': question,
+        'number': number,
+        'busy_object': number,
         'sample_voice_answer': sample,
         'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
       });
@@ -1008,6 +1008,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     required String audio,
     required int duration,
     required String sample,
+
   }) async =>
       await runBusyFuture(
           _setSpeakingAnswer4(
@@ -1025,15 +1026,15 @@ class CoursePracticeViewModel extends ReactiveViewModel
     int variants = _variants + 1;
     await stopRecording();
     _answers.add({
+      'question': audio,
+      'number':variants.toString(),
       'sample_voice_answer': sample,
-      'question': variants.toString(),
       'busy_object': variants.toString(),
       'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
     });
     if (_variants == 2) {
       nextScreen();
     } else {
-      //  nextVariant();
       _variants++;
       _variant = 0;
       _isSpeaking = true;
