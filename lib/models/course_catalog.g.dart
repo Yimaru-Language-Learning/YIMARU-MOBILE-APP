@@ -10,6 +10,9 @@ CourseCatalog _$CourseCatalogFromJson(Map<String, dynamic> json) =>
     CourseCatalog(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
+      access: json['access'] == null
+          ? null
+          : Access.fromJson(json['access'] as Map<String, dynamic>),
       thumbnail: json['thumbnail'] as String?,
       lessonsCount: (json['lessons_count'] as num?)?.toInt(),
       sortOrder: (json['sort_order'] as num?)?.toInt(),
@@ -23,6 +26,7 @@ Map<String, dynamic> _$CourseCatalogToJson(CourseCatalog instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'access': instance.access,
       'thumbnail': instance.thumbnail,
       'description': instance.description,
       'sort_order': instance.sortOrder,

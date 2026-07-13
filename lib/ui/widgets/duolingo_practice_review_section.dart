@@ -8,14 +8,16 @@ import '../views/course_practice/course_practice_viewmodel.dart';
 import 'custom_circular_progress_indicator.dart';
 import 'custom_elevated_button.dart';
 
-class DuolingoPracticeReviewSection   extends ViewModelWidget<CoursePracticeViewModel>  {
+class DuolingoPracticeReviewSection
+    extends ViewModelWidget<CoursePracticeViewModel> {
   final List review;
   final GestureTapCallback? onTap;
   const DuolingoPracticeReviewSection(
       {super.key, this.onTap, required this.review});
 
   @override
-  Widget build(BuildContext context,CoursePracticeViewModel viewModel) => _buildReviewContainer(viewModel);
+  Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
+      _buildReviewContainer(viewModel);
 
   Widget _buildReviewContainer(CoursePracticeViewModel viewModel) => Container(
         width: double.maxFinite,
@@ -64,12 +66,13 @@ class DuolingoPracticeReviewSection   extends ViewModelWidget<CoursePracticeView
           ? _buildProgressIndicatorWrapper()
           : _buildContinueButton();
 
-  Widget _buildProgressIndicatorWrapper()=> SizedBox(
-    height: 55,
-    child: _buildProgressIndicator(),
-  );
+  Widget _buildProgressIndicatorWrapper() => SizedBox(
+        height: 55,
+        child: _buildProgressIndicator(),
+      );
 
-  Widget _buildProgressIndicator()=> const CustomCircularProgressIndicator(color: kcPrimaryColor);
+  Widget _buildProgressIndicator() =>
+      const CustomCircularProgressIndicator(color: kcPrimaryColor);
 
   Widget _buildContinueButton() => CustomElevatedButton(
         height: 55,

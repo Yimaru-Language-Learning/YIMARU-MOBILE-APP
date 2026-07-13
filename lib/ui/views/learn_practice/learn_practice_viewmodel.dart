@@ -194,7 +194,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     await _audioPlayerService.pause();
   }
 
-
   Future<void> stopAudio() async {
     await _audioPlayerService.stop();
   }
@@ -315,7 +314,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   Future<void> _completeLearnPractices() async {
     if (await _statusChecker.checkConnection()) {
-
       await _apiService.completeLearnPractice(_practices.first.id ?? 0);
       await _learnService.getLearnProgress();
     }

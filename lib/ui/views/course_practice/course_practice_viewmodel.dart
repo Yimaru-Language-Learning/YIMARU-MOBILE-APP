@@ -618,6 +618,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Reset values
   void resetValues() {
+    _end = 0;
+    _start = 0;
     _variant = 0;
     _variants = 0;
     _playCount = 2;
@@ -845,12 +847,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
-  Future<void> stopAudio() async => await runBusyFuture(_stopAudio(),
-      busyObject: StateObjects.stopAudio);
+  Future<void> stopAudio() async =>
+      await runBusyFuture(_stopAudio(), busyObject: StateObjects.stopAudio);
 
-  Future<void> _stopAudio() async =>
-    await _audioPlayerService.stop();
-
+  Future<void> _stopAudio() async => await _audioPlayerService.stop();
 
   Future<void> startRecording() async => await runBusyFuture(_startRecording(),
       busyObject: StateObjects.recordCoursePracticeAnswer);
@@ -859,7 +859,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     await _audioPlayerService.stop();
     await _voiceRecorderService.startRecording();
   }
-
 
   // Play practice audio
   void _listenToAudio() {
@@ -985,8 +984,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> _cacheNetworkImage(
       {required String image, required BuildContext context}) async {
-    await _cacheImageService.cacheNetworkImage(
-        context: context, image: image);
+    await _cacheImageService.cacheNetworkImage(context: context, image: image);
     /* Map<String, dynamic> data = {'reference': image};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
     if (response['status'] == ResponseStatus.success) {
@@ -1153,6 +1151,80 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
+  Future<void> setReadingAnswer7({
+    required int end,
+    required int start,
+    required int duration,
+    required String sample,
+    required String question,
+  }) async =>
+      await runBusyFuture(
+          _setReadingAnswer7(
+            end: end,
+            start: start,
+            sample: sample,
+            duration: duration,
+            question: question,
+          ),
+          busyObject: StateObjects.reading7Variant);
+
+  Future<void> _setReadingAnswer7({
+    required int end,
+    required int start,
+    required int duration,
+    required String sample,
+    required String question,
+  }) async {
+    _answers.add({
+      'sample': sample,
+      'response_end': end,
+      'question': question,
+      'response_start': start,
+    });
+    if (_variants == 1) {
+      nextScreen();
+    } else {
+      _end = 0;
+      _start = 0;
+      _variants++;
+      setCountdown(duration);
+    }
+  }
+
+  Future<void> setReadingAnswer8({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+  }) async =>
+      await runBusyFuture(
+          _setReadingAnswer8(
+            answer: answer,
+            sample: sample,
+            duration: duration,
+            question: question,
+          ),
+          busyObject: StateObjects.reading8Variant);
+
+  Future<void> _setReadingAnswer8({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+  }) async {
+    _answers.add({
+      'sample': sample,
+      'response': answer,
+      'question': question,
+    });
+    if (_variants == 1) {
+      nextScreen();
+    } else {
+      _variants++;
+      setCountdown(duration);
+    }
+  }
+
   Future<void> setListeningAnswer({String? sample, String? response}) async {
     _answers.add({'sample': sample, 'response': response});
   }
@@ -1219,6 +1291,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> navigateToPdf(String url) async =>
       await _navigationService.navigateToPdfView(url: url);
+
+  // Future<void> navigateToCourseSubscription() async =>
+  //     await _navigationService.navigateToCourseSubscription();
 
   // Remote api call
 

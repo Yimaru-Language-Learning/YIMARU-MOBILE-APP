@@ -64,7 +64,7 @@ class DuolingoWritingPractice1Review
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-        _buildExpandedBody(context: context,viewModel: viewModel),
+        _buildExpandedBody(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarIndenter(
@@ -83,7 +83,7 @@ class DuolingoWritingPractice1Review
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(context: context,viewModel: viewModel),
+          _buildCountdownWrapper(context: context, viewModel: viewModel),
           verticalSpaceSmall
         ],
       );
@@ -105,29 +105,46 @@ class DuolingoWritingPractice1Review
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildCountdownWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) => Align(
+  Widget _buildCountdownWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Align(
         alignment: Alignment.centerRight,
-        child: _buildCountdown(context: context,viewModel: viewModel),
+        child: _buildCountdown(context: context, viewModel: viewModel),
       );
 
-  Widget _buildCountdown({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+  Widget _buildCountdown(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       const CountdownTimer(time: '00:00');
 
-  Widget _buildExpandedBody({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
-      Expanded(child: _buildBodyScroller(context: context,viewModel: viewModel));
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildBodyScroller(context: context, viewModel: viewModel));
 
-  Widget _buildBodyScroller({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+  Widget _buildBodyScroller(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildQuestionWrapper(context: context,viewModel: viewModel),
+        child: _buildQuestionWrapper(context: context, viewModel: viewModel),
       );
 
-  Widget _buildQuestionWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) => Column(
+  Widget _buildQuestionWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildQuestionChildren(context: context,viewModel: viewModel),
+        children:
+            _buildQuestionChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildQuestionChildren({required BuildContext context, required CoursePracticeViewModel viewModel}) => [
+  List<Widget> _buildQuestionChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
         _buildTitleWrapper(viewModel),
         verticalSpaceMedium,
@@ -135,7 +152,7 @@ class DuolingoWritingPractice1Review
         verticalSpaceMedium,
         _buildPracticeFormFieldWrapper(viewModel),
         verticalSpaceMedium,
-        _buildPracticeReviewSection(context: context,viewModel: viewModel)
+        _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
   Widget _buildTitleWrapper(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -162,8 +179,8 @@ class DuolingoWritingPractice1Review
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl:  viewModel
-            .questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value,
+        imageUrl: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value,
       );
 
   Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>
@@ -184,7 +201,9 @@ class DuolingoWritingPractice1Review
             filled: practiceController.text.isNotEmpty),
       );
 
-  Widget _buildPracticeReviewSection({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeReviewSection(
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen

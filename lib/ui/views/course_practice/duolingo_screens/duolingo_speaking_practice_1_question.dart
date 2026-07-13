@@ -19,7 +19,6 @@ class DuolingoSpeakingPractice1Question
   });
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
-
     await viewModel.startRecording();
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds']);
@@ -174,8 +173,8 @@ class DuolingoSpeakingPractice1Question
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl: viewModel
-            .questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value,
+        imageUrl: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value,
       );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>

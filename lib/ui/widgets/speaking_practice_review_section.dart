@@ -39,7 +39,7 @@ class SpeakingPracticeReviewSection
         verticalSpaceMedium,
         _buildResults(viewModel),
         verticalSpaceLarge,
-    _buildContinueButtonState(viewModel),
+        _buildContinueButtonState(viewModel),
         verticalSpaceMedium
       ];
 
@@ -70,12 +70,13 @@ class SpeakingPracticeReviewSection
           ? _buildProgressIndicatorWrapper()
           : _buildContinueButton();
 
-  Widget _buildProgressIndicatorWrapper()=> SizedBox(
-    height: 55,
-    child: _buildProgressIndicator(),
-  );
+  Widget _buildProgressIndicatorWrapper() => SizedBox(
+        height: 55,
+        child: _buildProgressIndicator(),
+      );
 
-  Widget _buildProgressIndicator()=> const CustomCircularProgressIndicator(color: kcPrimaryColor);
+  Widget _buildProgressIndicator() =>
+      const CustomCircularProgressIndicator(color: kcPrimaryColor);
 
   Widget _buildContinueButton() => CustomElevatedButton(
         height: 55,

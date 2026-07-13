@@ -63,7 +63,7 @@ class IeltsSpeakingPractice2Review
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(viewModel),
-        _buildPracticeReviewSection(context: context,viewModel: viewModel)
+        _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
 
   Widget _buildAppBarIndenter(
@@ -145,8 +145,9 @@ class IeltsSpeakingPractice2Review
             ?.stimulus?.last.value,
       );
 
-  Widget _buildPracticeReviewSection(    {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SpeakingPracticeReviewSection(
           onTap: viewModel.currentQuestion == viewModel.questions.length - 1
               ? viewModel.nextScreen

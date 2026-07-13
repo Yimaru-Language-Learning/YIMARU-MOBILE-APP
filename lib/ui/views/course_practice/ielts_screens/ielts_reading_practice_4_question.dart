@@ -14,7 +14,9 @@ class IeltsReadingPractice4Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsReadingPractice4Question({super.key});
 
-  void _nextScreen({required BuildContext context, required CoursePracticeViewModel viewModel}) {
+  void _nextScreen(
+      {required BuildContext context,
+      required CoursePracticeViewModel viewModel}) {
     FocusManager.instance.primaryFocus?.unfocus();
     viewModel.nextQuestion(context);
   }
@@ -118,27 +120,46 @@ class IeltsReadingPractice4Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildCountdownWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(context: context, viewModel: viewModel));
+  Widget _buildCountdownWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Align(
+          alignment: Alignment.centerRight,
+          child: _buildCountdown(context: context, viewModel: viewModel));
 
-  Widget _buildCountdown({required BuildContext context, required CoursePracticeViewModel viewModel}) => CountdownTimer(
+  Widget _buildCountdown(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      CountdownTimer(
         onEnd: () => _nextScreen(context: context, viewModel: viewModel),
         duration: viewModel.countdown,
       );
 
-  Widget _buildQuestionExpandedWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
-      Expanded(child: _buildQuestionScrollerWrapper(context: context, viewModel: viewModel));
+  Widget _buildQuestionExpandedWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildQuestionScrollerWrapper(
+              context: context, viewModel: viewModel));
 
-  Widget _buildQuestionScrollerWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
-      SingleChildScrollView(child: _buildQuestionColumn(context: context, viewModel: viewModel));
+  Widget _buildQuestionScrollerWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SingleChildScrollView(
+          child: _buildQuestionColumn(context: context, viewModel: viewModel));
 
-  Widget _buildQuestionColumn({required BuildContext context, required CoursePracticeViewModel viewModel}) => Column(
+  Widget _buildQuestionColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
-        children: _buildQuestionColumnChildren(context: context, viewModel: viewModel),
+        children: _buildQuestionColumnChildren(
+            context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildQuestionColumnChildren(
-      {required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceSmall,
         _buildQuestionContainerWrapper(viewModel),
@@ -196,18 +217,23 @@ class IeltsReadingPractice4Question
             ?.stimulus?[1].value,
       );
 
-  Widget _buildContinueButtonWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+  Widget _buildContinueButtonWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
-  Widget _buildContinueButton({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+  Widget _buildContinueButton(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
-          height: 55,
-          borderRadius: 12,
-          text: 'Submit Task',
-          foregroundColor: kcWhite,
-          backgroundColor: kcPrimaryColor,
-          onTap: () => _nextScreen(context: context, viewModel: viewModel),);
+        height: 55,
+        borderRadius: 12,
+        text: 'Submit Task',
+        foregroundColor: kcWhite,
+        backgroundColor: kcPrimaryColor,
+        onTap: () => _nextScreen(context: context, viewModel: viewModel),
+      );
 }

@@ -173,8 +173,8 @@ class DuolingoListeningPractice2Question
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       ListenableRepetitivePracticeCard(
-          question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                  ?.stimulus?.first.value ??
+          question: viewModel.questions[viewModel.currentQuestion]
+                  .dynamicPayload?.stimulus?.first.value ??
               '');
 
   Widget _buildLabel(String question) => Text(
@@ -204,12 +204,13 @@ class DuolingoListeningPractice2Question
           ? _buildProgressIndicatorWrapper()
           : _buildContinueButton(viewModel);
 
-  Widget _buildProgressIndicatorWrapper()=> SizedBox(
-    height: 55,
-    child: _buildProgressIndicator(),
-  );
+  Widget _buildProgressIndicatorWrapper() => SizedBox(
+        height: 55,
+        child: _buildProgressIndicator(),
+      );
 
-  Widget _buildProgressIndicator()=> const CustomCircularProgressIndicator(color: kcPrimaryColor);
+  Widget _buildProgressIndicator() =>
+      const CustomCircularProgressIndicator(color: kcPrimaryColor);
 
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
@@ -218,6 +219,6 @@ class DuolingoListeningPractice2Question
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: ()async =>await _next(viewModel),
+        onTap: () async => await _next(viewModel),
       );
 }

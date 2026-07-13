@@ -191,9 +191,9 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
   List<Widget> _buildLowerColumnChildren(RegisterViewModel viewModel) => [
         _buildContinueButton(viewModel),
         _buildRegisterWithGoogleButton(viewModel),
-    verticalSpaceMedium,
+        verticalSpaceMedium,
         _buildOptionTextDivider(),
-    verticalSpaceMedium,
+        verticalSpaceMedium,
         _buildRegisterWithEmailButton(viewModel),
         verticalSpaceMedium
       ];

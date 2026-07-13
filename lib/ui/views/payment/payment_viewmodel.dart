@@ -102,7 +102,7 @@ class PaymentViewModel extends ReactiveViewModel {
         'phone': '251$phone',
         'email': 'test@gmail.com',
         'plan_id': subscription.id,
-        'payment_method':'telebirr',
+        'payment_method': 'telebirr',
       };
 
       Map<String, dynamic> response =

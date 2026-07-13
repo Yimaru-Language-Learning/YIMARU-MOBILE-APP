@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
 import '../../models/course_catalog.dart';
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
+import '../views/course_catalog/course_catalog_viewmodel.dart';
+import '../views/learn_course/learn_course_viewmodel.dart';
 import 'custom_elevated_button.dart';
 
-class CourseCatalogTile extends StatelessWidget {
+class CourseCatalogTile extends ViewModelWidget<CourseCatalogViewModel> {
   final CourseCatalog catalog;
   final GestureTapCallback? onCourseTap;
   final GestureTapCallback? onPracticeTap;
@@ -19,7 +22,14 @@ class CourseCatalogTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => _buildExpansionTileCard();
+  Widget build(BuildContext context, CourseCatalogViewModel viewModel) =>
+      _buildExpansionTileCardWrapper(viewModel);
+
+  Widget _buildExpansionTileCardWrapper(CourseCatalogViewModel viewModel) =>
+      GestureDetector(
+        onTap: !(catalog.access?.isAccessible ?? false) ? onPracticeTap : null,
+        child: _buildExpansionTileCard(),
+      );
 
   Widget _buildExpansionTileCard() => Container(
         decoration: BoxDecoration(

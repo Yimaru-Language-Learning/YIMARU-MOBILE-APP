@@ -10,6 +10,9 @@ CourseModule _$CourseModuleFromJson(Map<String, dynamic> json) => CourseModule(
       id: (json['id'] as num?)?.toInt(),
       icon: json['icon'] as String?,
       name: json['name'] as String?,
+      access: json['access'] == null
+          ? null
+          : Access.fromJson(json['access'] as Map<String, dynamic>),
       unitId: (json['unit_id'] as num?)?.toInt(),
       practice: (json['practices_count'] as num?)?.toInt(),
       thumbnail: json['thumbnail'] as String?,
@@ -24,6 +27,7 @@ Map<String, dynamic> _$CourseModuleToJson(CourseModule instance) =>
       'id': instance.id,
       'name': instance.name,
       'icon': instance.icon,
+      'access': instance.access,
       'thumbnail': instance.thumbnail,
       'description': instance.description,
       'unit_id': instance.unitId,

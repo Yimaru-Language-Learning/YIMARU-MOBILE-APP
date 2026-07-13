@@ -168,8 +168,8 @@ class DuolingoSpeakingPractice1Answer
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl:  viewModel
-      .questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value,
+        imageUrl: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value,
       );
 
   Widget _buildSpeakerLabelState(CoursePracticeViewModel viewModel) =>

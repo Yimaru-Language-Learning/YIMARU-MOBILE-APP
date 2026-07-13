@@ -20,7 +20,10 @@ class FinishPracticeSheet extends StatelessWidget {
       return LocaleKeys.finish_all_practice_lesson.tr();
     } else if (practice == PracticeReason.module) {
       return LocaleKeys.finish_all_practice_module.tr();
-    } else if (practice == PracticeReason.previousModule) {
+    } else if (practice == PracticeReason.previousUnit) {
+      return LocaleKeys.finish_all_practice_previouse_module.tr();
+    }
+    if (practice == PracticeReason.previousModule) {
       return LocaleKeys.finish_all_practice_previouse_module.tr();
     } else if (practice == PracticeReason.previousCourse) {
       return LocaleKeys.finish_all_practice_previouse_course.tr();

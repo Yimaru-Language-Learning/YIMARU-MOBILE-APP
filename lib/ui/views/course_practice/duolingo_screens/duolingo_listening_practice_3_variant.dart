@@ -80,15 +80,14 @@ class DuolingoListeningPractice3Variant
             ?.response?[8].value['seconds'],
       );
 
-  Widget _buildVariant(
-          {required int duration,
-          required List options,
-          required String question,
-    }) =>
+  Widget _buildVariant({
+    required int duration,
+    required List options,
+    required String question,
+  }) =>
       DuolingoListeningPractice3Question(
         options: options,
         duration: duration,
         question: question,
-
       );
 }

@@ -205,6 +205,8 @@ class CodegenLoader extends AssetLoader {
     "finish_all_practice_lesson": "ይህን ልምምድ ለመውሰድ የቀድሞውን የትምህርት ልምምድ ያጠናቅቁ",
     "finish_all_practice_module": "የሞጁሉን ልምምድ ለመውሰድ የትምህርት ልምምዶችን ያጠናቅቁ",
     "finish_all_practice_course": "የኮርሱን ልምምድ ለመውሰድ የሞጁል ልምምዶችን ያጠናቅቁ",
+    "finish_all_practice_previouse_unit":
+        "ይህን ልምምድ ለመውሰድ የቀድሞውን የዩኒት ልምምድ ያጠናቅቁ",
     "finish_all_practice_previouse_module":
         "ይህን ልምምድ ለመውሰድ የቀድሞውን የሞጁል ልምምድ ያጠናቅቁ",
     "finish_all_practice_previouse_course": "ይህን ለመውሰድ የቀድሞውን የኮርስ ልምምድ ያጠናቅቁ",
@@ -424,6 +426,8 @@ class CodegenLoader extends AssetLoader {
         "Finish the lesson practices to take the Module Practice",
     "finish_all_practice_course":
         "Finish the Module practices to take the Course practice",
+    "finish_all_practice_previouse_unit":
+        "Finish the previous Unit practice to take this practice",
     "finish_all_practice_previouse_module":
         "Finish the previous Module practice to take this practice",
     "finish_all_practice_previouse_course":
@@ -435,7 +439,20 @@ class CodegenLoader extends AssetLoader {
     "completed_practices": "Completed Practices",
     "total_practices": "Total Practices",
     "progress_percentage": "Progress Percentage",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "choose_course_to_improve":
+        "Choose a course to improve your professional or exam skills.",
+    "start_course": "Start course",
+    "english_proficiency": "English Proficiency Exams",
+    "select_your_target_exam": "Select your target exam and start preparing",
+    "take_mock_exam": "Take Mock Exam",
+    "course_detail": "Course Detail",
+    "continue_course": "Continue Course",
+    "module_detail": "Module Detail",
+    "continue_module": "Continue Module",
+    "play_video": "Play Video",
+    "practice_test": "Practice Test",
+    "start_assessment": "Start assessment"
   };
   static const Map<String, Map<String, dynamic>> mapLocales = {
     "am": _am,

@@ -14,7 +14,7 @@ class DuolingoListeningPractice2Review
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoListeningPractice2Review({super.key});
 
-  Future<void> _next(CoursePracticeViewModel viewModel)async{
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
     await viewModel.stopAudio();
     viewModel.nextScreen();
   }
@@ -107,24 +107,34 @@ class DuolingoListeningPractice2Review
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildExpandedBody({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
-      Expanded(child: _buildBodyScroller(context: context, viewModel: viewModel));
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildBodyScroller(context: context, viewModel: viewModel));
 
-  Widget _buildBodyScroller({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+  Widget _buildBodyScroller(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildQuestionSectionWrapper(context: context, viewModel: viewModel),
+        child: _buildQuestionSectionWrapper(
+            context: context, viewModel: viewModel),
       );
 
-  Widget _buildQuestionSectionWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+  Widget _buildQuestionSectionWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildQuestionQuestionSectionChildren(context: context, viewModel: viewModel),
+        children: _buildQuestionQuestionSectionChildren(
+            context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildQuestionQuestionSectionChildren(
-{required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceLarge,
         _buildTitleWrapper(),
@@ -134,17 +144,20 @@ class DuolingoListeningPractice2Review
         _buildLabelWrapper(
             '1. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value}'),
         verticalSpaceTiny,
-        _buildPracticeResponsesWrapper(viewModel.answers.elementAt(0)['response']),
+        _buildPracticeResponsesWrapper(
+            viewModel.answers.elementAt(0)['response']),
         verticalSpaceMedium,
         _buildLabelWrapper(
             '2. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[2].value}'),
         verticalSpaceTiny,
-        _buildPracticeResponsesWrapper(viewModel.answers.elementAt(1)['response']),
+        _buildPracticeResponsesWrapper(
+            viewModel.answers.elementAt(1)['response']),
         verticalSpaceMedium,
         _buildLabelWrapper(
             '3. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[3].value}'),
         verticalSpaceTiny,
-        _buildPracticeResponsesWrapper(viewModel.answers.elementAt(2)['response']),
+        _buildPracticeResponsesWrapper(
+            viewModel.answers.elementAt(2)['response']),
         verticalSpaceMedium,
         _buildPracticeReviewSection(context: context, viewModel: viewModel),
       ];
@@ -167,8 +180,8 @@ class DuolingoListeningPractice2Review
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       ListenableRepetitivePracticeCard(
-          question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                  ?.stimulus?.first.value ??
+          question: viewModel.questions[viewModel.currentQuestion]
+                  .dynamicPayload?.stimulus?.first.value ??
               '');
 
   Widget _buildLabelWrapper(String question) => Padding(
@@ -192,7 +205,9 @@ class DuolingoListeningPractice2Review
   ) =>
       CoursePracticeQuestionCard(subtitle: answer);
 
-  Widget _buildPracticeReviewSection({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeReviewSection(
         review: viewModel.answers,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1

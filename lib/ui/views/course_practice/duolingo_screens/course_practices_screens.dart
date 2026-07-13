@@ -18,35 +18,49 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
   }
 
   Future<void> _getPracticeQuestions(
-      {required int index,required BuildContext context, required CoursePracticeViewModel viewModel}) async {
+      {required int index,
+      required BuildContext context,
+      required CoursePracticeViewModel viewModel}) async {
     _reset(viewModel);
     await viewModel.getCoursePracticeQuestions(
-      context: context,
-       id: viewModel.practices[index].questionSetId ?? 0);
+        context: context, id: viewModel.practices[index].questionSetId ?? 0);
   }
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(context: context,viewModel: viewModel);
+      _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildScaffoldWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) => Scaffold(
+  Widget _buildScaffoldWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context,viewModel: viewModel),
+        body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
-  Widget _buildScaffold({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
-      SafeArea(child: _buildBody(context: context,viewModel: viewModel),);
+  Widget _buildScaffold(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SafeArea(
+        child: _buildBody(context: context, viewModel: viewModel),
+      );
 
-  Widget _buildBody({required BuildContext context, required CoursePracticeViewModel viewModel}) => Padding(
+  Widget _buildBody(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(context: context,viewModel: viewModel),
+        child: _buildColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildColumn({required BuildContext context, required CoursePracticeViewModel viewModel}) => Column(
+  Widget _buildColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
-          _buildPracticeColumnWrapper(context: context,viewModel: viewModel),
+          _buildPracticeColumnWrapper(context: context, viewModel: viewModel),
         ],
       );
 
@@ -55,28 +69,40 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
         onPop: viewModel.goBack,
       );
 
-  Widget _buildPracticeColumnWrapper({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
-      Expanded(child: _buildPracticeColumnScrollView(context: context,viewModel: viewModel),);
-
-  Widget _buildPracticeColumnScrollView({required BuildContext context, required CoursePracticeViewModel viewModel}) =>
-      SingleChildScrollView(
-        child: _buildPracticeColumn(context: context,viewModel: viewModel),
+  Widget _buildPracticeColumnWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+        child: _buildPracticeColumnScrollView(
+            context: context, viewModel: viewModel),
       );
 
-  Widget _buildPracticeColumn({required BuildContext context, required CoursePracticeViewModel viewModel}) => Column(
+  Widget _buildPracticeColumnScrollView(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SingleChildScrollView(
+        child: _buildPracticeColumn(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildPracticeColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildPracticeColumnChildren(context: context,viewModel: viewModel),
+        children: _buildPracticeColumnChildren(
+            context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildPracticeColumnChildren(
-      {required BuildContext context, required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceMedium,
         _buildTitle(),
         _buildSubtitle(),
         verticalSpaceMedium,
-        _buildListView(context: context,viewModel: viewModel)
+        _buildListView(context: context, viewModel: viewModel)
       ];
 
   Widget _buildTitle() => Text(
@@ -89,14 +115,17 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
         style: style14DG400,
       );
 
-  Widget _buildListView({required BuildContext context, required CoursePracticeViewModel viewModel}) => GridView.builder(
+  Widget _buildListView(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      GridView.builder(
         shrinkWrap: true,
         itemCount: viewModel.practices.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildCard(
           title: viewModel.practices[index].title ?? '',
-          onTap: () async =>
-              await _getPracticeQuestions(index: index,context: context, viewModel: viewModel),
+          onTap: () async => await _getPracticeQuestions(
+              index: index, context: context, viewModel: viewModel),
         ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,

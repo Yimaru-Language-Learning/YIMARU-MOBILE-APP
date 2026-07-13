@@ -16,6 +16,7 @@ import 'custom_elevated_button.dart';
 
 class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
   final int index;
+  final bool first;
   final CourseUnit unit;
   final CourseCatalog catalog;
 
@@ -28,6 +29,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
       this.onPracticeTap,
       required this.unit,
       required this.index,
+      required this.first,
       required this.catalog});
 
   Future<void> _getCourseModules({
@@ -53,7 +55,15 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
 
   @override
   Widget build(BuildContext context, CourseUnitViewModel viewModel) =>
-      _buildExpansionTileCard(context: context, viewModel: viewModel);
+      _buildExpansionTileCardWrapper(context: context, viewModel: viewModel);
+
+  Widget _buildExpansionTileCardWrapper(
+          {required BuildContext context,
+          required CourseUnitViewModel viewModel}) =>
+      GestureDetector(
+        onTap: !(unit.access?.isAccessible ?? false) ? onPracticeTap : null,
+        child: _buildExpansionTileCard(context: context, viewModel: viewModel),
+      );
 
   Widget _buildExpansionTileCard(
           {required BuildContext context,
@@ -140,8 +150,10 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
           required CourseUnitViewModel viewModel}) =>
       [
         _buildProgressRowWrapper(),
-        verticalSpaceSmall,
-        _buildActionButtonWrapper(context: context, viewModel: viewModel),
+        verticalSpaceMedium,
+        if (unit.hasPractice ?? false)
+          _buildActionButtonState(context: context, viewModel: viewModel),
+        if (unit.hasPractice ?? false)
         verticalSpaceMedium,
         _buildCourseModulesState(viewModel)
       ];
@@ -173,14 +185,23 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         style: TextStyle(color: kcDarkGrey),
       );
 
+  Widget _buildActionButtonState(
+      {required BuildContext context,
+        required CourseUnitViewModel viewModel}) =>
+      viewModel.busy(index)
+          ? Container()
+          : _buildActionButtonWrapper(context: context, viewModel: viewModel);
+
   Widget _buildActionButtonWrapper(
           {required BuildContext context,
           required CourseUnitViewModel viewModel}) =>
       Container(
-        height: 40,
+        height: 50,
         margin: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildActionButtons(context: context, viewModel: viewModel),
+        child: _buildPracticeButton(context: context, viewModel: viewModel),
       );
+
+
 
   Widget _buildActionButtons(
           {required BuildContext context,
@@ -222,9 +243,8 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         borderRadius: 12,
         onTap: onPracticeTap,
         text: 'View Practices',
-        backgroundColor: kcWhite,
-        borderColor: kcPrimaryColor,
-        foregroundColor: kcPrimaryColor,
+        foregroundColor: kcWhite,
+        backgroundColor: kcPrimaryColor,
       );
 
   Widget _buildSheet(CourseUnitViewModel viewModel) => FinishPracticeSheet(
@@ -254,7 +274,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         itemBuilder: (context, index) => _buildCourseModuleCard(
             module: unit.modules?[index],
             onTap: () async => await viewModel.navigateToCourseModule(
-                catalog: catalog, module: unit.modules?[index])),
+                first: first, catalog: catalog, module: unit.modules?[index])),
       );
 
   Widget _buildCourseModuleCard(

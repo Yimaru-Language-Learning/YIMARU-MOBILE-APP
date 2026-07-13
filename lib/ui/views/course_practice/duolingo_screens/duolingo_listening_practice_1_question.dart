@@ -31,11 +31,10 @@ class DuolingoListeningPractice1Question
     String answer = practiceController.text;
     practiceController.clear();
     await viewModel.setListeningAnswer1(
-      answer: answer,
-      sample: response,
-      duration: duration,
-        question:question
-    );
+        answer: answer,
+        sample: response,
+        duration: duration,
+        question: question);
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -181,7 +180,8 @@ class DuolingoListeningPractice1Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestion() => ListenableRepetitivePracticeCard(question: question);
+  Widget _buildQuestion() =>
+      ListenableRepetitivePracticeCard(question: question);
 
   Widget _buildLabel() => Text(
         'Your Answer',

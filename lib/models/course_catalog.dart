@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'access.dart';
+
 part 'course_catalog.g.dart';
 
 @JsonSerializable()
@@ -7,6 +9,8 @@ class CourseCatalog {
   final int? id;
 
   final String? name;
+
+  final Access? access;
 
   final String? thumbnail;
 
@@ -27,16 +31,18 @@ class CourseCatalog {
   @JsonKey(name: 'has_practice')
   final bool? hasPractice;
 
-  const CourseCatalog(
-      {this.id,
-      this.name,
-      this.thumbnail,
-      this.lessonsCount,
-      this.sortOrder,
-      this.unitsCount,
-      this.hasPractice,
-      this.description,
-      this.modulesCount});
+  const CourseCatalog({
+    this.id,
+    this.name,
+    this.access,
+    this.thumbnail,
+    this.sortOrder,
+    this.unitsCount,
+    this.hasPractice,
+    this.description,
+    this.modulesCount,
+    this.lessonsCount,
+  });
 
   factory CourseCatalog.fromJson(Map<String, dynamic> json) =>
       _$CourseCatalogFromJson(json);

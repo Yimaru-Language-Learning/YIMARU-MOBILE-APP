@@ -212,7 +212,6 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
         verticalSpaceMedium
       ];
 
-
   Widget _buildContinueButton(LoginViewModel viewModel) => CustomElevatedButton(
         height: 55,
         bottom: false,
@@ -228,7 +227,6 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
       );
 
   Widget _buildOptionTextDivider() => const OptionTextDivider();
-
 
   Widget _buildLoginWitPhoneNumberButton(LoginViewModel viewModel) =>
       CustomElevatedButton(

@@ -19,7 +19,6 @@ class DuolingoReadingPractice1Question
   final List options;
   final String question;
 
-
   const DuolingoReadingPractice1Question({
     super.key,
     required this.options,
@@ -134,7 +133,6 @@ class DuolingoReadingPractice1Question
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
 
-
   Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.reading1Variant)
           ? const CountdownTimer(time: '00:00')
@@ -175,7 +173,6 @@ class DuolingoReadingPractice1Question
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         verticalSpaceLarge,
-
         _buildQuestion(),
         verticalSpaceLarge,
         _buildPracticeQuestions(viewModel),
@@ -183,15 +180,10 @@ class DuolingoReadingPractice1Question
         _buildContinueButtonWrapper(viewModel)
       ];
 
-
-
-  Widget _buildQuestion() =>
- Text(
-question,
-    style: style14DG400,
-  );
-
-
+  Widget _buildQuestion() => Text(
+        question,
+        style: style14DG400,
+      );
 
   Widget _buildPracticeQuestions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
