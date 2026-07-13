@@ -20,7 +20,7 @@ class DuolingoSpeakingPractice2Answer
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     await viewModel.setSpeakingAnswer(
-        question: '1',
+        number: '1',
         sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
                 ?.response?.last.value ??
             '');
@@ -169,7 +169,6 @@ class DuolingoSpeakingPractice2Answer
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeQuestionCard(
-        title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value,
       );

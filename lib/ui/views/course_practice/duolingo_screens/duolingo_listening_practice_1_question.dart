@@ -94,7 +94,6 @@ class DuolingoListeningPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:
             _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
@@ -104,8 +103,7 @@ class DuolingoListeningPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildQuestionWrapper(viewModel),
-        _buildContinueButtonWrapper(viewModel)
+        _buildBodyScroller(viewModel),
       ];
 
   Widget _buildAppBarWrapper(
@@ -153,6 +151,13 @@ class DuolingoListeningPractice1Question
         onEnd: () async => await _next(viewModel),
       );
 
+  Widget _buildBodyScroller(
+    CoursePracticeViewModel viewModel) =>
+      SingleChildScrollView(
+        child: _buildQuestionWrapper(
+           viewModel),
+      );
+
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -161,6 +166,7 @@ class DuolingoListeningPractice1Question
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
+    verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceMedium,
         _buildQuestion(),
@@ -172,6 +178,8 @@ class DuolingoListeningPractice1Question
           verticalSpaceTiny,
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
+    verticalSpaceMedium,
+    _buildContinueButtonWrapper(viewModel)
       ];
 
   Widget _buildTitle() => Text(

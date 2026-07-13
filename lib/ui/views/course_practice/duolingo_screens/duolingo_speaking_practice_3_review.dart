@@ -126,12 +126,21 @@ class DuolingoSpeakingPractice3Review
 
   Widget _buildQuestionIndenter(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildQuestion(viewModel),
+        child: _buildQuestionColumn(viewModel),
       );
+
+  Widget _buildQuestionColumn(CoursePracticeViewModel viewModel) => Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: __buildQuestionColumnChildren(viewModel),
+      );
+
+  List<Widget> __buildQuestionColumnChildren(
+          CoursePracticeViewModel viewModel) =>
+      [verticalSpaceMedium, _buildQuestion(viewModel), verticalSpaceMedium];
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeQuestionCard(
-        title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value,
       );

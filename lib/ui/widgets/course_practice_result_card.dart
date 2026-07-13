@@ -16,7 +16,7 @@ class CoursePracticeResultCard extends StatelessWidget {
   Widget build(BuildContext context) => _buildRow();
 
   Widget _buildQuestion() => Text(
-        '${answer['question']}.',
+        '${answer['number']}.',
         maxLines: 1,
         style: style14DG400,
       );

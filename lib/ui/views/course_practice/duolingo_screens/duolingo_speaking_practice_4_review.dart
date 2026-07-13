@@ -5,6 +5,7 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
+import '../../../widgets/listenable_review_practice_card.dart';
 import '../../../widgets/speaking_practice_review_section.dart';
 import '../../../widgets/dwarf_tile.dart';
 import '../course_practice_viewmodel.dart';
@@ -12,6 +13,12 @@ import '../course_practice_viewmodel.dart';
 class DuolingoSpeakingPractice4Review
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoSpeakingPractice4Review({super.key});
+
+  String getQuestion(
+      {required int index, required CoursePracticeViewModel viewModel}) {
+    if (index >= viewModel.answers.length) return '';
+    return viewModel.answers[index]['question']?.toString() ?? '';
+  }
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
     await viewModel.stopAudio();
@@ -65,8 +72,7 @@ class DuolingoSpeakingPractice4Review
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-        _buildQuestionIndenter(viewModel),
-        _buildPracticeReviewSection(context: context, viewModel: viewModel)
+        _buildExpandedBody(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarIndenter(
@@ -105,21 +111,100 @@ class DuolingoSpeakingPractice4Review
         onCancel: () async => await _cancel(viewModel),
       );
 
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildBodyScroller(context: context, viewModel: viewModel));
+
+  Widget _buildBodyScroller(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SingleChildScrollView(
+        child: _buildQuestionSectionWrapper(
+            context: context, viewModel: viewModel),
+      );
+
+  Widget _buildQuestionSectionWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _buildQuestionQuestionSectionChildren(
+            context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildQuestionQuestionSectionChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
+        verticalSpaceMedium,
+        _buildQuestionIndenter(viewModel),
+        verticalSpaceMedium,
+        _buildQuestionRowWrapper(
+            number: '1', question: getQuestion(index: 0, viewModel: viewModel)),
+        verticalSpaceMedium,
+        _buildQuestionRowWrapper(
+            number: '2', question: getQuestion(index: 1, viewModel: viewModel)),
+        verticalSpaceMedium,
+        _buildQuestionRowWrapper(
+            number: '3', question: getQuestion(index: 2, viewModel: viewModel)),
+        verticalSpaceLarge,
+        _buildPracticeReviewSection(context: context, viewModel: viewModel),
+      ];
+
   Widget _buildQuestionIndenter(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildDwarfWrapper(viewModel),
       );
 
   Widget _buildDwarfWrapper(CoursePracticeViewModel viewModel) => DwarfTile(
-        child: _buildQuestionWrapper(viewModel),
+        child: _buildDwarfLabelWrapper(viewModel),
       );
 
-  Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildQuestion(viewModel));
+  Widget _buildDwarfLabelWrapper(CoursePracticeViewModel viewModel) =>
+      Expanded(child: _buildDwarfLabel(viewModel));
 
-  Widget _buildQuestion(CoursePracticeViewModel viewModel) => Text(
-        'Listen your response',
+  Widget _buildDwarfLabel(CoursePracticeViewModel viewModel) => Text(
+        'Listen the questions',
         style: style16DG600,
+      );
+
+  Widget _buildQuestionRowWrapper(
+          {required String question, required String number}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildQuestionRow(question: question, number: number),
+      );
+
+  Widget _buildQuestionRow(
+          {required String question, required String number}) =>
+      Row(
+        children: [
+          _buildQuestionNumber(number),
+          horizontalSpaceSmall,
+          _buildQuestionWrapper(number: number, question: question)
+        ],
+      );
+
+  Widget _buildQuestionNumber(String number) => Text(
+        '$number.',
+        style: style16DG600,
+        textAlign: TextAlign.center,
+      );
+
+  Widget _buildQuestionWrapper(
+          {required String question, required String number}) =>
+      Expanded(
+        child: _buildQuestion(number: number, question: question),
+      );
+
+  Widget _buildQuestion({required String question, required String number}) =>
+      ListenableReviewPracticeCard(
+        audio: question,
+        busyObject: number,
       );
 
   Widget _buildPracticeReviewSection(

@@ -83,17 +83,17 @@ class DuolingoSpeakingPractice4Variant
       IndexedStack(
         index: viewModel.variant,
         children: _buildPractice(
-            stimulus: audio, response: response, duration: duration),
+            audio: audio, response: response, duration: duration),
       );
 
   List<Widget> _buildPractice({
     required int duration,
-    required String stimulus,
+    required String audio,
     required String response,
   }) =>
       [
         const DuolingoSpeakingPractice4Question(),
         DuolingoSpeakingPractice4Answer(
-            audio: stimulus, response: response, duration: duration)
+            audio: audio, response: response, duration: duration)
       ];
 }
