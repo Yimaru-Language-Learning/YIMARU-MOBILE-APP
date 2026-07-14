@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:stacked/stacked.dart';
@@ -335,14 +337,18 @@ class LoginViewModel extends ReactiveViewModel
 
   // Register device
   Future<void> _registerDevice() async {
-    String? token = await _pushNotificationService.getDeviceToken();
-    print('DEVICE TOKEN: $token');
-    if (token != null) {
-      Map<String, dynamic> deviceData = {
-        "platform": "android",
-        'device_token': token,
-      };
-      await _apiService.registerDevice(deviceData);
+    try {
+      String? token = await _pushNotificationService.getDeviceToken();
+      print('DEVICE TOKEN: $token');
+      if (token != null) {
+        Map<String, dynamic> deviceData = {
+          "platform": Platform.isIOS ? "ios" : "android",
+          'device_token': token,
+        };
+        await _apiService.registerDevice(deviceData);
+      }
+    } catch (error) {
+      print('DEVICE REGISTRATION ERROR: $error');
     }
   }
 

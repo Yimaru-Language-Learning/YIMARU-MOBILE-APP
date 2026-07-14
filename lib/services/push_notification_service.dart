@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:yimaru_app/app/app.locator.dart';
@@ -28,7 +31,7 @@ class PushNotificationService {
     await _setupMessageHandler();
 
     // Subscribe to all devices
-    subscribeToTopic('yimaru');
+    await subscribeToTopic('yimaru');
   }
 
   Future<void> _requestPermission() async {
@@ -126,13 +129,34 @@ class PushNotificationService {
   }
 
   Future<void> subscribeToTopic(String topic) async {
-    await FirebaseMessaging.instance.subscribeToTopic(topic);
+    try {
+      if (Platform.isIOS && await _messaging.getAPNSToken() == null) {
+        return;
+      }
+
+      await _messaging.subscribeToTopic(topic);
+    } on FirebaseException catch (error) {
+      if (error.code == 'apns-token-not-set') return;
+      rethrow;
+    }
   }
 
-  Future<String?> getDeviceToken() async => await _messaging.getToken();
+  Future<String?> getDeviceToken() async {
+    try {
+      if (Platform.isIOS && await _messaging.getAPNSToken() == null) {
+        return null;
+      }
+
+      return await _messaging.getToken();
+    } on FirebaseException catch (error) {
+      if (error.code == 'apns-token-not-set') return null;
+      rethrow;
+    }
+  }
 
   Future<void> updateFCMToken() async {
-    _messaging.onTokenRefresh.listen((newToken) {
+    _messaging.onTokenRefresh.listen((newToken) async {
+      await subscribeToTopic('yimaru');
       // updateTokenOnServer(newToken);
     });
   }

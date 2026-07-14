@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:in_app_update/in_app_update.dart';
@@ -20,6 +21,8 @@ class InAppUpdateService {
   final _statusCheckerService = locator<StatusCheckerService>();
 
   Future<void> checkForUpdate() async {
+    if (!Platform.isAndroid) return;
+
     try {
       final String? deviceVersion = await _statusCheckerService.getAppVersion();
       log('IN-APP UPDATE DEVICE VERSION CODE: $deviceVersion');
@@ -48,6 +51,8 @@ class InAppUpdateService {
           }
         }
       }
+    } on MissingPluginException {
+      // The in_app_update plugin is Android-only.
     } on PlatformException {
       // Handle specific error code for better user experience and potentially different error messages for each issue
     }
