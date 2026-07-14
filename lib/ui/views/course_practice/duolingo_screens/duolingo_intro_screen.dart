@@ -86,7 +86,6 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?[0].value['seconds'];
       viewModel.setCountdown(responseFirstSec);
-      viewModel.setPlayCount();
     } else if (id == 56 /*Interactive listening part 1*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
