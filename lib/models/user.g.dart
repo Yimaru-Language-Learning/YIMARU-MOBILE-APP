@@ -22,6 +22,9 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       userInfoLoaded: json['userInfoLoaded'] as bool?,
       profileCompleted: json['profile_completed'] as bool?,
       subscriptionStatus: json['subscription_status'] as String?,
+      activeSubscriptions: (json['active_subscriptions'] as List<dynamic>?)
+          ?.map((e) => ActiveSubscription.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -40,4 +43,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'profile_completed': instance.profileCompleted,
       'subscription_status': instance.subscriptionStatus,
       'profile_picture_url': instance.profilePicture,
+      'active_subscriptions': instance.activeSubscriptions,
     };

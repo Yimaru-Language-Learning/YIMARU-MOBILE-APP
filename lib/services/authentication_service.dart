@@ -110,7 +110,7 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('lastName', data.lastName ?? '');
     await _secureService.setString('firstName', data.firstName ?? '');
     await _secureService.setString('occupation', data.occupation ?? '');
-
+    ///To do: Active subscription to be added
     _user = User(
       email: data.email,
       gender: data.gender,
@@ -126,6 +126,7 @@ class AuthenticationService with ListenableServiceMixin {
       refreshToken: _user?.refreshToken,
       profileCompleted: data.profileCompleted,
       subscriptionStatus: data.subscriptionStatus,
+      activeSubscriptions: data.activeSubscriptions
     );
 
     notifyListeners();
