@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:yimaru_app/models/active_subscription.dart';
 
 part 'user.g.dart';
 
@@ -43,6 +44,9 @@ class User {
   @JsonKey(name: 'profile_picture_url')
   final String? profilePicture;
 
+  @JsonKey(name: 'active_subscriptions')
+  final List<ActiveSubscription>? activeSubscriptions;
+
   const User(
       {this.email,
       this.region,
@@ -58,7 +62,8 @@ class User {
       this.profilePicture,
       this.userInfoLoaded,
       this.profileCompleted,
-      this.subscriptionStatus});
+      this.subscriptionStatus,
+      this.activeSubscriptions});
 
   User copyWith(
           {int? userId,
@@ -75,7 +80,8 @@ class User {
           bool? userInfoLoaded,
           bool? profileCompleted,
           String? profilePicture,
-          String? subscriptionStatus}) =>
+          String? subscriptionStatus,
+          List<ActiveSubscription>? activeSubscriptions}) =>
       User(
           email: email ?? this.email,
           userId: userId ?? this.userId,
@@ -91,7 +97,8 @@ class User {
           userInfoLoaded: userInfoLoaded ?? this.userInfoLoaded,
           profilePicture: profilePicture ?? this.profilePicture,
           profileCompleted: profileCompleted ?? this.profileCompleted,
-          subscriptionStatus: subscriptionStatus ?? this.subscriptionStatus);
+          subscriptionStatus: subscriptionStatus ?? this.subscriptionStatus,
+          activeSubscriptions: activeSubscriptions ?? this.activeSubscriptions);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
