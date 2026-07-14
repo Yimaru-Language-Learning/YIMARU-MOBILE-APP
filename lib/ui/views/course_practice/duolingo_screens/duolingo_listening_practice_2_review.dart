@@ -14,6 +14,12 @@ class DuolingoListeningPractice2Review
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoListeningPractice2Review({super.key});
 
+  String getQuestion(
+      {required int index, required CoursePracticeViewModel viewModel}) {
+    if (index >= viewModel.answers.length) return '';
+    return viewModel.answers[index]['response']?.toString() ?? '';
+  }
+
   Future<void> _next(CoursePracticeViewModel viewModel) async {
     await viewModel.stopAudio();
     viewModel.nextScreen();
@@ -141,23 +147,23 @@ class DuolingoListeningPractice2Review
         verticalSpaceMedium,
         _buildQuestionWrapper(viewModel),
         verticalSpaceLarge,
-        _buildLabelWrapper(
-            '1. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value}'),
+        _buildLabelWrapper(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[1].value),
         verticalSpaceTiny,
         _buildPracticeResponsesWrapper(
-            viewModel.answers.elementAt(0)['response']),
+            getQuestion(index: 0, viewModel: viewModel)),
         verticalSpaceMedium,
-        _buildLabelWrapper(
-            '2. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[2].value}'),
+        _buildLabelWrapper(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[2].value),
         verticalSpaceTiny,
         _buildPracticeResponsesWrapper(
-            viewModel.answers.elementAt(1)['response']),
+            getQuestion(index: 1, viewModel: viewModel)),
         verticalSpaceMedium,
-        _buildLabelWrapper(
-            '3. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[3].value}'),
+        _buildLabelWrapper(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[2].value),
         verticalSpaceTiny,
         _buildPracticeResponsesWrapper(
-            viewModel.answers.elementAt(2)['response']),
+            getQuestion(index: 2, viewModel: viewModel)),
         verticalSpaceMedium,
         _buildPracticeReviewSection(context: context, viewModel: viewModel),
       ];
