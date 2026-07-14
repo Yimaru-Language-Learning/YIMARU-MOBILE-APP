@@ -18,7 +18,7 @@ class DuolingoListeningPractice2Question
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
     await viewModel.stopAudio();
-    for (int i = 0; i < viewModel.controllers.length; i++) {
+    for (int i = 0; i < 3; i++) {
       await viewModel.setListeningAnswer(
         response: viewModel.controllers['$i'] ?? '',
         sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -149,17 +149,17 @@ class DuolingoListeningPractice2Question
         _buildQuestion(viewModel),
         verticalSpaceMedium,
         _buildLabel(
-            '1. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value}'),
+          viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value),
         verticalSpaceTiny,
         _buildTextField(value: '0', viewModel: viewModel),
         verticalSpaceMedium,
         _buildLabel(
-            '2. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[2].value}'),
+        viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[2].value),
         verticalSpaceTiny,
         _buildTextField(value: '1', viewModel: viewModel),
         verticalSpaceMedium,
         _buildLabel(
-            '3. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[3].value}'),
+        viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[3].value),
         verticalSpaceTiny,
         _buildTextField(value: '2', viewModel: viewModel),
         verticalSpaceSmall,

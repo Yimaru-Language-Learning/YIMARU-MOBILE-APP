@@ -1008,7 +1008,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     required String audio,
     required int duration,
     required String sample,
-
   }) async =>
       await runBusyFuture(
           _setSpeakingAnswer4(
@@ -1027,7 +1026,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     await stopRecording();
     _answers.add({
       'question': audio,
-      'number':variants.toString(),
+      'number': variants.toString(),
       'sample_voice_answer': sample,
       'busy_object': variants.toString(),
       'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
@@ -1083,13 +1082,17 @@ class CoursePracticeViewModel extends ReactiveViewModel
     required String sample,
     required String answer,
     required String question,
+    required BuildContext context
+
   }) async =>
       await runBusyFuture(
           _setListeningAnswer3(
             answer: answer,
             sample: sample,
+            context: context,
             duration: duration,
             question: question,
+
           ),
           busyObject: StateObjects.listening3Variant);
 
@@ -1098,6 +1101,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     required String sample,
     required String answer,
     required String question,
+    required BuildContext context
   }) async {
     await stopRecording();
     _answers.add({
@@ -1106,10 +1110,15 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'question': question,
     });
     if (_variants == 4) {
-      nextScreen();
+      if (_currentQuestion == _questions.length - 1) {
+        nextScreen();
+      } else {
+        await nextQuestion(context);
+      }
     } else {
       _variants++;
       _playCount = 1;
+      _buttonActive = false;
       setCountdown(duration);
       _selectedOption.clear();
     }

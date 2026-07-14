@@ -14,6 +14,12 @@ class DuolingoListeningPractice1Review
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoListeningPractice1Review({super.key});
 
+  String getQuestion(
+      {required int index, required CoursePracticeViewModel viewModel}) {
+    if (index >= viewModel.answers.length) return '';
+    return viewModel.answers[index]['question']?.toString() ?? '';
+  }
+
   Future<void> _next(CoursePracticeViewModel viewModel) async {
     await viewModel.stopAudio();
     viewModel.nextScreen();
@@ -139,16 +145,16 @@ class DuolingoListeningPractice1Review
         _buildTitleWrapper(),
         verticalSpaceMedium,
         _buildQuestionRowWrapper(
-            number: '1', question: viewModel.answers[0]['question']),
+            number: '1', question:getQuestion(index: 0, viewModel: viewModel)),
         verticalSpaceMedium,
         _buildQuestionRowWrapper(
-            number: '2', question: viewModel.answers[1]['question']),
+            number: '2', question:getQuestion(index: 1, viewModel: viewModel)),
         verticalSpaceMedium,
         _buildQuestionRowWrapper(
-            number: '3', question: viewModel.answers[2]['question']),
+            number: '3', question: getQuestion(index: 2, viewModel: viewModel)),
         verticalSpaceMedium,
         _buildQuestionRowWrapper(
-            number: '4', question: viewModel.answers[3]['question']),
+            number: '4', question: getQuestion(index: 3, viewModel: viewModel)),
         verticalSpaceMedium,
         _buildQuestionRowWrapper(
             number: '5', question: viewModel.answers[4]['question']),
