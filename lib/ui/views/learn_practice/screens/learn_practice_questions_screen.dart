@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/models/learn_question.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/start_learn_practice_screen.dart';
 
+import '../../../../models/practice_question.dart';
 import '../learn_practice_viewmodel.dart';
 import 'interact_learn_practice_screen.dart';
 
@@ -27,7 +27,7 @@ class LearnPracticeQuestionsScreen
 
   Widget _buildQuestionView(
           {required int index,
-          required LearnQuestion question,
+          required PracticeQuestion question,
           required LearnPracticeViewModel viewModel}) =>
       PageView(
         controller: viewModel.questionController,
@@ -37,7 +37,7 @@ class LearnPracticeQuestionsScreen
 
   List<Widget> _buildScreens({
     required int index,
-    required LearnQuestion question,
+    required PracticeQuestion question,
   }) =>
       [
         if (index == 1)
@@ -47,7 +47,7 @@ class LearnPracticeQuestionsScreen
 
   Widget _buildStartLearnPracticeScreen({
     required int index,
-    required LearnQuestion question,
+    required PracticeQuestion question,
   }) =>
       StartLearnPracticeScreen(
         index: index,
@@ -56,7 +56,7 @@ class LearnPracticeQuestionsScreen
 
   Widget _buildInteractLearnPracticeScreen({
     required int index,
-    required LearnQuestion question,
+    required PracticeQuestion question,
   }) =>
       InteractLearnPracticeScreen(
         index: index,

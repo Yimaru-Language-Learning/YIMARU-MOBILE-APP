@@ -195,7 +195,9 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         _buildRegisterWithGoogleButton(viewModel),
         if (viewModel.isAppleSignInAvailable)
           _buildRegisterWithAppleButton(viewModel),
+        verticalSpaceMedium,
         _buildOptionTextDivider(),
+        verticalSpaceMedium,
         _buildRegisterWithEmailButton(viewModel),
         verticalSpaceMedium
       ];
@@ -203,7 +205,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
   Widget _buildContinueButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        safe: false,
+        bottom: false,
         borderRadius: 12,
         foregroundColor: kcWhite,
         text: LocaleKeys.cont.tr(),
@@ -220,6 +222,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
   Widget _buildRegisterWithGoogleButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        bottom: false,
         borderRadius: 12,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
@@ -246,6 +249,8 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
   Widget _buildRegisterWithEmailButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        top: false,
+        bottom: false,
         borderRadius: 12,
         backgroundColor: kcWhite,
         leadingIcon: Icons.phone,

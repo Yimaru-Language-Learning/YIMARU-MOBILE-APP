@@ -7,11 +7,46 @@ import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/course_catalog_tile.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
+import '../../widgets/finish_practice_sheet.dart';
 import '../../widgets/small_app_bar.dart';
+import '../learn_course/learn_course_viewmodel.dart';
 import 'course_catalog_viewmodel.dart';
 
 class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
   const CourseCatalogView({Key? key}) : super(key: key);
+
+  Future<void> _onPractice(
+      {required BuildContext context,
+      required CourseCatalog course,
+      required CourseCatalogViewModel viewModel}) async {
+    await viewModel.navigateToCoursePractice(course.id ?? 0);
+
+    /*   if (course.access?.isCompleted ?? false) {
+      await viewModel.navigateToCoursePractice(course.id ?? 0);
+    } else {
+      if (course.access?.isAccessible ?? false) {
+        await _showSheet(
+            context: context,
+            viewModel: viewModel,
+            practice: PracticeReason.course);
+      } else {
+        await _showSheet(
+            context: context,
+            viewModel: viewModel,
+            practice: PracticeReason.previousCourse);
+      }
+    }*/
+  }
+
+  Future<void> _showSheet(
+          {required BuildContext context,
+          required PracticeReason practice,
+          required CourseCatalogViewModel viewModel}) async =>
+      await showModalBottomSheet(
+        context: context,
+        backgroundColor: kcTransparent,
+        builder: (_) => _buildSheet(viewModel: viewModel, practice: practice),
+      );
 
   @override
   void onViewModelReady(CourseCatalogViewModel viewModel) async {
@@ -109,8 +144,10 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
         itemCount: viewModel.catalogs.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
-          onPracticeTap: () async => await viewModel
-              .navigateToCoursePractice(viewModel.catalogs[index].id ?? 0),
+          onPracticeTap: () async => await _onPractice(
+              context: context,
+              viewModel: viewModel,
+              course: viewModel.catalogs[index]),
           catalog: viewModel.catalogs[index],
           onCourseTap: () async =>
               await viewModel.navigateToCourseUnit(viewModel.catalogs[index]),
@@ -127,5 +164,13 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
         catalog: catalog,
         onCourseTap: onCourseTap,
         onPracticeTap: onPracticeTap,
+      );
+
+  Widget _buildSheet(
+          {required PracticeReason practice,
+          required CourseCatalogViewModel viewModel}) =>
+      FinishPracticeSheet(
+        practice: practice,
+        onTap: viewModel.pop,
       );
 }

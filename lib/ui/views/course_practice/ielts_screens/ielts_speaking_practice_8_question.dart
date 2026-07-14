@@ -1,18 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 
 import '../../../common/app_colors.dart';
-import '../../../common/helper_functions.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/course_practice_question_card.dart';
 import '../course_practice_viewmodel.dart';
-import '../course_practice_view.form.dart';
 
 class IeltsSpeakingPractice8Question
     extends ViewModelWidget<CoursePracticeViewModel> {
@@ -92,7 +88,7 @@ class IeltsSpeakingPractice8Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-        //  _buildCountdownWrapper(viewModel),
+          //  _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
@@ -143,8 +139,8 @@ class IeltsSpeakingPractice8Question
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
-    verticalSpaceMedium,
-    _buildQuestion(viewModel),
+        verticalSpaceMedium,
+        _buildQuestion(viewModel),
         verticalSpaceMedium,
         _buildSubtitle(),
         verticalSpaceMedium,
@@ -154,30 +150,23 @@ class IeltsSpeakingPractice8Question
       ];
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => Container(
-    padding: const EdgeInsets.all(15),
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(5),
-      border: Border.all(color: kcPrimaryColor.withValues(alpha: 0.1)),
-    ),
-    child: _buildTopColumn(viewModel),
-  );
+        padding: const EdgeInsets.all(15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(color: kcPrimaryColor.withValues(alpha: 0.1)),
+        ),
+        child: _buildTopColumn(viewModel),
+      );
 
   Widget _buildTopColumn(CoursePracticeViewModel viewModel) => ListView.builder(
-    shrinkWrap: true,
-    physics: const NeverScrollableScrollPhysics(),
-    itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-        ?.stimulus?.first.value['left'].length,
-    itemBuilder: (context, index) => _buildColumnItemWrapper('${alphabet[index+1]}. ${viewModel
-        .questions[viewModel.currentQuestion]
-        .dynamicPayload
-        ?.stimulus
-        ?.first
-        .value['left'][index]['text']}'),
-  );
-
-
-
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value['left'].length,
+        itemBuilder: (context, index) => _buildColumnItemWrapper(
+            '${alphabet[index + 1]}. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value['left'][index]['text']}'),
+      );
 
   Widget _buildSubtitle() => Text(
         'Label the diagram below. Write the letter from the second column for each answer',
@@ -195,25 +184,16 @@ class IeltsSpeakingPractice8Question
         _buildAnswerColumnWrapper(viewModel),
       ];
 
-
   Widget _buildColumnBottomExpandedWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(child: _buildColumnB(viewModel));
-
-
-
-
 
   Widget _buildColumnB(CoursePracticeViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.first.value['right'].length,
-        itemBuilder: (context, index) => _buildColumnItemWrapper('${index+1}. ${viewModel
-            .questions[viewModel.currentQuestion]
-            .dynamicPayload
-            ?.stimulus
-            ?.first
-            .value['right'][index]['text']}'),
+        itemBuilder: (context, index) => _buildColumnItemWrapper(
+            '${index + 1}. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value['right'][index]['text']}'),
       );
 
   Widget _buildColumnItemWrapper(String title) => Container(
@@ -226,10 +206,6 @@ class IeltsSpeakingPractice8Question
         title,
         style: style14MG400,
       );
-
-
-
-
 
   Widget _buildAnswerColumnWrapper(CoursePracticeViewModel viewModel) =>
       Expanded(
@@ -250,15 +226,15 @@ class IeltsSpeakingPractice8Question
   //Widget _build
 
   Widget _buildDropdown(
-      {required String question,
-        required CoursePracticeViewModel viewModel}) =>
+          {required String question,
+          required CoursePracticeViewModel viewModel}) =>
       DropdownMenu<String?>(
         width: 100,
         textStyle: style14MG400,
         initialSelection: viewModel.selectedOption.isNotEmpty
             ? viewModel.selectedOption.containsKey(question)
-            ? viewModel.selectedOption[question][question]
-            : ''
+                ? viewModel.selectedOption[question][question]
+                : ''
             : '',
         onSelected: (value) {
           Map<String, dynamic> answer = {question: value};
@@ -271,20 +247,18 @@ class IeltsSpeakingPractice8Question
           enabledBorder: dropdownBorder,
           focusedBorder: dropdownBorder,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 5, vertical: 7.5),
+              const EdgeInsets.symmetric(horizontal: 5, vertical: 7.5),
         ),
-        dropdownMenuEntries:
-          alphabet.entries.take(viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.stimulus?.first.value['left'].length)
-
-            .map((k)=> k.value)
+        dropdownMenuEntries: alphabet.entries
+            .take(viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                ?.stimulus?.first.value['left'].length)
+            .map((k) => k.value)
             .map(
               (option) => DropdownMenuEntry<String>(
-
-            value: option,
-            label: option,
-          ),
-        )
+                value: option,
+                label: option,
+              ),
+            )
             .toList(),
       );
 

@@ -7,7 +7,6 @@ import 'package:yimaru_app/models/learn_program.dart';
 import 'package:yimaru_app/models/assessment_question.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
-import 'package:yimaru_app/models/refresh_object.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
@@ -15,12 +14,11 @@ import 'package:yimaru_app/ui/common/app_constants.dart';
 import '../app/app.locator.dart';
 import '../models/course_module.dart';
 import '../models/course_practice.dart';
-import '../models/course_question.dart';
+import '../models/practice_question.dart';
 import '../models/course_unit.dart';
 import '../models/field_option.dart';
 import '../models/learn_course.dart';
 import '../models/learn_module.dart';
-import '../models/learn_question.dart';
 import '../models/learn_subscription.dart';
 import '../models/assessment.dart';
 import '../models/learn_subscription_request.dart';
@@ -714,8 +712,8 @@ class ApiService {
     }
   }
 
-  // Complete profile
-  Future<Map<String, dynamic>> refreshObject(Map<String, dynamic> data) async {
+  // Refresh object
+  /*Future<Map<String, dynamic>> refreshObject(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio.post(
         '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kFilesUrl/$kRefreshUrl',
@@ -740,7 +738,7 @@ class ApiService {
         'message': e.response?.data.toString(),
       };
     }
-  }
+  }*/
 
   // Learn learn programs
   Future<List<LearnProgram>> getLearnPrograms() async {
@@ -924,9 +922,9 @@ class ApiService {
   }
 
   // Get learn questions
-  Future<List<LearnQuestion>> getLearnQuestions(int id) async {
+  Future<List<PracticeQuestion>> getLearnQuestions(int id) async {
     try {
-      List<LearnQuestion> questions = [];
+      List<PracticeQuestion> questions = [];
       print('Here');
 
       final Response response = await _service.dio.get(
@@ -937,7 +935,7 @@ class ApiService {
         var decodedData = data['data'] as List;
         questions = decodedData.map(
           (e) {
-            return LearnQuestion.fromJson(e);
+            return PracticeQuestion.fromJson(e);
           },
         ).toList();
         return questions;
@@ -1027,6 +1025,34 @@ class ApiService {
     try {
       Response response = await _service.dio.post(
           '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kPaymentsUrl/$kSubscribeUrl',
+          data: data);
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Subscription successful!',
+          'data': LearnSubscriptionRequest.fromJson(response.data['data']),
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
+
+  // Create direct payment
+  Future<Map<String, dynamic>> createDirectPaymentRequest(
+      Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kPaymentsUrl/$kChapaUrl/$kDirectUrl',
           data: data);
 
       if (response.statusCode == 200) {
@@ -1244,9 +1270,9 @@ class ApiService {
   }
 
   // Get course questions
-  Future<List<CourseQuestion>> getCourseQuestions(int id) async {
+  Future<List<PracticeQuestion>> getCourseQuestions(int id) async {
     try {
-      List<CourseQuestion> questions = [];
+      List<PracticeQuestion> questions = [];
       print('Here');
 
       final Response response = await _service.dio.get(
@@ -1257,7 +1283,7 @@ class ApiService {
         var decodedData = data['data'] as List;
         questions = decodedData.map(
           (e) {
-            return CourseQuestion.fromJson(e);
+            return PracticeQuestion.fromJson(e);
           },
         ).toList();
         return questions;

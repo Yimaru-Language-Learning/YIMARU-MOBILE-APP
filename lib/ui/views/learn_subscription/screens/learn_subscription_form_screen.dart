@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/phone_number_prefix.dart';
 
@@ -91,7 +92,9 @@ class LearnSubscriptionFormScreen
             viewModel.focusPhoneNumber)
           _buildPhoneNumberValidatorWrapper(viewModel),
         verticalSpaceLarge,
-        _buildContinueButton(viewModel),
+        _buildPaymentElevatedButton(viewModel),
+        /* verticalSpaceSmall,
+        _buildPaymentTextButton(viewModel),*/
         verticalSpaceMedium,
         _buildSecurePaymentWrapper()
       ];
@@ -168,7 +171,7 @@ class LearnSubscriptionFormScreen
         style: style12R700,
       );
 
-  Widget _buildContinueButton(LearnSubscriptionViewModel viewModel) =>
+  Widget _buildPaymentElevatedButton(LearnSubscriptionViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
@@ -178,10 +181,29 @@ class LearnSubscriptionFormScreen
             ? kcPrimaryColor
             : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: phoneNumberController.text.isNotEmpty
-            ? () async => await viewModel.navigateToArifPay(
+            ? () async => await viewModel.navigateToPayment(
+                method: PaymentMethod.sdk,
                 phone: phoneNumberController.text,
                 subscription: viewModel.selectedSubscription)
             : null,
+      );
+
+  Widget _buildPaymentTextButton(LearnSubscriptionViewModel viewModel) =>
+      TextButton(
+          onPressed: phoneNumberController.text.isNotEmpty
+              ? () async => await viewModel.navigateToPayment(
+                  method: PaymentMethod.ussd,
+                  phone: phoneNumberController.text,
+                  subscription: viewModel.selectedSubscription)
+              : null,
+          child: _buildPaymentText());
+
+  Widget _buildPaymentText() => Text(
+        'Proceed with telebirr',
+        style: phoneNumberController.text.isNotEmpty
+            ? style16P600
+            : style16P600.copyWith(
+                color: kcPrimaryColor.withValues(alpha: 0.25)),
       );
 
   Widget _buildSecurePaymentWrapper() => Align(

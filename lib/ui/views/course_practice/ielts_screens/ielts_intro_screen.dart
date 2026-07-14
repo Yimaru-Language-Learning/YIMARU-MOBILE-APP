@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/course_practice_app_bar.dart';
@@ -10,7 +9,6 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/custom_circular_progress_indicator.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/page_loading_indicator.dart';
-import '../../../widgets/wave_wrapper.dart';
 import '../course_practice_viewmodel.dart';
 
 class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {

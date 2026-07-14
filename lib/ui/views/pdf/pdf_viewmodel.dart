@@ -2,28 +2,24 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../models/refresh_object.dart';
 import '../../../services/api_service.dart';
-import '../../common/enmus.dart';
 
 class PdfViewModel extends BaseViewModel {
   // Dependency injection
   final _apiService = locator<ApiService>();
 
-
   final _navigationService = locator<NavigationService>();
 
   // Url
-   String? _url;
+  /*String? _url;
 
-   String? get url => _url;
-
+   String? get url => _url;*/
 
   // Navigation
   void pop() => _navigationService.back();
 
   // Remote api
-  Future<void> openPdf(
+  /*Future<void> openPdf(
  String url) async =>
       await runBusyFuture(_openPdf(url),
           busyObject: StateObjects.openPdf);
@@ -37,5 +33,5 @@ class PdfViewModel extends BaseViewModel {
       _url = object.url;
 
     }
-  }
+  }*/
 }

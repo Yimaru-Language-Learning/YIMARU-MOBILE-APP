@@ -235,14 +235,16 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
         _buildLoginWithGoogleButton(viewModel),
         if (viewModel.isAppleSignInAvailable)
           _buildLoginWithAppleButton(viewModel),
+        verticalSpaceMedium,
         _buildOptionTextDivider(),
+        verticalSpaceMedium,
         _buildLoginWithPhoneButton(viewModel),
         verticalSpaceMedium
       ];
 
   Widget _buildContinueButton(LoginViewModel viewModel) => CustomElevatedButton(
         height: 55,
-        safe: false,
+        bottom: false,
         borderRadius: 12,
         foregroundColor: kcWhite,
         text: LocaleKeys.cont.tr(),
@@ -259,6 +261,7 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
   Widget _buildLoginWithGoogleButton(LoginViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        bottom: false,
         borderRadius: 12,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
@@ -285,6 +288,8 @@ class LoginWithEmailScreen extends ViewModelWidget<LoginViewModel> {
   Widget _buildLoginWithPhoneButton(LoginViewModel viewModel) =>
       CustomElevatedButton(
           height: 55,
+          top: false,
+          bottom: false,
           borderRadius: 12,
           backgroundColor: kcWhite,
           leadingIcon: Icons.phone,

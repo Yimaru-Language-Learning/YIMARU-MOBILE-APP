@@ -36,8 +36,8 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
 
   @override
   void onDispose(CourseLessonDetailViewmodel viewModel) {
-    viewModel.close();
     super.onDispose(viewModel);
+    viewModel.close();
   }
 
   @override

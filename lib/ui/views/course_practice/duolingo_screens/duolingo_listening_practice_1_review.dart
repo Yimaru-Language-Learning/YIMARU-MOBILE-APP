@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
+import 'package:yimaru_app/ui/widgets/listenable_review_practice_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
-import '../../../widgets/listenable_repetitive_practice_card.dart';
+import '../../../widgets/course_practice_question_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice1Review
     extends ViewModelWidget<CoursePracticeViewModel> {
-  final TextEditingController practiceController;
+  const DuolingoListeningPractice1Review({super.key});
 
-  const DuolingoListeningPractice1Review(
-      {super.key, required this.practiceController});
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.stopAudio();
+    viewModel.nextScreen();
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -63,8 +66,7 @@ class DuolingoListeningPractice1Review
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-        _buildExpandedBody(viewModel),
-        _buildPracticeReviewSection(viewModel)
+        _buildExpandedBody(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarIndenter(
@@ -85,6 +87,7 @@ class DuolingoListeningPractice1Review
           verticalSpaceSmall,
         ],
       );
+
   Widget _buildAppBar(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
@@ -102,33 +105,72 @@ class DuolingoListeningPractice1Review
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildExpandedBody(CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildBodyScroller(viewModel));
-
-  Widget _buildBodyScroller(CoursePracticeViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildQuestionSectionWrapper(viewModel),
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+        child: _buildBodyScroller(context: context, viewModel: viewModel),
       );
 
-  Widget _buildQuestionSectionWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildBodyScroller(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SingleChildScrollView(
+        child: _buildQuestionSectionWrapper(
+            context: context, viewModel: viewModel),
+      );
+
+  Widget _buildQuestionSectionWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildQuestionQuestionSectionChildren(viewModel),
+        children: _buildQuestionQuestionSectionChildren(
+            context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildQuestionQuestionSectionChildren(
-          CoursePracticeViewModel viewModel) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
+        verticalSpaceLarge,
         _buildTitleWrapper(),
         verticalSpaceMedium,
-        _buildQuestionWrapper(),
+        _buildQuestionRowWrapper(
+            number: '1', question: viewModel.answers[0]['question']),
+        verticalSpaceMedium,
+        _buildQuestionRowWrapper(
+            number: '2', question: viewModel.answers[1]['question']),
+        verticalSpaceMedium,
+        _buildQuestionRowWrapper(
+            number: '3', question: viewModel.answers[2]['question']),
+        verticalSpaceMedium,
+        _buildQuestionRowWrapper(
+            number: '4', question: viewModel.answers[3]['question']),
+        verticalSpaceMedium,
+        _buildQuestionRowWrapper(
+            number: '5', question: viewModel.answers[4]['question']),
         verticalSpaceLarge,
         _buildLabelWrapper(),
         verticalSpaceSmall,
-        _buildAssessmentFormFieldWrapper(viewModel),
+        _buildPracticeResponsesWrapper(
+            number: '1', answer: viewModel.answers[0]['response']),
+        verticalSpaceSmall,
+        _buildPracticeResponsesWrapper(
+            number: '2', answer: viewModel.answers[1]['response']),
+        verticalSpaceSmall,
+        _buildPracticeResponsesWrapper(
+            number: '3', answer: viewModel.answers[2]['response']),
+        verticalSpaceSmall,
+        _buildPracticeResponsesWrapper(
+            number: '4', answer: viewModel.answers[3]['response']),
+        verticalSpaceSmall,
+        _buildPracticeResponsesWrapper(
+            number: '5', answer: viewModel.answers[4]['response']),
         verticalSpaceMedium,
+        _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
 
   Widget _buildTitleWrapper() => Padding(
@@ -142,12 +184,40 @@ class DuolingoListeningPractice1Review
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestionWrapper() => Padding(
+  Widget _buildQuestionRowWrapper(
+          {required String question, required String number}) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildQuestion(),
+        child: _buildQuestionRow(question: question, number: number),
       );
 
-  Widget _buildQuestion() => const ListenableRepetitivePracticeCard();
+  Widget _buildQuestionRow(
+          {required String question, required String number}) =>
+      Row(
+        children: [
+          _buildQuestionNumber(number),
+          horizontalSpaceSmall,
+          _buildQuestionWrapper(number: number, question: question)
+        ],
+      );
+
+  Widget _buildQuestionNumber(String number) => Text(
+        '$number.',
+        style: style16DG600,
+        textAlign: TextAlign.center,
+      );
+
+  Widget _buildQuestionWrapper(
+          {required String question, required String number}) =>
+      Expanded(
+        child: _buildQuestion(number: number, question: question),
+      );
+
+  Widget _buildQuestion({required String question, required String number}) =>
+      ListenableReviewPracticeCard(
+        audio: question,
+        busyObject: number,
+      );
 
   Widget _buildLabelWrapper() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -160,31 +230,30 @@ class DuolingoListeningPractice1Review
         textAlign: TextAlign.center,
       );
 
-  Widget _buildAssessmentFormFieldWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeResponsesWrapper({
+    required String number,
+    required String answer,
+  }) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildAssessmentFormField(viewModel),
+        child: _buildPracticeResponses(number: number, answer: answer),
       );
 
-  Widget _buildAssessmentFormField(CoursePracticeViewModel viewModel) =>
-      TextFormField(
-        maxLines: 5,
-        maxLength: 250,
-        enabled: false,
-        controller: practiceController,
-        onTap: viewModel.setPracticeFocus,
-        decoration: inputDecoration(
-            focus: true,
-            hint: 'Start writing here...',
-            filled: practiceController.text.isNotEmpty),
+  Widget _buildPracticeResponses({
+    required String number,
+    required String answer,
+  }) =>
+      CoursePracticeQuestionCard(
+        subtitle: '$number. $answer',
       );
 
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeReviewSection(
-        review: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value,
+        review: viewModel.answers,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+            ? () async => await _next(viewModel)
+            : () async => await viewModel.nextQuestion(context),
       );
 }

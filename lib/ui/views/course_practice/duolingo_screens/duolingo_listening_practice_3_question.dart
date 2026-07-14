@@ -4,17 +4,35 @@ import 'package:yimaru_app/ui/widgets/dwarf_tile.dart';
 import 'package:yimaru_app/ui/widgets/listenable_one_time_practice_card.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/custom_small_radio_button.dart';
+import '../../../widgets/custom_small_trailing_radio_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice3Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const DuolingoListeningPractice3Question({super.key});
+  final int duration;
+  final List options;
+  final String question;
+
+  const DuolingoListeningPractice3Question(
+      {super.key,
+      required this.options,
+      required this.question,
+      required this.duration});
+
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.setListeningAnswer3(
+      question: question,
+      duration: duration,
+      answer: viewModel.selectedOption.toString(),
+      sample: options.firstWhere((e) => e['is_correct'])['text'],
+    );
+  }
 
   void _setOption(
       {required Map<String, dynamic> option,
@@ -110,11 +128,17 @@ class DuolingoListeningPractice3Question
       );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+      alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
+
+  Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.listening3Variant)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(viewModel);
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
+        key: ValueKey(viewModel.countdown),
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -164,10 +188,14 @@ class DuolingoListeningPractice3Question
       );
 
   Widget _buildQuestion() =>
-      DwarfTile(small: true, child: _buildListenablePracticeCard());
+      DwarfTile(small: true, child: _buildListenablePracticeCardWrapper());
+
+  Widget _buildListenablePracticeCardWrapper() => Expanded(
+        child: _buildListenablePracticeCard(),
+      );
 
   Widget _buildListenablePracticeCard() =>
-      const Expanded(child: ListenableOneTimePracticeCard());
+      ListenableOneTimePracticeCard(question: question);
 
   Widget _buildLabel() => Text(
         'Select the best response',
@@ -179,21 +207,11 @@ class DuolingoListeningPractice3Question
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value['options'].length,
+        itemCount: options.length,
         itemBuilder: (context, index) => _buildPracticeCard(
-          selected: viewModel.isSelectedOption(viewModel
-              .questions[viewModel.currentQuestion]
-              .dynamicPayload
-              ?.response
-              ?.last
-              .value['options'][index]),
-          onTap: () => _setOption(
-              viewModel: viewModel,
-              option: viewModel.questions[viewModel.currentQuestion]
-                  .dynamicPayload?.response?.last.value['options'][index]),
-          title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value['options'][index]['text'],
+          title: options[index]['text'],
+          selected: viewModel.isSelectedOption(options[index]),
+          onTap: () => _setOption(viewModel: viewModel, option: options[index]),
         ),
       );
 
@@ -201,7 +219,7 @@ class DuolingoListeningPractice3Question
           {required String title,
           required bool selected,
           required GestureTapCallback onTap}) =>
-      CustomSmallRadioButton(
+      CustomSmallTrailingRadioButton(
         title: title,
         onTap: onTap,
         selected: selected,
@@ -219,7 +237,7 @@ class DuolingoListeningPractice3Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: viewModel.nextScreen,
         backgroundColor: kcPrimaryColor,
+        onTap: () async => await _next(viewModel),
       );
 }

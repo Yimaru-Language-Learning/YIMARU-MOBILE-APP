@@ -6,7 +6,6 @@ import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/speaking_practice_review_section.dart';
-import '../../../widgets/dwarf_tile.dart';
 import '../course_practice_viewmodel.dart';
 
 class IeltsSpeakingPractice4Review
@@ -14,7 +13,8 @@ class IeltsSpeakingPractice4Review
   const IeltsSpeakingPractice4Review({super.key});
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();    viewModel.resetValues();
+    await viewModel.stopRecording();
+    viewModel.resetValues();
 
     viewModel.pop();
     viewModel.goBack();
@@ -61,7 +61,7 @@ class IeltsSpeakingPractice4Review
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-        _buildPracticeReviewSection(viewModel)
+        _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
 
   Widget _buildAppBarIndenter(
@@ -108,12 +108,14 @@ class IeltsSpeakingPractice4Review
         textAlign: TextAlign.center,
       );
 
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SpeakingPracticeReviewSection(
           onTap: viewModel.currentQuestion == viewModel.questions.length - 1
               ? viewModel.pop
-              : () async => await viewModel.nextQuestion(),
-          response: viewModel.questions[viewModel.currentQuestion]
-                  .dynamicPayload?.response?.last.value ??
+              : () async => await viewModel.nextQuestion(context),
+          answers: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.last.value ??
               '');
 }

@@ -5,7 +5,8 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
-import '../../../widgets/custom_small_radio_button.dart';
+import '../../../widgets/course_missing_word_question.dart';
+import '../../../widgets/custom_small_leading_radio_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../course_practice_viewmodel.dart';
@@ -13,6 +14,16 @@ import '../course_practice_viewmodel.dart';
 class DuolingoReadingPractice4Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoReadingPractice4Question({super.key});
+
+  Future<void> _next(
+      {required BuildContext context,
+      required CoursePracticeViewModel viewModel}) async {
+    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+      viewModel.nextScreen();
+    } else {
+      await viewModel.nextQuestion(context);
+    }
+  }
 
   void _setOption(
       {required Map<String, dynamic> option,
@@ -77,7 +88,7 @@ class DuolingoReadingPractice4Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildQuestionExpandedWrapper(viewModel),
+        _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarWrapper(
@@ -88,7 +99,7 @@ class DuolingoReadingPractice4Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(viewModel),
+          _buildCountdownWrapper(context: context, viewModel: viewModel),
           verticalSpaceSmall,
         ],
       );
@@ -110,30 +121,50 @@ class DuolingoReadingPractice4Question
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
-
-  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        duration: viewModel.countdown,
-        onEnd: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+  Widget _buildCountdownWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Align(
+        alignment: Alignment.centerRight,
+        child: _buildCountdown(context: context, viewModel: viewModel),
       );
 
-  Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildQuestionScrollerWrapper(viewModel));
+  Widget _buildCountdown(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      CountdownTimer(
+        duration: viewModel.countdown,
+        onEnd: () async => await _next(context: context, viewModel: viewModel),
+      );
 
-  Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
-      SingleChildScrollView(child: _buildQuestionWrapper(viewModel));
+  Widget _buildQuestionExpandedWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildQuestionScrollerWrapper(
+              context: context, viewModel: viewModel));
 
-  Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildQuestionScrollerWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SingleChildScrollView(
+          child: _buildQuestionWrapper(context: context, viewModel: viewModel));
+
+  Widget _buildQuestionWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildQuestionChildren(viewModel),
+        children:
+            _buildQuestionChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
+  List<Widget> _buildQuestionChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
         _buildTitle(viewModel),
         verticalSpaceSmall,
@@ -143,7 +174,7 @@ class DuolingoReadingPractice4Question
         verticalSpaceMedium,
         _buildPracticeOptions(viewModel),
         verticalSpaceLarge,
-        _buildContinueButtonWrapper(viewModel)
+        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
@@ -151,10 +182,11 @@ class DuolingoReadingPractice4Question
         style: style16DG600,
       );
 
-  Widget _buildQuestion(CoursePracticeViewModel viewModel) => Text(
-        viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus
-            ?.last.value,
-        style: style14DG400,
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
+      CourseMissingWordQuestion(
+        showNumber: false,
+        segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value['segments'],
       );
 
   Widget _buildSubtitle() => Text(
@@ -188,27 +220,29 @@ class DuolingoReadingPractice4Question
           {required String title,
           required bool selected,
           required GestureTapCallback onTap}) =>
-      CustomSmallRadioButton(
+      CustomSmallLeadingRadioButton(
         title: title,
         onTap: onTap,
         selected: selected,
       );
 
-  Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildContinueButtonWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
+        child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
-  Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
+  Widget _buildContinueButton(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+        onTap: () async => await _next(context: context, viewModel: viewModel),
       );
 }

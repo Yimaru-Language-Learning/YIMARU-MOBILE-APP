@@ -1,24 +1,43 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/app_colors.dart';
-import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
+import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 
+import '../common/app_colors.dart';
 import '../common/enmus.dart';
-import 'custom_circular_progress_indicator.dart';
+import '../common/ui_helpers.dart';
+import '../views/course_practice/course_practice_viewmodel.dart';
 
-class CustomResponseCard extends ViewModelWidget<CoursePracticeViewModel> {
+class CoursePracticeAnswerCard
+    extends ViewModelWidget<CoursePracticeViewModel> {
   final Voice voice;
   final String title;
-  final String? response;
+  final Map<String, dynamic> answer;
 
-  const CustomResponseCard({
+  const CoursePracticeAnswerCard({
     super.key,
-    this.response,
     required this.voice,
     required this.title,
+    required this.answer,
   });
+
+  Widget _getButtonState(CoursePracticeViewModel viewModel) {
+    if (answer['question'] == viewModel.busyObject) {
+      if (viewModel.playing == voice) {
+        if (viewModel.busy(answer['busy_object'])) {
+          return _buildProgressIndicatorWrapper();
+        } else if (viewModel.player.state == PlayerState.playing) {
+          return _buildPauseIcon();
+        }
+      } else {
+        return _buildPlayIcon();
+      }
+
+      return _buildPlayIcon();
+    } else {
+      return _buildPlayIcon();
+    }
+  }
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
@@ -46,18 +65,12 @@ class CustomResponseCard extends ViewModelWidget<CoursePracticeViewModel> {
         ),
         onPressed: () async => viewModel.player.state == PlayerState.playing
             ? await viewModel.pauseAudio()
-            : await viewModel.playResult(voice: voice, response: response),
+            : await viewModel.playResult(answer: answer, voice: voice),
         child: _buildButtonState(viewModel),
       );
 
   Widget _buildButtonState(CoursePracticeViewModel viewModel) =>
-      viewModel.playing == voice
-          ? viewModel.busy(StateObjects.coursePracticeReview)
-              ? _buildProgressIndicatorWrapper()
-              : viewModel.player.state == PlayerState.playing
-                  ? _buildPauseIcon()
-                  : _buildPlayIcon()
-          : _buildPlayIcon();
+      _getButtonState(viewModel);
 
   Widget _buildProgressIndicatorWrapper() => Center(
         child: _buildProgressIndicator(),

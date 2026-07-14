@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/course_practice_app_bar.dart';
 import 'package:yimaru_app/ui/widgets/download_pdf_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
-import '../../../widgets/custom_circular_progress_indicator.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/page_loading_indicator.dart';
-import '../../../widgets/wave_wrapper.dart';
 import '../course_practice_viewmodel.dart';
 
 class IeltsWritingPractice2Review
@@ -117,8 +112,14 @@ class IeltsWritingPractice2Review
         children: _buildSpeakingIndicatorChildren(viewModel),
       );
 
-  List<Widget> _buildSpeakingIndicatorChildren(CoursePracticeViewModel viewModel) =>
-      [_buildTitle(), _buildSubtitle(), verticalSpaceLarge, _buildPdfCard(viewModel)];
+  List<Widget> _buildSpeakingIndicatorChildren(
+          CoursePracticeViewModel viewModel) =>
+      [
+        _buildTitle(),
+        _buildSubtitle(),
+        verticalSpaceLarge,
+        _buildPdfCard(viewModel)
+      ];
 
   Widget _buildTitle() => Text(
         'Your Writing Feedback Report Is Ready',
@@ -132,11 +133,14 @@ class IeltsWritingPractice2Review
         textAlign: TextAlign.center,
       );
 
-  Widget _buildPdfCard(CoursePracticeViewModel viewModel) =>  DownloadPdfCard(
-
-    onTap:() async=> await viewModel.navigateToPdf(viewModel.questions[viewModel.currentQuestion]
-        .dynamicPayload?.response?.last.value) ,
-  );
+  Widget _buildPdfCard(CoursePracticeViewModel viewModel) => DownloadPdfCard(
+        onTap: () async => await viewModel.navigateToPdf(viewModel
+            .questions[viewModel.currentQuestion]
+            .dynamicPayload
+            ?.response
+            ?.last
+            .value),
+      );
   Widget _buildContinueButtonWrapper(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
@@ -156,6 +160,6 @@ class IeltsWritingPractice2Review
         backgroundColor: kcPrimaryColor,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.pop
-            : () async => await viewModel.nextQuestion(),
+            : () async => await viewModel.nextQuestion(context),
       );
 }

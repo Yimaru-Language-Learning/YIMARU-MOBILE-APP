@@ -6,7 +6,7 @@ import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/custom_small_radio_button.dart';
+import 'package:yimaru_app/ui/widgets/custom_small_trailing_radio_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
 class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
@@ -117,7 +117,7 @@ class AgeGroupFormScreen extends ViewModelWidget<OnboardingViewModel> {
           {required String title,
           required bool selected,
           required GestureTapCallback onTap}) =>
-      CustomSmallRadioButton(
+      CustomSmallTrailingRadioButton(
         title: title,
         onTap: onTap,
         selected: selected,

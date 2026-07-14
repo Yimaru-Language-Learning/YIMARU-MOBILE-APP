@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
-import '../../../common/helper_functions.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
@@ -19,8 +18,12 @@ class DuolingoWritingPractice3Question
   const DuolingoWritingPractice3Question(
       {super.key, required this.practiceController});
 
-  void _nextScreen(CoursePracticeViewModel viewModel) {
+  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
+    await viewModel.setWritingAnswer(
+        response: practiceController.text,
+        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?.last.value);
     viewModel.nextScreen();
   }
 
@@ -120,7 +123,7 @@ class DuolingoWritingPractice3Question
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
-        onEnd: () => _nextScreen(viewModel),
+        onEnd: () async => await _nextScreen(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -136,10 +139,11 @@ class DuolingoWritingPractice3Question
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
+        verticalSpaceMedium,
         _buildTitle(viewModel),
         verticalSpaceMedium,
         _buildQuestion(viewModel),
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildPracticeFormField(viewModel),
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           verticalSpaceTiny,
@@ -148,7 +152,7 @@ class DuolingoWritingPractice3Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write about the topic below for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes ${getSeconds(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} seconds.',
+        'Write about the topic below for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds.',
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -203,7 +207,7 @@ class DuolingoWritingPractice3Question
         onTap: !viewModel.buttonActive
             ? practiceController.text.isNotEmpty &&
                     !viewModel.hasPracticeValidationMessage
-                ? () => _nextScreen(viewModel)
+                ? () async => await _nextScreen(viewModel)
                 : null
             : viewModel.nextScreen,
       );

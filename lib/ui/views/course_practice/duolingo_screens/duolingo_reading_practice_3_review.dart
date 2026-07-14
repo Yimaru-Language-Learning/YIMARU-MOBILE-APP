@@ -61,8 +61,7 @@ class DuolingoReadingPractice3Review
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-        _buildQuestionExpandedWrapper(viewModel),
-        _buildPracticeReviewSection(viewModel)
+        _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarIndenter(
@@ -101,32 +100,48 @@ class DuolingoReadingPractice3Review
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildQuestionScrollerWrapper(viewModel));
+  Widget _buildQuestionExpandedWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildQuestionScrollerWrapper(
+              context: context, viewModel: viewModel));
 
-  Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
-      SingleChildScrollView(child: _buildQuestionIndenter(viewModel));
+  Widget _buildQuestionScrollerWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SingleChildScrollView(
+          child: _buildQuestionColumn(context: context, viewModel: viewModel));
 
-  Widget _buildQuestionIndenter(CoursePracticeViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildQuestionWrapper(viewModel),
-      );
-
-  Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildQuestionColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildQuestionChildren(viewModel),
+        children:
+            _buildQuestionChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
+  List<Widget> _buildQuestionChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
-        _buildTitle(viewModel),
+        _buildTitleWrapper(viewModel),
         verticalSpaceSmall,
-        _buildQuestion(viewModel),
+        _buildQuestionWrapper(viewModel),
         verticalSpaceMedium,
-        _buildPracticeOptions(viewModel),
+        _buildPracticeOptionsWrapper(viewModel),
+        verticalSpaceMedium,
+        _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
+
+  Widget _buildTitleWrapper(CoursePracticeViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildTitle(viewModel),
+      );
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
         'Complete the sentence with correct word',
@@ -134,15 +149,32 @@ class DuolingoReadingPractice3Review
         textAlign: TextAlign.center,
       );
 
+  Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildQuestion(viewModel),
+      );
+
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      const CourseMissingWordQuestion();
+      CourseMissingWordQuestion(
+        showNumber: true,
+        segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value['segments'],
+      );
+
+  Widget _buildPracticeOptionsWrapper(CoursePracticeViewModel viewModel) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildPracticeOptions(viewModel),
+      );
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: (viewModel.questions[viewModel.currentQuestion]
-                .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
+                .dynamicPayload?.stimulus?.last.value['segments'] as List)
+            .where((e) => e['type'] == 'blank')
+            .toList()
             .length,
         itemBuilder: (context, index) => _buildPracticeCard(
           index,
@@ -153,17 +185,14 @@ class DuolingoReadingPractice3Review
         enabled: false,
         number: (index + 1).toString(),
       );
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeReviewSection(
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
-        review: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                ?.stimulus?.last.value['word_bank'] as List)
-            .map(
-              (e) => ' ${e['text']} ',
-            )
-            .toList()
-            .toString(),
+            : () async => await viewModel.nextQuestion(context),
+        review: viewModel.answers,
       );
 }

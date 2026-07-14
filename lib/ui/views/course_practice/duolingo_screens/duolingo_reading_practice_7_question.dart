@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
@@ -11,7 +12,28 @@ import '../course_practice_viewmodel.dart';
 
 class DuolingoReadingPractice7Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const DuolingoReadingPractice7Question({super.key});
+  final int duration;
+  final String response;
+  final String question;
+  final String instruction;
+
+  const DuolingoReadingPractice7Question({
+    super.key,
+    required this.response,
+    required this.duration,
+    required this.question,
+    required this.instruction,
+  });
+
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.setReadingAnswer7(
+      sample: response,
+      duration: duration,
+      question: question,
+      end: viewModel.end,
+      start: viewModel.start,
+    );
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -81,7 +103,7 @@ class DuolingoReadingPractice7Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          //  _buildCountdownWrapper(viewModel),
+          _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
         ],
       );
@@ -104,11 +126,17 @@ class DuolingoReadingPractice7Question
       );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+      alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
+
+  Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.reading7Variant)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(viewModel);
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
+        key: ValueKey(viewModel.countdown),
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -141,8 +169,7 @@ class DuolingoReadingPractice7Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => SelectableText(
-        viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?[1].value,
+        question,
         style: style14DG400,
         selectionColor: kcPrimaryColor,
         onSelectionChanged: (cause, selection) =>
@@ -150,8 +177,7 @@ class DuolingoReadingPractice7Question
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus
-            ?.last.value,
+        instruction,
         style: style16DG600,
       );
 
@@ -167,7 +193,7 @@ class DuolingoReadingPractice7Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: viewModel.nextScreen,
+        onTap: () async => _next(viewModel),
         backgroundColor: kcPrimaryColor,
       );
 }

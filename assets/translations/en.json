@@ -188,6 +188,8 @@
   "finish_all_practice_lesson": "Finish the previous lesson practice to take this practice",
   "finish_all_practice_module": "Finish the lesson practices to take the Module Practice",
   "finish_all_practice_course": "Finish the Module practices to take the Course practice",
+  "finish_all_practice_previouse_unit": "Finish the previous Unit practice to take this practice",
+
   "finish_all_practice_previouse_module": "Finish the previous Module practice to take this practice",
   "finish_all_practice_previouse_course": "Finish the previous course  practice to take this",
   "track_journey": "Track your learning journey and see your growth over time.",

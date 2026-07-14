@@ -37,11 +37,16 @@ class LearnProgramTile extends ViewModelWidget<LearnProgramViewModel> {
         collapsedTextColor: kcDarkGrey,
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
+        /* Due to the now learn locking logic
         enabled: (program.access?.isAccessible ?? false),
-        backgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
+         backgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
+        */
         controlAffinity: ListTileControlAffinity.trailing,
         tilePadding: const EdgeInsets.fromLTRB(15, 0, 15, 5),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        backgroundColor: (program.access?.isAccessible ?? false)
+            ? kcPrimaryColor.withValues(alpha: 0.1)
+            : kcBackgroundColor,
         showTrailingIcon: (program.access?.isAccessible ?? false),
         initiallyExpanded: (program.access?.isAccessible ?? false),
         collapsedBackgroundColor: (program.access?.isAccessible ?? false)
@@ -59,12 +64,13 @@ class LearnProgramTile extends ViewModelWidget<LearnProgramViewModel> {
 
   Widget _buildTitleWrapper() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
-        child: _buildTitleState(),
+        child: _buildActiveTitleWrapper(),
       );
 
-  Widget _buildTitleState() => (program.access?.isAccessible ?? false)
+/*  Due to the now learn locking logic
+ Widget _buildTitleState() => (program.access?.isAccessible ?? false)
       ? _buildActiveTitleWrapper()
-      : _buildInactiveTitleWrapper();
+      : _buildInactiveTitleWrapper();*/
 
   Widget _buildInactiveTitleWrapper() => Column(
         mainAxisSize: MainAxisSize.min,
@@ -88,8 +94,11 @@ class LearnProgramTile extends ViewModelWidget<LearnProgramViewModel> {
         children: _buildActiveTitleChildren(),
       );
 
-  List<Widget> _buildActiveTitleChildren() =>
-      [_buildTitle(), horizontalSpaceSmall, _buildProgressStatus()];
+  List<Widget> _buildActiveTitleChildren() => [
+        _buildTitle(),
+        horizontalSpaceSmall,
+        if ((program.access?.isAccessible ?? false)) _buildProgressStatus()
+      ];
 
   Widget _buildTitle() => Text(
         program.name ?? '',

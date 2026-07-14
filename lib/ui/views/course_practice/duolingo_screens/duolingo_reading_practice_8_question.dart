@@ -2,16 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../course_practice_viewmodel.dart';
+import '../course_practice_view.form.dart';
 
 class DuolingoReadingPractice8Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const DuolingoReadingPractice8Question({super.key});
+  final int duration;
+  final String response;
+  final String question;
+  final TextEditingController practiceController;
+
+  const DuolingoReadingPractice8Question({
+    super.key,
+    required this.response,
+    required this.duration,
+    required this.question,
+    required this.practiceController,
+  });
+
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    String answer = practiceController.text;
+    practiceController.clear();
+    await viewModel.setReadingAnswer8(
+        answer: answer,
+        sample: response,
+        duration: duration,
+        question: question);
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -104,11 +127,17 @@ class DuolingoReadingPractice8Question
       );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+      alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
+
+  Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.reading8Variant)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(viewModel);
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
+        key: ValueKey(viewModel.countdown),
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -129,6 +158,12 @@ class DuolingoReadingPractice8Question
         _buildTitle(viewModel),
         verticalSpaceSmall,
         _buildQuestion(viewModel),
+        verticalSpaceMedium,
+        _buildPracticeFormField(viewModel),
+        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
+          verticalSpaceTiny,
+        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
+          _buildPracticeWrapper(viewModel),
         verticalSpaceLarge,
         _buildContinueButtonWrapper(viewModel)
       ];
@@ -139,9 +174,30 @@ class DuolingoReadingPractice8Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => Text(
-        viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus
-            ?.last.value,
+        question,
         style: style14DG400,
+      );
+
+  Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
+      TextFormField(
+        maxLines: 5,
+        maxLength: 250,
+        controller: practiceController,
+        onTap: viewModel.setPracticeFocus,
+        decoration: inputDecoration(
+            focus: true,
+            hint: 'Start writing here...',
+            filled: practiceController.text.isNotEmpty),
+      );
+
+  Widget _buildPracticeWrapper(CoursePracticeViewModel viewModel) =>
+      viewModel.hasPracticeValidationMessage
+          ? _buildPracticeValidator(viewModel)
+          : Container();
+
+  Widget _buildPracticeValidator(CoursePracticeViewModel viewModel) => Text(
+        viewModel.practiceValidationMessage!,
+        style: style12R700,
       );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
@@ -156,7 +212,7 @@ class DuolingoReadingPractice8Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: viewModel.nextScreen,
         backgroundColor: kcPrimaryColor,
+        onTap: () async => await _next(viewModel),
       );
 }

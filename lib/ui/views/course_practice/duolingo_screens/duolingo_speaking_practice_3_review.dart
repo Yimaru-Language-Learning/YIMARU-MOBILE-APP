@@ -14,6 +14,11 @@ class DuolingoSpeakingPractice3Review
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoSpeakingPractice3Review({super.key});
 
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.stopAudio();
+    viewModel.nextScreen();
+  }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -62,7 +67,7 @@ class DuolingoSpeakingPractice3Review
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildQuestionSectionWrapperExpandedWrapper(viewModel),
-        _buildPracticeReviewSection(viewModel)
+        _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
 
   Widget _buildAppBarIndenter(
@@ -121,22 +126,32 @@ class DuolingoSpeakingPractice3Review
 
   Widget _buildQuestionIndenter(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildQuestion(viewModel),
+        child: _buildQuestionColumn(viewModel),
       );
+
+  Widget _buildQuestionColumn(CoursePracticeViewModel viewModel) => Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: __buildQuestionColumnChildren(viewModel),
+      );
+
+  List<Widget> __buildQuestionColumnChildren(
+          CoursePracticeViewModel viewModel) =>
+      [verticalSpaceMedium, _buildQuestion(viewModel), verticalSpaceMedium];
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeQuestionCard(
-        title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.first.value,
+            ?.stimulus?.last.value,
       );
 
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SpeakingPracticeReviewSection(
-          onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-              ? viewModel.nextScreen
-              : () async => await viewModel.nextQuestion(),
-          response: viewModel.questions[viewModel.currentQuestion]
-                  .dynamicPayload?.response?.last.value ??
-              '');
+        answers: viewModel.answers,
+        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
+            ? () async => await _next(viewModel)
+            : () async => await viewModel.nextQuestion(context),
+      );
 }

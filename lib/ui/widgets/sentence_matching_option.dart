@@ -7,12 +7,12 @@ class SentenceMatchingOption extends StatelessWidget {
   final bool selected;
   final String leading;
 
-  const SentenceMatchingOption(
-      {super.key,
-      required this.title,
-      required this.leading,
-      required this.selected,
-      });
+  const SentenceMatchingOption({
+    super.key,
+    required this.title,
+    required this.leading,
+    required this.selected,
+  });
 
   @override
   Widget build(BuildContext context) => _buildContainerWrapper();
@@ -24,13 +24,12 @@ class SentenceMatchingOption extends StatelessWidget {
         child: _buildContainer(),
       );
 
-
-
   Widget _buildContainer() => Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: selected ? kcPrimaryColor.withValues(alpha: 0.1) : kcTransparent,
+          color:
+              selected ? kcPrimaryColor.withValues(alpha: 0.1) : kcTransparent,
           border: Border.all(
             color: selected
                 ? kcPrimaryColor.withValues(alpha: 0.75)
@@ -59,13 +58,15 @@ class SentenceMatchingOption extends StatelessWidget {
       );
 
   Widget _buildLeadingWrapper() => CircleAvatar(
-        backgroundColor:selected ? kcPrimaryColor.withValues(alpha: 0.25):kcPrimaryColor.withValues(alpha: 0.1),
+        backgroundColor: selected
+            ? kcPrimaryColor.withValues(alpha: 0.25)
+            : kcPrimaryColor.withValues(alpha: 0.1),
         child: _buildLeading(),
       );
 
   Widget _buildLeading() => Text(
         leading,
         maxLines: 2,
-        style:selected ?style14W400: style14DG400,
+        style: selected ? style14W400 : style14DG400,
       );
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
-import 'package:yimaru_app/ui/widgets/wave_wrapper.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
@@ -23,7 +22,8 @@ class IeltsSpeakingPractice3Answer
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();    viewModel.resetValues();
+    await viewModel.stopRecording();
+    viewModel.resetValues();
 
     viewModel.pop();
     viewModel.goBack();

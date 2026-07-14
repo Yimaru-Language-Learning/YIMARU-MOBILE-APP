@@ -205,15 +205,16 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
 
   List<Widget> _buildLowerColumnChildren(LoginViewModel viewModel) => [
         _buildContinueButton(viewModel),
+        verticalSpaceMedium,
         _buildOptionTextDivider(),
+        verticalSpaceMedium,
         _buildLoginWitPhoneNumberButton(viewModel),
         verticalSpaceMedium
       ];
 
-  Widget _buildOptionTextDivider() => const OptionTextDivider();
-
   Widget _buildContinueButton(LoginViewModel viewModel) => CustomElevatedButton(
         height: 55,
+        bottom: false,
         borderRadius: 12,
         foregroundColor: kcWhite,
         text: LocaleKeys.cont.tr(),
@@ -225,9 +226,13 @@ class LoginWithPhoneNumberScreen extends ViewModelWidget<LoginViewModel> {
             : kcPrimaryColor.withValues(alpha: 0.1),
       );
 
+  Widget _buildOptionTextDivider() => const OptionTextDivider();
+
   Widget _buildLoginWitPhoneNumberButton(LoginViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        top: false,
+        bottom: false,
         borderRadius: 12,
         backgroundColor: kcWhite,
         leadingIcon: Icons.email,

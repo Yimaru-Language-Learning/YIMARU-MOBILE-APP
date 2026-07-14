@@ -6,11 +6,5 @@ class CacheImageService {
   Future<void> cacheNetworkImage(
       {required String image, required BuildContext context}) async {
     await precacheImage(CachedNetworkImageProvider(image), context);
-
-  }
-
-  Future<void> cacheImage(String image)async{
-   await DefaultCacheManager().downloadFile(image);
-
   }
 }

@@ -45,6 +45,7 @@ class CancelPracticeSheet extends StatelessWidget {
         _buildSubtitle(),
         verticalSpaceLarge,
         _buildContinueButton(),
+    verticalSpaceMedium,
         _buildEndButton(),
       ];
 
@@ -72,6 +73,7 @@ class CancelPracticeSheet extends StatelessWidget {
 
   Widget _buildContinueButton() => CustomElevatedButton(
         height: 55,
+        bottom: false,
         onTap: onContinue,
         borderRadius: 12,
         foregroundColor: kcWhite,

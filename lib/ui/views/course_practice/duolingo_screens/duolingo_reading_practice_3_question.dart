@@ -15,6 +15,20 @@ class DuolingoReadingPractice3Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoReadingPractice3Question({super.key});
 
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    List samples = (viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.response?.last.value['blanks'] as List)
+        .map(
+          (e) => e['text'],
+        )
+        .toList();
+    for (String sample in samples) {
+      await viewModel.setListeningAnswer(sample: sample);
+    }
+
+    viewModel.nextScreen();
+  }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -83,7 +97,7 @@ class DuolingoReadingPractice3Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(viewModel),
+          // _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
         ],
       );
@@ -109,8 +123,8 @@ class DuolingoReadingPractice3Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -138,18 +152,24 @@ class DuolingoReadingPractice3Question
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
         'Read the passage below and answer the questions that follow.',
-        style: style14MG400,
+        style: style16DG600,
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      const CourseMissingWordQuestion();
+      CourseMissingWordQuestion(
+        showNumber: true,
+        segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value['segments'],
+      );
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: (viewModel.questions[viewModel.currentQuestion]
-                .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
+                .dynamicPayload?.stimulus?.last.value['segments'] as List)
+            .where((e) => e['type'] == 'blank')
+            .toList()
             .length,
         itemBuilder: (context, index) => _buildPracticeCard(
           index,
@@ -169,10 +189,11 @@ class DuolingoReadingPractice3Question
 
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
-          height: 55,
-          text: 'Submit',
-          borderRadius: 12,
-          foregroundColor: kcWhite,
-          onTap: viewModel.nextScreen,
-          backgroundColor: kcPrimaryColor);
+        height: 55,
+        text: 'Submit',
+        borderRadius: 12,
+        foregroundColor: kcWhite,
+        backgroundColor: kcPrimaryColor,
+        onTap: () async => await _next(viewModel),
+      );
 }

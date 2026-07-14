@@ -164,16 +164,15 @@ class DuolingoSpeakingPractice2Question
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        'You will have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value['seconds']} seconds to speak',
+        'You will have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value['seconds']} seconds to speak',
         style: style14DG400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeQuestionCard(
-        title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.first.value,
+            ?.stimulus?.last.value,
       );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>

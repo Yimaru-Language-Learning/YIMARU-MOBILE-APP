@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:path/path.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
@@ -8,8 +7,7 @@ import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/course_practice.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../models/course_question.dart';
-import '../../../models/refresh_object.dart';
+import '../../../models/practice_question.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/audio_player_service.dart';
@@ -80,11 +78,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     return _position.inMilliseconds / _duration.inMilliseconds;
   }
 
-  // Voice recorder
-  String? _recordedAudio;
-
-  String? get recordedAudio => _recordedAudio;
-
   WaveformRecorderController get _waveController =>
       _voiceRecorderService.waveController;
 
@@ -111,7 +104,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   Voice? get playing => _playing;
 
   // Text field controllers
-  Map<String, String> _controllers = {};
+  final Map<String, String> _controllers = {};
 
   Map<String, String> get controllers => _controllers;
 
@@ -126,10 +119,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
   bool get isSpeaking => _isSpeaking;
 
 // Course practices
-  String? _cachedImage;
-
-  String? get cachedImage => _cachedImage;
-
   bool _focusPractice = false;
 
   bool get focusPractice => _focusPractice;
@@ -147,9 +136,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   int get currentQuestion => _currentQuestion;
 
-  List<CourseQuestion> _questions = [];
+  List<PracticeQuestion> _questions = [];
 
-  List<CourseQuestion> get questions => _questions;
+  List<PracticeQuestion> get questions => _questions;
 
   final List<Map<String, dynamic>> _questionParams = [
     {
@@ -459,7 +448,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'label': 'IELTS Listening 33',
       'title': 'Sentence completion',
       'type': CoursePracticeType.ielts,
-    }, {
+    },
+    {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
@@ -475,20 +465,37 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'type': CoursePracticeType.ielts,
       'title': 'Reading diagram labeling',
     },
-     {
+    {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
       'label': 'IELTS Listening 36',
       'type': CoursePracticeType.ielts,
-       'title': 'Sentence Ending Matching',
-     },   {
+      'title': 'Sentence Ending Matching',
+    },
+    {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
       'label': 'IELTS Listening 37',
       'type': CoursePracticeType.ielts,
       'title': 'True / False / Not Given',
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'title': 'Multiple choice',
+      'instruction_subtitle': '',
+      'label': 'IELTS Listening 38',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Listening 39',
+      'title': 'Yes / No / Not Given',
+      'type': CoursePracticeType.ielts,
     },
   ];
 
@@ -526,7 +533,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   int get end => _end;
 
   // Play count
-  int _playCount = 3;
+  int _playCount = 2;
 
   int get playCount => _playCount;
 
@@ -540,13 +547,21 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   int get currentPage => _currentPage;
 
+  final PageController _questionsController = PageController();
+
+  PageController get questionsController => _questionsController;
+
   final PageController _questionController = PageController();
 
   PageController get questionController => _questionController;
 
-  final PageController _pageController = PageController();
+  int _variants = 0;
 
-  PageController get pageController => _pageController;
+  int get variants => _variants;
+
+  int _variant = 0;
+
+  int get variant => _variant;
 
   // Counter time
   void setCountdown(int durationInSeconds) {
@@ -556,6 +571,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
         seconds: getSeconds(durationInSeconds),
       ),
     );
+    // rebuildUi();
   }
 
   void resetCountdown() {
@@ -579,6 +595,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
+  void resetPracticeFocus() {
+    _focusPractice = false;
+    rebuildUi();
+  }
+
+  void setSpeakingState() {
+    _isSpeaking = true;
+    rebuildUi();
+  }
+
   void resetSpeakingState() {
     _isSpeaking = false;
     rebuildUi();
@@ -592,17 +618,24 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Reset values
   void resetValues() {
-    _playCount = 3;
+    _end = 0;
+    _start = 0;
+    _variant = 0;
+    _variants = 0;
+    _playCount = 2;
+    _answers.clear();
     _countdown = null;
     _isSpeaking = false;
-    _cachedImage = null;
+    _controllers.clear();
     _buttonActive = false;
     _focusPractice = false;
     _selectedOption.clear();
+    rebuildUi();
   }
 
   // Question param
-  Future<void> setQuestionParam(int id) async {
+  Future<void> setQuestionParam(
+      {required int id, required BuildContext context}) async {
     print('QUESTION TYPE ID: $id');
     if (id == 12 /*Speak about the photo*/) {
       // await refreshQuestionUrl(_questions[_currentQuestion]);
@@ -623,13 +656,13 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(7);
     } else if (id == 28 /*Listen and type*/) {
       _selectedQuestionParam = _questionParams.elementAt(8);
-    } else if (id == 0 /*Interactive listening part 1*/) {
+    } else if (id == 56 /*Interactive listening part 1*/) {
       _selectedQuestionParam = _questionParams.elementAt(9);
     } else if (id == 29 /*Interactive listening part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(10);
     } else if (id == 57 /*Interactive listening part 3*/) {
       _selectedQuestionParam = _questionParams.elementAt(11);
-    } else if (id == 0 /*Read and speak*/) {
+    } else if (id == 49 /*Read and select*/) {
       _selectedQuestionParam = _questionParams.elementAt(12);
     } else if (id == 3 /*Fill in the blank*/) {
       _selectedQuestionParam = _questionParams.elementAt(13);
@@ -688,7 +721,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           .value['seconds'];
       String image =
           _questions[_currentQuestion].dynamicPayload?.stimulus?.first.value;
-      await cacheNetworkImage(image: image);
+      await cacheNetworkImage(image: image, context: context);
       setCountdown(responseLastSec);
     } else if (id == 0 /*Multiple choice*/) {
       _selectedQuestionParam = _questionParams.elementAt(31);
@@ -710,8 +743,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       setCountdown(responseLastSec);
     } else if (id == 0 /*Sentence completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(34);
-
-    }  else if (id == 46 /*Paragraph choice*/) {
+    } else if (id == 46 /*Paragraph choice*/) {
       _selectedQuestionParam = _questionParams.elementAt(35);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -719,7 +751,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    }else if(id == 58 /*Reading diagram labeling*/){
+    } else if (id == 58 /*Reading diagram labeling*/) {
       _selectedQuestionParam = _questionParams.elementAt(30);
       int responseLastSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -728,9 +760,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
           .value['seconds'];
       String image =
           _questions[_currentQuestion].dynamicPayload?.stimulus?[1].value;
-      await cacheNetworkImage(image: image);
+      await cacheNetworkImage(image: image, context: context);
       setCountdown(responseLastSec);
-    }else if(id == 47 /*Sentence Ending Matching*/){
+    } else if (id == 47 /*Sentence Ending Matching*/) {
       _selectedQuestionParam = _questionParams.elementAt(31);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -738,7 +770,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    }else if(id == 48 /*True / False / Not Given*/){
+    } else if (id == 48 /*True / False / Not Given*/) {
       _selectedQuestionParam = _questionParams.elementAt(31);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -746,7 +778,23 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    }else {
+    } else if (id == 1 /*Multiple choice*/) {
+      _selectedQuestionParam = _questionParams.elementAt(31);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
+    } else if (id == 59 /*Yes / No / Not Given*/) {
+      _selectedQuestionParam = _questionParams.elementAt(32);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
+    } else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
     }
   }
@@ -766,12 +814,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     required Map<String, dynamic> answer,
   }) {
     // Single
-    print('Single');
-    print(answer);
-    print(_selectedOption[number]);
-    print(_selectedOption[number] == answer);
-   return _selectedOption[number] == answer;
-
+    return _selectedOption[number] == answer;
   }
 
   void setSelectedChoice({
@@ -781,6 +824,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
     Map<String, dynamic> option = {number: answer};
 
     _selectedOption.addAll(option);
+    print(_selectedOption);
+
     rebuildUi();
   }
 
@@ -795,35 +840,44 @@ class CoursePracticeViewModel extends ReactiveViewModel
   // Voice recorder
   Future<void> stopRecording() async {
     try {
+      await _audioPlayerService.stop();
       await _voiceRecorderService.stopRecording();
-      _recordedAudio = await _voiceRecorderService.getRecordedAudio();
     } catch (e) {
       rethrow;
     }
   }
 
+  Future<void> stopAudio() async =>
+      await runBusyFuture(_stopAudio(), busyObject: StateObjects.stopAudio);
+
+  Future<void> _stopAudio() async => await _audioPlayerService.stop();
+
   Future<void> startRecording() async => await runBusyFuture(_startRecording(),
       busyObject: StateObjects.recordCoursePracticeAnswer);
 
-  Future<void> _startRecording() async =>
-      await _voiceRecorderService.startRecording();
+  Future<void> _startRecording() async {
+    await _audioPlayerService.stop();
+    await _voiceRecorderService.startRecording();
+  }
 
   // Play practice audio
   void _listenToAudio() {
     _audioPlayerService.stateStream.listen((state) {
-      if (PlayerState.completed == state &&
-          _isSpeaking &&
-          (_questions[_currentQuestion].questionTypeDefinitionId == 14 ||
-              _questions[_currentQuestion].questionTypeDefinitionId == 17 ||
-              _questions[_currentQuestion].questionTypeDefinitionId == 20 ||
-              _questions[_currentQuestion].questionTypeDefinitionId == 21)) {
-        _isSpeaking = false;
-        if (_questions[_currentQuestion].questionTypeDefinitionId == 20 ||
-            _questions[_currentQuestion].questionTypeDefinitionId == 21) {
-          startRecording();
-          nextScreen();
-        } else {
-          nextScreen();
+      if (PlayerState.completed == state) {
+        if (_isSpeaking) {
+          // _isSpeaking = false;
+
+          if (_questions[_currentQuestion].questionTypeDefinitionId == 20 ||
+              _questions[_currentQuestion].questionTypeDefinitionId == 21) {
+            startRecording();
+            nextScreen();
+          } else if (_questions[_currentQuestion].questionTypeDefinitionId ==
+              14) {
+            nextSpeakingVariantScreen();
+          } else if (_questions[_currentQuestion].questionTypeDefinitionId ==
+              17) {
+            nextScreen();
+          }
         }
       }
     });
@@ -844,48 +898,61 @@ class CoursePracticeViewModel extends ReactiveViewModel
       await runBusyFuture(_playVoicePrompt(question),
           busyObject: StateObjects.coursePracticePrompt);
 
-  Future<void> _playVoicePrompt(String question) async {
-    _isSpeaking = true;
-    String url = await getRefreshedUrl(question) ?? '';
-    await _audioPlayerService.playUrl(url);
-  }
+  Future<void> _playVoicePrompt(String question) async =>
+      await _audioPlayerService.playUrl(question);
 
-  Future<void> replayVoicePrompt(CourseQuestion question) async {
-    String url = await getRefreshedUrl(
-            question.dynamicPayload?.stimulus?.first.value ?? '') ??
-        '';
-    await _audioPlayerService.playUrl(url);
-  }
+  Future<void> replayVoicePrompt(PracticeQuestion question) async =>
+      await _audioPlayerService
+          .playUrl(question.dynamicPayload?.stimulus?.first.value ?? '');
 
   Future<void> playResult(
-      {required Voice voice, required String? response}) async {
-    setBusyObject(voice);
-    await playAudio(voice: voice, response: response);
+      {required Voice voice, required Map<String, dynamic> answer}) async {
+    setResultBusyObject(playing: voice, object: answer['busy_object']);
+
+    await playResultAudio(voice: voice, answer: answer);
   }
 
-  Future<void> playAudio(
-          {required Voice voice, required String? response}) async =>
-      await runBusyFuture(_playAudio(voice: voice, response: response),
-          busyObject: StateObjects.coursePracticeReview);
+  Future<void> playResultAudio(
+          {required Map<String, dynamic> answer, required Voice voice}) async =>
+      await runBusyFuture(_playResultAudio(voice: voice, answer: answer),
+          busyObject: answer['busy_object']);
 
-  Future<void> _playAudio(
-      {required Voice voice, required String? response}) async {
+  Future<void> _playResultAudio(
+      {required Map<String, dynamic> answer, required Voice voice}) async {
     if (voice == Voice.recorded) {
-      await _audioPlayerService.playLocal(_recordedAudio ?? '');
+      await _audioPlayerService.playLocal(answer['recorded_voice_answer']);
     } else {
-      String url = await getRefreshedUrl(response ?? '') ?? '';
-
-      await _audioPlayerService.playUrl(url);
+      await _audioPlayerService.playUrl(answer['sample_voice_answer']);
     }
   }
+
+  Future<void> playReview(
+      {required String audio, required String busyObject}) async {
+    setReviewBusyObject(busyObject);
+
+    await playReviewAudio(audio: audio, busyObject: busyObject);
+  }
+
+  Future<void> playReviewAudio(
+          {required String audio, required String busyObject}) async =>
+      await runBusyFuture(_playReview(audio), busyObject: busyObject);
+
+  Future<void> _playReview(String audio) async =>
+      await _audioPlayerService.playUrl(audio);
 
   Future<void> pauseAudio() async {
     await _audioPlayerService.pause();
   }
 
   // Set busy object
-  void setBusyObject(Voice playing) {
+  void setResultBusyObject({required String object, required Voice playing}) {
     _playing = playing;
+    _busyObject = object;
+    rebuildUi();
+  }
+
+  void setReviewBusyObject(String object) {
+    _busyObject = object;
     rebuildUi();
   }
 
@@ -911,48 +978,299 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Cache image
   Future<void> cacheNetworkImage(
-          {required String image, BuildContext? context}) async =>
+          {required String image, required BuildContext context}) async =>
       await runBusyFuture(_cacheNetworkImage(image: image, context: context),
           busyObject: StateObjects.cacheImage);
 
   Future<void> _cacheNetworkImage(
-      {required String image, BuildContext? context}) async {
-    Map<String, dynamic> data = {'reference': image};
+      {required String image, required BuildContext context}) async {
+    await _cacheImageService.cacheNetworkImage(context: context, image: image);
+    /* Map<String, dynamic> data = {'reference': image};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
     if (response['status'] == ResponseStatus.success) {
       RefreshObject object = response['data'] as RefreshObject;
       _cachedImage = object.url;
       await _cacheImageService.cacheImage(_cachedImage ?? '');
-    }
+    }*/
   }
 
   // In-app navigation
+  Future<void> setSpeakingAnswer(
+          {required String sample, required String number}) async =>
+      _answers.add({
+        'number': number,
+        'busy_object': number,
+        'sample_voice_answer': sample,
+        'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
+      });
+
+  Future<void> setSpeakingAnswer4({
+    required String audio,
+    required int duration,
+    required String sample,
+
+  }) async =>
+      await runBusyFuture(
+          _setSpeakingAnswer4(
+            audio: audio,
+            sample: sample,
+            duration: duration,
+          ),
+          busyObject: StateObjects.speaking4Variant);
+
+  Future<void> _setSpeakingAnswer4({
+    required String audio,
+    required int duration,
+    required String sample,
+  }) async {
+    int variants = _variants + 1;
+    await stopRecording();
+    _answers.add({
+      'question': audio,
+      'number':variants.toString(),
+      'sample_voice_answer': sample,
+      'busy_object': variants.toString(),
+      'recorded_voice_answer': await _voiceRecorderService.getRecordedAudio(),
+    });
+    if (_variants == 2) {
+      nextScreen();
+    } else {
+      _variants++;
+      _variant = 0;
+      _isSpeaking = true;
+      setCountdown(duration);
+      await playVoicePrompt(audio);
+    }
+  }
+
+  Future<void> setListeningAnswer1(
+          {required int duration,
+          required String sample,
+          required String answer,
+          required String question}) async =>
+      await runBusyFuture(
+          _setListeningAnswer1(
+            answer: answer,
+            sample: sample,
+            duration: duration,
+            question: question,
+          ),
+          busyObject: StateObjects.listening1Variant);
+
+  Future<void> _setListeningAnswer1(
+      {required int duration,
+      required String sample,
+      required String answer,
+      required String question}) async {
+    await stopRecording();
+    _answers.add({
+      'sample': sample,
+      'response': answer,
+      'question': question,
+    });
+    if (_variants == 4) {
+      nextScreen();
+    } else {
+      _variants++;
+      _playCount = 2;
+      _focusPractice = false;
+      setCountdown(duration);
+    }
+  }
+
+  Future<void> setListeningAnswer3({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+  }) async =>
+      await runBusyFuture(
+          _setListeningAnswer3(
+            answer: answer,
+            sample: sample,
+            duration: duration,
+            question: question,
+          ),
+          busyObject: StateObjects.listening3Variant);
+
+  Future<void> _setListeningAnswer3({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+  }) async {
+    await stopRecording();
+    _answers.add({
+      'sample': sample,
+      'response': answer,
+      'question': question,
+    });
+    if (_variants == 4) {
+      nextScreen();
+    } else {
+      _variants++;
+      _playCount = 1;
+      setCountdown(duration);
+      _selectedOption.clear();
+    }
+  }
+
+  Future<void> setReadingAnswer1({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+  }) async =>
+      await runBusyFuture(
+          _setReadingAnswer1(
+            answer: answer,
+            sample: sample,
+            duration: duration,
+            question: question,
+          ),
+          busyObject: StateObjects.reading1Variant);
+
+  Future<void> _setReadingAnswer1({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+  }) async {
+    await stopRecording();
+    _answers.add({
+      'sample': sample,
+      'response': answer,
+      'question': question,
+    });
+    if (_variants == 4) {
+      nextScreen();
+    } else {
+      _variants++;
+      _playCount = 1;
+      setCountdown(duration);
+      _selectedOption.clear();
+    }
+  }
+
+  Future<void> setReadingAnswer7({
+    required int end,
+    required int start,
+    required int duration,
+    required String sample,
+    required String question,
+  }) async =>
+      await runBusyFuture(
+          _setReadingAnswer7(
+            end: end,
+            start: start,
+            sample: sample,
+            duration: duration,
+            question: question,
+          ),
+          busyObject: StateObjects.reading7Variant);
+
+  Future<void> _setReadingAnswer7({
+    required int end,
+    required int start,
+    required int duration,
+    required String sample,
+    required String question,
+  }) async {
+    _answers.add({
+      'sample': sample,
+      'response_end': end,
+      'question': question,
+      'response_start': start,
+    });
+    if (_variants == 1) {
+      nextScreen();
+    } else {
+      _end = 0;
+      _start = 0;
+      _variants++;
+      setCountdown(duration);
+    }
+  }
+
+  Future<void> setReadingAnswer8({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+  }) async =>
+      await runBusyFuture(
+          _setReadingAnswer8(
+            answer: answer,
+            sample: sample,
+            duration: duration,
+            question: question,
+          ),
+          busyObject: StateObjects.reading8Variant);
+
+  Future<void> _setReadingAnswer8({
+    required int duration,
+    required String sample,
+    required String answer,
+    required String question,
+  }) async {
+    _answers.add({
+      'sample': sample,
+      'response': answer,
+      'question': question,
+    });
+    if (_variants == 1) {
+      nextScreen();
+    } else {
+      _variants++;
+      setCountdown(duration);
+    }
+  }
+
+  Future<void> setListeningAnswer({String? sample, String? response}) async {
+    _answers.add({'sample': sample, 'response': response});
+  }
+
+  Future<void> setWritingAnswer(
+      {required String sample, required String response}) async {
+    _answers.add({'sample': sample, 'response': response});
+  }
+
+  /* void nextVariant() async {
+    _variants++;
+    _variant = 0;
+    rebuildUi();
+  }*/
+
+  void nextSpeakingVariantScreen() {
+    _variant++;
+    _isSpeaking = false;
+  }
+
   void nextScreen() {
-    _pageController.nextPage(
+    _questionController.nextPage(
       curve: Curves.easeInOutCubic,
       duration: const Duration(milliseconds: 350),
     );
   }
 
-  Future<void> nextQuestion() async => await runBusyFuture(_nextQuestion(),
-      busyObject: StateObjects.coursePractice);
+  Future<void> nextQuestion(BuildContext context) async =>
+      await runBusyFuture(_nextQuestion(context),
+          busyObject: StateObjects.coursePractice);
 
-  Future<void> _nextQuestion() async {
-
-    if(_currentQuestion == _questions.length - 1){
+  Future<void> _nextQuestion(BuildContext context) async {
+    if (_currentQuestion == _questions.length - 1) {
       pop();
-    }else{
+    } else {
       _currentQuestion++;
       _buttonActive = false;
-      _questionController.nextPage(
+      _questionsController.nextPage(
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 350),
       );
       await setQuestionParam(
-          _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
-
+          context: context,
+          id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     }
-
   }
 
   void goTo(int page) {
@@ -974,6 +1292,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> navigateToPdf(String url) async =>
       await _navigationService.navigateToPdfView(url: url);
+
+  // Future<void> navigateToCourseSubscription() async =>
+  //     await _navigationService.navigateToCourseSubscription();
 
   // Remote api call
 
@@ -997,20 +1318,23 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Course practice questions
-  Future<void> getCoursePracticeQuestions(int id) async =>
-      await runBusyFuture(_getCoursePracticeQuestions(id),
+  Future<void> getCoursePracticeQuestions(
+          {required int id, required BuildContext context}) async =>
+      await runBusyFuture(_getCoursePracticeQuestions(id: id, context: context),
           busyObject: StateObjects.coursePractice);
 
-  Future<void> _getCoursePracticeQuestions(int id) async {
+  Future<void> _getCoursePracticeQuestions(
+      {required int id, required BuildContext context}) async {
     _currentQuestion = 0;
     _questions = await _apiService.getCourseQuestions(id);
     await setQuestionParam(
-        _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
+        context: context,
+        id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     _currentPage = 1;
   }
 
   // Refresh url
-  Future<String?> getRefreshedUrl(String value) async {
+  /*Future<String?> getRefreshedUrl(String value) async {
     final String? refreshedUrl = await _courseService.refreshObject(value);
 
     if (refreshedUrl != null) {
@@ -1018,7 +1342,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     } else {
       return null;
     }
-  }
+  }*/
 
   String getReadableImage(String image) => getReadableUrl(image) ?? '';
 }

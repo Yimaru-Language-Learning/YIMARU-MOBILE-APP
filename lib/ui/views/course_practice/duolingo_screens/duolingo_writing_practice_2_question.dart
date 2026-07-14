@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/helper_functions.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
@@ -20,7 +19,7 @@ class DuolingoWritingPractice2Question
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
-        .dynamicPayload?.response?.last.value['seconds']);
+        .dynamicPayload?.response?.first.value['seconds']);
     viewModel.nextScreen();
   }
 
@@ -154,7 +153,7 @@ class DuolingoWritingPractice2Question
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        'You will write for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes ${getSeconds(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} seconds.',
+        'You will write for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds.',
         style: style14DG400,
         textAlign: TextAlign.center,
       );

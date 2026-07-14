@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
-import '../../../common/helper_functions.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
@@ -19,8 +18,12 @@ class DuolingoWritingPractice2Answer
   const DuolingoWritingPractice2Answer(
       {super.key, required this.practiceController});
 
-  void _nextScreen(CoursePracticeViewModel viewModel) {
+  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
+    await viewModel.setWritingAnswer(
+        response: practiceController.text,
+        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?.last.value);
     viewModel.nextScreen();
   }
 
@@ -119,7 +122,7 @@ class DuolingoWritingPractice2Answer
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: () => _nextScreen(viewModel),
+        onEnd: () async => await _nextScreen(viewModel),
         duration: viewModel.countdown,
       );
 
@@ -142,7 +145,7 @@ class DuolingoWritingPractice2Answer
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write about the topic below for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes ${getSeconds(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} seconds.',
+        'Write about the topic below for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds.',
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -193,7 +196,7 @@ class DuolingoWritingPractice2Answer
             : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? () => _nextScreen(viewModel)
+            ? () async => await _nextScreen(viewModel)
             : null,
       );
 }

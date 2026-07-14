@@ -20,7 +20,7 @@ class ParagraphOptionCard extends ViewModelWidget<CoursePracticeViewModel> {
       _buildButtonWrapper(viewModel);
 
   Widget _buildButtonWrapper(CoursePracticeViewModel viewModel) => Container(
-    height: 150,
+        height: 150,
         width: double.maxFinite,
         margin: const EdgeInsets.only(bottom: 15),
         decoration: BoxDecoration(

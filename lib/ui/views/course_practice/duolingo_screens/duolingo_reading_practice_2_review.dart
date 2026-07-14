@@ -62,7 +62,7 @@ class DuolingoReadingPractice2Review
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(viewModel),
-        _buildPracticeReviewSection(viewModel)
+        _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
 
   Widget _buildAppBarIndenter(
@@ -135,7 +135,11 @@ class DuolingoReadingPractice2Review
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      const CourseMissingWordQuestion();
+      CourseMissingWordQuestion(
+        showNumber: false,
+        segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value['segments'],
+      );
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
@@ -154,17 +158,13 @@ class DuolingoReadingPractice2Review
         number: (index + 1).toString(),
       );
 
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeReviewSection(
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
-        review: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                ?.stimulus?.last.value['word_bank'] as List)
-            .map(
-              (e) => ' ${e['text']} ',
-            )
-            .toList()
-            .toString(),
+            : () async => await viewModel.nextQuestion(context),
+        review: viewModel.answers,
       );
 }

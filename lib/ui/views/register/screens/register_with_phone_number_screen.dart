@@ -221,16 +221,17 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
 
   List<Widget> _buildLowerColumnChildren(RegisterViewModel viewModel) => [
         _buildContinueButton(viewModel),
+        verticalSpaceMedium,
         _buildOptionTextDivider(),
+        verticalSpaceMedium,
         _buildRegisterWitPhoneNumberButton(viewModel),
         verticalSpaceMedium
       ];
 
-  Widget _buildOptionTextDivider() => const OptionTextDivider();
-
   Widget _buildContinueButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        bottom: false,
         borderRadius: 12,
         foregroundColor: kcWhite,
         text: LocaleKeys.cont.tr(),
@@ -242,9 +243,13 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
             : kcPrimaryColor.withValues(alpha: 0.1),
       );
 
+  Widget _buildOptionTextDivider() => const OptionTextDivider();
+
   Widget _buildRegisterWitPhoneNumberButton(RegisterViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        top: false,
+        bottom: false,
         borderRadius: 12,
         backgroundColor: kcWhite,
         leadingIcon: Icons.email,

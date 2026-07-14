@@ -17,7 +17,7 @@ class TrueFalseOptionCard extends ViewModelWidget<CoursePracticeViewModel> {
       required this.question});
 
   void _onTap({
-    required Map<String,dynamic> answer,
+    required Map<String, dynamic> answer,
     required CoursePracticeViewModel viewModel,
   }) {
     viewModel.setSelectedChoice(number: number, answer: answer);

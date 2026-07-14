@@ -151,6 +151,7 @@ class DuolingoSpeakingPractice3Question
   List<Widget> _buildSpeakingIndicatorChildren(
           CoursePracticeViewModel viewModel) =>
       [
+        verticalSpaceMedium,
         _buildTitle(),
         _buildSubtitle(viewModel),
         verticalSpaceMedium,
@@ -164,16 +165,15 @@ class DuolingoSpeakingPractice3Question
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        'You will have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value['seconds']} seconds to speak',
+        'You will have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds to speak',
         style: style14DG400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeQuestionCard(
-        title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.first.value,
+            ?.stimulus?.last.value,
       );
 
   Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>

@@ -31,6 +31,7 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         onTap: !(module.access?.isAccessible ?? false) ? onPracticeTap : null,
         child: _buildExpansionTileCard(context: context, viewModel: viewModel),
       );
+
   Widget _buildExpansionTileCard(
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>
@@ -49,7 +50,9 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       Stack(
         children: [
           _buildExpansionTile(context: context, viewModel: viewModel),
-          _buildContainerShaderState()
+          /*  Due to the now learn locking logic
+         if (!(module.access?.isAccessible ?? false))
+          _buildContainerShader()*/
         ],
       );
 
@@ -59,7 +62,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
       ExpansionTile(
         textColor: kcDarkGrey,
         subtitle: _buildContent(),
-        trailing: _buildLockIcon(),
+        /* Due to the now learn locking logic
+         trailing: _buildLockIcon(),*/
         title: _buildTitleWrapper(),
         collapsedIconColor: kcDarkGrey,
         collapsedTextColor: kcDarkGrey,
@@ -68,14 +72,17 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         shape: Border.all(color: kcTransparent),
         expandedAlignment: Alignment.centerLeft,
         collapsedBackgroundColor: kcBackgroundColor,
-        enabled: (module.access?.isAccessible ?? false),
+        /* Due to the now learn locking logic
+        enabled: (program.access?.isAccessible ?? false)
+        */
         controlAffinity: ListTileControlAffinity.trailing,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         tilePadding: const EdgeInsets.symmetric(horizontal: 15),
         childrenPadding: const EdgeInsets.fromLTRB(70, 0, 15, 15),
         initiallyExpanded: (module.access?.isAccessible ?? false),
-        showTrailingIcon:
-            !(module.access?.isAccessible ?? false) ? true : false,
+        /* Due to the now learn locking logic
+       showTrailingIcon:
+            !(module.access?.isAccessible ?? false) ? true : false,*/
         children:
             _buildExpansionTileChildren(context: context, viewModel: viewModel),
       );
@@ -97,8 +104,8 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
   Widget _buildIcon(LearnModuleViewModel viewModel) => CachedNetworkImage(
         width: 25,
         height: 25,
-        cacheKey: viewModel.getModuleImage(module),
-        imageUrl: viewModel.getModuleImage(module),
+        imageUrl: module.icon ?? '',
+        // cacheKey: viewModel.getModuleImage(module),
       );
 
   Widget _buildTitleWrapper() => Padding(
@@ -214,10 +221,6 @@ class LearnModuleTile extends ViewModelWidget<LearnModuleViewModel> {
         foregroundColor: kcPrimaryColor,
         text: LocaleKeys.take_practice.tr(),
       );
-
-  Widget _buildContainerShaderState() => !(module.access?.isAccessible ?? false)
-      ? _buildContainerShader()
-      : Container();
 
   Widget _buildContainerShader() => const CustomContainerShader();
 }

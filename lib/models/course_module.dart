@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'access.dart';
+
 part 'course_module.g.dart';
 
 @JsonSerializable()
@@ -9,6 +11,8 @@ class CourseModule {
   final String? name;
 
   final String? icon;
+
+  final Access? access;
 
   final String? thumbnail;
 
@@ -33,6 +37,7 @@ class CourseModule {
       {this.id,
       this.icon,
       this.name,
+      this.access,
       this.unitId,
       this.practice,
       this.thumbnail,

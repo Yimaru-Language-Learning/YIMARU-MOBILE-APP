@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yimaru_app/models/course_module.dart';
 
+import 'access.dart';
+
 part 'course_unit.g.dart';
 
 @JsonSerializable()
@@ -8,6 +10,8 @@ class CourseUnit {
   final int? id;
 
   final String? name;
+
+  final Access? access;
 
   final String? thumbnail;
 
@@ -36,6 +40,7 @@ class CourseUnit {
   const CourseUnit(
       {this.id,
       this.name,
+      this.access,
       this.modules,
       this.practice,
       this.thumbnail,

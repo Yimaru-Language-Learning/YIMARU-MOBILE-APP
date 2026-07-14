@@ -12,7 +12,6 @@ import '../../../models/user.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
-import '../../common/helper_functions.dart';
 
 class LearnLessonViewModel extends ReactiveViewModel {
   // Dependency injection
@@ -88,7 +87,7 @@ class LearnLessonViewModel extends ReactiveViewModel {
   }
 
   //Refresh image
-  Future<void> refreshLessonImages(List<LearnLesson> lessons) async {
+  /*Future<void> refreshLessonImages(List<LearnLesson> lessons) async {
     for (final lesson in lessons) {
       final thumbnail = lesson.thumbnail;
 
@@ -105,5 +104,5 @@ class LearnLessonViewModel extends ReactiveViewModel {
   }
 
   String getLessonImage(LearnLesson lesson) =>
-      getReadableUrl(_refreshedThumbnails[lesson.id] ?? '') ?? '';
+      getReadableUrl(_refreshedThumbnails[lesson.id] ?? '') ?? '';*/
 }

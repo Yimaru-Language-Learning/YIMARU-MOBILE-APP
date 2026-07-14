@@ -63,7 +63,7 @@ class DuolingoListeningPractice4Review
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-        _buildExpandedBody(viewModel),
+        _buildExpandedBody(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarIndenter(
@@ -102,23 +102,33 @@ class DuolingoListeningPractice4Review
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildExpandedBody(CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildBodyScroller(viewModel));
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildBodyScroller(context: context, viewModel: viewModel));
 
-  Widget _buildBodyScroller(CoursePracticeViewModel viewModel) =>
+  Widget _buildBodyScroller(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildQuestionSectionWrapper(viewModel),
+        child: _buildQuestionSectionWrapper(
+            context: context, viewModel: viewModel),
       );
 
-  Widget _buildQuestionSectionWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionSectionWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildQuestionQuestionSectionChildren(viewModel),
+        children: _buildQuestionQuestionSectionChildren(
+            context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildQuestionQuestionSectionChildren(
-          CoursePracticeViewModel viewModel) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceLarge,
         _buildTitle(viewModel),
@@ -127,7 +137,7 @@ class DuolingoListeningPractice4Review
         verticalSpaceLarge,
         _buildPracticeFormFieldWrapper(viewModel),
         verticalSpaceLarge,
-        _buildPracticeReviewSection(viewModel)
+        _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
@@ -163,12 +173,13 @@ class DuolingoListeningPractice4Review
             hint: 'Start writing here...',
             filled: practiceController.text.isNotEmpty),
       );
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeReviewSection(
-        review: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value,
+        review: viewModel.answers,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+            : () async => await viewModel.nextQuestion(context),
       );
 }

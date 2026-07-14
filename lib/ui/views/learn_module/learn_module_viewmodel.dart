@@ -60,7 +60,7 @@ class LearnModuleViewModel extends ReactiveViewModel {
   Future<void> _getLearnModules(int id) async {
     if (await _statusChecker.checkConnection()) {
       await _learnService.getLearnModules(id);
-      await refreshModuleImages(_modules);
+      // await refreshModuleImages(_modules);
     }
   }
 
@@ -70,7 +70,7 @@ class LearnModuleViewModel extends ReactiveViewModel {
   }
 
   //Refresh image
-  Future<void> refreshModuleImages(List<LearnModule> modules) async {
+  /*Future<void> refreshModuleImages(List<LearnModule> modules) async {
     for (final module in modules) {
       final icon = module.icon;
 
@@ -84,7 +84,7 @@ class LearnModuleViewModel extends ReactiveViewModel {
         _refreshedIcons[module.id!] = refreshedUrl;
       }
     }
-  }
+  }*/
 
   String getModuleImage(LearnModule module) =>
       getReadableUrl(_refreshedIcons[module.id] ?? '') ?? '';

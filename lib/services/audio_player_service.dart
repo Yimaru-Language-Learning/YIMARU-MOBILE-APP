@@ -49,6 +49,8 @@ class AudioPlayerService with ListenableServiceMixin {
     await _player.play(DeviceFileSource(url));
   }
 
+  Future<void> stop() async => await _player.stop();
+
   Future<void> pause() async => await _player.pause();
 
   Future<void> seek(Duration position) async => await _player.seek(position);

@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yimaru_app/models/dynamic_payload.dart';
 
-part 'course_question.g.dart';
+part 'practice_question.g.dart';
 
 @JsonSerializable()
-class CourseQuestion {
+class PracticeQuestion {
   final int? id;
 
   final int? points;
@@ -26,7 +26,7 @@ class CourseQuestion {
   @JsonKey(name: 'question_type_definition_id')
   final int? questionTypeDefinitionId;
 
-  const CourseQuestion(
+  const PracticeQuestion(
       {this.id,
       this.status,
       this.points,
@@ -36,8 +36,8 @@ class CourseQuestion {
       this.difficultyLevel,
       this.questionTypeDefinitionId});
 
-  factory CourseQuestion.fromJson(Map<String, dynamic> json) =>
-      _$CourseQuestionFromJson(json);
+  factory PracticeQuestion.fromJson(Map<String, dynamic> json) =>
+      _$PracticeQuestionFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CourseQuestionToJson(this);
+  Map<String, dynamic> toJson() => _$PracticeQuestionToJson(this);
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
-import '../../../common/helper_functions.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
@@ -169,7 +168,7 @@ class IeltsWritingPractice1Question
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl: viewModel.cachedImage ?? '',
+        imageUrl: '',
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>

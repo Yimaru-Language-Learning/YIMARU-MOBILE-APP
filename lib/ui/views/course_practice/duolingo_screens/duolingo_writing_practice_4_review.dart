@@ -3,7 +3,6 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 
 import '../../../common/app_colors.dart';
-import '../../../common/helper_functions.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
@@ -64,7 +63,7 @@ class DuolingoWritingPractice4Review
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarIndenter(context: context, viewModel: viewModel),
-        _buildExpandedBody(viewModel),
+        _buildExpandedBody(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarIndenter(
@@ -103,36 +102,46 @@ class DuolingoWritingPractice4Review
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildExpandedBody(CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildBodyScroller(viewModel));
+  Widget _buildExpandedBody(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildBodyScroller(context: context, viewModel: viewModel));
 
-  Widget _buildBodyScroller(CoursePracticeViewModel viewModel) =>
+  Widget _buildBodyScroller(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SingleChildScrollView(
-        child: _buildQuestionSectionWrapper(viewModel),
+        child: _buildQuestionSectionWrapper(
+            context: context, viewModel: viewModel),
       );
 
-  Widget _buildQuestionSectionWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildQuestionSectionWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildQuestionQuestionSectionChildren(viewModel),
+        children: _buildQuestionQuestionSectionChildren(
+            context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildQuestionQuestionSectionChildren(
-          CoursePracticeViewModel viewModel) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
-        verticalSpaceLarge,
-        _buildTitle(viewModel),
         verticalSpaceMedium,
-        _buildQuestionWrapper(viewModel),
+        _buildTitle(viewModel),
         verticalSpaceLarge,
+        _buildQuestionWrapper(viewModel),
+        verticalSpaceMedium,
         _buildPracticeFormFieldWrapper(viewModel),
         verticalSpaceLarge,
-        _buildPracticeReviewSection(viewModel)
+        _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write a follow-up response for ${getMinutes(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['seconds'])} minutes',
+        'Write a follow-up response for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds',
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -164,12 +173,13 @@ class DuolingoWritingPractice4Review
             hint: 'Start writing here...',
             filled: practiceController.text.isNotEmpty),
       );
-  Widget _buildPracticeReviewSection(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       DuolingoPracticeReviewSection(
-        review: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.first.value,
+        review: viewModel.answers,
         onTap: viewModel.currentQuestion == viewModel.questions.length - 1
             ? viewModel.nextScreen
-            : () async => await viewModel.nextQuestion(),
+            : () async => await viewModel.nextQuestion(context),
       );
 }

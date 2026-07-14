@@ -630,7 +630,10 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CourseModuleViewArguments>(nullOk: false);
       return _i39.MaterialPageRoute<dynamic>(
         builder: (context) => _i33.CourseModuleView(
-            key: args.key, module: args.module, catalog: args.catalog),
+            key: args.key,
+            first: args.first,
+            module: args.module,
+            catalog: args.catalog),
         settings: data,
       );
     },
@@ -646,7 +649,10 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<PaymentViewArguments>(nullOk: false);
       return _i39.MaterialPageRoute<dynamic>(
         builder: (context) => _i35.PaymentView(
-            key: args.key, phone: args.phone, subscription: args.subscription),
+            key: args.key,
+            phone: args.phone,
+            method: args.method,
+            subscription: args.subscription),
         settings: data,
       );
     },
@@ -1471,11 +1477,14 @@ class LandingViewArguments {
 class CourseModuleViewArguments {
   const CourseModuleViewArguments({
     this.key,
+    required this.first,
     required this.module,
     required this.catalog,
   });
 
   final _i39.Key? key;
+
+  final bool first;
 
   final _i47.CourseModule? module;
 
@@ -1483,20 +1492,21 @@ class CourseModuleViewArguments {
 
   @override
   String toString() {
-    return '{"key": "$key", "module": "$module", "catalog": "$catalog"}';
+    return '{"key": "$key", "first": "$first", "module": "$module", "catalog": "$catalog"}';
   }
 
   @override
   bool operator ==(covariant CourseModuleViewArguments other) {
     if (identical(this, other)) return true;
     return other.key == key &&
+        other.first == first &&
         other.module == module &&
         other.catalog == catalog;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ module.hashCode ^ catalog.hashCode;
+    return key.hashCode ^ first.hashCode ^ module.hashCode ^ catalog.hashCode;
   }
 }
 
@@ -1534,6 +1544,7 @@ class PaymentViewArguments {
   const PaymentViewArguments({
     this.key,
     required this.phone,
+    required this.method,
     required this.subscription,
   });
 
@@ -1541,11 +1552,13 @@ class PaymentViewArguments {
 
   final String phone;
 
+  final _i43.PaymentMethod method;
+
   final _i48.LearnSubscription subscription;
 
   @override
   String toString() {
-    return '{"key": "$key", "phone": "$phone", "subscription": "$subscription"}';
+    return '{"key": "$key", "phone": "$phone", "method": "$method", "subscription": "$subscription"}';
   }
 
   @override
@@ -1553,12 +1566,16 @@ class PaymentViewArguments {
     if (identical(this, other)) return true;
     return other.key == key &&
         other.phone == phone &&
+        other.method == method &&
         other.subscription == subscription;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ phone.hashCode ^ subscription.hashCode;
+    return key.hashCode ^
+        phone.hashCode ^
+        method.hashCode ^
+        subscription.hashCode;
   }
 }
 
@@ -2175,6 +2192,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
 
   Future<dynamic> navigateToCourseModuleView({
     _i39.Key? key,
+    required bool first,
     required _i47.CourseModule? module,
     required _i46.CourseCatalog catalog,
     int? routerId,
@@ -2185,7 +2203,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.courseModuleView,
         arguments: CourseModuleViewArguments(
-            key: key, module: module, catalog: catalog),
+            key: key, first: first, module: module, catalog: catalog),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2213,6 +2231,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   Future<dynamic> navigateToPaymentView({
     _i39.Key? key,
     required String phone,
+    required _i43.PaymentMethod method,
     required _i48.LearnSubscription subscription,
     int? routerId,
     bool preventDuplicates = true,
@@ -2222,7 +2241,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.paymentView,
         arguments: PaymentViewArguments(
-            key: key, phone: phone, subscription: subscription),
+            key: key, phone: phone, method: method, subscription: subscription),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2814,6 +2833,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
 
   Future<dynamic> replaceWithCourseModuleView({
     _i39.Key? key,
+    required bool first,
     required _i47.CourseModule? module,
     required _i46.CourseCatalog catalog,
     int? routerId,
@@ -2824,7 +2844,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.courseModuleView,
         arguments: CourseModuleViewArguments(
-            key: key, module: module, catalog: catalog),
+            key: key, first: first, module: module, catalog: catalog),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2852,6 +2872,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   Future<dynamic> replaceWithPaymentView({
     _i39.Key? key,
     required String phone,
+    required _i43.PaymentMethod method,
     required _i48.LearnSubscription subscription,
     int? routerId,
     bool preventDuplicates = true,
@@ -2861,7 +2882,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.paymentView,
         arguments: PaymentViewArguments(
-            key: key, phone: phone, subscription: subscription),
+            key: key, phone: phone, method: method, subscription: subscription),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

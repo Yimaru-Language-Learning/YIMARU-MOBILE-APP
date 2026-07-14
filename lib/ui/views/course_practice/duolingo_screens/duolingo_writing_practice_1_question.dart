@@ -18,8 +18,12 @@ class DuolingoWritingPractice1Question
   const DuolingoWritingPractice1Question(
       {super.key, required this.practiceController});
 
-  void _nextScreen(CoursePracticeViewModel viewModel) {
+  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
+    await viewModel.setWritingAnswer(
+        response: practiceController.text,
+        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?.last.value);
     viewModel.nextScreen();
   }
 
@@ -117,7 +121,7 @@ class DuolingoWritingPractice1Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: () => _nextScreen(viewModel),
+        onEnd: () async => await _nextScreen(viewModel),
         duration: viewModel.countdown,
       );
 
@@ -136,7 +140,7 @@ class DuolingoWritingPractice1Question
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
         verticalSpaceMedium,
         _buildTitle(viewModel),
-        verticalSpaceSmall,
+        verticalSpaceMedium,
         _buildImageContainer(viewModel),
         verticalSpaceMedium,
         _buildPracticeFormField(viewModel),
@@ -168,7 +172,8 @@ class DuolingoWritingPractice1Question
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl: viewModel.cachedImage ?? '',
+        imageUrl: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value,
       );
 
   Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
@@ -207,7 +212,7 @@ class DuolingoWritingPractice1Question
         foregroundColor: kcWhite,
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? () => _nextScreen(viewModel)
+            ? () async => await _nextScreen(viewModel)
             : null,
         backgroundColor: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage

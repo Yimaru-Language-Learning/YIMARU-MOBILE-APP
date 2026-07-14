@@ -4,23 +4,37 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_view.form.da
 import 'package:yimaru_app/ui/widgets/listenable_repetitive_practice_card.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice1Question
     extends ViewModelWidget<CoursePracticeViewModel> {
+  final int duration;
+  final String question;
+  final String response;
   final TextEditingController practiceController;
 
   const DuolingoListeningPractice1Question(
-      {super.key, required this.practiceController});
+      {super.key,
+      required this.question,
+      required this.duration,
+      required this.response,
+      required this.practiceController});
 
-  void _next(CoursePracticeViewModel viewModel) {
-    viewModel.resetPlayCount(2);
-    viewModel.nextScreen();
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    String answer = practiceController.text;
+    practiceController.clear();
+    await viewModel.setListeningAnswer1(
+        answer: answer,
+        sample: response,
+        duration: duration,
+        question: question);
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -48,7 +62,17 @@ class DuolingoListeningPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -70,7 +94,6 @@ class DuolingoListeningPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:
             _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
@@ -80,8 +103,7 @@ class DuolingoListeningPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildQuestionWrapper(viewModel),
-        _buildContinueButtonWrapper(viewModel)
+        _buildBodyScroller(viewModel),
       ];
 
   Widget _buildAppBarWrapper(
@@ -92,7 +114,9 @@ class DuolingoListeningPractice1Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
+          verticalSpaceSmall,
           _buildCountdownWrapper(viewModel),
+          verticalSpaceSmall,
         ],
       );
 
@@ -114,11 +138,24 @@ class DuolingoListeningPractice1Question
       );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+      alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
+
+  Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.listening1Variant)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(viewModel);
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
+        key: ValueKey(viewModel.countdown),
+        onEnd: () async => await _next(viewModel),
+      );
+
+  Widget _buildBodyScroller(
+    CoursePracticeViewModel viewModel) =>
+      SingleChildScrollView(
+        child: _buildQuestionWrapper(
+           viewModel),
       );
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
@@ -129,6 +166,7 @@ class DuolingoListeningPractice1Question
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
+    verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceMedium,
         _buildQuestion(),
@@ -140,6 +178,8 @@ class DuolingoListeningPractice1Question
           verticalSpaceTiny,
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
+    verticalSpaceMedium,
+    _buildContinueButtonWrapper(viewModel)
       ];
 
   Widget _buildTitle() => Text(
@@ -148,7 +188,8 @@ class DuolingoListeningPractice1Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestion() => const ListenableRepetitivePracticeCard();
+  Widget _buildQuestion() =>
+      ListenableRepetitivePracticeCard(question: question);
 
   Widget _buildLabel() => Text(
         'Your Answer',
@@ -197,7 +238,12 @@ class DuolingoListeningPractice1Question
             : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? () => _next(viewModel)
+            ? () async => await _next(viewModel)
             : null,
       );
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.listening1Variant)
+          ? const PageLoadingIndicator()
+          : Container();
 }

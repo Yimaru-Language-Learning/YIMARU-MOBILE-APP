@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
-import 'package:yimaru_app/ui/common/helper_functions.dart';
 import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 
 import '../../common/enmus.dart';
-import '../../common/ui_helpers.dart';
-import '../../widgets/course_practice_app_bar.dart';
-import '../../widgets/page_loading_indicator.dart';
 import 'pdf_viewmodel.dart';
 
 class PdfView extends StackedView<PdfViewModel> {
@@ -18,7 +14,7 @@ class PdfView extends StackedView<PdfViewModel> {
 
   @override
   void onViewModelReady(PdfViewModel viewModel) async {
-    await viewModel.openPdf(url);
+    // await viewModel.openPdf(url);
     super.onViewModelReady(viewModel);
   }
 
@@ -45,8 +41,6 @@ class PdfView extends StackedView<PdfViewModel> {
         ],
       );
 
-
-
   Widget _buildSafeBackButton(PdfViewModel viewModel) => SafeArea(
         child: _buildBackButtonWrapper(viewModel),
       );
@@ -66,7 +60,7 @@ class PdfView extends StackedView<PdfViewModel> {
 
   Widget _buildPdfViewerState(PdfViewModel viewModel) =>
       viewModel.busy(StateObjects.openPdf)
-          ?  _buildLoadingIndicator()
+          ? _buildLoadingIndicator()
           : _buildPdfViewer(viewModel);
 
   Widget _buildLoadingIndicator() => const Center(
@@ -74,6 +68,6 @@ class PdfView extends StackedView<PdfViewModel> {
       );
 
   Widget _buildPdfViewer(PdfViewModel viewModel) => SfPdfViewer.network(
-        viewModel.url ?? '',
+        url,
       );
 }

@@ -6,8 +6,6 @@ import '../models/course_catalog.dart';
 import '../models/course_lesson.dart';
 import '../models/course_module.dart';
 import '../models/course_unit.dart';
-import '../models/refresh_object.dart';
-import '../ui/common/enmus.dart';
 
 class CourseService with ListenableServiceMixin {
   // Dependency injection
@@ -79,7 +77,7 @@ class CourseService with ListenableServiceMixin {
     notifyListeners();
   }
 
-  Future<String?> refreshObject(String url) async {
+  /*Future<String?> refreshObject(String url) async {
     Map<String, dynamic> data = {'reference': url};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
 
@@ -89,5 +87,5 @@ class CourseService with ListenableServiceMixin {
       return object.url ?? '';
     }
     return null;
-  }
+  }*/
 }

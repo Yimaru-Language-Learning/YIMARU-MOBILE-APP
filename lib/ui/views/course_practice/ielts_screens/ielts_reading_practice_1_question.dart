@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/course_missing_word_question.dart';
 import 'package:yimaru_app/ui/widgets/paragraph_option_card.dart';
-import 'package:yimaru_app/ui/widgets/reading_practice_option_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
@@ -73,7 +71,7 @@ class IeltsReadingPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildQuestionExpandedWrapper(viewModel),
+        _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarWrapper(
@@ -84,7 +82,7 @@ class IeltsReadingPractice1Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-        _buildCountdownWrapper(viewModel),
+          _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
@@ -122,19 +120,33 @@ class IeltsReadingPractice1Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildQuestionScrollerWrapper(viewModel));
+  Widget _buildQuestionExpandedWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildQuestionScrollerWrapper(
+              context: context, viewModel: viewModel));
 
-  Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
-      SingleChildScrollView(child: _buildQuestionWrapper(viewModel));
+  Widget _buildQuestionScrollerWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SingleChildScrollView(
+          child: _buildQuestionWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildQuestionWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildQuestionChildren(viewModel),
+        children:
+            _buildQuestionChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
+  List<Widget> _buildQuestionChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
         _buildInstruction(viewModel),
         verticalSpaceMedium,
@@ -144,7 +156,7 @@ class IeltsReadingPractice1Question
         verticalSpaceMedium,
         _buildQuestion3(viewModel),
         verticalSpaceLarge,
-        _buildContinueButtonWrapper(viewModel)
+        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
 
   Widget _buildInstruction(CoursePracticeViewModel viewModel) => Text(
@@ -180,19 +192,23 @@ class IeltsReadingPractice1Question
             ?.response?[3].value['options'],
       );
 
-  Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildContinueButtonWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
+        child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
-  Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
+  Widget _buildContinueButton(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.nextQuestion(),
+        onTap: () async => await viewModel.nextQuestion(context),
       );
 }

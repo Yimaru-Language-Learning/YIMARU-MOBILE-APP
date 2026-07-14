@@ -1,3 +1,6 @@
+// Payment method
+enum PaymentMethod { ussd, sdk }
+
 // Practice voice
 enum Voice { sample, recorded }
 
@@ -29,7 +32,15 @@ enum ProgressStatuses { pending, started, completed }
 enum CoursePracticeType { ielts, speaking, reading, writing, listening }
 
 // Practice reason
-enum PracticeReason { course, module, lesson, previousModule, previousCourse }
+enum PracticeReason {
+  unit,
+  course,
+  module,
+  lesson,
+  previousUnit,
+  previousModule,
+  previousCourse,
+}
 
 // State object
 enum StateObjects {
@@ -40,6 +51,7 @@ enum StateObjects {
   register,
   verifyOtp,
   resendOtp,
+  stopAudio,
   cacheImage,
   courseUnits,
   assessments,
@@ -63,9 +75,15 @@ enum StateObjects {
   loadLessonVideo,
   loadCourseVideo,
   progressSummary,
+  reading1Variant,
+  reading7Variant,
+  reading8Variant,
+  speaking4Variant,
   requestResetCode,
   profileCompletion,
   learnSubscription,
+  listening1Variant,
+  listening3Variant,
   learnSubscriptions,
   loginWithApple,
   registerWithGoogle,

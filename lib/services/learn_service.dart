@@ -1,8 +1,6 @@
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_progress.dart';
 import 'package:yimaru_app/models/module_progress.dart';
-import 'package:yimaru_app/models/refresh_object.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../app/app.locator.dart';
 import '../models/access.dart';
@@ -59,7 +57,7 @@ class LearnService with ListenableServiceMixin {
   List<LearnLesson> get lessons => _lessons;
 
   // Learn programs
-  Future<String?> refreshObject(String url) async {
+  /*Future<String?> refreshObject(String url) async {
     Map<String, dynamic> data = {'reference': url};
     Map<String, dynamic> response = await _apiService.refreshObject(data);
 
@@ -69,7 +67,7 @@ class LearnService with ListenableServiceMixin {
       return object.url ?? '';
     }
     return null;
-  }
+  }*/
 
   // Learn programs
   Future<void> getLearnPrograms() async {

@@ -18,6 +18,14 @@ class DuolingoListeningPractice4Question
   const DuolingoListeningPractice4Question(
       {super.key, required this.practiceController});
 
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    await viewModel.setListeningAnswer(
+        response: practiceController.text,
+        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?.last.value);
+    viewModel.nextScreen();
+  }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -113,8 +121,8 @@ class DuolingoListeningPractice4Question
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
         duration: viewModel.countdown,
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -130,6 +138,7 @@ class DuolingoListeningPractice4Question
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
+        verticalSpaceMedium,
         _buildTitle(viewModel),
         verticalSpaceMedium,
         _buildQuestion(viewModel),
@@ -150,7 +159,7 @@ class DuolingoListeningPractice4Question
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeQuestionCard(
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.last.value,
+            ?.stimulus?.first.value,
       );
 
   Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
@@ -190,7 +199,7 @@ class DuolingoListeningPractice4Question
         foregroundColor: kcWhite,
         onTap: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
-            ? viewModel.nextScreen
+            ? () async => await _next(viewModel)
             : null,
         backgroundColor: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage
