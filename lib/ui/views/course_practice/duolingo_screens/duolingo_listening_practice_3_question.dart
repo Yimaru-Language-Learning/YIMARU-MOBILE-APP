@@ -24,13 +24,13 @@ class DuolingoListeningPractice3Question
     required this.question,
     required this.duration});
 
-  void _setButtonActive(CoursePracticeViewModel viewModel) {
-    viewModel.setNextButton();
+  void _setShowAnswer(CoursePracticeViewModel viewModel) {
+    viewModel.setShowAnswer();
   }
 
   Future<void> _next({required BuildContext context,
     required CoursePracticeViewModel viewModel}) async {
-    if (viewModel.buttonActive) {
+    if (viewModel.showAnswer) {
       await viewModel.setListeningAnswer3(
         context: context,
         question: question,
@@ -39,7 +39,7 @@ class DuolingoListeningPractice3Question
         sample: options.firstWhere((e) => e['is_correct'])['text'],
       );
     } else {
-      _setButtonActive(viewModel);
+      _setShowAnswer(viewModel);
     }
   }
 
@@ -141,7 +141,7 @@ class DuolingoListeningPractice3Question
       CountdownTimer(
         duration: viewModel.countdown,
         key: ValueKey(viewModel.countdown),
-        onEnd: () => _setButtonActive(viewModel),
+        onEnd: () => _setShowAnswer(viewModel),
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) =>
@@ -190,8 +190,8 @@ class DuolingoListeningPractice3Question
         verticalSpaceSmall,
         _buildPracticeQuestions(viewModel),
         verticalSpaceMedium,
-        if(viewModel.buttonActive)
-          _correctAnswer(),
+        if(viewModel.showAnswer)
+          _buildCorrectAnswer(),
         verticalSpaceSmall,
         _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
@@ -245,7 +245,7 @@ class DuolingoListeningPractice3Question
       );
 
 
-  Widget _correctAnswer() =>
+  Widget _buildCorrectAnswer() =>
       Text(
         'Correct Answer: ${options.firstWhere((
             e) => e['is_correct'])['text']} ',

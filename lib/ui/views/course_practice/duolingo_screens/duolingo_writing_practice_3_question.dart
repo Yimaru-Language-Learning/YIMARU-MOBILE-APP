@@ -165,7 +165,7 @@ class DuolingoWritingPractice3Question
         maxLines: 5,
         maxLength: 250,
         controller: practiceController,
-        enabled: !viewModel.buttonActive,
+        enabled: !viewModel.showAnswer,
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,

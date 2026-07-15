@@ -4,10 +4,12 @@ import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 import 'package:yimaru_app/ui/widgets/listenable_review_practice_card.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/course_practice_text_card.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice1Review
@@ -18,6 +20,13 @@ class DuolingoListeningPractice1Review
       {required int index, required CoursePracticeViewModel viewModel}) {
     if (index >= viewModel.answers.length) return '';
     return viewModel.answers[index]['question']?.toString() ?? '';
+  }
+
+
+  String getResponse(
+      {required int index, required CoursePracticeViewModel viewModel}) {
+    if (index >= viewModel.answers.length) return '';
+    return viewModel.answers[index]['response']?.toString() ?? '';
   }
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
@@ -50,7 +59,17 @@ class DuolingoListeningPractice1Review
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildStopRecState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -157,21 +176,21 @@ class DuolingoListeningPractice1Review
             number: '4', question: getQuestion(index: 3, viewModel: viewModel)),
         verticalSpaceMedium,
         _buildQuestionRowWrapper(
-            number: '5', question: viewModel.answers[4]['question']),
+            number: '5', question: getQuestion(index: 4, viewModel: viewModel)),
         verticalSpaceLarge,
         _buildLabelWrapper(),
         verticalSpaceSmall,
         _buildPracticeResponsesWrapper(
-            number: '1', answer: viewModel.answers[0]['response']),
+            number: '1', answer:getResponse(index: 0, viewModel: viewModel)),
         verticalSpaceSmall,
         _buildPracticeResponsesWrapper(
-            number: '2', answer: viewModel.answers[1]['response']),
+            number: '2', answer:getResponse(index: 1, viewModel: viewModel)),
         verticalSpaceSmall,
         _buildPracticeResponsesWrapper(
-            number: '3', answer: viewModel.answers[2]['response']),
+            number: '3', answer:getResponse(index: 2, viewModel: viewModel)),
         verticalSpaceSmall,
         _buildPracticeResponsesWrapper(
-            number: '4', answer: viewModel.answers[3]['response']),
+            number: '4', answer: getResponse(index: 3, viewModel: viewModel)),
         verticalSpaceSmall,
         _buildPracticeResponsesWrapper(
             number: '5', answer: viewModel.answers[4]['response']),
@@ -262,4 +281,9 @@ class DuolingoListeningPractice1Review
             ? () async => await _next(viewModel)
             : () async => await viewModel.nextQuestion(context),
       );
+
+  Widget _buildStopRecState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.stopAudio)
+          ? const PageLoadingIndicator()
+          : Container();
 }

@@ -10,6 +10,7 @@ import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_circular_progress_indicator.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/course_practice_app_bar.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice2Question
@@ -54,7 +55,17 @@ class DuolingoListeningPractice2Question
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -221,4 +232,10 @@ class DuolingoListeningPractice2Question
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _next(viewModel),
       );
+
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.listening1Variant)
+          ? const PageLoadingIndicator()
+          : Container();
 }

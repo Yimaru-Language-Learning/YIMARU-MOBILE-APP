@@ -14,15 +14,25 @@ class DuolingoReadingPractice5Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoReadingPractice5Question({super.key});
 
+  void _setShowAnswer(CoursePracticeViewModel viewModel) {
+    viewModel.setShowAnswer();
+  }
+  
+  
   Future<void> _next(
       {required BuildContext context,
-      required CoursePracticeViewModel viewModel}) async {
-    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
-      viewModel.nextScreen();
+        required CoursePracticeViewModel viewModel}) async {
+    if (viewModel.showAnswer) {
+      if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+        viewModel.nextScreen();
+      } else {
+        await viewModel.nextQuestion(context);
+      }
     } else {
-      await viewModel.nextQuestion(context);
+      _setShowAnswer(viewModel);
     }
   }
+
 
   void _setOption(
       {required Map<String, dynamic> option,
@@ -135,7 +145,7 @@ class DuolingoReadingPractice5Question
           required CoursePracticeViewModel viewModel}) =>
       CountdownTimer(
         duration: viewModel.countdown,
-        onEnd: () async => await _next(context: context, viewModel: viewModel),
+        onEnd: ()  => _setShowAnswer(viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -175,6 +185,9 @@ class DuolingoReadingPractice5Question
         verticalSpaceMedium,
         _buildPracticeOptions(viewModel),
         verticalSpaceLarge,
+        if(viewModel.showAnswer)
+          _buildCorrectAnswer(viewModel),
+        verticalSpaceMedium,
         _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
 
@@ -224,6 +237,15 @@ class DuolingoReadingPractice5Question
         title: title,
         onTap: onTap,
         selected: selected,
+      );
+
+
+  Widget _buildCorrectAnswer(CoursePracticeViewModel viewModel) =>
+      Text(
+        'Correct Answer: ${ (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?.last.value['options'] as List).firstWhere((e) => e['is_correct'])['text']} ',
+        style: style16DG400,
+        textAlign: TextAlign.center,
       );
 
   Widget _buildContinueButtonWrapper(

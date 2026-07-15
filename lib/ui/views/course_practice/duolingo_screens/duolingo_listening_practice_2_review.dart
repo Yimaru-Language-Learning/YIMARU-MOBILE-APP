@@ -3,11 +3,13 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/course_practice_text_card.dart';
 import '../../../widgets/listenable_repetitive_practice_card.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoListeningPractice2Review
@@ -50,7 +52,17 @@ class DuolingoListeningPractice2Review
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildStopRecState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -160,7 +172,7 @@ class DuolingoListeningPractice2Review
             getQuestion(index: 1, viewModel: viewModel)),
         verticalSpaceMedium,
         _buildLabelWrapper(viewModel.questions[viewModel.currentQuestion]
-            .dynamicPayload?.stimulus?[2].value),
+            .dynamicPayload?.stimulus?[3].value),
         verticalSpaceTiny,
         _buildPracticeResponsesWrapper(
             getQuestion(index: 2, viewModel: viewModel)),
@@ -220,4 +232,9 @@ class DuolingoListeningPractice2Review
             ? () async => await _next(viewModel)
             : () async => await viewModel.nextQuestion(context),
       );
+
+  Widget _buildStopRecState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.stopAudio)
+          ? const PageLoadingIndicator()
+          : Container();
 }
