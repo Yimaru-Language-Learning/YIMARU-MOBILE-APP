@@ -8,6 +8,7 @@ import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
+import '../../../widgets/course_practice_text_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoWritingPractice1Review
@@ -150,7 +151,7 @@ class DuolingoWritingPractice1Review
         verticalSpaceMedium,
         _buildImageContainer(viewModel),
         verticalSpaceMedium,
-        _buildPracticeFormFieldWrapper(viewModel),
+        _buildPracticeAnswerWrapper(viewModel),
         verticalSpaceMedium,
         _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
@@ -183,23 +184,18 @@ class DuolingoWritingPractice1Review
             ?.stimulus?.first.value,
       );
 
-  Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeAnswerWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildPracticeFormField(viewModel),
+        child: _buildPracticeAnswer(viewModel),
       );
 
-  Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
-      TextFormField(
-        maxLines: 5,
-        maxLength: 250,
-        enabled: false,
-        controller: practiceController,
-        decoration: inputDecoration(
-            focus: true,
-            hint: 'Start writing here...',
-            filled: practiceController.text.isNotEmpty),
-      );
+  Widget _buildPracticeAnswer(CoursePracticeViewModel viewModel) =>
+
+
+  CoursePracticeTextCard(
+  subtitle: practiceController.text,
+  );
 
   Widget _buildPracticeReviewSection(
           {required BuildContext context,

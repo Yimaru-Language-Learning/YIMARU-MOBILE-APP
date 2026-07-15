@@ -150,7 +150,7 @@ class DuolingoSpeakingPractice1Question
 
   Widget _buildTimerStackWrapper(CoursePracticeViewModel viewModel) =>
       CircularCountdownTimer(
-        onEnd: () => _next(viewModel),
+        onEnd: ()async => await _next(viewModel),
       );
 
   Widget _buildSubtitle() => Text(

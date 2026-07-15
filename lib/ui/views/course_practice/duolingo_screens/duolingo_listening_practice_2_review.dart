@@ -6,7 +6,7 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
-import '../../../widgets/course_practice_question_card.dart';
+import '../../../widgets/course_practice_text_card.dart';
 import '../../../widgets/listenable_repetitive_practice_card.dart';
 import '../course_practice_viewmodel.dart';
 
@@ -209,7 +209,7 @@ class DuolingoListeningPractice2Review
   Widget _buildPracticeResponses(
     String answer,
   ) =>
-      CoursePracticeQuestionCard(subtitle: answer);
+      CoursePracticeTextCard(subtitle: answer);
 
   Widget _buildPracticeReviewSection(
           {required BuildContext context,

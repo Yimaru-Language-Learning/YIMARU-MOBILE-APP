@@ -7,7 +7,7 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/course_practice_question_card.dart';
+import '../../../widgets/course_practice_text_card.dart';
 import '../course_practice_viewmodel.dart';
 import '../course_practice_view.form.dart';
 
@@ -18,14 +18,11 @@ class DuolingoWritingPractice3Question
   const DuolingoWritingPractice3Question(
       {super.key, required this.practiceController});
 
-  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async {
-    FocusManager.instance.primaryFocus?.unfocus();
-    await viewModel.setWritingAnswer(
-        response: practiceController.text,
-        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value);
-    viewModel.nextScreen();
-  }
+  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async =>
+      await viewModel.setWritingAnswer(
+          response: practiceController.text,
+          sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?.last.value);
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -158,7 +155,7 @@ class DuolingoWritingPractice3Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CoursePracticeQuestionCard(
+      CoursePracticeTextCard(
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.first.value,
       );
@@ -198,17 +195,7 @@ class DuolingoWritingPractice3Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor: !viewModel.buttonActive
-            ? practiceController.text.isNotEmpty &&
-                    !viewModel.hasPracticeValidationMessage
-                ? kcPrimaryColor
-                : kcPrimaryColor.withValues(alpha: 0.1)
-            : kcPrimaryColor,
-        onTap: !viewModel.buttonActive
-            ? practiceController.text.isNotEmpty &&
-                    !viewModel.hasPracticeValidationMessage
-                ? () async => await _nextScreen(viewModel)
-                : null
-            : viewModel.nextScreen,
+        backgroundColor: kcPrimaryColor,
+        onTap: () async => await _nextScreen(viewModel),
       );
 }
