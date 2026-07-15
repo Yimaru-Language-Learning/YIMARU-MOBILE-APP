@@ -19,16 +19,13 @@ class DuolingoSpeakingPractice1Answer
     super.key,
   });
 
-  Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();
-    await viewModel.setSpeakingAnswer(
-      number: '1',
-      sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value ??
-          '',
-    );
-    viewModel.nextScreen();
-  }
+  Future<void> _stopRecording(CoursePracticeViewModel viewModel) async =>
+      await viewModel.setSpeakingAnswer(
+        number: '1',
+        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                ?.response?.last.value ??
+            '',
+      );
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();

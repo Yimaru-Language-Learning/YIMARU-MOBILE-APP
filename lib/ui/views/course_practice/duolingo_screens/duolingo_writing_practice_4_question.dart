@@ -7,7 +7,7 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/course_practice_question_card.dart';
+import '../../../widgets/course_practice_text_card.dart';
 import '../course_practice_viewmodel.dart';
 import '../course_practice_view.form.dart';
 
@@ -18,14 +18,11 @@ class DuolingoWritingPractice4Question
   const DuolingoWritingPractice4Question(
       {super.key, required this.practiceController});
 
-  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async {
-    FocusManager.instance.primaryFocus?.unfocus();
-    await viewModel.setWritingAnswer(
-        response: practiceController.text,
-        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value);
-    viewModel.nextScreen();
-  }
+  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async =>
+      await viewModel.setWritingAnswer(
+          response: practiceController.text,
+          sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?.last.value);
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -158,7 +155,7 @@ class DuolingoWritingPractice4Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CoursePracticeQuestionCard(
+      CoursePracticeTextCard(
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.first.value,
       );
@@ -193,17 +190,10 @@ class DuolingoWritingPractice4Question
 
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
-        height: 55,
-        text: 'Submit',
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        onTap: practiceController.text.isNotEmpty &&
-                !viewModel.hasPracticeValidationMessage
-            ? () async => await _nextScreen(viewModel)
-            : null,
-        backgroundColor: practiceController.text.isNotEmpty &&
-                !viewModel.hasPracticeValidationMessage
-            ? kcPrimaryColor
-            : kcPrimaryColor.withValues(alpha: 0.1),
-      );
+          height: 55,
+          text: 'Submit',
+          borderRadius: 12,
+          foregroundColor: kcWhite,
+          backgroundColor: kcPrimaryColor,
+          onTap: () async => await _nextScreen(viewModel));
 }

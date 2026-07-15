@@ -4,9 +4,11 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/countdown_timer.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/speaking_practice_review_section.dart';
 import '../course_practice_viewmodel.dart';
 
@@ -16,9 +18,16 @@ class DuolingoSpeakingPractice1Review
     super.key,
   });
 
-  Future<void> _next(CoursePracticeViewModel viewModel) async {
+  Future<void> _next(
+      {required BuildContext context,
+      required CoursePracticeViewModel viewModel}) async {
     await viewModel.stopAudio();
-    viewModel.nextScreen();
+
+    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+      viewModel.nextScreen();
+    } else {
+      await viewModel.nextQuestion(context);
+    }
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -46,7 +55,17 @@ class DuolingoSpeakingPractice1Review
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildStopRecState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -184,8 +203,11 @@ class DuolingoSpeakingPractice1Review
           required CoursePracticeViewModel viewModel}) =>
       SpeakingPracticeReviewSection(
         answers: viewModel.answers,
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? () async => await _next(viewModel)
-            : () async => await viewModel.nextQuestion(context),
+        onTap: () async => await _next(context: context, viewModel: viewModel),
       );
+
+  Widget _buildStopRecState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.stopAudio)
+          ? const PageLoadingIndicator()
+          : Container();
 }

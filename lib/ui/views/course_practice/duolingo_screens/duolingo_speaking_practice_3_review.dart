@@ -2,21 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/speaking_practice_review_section.dart';
-import '../../../widgets/course_practice_question_card.dart';
+import '../../../widgets/course_practice_text_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoSpeakingPractice3Review
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoSpeakingPractice3Review({super.key});
 
-  Future<void> _next(CoursePracticeViewModel viewModel) async {
+  Future<void> _next(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) async {
     await viewModel.stopAudio();
-    viewModel.nextScreen();
+
+    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+      viewModel.nextScreen();
+    } else {
+      await viewModel.nextQuestion(context);
+    }
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -44,8 +53,19 @@ class DuolingoSpeakingPractice3Review
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
+
+  Widget _buildScaffoldStack(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildStopRecState(viewModel)
+        ],
+      );
+
 
   Widget _buildScaffold(
           {required BuildContext context,
@@ -140,7 +160,7 @@ class DuolingoSpeakingPractice3Review
       [verticalSpaceMedium, _buildQuestion(viewModel), verticalSpaceMedium];
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CoursePracticeQuestionCard(
+      CoursePracticeTextCard(
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value,
       );
@@ -150,8 +170,13 @@ class DuolingoSpeakingPractice3Review
           required CoursePracticeViewModel viewModel}) =>
       SpeakingPracticeReviewSection(
         answers: viewModel.answers,
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? () async => await _next(viewModel)
-            : () async => await viewModel.nextQuestion(context),
+        onTap: () async => await _next(context: context, viewModel: viewModel),
+
       );
+
+
+  Widget _buildStopRecState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.stopAudio)
+          ? const PageLoadingIndicator()
+          : Container();
 }

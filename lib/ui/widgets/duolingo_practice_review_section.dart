@@ -32,7 +32,7 @@ class DuolingoPracticeReviewSection
           verticalSpaceMedium,
           _buildSampleAnswers(),
           verticalSpaceMedium,
-          _buildContinueButtonState(viewModel),
+          _buildProgressIndicatorWrapper(),
           verticalSpaceMedium,
         ],
       );
@@ -61,10 +61,7 @@ class DuolingoPracticeReviewSection
         textAlign: TextAlign.center,
       );
 
-  Widget _buildContinueButtonState(CoursePracticeViewModel viewModel) =>
-      viewModel.busy(StateObjects.stopAudio)
-          ? _buildProgressIndicatorWrapper()
-          : _buildContinueButton();
+
 
   Widget _buildProgressIndicatorWrapper() => SizedBox(
         height: 55,

@@ -8,7 +8,7 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/circular_countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/countdown_timer.dart';
-import '../../../widgets/course_practice_question_card.dart';
+import '../../../widgets/course_practice_text_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class IeltsSpeakingPractice2Question
@@ -162,7 +162,7 @@ class IeltsSpeakingPractice2Question
       ];
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CoursePracticeQuestionCard(
+      CoursePracticeTextCard(
         title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value,
