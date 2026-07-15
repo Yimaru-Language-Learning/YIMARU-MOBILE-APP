@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
-import 'package:yimaru_app/ui/widgets/course_practice_question_card.dart';
+import 'package:yimaru_app/ui/widgets/course_practice_text_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
@@ -18,13 +18,11 @@ class DuolingoSpeakingPractice3Answer
   const DuolingoSpeakingPractice3Answer({super.key});
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();
     await viewModel.setSpeakingAnswer(
         number: '1',
         sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
                 ?.response?.last.value ??
             '');
-    viewModel.nextScreen();
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -153,7 +151,7 @@ class DuolingoSpeakingPractice3Answer
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CoursePracticeQuestionCard(
+      CoursePracticeTextCard(
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value,
       );

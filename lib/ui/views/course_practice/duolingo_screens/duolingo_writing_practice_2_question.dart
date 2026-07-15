@@ -7,7 +7,7 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/course_practice_question_card.dart';
+import '../../../widgets/course_practice_text_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoWritingPractice2Question
@@ -159,7 +159,7 @@ class DuolingoWritingPractice2Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CoursePracticeQuestionCard(
+      CoursePracticeTextCard(
           subtitle: viewModel.questions[viewModel.currentQuestion]
               .dynamicPayload?.stimulus?.last.value);
 

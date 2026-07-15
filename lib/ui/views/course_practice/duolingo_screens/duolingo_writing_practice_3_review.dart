@@ -6,7 +6,7 @@ import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
-import '../../../widgets/course_practice_question_card.dart';
+import '../../../widgets/course_practice_text_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoWritingPractice3Review
@@ -137,7 +137,7 @@ class DuolingoWritingPractice3Review
         verticalSpaceLarge,
         _buildQuestionWrapper(viewModel),
         verticalSpaceMedium,
-        _buildPracticeFormFieldWrapper(viewModel),
+        _buildPracticeAnswerWrapper(viewModel),
         verticalSpaceLarge,
         _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
@@ -154,26 +154,21 @@ class DuolingoWritingPractice3Review
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CoursePracticeQuestionCard(
+      CoursePracticeTextCard(
           subtitle: viewModel.questions[viewModel.currentQuestion]
               .dynamicPayload?.stimulus?.first.value);
 
-  Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildPracticeAnswerWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildAssessmentFormField(viewModel),
+        child: _buildPracticeAnswer(viewModel),
       );
 
-  Widget _buildAssessmentFormField(CoursePracticeViewModel viewModel) =>
-      TextFormField(
-        maxLines: 5,
-        enabled: false,
-        maxLength: 250,
-        controller: practiceController,
-        decoration: inputDecoration(
-            focus: true,
-            hint: 'Start writing here...',
-            filled: practiceController.text.isNotEmpty),
+  Widget _buildPracticeAnswer(CoursePracticeViewModel viewModel) =>
+
+
+      CoursePracticeTextCard(
+        subtitle: practiceController.text,
       );
 
   Widget _buildPracticeReviewSection(

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
-class CoursePracticeQuestionCard extends StatelessWidget {
+class CoursePracticeTextCard extends StatelessWidget {
   final String? title;
   final String? subtitle;
 
-  const CoursePracticeQuestionCard({super.key, this.title, this.subtitle});
+  const CoursePracticeTextCard({super.key, this.title, this.subtitle});
 
   @override
   Widget build(BuildContext context) => _buildContainer();
