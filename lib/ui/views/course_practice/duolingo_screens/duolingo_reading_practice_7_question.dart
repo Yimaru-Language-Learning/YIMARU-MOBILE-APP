@@ -8,6 +8,7 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoReadingPractice7Question
@@ -60,7 +61,17 @@ class DuolingoReadingPractice7Question
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -168,6 +179,7 @@ class DuolingoReadingPractice7Question
         style: style16DG600,
       );
 
+
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => SelectableText(
         question,
         style: style14DG400,
@@ -196,4 +208,11 @@ class DuolingoReadingPractice7Question
         onTap: () async => _next(viewModel),
         backgroundColor: kcPrimaryColor,
       );
+
+
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.reading7Variant)
+          ? const PageLoadingIndicator()
+          : Container();
 }

@@ -177,13 +177,16 @@ class DuolingoReadingPractice3Review
             .toList()
             .length,
         itemBuilder: (context, index) => _buildPracticeCard(
-          index,
+          index:index,
+          viewModel: viewModel
         ),
       );
 
-  Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
+  Widget _buildPracticeCard({required int index,required CoursePracticeViewModel viewModel}) => ReadingPracticeOptionCard(
         enabled: false,
         number: (index + 1).toString(),
+    options: viewModel.questions[viewModel.currentQuestion]
+        .dynamicPayload?.stimulus?.last.value['word_bank'],
       );
 
   Widget _buildPracticeReviewSection(

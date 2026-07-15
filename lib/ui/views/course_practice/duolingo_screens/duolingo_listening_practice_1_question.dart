@@ -202,7 +202,7 @@ class DuolingoListeningPractice1Question
         maxLines: 5,
         maxLength: 250,
         controller: practiceController,
-        enabled: !viewModel.buttonActive,
+        enabled: !viewModel.showAnswer,
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,
@@ -232,14 +232,8 @@ class DuolingoListeningPractice1Question
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor: practiceController.text.isNotEmpty &&
-                !viewModel.hasPracticeValidationMessage
-            ? kcPrimaryColor
-            : kcPrimaryColor.withValues(alpha: 0.1),
-        onTap: practiceController.text.isNotEmpty &&
-                !viewModel.hasPracticeValidationMessage
-            ? () async => await _next(viewModel)
-            : null,
+        backgroundColor: kcPrimaryColor,
+        onTap: () async => await _next(viewModel)
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>

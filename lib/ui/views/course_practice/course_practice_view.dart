@@ -16,6 +16,7 @@ import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_li
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_1_variant.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_2_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_2_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_2_variant.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_3_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_3_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_4_question.dart';
@@ -152,7 +153,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 49 /*Read and select*/) {
       return const DuolingoReadingPractice1Variant();
     } else if (id == 3 /*Fill in the blank*/) {
-      return const DuolingoReadingPractice2Question();
+      return Container();
+      return const DuolingoReadingPractice2Variant();
     } else if (id == 51 /*Interactive reading - complete the sentence*/) {
       return const DuolingoReadingPractice3Question();
     } else if (id == 52 /*Interactive reading - complete the passage*/) {
@@ -226,6 +228,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
   bool _buildDuolingoReviewScreenWrapperCondition(
           CoursePracticeViewModel viewModel) =>
       viewModel
+          .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          3 &&viewModel
               .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           29 &&
       viewModel
@@ -270,9 +274,11 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 57 /*Interactive listening part 3*/) {
       return DuolingoListeningPractice4Review(
           practiceController: practiceController);
-    } else if (id == 3 /*Fill in the blank*/) {
+    }
+  /*  else if (id == 3 *//*Fill in the blank*//*) {
       return const DuolingoReadingPractice2Review();
-    } else if (id == 51 /*Interactive reading - complete the sentence*/) {
+    } */
+    else if (id == 51 /*Interactive reading - complete the sentence*/) {
       return const DuolingoReadingPractice3Review();
     } else if (id == 55 /*Interactive reading - highlight the answer*/) {
       return const DuolingoReadingPractice7Review();

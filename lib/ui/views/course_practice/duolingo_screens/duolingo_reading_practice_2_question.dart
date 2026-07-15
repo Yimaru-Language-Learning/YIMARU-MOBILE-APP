@@ -3,29 +3,51 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/course_missing_word_question.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/duolingo_practice_review_section.dart';
 import '../../../widgets/reading_practice_option_card.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoReadingPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const DuolingoReadingPractice2Question({super.key});
+  final List blanks;
+  final int duration;
+  final List options;
+  final dynamic question;
 
-  Future<void> _next(CoursePracticeViewModel viewModel) async {
-    await viewModel.setListeningAnswer(
-        response: viewModel.selectedOption.toString(),
-        sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                ?.stimulus?.last.value['word_bank'] as List)
-            .map(
-              (e) => ' ${e['text']} ',
-            )
-            .toList()
-            .toString());
-    viewModel.nextScreen();
+  const DuolingoReadingPractice2Question(
+      {super.key,
+      required this.blanks,
+      required this.options,
+      required this.question,
+      required this.duration});
+
+  void _setShowAnswer(CoursePracticeViewModel viewModel) {
+    viewModel.setShowAnswer();
+  }
+
+  Future<void> _next(
+      {required BuildContext context,
+      required CoursePracticeViewModel viewModel}) async {
+    if (viewModel.showAnswer) {
+      await viewModel.setReadingAnswer2(
+          duration: duration,
+          question: question,
+          answer: viewModel.selectedOption.toString(),
+          sample: options.firstWhere((e) => e['is_correct'])['text']);
+    } else {
+      // viewModel.setAnswer(
+      //   question: question,
+      //   answer: viewModel.selectedOption.toString(),
+      //   sample: options.firstWhere((e) => e['is_correct'])['text'],
+      // );
+      _setShowAnswer(viewModel);
+    }
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -85,7 +107,7 @@ class DuolingoReadingPractice2Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildQuestionExpandedWrapper(viewModel),
+        _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
 
   Widget _buildAppBarWrapper(
@@ -119,26 +141,46 @@ class DuolingoReadingPractice2Question
       );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+      alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
+
+  Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.reading8Variant)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(viewModel);
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
         duration: viewModel.countdown,
-        onEnd: () async => await _next(viewModel),
+        key: ValueKey(viewModel.countdown),
+        onEnd: () => _setShowAnswer(viewModel),
       );
 
-  Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildQuestionScrollerWrapper(viewModel));
+  Widget _buildQuestionExpandedWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(
+          child: _buildQuestionScrollerWrapper(
+              context: context, viewModel: viewModel));
 
-  Widget _buildQuestionScrollerWrapper(CoursePracticeViewModel viewModel) =>
-      SingleChildScrollView(child: _buildQuestionWrapper(viewModel));
+  Widget _buildQuestionScrollerWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      SingleChildScrollView(
+          child: _buildQuestionWrapper(context: context, viewModel: viewModel));
 
-  Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
+  Widget _buildQuestionWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildQuestionChildren(viewModel),
+        children:
+            _buildQuestionChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
+  List<Widget> _buildQuestionChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
         _buildTitle(viewModel),
         verticalSpaceSmall,
@@ -146,7 +188,7 @@ class DuolingoReadingPractice2Question
         verticalSpaceMedium,
         _buildPracticeOptions(viewModel),
         verticalSpaceLarge,
-        _buildContinueButtonWrapper(viewModel)
+        _buildContinueButtonState(context: context, viewModel: viewModel)
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
@@ -157,18 +199,15 @@ class DuolingoReadingPractice2Question
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CourseMissingWordQuestion(
-        showNumber: false,
-        segment: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.last.value['segments'],
+        showNumber: true,
+        segment: question,
       );
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: (viewModel.questions[viewModel.currentQuestion]
-                .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
-            .length,
+        itemCount: blanks.length,
         itemBuilder: (context, index) => _buildPracticeCard(
           index,
         ),
@@ -176,22 +215,44 @@ class DuolingoReadingPractice2Question
 
   Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
         enabled: true,
+        options: options,
         number: (index + 1).toString(),
       );
 
-  Widget _buildContinueButtonWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildContinueButtonState(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      viewModel.showAnswer
+          ? _buildPracticeReviewSection(context: context, viewModel: viewModel)
+          : _buildContinueButtonWrapper(context: context, viewModel: viewModel);
+
+  Widget _buildContinueButtonWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
+        child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
-  Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
+  Widget _buildContinueButton(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await _next(viewModel),
+        onTap: () async => await _next(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildPracticeReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      DuolingoPracticeReviewSection(
+        review: options,
+        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
+            ? () async => await _next(context: context, viewModel: viewModel)
+            : () async => await viewModel.nextQuestion(context),
       );
 }
