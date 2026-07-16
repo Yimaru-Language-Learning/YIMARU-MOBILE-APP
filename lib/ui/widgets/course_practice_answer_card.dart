@@ -22,7 +22,7 @@ class CoursePracticeAnswerCard
   });
 
   Widget _getButtonState(CoursePracticeViewModel viewModel) {
-    if (answer['question'] == viewModel.busyObject) {
+    if (answer['number'] == viewModel.busyObject) {
       if (viewModel.playing == voice) {
         if (viewModel.busy(answer['busy_object'])) {
           return _buildProgressIndicatorWrapper();

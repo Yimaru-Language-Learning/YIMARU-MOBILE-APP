@@ -38,8 +38,12 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         0;
     if (id == 17 /*IELTS Speaking – Interview*/) {
       String stimulus = viewModel.questions[viewModel.currentQuestion]
-              .dynamicPayload?.stimulus?.last.value ??
+              .dynamicPayload?.stimulus?.first.value ??
           '';
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
+      viewModel.setSpeakingState();
+      viewModel.setCountdown(responseFirstSec);
       await viewModel.playVoicePrompt(stimulus);
     } else if (id == 18 /*IELTS Speaking – Cue Card Part 1*/) {
       int stimulusFirstSec = viewModel.questions[viewModel.currentQuestion]
@@ -51,23 +55,25 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       String stimulus = viewModel.questions[viewModel.currentQuestion]
               .dynamicPayload?.stimulus?.first.value ??
           '';
-      await viewModel.playVoicePrompt(stimulus);
+      viewModel.setSpeakingState();
       viewModel.setCountdown(responseFirstSec);
+      await viewModel.playVoicePrompt(stimulus);
     } else if (id == 21 /*IELTS Speaking – Discussion*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       String stimulus = viewModel.questions[viewModel.currentQuestion]
               .dynamicPayload?.stimulus?.first.value ??
           '';
-      await viewModel.playVoicePrompt(stimulus);
+      viewModel.setSpeakingState();
       viewModel.setCountdown(responseFirstSec);
+      await viewModel.playVoicePrompt(stimulus);
     } else if (id == 26 /*IELTS Writing – Part 1*/) {
-      int responseLastSec = viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.response?.last.value['seconds'];
+      int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
+          .dynamicPayload?.response?.first.value['seconds'];
       String image = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.stimulus?.first.value;
       await viewModel.cacheNetworkImage(image: image, context: context);
-      viewModel.setCountdown(responseLastSec);
+      viewModel.setCountdown(responseFirstSec);
     } else if (id == 27 /*IELTS Writing – Part 2*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];

@@ -168,7 +168,8 @@ class IeltsWritingPractice1Question
   Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
         fit: BoxFit.fill,
         width: double.maxFinite,
-        imageUrl: '',
+        imageUrl: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.first.value,
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
@@ -211,13 +212,7 @@ class IeltsWritingPractice1Question
         borderRadius: 12,
         text: 'Submit Task',
         foregroundColor: kcWhite,
-        backgroundColor: practiceController.text.isNotEmpty &&
-                !viewModel.hasPracticeValidationMessage
-            ? kcPrimaryColor
-            : kcPrimaryColor.withValues(alpha: 0.1),
-        onTap: practiceController.text.isNotEmpty &&
-                !viewModel.hasPracticeValidationMessage
-            ? () => _nextScreen(viewModel)
-            : null,
+        backgroundColor: kcPrimaryColor,
+        onTap: () => _nextScreen(viewModel),
       );
 }

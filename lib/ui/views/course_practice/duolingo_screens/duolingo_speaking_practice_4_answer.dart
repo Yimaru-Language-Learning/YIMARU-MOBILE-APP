@@ -18,11 +18,13 @@ class DuolingoSpeakingPractice4Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
   final int duration;
   final String audio;
+  final String question;
   final String response;
 
   const DuolingoSpeakingPractice4Answer(
       {super.key,
       required this.audio,
+      required this.question,
       required this.response,
       required this.duration});
 
@@ -32,10 +34,11 @@ class DuolingoSpeakingPractice4Answer
   }
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
-    await viewModel.setSpeakingAnswer4(
+    await viewModel.setDuolingoSpeakingAnswer4(
       audio: audio,
       sample: response,
       duration: duration,
+      question: question
     );
   }
 
@@ -268,7 +271,7 @@ class DuolingoSpeakingPractice4Answer
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
-      viewModel.busy(StateObjects.speaking4Variant)
+      viewModel.busy(StateObjects.duolingoSpeaking4Variant)
           ? const PageLoadingIndicator()
           : Container();
 }

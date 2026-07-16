@@ -35,39 +35,31 @@ class DuolingoSpeakingPractice4Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[2].value,
+        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[1].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[1].value,
         duration: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[2].value['seconds'],
-
-        /*      response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?[1].value,
-        duration: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?[0].value['seconds'],
-        stimulus: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?[1].value,*/
       );
 
   Widget _buildVariant2(CoursePracticeViewModel viewModel) => _buildVariant(
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[3].value,
+        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[2].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[3].value,
         duration: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[4].value['seconds'],
-
-        /*   response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?[3].value,
-        duration: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?[2].value['seconds'],
-        stimulus: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?[2].value,*/
       );
 
   Widget _buildVariant3(CoursePracticeViewModel viewModel) => _buildVariant(
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[3].value,
+        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[3].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[5].value,
@@ -79,21 +71,30 @@ class DuolingoSpeakingPractice4Variant
           {required int duration,
           required String audio,
           required String response,
+          required String question,
           required CoursePracticeViewModel viewModel}) =>
       IndexedStack(
         index: viewModel.variant,
         children: _buildPractice(
-            audio: audio, response: response, duration: duration),
+            audio: audio,
+            response: response,
+            duration: duration,
+            question: question),
       );
 
   List<Widget> _buildPractice({
     required int duration,
     required String audio,
     required String response,
+    required String question,
   }) =>
       [
         const DuolingoSpeakingPractice4Question(),
         DuolingoSpeakingPractice4Answer(
-            audio: audio, response: response, duration: duration)
+          audio: audio,
+          response: response,
+          duration: duration,
+          question: question,
+        )
       ];
 }
