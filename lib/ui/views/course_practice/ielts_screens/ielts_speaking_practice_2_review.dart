@@ -140,7 +140,6 @@ class IeltsSpeakingPractice2Review
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeTextCard(
-        title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value,
       );
@@ -149,10 +148,9 @@ class IeltsSpeakingPractice2Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       SpeakingPracticeReviewSection(
+          answers: viewModel.answers,
           onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-              ? viewModel.nextScreen
+              ? viewModel.pop
               : () async => await viewModel.nextQuestion(context),
-          answers: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                  ?.response?.last.value ??
-              '');
+         );
 }

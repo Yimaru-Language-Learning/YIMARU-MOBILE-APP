@@ -139,7 +139,7 @@ class IeltsWritingPractice1Review
             .questions[viewModel.currentQuestion]
             .dynamicPayload
             ?.response
-            ?.first
+            ?.last
             .value),
       );
 

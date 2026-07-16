@@ -23,10 +23,7 @@ class IeltsSpeakingPractice2Question
     viewModel.setCountdown(responseFirstSec);
   }
 
-  Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();
-    viewModel.nextScreen();
-  }
+
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -98,8 +95,6 @@ class IeltsSpeakingPractice2Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(viewModel),
-          verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
         ],
@@ -128,18 +123,7 @@ class IeltsSpeakingPractice2Question
         textAlign: TextAlign.center,
       );
 
-  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
 
-  Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
-      VoiceRecordingState.recording == viewModel.recordingState
-          ? _buildCountdown(viewModel)
-          : Container();
-
-  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        duration: viewModel.countdown,
-        onEnd: () async => await _stopRecording(viewModel),
-      );
 
   Widget _buildAnswerSectionWrapper(CoursePracticeViewModel viewModel) =>
       Column(
@@ -150,6 +134,7 @@ class IeltsSpeakingPractice2Question
 
   List<Widget> _buildAnswerSectionChildren(CoursePracticeViewModel viewModel) =>
       [
+        verticalSpaceMedium,
         _buildQuestion(viewModel),
         verticalSpaceLarge,
         _buildTimerStackWrapper(viewModel),

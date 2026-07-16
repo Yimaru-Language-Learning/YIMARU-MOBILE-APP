@@ -10,24 +10,39 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/speaking_label.dart';
 import '../course_practice_viewmodel.dart';
 
 class IeltsSpeakingPractice1Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const IeltsSpeakingPractice1Answer({super.key});
+  final int duration;
+  final String audio;
+  final String response;
+  final String question;
+
+  const IeltsSpeakingPractice1Answer(
+      {super.key,
+      required this.audio,
+      required this.response,
+      required this.duration,required this.question});
+
 
   Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
-    int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
-        .dynamicPayload?.response?.first.value['seconds'];
+    viewModel.setCountdown(duration);
     await viewModel.startRecording();
-    viewModel.setCountdown(responseFirstSec);
   }
 
-  Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
-    await viewModel.stopRecording();
-    viewModel.nextScreen();
-  }
+
+  Future<void> _stopRecording(CoursePracticeViewModel viewModel) async =>
+    await viewModel.setIeltsSpeakingAnswer1(
+      audio: audio,
+      sample: response,
+      question:question,
+      duration: duration,
+
+    );
+
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -55,7 +70,18 @@ class IeltsSpeakingPractice1Answer
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+
+  Widget _buildScaffoldStack(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -249,4 +275,10 @@ class IeltsSpeakingPractice1Answer
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _stopRecording(viewModel),
       );
+
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.ieltsSpeaking1Variant)
+          ? const PageLoadingIndicator()
+          : Container();
 }

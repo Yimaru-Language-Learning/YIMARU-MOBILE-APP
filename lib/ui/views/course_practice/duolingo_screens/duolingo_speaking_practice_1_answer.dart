@@ -15,9 +15,7 @@ import '../course_practice_viewmodel.dart';
 
 class DuolingoSpeakingPractice1Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const DuolingoSpeakingPractice1Answer({
-    super.key,
-  });
+  const DuolingoSpeakingPractice1Answer({super.key});
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async =>
       await viewModel.setSpeakingAnswer(
