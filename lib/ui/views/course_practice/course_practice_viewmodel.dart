@@ -852,25 +852,28 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> _stopAudio() async => await _audioPlayerService.stop();
 
-  Future<void> startRecording() async => await runBusyFuture(_startRecording(),
-      busyObject: StateObjects.recordCoursePracticeAnswer);
+  Future<bool> startRecording() async => await runBusyFuture(
+        _startRecording(),
+        busyObject: StateObjects.recordCoursePracticeAnswer,
+      );
 
-  Future<void> _startRecording() async {
+  Future<bool> _startRecording() async {
     await _audioPlayerService.stop();
-    await _voiceRecorderService.startRecording();
+    return _voiceRecorderService.startRecording();
   }
 
   // Play practice audio
   void _listenToAudio() {
-    _audioPlayerService.stateStream.listen((state) {
+    _audioPlayerService.stateStream.listen((state) async {
       if (PlayerState.completed == state) {
         if (_isSpeaking) {
           // _isSpeaking = false;
 
           if (_questions[_currentQuestion].questionTypeDefinitionId == 20 ||
               _questions[_currentQuestion].questionTypeDefinitionId == 21) {
-            startRecording();
-            nextScreen();
+            if (await startRecording()) {
+              nextScreen();
+            }
           } else if (_questions[_currentQuestion].questionTypeDefinitionId ==
               14) {
             nextSpeakingVariantScreen();
@@ -996,7 +999,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // In-app navigation
   Future<void> setSpeakingAnswer(
-          {required String sample, required String number}) async {
+      {required String sample, required String number}) async {
     await stopRecording();
     _answers.add({
       'number': number,
@@ -1006,6 +1009,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     });
     nextScreen();
   }
+
   Future<void> setSpeakingAnswer4({
     required String audio,
     required int duration,
@@ -1079,14 +1083,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
-  Future<void> setListeningAnswer3({
-    required int duration,
-    required String sample,
-    required String answer,
-    required String question,
-    required BuildContext context
-
-  }) async =>
+  Future<void> setListeningAnswer3(
+          {required int duration,
+          required String sample,
+          required String answer,
+          required String question,
+          required BuildContext context}) async =>
       await runBusyFuture(
           _setListeningAnswer3(
             answer: answer,
@@ -1094,17 +1096,15 @@ class CoursePracticeViewModel extends ReactiveViewModel
             context: context,
             duration: duration,
             question: question,
-
           ),
           busyObject: StateObjects.listening3Variant);
 
-  Future<void> _setListeningAnswer3({
-    required int duration,
-    required String sample,
-    required String answer,
-    required String question,
-    required BuildContext context
-  }) async {
+  Future<void> _setListeningAnswer3(
+      {required int duration,
+      required String sample,
+      required String answer,
+      required String question,
+      required BuildContext context}) async {
     await stopRecording();
     _answers.add({
       'sample': sample,

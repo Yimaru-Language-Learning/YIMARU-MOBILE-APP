@@ -1,11 +1,18 @@
 import 'dart:io';
 import 'dart:math';
+
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
+import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
+import 'permission_handler_service.dart';
+
 class VoiceRecorderService with ListenableServiceMixin {
+  final _permissionHandlerService = locator<PermissionHandlerService>();
+
   // Recording states
   VoiceRecordingState _recordingState = VoiceRecordingState.pending;
 
@@ -22,10 +29,21 @@ class VoiceRecorderService with ListenableServiceMixin {
   bool get isRecording => _isRecording;
 
   // Start voice recording
-  Future<void> startRecording() async {
-    await _waveController.startRecording();
-    _recordingState = VoiceRecordingState.recording;
-    notifyListeners();
+  Future<bool> startRecording() async {
+    final status = await _permissionHandlerService
+        .requestPermission(Permission.microphone);
+    if (!status.isGranted) return false;
+
+    try {
+      await _waveController.startRecording();
+      _recordingState = VoiceRecordingState.recording;
+      notifyListeners();
+      return true;
+    } catch (_) {
+      _recordingState = VoiceRecordingState.pending;
+      notifyListeners();
+      return false;
+    }
   }
 
   // Stop voice recording

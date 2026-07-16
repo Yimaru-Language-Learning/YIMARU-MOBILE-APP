@@ -17,7 +17,8 @@ class DuolingoSpeakingPractice2Question
   const DuolingoSpeakingPractice2Question({super.key});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
-    await viewModel.startRecording();
+    if (!await viewModel.startRecording()) return;
+
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds']);
     viewModel.nextScreen();

@@ -19,7 +19,8 @@ class DuolingoSpeakingPractice1Question
   });
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
-    await viewModel.startRecording();
+    if (!await viewModel.startRecording()) return;
+
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds']);
     viewModel.nextScreen();
@@ -150,7 +151,7 @@ class DuolingoSpeakingPractice1Question
 
   Widget _buildTimerStackWrapper(CoursePracticeViewModel viewModel) =>
       CircularCountdownTimer(
-        onEnd: ()async => await _next(viewModel),
+        onEnd: () async => await _next(viewModel),
       );
 
   Widget _buildSubtitle() => Text(
