@@ -537,10 +537,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   int get playCount => _playCount;
 
-  // Next button state
-  bool _buttonActive = false;
+  // Show answer
+  bool _showAnswer = false;
 
-  bool get buttonActive => _buttonActive;
+  bool get showAnswer => _showAnswer;
 
   // In-app navigation
   int _currentPage = 0;
@@ -610,9 +610,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
-  // Next button
-  void setNextButton() {
-    _buttonActive = true;
+  // Show answer
+  void setShowAnswer() {
+    _showAnswer = true;
     rebuildUi();
   }
 
@@ -627,7 +627,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _countdown = null;
     _isSpeaking = false;
     _controllers.clear();
-    _buttonActive = false;
+    _showAnswer = false;
     _focusPractice = false;
     _selectedOption.clear();
     rebuildUi();
@@ -1067,7 +1067,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       required String sample,
       required String answer,
       required String question}) async {
-    await stopRecording();
+    await _audioPlayerService.stop();
     _answers.add({
       'sample': sample,
       'response': answer,
@@ -1120,7 +1120,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     } else {
       _variants++;
       _playCount = 1;
-      _buttonActive = false;
+      _showAnswer = false;
       setCountdown(duration);
       _selectedOption.clear();
     }
@@ -1241,6 +1241,55 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _answers.add({'sample': sample, 'response': response});
   }
 
+  void setAnswer({    required String sample,
+    required String answer,
+    required dynamic question})=>
+    _answers.add({
+      'sample': sample,
+      'response': answer,
+      'question': question,
+    });
+
+
+  Future<void> setReadingAnswer2({
+    required int duration,
+    required String sample,
+    required String answer,
+    required dynamic question,
+  }) async =>
+      await runBusyFuture(
+          _setReadingAnswer2(
+            answer: answer,
+            sample: sample,
+            duration: duration,
+            question: question,
+          ),
+          busyObject: StateObjects.reading8Variant);
+
+  Future<void> _setReadingAnswer2({
+    required int duration,
+    required String sample,
+    required String answer,
+    required dynamic question,
+  }) async {
+    _answers.add({
+      'sample': sample,
+      'response': answer,
+      'question': question,
+    });
+    if (_variants == 4) {
+      nextScreen();
+    } else {
+      _variants++;
+      _showAnswer = false;
+      setCountdown(duration);
+      _selectedOption.clear();
+    }
+  }
+
+  Future<void> setReadingAnswer({String? sample, String? response}) async {
+    _answers.add({'sample': sample, 'response': response});
+  }
   Future<void> setWritingAnswer(
       {required String sample, required String response}) async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -1275,7 +1324,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       pop();
     } else {
       _currentQuestion++;
-      _buttonActive = false;
+      _showAnswer = false;
       _questionsController.nextPage(
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 350),

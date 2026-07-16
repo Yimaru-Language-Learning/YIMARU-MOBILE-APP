@@ -7,10 +7,14 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.da
 class ReadingPracticeOptionCard
     extends ViewModelWidget<CoursePracticeViewModel> {
   final bool enabled;
+  final List options;
   final String number;
 
   const ReadingPracticeOptionCard(
-      {super.key, required this.enabled, required this.number});
+      {super.key,
+      required this.enabled,
+      required this.options,
+      required this.number});
 
   void _setOption(
       {required Map<String, dynamic> answer,
@@ -69,27 +73,14 @@ class ReadingPracticeOptionCard
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: (viewModel.questions[viewModel.currentQuestion]
-                .dynamicPayload?.stimulus?.last.value['word_bank'] as List)
-            .length,
+        itemCount: options.length,
         itemBuilder: (context, index) => _buildOptionDetector(
+          title: options[index]['text'],
           onTap: enabled
-              ? () => _setOption(
-                    viewModel: viewModel,
-                    answer: viewModel
-                        .questions[viewModel.currentQuestion]
-                        .dynamicPayload
-                        ?.stimulus
-                        ?.last
-                        .value['word_bank'][index],
-                  )
+              ? () => _setOption(viewModel: viewModel, answer: options[index])
               : null,
           selected: viewModel.isSelectedChoice(
-              number: number,
-              answer: viewModel.questions[viewModel.currentQuestion]
-                  .dynamicPayload?.stimulus?.last.value['word_bank'][index]),
-          title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.stimulus?.last.value['word_bank'][index]['text'],
+              number: number, answer: options[index]),
         ),
       );
 

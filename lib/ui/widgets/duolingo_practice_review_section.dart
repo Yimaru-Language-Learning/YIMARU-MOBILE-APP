@@ -32,7 +32,7 @@ class DuolingoPracticeReviewSection
           verticalSpaceMedium,
           _buildSampleAnswers(),
           verticalSpaceMedium,
-          _buildProgressIndicatorWrapper(),
+          _buildContinueButton(),
           verticalSpaceMedium,
         ],
       );

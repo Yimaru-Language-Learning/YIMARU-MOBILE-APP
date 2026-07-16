@@ -177,7 +177,7 @@ class DuolingoSpeakingPractice4Answer
 
   Widget _buildActionLabelState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState ||
-              viewModel.buttonActive
+              viewModel.showAnswer
           ? _buildResponseLabel()
           : _buildActionLabel();
 
@@ -230,14 +230,14 @@ class DuolingoSpeakingPractice4Answer
           shape: const WidgetStatePropertyAll(CircleBorder()),
           padding: const WidgetStatePropertyAll(EdgeInsets.all(15)),
           backgroundColor: WidgetStatePropertyAll(
-            viewModel.buttonActive ||
+            viewModel.showAnswer ||
                     VoiceRecordingState.recording == viewModel.recordingState ||
                     viewModel.busy(StateObjects.recordCoursePracticeAnswer)
                 ? kcPrimaryColor.withValues(alpha: 0.5)
                 : kcPrimaryColor,
           ),
         ),
-        onPressed: () async => viewModel.buttonActive ||
+        onPressed: () async => viewModel.showAnswer ||
                 VoiceRecordingState.recording == viewModel.recordingState ||
                 viewModel.busy(StateObjects.recordCoursePracticeAnswer)
             ? null

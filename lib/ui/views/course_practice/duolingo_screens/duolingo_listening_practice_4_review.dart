@@ -134,8 +134,8 @@ class DuolingoListeningPractice4Review
         _buildTitle(viewModel),
         verticalSpaceMedium,
         _buildQuestionWrapper(viewModel),
-        verticalSpaceLarge,
-        _buildPracticeFormFieldWrapper(viewModel),
+        verticalSpaceMedium,
+        _buildAnswerWrapper(viewModel),
         verticalSpaceLarge,
         _buildPracticeReviewSection(context: context, viewModel: viewModel)
       ];
@@ -156,22 +156,16 @@ class DuolingoListeningPractice4Review
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value,
       );
-  Widget _buildPracticeFormFieldWrapper(CoursePracticeViewModel viewModel) =>
+  Widget _buildAnswerWrapper(CoursePracticeViewModel viewModel) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildAssessmentFormField(viewModel),
+        child: _buildAnswer(viewModel),
       );
 
-  Widget _buildAssessmentFormField(CoursePracticeViewModel viewModel) =>
-      TextFormField(
-        maxLines: 5,
-        enabled: false,
-        maxLength: 250,
-        controller: practiceController,
-        decoration: inputDecoration(
-            focus: true,
-            hint: 'Start writing here...',
-            filled: practiceController.text.isNotEmpty),
+  Widget _buildAnswer(CoursePracticeViewModel viewModel) =>
+      CoursePracticeTextCard(
+        title: 'Your response',
+        subtitle: practiceController.text,
       );
   Widget _buildPracticeReviewSection(
           {required BuildContext context,

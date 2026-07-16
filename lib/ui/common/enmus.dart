@@ -77,6 +77,7 @@ enum StateObjects {
   progressSummary,
   reading1Variant,
   reading7Variant,
+  reading2Variant,
   reading8Variant,
   speaking4Variant,
   requestResetCode,
