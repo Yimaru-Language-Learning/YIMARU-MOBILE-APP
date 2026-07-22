@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_view.form.dart';
-import 'package:yimaru_app/ui/views/learn_subscription/screens/learn_subscription_form_screen.dart';
-import 'package:yimaru_app/ui/views/learn_subscription/screens/learn_subscription_package_screen.dart';
+import 'package:yimaru_app/ui/views/learn_subscription/screens/subscription_form_screen.dart';
+import 'package:yimaru_app/ui/views/learn_subscription/screens/subscription_package_screen.dart';
 
 import '../../common/validators/form_validator.dart';
 import 'learn_subscription_viewmodel.dart';
@@ -57,8 +57,8 @@ class LearnSubscriptionView extends StackedView<LearnSubscriptionViewModel>
       ];
 
   Widget _buildLearnSubscriptionPackageScreen() =>
-      const LearnSubscriptionPackageScreen();
+      const SubscriptionPackageScreen();
 
   Widget _buildLearnSubscriptionFormScreen() =>
-      LearnSubscriptionFormScreen(phoneNumberController: phoneNumberController);
+      SubscriptionFormScreen(phoneNumberController: phoneNumberController);
 }

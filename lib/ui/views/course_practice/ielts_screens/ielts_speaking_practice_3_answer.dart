@@ -20,7 +20,7 @@ class IeltsSpeakingPractice3Answer
       await viewModel.setSpeakingAnswer(
         number: '1',
         sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value ??
+                ?.response?.last.value ??
             '',
       );
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {

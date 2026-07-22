@@ -22,7 +22,6 @@ class DuolingoListeningPractice1Review
     return viewModel.answers[index]['question']?.toString() ?? '';
   }
 
-
   String getResponse(
       {required int index, required CoursePracticeViewModel viewModel}) {
     if (index >= viewModel.answers.length) return '';
@@ -63,8 +62,8 @@ class DuolingoListeningPractice1Review
       );
 
   Widget _buildScaffoldStack(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
@@ -164,10 +163,10 @@ class DuolingoListeningPractice1Review
         _buildTitleWrapper(),
         verticalSpaceMedium,
         _buildQuestionRowWrapper(
-            number: '1', question:getQuestion(index: 0, viewModel: viewModel)),
+            number: '1', question: getQuestion(index: 0, viewModel: viewModel)),
         verticalSpaceMedium,
         _buildQuestionRowWrapper(
-            number: '2', question:getQuestion(index: 1, viewModel: viewModel)),
+            number: '2', question: getQuestion(index: 1, viewModel: viewModel)),
         verticalSpaceMedium,
         _buildQuestionRowWrapper(
             number: '3', question: getQuestion(index: 2, viewModel: viewModel)),
@@ -181,13 +180,13 @@ class DuolingoListeningPractice1Review
         _buildLabelWrapper(),
         verticalSpaceSmall,
         _buildPracticeResponsesWrapper(
-            number: '1', answer:getResponse(index: 0, viewModel: viewModel)),
+            number: '1', answer: getResponse(index: 0, viewModel: viewModel)),
         verticalSpaceSmall,
         _buildPracticeResponsesWrapper(
-            number: '2', answer:getResponse(index: 1, viewModel: viewModel)),
+            number: '2', answer: getResponse(index: 1, viewModel: viewModel)),
         verticalSpaceSmall,
         _buildPracticeResponsesWrapper(
-            number: '3', answer:getResponse(index: 2, viewModel: viewModel)),
+            number: '3', answer: getResponse(index: 2, viewModel: viewModel)),
         verticalSpaceSmall,
         _buildPracticeResponsesWrapper(
             number: '4', answer: getResponse(index: 3, viewModel: viewModel)),

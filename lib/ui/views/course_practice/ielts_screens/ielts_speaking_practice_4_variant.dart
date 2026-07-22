@@ -27,7 +27,7 @@ class IeltsSpeakingPractice4Variant
       return _buildVariant7(viewModel);
     } else if (viewModel.variants == 7) {
       return _buildVariant8(viewModel);
-    }  else {
+    } else {
       return Container();
     }
   }
@@ -136,8 +136,6 @@ class IeltsSpeakingPractice4Variant
         duration: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.response?[14].value['seconds'],
       );
-
-
 
   Widget _buildVariant(
           {required String audio,

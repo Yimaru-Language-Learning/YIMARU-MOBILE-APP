@@ -11,9 +11,7 @@ import '../course_practice_viewmodel.dart';
 
 class IeltsListeningPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-
-  const IeltsListeningPractice2Question(
-      {super.key });
+  const IeltsListeningPractice2Question({super.key});
 
   void _reset(CoursePracticeViewModel viewModel) {
     viewModel.resetValues();
@@ -161,7 +159,6 @@ class IeltsListeningPractice2Question
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-
         children:
             _buildQuestionChildren(context: context, viewModel: viewModel),
       );
@@ -197,20 +194,20 @@ class IeltsListeningPractice2Question
       ];
 
   Widget _buildInstruction() => Text(
-    'Complete the following note',
-    style: style16DG600,
-    textAlign: TextAlign.center,
-  );
+        'Complete the following note',
+        style: style16DG600,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildLabel(String question) => Text(
-    question,
-    style: style14MG400,
-    textAlign: TextAlign.center,
-  );
+        question,
+        style: style14MG400,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildTextField(
-      {required String value,
-        required CoursePracticeViewModel viewModel}) =>
+          {required String value,
+          required CoursePracticeViewModel viewModel}) =>
       TextField(
         style: style14MG400,
         decoration: inputDecoration(
@@ -218,16 +215,16 @@ class IeltsListeningPractice2Question
         onChanged: (change) => viewModel.updateAnswer(value, change),
       );
   Widget _buildContinueButtonWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButton(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',

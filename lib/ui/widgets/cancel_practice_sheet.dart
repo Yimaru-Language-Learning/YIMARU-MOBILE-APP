@@ -45,7 +45,7 @@ class CancelPracticeSheet extends StatelessWidget {
         _buildSubtitle(),
         verticalSpaceLarge,
         _buildContinueButton(),
-    verticalSpaceMedium,
+        verticalSpaceMedium,
         _buildEndButton(),
       ];
 

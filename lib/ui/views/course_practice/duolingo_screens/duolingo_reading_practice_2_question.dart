@@ -40,13 +40,12 @@ class DuolingoReadingPractice2Question
       required CoursePracticeViewModel viewModel}) async {
     if (viewModel.showAnswer) {
       await viewModel.setReadingAnswer2(
-          duration: duration,
-          question: question,
-          sample: response.first['text'],
-          answer: viewModel.selectedOption.toString(),
-          );
+        duration: duration,
+        question: question,
+        sample: response.first['text'],
+        answer: viewModel.selectedOption.toString(),
+      );
     } else {
-
       _setShowAnswer(viewModel);
     }
   }
@@ -119,7 +118,7 @@ class DuolingoReadingPractice2Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-        _buildCountdownWrapper(viewModel),
+          _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
         ],
       );
@@ -190,8 +189,7 @@ class DuolingoReadingPractice2Question
         verticalSpaceMedium,
         _buildPracticeOptions(viewModel),
         verticalSpaceMedium,
-        if(viewModel.showAnswer)
-          _buildCorrectAnswer(),
+        if (viewModel.showAnswer) _buildCorrectAnswer(),
         verticalSpaceLarge,
         _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
@@ -225,8 +223,7 @@ class DuolingoReadingPractice2Question
         number: (index + 1).toString(),
       );
 
-  Widget _buildCorrectAnswer() =>
-      Text(
+  Widget _buildCorrectAnswer() => Text(
         'Correct Answer: ${response.first['text']} ',
         style: style16DG400,
         textAlign: TextAlign.center,
@@ -251,6 +248,4 @@ class DuolingoReadingPractice2Question
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _next(context: context, viewModel: viewModel),
       );
-
-
 }

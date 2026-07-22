@@ -21,8 +21,6 @@ class IeltsSpeakingPractice2Question
     viewModel.setCountdown(responseFirstSec);
   }
 
-
-
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.resetValues();
@@ -120,8 +118,6 @@ class IeltsSpeakingPractice2Question
         style: style18DG700,
         textAlign: TextAlign.center,
       );
-
-
 
   Widget _buildAnswerSectionWrapper(CoursePracticeViewModel viewModel) =>
       Column(

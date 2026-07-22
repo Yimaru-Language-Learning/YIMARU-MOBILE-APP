@@ -210,8 +210,7 @@ class DuolingoReadingPractice1Question
         verticalSpaceLarge,
         _buildPracticeQuestions(viewModel),
         verticalSpaceMedium,
-        if(viewModel.showAnswer)
-          _buildCorrectAnswer(),
+        if (viewModel.showAnswer) _buildCorrectAnswer(),
         verticalSpaceSmall,
         _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
@@ -243,10 +242,8 @@ class DuolingoReadingPractice1Question
         selected: selected,
       );
 
-  Widget _buildCorrectAnswer() =>
-      Text(
-        'Correct Answer: ${options.firstWhere((
-            e) => e['is_correct'])['text']} ',
+  Widget _buildCorrectAnswer() => Text(
+        'Correct Answer: ${options.firstWhere((e) => e['is_correct'])['text']} ',
         style: style16DG400,
         textAlign: TextAlign.center,
       );

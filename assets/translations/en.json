@@ -126,7 +126,11 @@
   "search_for": "Search for",
   "current_level": "Current Level",
   "keep_up_the_great_work": "Keep up the great work! You're doing amazing.",
-  "no_practice_available": "No practice available!",
+  "no_practice_available_lesson": "No practice attached for this lesson!",
+  "no_practice_available_unit": "No practice attached for this unit!",
+  "no_practice_available_module": "No practice attached for this module!",
+  "no_practice_available_course": "No practice attached for this course!",
+
   "begin_module_practice": "Begin Module Practice",
   "lets_practice_lesson": "Let’s Practice",
   "lets_quickly_review": "Let’s quickly review what you’ve learned in this module!",

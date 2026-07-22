@@ -19,7 +19,7 @@ import '../models/course_unit.dart';
 import '../models/field_option.dart';
 import '../models/learn_course.dart';
 import '../models/learn_module.dart';
-import '../models/learn_subscription.dart';
+import '../models/subscription.dart';
 import '../models/assessment.dart';
 import '../models/learn_subscription_request.dart';
 import '../models/progress_summary.dart';
@@ -968,19 +968,19 @@ class ApiService {
     }
   }
 
-  Future<List<LearnSubscription>> getLearnSubscriptions() async {
+  Future<List<Subscription>> getSubscriptions(String type) async {
     try {
-      List<LearnSubscription> subscriptions = [];
+      List<Subscription> subscriptions = [];
 
-      final Response response = await _service.dio
-          .get('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kSubscriptionsUrl');
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kSubscriptionsUrl?category=$type');
 
       if (response.statusCode == 200) {
         var data = response.data;
         var decodedData = data['data'] as List;
         subscriptions = decodedData.map(
           (e) {
-            return LearnSubscription.fromJson(e);
+            return Subscription.fromJson(e);
           },
         ).toList();
         return subscriptions;

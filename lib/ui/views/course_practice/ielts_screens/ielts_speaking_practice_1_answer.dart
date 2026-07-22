@@ -25,24 +25,21 @@ class IeltsSpeakingPractice1Answer
       {super.key,
       required this.audio,
       required this.response,
-      required this.duration,required this.question});
-
+      required this.duration,
+      required this.question});
 
   Future<void> _startRecording(CoursePracticeViewModel viewModel) async {
     viewModel.setCountdown(duration);
     await viewModel.startRecording();
   }
 
-
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async =>
-    await viewModel.setIeltsSpeakingAnswer1(
-      audio: audio,
-      sample: response,
-      question:question,
-      duration: duration,
-
-    );
-
+      await viewModel.setIeltsSpeakingAnswer1(
+        audio: audio,
+        sample: response,
+        question: question,
+        duration: duration,
+      );
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -73,10 +70,9 @@ class IeltsSpeakingPractice1Answer
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
 
-
   Widget _buildScaffoldStack(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
@@ -275,7 +271,6 @@ class IeltsSpeakingPractice1Answer
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _stopRecording(viewModel),
       );
-
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.ieltsSpeaking1Variant)

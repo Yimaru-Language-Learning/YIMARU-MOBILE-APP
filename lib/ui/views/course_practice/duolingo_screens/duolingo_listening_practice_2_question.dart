@@ -59,8 +59,8 @@ class DuolingoListeningPractice2Question
       );
 
   Widget _buildScaffoldStack(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
@@ -159,18 +159,18 @@ class DuolingoListeningPractice2Question
         verticalSpaceMedium,
         _buildQuestion(viewModel),
         verticalSpaceMedium,
-        _buildLabel(
-          viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value),
+        _buildLabel(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[1].value),
         verticalSpaceTiny,
         _buildTextField(value: '0', viewModel: viewModel),
         verticalSpaceMedium,
-        _buildLabel(
-        viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[2].value),
+        _buildLabel(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[2].value),
         verticalSpaceTiny,
         _buildTextField(value: '1', viewModel: viewModel),
         verticalSpaceMedium,
-        _buildLabel(
-        viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[3].value),
+        _buildLabel(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[3].value),
         verticalSpaceTiny,
         _buildTextField(value: '2', viewModel: viewModel),
         verticalSpaceSmall,
@@ -232,7 +232,6 @@ class DuolingoListeningPractice2Question
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _next(viewModel),
       );
-
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.listening1Variant)

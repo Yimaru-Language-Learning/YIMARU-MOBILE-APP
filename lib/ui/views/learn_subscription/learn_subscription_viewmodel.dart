@@ -1,7 +1,7 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
-import 'package:yimaru_app/models/learn_subscription.dart';
+import 'package:yimaru_app/models/subscription.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../services/api_service.dart';
@@ -31,13 +31,13 @@ class LearnSubscriptionViewModel extends FormViewModel {
 
   int get selectedIndex => _selectedIndex;
 
-  LearnSubscription? _selectedSubscription;
+  Subscription? _selectedSubscription;
 
-  LearnSubscription? get selectedSubscription => _selectedSubscription;
+  Subscription? get selectedSubscription => _selectedSubscription;
 
-  List<LearnSubscription> _subscriptions = [];
+  List<Subscription> _subscriptions = [];
 
-  List<LearnSubscription> get subscriptions => _subscriptions;
+  List<Subscription> get subscriptions => _subscriptions;
 
   // Phone number
   void setPhoneNumberFocus() {
@@ -75,7 +75,7 @@ class LearnSubscriptionViewModel extends FormViewModel {
   Future<void> navigateToPayment(
       {required String phone,
       required PaymentMethod method,
-      required LearnSubscription? subscription}) async {
+      required Subscription? subscription}) async {
     pop();
     await _navigationService.navigateToPaymentView(
         phone: phone,
@@ -92,7 +92,7 @@ class LearnSubscriptionViewModel extends FormViewModel {
 
   Future<void> _getLearnSubscriptions() async {
     if (await _statusChecker.checkConnection()) {
-      _subscriptions = await _apiService.getLearnSubscriptions();
+      _subscriptions = await _apiService.getSubscriptions('LEARN_ENGLISH');
     }
   }
 }

@@ -65,8 +65,8 @@ class DuolingoReadingPractice7Question
       );
 
   Widget _buildScaffoldStack(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
@@ -179,7 +179,6 @@ class DuolingoReadingPractice7Question
         style: style16DG600,
       );
 
-
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => SelectableText(
         question,
         style: style14DG400,
@@ -208,8 +207,6 @@ class DuolingoReadingPractice7Question
         onTap: () async => _next(viewModel),
         backgroundColor: kcPrimaryColor,
       );
-
-
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.reading7Variant)

@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'learn_subscription.dart';
+part of 'subscription.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-LearnSubscription _$LearnSubscriptionFromJson(Map<String, dynamic> json) =>
-    LearnSubscription(
+Subscription _$SubscriptionFromJson(Map<String, dynamic> json) => Subscription(
       id: (json['id'] as num?)?.toInt(),
       name: json['name'] as String?,
       price: (json['price'] as num?)?.toDouble(),
@@ -18,7 +17,7 @@ LearnSubscription _$LearnSubscriptionFromJson(Map<String, dynamic> json) =>
       durationValue: (json['duration_value'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$LearnSubscriptionToJson(LearnSubscription instance) =>
+Map<String, dynamic> _$SubscriptionToJson(Subscription instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

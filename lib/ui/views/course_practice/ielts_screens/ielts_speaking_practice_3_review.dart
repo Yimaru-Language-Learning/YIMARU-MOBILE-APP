@@ -112,9 +112,9 @@ class IeltsSpeakingPractice3Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       SpeakingPracticeReviewSection(
-answers:     viewModel.answers,
-
-          onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-              ? viewModel.pop
-              : () async => await viewModel.nextQuestion(context),);
+        answers: viewModel.answers,
+        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
+            ? viewModel.pop
+            : () async => await viewModel.nextQuestion(context),
+      );
 }

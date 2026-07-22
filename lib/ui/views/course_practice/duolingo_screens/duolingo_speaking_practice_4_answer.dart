@@ -35,11 +35,7 @@ class DuolingoSpeakingPractice4Answer
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async {
     await viewModel.setDuolingoSpeakingAnswer4(
-      audio: audio,
-      sample: response,
-      duration: duration,
-      question: question
-    );
+        audio: audio, sample: response, duration: duration, question: question);
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {

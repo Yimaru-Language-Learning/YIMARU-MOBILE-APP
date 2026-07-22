@@ -10,13 +10,13 @@ import '../../../common/ui_helpers.dart';
 import '../../../widgets/learn_subscription_card.dart';
 import '../../../widgets/small_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../learn_subscription_view.form.dart';
+import '../subscription_view.form.dart';
 
-class LearnSubscriptionFormScreen
+class SubscriptionFormScreen
     extends ViewModelWidget<LearnSubscriptionViewModel> {
   final TextEditingController phoneNumberController;
 
-  const LearnSubscriptionFormScreen({
+  const SubscriptionFormScreen({
     super.key,
     required this.phoneNumberController,
   });

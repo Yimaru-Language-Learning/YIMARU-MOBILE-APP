@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'learn_subscription.g.dart';
+part 'subscription.g.dart';
 
 @JsonSerializable()
-class LearnSubscription {
+class Subscription {
   final int? id;
 
   final String? name;
@@ -23,7 +23,7 @@ class LearnSubscription {
   @JsonKey(name: 'duration_value')
   final int? durationValue;
 
-  const LearnSubscription(
+  const Subscription(
       {this.id,
       this.name,
       this.price,
@@ -33,8 +33,8 @@ class LearnSubscription {
       this.durationUnit,
       this.durationValue});
 
-  factory LearnSubscription.fromJson(Map<String, dynamic> json) =>
-      _$LearnSubscriptionFromJson(json);
+  factory Subscription.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LearnSubscriptionToJson(this);
+  Map<String, dynamic> toJson() => _$SubscriptionToJson(this);
 }

@@ -165,8 +165,6 @@ class DuolingoWritingPractice3Review
       );
 
   Widget _buildPracticeAnswer(CoursePracticeViewModel viewModel) =>
-
-
       CoursePracticeTextCard(
         subtitle: practiceController.text,
       );

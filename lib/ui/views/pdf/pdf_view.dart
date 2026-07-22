@@ -13,7 +13,6 @@ class PdfView extends StackedView<PdfViewModel> {
 
   const PdfView({Key? key, required this.url}) : super(key: key);
 
-
   @override
   PdfViewModel viewModelBuilder(BuildContext context) => PdfViewModel();
 
@@ -63,5 +62,6 @@ class PdfView extends StackedView<PdfViewModel> {
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
-  Widget _buildPdfViewer(PdfViewModel viewModel) => SfPdfViewer.network(getReadableUrl(url) ?? '');
+  Widget _buildPdfViewer(PdfViewModel viewModel) =>
+      SfPdfViewer.network(getReadableUrl(url) ?? '');
 }

@@ -18,7 +18,7 @@ class DuolingoSpeakingPractice3Review
 
   Future<void> _next(
       {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) async {
+      required CoursePracticeViewModel viewModel}) async {
     await viewModel.stopAudio();
 
     if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -57,15 +57,14 @@ class DuolingoSpeakingPractice3Review
       );
 
   Widget _buildScaffoldStack(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
           _buildStopRecState(viewModel)
         ],
       );
-
 
   Widget _buildScaffold(
           {required BuildContext context,
@@ -171,9 +170,7 @@ class DuolingoSpeakingPractice3Review
       SpeakingPracticeReviewSection(
         answers: viewModel.answers,
         onTap: () async => await _next(context: context, viewModel: viewModel),
-
       );
-
 
   Widget _buildStopRecState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.stopAudio)

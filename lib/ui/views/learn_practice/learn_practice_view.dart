@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_finish_screen.dart';
 import 'package:yimaru_app/ui/widgets/practice_loading_screen.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_appreciation_screen.dart';
@@ -32,6 +34,16 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
     required this.practice,
     required this.subtitle,
   }) : super(key: key);
+
+  String _getErrorMessages() {
+    if (practice == LearnPractices.course) {
+      return LocaleKeys.no_practice_available_course.tr();
+    } else if (practice == LearnPractices.module) {
+      return LocaleKeys.no_practice_available_module.tr();
+    } else {
+      return LocaleKeys.no_practice_available_lesson.tr();
+    }
+  }
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -101,6 +113,7 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
 
   Widget _buildPageLoadingIndicator(LearnPracticeViewModel viewModel) =>
       PracticeLoadingScreen(
+        message: _getErrorMessages(),
         isLoading: viewModel.busy(StateObjects.learnPractice),
         onTap: () async =>
             await viewModel.getLearnPractices(id: id, practice: practice),
