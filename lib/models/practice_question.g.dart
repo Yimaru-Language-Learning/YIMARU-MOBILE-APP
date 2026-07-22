@@ -13,11 +13,16 @@ PracticeQuestion _$PracticeQuestionFromJson(Map<String, dynamic> json) =>
       points: (json['points'] as num?)?.toInt(),
       questionType: json['question_type'] as String?,
       questionText: json['question_text'] as String?,
+      sharedStimulus: json['shared_stimulus'] == null
+          ? null
+          : DynamicPayload.fromJson(
+              json['shared_stimulus'] as Map<String, dynamic>),
       dynamicPayload: json['dynamic_payload'] == null
           ? null
           : DynamicPayload.fromJson(
               json['dynamic_payload'] as Map<String, dynamic>),
       difficultyLevel: json['difficulty_level'] as String?,
+      stimulusBlockKey: json['stimulus_block_key'] as String?,
       questionTypeDefinitionId:
           (json['question_type_definition_id'] as num?)?.toInt(),
     );
@@ -30,6 +35,8 @@ Map<String, dynamic> _$PracticeQuestionToJson(PracticeQuestion instance) =>
       'question_type': instance.questionType,
       'question_text': instance.questionText,
       'difficulty_level': instance.difficultyLevel,
+      'stimulus_block_key': instance.stimulusBlockKey,
+      'shared_stimulus': instance.sharedStimulus,
       'dynamic_payload': instance.dynamicPayload,
       'question_type_definition_id': instance.questionTypeDefinitionId,
     };

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/dwarf_tile.dart';
-import 'package:yimaru_app/ui/widgets/listenable_one_time_practice_card.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';

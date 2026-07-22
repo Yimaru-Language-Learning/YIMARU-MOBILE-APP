@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/fill_in_the_blanks_question.dart';
+import 'package:yimaru_app/ui/widgets/ielts_fill_in_the_blanks_question.dart';
 import 'package:yimaru_app/ui/widgets/instruction_card.dart';
 
 import '../../../common/app_colors.dart';
@@ -171,7 +171,7 @@ class IeltsListeningPractice9Question
               .dynamicPayload?.stimulus?.last.value);
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      FillInTheBlanksQuestion(
+      IeltsFillInTheBlanksQuestion(
         question: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.first.value['segments'] as List),
       );

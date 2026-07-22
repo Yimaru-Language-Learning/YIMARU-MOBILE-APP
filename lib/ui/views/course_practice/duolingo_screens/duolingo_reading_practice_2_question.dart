@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/course_missing_word_question.dart';
+import 'package:yimaru_app/ui/widgets/duolingo_fill_in_the_blank_question.dart';
+import 'package:yimaru_app/ui/widgets/ielts_fill_in_the_blanks_question.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
@@ -15,17 +17,19 @@ import '../course_practice_viewmodel.dart';
 
 class DuolingoReadingPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  final List blanks;
   final int duration;
   final List options;
+  final List response;
+
   final dynamic question;
 
-  const DuolingoReadingPractice2Question(
-      {super.key,
-      required this.blanks,
-      required this.options,
-      required this.question,
-      required this.duration});
+  const DuolingoReadingPractice2Question({
+    super.key,
+    required this.options,
+    required this.question,
+    required this.duration,
+    required this.response,
+  });
 
   void _setShowAnswer(CoursePracticeViewModel viewModel) {
     viewModel.setShowAnswer();
@@ -38,14 +42,11 @@ class DuolingoReadingPractice2Question
       await viewModel.setReadingAnswer2(
           duration: duration,
           question: question,
+          sample: response.first['text'],
           answer: viewModel.selectedOption.toString(),
-          sample: options.firstWhere((e) => e['is_correct'])['text']);
+          );
     } else {
-      // viewModel.setAnswer(
-      //   question: question,
-      //   answer: viewModel.selectedOption.toString(),
-      //   sample: options.firstWhere((e) => e['is_correct'])['text'],
-      // );
+
       _setShowAnswer(viewModel);
     }
   }
@@ -118,7 +119,7 @@ class DuolingoReadingPractice2Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(viewModel),
+        _buildCountdownWrapper(viewModel),
           verticalSpaceSmall,
         ],
       );
@@ -173,6 +174,7 @@ class DuolingoReadingPractice2Question
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children:
             _buildQuestionChildren(context: context, viewModel: viewModel),
       );
@@ -187,8 +189,11 @@ class DuolingoReadingPractice2Question
         _buildQuestion(viewModel),
         verticalSpaceMedium,
         _buildPracticeOptions(viewModel),
+        verticalSpaceMedium,
+        if(viewModel.showAnswer)
+          _buildCorrectAnswer(),
         verticalSpaceLarge,
-        _buildContinueButtonState(context: context, viewModel: viewModel)
+        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
@@ -198,16 +203,17 @@ class DuolingoReadingPractice2Question
       );
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CourseMissingWordQuestion(
+      DuolingoFillInTheBlankQuestion(
         showNumber: true,
         segment: question,
+        blanks: response.first['text'].toString().length,
       );
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: blanks.length,
+        itemCount: response.length,
         itemBuilder: (context, index) => _buildPracticeCard(
           index,
         ),
@@ -219,12 +225,12 @@ class DuolingoReadingPractice2Question
         number: (index + 1).toString(),
       );
 
-  Widget _buildContinueButtonState(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      viewModel.showAnswer
-          ? _buildPracticeReviewSection(context: context, viewModel: viewModel)
-          : _buildContinueButtonWrapper(context: context, viewModel: viewModel);
+  Widget _buildCorrectAnswer() =>
+      Text(
+        'Correct Answer: ${response.first['text']} ',
+        style: style16DG400,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildContinueButtonWrapper(
           {required BuildContext context,
@@ -246,13 +252,5 @@ class DuolingoReadingPractice2Question
         onTap: () async => await _next(context: context, viewModel: viewModel),
       );
 
-  Widget _buildPracticeReviewSection(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      DuolingoPracticeReviewSection(
-        review: options,
-        onTap: viewModel.currentQuestion == viewModel.questions.length - 1
-            ? () async => await _next(context: context, viewModel: viewModel)
-            : () async => await viewModel.nextQuestion(context),
-      );
+
 }

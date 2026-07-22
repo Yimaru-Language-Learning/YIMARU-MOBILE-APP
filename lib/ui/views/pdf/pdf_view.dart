@@ -13,10 +13,6 @@ class PdfView extends StackedView<PdfViewModel> {
 
   const PdfView({Key? key, required this.url}) : super(key: key);
 
-  @override
-  void onViewModelReady(PdfViewModel viewModel) async {
-    super.onViewModelReady(viewModel);
-  }
 
   @override
   PdfViewModel viewModelBuilder(BuildContext context) => PdfViewModel();
