@@ -18,12 +18,11 @@ class DuolingoSpeakingPractice2Answer
   const DuolingoSpeakingPractice2Answer({super.key});
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async =>
-    await viewModel.setSpeakingAnswer(
-        number: '1',
-        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                ?.response?.last.value ??
-            '');
-
+      await viewModel.setSpeakingAnswer(
+          number: '1',
+          sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.last.value ??
+              '');
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();

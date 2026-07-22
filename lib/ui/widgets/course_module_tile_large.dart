@@ -220,11 +220,11 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
             onVideoTap: () async =>
                 await viewModel.navigateToCourseLessonDetail(lessons[index]),
             onPracticeTap: () async => await _onPractice(
-              index: index,
-              context: context,
-              viewModel: viewModel,
-              lesson: viewModel.lessons[index],
-            )),
+                  index: index,
+                  context: context,
+                  viewModel: viewModel,
+                  lesson: viewModel.lessons[index],
+                )),
       );
 
   Widget _buildCourseLessonTile({
@@ -237,6 +237,4 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
         onVideoTap: onVideoTap,
         onPracticeTap: onPracticeTap,
       );
-
-
 }

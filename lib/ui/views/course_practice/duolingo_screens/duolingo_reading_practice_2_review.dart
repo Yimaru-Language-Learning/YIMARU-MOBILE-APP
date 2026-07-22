@@ -156,7 +156,7 @@ class DuolingoReadingPractice2Review
   Widget _buildPracticeCard(int index) => ReadingPracticeOptionCard(
         enabled: true,
         number: (index + 1).toString(),
-    options: const [],
+        options: const [],
       );
 
   Widget _buildPracticeReviewSection(

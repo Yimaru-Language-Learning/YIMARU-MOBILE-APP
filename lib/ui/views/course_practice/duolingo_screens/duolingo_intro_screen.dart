@@ -25,13 +25,14 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       required this.subtitle,
       required this.practiceController});
 
-  Future<void> _practice(  {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) async {
-   // if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
-        await _nextScreen(context: context, viewModel: viewModel);
-   /* } else {
-      await viewModel.navigateToLearnSubscription();
-    }*/
+  Future<void> _practice(
+      {required BuildContext context,
+      required CoursePracticeViewModel viewModel}) async {
+    if (viewModel.user?.duolingo ?? false) {
+      await _nextScreen(context: context, viewModel: viewModel);
+    } else {
+      //  await viewModel.navigateToLearnSubscription();
+    }
   }
 
   Future<void> _nextScreen(

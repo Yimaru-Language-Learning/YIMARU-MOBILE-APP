@@ -21,7 +21,8 @@ class CourseModuleViewModel extends ReactiveViewModel {
   final _authenticationService = locator<AuthenticationService>();
 
   @override
-  List<ListenableServiceMixin> get listenableServices => [_courseService,_authenticationService];
+  List<ListenableServiceMixin> get listenableServices =>
+      [_courseService, _authenticationService];
 
   // Current user
   User? get _user => _authenticationService.user;

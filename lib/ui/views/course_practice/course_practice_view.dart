@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -62,6 +63,7 @@ import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_writing_
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_writing_practice_1_review.dart';
 
 import '../../common/app_colors.dart';
+import '../../common/translations/locale_keys.g.dart';
 import '../../common/validators/form_validator.dart';
 import '../../widgets/cancel_practice_sheet.dart';
 import '../../widgets/page_loading_indicator.dart';
@@ -93,6 +95,16 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
 
   const CoursePracticeView({Key? key, required this.id, required this.practice})
       : super(key: key);
+
+  String _getErrorMessages() {
+    if (practice == CoursePractices.courseCatalog) {
+      return LocaleKeys.no_practice_available_course.tr();
+    } else if (practice == CoursePractices.unit) {
+      return LocaleKeys.no_practice_available_unit.tr();
+    } else {
+      return LocaleKeys.no_practice_available_lesson.tr();
+    }
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -263,9 +275,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 57 /*Interactive listening part 3*/) {
       return DuolingoListeningPractice4Review(
           practiceController: practiceController);
-    }
-
-    else if (id == 51 /*Interactive reading - complete the sentence*/) {
+    } else if (id == 51 /*Interactive reading - complete the sentence*/) {
       return const DuolingoReadingPractice3Review();
     } else if (id == 55 /*Interactive reading - highlight the answer*/) {
       return const DuolingoReadingPractice7Review();
@@ -466,6 +476,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
 
   Widget _buildPageLoadingIndicator(CoursePracticeViewModel viewModel) =>
       PracticeLoadingScreen(
+        message: _getErrorMessages(),
         isEmpty: viewModel.practices.isEmpty,
         isLoading: viewModel.busy(StateObjects.coursePractice),
         onTap: () async =>

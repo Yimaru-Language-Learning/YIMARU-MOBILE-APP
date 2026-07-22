@@ -19,11 +19,10 @@ class DuolingoWritingPractice2Answer
       {super.key, required this.practiceController});
 
   Future<void> _nextScreen(CoursePracticeViewModel viewModel) async =>
-    await viewModel.setWritingAnswer(
-        response: practiceController.text,
-        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value);
-
+      await viewModel.setWritingAnswer(
+          response: practiceController.text,
+          sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?.last.value);
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();

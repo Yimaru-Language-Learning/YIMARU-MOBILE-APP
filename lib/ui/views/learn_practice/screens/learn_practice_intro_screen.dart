@@ -28,7 +28,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       required this.practice});
 
   Future<void> _practice(LearnPracticeViewModel viewModel) async {
-    if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
+    if (viewModel.user?.learn ?? false) {
       viewModel.goTo(1);
     } else {
       await viewModel.navigateToLearnSubscription();

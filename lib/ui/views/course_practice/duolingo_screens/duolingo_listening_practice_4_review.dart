@@ -156,8 +156,7 @@ class DuolingoListeningPractice4Review
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value,
       );
-  Widget _buildAnswerWrapper(CoursePracticeViewModel viewModel) =>
-      Padding(
+  Widget _buildAnswerWrapper(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildAnswer(viewModel),
       );

@@ -11,9 +11,9 @@ import '../../../widgets/learn_subscription_card.dart';
 import '../../../widgets/learn_subscription_pricing_section.dart';
 import '../../../widgets/small_app_bar.dart';
 
-class LearnSubscriptionPackageScreen
+class SubscriptionPackageScreen
     extends ViewModelWidget<LearnSubscriptionViewModel> {
-  const LearnSubscriptionPackageScreen({super.key});
+  const SubscriptionPackageScreen({super.key});
 
   @override
   Widget build(BuildContext context, LearnSubscriptionViewModel viewModel) =>

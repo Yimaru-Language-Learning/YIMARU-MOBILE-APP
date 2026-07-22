@@ -151,11 +151,9 @@ class DuolingoListeningPractice1Question
         onEnd: () async => await _next(viewModel),
       );
 
-  Widget _buildBodyScroller(
-    CoursePracticeViewModel viewModel) =>
+  Widget _buildBodyScroller(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(
-        child: _buildQuestionWrapper(
-           viewModel),
+        child: _buildQuestionWrapper(viewModel),
       );
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
@@ -166,7 +164,7 @@ class DuolingoListeningPractice1Question
       );
 
   List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
-    verticalSpaceMedium,
+        verticalSpaceMedium,
         _buildTitle(),
         verticalSpaceMedium,
         _buildQuestion(),
@@ -178,8 +176,8 @@ class DuolingoListeningPractice1Question
           verticalSpaceTiny,
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
-    verticalSpaceMedium,
-    _buildContinueButtonWrapper(viewModel)
+        verticalSpaceMedium,
+        _buildContinueButtonWrapper(viewModel)
       ];
 
   Widget _buildTitle() => Text(
@@ -228,13 +226,12 @@ class DuolingoListeningPractice1Question
 
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
-        height: 55,
-        text: 'Submit',
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
-        onTap: () async => await _next(viewModel)
-      );
+          height: 55,
+          text: 'Submit',
+          borderRadius: 12,
+          foregroundColor: kcWhite,
+          backgroundColor: kcPrimaryColor,
+          onTap: () async => await _next(viewModel));
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.listening1Variant)

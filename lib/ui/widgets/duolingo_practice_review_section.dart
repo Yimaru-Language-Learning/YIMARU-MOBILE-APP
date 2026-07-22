@@ -60,8 +60,6 @@ class DuolingoPracticeReviewSection
         textAlign: TextAlign.center,
       );
 
-
-
   Widget _buildProgressIndicatorWrapper() => SizedBox(
         height: 55,
         child: _buildProgressIndicator(),

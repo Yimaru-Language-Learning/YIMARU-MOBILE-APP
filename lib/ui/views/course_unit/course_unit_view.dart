@@ -24,7 +24,6 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
       {required CourseUnit unit,
       required BuildContext context,
       required CourseUnitViewModel viewModel}) async {
-
     await viewModel.navigateToCoursePractice(unit.id ?? 0);
 
 /*    if (unit.access?.isCompleted ?? false) {

@@ -153,8 +153,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         verticalSpaceMedium,
         if (unit.hasPractice ?? false)
           _buildActionButtonState(context: context, viewModel: viewModel),
-        if (unit.hasPractice ?? false)
-        verticalSpaceMedium,
+        if (unit.hasPractice ?? false) verticalSpaceMedium,
         _buildCourseModulesState(viewModel)
       ];
 
@@ -186,8 +185,8 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
       );
 
   Widget _buildActionButtonState(
-      {required BuildContext context,
-        required CourseUnitViewModel viewModel}) =>
+          {required BuildContext context,
+          required CourseUnitViewModel viewModel}) =>
       viewModel.busy(index)
           ? Container()
           : _buildActionButtonWrapper(context: context, viewModel: viewModel);
@@ -200,8 +199,6 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         margin: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildPracticeButton(context: context, viewModel: viewModel),
       );
-
-
 
   Widget _buildActionButtons(
           {required BuildContext context,

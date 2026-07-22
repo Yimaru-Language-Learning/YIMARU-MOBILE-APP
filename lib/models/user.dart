@@ -5,6 +5,10 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
+  final bool? learn;
+
+  final bool? ielts;
+
   final String? email;
 
   final String? gender;
@@ -12,6 +16,8 @@ class User {
   final String? region;
 
   final String? country;
+
+  final bool? duolingo;
 
   final String? occupation;
 
@@ -48,13 +54,16 @@ class User {
   final List<ActiveSubscription>? activeSubscriptions;
 
   const User(
-      {this.email,
+      {this.learn,
+      this.ielts,
+      this.email,
       this.region,
       this.gender,
       this.userId,
       this.country,
       this.lastName,
       this.birthday,
+      this.duolingo,
       this.firstName,
       this.occupation,
       this.accessToken,

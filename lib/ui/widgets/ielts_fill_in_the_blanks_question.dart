@@ -3,7 +3,8 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
 
-class IeltsFillInTheBlanksQuestion extends ViewModelWidget<CoursePracticeViewModel> {
+class IeltsFillInTheBlanksQuestion
+    extends ViewModelWidget<CoursePracticeViewModel> {
   final List<dynamic> question;
 
   const IeltsFillInTheBlanksQuestion({super.key, required this.question});

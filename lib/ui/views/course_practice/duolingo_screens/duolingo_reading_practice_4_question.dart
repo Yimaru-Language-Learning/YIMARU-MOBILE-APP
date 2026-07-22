@@ -15,14 +15,13 @@ class DuolingoReadingPractice4Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const DuolingoReadingPractice4Question({super.key});
 
-
   void _setShowAnswer(CoursePracticeViewModel viewModel) {
     viewModel.setShowAnswer();
   }
 
   Future<void> _next(
       {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) async {
+      required CoursePracticeViewModel viewModel}) async {
     if (viewModel.showAnswer) {
       if (viewModel.currentQuestion == viewModel.questions.length - 1) {
         viewModel.nextScreen();
@@ -33,8 +32,6 @@ class DuolingoReadingPractice4Question
       _setShowAnswer(viewModel);
     }
   }
-
-
 
   void _setOption(
       {required Map<String, dynamic> option,
@@ -185,8 +182,7 @@ class DuolingoReadingPractice4Question
         verticalSpaceMedium,
         _buildPracticeOptions(viewModel),
         verticalSpaceLarge,
-        if(viewModel.showAnswer)
-          _buildCorrectAnswer(viewModel),
+        if (viewModel.showAnswer) _buildCorrectAnswer(viewModel),
         verticalSpaceMedium,
         _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
@@ -240,16 +236,11 @@ class DuolingoReadingPractice4Question
         selected: selected,
       );
 
-  Widget _buildCorrectAnswer(CoursePracticeViewModel viewModel) =>
-      Text(
-        'Correct Answer: ${ (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value['options'] as List).firstWhere((e) => e['is_correct'])['text']} ',
+  Widget _buildCorrectAnswer(CoursePracticeViewModel viewModel) => Text(
+        'Correct Answer: ${(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['options'] as List).firstWhere((e) => e['is_correct'])['text']} ',
         style: style16DG400,
         textAlign: TextAlign.center,
       );
-
-
-
 
   Widget _buildContinueButtonWrapper(
           {required BuildContext context,
