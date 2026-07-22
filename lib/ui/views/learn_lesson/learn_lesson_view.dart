@@ -34,13 +34,17 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
       } else {
         await _showSheet(context: context, viewModel: viewModel);
       }
-    } else {
+    }else{
+      await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+    }
+
+ /*   else {
       if (first && index < 3) {
         await viewModel.navigateToLearnPractice(lesson.id ?? 0);
       } else {
         await _showSheet(context: context, viewModel: viewModel);
       }
-    }
+    }*/
   }
 
   Future<void> _showSheet(
