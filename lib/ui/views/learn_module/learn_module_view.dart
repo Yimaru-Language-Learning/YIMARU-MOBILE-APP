@@ -26,21 +26,26 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       {required BuildContext context,
       required LearnModule module,
       required LearnModuleViewModel viewModel}) async {
-    if (module.access?.isCompleted ?? false) {
+    if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
+      if (module.access?.isCompleted ?? false) {
+        await viewModel.navigateToLearnPractice(
+            id: module.id ?? 0, module: module.name ?? '');
+      } else {
+        if (module.access?.isAccessible ?? false) {
+          await _showSheet(
+              context: context,
+              viewModel: viewModel,
+              practice: PracticeReason.module);
+        } else {
+          await _showSheet(
+              context: context,
+              viewModel: viewModel,
+              practice: PracticeReason.previousModule);
+        }
+      }
+    } else {
       await viewModel.navigateToLearnPractice(
           id: module.id ?? 0, module: module.name ?? '');
-    } else {
-      if (module.access?.isAccessible ?? false) {
-        await _showSheet(
-            context: context,
-            viewModel: viewModel,
-            practice: PracticeReason.module);
-      } else {
-        await _showSheet(
-            context: context,
-            viewModel: viewModel,
-            practice: PracticeReason.previousModule);
-      }
     }
   }
 
