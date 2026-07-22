@@ -6,7 +6,6 @@ import '../../models/course_catalog.dart';
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
 import '../views/course_catalog/course_catalog_viewmodel.dart';
-import '../views/learn_course/learn_course_viewmodel.dart';
 import 'custom_elevated_button.dart';
 
 class CourseCatalogTile extends ViewModelWidget<CourseCatalogViewModel> {

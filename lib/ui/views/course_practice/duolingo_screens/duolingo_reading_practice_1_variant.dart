@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_listening_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_reading_practice_1_question.dart';
 
 import '../../../common/app_colors.dart';

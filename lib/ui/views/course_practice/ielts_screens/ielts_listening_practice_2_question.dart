@@ -7,19 +7,15 @@ import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/course_practice_text_card.dart';
 import '../course_practice_viewmodel.dart';
-import '../course_practice_view.form.dart';
 
 class IeltsListeningPractice2Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  final TextEditingController practiceController;
 
   const IeltsListeningPractice2Question(
-      {super.key, required this.practiceController});
+      {super.key });
 
   void _reset(CoursePracticeViewModel viewModel) {
-    practiceController.clear();
     viewModel.resetValues();
   }
 
@@ -164,6 +160,8 @@ class IeltsListeningPractice2Question
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+
         children:
             _buildQuestionChildren(context: context, viewModel: viewModel),
       );
@@ -173,68 +171,69 @@ class IeltsListeningPractice2Question
           required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceMedium,
-        _buildQuestion(viewModel),
+        _buildInstruction(),
         verticalSpaceMedium,
-        _buildPracticeFormField(viewModel),
-        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
-          verticalSpaceTiny,
-        if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
-          _buildPracticeWrapper(viewModel),
+        _buildLabel(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[0].value),
+        verticalSpaceTiny,
+        _buildTextField(value: '0', viewModel: viewModel),
+        verticalSpaceMedium,
+        _buildLabel(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[1].value),
+        verticalSpaceTiny,
+        _buildTextField(value: '1', viewModel: viewModel),
+        verticalSpaceMedium,
+        _buildLabel(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[2].value),
+        verticalSpaceTiny,
+        _buildTextField(value: '2', viewModel: viewModel),
+        verticalSpaceMedium,
+        _buildLabel(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[3].value),
+        verticalSpaceTiny,
+        _buildTextField(value: '3', viewModel: viewModel),
         verticalSpaceLarge,
         _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
 
-  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CoursePracticeTextCard(
-        subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value,
-      );
+  Widget _buildInstruction() => Text(
+    'Complete the following note',
+    style: style16DG600,
+    textAlign: TextAlign.center,
+  );
 
-  Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
-      TextFormField(
-        maxLines: 5,
-        maxLength: 250,
-        controller: practiceController,
-        onTap: viewModel.setPracticeFocus,
+  Widget _buildLabel(String question) => Text(
+    question,
+    style: style14MG400,
+    textAlign: TextAlign.center,
+  );
+
+  Widget _buildTextField(
+      {required String value,
+        required CoursePracticeViewModel viewModel}) =>
+      TextField(
+        style: style14MG400,
         decoration: inputDecoration(
-            focus: true,
-            hint: 'Start writing here...',
-            filled: practiceController.text.isNotEmpty),
+            focus: true, filled: true, hint: 'Start writing here...'),
+        onChanged: (change) => viewModel.updateAnswer(value, change),
       );
-
-  Widget _buildPracticeWrapper(CoursePracticeViewModel viewModel) =>
-      viewModel.hasPracticeValidationMessage
-          ? _buildPracticeValidator(viewModel)
-          : Container();
-
-  Widget _buildPracticeValidator(CoursePracticeViewModel viewModel) => Text(
-        viewModel.practiceValidationMessage!,
-        style: style12R700,
-      );
-
   Widget _buildContinueButtonWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButton(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        backgroundColor: practiceController.text.isNotEmpty &&
-                !viewModel.hasPracticeValidationMessage
-            ? kcPrimaryColor
-            : kcPrimaryColor.withValues(alpha: 0.1),
-        onTap: practiceController.text.isNotEmpty &&
-                !viewModel.hasPracticeValidationMessage
-            ? () => _nextScreen(context: context, viewModel: viewModel)
-            : null,
+        backgroundColor: kcPrimaryColor,
+        onTap: () => _nextScreen(context: context, viewModel: viewModel),
       );
 }

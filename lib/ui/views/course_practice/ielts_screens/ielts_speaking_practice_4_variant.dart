@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_4_answer.dart';
-import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_speaking_practice_4_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_4_question.dart';
 
 import '../../../common/app_colors.dart';
 import '../course_practice_viewmodel.dart';
-import 'ielts_speaking_practice_1_answer.dart';
-import 'ielts_speaking_practice_1_question.dart';
 import 'ielts_speaking_practice_4_answer.dart';
 
 class IeltsSpeakingPractice4Variant

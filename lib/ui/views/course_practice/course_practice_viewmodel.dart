@@ -132,6 +132,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   String? get refreshedUrl => _refreshedUrl;
 
+  bool _isSectionStart = false;
+
+  bool get isSectionStart => _isSectionStart;
+
+  int _sectionElements = 0;
+
+  int get sectionElements => _sectionElements;
+
   int _currentQuestion = 0;
 
   int get currentQuestion => _currentQuestion;
@@ -634,9 +642,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Question param
-  Future<void> setQuestionParam(
+  Future<void> setQuestionIntros(
       {required int id, required BuildContext context}) async {
-    print('QUESTION TYPE ID: $id');
     if (id == 12 /*Speak about the photo*/) {
       // await refreshQuestionUrl(_questions[_currentQuestion]);
       _selectedQuestionParam = _questionParams.elementAt(0);
@@ -708,6 +715,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
       setCountdown(responseFirstSec);
     } else if (id == 4 /*Short Answer*/) {
       _selectedQuestionParam = _questionParams.elementAt(28);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
     } else if (id == 0 /*Table completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(29);
     } else if (id == 0 /*Diagram completion*/) {
@@ -799,6 +812,23 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
+  Future<void> initializeQuestions(
+      {required int id, required BuildContext context}) async {
+    print('HERE: -1');
+    print(_questions[_currentQuestion].stimulusBlockKey);
+    if (_questions[_currentQuestion].stimulusBlockKey != null &&
+        _sectionElements == 0) {
+      _sectionElements++;
+      _isSectionStart = true;
+      await setQuestionIntros(
+          context: context,
+          id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
+    } else {
+      _sectionElements++;
+      _isSectionStart = false;
+    }
+  }
+
   // Selected option
   bool isSelectedOption(Map<String, dynamic> value) =>
       _selectedOption['id'] == value['id'];
@@ -880,8 +910,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
               21) {
             nextIeltsSpeakingVariantScreen();
             startRecording();
-
-
           }
         }
       }
@@ -1413,15 +1441,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 350),
       );
-      await setQuestionParam(
+      await setQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     }
-  }
-
-  void goTo(int page) {
-    /*  _currentPage = page;
-    rebuildUi()*/
   }
 
   void goBack() {
@@ -1473,7 +1496,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       {required int id, required BuildContext context}) async {
     _currentQuestion = 0;
     _questions = await _apiService.getCourseQuestions(id);
-    await setQuestionParam(
+    await setQuestionIntros(
         context: context,
         id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     _currentPage = 1;

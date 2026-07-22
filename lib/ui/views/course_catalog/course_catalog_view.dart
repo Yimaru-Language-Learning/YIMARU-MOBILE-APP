@@ -9,7 +9,6 @@ import '../../widgets/course_catalog_tile.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
 import '../../widgets/finish_practice_sheet.dart';
 import '../../widgets/small_app_bar.dart';
-import '../learn_course/learn_course_viewmodel.dart';
 import 'course_catalog_viewmodel.dart';
 
 class CourseCatalogView extends StackedView<CourseCatalogViewModel> {

@@ -20,6 +20,12 @@ class PracticeQuestion {
   @JsonKey(name: 'difficulty_level')
   final String? difficultyLevel;
 
+  @JsonKey(name: 'stimulus_block_key')
+  final String? stimulusBlockKey;
+
+  @JsonKey(name: 'shared_stimulus')
+  final DynamicPayload? sharedStimulus;
+
   @JsonKey(name: 'dynamic_payload')
   final DynamicPayload? dynamicPayload;
 
@@ -32,8 +38,10 @@ class PracticeQuestion {
       this.points,
       this.questionType,
       this.questionText,
+      this.sharedStimulus,
       this.dynamicPayload,
       this.difficultyLevel,
+      this.stimulusBlockKey,
       this.questionTypeDefinitionId});
 
   factory PracticeQuestion.fromJson(Map<String, dynamic> json) =>

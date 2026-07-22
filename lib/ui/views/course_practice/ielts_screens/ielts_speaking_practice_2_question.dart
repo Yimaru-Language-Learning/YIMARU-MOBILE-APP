@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
-import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/circular_countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
-import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_text_card.dart';
 import '../course_practice_viewmodel.dart';
 
@@ -148,7 +146,6 @@ class IeltsSpeakingPractice2Question
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeTextCard(
-        title: '',
         subtitle: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?.last.value,
       );
