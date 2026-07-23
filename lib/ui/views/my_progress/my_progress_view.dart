@@ -1,51 +1,50 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../common/app_colors.dart';
+import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/course_progress_section.dart';
 import '../../widgets/learning_progress_card.dart';
 import '../../widgets/small_app_bar.dart';
-import 'progress_viewmodel.dart';
+import 'my_progress_viewmodel.dart';
 
-class ProgressView extends StackedView<ProgressViewModel> {
-  const ProgressView({Key? key}) : super(key: key);
-
+class MyProgressView extends StackedView<MyProgressViewModel> {
+  const MyProgressView({Key? key}) : super(key: key);
   @override
-  void onViewModelReady(ProgressViewModel viewModel) async {
+  void onViewModelReady(MyProgressViewModel viewModel) async {
     await viewModel.getProgressSummary();
     super.onViewModelReady(viewModel);
   }
 
   @override
-  ProgressViewModel viewModelBuilder(BuildContext context) =>
-      ProgressViewModel();
+  MyProgressViewModel viewModelBuilder(BuildContext context) =>
+      MyProgressViewModel();
 
   @override
   Widget builder(
     BuildContext context,
-    ProgressViewModel viewModel,
+    MyProgressViewModel viewModel,
     Widget? child,
   ) =>
       _buildScaffoldWrapper(viewModel);
 
-  Widget _buildScaffoldWrapper(ProgressViewModel viewModel) => Scaffold(
+  Widget _buildScaffoldWrapper(MyProgressViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );
 
-  Widget _buildScaffold(ProgressViewModel viewModel) =>
+  Widget _buildScaffold(MyProgressViewModel viewModel) =>
       SafeArea(child: _buildBodyWrapper(viewModel));
 
-  Widget _buildBodyWrapper(ProgressViewModel viewModel) =>
+  Widget _buildBodyWrapper(MyProgressViewModel viewModel) =>
       _buildBody(viewModel);
 
-  Widget _buildBody(ProgressViewModel viewModel) =>
+  Widget _buildBody(MyProgressViewModel viewModel) =>
       _buildNestedScrollView(viewModel);
 
-  Widget _buildNestedScrollView(ProgressViewModel viewModel) =>
+  Widget _buildNestedScrollView(MyProgressViewModel viewModel) =>
       NestedScrollView(
           scrollDirection: Axis.vertical,
           headerSliverBuilder:
@@ -53,7 +52,8 @@ class ProgressView extends StackedView<ProgressViewModel> {
                   [_buildSliverAppbarWrapper(viewModel)],
           body: _buildContentScrollViewWrapper(viewModel));
 
-  Widget _buildSliverAppbarWrapper(ProgressViewModel viewModel) => SliverAppBar(
+  Widget _buildSliverAppbarWrapper(MyProgressViewModel viewModel) =>
+      SliverAppBar(
         pinned: true,
         automaticallyImplyLeading: false,
         backgroundColor: kcBackgroundColor,
@@ -61,35 +61,35 @@ class ProgressView extends StackedView<ProgressViewModel> {
         title: _buildAppbar(viewModel),
       );
 
-  Widget _buildAppbar(ProgressViewModel viewModel) => SmallAppBar(
+  Widget _buildAppbar(MyProgressViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.pop,
         title: LocaleKeys.my_progress.tr(),
       );
 
-  Widget _buildContentScrollViewWrapper(ProgressViewModel viewModel) =>
+  Widget _buildContentScrollViewWrapper(MyProgressViewModel viewModel) =>
       SingleChildScrollView(
         child: _buildContentWrapper(viewModel),
       );
 
-  Widget _buildContentWrapper(ProgressViewModel viewModel) => Padding(
+  Widget _buildContentWrapper(MyProgressViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildContentColumn(viewModel),
       );
 
-  Widget _buildContentColumn(ProgressViewModel viewModel) => Column(
+  Widget _buildContentColumn(MyProgressViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildContentChildren(viewModel),
       );
 
-  List<Widget> _buildContentChildren(ProgressViewModel viewModel) => [
+  List<Widget> _buildContentChildren(MyProgressViewModel viewModel) => [
         verticalSpaceMedium,
         _buildText(),
         verticalSpaceMedium,
         _buildLearningProgressCard(),
         verticalSpaceMedium,
-        //  _buildCourseProgressSection()
+        _buildCourseProgressSection()
       ];
 
   Widget _buildText() => Text(

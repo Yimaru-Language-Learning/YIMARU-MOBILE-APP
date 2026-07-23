@@ -3,10 +3,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
@@ -15,6 +17,12 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
 
   const DuolingoFinishScreen(
       {super.key, required this.title, required this.subtitle});
+
+  Future<void> _navigate(CoursePracticeViewModel viewModel) async {
+    await viewModel.completeCoursePractice(
+        viewModel.practices[viewModel.currentPractice].id ?? 0);
+    viewModel.pop();
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -41,8 +49,15 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildSafeWrapper(context: context, viewModel: viewModel),
+        body: _buildScaffoldState(context: context, viewModel: viewModel),
       );
+
+  Widget _buildScaffoldState(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      viewModel.busy(StateObjects.completeCoursePractice)
+          ? const PageLoadingIndicator()
+          : _buildSafeWrapper(context: context, viewModel: viewModel);
 
   Widget _buildSafeWrapper(
           {required BuildContext context,
@@ -144,9 +159,9 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
         height: 55,
         text: 'Continue',
         borderRadius: 12,
-        onTap: viewModel.pop,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
+        onTap: () async => await _navigate(viewModel),
       );
 }

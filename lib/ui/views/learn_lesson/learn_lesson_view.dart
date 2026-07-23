@@ -28,8 +28,6 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
       required LearnLesson lesson,
       required BuildContext context,
       required LearnLessonViewModel viewModel}) async {
-    print(viewModel.user?.learn );
-
     if (viewModel.user?.learn ?? false) {
       if (lesson.access?.isAccessible ?? false) {
         await viewModel.navigateToLearnPractice(lesson.id ?? 0);

@@ -1,21 +1,25 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:yimaru_app/services/learn_service.dart';
-import 'package:yimaru_app/services/status_checker_service.dart';
-import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
+import '../../../services/course_service.dart';
+import '../../../services/learn_service.dart';
+import '../../../services/status_checker_service.dart';
+import '../../common/enmus.dart';
 
-class ProgressViewModel extends ReactiveViewModel {
+class MyProgressViewModel extends BaseViewModel {
   // Dependency injection
   final _learnService = locator<LearnService>();
+
+  final _courseService = locator<CourseService>();
 
   final _navigationService = locator<NavigationService>();
 
   final _statusCheckerService = locator<StatusCheckerService>();
 
   @override
-  List<ListenableServiceMixin> get listenableServices => [_learnService];
+  List<ListenableServiceMixin> get listenableServices =>
+      [_learnService, _courseService];
 
   // Total practice count
   int get _totalCount => _learnService.totalCount;
@@ -34,9 +38,9 @@ class ProgressViewModel extends ReactiveViewModel {
 
   // Courses
   final List<Map<String, dynamic>> _courses = [
-    {
+/*    {
       'title': 'IELTS Preparation',
-    },
+    },*/
     {
       'title': 'Duolingo English Test',
     },
@@ -57,6 +61,7 @@ class ProgressViewModel extends ReactiveViewModel {
 
   Future<void> _getProgressSummary() async {
     if (await _statusCheckerService.checkConnection()) {
+      // await _courseService.getCourseProgress();
       await _learnService.getProgressSummary();
     }
   }

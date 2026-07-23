@@ -140,6 +140,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   int get sectionElements => _sectionElements;
 
+  int _currentPractice = 0;
+
+  int get currentPractice => _currentPractice;
+
   int _currentQuestion = 0;
 
   int get currentQuestion => _currentQuestion;
@@ -1462,8 +1466,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
   Future<void> navigateToPdf(String url) async =>
       await _navigationService.navigateToPdfView(url: url);
 
-  // Future<void> navigateToCourseSubscription() async =>
-  //     await _navigationService.navigateToCourseSubscription();
+  Future<void> navigateToCourseSubscription(SubscriptionType type) async =>
+      await _navigationService.navigateToSubscriptionView(type: type);
 
   // Remote api call
 
@@ -1494,12 +1498,27 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> _getCoursePracticeQuestions(
       {required int id, required BuildContext context}) async {
+    _currentPractice = 0;
     _currentQuestion = 0;
     _questions = await _apiService.getCourseQuestions(id);
     await setQuestionIntros(
         context: context,
         id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     _currentPage = 1;
+  }
+
+  // Finish practice
+  // Complete practice
+  Future<void> completeCoursePractice(int id) async =>
+      await runBusyFuture(_completeCoursePractice(id),
+          busyObject: StateObjects.completeCoursePractice);
+
+  Future<void> _completeCoursePractice(int id) async {
+    if (await _statusChecker.checkConnection()) {
+      await stopAudio();
+      /* await _apiService.completePractice(id);
+     await _courseService.getCourseProgress();*/
+    }
   }
 
   // Refresh url

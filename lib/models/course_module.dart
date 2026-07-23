@@ -46,6 +46,33 @@ class CourseModule {
       this.description,
       this.lessonsCount});
 
+  CourseModule copyWith({
+    int? id,
+    int? unitId,
+    String? name,
+    String? icon,
+    int? practice,
+    Access? access,
+    int? sortOrder,
+    bool? hasPractice,
+    int? lessonsCount,
+    String? thumbnail,
+    String? description,
+  }) =>
+      CourseModule(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        icon: icon ?? this.icon,
+        access: access ?? this.access,
+        unitId: unitId ?? this.unitId,
+        practice: practice ?? this.practice,
+        thumbnail: thumbnail ?? this.thumbnail,
+        sortOrder: sortOrder ?? this.sortOrder,
+        hasPractice: hasPractice ?? this.hasPractice,
+        description: description ?? this.description,
+        lessonsCount: lessonsCount ?? this.lessonsCount,
+      );
+
   factory CourseModule.fromJson(Map<String, dynamic> json) =>
       _$CourseModuleFromJson(json);
 

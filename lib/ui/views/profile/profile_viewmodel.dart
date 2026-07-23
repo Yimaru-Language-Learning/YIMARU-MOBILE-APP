@@ -88,11 +88,8 @@ class ProfileViewModel extends ReactiveViewModel {
   Future<void> navigateToSupport() async =>
       await _navigationService.navigateToSupportView();
 
-  Future<void> navigateToProgress() async =>
-      await _navigationService.navigateToProgressView();
-
-  Future<void> navigateToDownloads() async =>
-      await _navigationService.navigateToDownloadsView();
+  Future<void> navigateToMyProgress() async =>
+      await _navigationService.navigateToMyProgressView();
 
   Future<void> navigateToNotification() async =>
       await _navigationService.navigateToNotificationView();
@@ -102,6 +99,9 @@ class ProfileViewModel extends ReactiveViewModel {
 
   Future<void> navigateToAccountPrivacy() async =>
       await _navigationService.navigateToAccountPrivacyView();
+
+  Future<void> navigateToMySubscription() async =>
+      await _navigationService.navigateToMySubscriptionView();
 
   Future<void> navigateToLogin() async =>
       await _navigationService.clearStackAndShow(Routes.loginView);

@@ -21,8 +21,7 @@ class LearnPracticeResultScreen
   const LearnPracticeResultScreen({super.key, required this.practice});
 
   Future<void> _navigate(LearnPracticeViewModel viewModel) async {
-    await viewModel.stopAudio();
-    await viewModel.completeLearnPractices();
+    await viewModel.completeLearnPractice();
     if (practice == LearnPractices.course) {
       viewModel.goTo(6);
     } else if (practice == LearnPractices.module) {

@@ -31,7 +31,7 @@ Map<String, dynamic> _$CourseCatalogToJson(CourseCatalog instance) =>
       'description': instance.description,
       'sort_order': instance.sortOrder,
       'units_count': instance.unitsCount,
+      'has_practice': instance.hasPractice,
       'modules_count': instance.modulesCount,
       'lessons_count': instance.lessonsCount,
-      'has_practice': instance.hasPractice,
     };

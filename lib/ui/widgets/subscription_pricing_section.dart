@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
-import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/learn_subscription_pricing_card.dart';
 
 import '../common/ui_helpers.dart';
+import '../views/subscription/subscription_viewmodel.dart';
 
-class LearnSubscriptionPricingSection
-    extends ViewModelWidget<LearnSubscriptionViewModel> {
-  const LearnSubscriptionPricingSection({super.key});
+class SubscriptionPricingSection
+    extends ViewModelWidget<SubscriptionViewModel> {
+  const SubscriptionPricingSection({super.key});
 
   @override
-  Widget build(BuildContext context, LearnSubscriptionViewModel viewModel) =>
+  Widget build(BuildContext context, SubscriptionViewModel viewModel) =>
       _buildContainer(viewModel);
 
-  Widget _buildContainer(LearnSubscriptionViewModel viewModel) => Container(
+  Widget _buildContainer(SubscriptionViewModel viewModel) => Container(
         height: 200,
         padding: const EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
@@ -25,12 +25,12 @@ class LearnSubscriptionPricingSection
         child: _buildColumn(viewModel),
       );
 
-  Widget _buildColumn(LearnSubscriptionViewModel viewModel) => Column(
+  Widget _buildColumn(SubscriptionViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         children: _buildColumnChildren(viewModel),
       );
 
-  List<Widget> _buildColumnChildren(LearnSubscriptionViewModel viewModel) => [
+  List<Widget> _buildColumnChildren(SubscriptionViewModel viewModel) => [
         _buildTileWrapper(),
         verticalSpaceSmall,
         _buildLearnPriceWrapper(viewModel)
@@ -62,12 +62,11 @@ class LearnSubscriptionPricingSection
         color: kcPrimaryColor,
       );
 
-  Widget _buildLearnPriceWrapper(LearnSubscriptionViewModel viewModel) =>
-      Expanded(
+  Widget _buildLearnPriceWrapper(SubscriptionViewModel viewModel) => Expanded(
         child: _buildLearnPricing(viewModel),
       );
 
-  Widget _buildLearnPricing(LearnSubscriptionViewModel viewModel) =>
+  Widget _buildLearnPricing(SubscriptionViewModel viewModel) =>
       PageView.builder(
         itemCount: viewModel.subscriptions.length,
         controller: PageController(viewportFraction: 0.9),

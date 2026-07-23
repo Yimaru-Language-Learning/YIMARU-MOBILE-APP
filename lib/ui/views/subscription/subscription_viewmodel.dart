@@ -85,14 +85,21 @@ class SubscriptionViewModel extends FormViewModel {
 
   // Remote api call
 
-  // Learn subscriptions
-  Future<void> getLearnSubscriptions() async =>
-      await runBusyFuture(_getLearnSubscriptions(),
-          busyObject: StateObjects.learnSubscriptions);
+  // Subscriptions
+  Future<void> getSubscriptions(SubscriptionType type) async =>
+      await runBusyFuture(_getSubscriptions(type),
+          busyObject: StateObjects.subscriptions);
 
-  Future<void> _getLearnSubscriptions() async {
+  Future<void> _getSubscriptions(SubscriptionType type) async {
+    print(type);
     if (await _statusChecker.checkConnection()) {
-      _subscriptions = await _apiService.getSubscriptions('LEARN_ENGLISH');
+      if (type == SubscriptionType.learn) {
+        _subscriptions = await _apiService.getSubscriptions('LEARN_ENGLISH');
+      } else if (type == SubscriptionType.duolingo) {
+        _subscriptions = await _apiService.getSubscriptions('DUOLINGO');
+      } else {
+        _subscriptions = await _apiService.getSubscriptions('IELTS');
+      }
     }
   }
 }

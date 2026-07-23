@@ -4,18 +4,18 @@ import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
-import '../views/progress/progress_viewmodel.dart';
+import '../views/my_progress/my_progress_viewmodel.dart';
 import 'custom_column.dart';
 import 'custom_elevated_button.dart';
 
-class CourseProgressSection extends ViewModelWidget<ProgressViewModel> {
+class CourseProgressSection extends ViewModelWidget<MyProgressViewModel> {
   const CourseProgressSection({super.key});
 
   @override
-  Widget build(BuildContext context, ProgressViewModel viewModel) =>
+  Widget build(BuildContext context, MyProgressViewModel viewModel) =>
       _buildContainer(viewModel);
 
-  Widget _buildContainer(ProgressViewModel viewModel) => Container(
+  Widget _buildContainer(MyProgressViewModel viewModel) => Container(
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -24,13 +24,13 @@ class CourseProgressSection extends ViewModelWidget<ProgressViewModel> {
         child: _buildColumn(viewModel),
       );
 
-  Widget _buildColumn(ProgressViewModel viewModel) => Column(
+  Widget _buildColumn(MyProgressViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildColumnChildren(viewModel),
       );
 
-  List<Widget> _buildColumnChildren(ProgressViewModel viewModel) => [
+  List<Widget> _buildColumnChildren(MyProgressViewModel viewModel) => [
         _buildIcon(),
         verticalSpaceSmall,
         _buildTitle('Course'),
@@ -44,7 +44,7 @@ class CourseProgressSection extends ViewModelWidget<ProgressViewModel> {
         color: kcPrimaryColor,
       );
 
-  Widget _buildExpansionTileWrapper(ProgressViewModel viewModel) => Column(
+  Widget _buildExpansionTileWrapper(MyProgressViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         children: viewModel.courses
             .map(
