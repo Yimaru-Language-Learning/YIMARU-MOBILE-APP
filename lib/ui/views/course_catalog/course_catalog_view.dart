@@ -140,7 +140,7 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
 
   Widget _buildListView(CourseCatalogViewModel viewModel) => ListView.separated(
         shrinkWrap: true,
-        itemCount: viewModel.catalogs.length,
+        itemCount: 1,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           onPracticeTap: () async => await _onPractice(

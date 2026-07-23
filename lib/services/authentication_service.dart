@@ -126,7 +126,7 @@ class AuthenticationService with ListenableServiceMixin {
           learn = true;
           await _secureService.setBool('learn', learn);
         }
-        if (subscription.category == 'DUOLINGO ' &&
+        if (subscription.category == 'DUOLINGO' &&
             subscription.status == 'ACTIVE') {
           duolingo = true;
           await _secureService.setBool('duolingo', duolingo);

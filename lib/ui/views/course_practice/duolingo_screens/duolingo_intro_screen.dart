@@ -31,7 +31,7 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
     if (viewModel.user?.duolingo ?? false) {
       await _nextScreen(context: context, viewModel: viewModel);
     } else {
-      //  await viewModel.navigateToLearnSubscription();
+      await viewModel.navigateToCourseSubscription(SubscriptionType.duolingo);
     }
   }
 

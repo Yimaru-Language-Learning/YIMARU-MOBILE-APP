@@ -1,49 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/learn_subscription_card.dart';
-import '../../../widgets/learn_subscription_pricing_section.dart';
+import '../../../widgets/subscription_pricing_section.dart';
 import '../../../widgets/small_app_bar.dart';
+import '../subscription_viewmodel.dart';
 
-class SubscriptionPackageScreen
-    extends ViewModelWidget<LearnSubscriptionViewModel> {
+class SubscriptionPackageScreen extends ViewModelWidget<SubscriptionViewModel> {
   const SubscriptionPackageScreen({super.key});
 
   @override
-  Widget build(BuildContext context, LearnSubscriptionViewModel viewModel) =>
+  Widget build(BuildContext context, SubscriptionViewModel viewModel) =>
       _buildScaffoldWrapper(viewModel);
 
-  Widget _buildScaffoldWrapper(LearnSubscriptionViewModel viewModel) =>
-      Scaffold(
+  Widget _buildScaffoldWrapper(SubscriptionViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
 
-  Widget _buildScaffoldContainer(LearnSubscriptionViewModel viewModel) =>
-      Container(
+  Widget _buildScaffoldContainer(SubscriptionViewModel viewModel) => Container(
         decoration: bgDecoration,
         child: _buildScaffoldState(viewModel),
       );
 
-  Widget _buildScaffoldState(LearnSubscriptionViewModel viewModel) =>
-      viewModel.busy(StateObjects.learnSubscriptions)
+  Widget _buildScaffoldState(SubscriptionViewModel viewModel) =>
+      viewModel.busy(StateObjects.subscriptions)
           ? const PageLoadingIndicator()
           : _buildScaffold(viewModel);
-  Widget _buildScaffold(LearnSubscriptionViewModel viewModel) =>
+  Widget _buildScaffold(SubscriptionViewModel viewModel) =>
       SafeArea(child: _buildBody(viewModel));
 
-  Widget _buildBody(LearnSubscriptionViewModel viewModel) => Padding(
+  Widget _buildBody(SubscriptionViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildColumn(viewModel),
       );
 
-  Widget _buildColumn(LearnSubscriptionViewModel viewModel) => Column(
+  Widget _buildColumn(SubscriptionViewModel viewModel) => Column(
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
@@ -51,30 +48,27 @@ class SubscriptionPackageScreen
         ],
       );
 
-  Widget _buildAppBar(LearnSubscriptionViewModel viewModel) => SmallAppBar(
+  Widget _buildAppBar(SubscriptionViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.goBack,
       );
 
-  Widget _buildSubscriptionColumnWrapper(
-          LearnSubscriptionViewModel viewModel) =>
+  Widget _buildSubscriptionColumnWrapper(SubscriptionViewModel viewModel) =>
       Expanded(child: _buildSubscriptionColumnScrollView(viewModel));
 
-  Widget _buildSubscriptionColumnScrollView(
-          LearnSubscriptionViewModel viewModel) =>
+  Widget _buildSubscriptionColumnScrollView(SubscriptionViewModel viewModel) =>
       SingleChildScrollView(
         child: _buildSubscriptionColumn(viewModel),
       );
 
-  Widget _buildSubscriptionColumn(LearnSubscriptionViewModel viewModel) =>
-      Column(
+  Widget _buildSubscriptionColumn(SubscriptionViewModel viewModel) => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: _buildSubscriptionColumnChildren(viewModel),
       );
 
   List<Widget> _buildSubscriptionColumnChildren(
-          LearnSubscriptionViewModel viewModel) =>
+          SubscriptionViewModel viewModel) =>
       [
         verticalSpaceSmall,
         _buildTitleWrapper(),
@@ -132,9 +126,9 @@ class SubscriptionPackageScreen
       );
 
   Widget _buildSubscriptionPricingSection() =>
-      const LearnSubscriptionPricingSection();
+      const SubscriptionPricingSection();
 
-  Widget _buildSubscribeButton(LearnSubscriptionViewModel viewModel) =>
+  Widget _buildSubscribeButton(SubscriptionViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,

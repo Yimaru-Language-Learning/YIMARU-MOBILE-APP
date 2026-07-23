@@ -54,8 +54,8 @@ class LearnLessonViewModel extends ReactiveViewModel {
         subtitle: LocaleKeys.ask_you_few_actions.tr(),
       );
 
-  Future<void> navigateToLearnSubscription() async =>
-      await _navigationService.navigateToLearnSubscriptionView();
+  Future<void> navigateToLearnSubscription() async => await _navigationService
+      .navigateToSubscriptionView(type: SubscriptionType.learn);
 
   Future<void> navigateToLearnLessonDetail(
           {required int index,

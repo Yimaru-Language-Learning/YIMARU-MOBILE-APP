@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/phone_number_prefix.dart';
 
 import '../../../common/app_colors.dart';
@@ -11,9 +10,9 @@ import '../../../widgets/learn_subscription_card.dart';
 import '../../../widgets/small_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../subscription_view.form.dart';
+import '../subscription_viewmodel.dart';
 
-class SubscriptionFormScreen
-    extends ViewModelWidget<LearnSubscriptionViewModel> {
+class SubscriptionFormScreen extends ViewModelWidget<SubscriptionViewModel> {
   final TextEditingController phoneNumberController;
 
   const SubscriptionFormScreen({
@@ -22,30 +21,28 @@ class SubscriptionFormScreen
   });
 
   @override
-  Widget build(BuildContext context, LearnSubscriptionViewModel viewModel) =>
+  Widget build(BuildContext context, SubscriptionViewModel viewModel) =>
       _buildScaffoldWrapper(viewModel);
 
-  Widget _buildScaffoldWrapper(LearnSubscriptionViewModel viewModel) =>
-      Scaffold(
+  Widget _buildScaffoldWrapper(SubscriptionViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
 
-  Widget _buildScaffoldContainer(LearnSubscriptionViewModel viewModel) =>
-      Container(
+  Widget _buildScaffoldContainer(SubscriptionViewModel viewModel) => Container(
         decoration: bgDecoration,
         child: _buildScaffold(viewModel),
       );
 
-  Widget _buildScaffold(LearnSubscriptionViewModel viewModel) =>
+  Widget _buildScaffold(SubscriptionViewModel viewModel) =>
       SafeArea(child: _buildBody(viewModel));
 
-  Widget _buildBody(LearnSubscriptionViewModel viewModel) => Padding(
+  Widget _buildBody(SubscriptionViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildColumn(viewModel),
       );
 
-  Widget _buildColumn(LearnSubscriptionViewModel viewModel) => Column(
+  Widget _buildColumn(SubscriptionViewModel viewModel) => Column(
         children: [
           verticalSpaceMedium,
           _buildAppBar(viewModel),
@@ -53,28 +50,25 @@ class SubscriptionFormScreen
         ],
       );
 
-  Widget _buildAppBar(LearnSubscriptionViewModel viewModel) => SmallAppBar(
+  Widget _buildAppBar(SubscriptionViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.goBack,
       );
 
-  Widget _buildSubscriptionColumnWrapper(
-          LearnSubscriptionViewModel viewModel) =>
+  Widget _buildSubscriptionColumnWrapper(SubscriptionViewModel viewModel) =>
       Expanded(child: _buildSubscriptionColumnScrollView(viewModel));
 
-  Widget _buildSubscriptionColumnScrollView(
-          LearnSubscriptionViewModel viewModel) =>
+  Widget _buildSubscriptionColumnScrollView(SubscriptionViewModel viewModel) =>
       SingleChildScrollView(
         child: _buildSubscriptionColumn(viewModel),
       );
 
-  Widget _buildSubscriptionColumn(LearnSubscriptionViewModel viewModel) =>
-      Column(
+  Widget _buildSubscriptionColumn(SubscriptionViewModel viewModel) => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: _buildSheetChildren(viewModel),
       );
 
-  List<Widget> _buildSheetChildren(LearnSubscriptionViewModel viewModel) => [
+  List<Widget> _buildSheetChildren(SubscriptionViewModel viewModel) => [
         verticalSpaceSmall,
         _buildTitleWrapper(),
         verticalSpaceMedium,
@@ -127,27 +121,24 @@ class SubscriptionFormScreen
         textAlign: TextAlign.center,
       );
 
-  Widget _buildPhoneNumberWrapper(LearnSubscriptionViewModel viewModel) => Row(
+  Widget _buildPhoneNumberWrapper(SubscriptionViewModel viewModel) => Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildPhoneNumberChildren(viewModel),
       );
 
-  List<Widget> _buildPhoneNumberChildren(
-          LearnSubscriptionViewModel viewModel) =>
-      [
+  List<Widget> _buildPhoneNumberChildren(SubscriptionViewModel viewModel) => [
         _buildPhoneNumberPrefix(viewModel),
         horizontalSpaceSmall,
         _buildPhoneNumberFormFieldWrapper(viewModel),
       ];
 
-  Widget _buildPhoneNumberPrefix(LearnSubscriptionViewModel viewModel) =>
+  Widget _buildPhoneNumberPrefix(SubscriptionViewModel viewModel) =>
       PhoneNumberPrefix(selected: viewModel.focusPhoneNumber);
 
-  Widget _buildPhoneNumberFormFieldWrapper(
-          LearnSubscriptionViewModel viewModel) =>
+  Widget _buildPhoneNumberFormFieldWrapper(SubscriptionViewModel viewModel) =>
       Expanded(child: _buildPhoneNumberFormField(viewModel));
 
-  Widget _buildPhoneNumberFormField(LearnSubscriptionViewModel viewModel) =>
+  Widget _buildPhoneNumberFormField(SubscriptionViewModel viewModel) =>
       TextFormField(
         maxLength: 9,
         keyboardType: TextInputType.phone,
@@ -159,19 +150,17 @@ class SubscriptionFormScreen
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       );
 
-  Widget _buildPhoneNumberValidatorWrapper(
-          LearnSubscriptionViewModel viewModel) =>
+  Widget _buildPhoneNumberValidatorWrapper(SubscriptionViewModel viewModel) =>
       viewModel.hasPhoneNumberValidationMessage
           ? _buildPhoneNumberValidator(viewModel)
           : Container();
 
-  Widget _buildPhoneNumberValidator(LearnSubscriptionViewModel viewModel) =>
-      Text(
+  Widget _buildPhoneNumberValidator(SubscriptionViewModel viewModel) => Text(
         viewModel.phoneNumberValidationMessage!,
         style: style12R700,
       );
 
-  Widget _buildPaymentElevatedButton(LearnSubscriptionViewModel viewModel) =>
+  Widget _buildPaymentElevatedButton(SubscriptionViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
@@ -188,15 +177,14 @@ class SubscriptionFormScreen
             : null,
       );
 
-  Widget _buildPaymentTextButton(LearnSubscriptionViewModel viewModel) =>
-      TextButton(
-          onPressed: phoneNumberController.text.isNotEmpty
-              ? () async => await viewModel.navigateToPayment(
-                  method: PaymentMethod.ussd,
-                  phone: phoneNumberController.text,
-                  subscription: viewModel.selectedSubscription)
-              : null,
-          child: _buildPaymentText());
+  Widget _buildPaymentTextButton(SubscriptionViewModel viewModel) => TextButton(
+      onPressed: phoneNumberController.text.isNotEmpty
+          ? () async => await viewModel.navigateToPayment(
+              method: PaymentMethod.ussd,
+              phone: phoneNumberController.text,
+              subscription: viewModel.selectedSubscription)
+          : null,
+      child: _buildPaymentText());
 
   Widget _buildPaymentText() => Text(
         'Proceed with telebirr',

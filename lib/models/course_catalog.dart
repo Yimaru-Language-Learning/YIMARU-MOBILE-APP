@@ -22,14 +22,14 @@ class CourseCatalog {
   @JsonKey(name: 'units_count')
   final int? unitsCount;
 
+  @JsonKey(name: 'has_practice')
+  final bool? hasPractice;
+
   @JsonKey(name: 'modules_count')
   final int? modulesCount;
 
   @JsonKey(name: 'lessons_count')
   final int? lessonsCount;
-
-  @JsonKey(name: 'has_practice')
-  final bool? hasPractice;
 
   const CourseCatalog({
     this.id,
@@ -43,6 +43,31 @@ class CourseCatalog {
     this.modulesCount,
     this.lessonsCount,
   });
+
+  CourseCatalog copyWith({
+    int? id,
+    String? name,
+    Access? access,
+    int? sortOrder,
+    int? unitsCount,
+    int? modulesCount,
+    int? lessonsCount,
+    bool? hasPractice,
+    String? thumbnail,
+    String? description,
+  }) =>
+      CourseCatalog(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        access: access ?? this.access,
+        thumbnail: thumbnail ?? this.thumbnail,
+        sortOrder: sortOrder ?? this.sortOrder,
+        unitsCount: unitsCount ?? this.unitsCount,
+        hasPractice: hasPractice ?? this.hasPractice,
+        description: description ?? this.description,
+        modulesCount: modulesCount ?? this.modulesCount,
+        lessonsCount: lessonsCount ?? this.lessonsCount,
+      );
 
   factory CourseCatalog.fromJson(Map<String, dynamic> json) =>
       _$CourseCatalogFromJson(json);

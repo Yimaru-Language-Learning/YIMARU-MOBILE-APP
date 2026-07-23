@@ -61,6 +61,7 @@ class CourseUnit {
     String? name,
     int? practice,
     int? sortOrder,
+    Access? access,
     bool? hasPractice,
     int? lessonsCount,
     int? modulesCount,
@@ -72,6 +73,7 @@ class CourseUnit {
       CourseUnit(
         id: id ?? this.id,
         name: name ?? this.name,
+        access: access ?? this.access,
         modules: modules ?? this.modules,
         practice: practice ?? this.practice,
         thumbnail: thumbnail ?? this.thumbnail,

@@ -8,7 +8,6 @@ import 'package:yimaru_app/ui/views/startup/startup_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
 import 'package:yimaru_app/ui/views/profile_detail/profile_detail_view.dart';
 import 'package:yimaru_app/ui/views/downloads/downloads_view.dart';
-import 'package:yimaru_app/ui/views/progress/progress_view.dart';
 import 'package:yimaru_app/ui/views/account_privacy/account_privacy_view.dart';
 import 'package:yimaru_app/ui/views/support/support_view.dart';
 import 'package:yimaru_app/ui/views/telegram_support/telegram_support_view.dart';
@@ -46,7 +45,6 @@ import 'package:yimaru_app/ui/views/assessment/assessment_view.dart';
 import 'package:yimaru_app/services/vimeo_service.dart';
 import 'package:yimaru_app/services/url_launcher_service.dart';
 import 'package:yimaru_app/services/phone_caller_service.dart';
-import 'package:yimaru_app/ui/views/learn_subscription/learn_subscription_view.dart';
 import 'package:yimaru_app/services/learn_service.dart';
 import 'package:yimaru_app/ui/views/course_catalog/course_catalog_view.dart';
 import 'package:yimaru_app/ui/views/course_unit/course_unit_view.dart';
@@ -63,6 +61,9 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart';
 import 'package:yimaru_app/services/cache_image_service.dart';
 import 'package:yimaru_app/ui/views/pdf/pdf_view.dart';
 import 'package:yimaru_app/ui/views/subscription/subscription_view.dart';
+import 'package:yimaru_app/ui/views/my_subscription/my_subscription_view.dart';
+import 'package:yimaru_app/ui/views/my_progress/my_progress_view.dart';
+import 'package:yimaru_app/ui/views/in_app_support/in_app_support_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -73,7 +74,6 @@ import 'package:yimaru_app/ui/views/subscription/subscription_view.dart';
     MaterialRoute(page: ProfileView),
     MaterialRoute(page: ProfileDetailView),
     MaterialRoute(page: DownloadsView),
-    MaterialRoute(page: ProgressView),
     MaterialRoute(page: AccountPrivacyView),
     MaterialRoute(page: SupportView),
     MaterialRoute(page: TelegramSupportView),
@@ -94,7 +94,6 @@ import 'package:yimaru_app/ui/views/subscription/subscription_view.dart';
     MaterialRoute(page: CourseView),
     MaterialRoute(page: LearnProgramView),
     MaterialRoute(page: AssessmentView),
-    MaterialRoute(page: LearnSubscriptionView),
     MaterialRoute(page: CourseCatalogView),
     MaterialRoute(page: CourseUnitView),
     MaterialRoute(page: LandingView),
@@ -105,6 +104,9 @@ import 'package:yimaru_app/ui/views/subscription/subscription_view.dart';
     MaterialRoute(page: CoursePracticeView),
     MaterialRoute(page: PdfView),
     MaterialRoute(page: SubscriptionView),
+    MaterialRoute(page: MySubscriptionView),
+    MaterialRoute(page: MyProgressView),
+    MaterialRoute(page: InAppSupportView),
 // @stacked-route
   ],
   dependencies: [
