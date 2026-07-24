@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/widgets/ielts_listening_instruction_card.dart';
+import 'package:yimaru_app/ui/widgets/ielts_listening_section_play_button.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/custom_linear_progress_indicator.dart';
+import '../../../widgets/page_loading_indicator.dart';
+import '../../../widgets/progress_status.dart';
+import '../../../widgets/speaking_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class IeltsListeningSectionIntro
@@ -48,7 +55,7 @@ class IeltsListeningSectionIntro
       Stack(
         children: [
           _buildScaffold(context: context, viewModel: viewModel),
-          //  _buildBodyState(viewModel)
+          _buildBodyState(viewModel)
         ],
       );
 
@@ -82,7 +89,7 @@ class IeltsListeningSectionIntro
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildSpeakingIndicatorWrapper(viewModel),
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
+        _buildContinueButtonSection(context: context, viewModel: viewModel)
       ];
 
   Widget _buildAppBarWrapper(
@@ -93,6 +100,7 @@ class IeltsListeningSectionIntro
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceMedium,
+          _buildInstructionCard()
         ],
       );
 
@@ -113,19 +121,29 @@ class IeltsListeningSectionIntro
         onCancel: () async => await _cancel(viewModel),
       );
 
+  Widget _buildInstructionCard() => const IeltsListeningInstructionCard();
+
   Widget _buildSpeakingIndicatorWrapper(CoursePracticeViewModel viewModel) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildSpeakingIndicatorChildren(),
+        children: _buildSpeakingIndicatorChildren(viewModel),
       );
 
-  List<Widget> _buildSpeakingIndicatorChildren() => [
+  List<Widget> _buildSpeakingIndicatorChildren(
+          CoursePracticeViewModel viewModel) =>
+      [
         _buildTitle(),
+        verticalSpaceSmall,
         _buildSubtitle(),
         verticalSpaceMedium,
+        _buildSpeakingIndicator(),
+        verticalSpaceMedium,
+        _buildLinearProgressIndicator(viewModel),
+        verticalSpaceMedium,
+        _buildPlayButton(),
+        verticalSpaceMedium,
         _buildInstruction(),
-        _buildWarning()
       ];
 
   Widget _buildTitle() => Text(
@@ -134,11 +152,20 @@ class IeltsListeningSectionIntro
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSubtitle() => Text(
-        'READY TO LISTEN',
-        style: style14P400,
-        textAlign: TextAlign.center,
+  Widget _buildSubtitle() => const ProgressStatus(
+        color: kcPrimaryColor,
+        status: 'READY TO LISTEN',
       );
+
+  Widget _buildSpeakingIndicator() => const SpeakingIndicator(size: 50);
+
+  Widget _buildLinearProgressIndicator(CoursePracticeViewModel viewModel) =>
+      CustomLinearProgressIndicator(
+          activeColor: kcPrimaryColor,
+          progress: viewModel.progress,
+          backgroundColor: kcVeryLightGrey);
+
+  Widget _buildPlayButton() => const IeltsListeningSectionPlayButton();
 
   Widget _buildInstruction() => Text(
         'Once you press play, you cannot stop or restart the audio.',
@@ -152,29 +179,47 @@ class IeltsListeningSectionIntro
         textAlign: TextAlign.center,
       );
 
-  Widget _buildContinueButtonWrapper(
+  Widget _buildContinueButtonSection(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(context: context, viewModel: viewModel),
+        child:
+            _buildContinueButtonColumn(context: context, viewModel: viewModel),
       );
+
+  Widget _buildContinueButtonColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: _buildContinueButtonChildren(
+            context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildContinueButtonChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
+        _buildContinueButton(context: context, viewModel: viewModel),
+        verticalSpaceTiny,
+        _buildWarning(),
+      ];
 
   Widget _buildContinueButton(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      const CustomElevatedButton(
+      CustomElevatedButton(
         height: 55,
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
+        onTap: viewModel.nextScreen,
         backgroundColor: kcPrimaryColor,
-        /* onTap: () async =>
-        await _nextScreen(context: context, viewModel: viewModel),*/
       );
 
-/*  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
-      viewModel.busy(StateObjects.coursePracticePrompt)
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.coursePractice)
           ? const PageLoadingIndicator()
-          : Container();*/
+          : Container();
 }

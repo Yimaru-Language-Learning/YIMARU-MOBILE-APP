@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class IeltsListeningPractice2Question
@@ -22,7 +24,18 @@ class IeltsListeningPractice2Question
       required CoursePracticeViewModel viewModel}) {
     FocusManager.instance.primaryFocus?.unfocus();
     _reset(viewModel);
-    viewModel.nextQuestion(context);
+    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+      viewModel.setSectionEnd(true);
+      viewModel.nextScreen();
+    } else {
+      if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+          null) {
+        viewModel.setSectionEnd(true);
+        viewModel.nextScreen();
+      } else {
+        viewModel.nextQuestion(context);
+      }
+    }
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -51,7 +64,17 @@ class IeltsListeningPractice2Question
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -129,14 +152,22 @@ class IeltsListeningPractice2Question
           required CoursePracticeViewModel viewModel}) =>
       Align(
           alignment: Alignment.centerRight,
-          child: _buildCountdown(context: context, viewModel: viewModel));
+          child: _buildCountdownState(context: context, viewModel: viewModel));
+
+  Widget _buildCountdownState(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      viewModel.busy(StateObjects.coursePractice)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(context: context, viewModel: viewModel);
 
   Widget _buildCountdown(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CountdownTimer(
-        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
         duration: viewModel.countdown,
+        key: ValueKey(viewModel.countdown),
+        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -233,4 +264,9 @@ class IeltsListeningPractice2Question
         backgroundColor: kcPrimaryColor,
         onTap: () => _nextScreen(context: context, viewModel: viewModel),
       );
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.coursePracticePrompt)
+          ? const PageLoadingIndicator()
+          : Container();
 }

@@ -19,7 +19,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
   final bool first;
   final CourseUnit unit;
   final CourseCatalog catalog;
-
+  final SubscriptionType type;
   final GestureTapCallback? onLessonTap;
   final GestureTapCallback? onPracticeTap;
 
@@ -28,6 +28,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
       this.onLessonTap,
       this.onPracticeTap,
       required this.unit,
+      required this.type,
       required this.index,
       required this.first,
       required this.catalog});
@@ -271,7 +272,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         itemBuilder: (context, index) => _buildCourseModuleCard(
             module: unit.modules?[index],
             onTap: () async => await viewModel.navigateToCourseModule(
-                first: first, catalog: catalog, module: unit.modules?[index])),
+                first: first,type: type, catalog: catalog, module: unit.modules?[index])),
       );
 
   Widget _buildCourseModuleCard(

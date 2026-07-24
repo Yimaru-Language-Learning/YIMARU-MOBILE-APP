@@ -139,7 +139,7 @@ class AuthenticationService with ListenableServiceMixin {
       }
     }
 
-    print('STATUSES:');
+    print('STATUSES: 1');
     print(learn);
     print(ielts);
     print(duolingo);
@@ -201,8 +201,6 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Get user data
   Future<User?> getUser() async {
-    print('GENDER:');
-    print(await _secureService.getString('gender'));
     _user = User(
       learn: await _secureService.getBool('learn'),
       ielts: await _secureService.getBool('ielts'),
@@ -223,6 +221,10 @@ class AuthenticationService with ListenableServiceMixin {
       profileCompleted: await _secureService.getBool('profileCompleted'),
       subscriptionStatus: await _secureService.getString('subscriptionStatus'),
     );
+    print('STATUSES: 2');
+
+    print(_user?.duolingo);
+    notifyListeners();
     return _user;
   }
 

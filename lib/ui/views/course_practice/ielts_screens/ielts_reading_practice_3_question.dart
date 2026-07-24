@@ -1,23 +1,43 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/sentence_matching_option.dart';
-import 'package:yimaru_app/ui/widgets/sentence_matching_question.dart';
+import 'package:yimaru_app/ui/widgets/diagram_labeling_choice_card.dart';
 
 import '../../../common/app_colors.dart';
-import '../../../common/app_constants.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class IeltsReadingPractice3Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsReadingPractice3Question({super.key});
 
+  void _nextScreen(
+      {required BuildContext context,
+      required CoursePracticeViewModel viewModel}) {
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+      viewModel.setSectionEnd(true);
+      viewModel.pop();
+    } else {
+      if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+          null) {
+        viewModel.setSectionEnd(true);
+        viewModel.nextScreen();
+      } else {
+        viewModel.nextQuestion(context);
+      }
+    }
+  }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
+    viewModel.resetValues();
     viewModel.pop();
     viewModel.goBack();
   }
@@ -41,7 +61,17 @@ class IeltsReadingPractice3Question
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -84,9 +114,7 @@ class IeltsReadingPractice3Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          // _buildCountdownWrapper(viewModel),
-          verticalSpaceSmall,
-          _buildTitle(),
+          _buildCountdownWrapper(context: context, viewModel: viewModel),
           verticalSpaceSmall,
         ],
       );
@@ -98,7 +126,7 @@ class IeltsReadingPractice3Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -108,18 +136,27 @@ class IeltsReadingPractice3Question
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+  Widget _buildCountdownWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Align(
+          alignment: Alignment.centerRight,
+          child: _buildCountdownState(context: context, viewModel: viewModel));
 
-  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
+  Widget _buildCountdownState(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      viewModel.busy(StateObjects.coursePractice)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(context: context, viewModel: viewModel);
+
+  Widget _buildCountdown(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      CountdownTimer(
         duration: viewModel.countdown,
-      );
-
-  Widget _buildTitle() => Text(
-        'Sentence Ending Matching',
-        style: style18DG700,
-        textAlign: TextAlign.center,
+        key: ValueKey(viewModel.countdown),
+        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -133,100 +170,113 @@ class IeltsReadingPractice3Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       SingleChildScrollView(
-          child: _buildQuestionWrapper(context: context, viewModel: viewModel));
+          child: _buildQuestionColumn(context: context, viewModel: viewModel));
 
-  Widget _buildQuestionWrapper(
+  Widget _buildQuestionColumn(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children:
-            _buildQuestionChildren(context: context, viewModel: viewModel),
+        children: _buildQuestionColumnChildren(
+            context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildQuestionChildren(
+  List<Widget> _buildQuestionColumnChildren(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
-        verticalSpaceMedium,
-        _buildInstruction(viewModel),
-        verticalSpaceMedium,
-        _buildSubtitle('Questions'),
-        verticalSpaceMedium,
-        _buildQuestion1(viewModel),
-        verticalSpaceMedium,
-        _buildQuestion2(viewModel),
-        verticalSpaceMedium,
-        _buildQuestion3(viewModel),
-        verticalSpaceMedium,
-        _buildSubtitle('Sentence Endings'),
-        verticalSpaceMedium,
-        _buildOptions(viewModel),
+        verticalSpaceSmall,
+        _buildQuestionContainerWrapper(viewModel),
         verticalSpaceLarge,
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
+        _buildContinueButtonWrapper(context: context, viewModel: viewModel),
       ];
 
-  Widget _buildSubtitle(String label) => Text(
-        label,
-        style: style18DG700,
+  Widget _buildQuestionContainerWrapper(CoursePracticeViewModel viewModel) =>
+      Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: kcDarkGrey.withValues(alpha: 0.1)),
+        ),
+        child: _buildQuestionWrapper(viewModel),
       );
 
-  Widget _buildInstruction(CoursePracticeViewModel viewModel) => Text(
+  Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: _buildQuestionChildren(viewModel),
+      );
+
+  List<Widget> _buildQuestionChildren(CoursePracticeViewModel viewModel) => [
+        verticalSpaceMedium,
+        _buildTitleWrapper(viewModel),
+        verticalSpaceSmall,
+        _buildDivider(),
+        verticalSpaceMedium,
+        _buildImageContainer(viewModel),
+        verticalSpaceMedium,
+        _buildDiagramLabelingChoicesWrapper(viewModel),
+        verticalSpaceMedium,
+      ];
+
+  Widget _buildTitleWrapper(CoursePracticeViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildTitle(viewModel),
+      );
+
+  Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
         viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus
             ?.first.value,
         style: style14MG400,
       );
 
-  Widget _buildQuestion1(CoursePracticeViewModel viewModel) =>
-      SentenceMatchingQuestion(
-        number: '1',
-        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+  Widget _buildDivider() => const Divider(color: kcVeryLightGrey);
+
+  Widget _buildImageContainer(CoursePracticeViewModel viewModel) => Container(
+        width: 250,
+        height: 300,
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildImageWrapper(viewModel),
+      );
+
+  Widget _buildImageWrapper(CoursePracticeViewModel viewModel) => ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: _buildImage(viewModel),
+      );
+
+  Widget _buildImage(CoursePracticeViewModel viewModel) => CachedNetworkImage(
+        fit: BoxFit.fill,
+        width: double.maxFinite,
+        imageUrl: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[1].value,
       );
 
-  Widget _buildQuestion2(CoursePracticeViewModel viewModel) =>
-      SentenceMatchingQuestion(
-        number: '2',
-        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?[2].value,
+  Widget _buildDiagramLabelingChoicesWrapper(
+          CoursePracticeViewModel viewModel) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildDiagramLabelingChoices(viewModel),
       );
 
-  Widget _buildQuestion3(CoursePracticeViewModel viewModel) =>
-      SentenceMatchingQuestion(
-        number: '3',
-        question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?[3].value,
-      );
-
-  Widget _buildOptions(CoursePracticeViewModel viewModel) => ListView.separated(
+  Widget _buildDiagramLabelingChoices(CoursePracticeViewModel viewModel) =>
+      ListView.separated(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         separatorBuilder: (context, index) => verticalSpaceSmall,
         itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.response?.last.value['options'].length,
-        itemBuilder: (context, index) => _buildOption(
-          selected: false,
-          leading: alphabet.entries
-              .take(viewModel.questions[viewModel.currentQuestion]
-                  .dynamicPayload?.response?.last.value['options'].length)
-              .map((k) => k.value)
-              .toList()[index],
-          title: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value['options'][index]['text'],
-        ),
+            ?.stimulus?.last.value['left'].length,
+        itemBuilder: (context, index) => _buildDiagramLabelingChoiceCard(
+            viewModel: viewModel, number: (index + 1).toString()),
       );
 
-  Widget _buildOption({
-    required String title,
-    required bool selected,
-    required String leading,
-  }) =>
-      SentenceMatchingOption(
-        title: title,
-        leading: leading,
-        selected: selected,
+  //Widget _build
+
+  Widget _buildDiagramLabelingChoiceCard(
+          {required String number,
+          required CoursePracticeViewModel viewModel}) =>
+      DiagramLabelingChoiceCard(
+        number: number,
+        choice: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?.last.value['left'],
       );
 
   Widget _buildContinueButtonWrapper(
@@ -241,11 +291,15 @@ class IeltsReadingPractice3Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
-        height: 55,
-        text: 'Submit',
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.nextQuestion(context),
-      );
+          height: 55,
+          borderRadius: 12,
+          text: 'Submit Task',
+          foregroundColor: kcWhite,
+          backgroundColor: kcPrimaryColor,
+          onTap: () => _nextScreen(context: context, viewModel: viewModel));
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.coursePracticePrompt)
+          ? const PageLoadingIndicator()
+          : Container();
 }

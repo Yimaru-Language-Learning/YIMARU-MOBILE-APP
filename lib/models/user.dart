@@ -11,13 +11,13 @@ class User {
 
   final String? email;
 
+  final bool? duolingo;
+
   final String? gender;
 
   final String? region;
 
   final String? country;
-
-  final bool? duolingo;
 
   final String? occupation;
 
@@ -75,11 +75,14 @@ class User {
       this.activeSubscriptions});
 
   User copyWith(
-          {int? userId,
+          {bool? learn,
+          bool? ielts,
+          int? userId,
           String? email,
           String? gender,
           String? region,
           String? country,
+          bool? duolingo,
           String? lastName,
           String? birthday,
           String? firstName,
@@ -92,11 +95,14 @@ class User {
           String? subscriptionStatus,
           List<ActiveSubscription>? activeSubscriptions}) =>
       User(
+        ielts: ielts ?? this.ielts,
+          learn: learn ?? this.learn,
           email: email ?? this.email,
           userId: userId ?? this.userId,
           gender: gender ?? this.gender,
           region: region ?? this.region,
           country: country ?? this.country,
+          duolingo: duolingo ?? this.duolingo,
           lastName: lastName ?? this.lastName,
           birthday: birthday ?? this.birthday,
           firstName: firstName ?? this.firstName,

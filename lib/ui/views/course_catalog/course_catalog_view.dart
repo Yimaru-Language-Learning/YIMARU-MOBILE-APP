@@ -18,7 +18,11 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
       {required BuildContext context,
       required CourseCatalog course,
       required CourseCatalogViewModel viewModel}) async {
-    await viewModel.navigateToCoursePractice(course.id ?? 0);
+    await viewModel.navigateToCoursePractice(
+        id: course.id ?? 0,
+        type: course.category == 'IELTS'
+            ? SubscriptionType.ielts
+            : SubscriptionType.duolingo);
 
     /*   if (course.access?.isCompleted ?? false) {
       await viewModel.navigateToCoursePractice(course.id ?? 0);
@@ -140,7 +144,7 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
 
   Widget _buildListView(CourseCatalogViewModel viewModel) => ListView.separated(
         shrinkWrap: true,
-        itemCount: viewModel.catalogs.length,
+        itemCount: 1,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildTile(
           onPracticeTap: () async => await _onPractice(
@@ -148,8 +152,11 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
               viewModel: viewModel,
               course: viewModel.catalogs[index]),
           catalog: viewModel.catalogs[index],
-          onCourseTap: () async =>
-              await viewModel.navigateToCourseUnit(viewModel.catalogs[index]),
+          onCourseTap: () async => await viewModel.navigateToCourseUnit(
+              catalog: viewModel.catalogs[index],
+              type: viewModel.catalogs[index].category == 'IELTS'
+                  ? SubscriptionType.ielts
+                  : SubscriptionType.duolingo),
         ),
         separatorBuilder: (context, index) => verticalSpaceSmall,
       );

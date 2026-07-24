@@ -109,7 +109,8 @@ class CourseLessonDetailViewmodel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> replaceWithCoursePractice(int id) async =>
+  Future<void> replaceWithCoursePractice(
+          {required int id, required SubscriptionType type}) async =>
       await _navigationService.replaceWithCoursePracticeView(
-          id: id, practice: CoursePractices.lesson);
+          id: id, type: type, practice: CoursePractices.lesson);
 }

@@ -12,6 +12,8 @@ class CourseCatalog {
 
   final Access? access;
 
+  final String? category;
+
   final String? thumbnail;
 
   final String? description;
@@ -35,6 +37,7 @@ class CourseCatalog {
     this.id,
     this.name,
     this.access,
+    this.category,
     this.thumbnail,
     this.sortOrder,
     this.unitsCount,
@@ -50,6 +53,7 @@ class CourseCatalog {
     Access? access,
     int? sortOrder,
     int? unitsCount,
+    String? category,
     int? modulesCount,
     int? lessonsCount,
     bool? hasPractice,
@@ -60,6 +64,7 @@ class CourseCatalog {
         id: id ?? this.id,
         name: name ?? this.name,
         access: access ?? this.access,
+        category: category ?? this.category,
         thumbnail: thumbnail ?? this.thumbnail,
         sortOrder: sortOrder ?? this.sortOrder,
         unitsCount: unitsCount ?? this.unitsCount,
