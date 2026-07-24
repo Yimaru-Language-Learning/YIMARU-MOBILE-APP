@@ -569,8 +569,8 @@ class StackedRouter extends _i1.RouterBase {
     _i24.CourseLessonDetailView: (data) {
       final args = data.getArgs<CourseLessonDetailViewArguments>(nullOk: false);
       return _i41.MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            _i24.CourseLessonDetailView(key: args.key, lesson: args.lesson),
+        builder: (context) => _i24.CourseLessonDetailView(
+            key: args.key, type: args.type, lesson: args.lesson),
         settings: data,
       );
     },
@@ -612,8 +612,8 @@ class StackedRouter extends _i1.RouterBase {
     _i29.CourseUnitView: (data) {
       final args = data.getArgs<CourseUnitViewArguments>(nullOk: false);
       return _i41.MaterialPageRoute<dynamic>(
-        builder: (context) =>
-            _i29.CourseUnitView(key: args.key, catalog: args.catalog),
+        builder: (context) => _i29.CourseUnitView(
+            key: args.key, type: args.type, catalog: args.catalog),
         settings: data,
       );
     },
@@ -631,6 +631,7 @@ class StackedRouter extends _i1.RouterBase {
       return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i31.CourseModuleView(
             key: args.key,
+            type: args.type,
             first: args.first,
             module: args.module,
             catalog: args.catalog),
@@ -669,7 +670,10 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CoursePracticeViewArguments>(nullOk: false);
       return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i35.CoursePracticeView(
-            key: args.key, id: args.id, practice: args.practice),
+            key: args.key,
+            id: args.id,
+            type: args.type,
+            practice: args.practice),
         settings: data,
       );
     },
@@ -1299,27 +1303,30 @@ class FailureViewArguments {
 class CourseLessonDetailViewArguments {
   const CourseLessonDetailViewArguments({
     this.key,
+    required this.type,
     required this.lesson,
   });
 
   final _i41.Key? key;
 
+  final _i45.SubscriptionType type;
+
   final _i47.CourseLesson lesson;
 
   @override
   String toString() {
-    return '{"key": "$key", "lesson": "$lesson"}';
+    return '{"key": "$key", "type": "$type", "lesson": "$lesson"}';
   }
 
   @override
   bool operator ==(covariant CourseLessonDetailViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.lesson == lesson;
+    return other.key == key && other.type == type && other.lesson == lesson;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ lesson.hashCode;
+    return key.hashCode ^ type.hashCode ^ lesson.hashCode;
   }
 }
 
@@ -1419,27 +1426,30 @@ class CourseCatalogViewArguments {
 class CourseUnitViewArguments {
   const CourseUnitViewArguments({
     this.key,
+    required this.type,
     required this.catalog,
   });
 
   final _i41.Key? key;
 
+  final _i45.SubscriptionType type;
+
   final _i48.CourseCatalog catalog;
 
   @override
   String toString() {
-    return '{"key": "$key", "catalog": "$catalog"}';
+    return '{"key": "$key", "type": "$type", "catalog": "$catalog"}';
   }
 
   @override
   bool operator ==(covariant CourseUnitViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.catalog == catalog;
+    return other.key == key && other.type == type && other.catalog == catalog;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ catalog.hashCode;
+    return key.hashCode ^ type.hashCode ^ catalog.hashCode;
   }
 }
 
@@ -1468,12 +1478,15 @@ class LandingViewArguments {
 class CourseModuleViewArguments {
   const CourseModuleViewArguments({
     this.key,
+    required this.type,
     required this.first,
     required this.module,
     required this.catalog,
   });
 
   final _i41.Key? key;
+
+  final _i45.SubscriptionType type;
 
   final bool first;
 
@@ -1483,13 +1496,14 @@ class CourseModuleViewArguments {
 
   @override
   String toString() {
-    return '{"key": "$key", "first": "$first", "module": "$module", "catalog": "$catalog"}';
+    return '{"key": "$key", "type": "$type", "first": "$first", "module": "$module", "catalog": "$catalog"}';
   }
 
   @override
   bool operator ==(covariant CourseModuleViewArguments other) {
     if (identical(this, other)) return true;
     return other.key == key &&
+        other.type == type &&
         other.first == first &&
         other.module == module &&
         other.catalog == catalog;
@@ -1497,7 +1511,11 @@ class CourseModuleViewArguments {
 
   @override
   int get hashCode {
-    return key.hashCode ^ first.hashCode ^ module.hashCode ^ catalog.hashCode;
+    return key.hashCode ^
+        type.hashCode ^
+        first.hashCode ^
+        module.hashCode ^
+        catalog.hashCode;
   }
 }
 
@@ -1596,6 +1614,7 @@ class CoursePracticeViewArguments {
   const CoursePracticeViewArguments({
     this.key,
     required this.id,
+    required this.type,
     required this.practice,
   });
 
@@ -1603,22 +1622,27 @@ class CoursePracticeViewArguments {
 
   final int id;
 
+  final _i45.SubscriptionType type;
+
   final _i45.CoursePractices practice;
 
   @override
   String toString() {
-    return '{"key": "$key", "id": "$id", "practice": "$practice"}';
+    return '{"key": "$key", "id": "$id", "type": "$type", "practice": "$practice"}';
   }
 
   @override
   bool operator ==(covariant CoursePracticeViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key && other.id == id && other.practice == practice;
+    return other.key == key &&
+        other.id == id &&
+        other.type == type &&
+        other.practice == practice;
   }
 
   @override
   int get hashCode {
-    return key.hashCode ^ id.hashCode ^ practice.hashCode;
+    return key.hashCode ^ id.hashCode ^ type.hashCode ^ practice.hashCode;
   }
 }
 
@@ -2129,6 +2153,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
 
   Future<dynamic> navigateToCourseLessonDetailView({
     _i41.Key? key,
+    required _i45.SubscriptionType type,
     required _i47.CourseLesson lesson,
     int? routerId,
     bool preventDuplicates = true,
@@ -2137,7 +2162,8 @@ extension NavigatorStateExtension on _i51.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.courseLessonDetailView,
-        arguments: CourseLessonDetailViewArguments(key: key, lesson: lesson),
+        arguments: CourseLessonDetailViewArguments(
+            key: key, type: type, lesson: lesson),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2211,6 +2237,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
 
   Future<dynamic> navigateToCourseUnitView({
     _i41.Key? key,
+    required _i45.SubscriptionType type,
     required _i48.CourseCatalog catalog,
     int? routerId,
     bool preventDuplicates = true,
@@ -2219,7 +2246,8 @@ extension NavigatorStateExtension on _i51.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.courseUnitView,
-        arguments: CourseUnitViewArguments(key: key, catalog: catalog),
+        arguments:
+            CourseUnitViewArguments(key: key, type: type, catalog: catalog),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2244,6 +2272,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
 
   Future<dynamic> navigateToCourseModuleView({
     _i41.Key? key,
+    required _i45.SubscriptionType type,
     required bool first,
     required _i49.CourseModule? module,
     required _i48.CourseCatalog catalog,
@@ -2255,7 +2284,11 @@ extension NavigatorStateExtension on _i51.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.courseModuleView,
         arguments: CourseModuleViewArguments(
-            key: key, first: first, module: module, catalog: catalog),
+            key: key,
+            type: type,
+            first: first,
+            module: module,
+            catalog: catalog),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2319,6 +2352,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
   Future<dynamic> navigateToCoursePracticeView({
     _i41.Key? key,
     required int id,
+    required _i45.SubscriptionType type,
     required _i45.CoursePractices practice,
     int? routerId,
     bool preventDuplicates = true,
@@ -2327,8 +2361,8 @@ extension NavigatorStateExtension on _i51.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.coursePracticeView,
-        arguments:
-            CoursePracticeViewArguments(key: key, id: id, practice: practice),
+        arguments: CoursePracticeViewArguments(
+            key: key, id: id, type: type, practice: practice),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2803,6 +2837,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
 
   Future<dynamic> replaceWithCourseLessonDetailView({
     _i41.Key? key,
+    required _i45.SubscriptionType type,
     required _i47.CourseLesson lesson,
     int? routerId,
     bool preventDuplicates = true,
@@ -2811,7 +2846,8 @@ extension NavigatorStateExtension on _i51.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.courseLessonDetailView,
-        arguments: CourseLessonDetailViewArguments(key: key, lesson: lesson),
+        arguments: CourseLessonDetailViewArguments(
+            key: key, type: type, lesson: lesson),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2885,6 +2921,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
 
   Future<dynamic> replaceWithCourseUnitView({
     _i41.Key? key,
+    required _i45.SubscriptionType type,
     required _i48.CourseCatalog catalog,
     int? routerId,
     bool preventDuplicates = true,
@@ -2893,7 +2930,8 @@ extension NavigatorStateExtension on _i51.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.courseUnitView,
-        arguments: CourseUnitViewArguments(key: key, catalog: catalog),
+        arguments:
+            CourseUnitViewArguments(key: key, type: type, catalog: catalog),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2918,6 +2956,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
 
   Future<dynamic> replaceWithCourseModuleView({
     _i41.Key? key,
+    required _i45.SubscriptionType type,
     required bool first,
     required _i49.CourseModule? module,
     required _i48.CourseCatalog catalog,
@@ -2929,7 +2968,11 @@ extension NavigatorStateExtension on _i51.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.courseModuleView,
         arguments: CourseModuleViewArguments(
-            key: key, first: first, module: module, catalog: catalog),
+            key: key,
+            type: type,
+            first: first,
+            module: module,
+            catalog: catalog),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2993,6 +3036,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
   Future<dynamic> replaceWithCoursePracticeView({
     _i41.Key? key,
     required int id,
+    required _i45.SubscriptionType type,
     required _i45.CoursePractices practice,
     int? routerId,
     bool preventDuplicates = true,
@@ -3001,8 +3045,8 @@ extension NavigatorStateExtension on _i51.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.coursePracticeView,
-        arguments:
-            CoursePracticeViewArguments(key: key, id: id, practice: practice),
+        arguments: CoursePracticeViewArguments(
+            key: key, id: id, type: type, practice: practice),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

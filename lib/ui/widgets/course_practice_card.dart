@@ -14,12 +14,12 @@ class CoursePracticeCard extends StatelessWidget {
   Widget build(BuildContext context) => _buildContainer();
 
   Widget _buildContainer() => Container(
-        // height: 250,
+        height: 175,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: kcPrimaryColor.withValues(alpha: 0.25),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildColumn(),
       );
 
@@ -27,20 +27,17 @@ class CoursePracticeCard extends StatelessWidget {
       Column(mainAxisSize: MainAxisSize.min, children: _buildColumnChildren());
 
   List<Widget> _buildColumnChildren() => [
-        verticalSpaceTiny,
-        _buildTitleWrapper(),
+        verticalSpaceMedium,
+        _buildTitle(),
         verticalSpaceSmall,
         _buildStartButtonWrapper(),
         verticalSpaceSmall,
       ];
 
-  Widget _buildTitleWrapper() => Expanded(child: _buildTitle());
-
   Widget _buildTitle() => Text(
         title,
-        maxLines: 2,
-        style: style18DG700,
-        overflow: TextOverflow.fade,
+        maxLines: 1,
+        style: style14DG400,
       );
 
   Widget _buildStartButtonWrapper() => SizedBox(
@@ -53,7 +50,7 @@ class CoursePracticeCard extends StatelessWidget {
         width: 200,
         onTap: onTap,
         borderRadius: 8,
-        text: 'Start Practice',
+        text: 'Take Assessment',
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );

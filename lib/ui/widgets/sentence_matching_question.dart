@@ -90,7 +90,7 @@ class SentenceMatchingQuestion
         ),
         dropdownMenuEntries: alphabet.entries
             .take(viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                ?.response?.last.value['options'].length)
+                ?.stimulus?[1].value['right'].length)
             .map((k) => k.value)
             .map(
               (option) => DropdownMenuEntry<String>(

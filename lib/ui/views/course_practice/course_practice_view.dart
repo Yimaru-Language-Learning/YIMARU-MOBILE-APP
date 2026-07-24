@@ -46,19 +46,22 @@ import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_wr
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_3_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_4_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/duolingo_screens/duolingo_writing_practice_4_review.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_finish_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_listening_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_listening_practice_3_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_listening_section_intro.dart';
-import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_reading_practice_6_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_reading_practice_2_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_reading_practice_7_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_intro_screen.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_reading_section_intro.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_1_variant.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_2_answer.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_2_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_2_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_3_review.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_4_variant.dart';
-import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_6_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_speaking_practice_8_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_listening_practice_6_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_listening_practice_8_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_writing_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/ielts_screens/ielts_writing_practice_1_review.dart';
 
@@ -71,13 +74,16 @@ import '../../widgets/practice_loading_screen.dart';
 import 'course_practice_view.form.dart';
 import 'course_practice_viewmodel.dart';
 import 'duolingo_screens/duolingo_listening_practice_3_variant.dart';
-import 'ielts_screens/ielts_reading_practice_2_question.dart';
+import 'ielts_screens/ielts_listening_practice_10_question.dart';
+import 'ielts_screens/ielts_listening_practice_5_question.dart';
+import 'ielts_screens/ielts_listening_practice_7_question.dart';
+import 'ielts_screens/ielts_reading_practice_3_question.dart';
 import 'ielts_screens/ielts_listening_practice_2_question.dart';
 import 'ielts_screens/ielts_listening_practice_9_question.dart';
 import 'ielts_screens/ielts_reading_practice_1_question.dart';
-import 'ielts_screens/ielts_reading_practice_3_question.dart';
 import 'ielts_screens/ielts_reading_practice_4_question.dart';
 import 'ielts_screens/ielts_reading_practice_5_question.dart';
+import 'ielts_screens/ielts_reading_practice_6_question.dart';
 import 'ielts_screens/ielts_speaking_practice_1_review.dart';
 import 'ielts_screens/ielts_speaking_practice_3_answer.dart';
 import 'ielts_screens/ielts_speaking_practice_3_question.dart';
@@ -91,9 +97,11 @@ import 'ielts_screens/ielts_writing_practice_2_review.dart';
 class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     with $CoursePracticeView {
   final int id;
+  final SubscriptionType type;
   final CoursePractices practice;
 
-  const CoursePracticeView({Key? key, required this.id, required this.practice})
+  const CoursePracticeView(
+      {Key? key, required this.id, required this.type, required this.practice})
       : super(key: key);
 
   String _getErrorMessages() {
@@ -286,6 +294,41 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     return Container();
   }
 
+  bool _buildIeltsSectionScreenCondition(CoursePracticeViewModel viewModel) =>
+      viewModel
+              .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          1 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          4 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          31 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          33 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          34 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          40 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          42 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          46 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          47 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          48 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          58 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          59 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          61 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          62 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          62 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          63;
+
   bool _buildIeltsIntroScreenCondition(CoursePracticeViewModel viewModel) =>
       viewModel
               .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
@@ -311,15 +354,52 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           58 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          59;
+          59 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          61 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          62 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          63;
 
-  Widget _buildIeltsIntroScreenWrapper(CoursePracticeViewModel viewModel) {
-    if (viewModel.isSectionStart) {
-      if (viewModel.questions[viewModel.currentQuestion].stimulusBlockKey ==
-          'listening-section-1') {
-        return const IeltsListeningSectionIntro(title: 'Listening - Section 1');
+  Widget? _buildIeltsIntroScreenWrapper(CoursePracticeViewModel viewModel) {
+    if (_buildIeltsSectionScreenCondition(viewModel)) {
+      if (viewModel.stimulusBlockKey != null) {
+        if (viewModel.isSectionStart) {
+          if (viewModel.questions[viewModel.currentQuestion].stimulusBlockKey ==
+              'listening-section-1') {
+            return const IeltsListeningSectionIntro(
+                title: 'Listening - Section 1');
+          } else if (viewModel
+                  .questions[viewModel.currentQuestion].stimulusBlockKey ==
+              'listening-section-2') {
+            return const IeltsListeningSectionIntro(
+                title: 'Listening - Section 2');
+          } else if (viewModel
+                  .questions[viewModel.currentQuestion].stimulusBlockKey ==
+              'listening-section-3') {
+            return const IeltsListeningSectionIntro(
+                title: 'Listening - Section 3');
+          } else if (viewModel
+                  .questions[viewModel.currentQuestion].stimulusBlockKey ==
+              'listening-section-4') {
+            return const IeltsListeningSectionIntro(
+                title: 'Listening - Section 4');
+          } else if (viewModel
+                  .questions[viewModel.currentQuestion].stimulusBlockKey ==
+              'reading-section-1') {
+            return const IeltsReadingSectionIntro();
+          } else if (viewModel
+                  .questions[viewModel.currentQuestion].stimulusBlockKey ==
+              'reading-section-2') {
+            return const IeltsReadingSectionIntro();
+          }
+          return Container();
+        } else {
+          return null;
+        }
       }
-      return Container();
+      return _buildIeltsIntroScreen(viewModel);
     } else {
       return _buildIeltsIntroScreen(viewModel);
     }
@@ -351,39 +431,76 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return const IeltsListeningPractice3Question();
     } else if (id == 0 /*Table completion*/) {
       return Container();
-    } else if (id == 0 /*Diagram completion*/) {
-      return Container();
+    } else if (id == 61 /*Map/Plan/Diagram Completion*/) {
+      return const IeltsListeningPractice5Question();
     } else if (id == 31 /*Diagram labeling*/) {
-      return const IeltsSpeakingPractice6Question();
-    } else if (id == 0 /*Multiple choice*/) {
-      return Container();
+      return const IeltsListeningPractice6Question();
+    } else if (id == 62 /*IELTS Listening Multiple choice*/) {
+      return const IeltsListeningPractice7Question();
     } else if (id == 33 /*Matching*/) {
-      return const IeltsSpeakingPractice8Question();
-    } else if (id == 34 /*Summary completion*/) {
+      return const IeltsListeningPractice8Question();
+    } else if (id == 34 /*IELTS Listening - Summary completion*/) {
       return const IeltsListeningPractice9Question();
-    } else if (id == 0 /*Sentence completion*/) {
-      return Container();
+    } else if (id == 35 /*Sentence completion*/) {
+      return const IeltsListeningPractice10Question();
     } else if (id == 46 /*Paragraph choice*/) {
       return const IeltsReadingPractice1Question();
-    } else if (id == 58 /*Reading diagram labeling*/) {
+    } else if (id == 63 /*IELTS Reading - Summary completion*/) {
       return const IeltsReadingPractice2Question();
-    } else if (id == 47 /*Sentence Ending Matching*/) {
+    } else if (id == 58 /*IELTS Reading - Diagram Labeling*/) {
       return const IeltsReadingPractice3Question();
-    } else if (id == 48 /*True / False / Not Given*/) {
+    } else if (id == 47 /*Sentence Ending Matching*/) {
       return const IeltsReadingPractice4Question();
-    } else if (id == 1 /*Multiple choice*/) {
+    } else if (id == 48 /*True / False / Not Given*/) {
       return const IeltsReadingPractice5Question();
-    } else if (id == 59 /*Yes / No / Not Given*/) {
+    } else if (id == 64 /*IELTS Reading - Multiple choice*/) {
       return const IeltsReadingPractice6Question();
+    } else if (id == 59 /*Yes / No / Not Given*/) {
+      return const IeltsReadingPractice7Question();
     }
     return Container();
   }
 
   bool _buildIeltsAnswerScreenCondition(CoursePracticeViewModel viewModel) =>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          1 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          4 &&
+      // Original
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           26 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          27;
+          27
+      // Original
+      &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          31 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          33 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          34 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          35 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          40 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          42 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          46 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          47 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          48 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          58 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          59 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          61 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          62 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          63;
 
   Widget _buildIeltsAnswerScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
@@ -401,6 +518,41 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return Container();
     }
   }
+
+  bool _buildIeltsReviewScreenCondition(CoursePracticeViewModel viewModel) =>
+      viewModel
+              .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          1 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          4 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          31 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          33 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          34 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          35 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          40 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          42 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          46 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          47 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          48 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          58 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          59 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          61 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          62 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          63;
 
   Widget _buildIeltsReviewScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
@@ -422,6 +574,15 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return Container();
     }
   }
+
+  bool _buildIeltsFinishScreenCondition(CoursePracticeViewModel viewModel) =>
+      viewModel.isSectionEnd &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          46 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          58 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          63;
 
   @override
   void onViewModelReady(CoursePracticeViewModel viewModel) async {
@@ -490,10 +651,11 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       index: viewModel.currentPage, children: _buildBodyChildren(viewModel));
 
   List<Widget> _buildBodyChildren(CoursePracticeViewModel viewModel) =>
-      [_buildCoursePracticesScreen(), _buildPracticesView(viewModel)];
+      [_buildCoursePracticesScreen(viewModel), _buildPracticesView(viewModel)];
 
-  Widget _buildCoursePracticesScreen() =>
-      CoursePracticesScreens(practiceController: practiceController);
+  Widget _buildCoursePracticesScreen(CoursePracticeViewModel viewModel) =>
+      CoursePracticesScreens(
+          practiceController: practiceController, type: type);
 
   Widget _buildPracticesView(CoursePracticeViewModel viewModel) =>
       PageView.builder(
@@ -566,12 +728,18 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           required PracticeQuestion question,
           required CoursePracticeViewModel viewModel}) =>
       [
-        if (_buildIeltsIntroScreenCondition(viewModel))
-          _buildIeltsIntroScreen(viewModel),
+        if (_buildIeltsIntroScreenWrapper(viewModel) != null)
+          _buildIeltsIntroScreenWrapper(viewModel)!,
+
+/*        if (_buildIeltsIntroScreenCondition(viewModel))
+          _buildIeltsIntroScreen(viewModel),*/
         _buildIeltsQuestionScreen(viewModel),
         if (_buildIeltsAnswerScreenCondition(viewModel))
           _buildIeltsAnswerScreen(viewModel),
-        _buildIeltsReviewScreen(viewModel),
+        if (_buildIeltsReviewScreenCondition(viewModel))
+          _buildIeltsReviewScreen(viewModel),
+        if (_buildIeltsFinishScreenCondition(viewModel))
+          _buildIeltsFinishScreenWrapper(viewModel),
       ];
 
   Widget _buildIeltsIntroScreen(CoursePracticeViewModel viewModel) =>
@@ -583,4 +751,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
             viewModel.selectedQuestionParam['instruction_subtitle'],
         instructionTitle: viewModel.selectedQuestionParam['instruction_title'],
       );
+
+  Widget _buildIeltsFinishScreenWrapper(CoursePracticeViewModel viewModel) =>
+      IeltsFinishScreen(
+          title: viewModel.selectedQuestionParam['outro_title'],
+          subtitle: viewModel.selectedQuestionParam['outro_subtitle']);
 }

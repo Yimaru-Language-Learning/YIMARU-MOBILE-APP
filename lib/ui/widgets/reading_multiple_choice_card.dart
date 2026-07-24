@@ -6,12 +6,13 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.da
 
 import 'custom_small_trailing_radio_button.dart';
 
-class MultipleChoiceCard extends ViewModelWidget<CoursePracticeViewModel> {
+class ReadingMultipleChoiceCard
+    extends ViewModelWidget<CoursePracticeViewModel> {
   final String number;
   final String question;
   final List<dynamic> choice;
 
-  const MultipleChoiceCard(
+  const ReadingMultipleChoiceCard(
       {super.key,
       required this.choice,
       required this.number,

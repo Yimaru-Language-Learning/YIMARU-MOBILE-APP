@@ -17,14 +17,16 @@ import 'course_unit_viewmodel.dart';
 
 class CourseUnitView extends StackedView<CourseUnitViewModel> {
   final CourseCatalog catalog;
+  final SubscriptionType type;
 
-  const CourseUnitView({Key? key, required this.catalog}) : super(key: key);
+  const CourseUnitView({Key? key, required this.type, required this.catalog})
+      : super(key: key);
 
   Future<void> _onPractice(
       {required CourseUnit unit,
       required BuildContext context,
       required CourseUnitViewModel viewModel}) async {
-    await viewModel.navigateToCoursePractice(unit.id ?? 0);
+    await viewModel.navigateToCoursePractice(id: unit.id ?? 0, type: type);
 
 /*    if (unit.access?.isCompleted ?? false) {
       await viewModel.navigateToCoursePractice(unit.id ?? 0);
@@ -187,6 +189,7 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
   }) =>
       CourseUnitTile(
         unit: unit,
+        type: type,
         first: first,
         index: index,
         catalog: catalog,

@@ -9,6 +9,7 @@ class IeltsListeningInstructionCard extends StatelessWidget {
   Widget build(BuildContext context) => _buildContainer();
 
   Widget _buildContainer() => Container(
+        height: 175,
         width: double.maxFinite,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
@@ -28,7 +29,11 @@ class IeltsListeningInstructionCard extends StatelessWidget {
       [_buildInstructionWrapper(), _buildDividerWrapper(), _buildRow()];
 
   Widget _buildInstructionWrapper() => Row(
-        children: [_buildWarningIconWrapper(), _buildInstruction()],
+        children: [
+          _buildWarningIconWrapper(),
+          horizontalSpaceSmall,
+          _buildInstructionExpandedWrapper()
+        ],
       );
 
   Widget _buildWarningIconWrapper() => CircleAvatar(
@@ -41,13 +46,17 @@ class IeltsListeningInstructionCard extends StatelessWidget {
         color: kcPrimaryColor,
       );
 
+  Widget _buildInstructionExpandedWrapper() =>
+      Expanded(child: _buildInstruction());
+
   Widget _buildInstruction() => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildInstructionChildren(),
       );
 
-  List<Widget> _buildInstructionChildren() => [_buildTitle(), _buildSubtitle()];
+  List<Widget> _buildInstructionChildren() =>
+      [_buildTitle(), verticalSpaceTiny, _buildSubtitle()];
 
   Widget _buildTitle() => Text(
         'Important Instruction',
@@ -63,11 +72,11 @@ class IeltsListeningInstructionCard extends StatelessWidget {
                 style: style14MG400, text: 'You will hear an audio recording'),
             TextSpan(
               style: style12R700,
-              text: 'one time only during the exam',
+              text: ' one time only during the exam ',
             ),
             TextSpan(
               style: style14MG400,
-              text: ' You can replay here for tutorial purposes.',
+              text: 'You can replay here for tutorial purposes.',
             ),
           ],
         ),
@@ -78,7 +87,7 @@ class IeltsListeningInstructionCard extends StatelessWidget {
   Widget _buildDivider() => const Divider(color: kcVeryLightGrey);
 
   Widget _buildRow() => Row(
-        children: [_buildHeadsetIcon(), _buildWarning()],
+        children: [_buildHeadsetIcon(), horizontalSpaceSmall, _buildWarning()],
       );
 
   Widget _buildHeadsetIcon() => const Icon(

@@ -1,30 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
-import '../../../widgets/duolingo_practice_card.dart';
+import '../../../widgets/course_practice_card.dart';
 import '../../../widgets/small_app_bar.dart';
 import '../course_practice_viewmodel.dart';
 
 class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
+  final SubscriptionType type;
   final TextEditingController practiceController;
 
-  const CoursePracticesScreens({super.key, required this.practiceController});
+  const CoursePracticesScreens(
+      {super.key, required this.type, required this.practiceController});
 
   void _reset(CoursePracticeViewModel viewModel) {
     viewModel.resetValues();
     practiceController.clear();
   }
 
-  Future<void> _getPracticeQuestions(
+  Future<void> _navigate(
       {required int index,
       required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
-    _reset(viewModel);
-    await viewModel.getCoursePracticeQuestions(
-        context: context, id: viewModel.practices[index].questionSetId ?? 0);
+    if (type == SubscriptionType.duolingo) {
+      print('SUBSCRIPTION:');
+      print(viewModel.user?.duolingo);
+      if (viewModel.user?.duolingo ?? false) {
+        _reset(viewModel);
+        await viewModel.getCoursePracticeQuestions(
+            context: context,
+            id: viewModel.practices[index].questionSetId ?? 0);
+      } else {
+        await viewModel.navigateToCourseSubscription(SubscriptionType.duolingo);
+      }
+    } else {
+      if (viewModel.user?.ielts ?? false) {
+        _reset(viewModel);
+        await viewModel.getCoursePracticeQuestions(
+            context: context,
+            id: viewModel.practices[index].questionSetId ?? 0);
+      } else {
+        await viewModel.navigateToCourseSubscription(SubscriptionType.ielts);
+      }
+    }
   }
+
+
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
@@ -106,7 +129,7 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Duolingo',
+        SubscriptionType.duolingo == type ? 'Duolingo' : 'IELTS',
         style: style18DG700,
       );
 
@@ -124,7 +147,7 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildCard(
           title: viewModel.practices[index].title ?? '',
-          onTap: () async => await _getPracticeQuestions(
+          onTap: () async => await _navigate(
               index: index, context: context, viewModel: viewModel),
         ),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -139,7 +162,7 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
     required String title,
     required GestureTapCallback onTap,
   }) =>
-      DuolingoPracticeCard(
+      CoursePracticeCard(
         title: title,
         onTap: onTap,
       );

@@ -3,16 +3,36 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/paragraph_option_card.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
 class IeltsReadingPractice1Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsReadingPractice1Question({super.key});
+
+  void _nextScreen(
+      {required BuildContext context,
+      required CoursePracticeViewModel viewModel}) {
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+      viewModel.setSectionEnd(true);
+      viewModel.pop();
+    } else {
+      if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+          null) {
+        viewModel.setSectionEnd(true);
+        viewModel.nextScreen();
+      } else {
+        viewModel.nextQuestion(context);
+      }
+    }
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -39,7 +59,17 @@ class IeltsReadingPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -82,7 +112,7 @@ class IeltsReadingPractice1Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          _buildCountdownWrapper(viewModel),
+          _buildCountdownWrapper(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
@@ -105,13 +135,27 @@ class IeltsReadingPractice1Question
         user: viewModel.user?.firstName ?? '',
         onCancel: () async => await _cancel(viewModel),
       );
+  Widget _buildCountdownWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Align(
+          alignment: Alignment.centerRight,
+          child: _buildCountdownState(context: context, viewModel: viewModel));
 
-  Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
-      alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
+  Widget _buildCountdownState(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      viewModel.busy(StateObjects.coursePractice)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(context: context, viewModel: viewModel);
 
-  Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-        onEnd: viewModel.nextScreen,
+  Widget _buildCountdown(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      CountdownTimer(
         duration: viewModel.countdown,
+        key: ValueKey(viewModel.countdown),
+        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildTitle() => Text(
@@ -209,6 +253,11 @@ class IeltsReadingPractice1Question
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await viewModel.nextQuestion(context),
+        onTap: () => _nextScreen(context: context, viewModel: viewModel),
       );
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.coursePracticePrompt)
+          ? const PageLoadingIndicator()
+          : Container();
 }

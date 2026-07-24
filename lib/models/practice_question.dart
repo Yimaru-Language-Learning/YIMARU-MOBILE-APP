@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yimaru_app/models/dynamic_payload.dart';
+import 'package:yimaru_app/models/shared_stimulus.dart';
 
 part 'practice_question.g.dart';
 
@@ -23,11 +24,11 @@ class PracticeQuestion {
   @JsonKey(name: 'stimulus_block_key')
   final String? stimulusBlockKey;
 
-  @JsonKey(name: 'shared_stimulus')
-  final DynamicPayload? sharedStimulus;
-
   @JsonKey(name: 'dynamic_payload')
   final DynamicPayload? dynamicPayload;
+
+  @JsonKey(name: 'shared_stimulus')
+  final List<SharedStimulus>? sharedStimulus;
 
   @JsonKey(name: 'question_type_definition_id')
   final int? questionTypeDefinitionId;

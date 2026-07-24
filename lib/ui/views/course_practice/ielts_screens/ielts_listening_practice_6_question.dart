@@ -4,22 +4,35 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
 import '../../../widgets/countdown_timer.dart';
 import '../../../widgets/course_practice_app_bar.dart';
 import '../../../widgets/custom_elevated_button.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../course_practice_viewmodel.dart';
 
-class IeltsSpeakingPractice6Question
+class IeltsListeningPractice6Question
     extends ViewModelWidget<CoursePracticeViewModel> {
-  const IeltsSpeakingPractice6Question({super.key});
+  const IeltsListeningPractice6Question({super.key});
 
   void _nextScreen(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) {
     FocusManager.instance.primaryFocus?.unfocus();
-    viewModel.nextQuestion(context);
+    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
+      viewModel.setSectionEnd(true);
+      viewModel.nextScreen();
+    } else {
+      if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+          null) {
+        viewModel.setSectionEnd(true);
+        viewModel.nextScreen();
+      } else {
+        viewModel.nextQuestion(context);
+      }
+    }
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
@@ -48,7 +61,17 @@ class IeltsSpeakingPractice6Question
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        body: _buildScaffoldStack(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildScaffoldStack(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Stack(
+        children: [
+          _buildScaffold(context: context, viewModel: viewModel),
+          _buildBodyState(viewModel)
+        ],
       );
 
   Widget _buildScaffold(
@@ -91,7 +114,7 @@ class IeltsSpeakingPractice6Question
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceSmall,
-          // _buildCountdownWrapper(viewModel),
+          _buildCountdownWrapper(context: context, viewModel: viewModel),
           verticalSpaceSmall,
           _buildTitle(),
           verticalSpaceSmall,
@@ -105,7 +128,7 @@ class IeltsSpeakingPractice6Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -126,14 +149,22 @@ class IeltsSpeakingPractice6Question
           required CoursePracticeViewModel viewModel}) =>
       Align(
           alignment: Alignment.centerRight,
-          child: _buildCountdown(context: context, viewModel: viewModel));
+          child: _buildCountdownState(context: context, viewModel: viewModel));
+
+  Widget _buildCountdownState(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      viewModel.busy(StateObjects.coursePractice)
+          ? const CountdownTimer(time: '00:00')
+          : _buildCountdown(context: context, viewModel: viewModel);
 
   Widget _buildCountdown(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CountdownTimer(
-        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
         duration: viewModel.countdown,
+        key: ValueKey(viewModel.countdown),
+        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -278,7 +309,7 @@ class IeltsSpeakingPractice6Question
               const EdgeInsets.symmetric(horizontal: 5, vertical: 7.5),
         ),
         dropdownMenuEntries: (viewModel.questions[viewModel.currentQuestion]
-                .dynamicPayload?.stimulus?.last.value['left'] as List)
+                .dynamicPayload?.stimulus?.last.value['right'] as List)
             .map((e) => e['text'])
             .map(
               (option) => DropdownMenuEntry<String>(
@@ -343,4 +374,9 @@ class IeltsSpeakingPractice6Question
           foregroundColor: kcWhite,
           backgroundColor: kcPrimaryColor,
           onTap: () => _nextScreen(context: context, viewModel: viewModel));
+
+  Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.coursePracticePrompt)
+          ? const PageLoadingIndicator()
+          : Container();
 }
