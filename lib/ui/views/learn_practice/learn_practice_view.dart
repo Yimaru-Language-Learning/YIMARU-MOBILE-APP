@@ -115,7 +115,7 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
       PracticeLoadingScreen(
         message: _getErrorMessages(),
         isLoading: viewModel.busy(StateObjects.learnPractice),
-        onTap: () async =>
+        onRetry: () async =>
             await viewModel.getLearnPractices(id: id, practice: practice),
         onPop: viewModel.practices.isEmpty || viewModel.questions.isEmpty
             ? viewModel.pop

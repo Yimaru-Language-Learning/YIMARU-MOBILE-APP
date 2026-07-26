@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
-import 'package:yimaru_app/ui/widgets/learn_subscription_pricing_card.dart';
+import 'package:yimaru_app/ui/widgets/subscription_pricing_card.dart';
 
 import '../common/ui_helpers.dart';
 import '../views/subscription/subscription_viewmodel.dart';
 
 class SubscriptionPricingSection
     extends ViewModelWidget<SubscriptionViewModel> {
-  const SubscriptionPricingSection({super.key});
+  final String subtitle;
+  const SubscriptionPricingSection({super.key,required this.subtitle});
 
   @override
   Widget build(BuildContext context, SubscriptionViewModel viewModel) =>
@@ -44,7 +45,7 @@ class SubscriptionPricingSection
   Widget _buildTile() => ListTile(
         title: _buildTileTitle(),
         leading: _buildTileLeading(),
-        subtitle: _buildTileSubtitle(),
+        subtitle: _buildSubtitle(),
         contentPadding: EdgeInsets.zero,
       );
 
@@ -53,8 +54,8 @@ class SubscriptionPricingSection
         style: style16DG600,
       );
 
-  Widget _buildTileSubtitle() =>
-      Text('This includes Monthly and 3-Month packages', style: style14MG400);
+  Widget _buildSubtitle() =>
+      Text(subtitle, style: style14MG400);
 
   Widget _buildTileLeading() => const Icon(
         Icons.key,
@@ -87,11 +88,11 @@ class SubscriptionPricingSection
           required String currency,
           required int selectedIndex,
           required GestureTapCallback onTap}) =>
-      LearnSubscriptionPricingCard(
+      SubscriptionPricingCard(
         type: type,
-        price: price,
-        onTap: onTap,
+        onTap:onTap,
         index: index,
+        price: price,
         currency: currency,
         selectedIndex: selectedIndex,
       );

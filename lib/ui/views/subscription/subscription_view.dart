@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:yimaru_app/ui/views/subscription/screens/course_subscription_package_screen.dart';
 import 'package:yimaru_app/ui/views/subscription/screens/subscription_form_screen.dart';
-import 'package:yimaru_app/ui/views/subscription/screens/subscription_package_screen.dart';
+import 'package:yimaru_app/ui/views/subscription/screens/learn_subscription_package_screen.dart';
 import 'package:yimaru_app/ui/views/subscription/subscription_view.form.dart';
 import 'package:yimaru_app/ui/views/subscription/subscription_viewmodel.dart';
 
@@ -15,6 +16,7 @@ import '../../common/validators/form_validator.dart';
 class SubscriptionView extends StackedView<SubscriptionViewModel>
     with $SubscriptionView {
   final SubscriptionType type;
+
   const SubscriptionView({Key? key, required this.type}) : super(key: key);
 
   @override
@@ -53,12 +55,19 @@ class SubscriptionView extends StackedView<SubscriptionViewModel>
       index: viewModel.currentPage, children: _buildScreens(viewModel));
 
   List<Widget> _buildScreens(SubscriptionViewModel viewModel) => [
-        _buildLearnSubscriptionPackageScreen(),
+    _buildSubscriptionPackageScreen(),
         _buildLearnSubscriptionFormScreen()
       ];
 
+  Widget _buildSubscriptionPackageScreen() => type == SubscriptionType.learn
+      ? _buildLearnSubscriptionPackageScreen()
+      : _buildCourseSubscriptionPackageScreen();
+
   Widget _buildLearnSubscriptionPackageScreen() =>
-      const SubscriptionPackageScreen();
+      const LearnSubscriptionPackageScreen();
+
+  Widget _buildCourseSubscriptionPackageScreen() =>
+      const CourseSubscriptionPackageScreen();
 
   Widget _buildLearnSubscriptionFormScreen() =>
       SubscriptionFormScreen(phoneNumberController: phoneNumberController);

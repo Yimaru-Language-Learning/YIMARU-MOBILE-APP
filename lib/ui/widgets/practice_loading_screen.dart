@@ -13,12 +13,12 @@ class PracticeLoadingScreen extends StatelessWidget {
   final bool isLoading;
   final String message;
   final GestureTapCallback? onPop;
-  final GestureTapCallback? onTap;
+  final GestureTapCallback? onRetry;
 
   const PracticeLoadingScreen(
       {super.key,
-      this.onTap,
       this.onPop,
+      this.onRetry,
       required this.message,
       required this.isEmpty,
       required this.isLoading});
@@ -69,7 +69,8 @@ class PracticeLoadingScreen extends StatelessWidget {
       Align(alignment: Alignment.center, child: _buildRefreshButton());
 
   Widget _buildRefreshButton() => NoDataIndicator(
-        onTap: onTap,
+        onPop: onPop,
         title: message,
+        onRetry: onRetry,
       );
 }
