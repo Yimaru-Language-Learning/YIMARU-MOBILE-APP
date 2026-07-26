@@ -29,7 +29,7 @@ class CustomSmallLeadingRadioButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: kcWhite,
+          color: kcPrimaryColor.withValues(alpha: 0.1),
           border: Border.all(
             color: selected
                 ? kcPrimaryColor.withValues(alpha: 0.5)
@@ -66,6 +66,6 @@ class CustomSmallLeadingRadioButton extends StatelessWidget {
 
   Widget _buildUnfilledIcon() => Icon(
         Icons.circle_outlined,
-        color: kcMediumGrey.withValues(alpha: 0.75),
+        color: kcMediumGrey.withValues(alpha: 0.5),
       );
 }

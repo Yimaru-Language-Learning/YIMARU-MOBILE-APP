@@ -3,6 +3,7 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
+import 'package:yimaru_app/ui/widgets/custom_small_leading_radio_button.dart';
 
 import 'custom_small_trailing_radio_button.dart';
 
@@ -111,6 +112,6 @@ class ReadingMultipleChoiceCard
     required bool selected,
     required GestureTapCallback onTap,
   }) =>
-      CustomSmallTrailingRadioButton(
+      CustomSmallLeadingRadioButton(
           onTap: onTap, title: title, selected: selected);
 }

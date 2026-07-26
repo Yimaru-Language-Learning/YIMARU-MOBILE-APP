@@ -686,7 +686,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _showAnswer = false;
     _focusPractice = false;
     _selectedOption.clear();
-    rebuildUi();
+  rebuildUi();
   }
 
   // Question param
