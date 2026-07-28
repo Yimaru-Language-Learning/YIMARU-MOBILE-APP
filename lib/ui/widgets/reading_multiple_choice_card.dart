@@ -113,5 +113,5 @@ class ReadingMultipleChoiceCard
     required GestureTapCallback onTap,
   }) =>
       CustomSmallLeadingRadioButton(
-          onTap: onTap, title: title, selected: selected);
+          onTap: onTap, title: title, selected: selected,color: kcPrimaryColor.withValues(alpha: 0.1),);
 }

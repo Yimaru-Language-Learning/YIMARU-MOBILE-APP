@@ -11,17 +11,25 @@ class IeltsFillInTheBlanksQuestion
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildSentence(viewModel);
+      _buildSentenceWrapper(viewModel);
 
-  Widget _buildSentence(CoursePracticeViewModel viewModel) => RichText(
+  Widget _buildSentenceWrapper(CoursePracticeViewModel viewModel) {
+    int blank = 0;
+    return _buildSentence(blank: blank, viewModel: viewModel);
+  }
+
+  Widget _buildSentence(
+          {required int blank, required CoursePracticeViewModel viewModel}) =>
+      RichText(
         text: TextSpan(
           style: style14MG400,
           children: question.map<InlineSpan>((e) {
             if (e['type'] == 'text') {
               return _buildText(e['value']);
             }
-
-            return _buildTextFieldSpan(value: e['id'], viewModel: viewModel);
+            blank++;
+            return _buildTextFieldSpan(
+                blank: blank, value: e['id'], viewModel: viewModel);
           }).toList(),
         ),
       );
@@ -32,21 +40,46 @@ class IeltsFillInTheBlanksQuestion
       );
 
   WidgetSpan _buildTextFieldSpan(
-          {required String value,
+          {required int blank,
+          required String value,
           required CoursePracticeViewModel viewModel}) =>
       WidgetSpan(
         alignment: PlaceholderAlignment.middle,
-        child: _buildTextFieldWrapper(value: value, viewModel: viewModel),
+        child: _buildTextFieldWrapper(
+            blank: blank, value: value, viewModel: viewModel),
       );
 
   Widget _buildTextFieldWrapper(
-          {required String value,
+          {required int blank,
+          required String value,
           required CoursePracticeViewModel viewModel}) =>
       SizedBox(
-        width: 100,
+        width: 150,
         height: 32,
-        child: _buildTextField(value: value, viewModel: viewModel),
+        child: _buildTextFieldRow(
+            blank: blank, value: value, viewModel: viewModel),
       );
+
+  Widget _buildTextFieldRow(
+          {required int blank,
+          required String value,
+          required CoursePracticeViewModel viewModel}) =>
+      Row(
+        children: [
+          _buildBlankNumber(blank),
+          _buildTextFieldExpandedWrapper(value: value, viewModel: viewModel)
+        ],
+      );
+
+  Widget _buildBlankNumber(int blank) => Text(
+        '  $blank  ',
+        style: style14MG400,
+      );
+
+  Widget _buildTextFieldExpandedWrapper(
+          {required String value,
+          required CoursePracticeViewModel viewModel}) =>
+      Expanded(child: _buildTextField(value: value, viewModel: viewModel));
 
   Widget _buildTextField(
           {required String value,

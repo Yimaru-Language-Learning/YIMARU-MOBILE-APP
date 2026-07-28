@@ -11,6 +11,7 @@ import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/countdown_timer.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
 import '../../../../widgets/custom_elevated_button.dart';
+import '../../../../widgets/ielts_practice_review_section.dart';
 import '../../../../widgets/page_loading_indicator.dart';
 import '../../course_practice_viewmodel.dart';
 
@@ -18,20 +19,53 @@ class IeltsReadingPractice4Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsReadingPractice4Question({super.key});
 
-  void _nextScreen(
+
+
+
+
+
+  void _setShowAnswer(CoursePracticeViewModel viewModel) {
+    viewModel.setShowAnswer();
+  }
+
+  Future<void> _nextScreen(
       {required BuildContext context,
-      required CoursePracticeViewModel viewModel}) {
+        required CoursePracticeViewModel viewModel}) async {
     FocusManager.instance.primaryFocus?.unfocus();
-    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
-      viewModel.setSectionEnd(true);
-      viewModel.pop();
-    } else {
-      if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
-          null) {
+
+    if (viewModel.showAnswer) {
+      viewModel.clearAnswer();
+      if (viewModel.currentQuestion == viewModel.questions.length - 1) {
         viewModel.setSectionEnd(true);
-        viewModel.nextScreen();
+        viewModel.pop();
       } else {
-        viewModel.nextQuestion(context);
+        if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+            null) {
+          viewModel.setSectionEnd(true);
+          viewModel.nextScreen();
+        } else {
+          viewModel.nextQuestion(context);
+        }
+      }
+    } else {
+      _setShowAnswer(viewModel);
+      for (int i = 0;
+      i <
+          (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?[1].value['pairs'] as List)
+              .length;
+      i++) {
+        await viewModel.setListeningAnswer(
+          sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.stimulus?[1].value['right'] as List)
+              .firstWhere((e) =>
+          e['id'] ==
+              (viewModel
+                  .questions[viewModel.currentQuestion]
+                  .dynamicPayload
+                  ?.response?[1]
+                  .value['pairs'] as List)[i]['right_id'])['text'],
+        );
       }
     }
   }
@@ -206,7 +240,7 @@ class IeltsReadingPractice4Question
         verticalSpaceMedium,
         _buildOptions(viewModel),
         verticalSpaceLarge,
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
+        _buildContinueButtonState(context: context, viewModel: viewModel)
       ];
 
   Widget _buildSubtitle(String label) => Text(
@@ -265,25 +299,35 @@ class IeltsReadingPractice4Question
         leading: leading,
         selected: selected,
       );
+  Widget _buildContinueButtonState(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      viewModel.showAnswer
+          ? _buildReviewSection(context: context,viewModel: viewModel)
+          : _buildContinueButtonWrapper(context: context, viewModel: viewModel);
+
+  Widget _buildReviewSection(       {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) =>
+      IeltsPracticeReviewSection(review: viewModel.answers,onTap: ()async =>await  _nextScreen(context: context, viewModel: viewModel),);
 
   Widget _buildContinueButtonWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButton(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () => _nextScreen(context: context, viewModel: viewModel),
+        onTap: ()async =>await  _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
