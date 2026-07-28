@@ -234,6 +234,7 @@ class DuolingoReadingPractice4Question
         title: title,
         onTap: onTap,
         selected: selected,
+        color: kcBackgroundColor,
       );
 
   Widget _buildCorrectAnswer(CoursePracticeViewModel viewModel) => Text(

@@ -8,6 +8,7 @@ import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/countdown_timer.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
 import '../../../../widgets/custom_elevated_button.dart';
+import '../../../../widgets/ielts_practice_review_section.dart';
 import '../../../../widgets/page_loading_indicator.dart';
 import '../../course_practice_viewmodel.dart';
 
@@ -15,25 +16,42 @@ class IeltsListeningPractice10Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsListeningPractice10Question({super.key});
 
-  void _reset(CoursePracticeViewModel viewModel) {
-   // viewModel.resetValues();
+  void _setShowAnswer(CoursePracticeViewModel viewModel) {
+    viewModel.setShowAnswer();
   }
 
-  void _nextScreen(
+  void _reset(CoursePracticeViewModel viewModel) {
+    //  viewModel.resetValues();
+  }
+
+  Future<void> _nextScreen(
       {required BuildContext context,
-      required CoursePracticeViewModel viewModel}) {
+      required CoursePracticeViewModel viewModel}) async {
     FocusManager.instance.primaryFocus?.unfocus();
     _reset(viewModel);
-    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
-      viewModel.setSectionEnd(true);
-      viewModel.nextScreen();
-    } else {
-      if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
-          null) {
+
+    if (viewModel.showAnswer) {
+      viewModel.clearAnswer();
+      if (viewModel.currentQuestion == viewModel.questions.length - 1) {
         viewModel.setSectionEnd(true);
         viewModel.nextScreen();
       } else {
-        viewModel.nextQuestion(context);
+        if (viewModel
+                .questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+            null) {
+          viewModel.setSectionEnd(true);
+          viewModel.nextScreen();
+        } else {
+          viewModel.nextQuestion(context);
+        }
+      }
+    } else {
+      _setShowAnswer(viewModel);
+      for (int i = 0; i < 4; i++) {
+        await viewModel.setListeningAnswer(
+          sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?[i + 1].value,
+        );
       }
     }
   }
@@ -146,6 +164,7 @@ class IeltsListeningPractice10Question
         style: style18DG700,
         textAlign: TextAlign.center,
       );
+
   Widget _buildCountdownWrapper(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
@@ -166,7 +185,7 @@ class IeltsListeningPractice10Question
       CountdownTimer(
         duration: viewModel.countdown,
         key: ValueKey(viewModel.countdown),
-        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
+        onEnd: () async=> await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -215,7 +234,7 @@ class IeltsListeningPractice10Question
         verticalSpaceTiny,
         _buildTextField(value: '2', viewModel: viewModel),
         verticalSpaceLarge,
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
+        _buildContinueButtonState(context: context, viewModel: viewModel)
       ];
 
   Widget _buildInstruction() => Text(
@@ -240,6 +259,22 @@ class IeltsListeningPractice10Question
         onChanged: (change) => viewModel.updateAnswer(value, change),
       );
 
+  Widget _buildContinueButtonState(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      viewModel.showAnswer
+          ? _buildReviewSection(context: context, viewModel: viewModel)
+          : _buildContinueButtonWrapper(context: context, viewModel: viewModel);
+
+  Widget _buildReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      IeltsPracticeReviewSection(
+        review: viewModel.answers,
+        onTap: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
+      );
+
   Widget _buildContinueButtonWrapper(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
@@ -257,7 +292,8 @@ class IeltsListeningPractice10Question
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () => _nextScreen(context: context, viewModel: viewModel),
+        onTap: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>

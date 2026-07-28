@@ -10,6 +10,7 @@ import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/countdown_timer.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
 import '../../../../widgets/custom_elevated_button.dart';
+import '../../../../widgets/ielts_practice_review_section.dart';
 import '../../../../widgets/page_loading_indicator.dart';
 import '../../course_practice_viewmodel.dart';
 
@@ -17,23 +18,50 @@ class IeltsListeningPractice6Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsListeningPractice6Question({super.key});
 
-  void _nextScreen(
+
+  void _setShowAnswer(CoursePracticeViewModel viewModel) {
+    viewModel.setShowAnswer();
+  }
+
+  Future<void> _nextScreen(
       {required BuildContext context,
-      required CoursePracticeViewModel viewModel}) {
+        required CoursePracticeViewModel viewModel}) async {
     FocusManager.instance.primaryFocus?.unfocus();
-    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
-      viewModel.setSectionEnd(true);
-      viewModel.nextScreen();
-    } else {
-      if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
-          null) {
+
+    if (viewModel.showAnswer) {
+      viewModel.clearAnswer();
+      if (viewModel.currentQuestion == viewModel.questions.length - 1) {
         viewModel.setSectionEnd(true);
         viewModel.nextScreen();
       } else {
-        viewModel.nextQuestion(context);
+        if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+            null) {
+          viewModel.setSectionEnd(true);
+          viewModel.nextScreen();
+        } else {
+          viewModel.nextQuestion(context);
+        }
+      }
+    } else {
+      _setShowAnswer(viewModel);
+      for (int i = 0;
+      i <
+          (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?[1].value['pairs'] as List)
+              .length;
+      i++) {
+        await viewModel.setListeningAnswer(
+          sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.stimulus?[1].value['right'] as List)
+              .firstWhere((e) =>
+          e['id'] ==
+              (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?[1].value['pairs'] as List)[i]['right_id'])['text'],
+        );
       }
     }
   }
+
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -164,7 +192,7 @@ class IeltsListeningPractice6Question
       CountdownTimer(
         duration: viewModel.countdown,
         key: ValueKey(viewModel.countdown),
-        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
+        onEnd: ()async =>await  _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -199,9 +227,9 @@ class IeltsListeningPractice6Question
         verticalSpaceMedium,
         _buildSubtitle(),
         verticalSpaceMedium,
-        _buildQuestionColumns(viewModel),
+        _buildQuestionColumns(context: context,viewModel: viewModel),
         verticalSpaceLarge,
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel),
+        _buildContinueButtonState(context: context,viewModel: viewModel)
       ];
 
   Widget _buildImageContainer(CoursePracticeViewModel viewModel) => SizedBox(
@@ -227,17 +255,18 @@ class IeltsListeningPractice6Question
         style: style14MG400,
       );
 
-  Widget _buildQuestionColumns(CoursePracticeViewModel viewModel) => Row(
+  Widget _buildQuestionColumns( {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildQuestionColumnChildren(viewModel),
+        children: _buildQuestionColumnChildren(context: context,viewModel: viewModel),
       );
 
   List<Widget> _buildQuestionColumnChildren(
-          CoursePracticeViewModel viewModel) =>
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
       [
         _buildColumnAExpandedWrapper(viewModel),
         _buildAnswerColumnWrapper(viewModel),
-        _buildColumnBExpandedWrapper(viewModel)
       ];
 
   Widget _buildColumnAExpandedWrapper(CoursePracticeViewModel viewModel) =>
@@ -356,24 +385,36 @@ class IeltsListeningPractice6Question
         style: style14MG400,
       );
 
+  Widget _buildContinueButtonState(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      viewModel.showAnswer
+          ? _buildReviewSection(context: context,viewModel: viewModel)
+          : _buildContinueButtonWrapper(context: context, viewModel: viewModel);
+
+  Widget _buildReviewSection(       {required BuildContext context,
+    required CoursePracticeViewModel viewModel}) =>
+      IeltsPracticeReviewSection(review: viewModel.answers,onTap: ()async =>await  _nextScreen(context: context, viewModel: viewModel),);
+
   Widget _buildContinueButtonWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButton(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
-          height: 55,
-          borderRadius: 12,
-          text: 'Submit Task',
-          foregroundColor: kcWhite,
-          backgroundColor: kcPrimaryColor,
-          onTap: () => _nextScreen(context: context, viewModel: viewModel));
+        height: 55,
+        text: 'Submit',
+        borderRadius: 12,
+        foregroundColor: kcWhite,
+        backgroundColor: kcPrimaryColor,
+        onTap: ()async =>await  _nextScreen(context: context, viewModel: viewModel),
+      );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.coursePracticePrompt)

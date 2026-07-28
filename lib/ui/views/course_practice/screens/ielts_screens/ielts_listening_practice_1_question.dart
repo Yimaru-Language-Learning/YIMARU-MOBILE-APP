@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/widgets/ielts_practice_review_section.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
@@ -15,25 +16,42 @@ class IeltsListeningPractice1Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsListeningPractice1Question({super.key});
 
-  void _reset(CoursePracticeViewModel viewModel) {
- //  viewModel.resetValues();
+  void _setShowAnswer(CoursePracticeViewModel viewModel) {
+    viewModel.setShowAnswer();
   }
 
-  void _nextScreen(
+  void _reset(CoursePracticeViewModel viewModel) {
+    //  viewModel.resetValues();
+  }
+
+  Future<void> _nextScreen(
       {required BuildContext context,
-      required CoursePracticeViewModel viewModel}) {
+      required CoursePracticeViewModel viewModel}) async {
     FocusManager.instance.primaryFocus?.unfocus();
-   _reset(viewModel);
-    if (viewModel.currentQuestion == viewModel.questions.length - 1) {
-      viewModel.setSectionEnd(true);
-      viewModel.nextScreen();
-    } else {
-      if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
-          null) {
+    _reset(viewModel);
+
+    if (viewModel.showAnswer) {
+      viewModel.clearAnswer();
+      if (viewModel.currentQuestion == viewModel.questions.length - 1) {
         viewModel.setSectionEnd(true);
         viewModel.nextScreen();
       } else {
-        viewModel.nextQuestion(context);
+        if (viewModel
+                .questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+            null) {
+          viewModel.setSectionEnd(true);
+          viewModel.nextScreen();
+        } else {
+          viewModel.nextQuestion(context);
+        }
+      }
+    } else {
+      _setShowAnswer(viewModel);
+      for (int i = 0; i < 4; i++) {
+        await viewModel.setListeningAnswer(
+          sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?[i + 1].value,
+        );
       }
     }
   }
@@ -76,6 +94,7 @@ class IeltsListeningPractice1Question
           _buildBodyState(viewModel)
         ],
       );
+
   Widget _buildScaffold(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
@@ -166,7 +185,8 @@ class IeltsListeningPractice1Question
       CountdownTimer(
         duration: viewModel.countdown,
         key: ValueKey(viewModel.countdown),
-        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
+        onEnd: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -220,7 +240,7 @@ class IeltsListeningPractice1Question
         verticalSpaceTiny,
         _buildTextField(value: '3', viewModel: viewModel),
         verticalSpaceLarge,
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
+        _buildContinueButtonState(context: context, viewModel: viewModel)
       ];
 
   Widget _buildInstruction() => Text(
@@ -245,6 +265,21 @@ class IeltsListeningPractice1Question
         onChanged: (change) => viewModel.updateAnswer(value, change),
       );
 
+  Widget _buildContinueButtonState(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      viewModel.showAnswer
+          ? _buildReviewSection(context: context, viewModel: viewModel)
+          : _buildContinueButtonWrapper(context: context, viewModel: viewModel);
+
+  Widget _buildReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      IeltsPracticeReviewSection(
+        review: viewModel.answers,
+        onTap: ()async =>await  _nextScreen(context: context, viewModel: viewModel),
+      );
+
   Widget _buildContinueButtonWrapper(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
@@ -262,7 +297,7 @@ class IeltsListeningPractice1Question
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () => _nextScreen(context: context, viewModel: viewModel),
+        onTap: () async=>await  _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>

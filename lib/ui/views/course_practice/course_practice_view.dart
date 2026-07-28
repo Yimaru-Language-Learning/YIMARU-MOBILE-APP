@@ -50,7 +50,7 @@ import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_listening_practice_1_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_listening_practice_3_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_listening_section_intro.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_2_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_3_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_7_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_intro_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_section_intro.dart';
@@ -77,7 +77,7 @@ import 'screens/duolingo_screens/duolingo_listening_practice_3_variant.dart';
 import 'screens/ielts_screens/ielts_listening_practice_10_question.dart';
 import 'screens/ielts_screens/ielts_listening_practice_5_question.dart';
 import 'screens/ielts_screens/ielts_listening_practice_7_question.dart';
-import 'screens/ielts_screens/ielts_reading_practice_3_question.dart';
+import 'screens/ielts_screens/ielts_reading_practice_2_question.dart';
 import 'screens/ielts_screens/ielts_listening_practice_2_question.dart';
 import 'screens/ielts_screens/ielts_listening_practice_9_question.dart';
 import 'screens/ielts_screens/ielts_reading_practice_1_question.dart';
@@ -445,9 +445,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return const IeltsListeningPractice10Question();
     } else if (id == 46 /*Paragraph choice*/) {
       return const IeltsReadingPractice1Question();
-    } else if (id == 63 /*IELTS Reading - Summary completion*/) {
-      return const IeltsReadingPractice2Question();
     } else if (id == 58 /*IELTS Reading - Diagram Labeling*/) {
+      return const IeltsReadingPractice2Question();
+    } else if (id == 63 /*IELTS Reading - Summary completion*/) {
       return const IeltsReadingPractice3Question();
     } else if (id == 47 /*Sentence Ending Matching*/) {
       return const IeltsReadingPractice4Question();
@@ -500,7 +500,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           62 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          63;
+          63&&
+          viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+              64;
 
   Widget _buildIeltsAnswerScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
@@ -552,7 +554,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           62 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          63;
+          63&&
+          viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+              64;
 
   Widget _buildIeltsReviewScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
@@ -580,9 +584,17 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           46 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          47 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          48 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           58 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          63;
+          59 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          63 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          64;
 
   @override
   void onViewModelReady(CoursePracticeViewModel viewModel) async {

@@ -1347,6 +1347,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _answers.add({'sample': sample, 'response': response});
   }
 
+
+
   void setAnswer(
           {required String sample,
           required String answer,
@@ -1500,6 +1502,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
   void setSectionEnd(bool value) {
     _isSectionEnd = value;
     rebuildUi();
+  }
+
+
+  void clearAnswer(){
+    _answers.clear();
   }
 
   void nextScreen() {
