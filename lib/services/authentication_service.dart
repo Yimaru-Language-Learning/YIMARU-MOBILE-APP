@@ -1,5 +1,6 @@
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/app/app.locator.dart';
+import 'package:yimaru_app/models/active_subscription.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/secure_storage_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
@@ -97,6 +98,13 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Save user data
   Future<void> saveUserData(User data) async {
+    bool? learn;
+
+    bool? ielts;
+
+    bool? duolingo;
+
+    List<ActiveSubscription> subscriptions = data.activeSubscriptions ?? [];
     await _secureService.setBool('userInfoLoaded', true);
     await _secureService.setBool(
         'profileCompleted', data.profileCompleted ?? false);
@@ -110,9 +118,37 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('lastName', data.lastName ?? '');
     await _secureService.setString('firstName', data.firstName ?? '');
     await _secureService.setString('occupation', data.occupation ?? '');
-    ///To do: Active subscription to be added
+
+    if (subscriptions.isNotEmpty) {
+      for (ActiveSubscription subscription in subscriptions) {
+        if (subscription.category == 'LEARN_ENGLISH' &&
+            subscription.status == 'ACTIVE') {
+          learn = true;
+          await _secureService.setBool('learn', learn);
+        }
+        if (subscription.category == 'DUOLINGO' &&
+            subscription.status == 'ACTIVE') {
+          duolingo = true;
+          await _secureService.setBool('duolingo', duolingo);
+        }
+        if (subscription.category == 'IELTS' &&
+            subscription.status == 'ACTIVE') {
+          ielts = true;
+          await _secureService.setBool('ielts', ielts);
+        }
+      }
+    }
+
+    print('STATUSES: 1');
+    print(learn);
+    print(ielts);
+    print(duolingo);
+
     _user = User(
+      learn: learn,
+      ielts: ielts,
       email: data.email,
+      duolingo: duolingo,
       gender: data.gender,
       region: data.region,
       userInfoLoaded: true,
@@ -126,7 +162,6 @@ class AuthenticationService with ListenableServiceMixin {
       refreshToken: _user?.refreshToken,
       profileCompleted: data.profileCompleted,
       subscriptionStatus: data.subscriptionStatus,
-      activeSubscriptions: data.activeSubscriptions
     );
 
     notifyListeners();
@@ -166,13 +201,14 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Get user data
   Future<User?> getUser() async {
-    print('GENDER:');
-    print(await _secureService.getString('gender'));
     _user = User(
+      learn: await _secureService.getBool('learn'),
+      ielts: await _secureService.getBool('ielts'),
       userId: await _secureService.getInt('userId'),
       email: await _secureService.getString('email'),
       region: await _secureService.getString('region'),
       gender: await _secureService.getString('gender'),
+      duolingo: await _secureService.getBool('duolingo'),
       country: await _secureService.getString('country'),
       lastName: await _secureService.getString('lastName'),
       birthday: await _secureService.getString('birthday'),
@@ -185,6 +221,10 @@ class AuthenticationService with ListenableServiceMixin {
       profileCompleted: await _secureService.getBool('profileCompleted'),
       subscriptionStatus: await _secureService.getString('subscriptionStatus'),
     );
+    print('STATUSES: 2');
+
+    print(_user?.duolingo);
+    notifyListeners();
     return _user;
   }
 

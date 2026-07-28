@@ -7,6 +7,7 @@ import 'package:yimaru_app/models/learn_program.dart';
 import 'package:yimaru_app/models/assessment_question.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
+import 'package:yimaru_app/models/my_subscription.dart';
 import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
@@ -19,7 +20,7 @@ import '../models/course_unit.dart';
 import '../models/field_option.dart';
 import '../models/learn_course.dart';
 import '../models/learn_module.dart';
-import '../models/learn_subscription.dart';
+import '../models/subscription.dart';
 import '../models/assessment.dart';
 import '../models/learn_subscription_request.dart';
 import '../models/progress_summary.dart';
@@ -971,7 +972,7 @@ class ApiService {
   }
 
   // Complete lesson
-  Future<Map<String, dynamic>> completeLearnPractice(int id) async {
+  Future<Map<String, dynamic>> completePractice(int id) async {
     try {
       Response response = await _service.dio.post(
         '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kProgressUrl/$kPracticesUrl/$id/$kCompleteUrl',
@@ -996,19 +997,19 @@ class ApiService {
     }
   }
 
-  Future<List<LearnSubscription>> getLearnSubscriptions() async {
+  Future<List<Subscription>> getSubscriptions(String type) async {
     try {
-      List<LearnSubscription> subscriptions = [];
+      List<Subscription> subscriptions = [];
 
-      final Response response = await _service.dio
-          .get('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kSubscriptionsUrl');
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kSubscriptionPlansUrl?category=$type');
 
       if (response.statusCode == 200) {
         var data = response.data;
         var decodedData = data['data'] as List;
         subscriptions = decodedData.map(
           (e) {
-            return LearnSubscription.fromJson(e);
+            return Subscription.fromJson(e);
           },
         ).toList();
         return subscriptions;
@@ -1098,6 +1099,29 @@ class ApiService {
         'status': ResponseStatus.failure,
         'message': e.response?.data.toString(),
       };
+    }
+  }
+
+  Future<List<MySubscription>> getMySubscriptions() async {
+    try {
+      List<MySubscription> subscriptions = [];
+
+      final Response response = await _service.dio
+          .get('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kSubscriptionsUrl/$kMeUrl');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data'] as List;
+        subscriptions = decodedData.map(
+          (e) {
+            return MySubscription.fromJson(e);
+          },
+        ).toList();
+        return subscriptions;
+      }
+      return [];
+    } catch (e) {
+      return [];
     }
   }
 
@@ -1314,6 +1338,30 @@ class ApiService {
     } on DioException {
       return {
         'status': ResponseStatus.failure,
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> reportIssue(Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio
+          .post('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kIssuesUrl', data: data);
+
+      if (response.statusCode == 201) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Issue reported successfully!',
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
       };
     }
   }

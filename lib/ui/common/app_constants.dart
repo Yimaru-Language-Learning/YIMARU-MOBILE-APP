@@ -1,6 +1,8 @@
 // Endpoints
 String kBaseUrl = 'https://api.yimaruacademy.com';
 
+String kMeUrl = 'me';
+
 String kLmsUrl = 'lms';
 
 String kAppUrl = 'app';
@@ -20,6 +22,8 @@ String kDirectUrl = 'direct';
 String kUnreadUrl = 'unread';
 
 String kApiVersionUrl = 'v1';
+
+String kIssuesUrl = 'issues';
 
 String kVideosUrl = 'videos';
 
@@ -81,6 +85,8 @@ String kVerifySubscriptionUrl = 'verify';
 
 String kQuestionSetsUrl = 'question-sets';
 
+String kSubscriptionsUrl = 'subscriptions';
+
 String kRequestResetCode = 'sendResetCode';
 
 String kNotificationsUrl = 'notifications';
@@ -99,8 +105,6 @@ String kMarkNotificationRead = 'mark-all-read';
 
 String kUpdateProfileImage = 'profile-picture';
 
-String kSubscriptionsUrl = 'subscription-plans';
-
 String kRefreshTokenUrl = 'api/v1/auth/refresh';
 
 String kLoginUrl = 'api/v1/auth/customer-login';
@@ -112,6 +116,8 @@ String kCourseManagementUrl = 'course-management';
 String kProfileStatusUrl = 'is-profile-completed';
 
 String kCourseBaseUrl = 'api/v1/course-management';
+
+String kSubscriptionPlansUrl = 'subscription-plans';
 
 String kCoursePracticeQuestion = 'api/v1/questions';
 

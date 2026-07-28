@@ -49,7 +49,8 @@ class ActiveSubscription {
       this.durationUnit,
       this.durationValue});
 
-  factory ActiveSubscription.fromJson(Map<String, dynamic> json) => _$ActiveSubscriptionFromJson(json);
+  factory ActiveSubscription.fromJson(Map<String, dynamic> json) =>
+      _$ActiveSubscriptionFromJson(json);
 
   Map<String, dynamic> toJson() => _$ActiveSubscriptionToJson(this);
 }

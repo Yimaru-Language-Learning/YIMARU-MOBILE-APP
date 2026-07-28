@@ -47,7 +47,6 @@ class CourseLessonTile extends ViewModelWidget<CourseModuleViewModel> {
         verticalSpaceMedium,
         _buildTile(),
         verticalSpaceMedium,
-
         _buildActionButtonWrapper(),
         verticalSpaceSmall,
       ];
@@ -102,8 +101,7 @@ class CourseLessonTile extends ViewModelWidget<CourseModuleViewModel> {
 
   Widget _buildActionButtons() => Row(
         children: [
-           _buildDetailButtonWrapper(),
-
+          _buildDetailButtonWrapper(),
           if (lesson.hasPractice ?? false) horizontalSpaceSmall,
           if (lesson.hasPractice ?? false) _buildPracticeButtonWrapper()
         ],

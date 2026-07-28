@@ -130,7 +130,10 @@ abstract class  LocaleKeys {
   static const search_for = 'search_for';
   static const current_level = 'current_level';
   static const keep_up_the_great_work = 'keep_up_the_great_work';
-  static const no_practice_available = 'no_practice_available';
+  static const no_practice_available_lesson = 'no_practice_available_lesson';
+  static const no_practice_available_unit = 'no_practice_available_unit';
+  static const no_practice_available_module = 'no_practice_available_module';
+  static const no_practice_available_course = 'no_practice_available_course';
   static const begin_module_practice = 'begin_module_practice';
   static const lets_practice_lesson = 'lets_practice_lesson';
   static const lets_quickly_review = 'lets_quickly_review';

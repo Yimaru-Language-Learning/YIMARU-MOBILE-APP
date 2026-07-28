@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/helper_functions.dart';
 import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
 
 import '../../common/enmus.dart';
@@ -11,12 +12,6 @@ class PdfView extends StackedView<PdfViewModel> {
   final String url;
 
   const PdfView({Key? key, required this.url}) : super(key: key);
-
-  @override
-  void onViewModelReady(PdfViewModel viewModel) async {
-    // await viewModel.openPdf(url);
-    super.onViewModelReady(viewModel);
-  }
 
   @override
   PdfViewModel viewModelBuilder(BuildContext context) => PdfViewModel();
@@ -67,7 +62,6 @@ class PdfView extends StackedView<PdfViewModel> {
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),
       );
 
-  Widget _buildPdfViewer(PdfViewModel viewModel) => SfPdfViewer.network(
-        url,
-      );
+  Widget _buildPdfViewer(PdfViewModel viewModel) =>
+      SfPdfViewer.network(getReadableUrl(url) ?? '');
 }

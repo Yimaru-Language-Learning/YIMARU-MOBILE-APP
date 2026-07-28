@@ -7,6 +7,8 @@ import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/learn_course.dart';
+import '../../../models/user.dart';
+import '../../../services/authentication_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
@@ -20,8 +22,16 @@ class LearnModuleViewModel extends ReactiveViewModel {
 
   final _navigationService = locator<NavigationService>();
 
+  final _authenticationService = locator<AuthenticationService>();
+
   @override
-  List<ListenableServiceMixin> get listenableServices => [_learnService];
+  List<ListenableServiceMixin> get listenableServices =>
+      [_learnService, _authenticationService];
+
+  // Current user
+  User? get _user => _authenticationService.user;
+
+  User? get user => _user;
 
   // Learn module
   final Map<int, String> _refreshedIcons = {};

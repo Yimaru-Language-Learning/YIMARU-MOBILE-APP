@@ -28,19 +28,23 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
       required LearnLesson lesson,
       required BuildContext context,
       required LearnLessonViewModel viewModel}) async {
-    if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
+    if (viewModel.user?.learn ?? false) {
       if (lesson.access?.isAccessible ?? false) {
         await viewModel.navigateToLearnPractice(lesson.id ?? 0);
       } else {
         await _showSheet(context: context, viewModel: viewModel);
       }
     } else {
+      await viewModel.navigateToLearnPractice(lesson.id ?? 0);
+    }
+
+    /*   else {
       if (first && index < 3) {
         await viewModel.navigateToLearnPractice(lesson.id ?? 0);
       } else {
         await _showSheet(context: context, viewModel: viewModel);
       }
-    }
+    }*/
   }
 
   Future<void> _showSheet(

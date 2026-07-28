@@ -7,6 +7,8 @@ part of 'user.dart';
 // **************************************************************************
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
+      learn: json['learn'] as bool?,
+      ielts: json['ielts'] as bool?,
       email: json['email'] as String?,
       region: json['region'] as String?,
       gender: json['gender'] as String?,
@@ -14,6 +16,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       country: json['country'] as String?,
       lastName: json['last_name'] as String?,
       birthday: json['birth_day'] as String?,
+      duolingo: json['duolingo'] as bool?,
       firstName: json['first_name'] as String?,
       occupation: json['occupation'] as String?,
       accessToken: json['access_token'] as String?,
@@ -28,7 +31,10 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+      'learn': instance.learn,
+      'ielts': instance.ielts,
       'email': instance.email,
+      'duolingo': instance.duolingo,
       'gender': instance.gender,
       'region': instance.region,
       'country': instance.country,

@@ -5,10 +5,11 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 class CustomSmallLeadingRadioButton extends StatelessWidget {
   final String title;
   final bool selected;
+  final Color color;
   final GestureTapCallback? onTap;
 
   const CustomSmallLeadingRadioButton(
-      {super.key, required this.title, required this.selected, this.onTap});
+      {super.key, required this.title,required this.color, required this.selected, this.onTap});
 
   @override
   Widget build(BuildContext context) => _buildButtonWrapper();
@@ -29,7 +30,7 @@ class CustomSmallLeadingRadioButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: kcWhite,
+          color: color,
           border: Border.all(
             color: selected
                 ? kcPrimaryColor.withValues(alpha: 0.5)
@@ -66,6 +67,6 @@ class CustomSmallLeadingRadioButton extends StatelessWidget {
 
   Widget _buildUnfilledIcon() => Icon(
         Icons.circle_outlined,
-        color: kcMediumGrey.withValues(alpha: 0.75),
+        color: kcMediumGrey.withValues(alpha: 0.5),
       );
 }

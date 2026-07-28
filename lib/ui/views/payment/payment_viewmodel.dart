@@ -3,7 +3,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
-import '../../../models/learn_subscription.dart';
+import '../../../models/subscription.dart';
 import '../../../models/learn_subscription_request.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
@@ -49,7 +49,7 @@ class PaymentViewModel extends ReactiveViewModel {
   Future<void> initiate(
           {required String phone,
           required PaymentMethod method,
-          required LearnSubscription subscription}) async =>
+          required Subscription subscription}) async =>
       await runBusyFuture(
           _initiate(phone: phone, method: method, subscription: subscription),
           busyObject: StateObjects.learnSubscription);
@@ -57,7 +57,7 @@ class PaymentViewModel extends ReactiveViewModel {
   Future<void> _initiate(
       {required String phone,
       required PaymentMethod method,
-      required LearnSubscription subscription}) async {
+      required Subscription subscription}) async {
     if (method == PaymentMethod.sdk) {
       await _createLearnSubscriptionRequest(
           phone: phone, subscription: subscription);
@@ -68,7 +68,7 @@ class PaymentViewModel extends ReactiveViewModel {
   }
 
   Future<void> _createLearnSubscriptionRequest(
-      {required String phone, required LearnSubscription subscription}) async {
+      {required String phone, required Subscription subscription}) async {
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> data = {
         'provider': 'CHAPA',
@@ -88,15 +88,14 @@ class PaymentViewModel extends ReactiveViewModel {
 
 // Create direct payment
   Future<void> createDirectPaymentRequest(
-          {required String phone,
-          required LearnSubscription subscription}) async =>
+          {required String phone, required Subscription subscription}) async =>
       await runBusyFuture(
           _createLearnDirectPaymentRequest(
               phone: phone, subscription: subscription),
           busyObject: StateObjects.learnSubscription);
 
   Future<void> _createLearnDirectPaymentRequest(
-      {required String phone, required LearnSubscription subscription}) async {
+      {required String phone, required Subscription subscription}) async {
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> data = {
         'phone': '251$phone',

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../common/app_colors.dart';
-import '../common/enmus.dart';
 import '../common/ui_helpers.dart';
 import '../views/course_practice/course_practice_viewmodel.dart';
 import 'custom_circular_progress_indicator.dart';
@@ -60,8 +59,6 @@ class DuolingoPracticeReviewSection
         style: style14DG400,
         textAlign: TextAlign.center,
       );
-
-
 
   Widget _buildProgressIndicatorWrapper() => SizedBox(
         height: 55,

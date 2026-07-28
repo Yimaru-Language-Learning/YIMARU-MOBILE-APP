@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yimaru_app/models/dynamic_payload.dart';
+import 'package:yimaru_app/models/shared_stimulus.dart';
 
 part 'practice_question.g.dart';
 
@@ -20,8 +21,14 @@ class PracticeQuestion {
   @JsonKey(name: 'difficulty_level')
   final String? difficultyLevel;
 
+  @JsonKey(name: 'stimulus_block_key')
+  final String? stimulusBlockKey;
+
   @JsonKey(name: 'dynamic_payload')
   final DynamicPayload? dynamicPayload;
+
+  @JsonKey(name: 'shared_stimulus')
+  final List<SharedStimulus>? sharedStimulus;
 
   @JsonKey(name: 'question_type_definition_id')
   final int? questionTypeDefinitionId;
@@ -32,8 +39,10 @@ class PracticeQuestion {
       this.points,
       this.questionType,
       this.questionText,
+      this.sharedStimulus,
       this.dynamicPayload,
       this.difficultyLevel,
+      this.stimulusBlockKey,
       this.questionTypeDefinitionId});
 
   factory PracticeQuestion.fromJson(Map<String, dynamic> json) =>

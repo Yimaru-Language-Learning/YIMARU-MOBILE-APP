@@ -22,21 +22,26 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
       {required BuildContext context,
       required LearnCourse course,
       required LearnCourseViewModel viewModel}) async {
-    if (course.access?.isCompleted ?? false) {
+    if (viewModel.user?.learn ?? false) {
+      if (course.access?.isCompleted ?? false) {
+        await viewModel.navigateToLearnPractice(
+            id: course.id ?? 0, level: course.name ?? '');
+      } else {
+        if (course.access?.isAccessible ?? false) {
+          await _showSheet(
+              context: context,
+              viewModel: viewModel,
+              practice: PracticeReason.course);
+        } else {
+          await _showSheet(
+              context: context,
+              viewModel: viewModel,
+              practice: PracticeReason.course);
+        }
+      }
+    } else {
       await viewModel.navigateToLearnPractice(
           id: course.id ?? 0, level: course.name ?? '');
-    } else {
-      if (course.access?.isAccessible ?? false) {
-        await _showSheet(
-            context: context,
-            viewModel: viewModel,
-            practice: PracticeReason.course);
-      } else {
-        await _showSheet(
-            context: context,
-            viewModel: viewModel,
-            practice: PracticeReason.course);
-      }
     }
   }
 

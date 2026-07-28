@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../models/learn_subscription.dart';
+import '../../../models/subscription.dart';
 import '../../common/app_constants.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
@@ -12,7 +12,7 @@ import 'payment_viewmodel.dart';
 class PaymentView extends StackedView<PaymentViewModel> {
   final String phone;
   final PaymentMethod method;
-  final LearnSubscription subscription;
+  final Subscription subscription;
 
   const PaymentView(
       {Key? key,

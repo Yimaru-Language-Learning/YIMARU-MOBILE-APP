@@ -13,15 +13,17 @@ import '../../widgets/small_app_bar.dart';
 
 class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
   final CourseLesson lesson;
+  final SubscriptionType type;
 
   const CourseLessonDetailView({
     Key? key,
+    required this.type,
     required this.lesson,
   }) : super(key: key);
 
   Future<void> _navigate(CourseLessonDetailViewmodel viewModel) async {
     viewModel.close();
-    await viewModel.replaceWithCoursePractice(lesson.id ?? 0);
+    await viewModel.replaceWithCoursePractice(id: lesson.id ?? 0, type: type);
   }
 
   @override

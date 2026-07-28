@@ -272,8 +272,8 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnSubscription() async =>
-      await _navigationService.navigateToLearnSubscriptionView();
+  Future<void> navigateToLearnSubscription() async => await _navigationService
+      .navigateToSubscriptionView(type: SubscriptionType.learn);
 
   // Remote api call
 
@@ -310,13 +310,14 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   }
 
   // Complete practice
-  Future<void> completeLearnPractices() async =>
-      await runBusyFuture(_completeLearnPractices(),
+  Future<void> completeLearnPractice() async =>
+      await runBusyFuture(_completeLearnPractice(),
           busyObject: StateObjects.completeLearnPractice);
 
-  Future<void> _completeLearnPractices() async {
+  Future<void> _completeLearnPractice() async {
     if (await _statusChecker.checkConnection()) {
-      await _apiService.completeLearnPractice(_practices.first.id ?? 0);
+      await stopAudio();
+      await _apiService.completePractice(_practices.first.id ?? 0);
       await _learnService.getLearnProgress();
     }
   }

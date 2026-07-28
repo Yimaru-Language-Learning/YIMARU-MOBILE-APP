@@ -19,7 +19,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
   final bool first;
   final CourseUnit unit;
   final CourseCatalog catalog;
-
+  final SubscriptionType type;
   final GestureTapCallback? onLessonTap;
   final GestureTapCallback? onPracticeTap;
 
@@ -28,6 +28,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
       this.onLessonTap,
       this.onPracticeTap,
       required this.unit,
+      required this.type,
       required this.index,
       required this.first,
       required this.catalog});
@@ -153,8 +154,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         verticalSpaceMedium,
         if (unit.hasPractice ?? false)
           _buildActionButtonState(context: context, viewModel: viewModel),
-        if (unit.hasPractice ?? false)
-        verticalSpaceMedium,
+        if (unit.hasPractice ?? false) verticalSpaceMedium,
         _buildCourseModulesState(viewModel)
       ];
 
@@ -186,8 +186,8 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
       );
 
   Widget _buildActionButtonState(
-      {required BuildContext context,
-        required CourseUnitViewModel viewModel}) =>
+          {required BuildContext context,
+          required CourseUnitViewModel viewModel}) =>
       viewModel.busy(index)
           ? Container()
           : _buildActionButtonWrapper(context: context, viewModel: viewModel);
@@ -200,8 +200,6 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         margin: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildPracticeButton(context: context, viewModel: viewModel),
       );
-
-
 
   Widget _buildActionButtons(
           {required BuildContext context,
@@ -274,7 +272,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         itemBuilder: (context, index) => _buildCourseModuleCard(
             module: unit.modules?[index],
             onTap: () async => await viewModel.navigateToCourseModule(
-                first: first, catalog: catalog, module: unit.modules?[index])),
+                first: first,type: type, catalog: catalog, module: unit.modules?[index])),
       );
 
   Widget _buildCourseModuleCard(

@@ -5,7 +5,13 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
+  final bool? learn;
+
+  final bool? ielts;
+
   final String? email;
+
+  final bool? duolingo;
 
   final String? gender;
 
@@ -48,13 +54,16 @@ class User {
   final List<ActiveSubscription>? activeSubscriptions;
 
   const User(
-      {this.email,
+      {this.learn,
+      this.ielts,
+      this.email,
       this.region,
       this.gender,
       this.userId,
       this.country,
       this.lastName,
       this.birthday,
+      this.duolingo,
       this.firstName,
       this.occupation,
       this.accessToken,
@@ -66,11 +75,14 @@ class User {
       this.activeSubscriptions});
 
   User copyWith(
-          {int? userId,
+          {bool? learn,
+          bool? ielts,
+          int? userId,
           String? email,
           String? gender,
           String? region,
           String? country,
+          bool? duolingo,
           String? lastName,
           String? birthday,
           String? firstName,
@@ -83,11 +95,14 @@ class User {
           String? subscriptionStatus,
           List<ActiveSubscription>? activeSubscriptions}) =>
       User(
+        ielts: ielts ?? this.ielts,
+          learn: learn ?? this.learn,
           email: email ?? this.email,
           userId: userId ?? this.userId,
           gender: gender ?? this.gender,
           region: region ?? this.region,
           country: country ?? this.country,
+          duolingo: duolingo ?? this.duolingo,
           lastName: lastName ?? this.lastName,
           birthday: birthday ?? this.birthday,
           firstName: firstName ?? this.firstName,

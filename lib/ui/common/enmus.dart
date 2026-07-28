@@ -19,6 +19,9 @@ enum SignUpMethod { phone, email, google, apple }
 // Learn practice
 enum LearnPractices { course, module, lesson }
 
+// Subscription  type
+enum SubscriptionType { ielts, learn, duolingo }
+
 // Voice recording state
 enum VoiceRecordingState { pending, recording }
 
@@ -60,6 +63,7 @@ enum StateObjects {
   learnModules,
   learnCourses,
   profileImage,
+  inAppSupport,
   paymentStatus,
   profileDetail,
   learnPrograms,
@@ -68,6 +72,7 @@ enum StateObjects {
   resetPassword,
   learnPractice,
   notifications,
+  subscriptions,
   courseCatalogs,
   loginWithEmail,
   coursePractice,
@@ -79,7 +84,7 @@ enum StateObjects {
   reading7Variant,
   reading2Variant,
   reading8Variant,
-  speaking4Variant,
+  mySubscriptions,
   requestResetCode,
   profileCompletion,
   learnSubscription,
@@ -91,13 +96,17 @@ enum StateObjects {
   registerWithApple,
   learnPracticeSample,
   learnPracticeAnswer,
+  assessmentQuestions,
   coursePracticePrompt,
   loginWithPhoneNumber,
-  assessmentQuestions,
   coursePracticeReview,
   learnPracticeQuestion,
   completeLearnPractice,
+  ieltsSpeaking1Variant,
+  ieltsSpeaking4Variant,
+  completeCoursePractice,
   coursePracticeQuestions,
+  duolingoSpeaking4Variant,
   recordLearnPracticeAnswer,
   recordCoursePracticeAnswer,
   finishLearnPracticeQuestion,

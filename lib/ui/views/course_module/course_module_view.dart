@@ -15,9 +15,11 @@ class CourseModuleView extends StackedView<CourseModuleViewModel> {
   final bool first;
   final CourseModule? module;
   final CourseCatalog catalog;
+  final SubscriptionType type;
 
   const CourseModuleView(
       {Key? key,
+      required this.type,
       required this.first,
       required this.module,
       required this.catalog})
@@ -110,9 +112,9 @@ class CourseModuleView extends StackedView<CourseModuleViewModel> {
       );
 
   Widget _buildTile(CourseModuleViewModel viewModel) => CourseModuleTileLarge(
+        type: type,
         first: first,
         module: module,
-        onContinueTap: () {},
         lessons: viewModel.lessons,
       );
 }

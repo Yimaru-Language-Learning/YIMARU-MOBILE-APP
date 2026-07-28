@@ -86,7 +86,9 @@ class SupportView extends StackedView<SupportViewModel> {
         verticalSpaceLarge,
         _buildCallSupport(viewModel),
         verticalSpaceMedium,
-        _buildTelegramSupport(viewModel)
+        _buildTelegramSupport(viewModel),
+        verticalSpaceMedium,
+        _buildInAppSupport(viewModel)
       ];
 
   Widget _buildCallSupport(SupportViewModel viewModel) => SupportCard(
@@ -103,5 +105,13 @@ class SupportView extends StackedView<SupportViewModel> {
         title: LocaleKeys.telegram_support.tr(),
         subtitle: LocaleKeys.chat_via_telegram.tr(),
         onTap: () async => await viewModel.navigateToTelegramSupport(),
+      );
+
+  Widget _buildInAppSupport(SupportViewModel viewModel) => SupportCard(
+        color: kcOrange,
+        icon: Icons.menu_book,
+        title: 'In-App support',
+        subtitle: 'Write down your issue here',
+        onTap: () async => await viewModel.navigateToInAppSupport(),
       );
 }
