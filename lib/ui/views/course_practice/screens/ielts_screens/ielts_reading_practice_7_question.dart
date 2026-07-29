@@ -99,15 +99,8 @@ class IeltsReadingPractice7Question
           required CoursePracticeViewModel viewModel}) =>
       SafeArea(
           child:
-              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
+              _buildBodyColumn(context: context, viewModel: viewModel));
 
-  Widget _buildBodyColumnWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(context: context, viewModel: viewModel),
-      );
 
   Widget _buildBodyColumn(
           {required BuildContext context,
@@ -122,9 +115,18 @@ class IeltsReadingPractice7Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
-        _buildAppBarWrapper(context: context, viewModel: viewModel),
+        _buildAppBarPaddingWrapper(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
+
+  Widget _buildAppBarPaddingWrapper(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildAppBarWrapper(context: context, viewModel: viewModel),
+      );
+
 
   Widget _buildAppBarWrapper(
           {required BuildContext context,
@@ -184,7 +186,7 @@ class IeltsReadingPractice7Question
       CountdownTimer(
         duration: viewModel.countdown,
         key: ValueKey(viewModel.countdown),
-        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
+        onEnd: ()async =>await  _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -225,6 +227,7 @@ class IeltsReadingPractice7Question
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: kcDarkGrey.withValues(alpha: 0.1)),
         ),
+        margin: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestionWrapper(viewModel),
       );
 
@@ -243,7 +246,6 @@ class IeltsReadingPractice7Question
         _buildQuestion2(viewModel),
         verticalSpaceSmall,
         _buildQuestion3(viewModel),
-        verticalSpaceSmall,
       ];
 
   Widget _buildInstructionWrapper(CoursePracticeViewModel viewModel) => Padding(
@@ -300,7 +302,7 @@ class IeltsReadingPractice7Question
       {required BuildContext context,
         required CoursePracticeViewModel viewModel}) =>
       Padding(
-        padding: const EdgeInsets.only(bottom: 50),
+        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 

@@ -18,14 +18,13 @@ class IeltsListeningPractice6Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsListeningPractice6Question({super.key});
 
-
   void _setShowAnswer(CoursePracticeViewModel viewModel) {
     viewModel.setShowAnswer();
   }
 
   Future<void> _nextScreen(
       {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) async {
+      required CoursePracticeViewModel viewModel}) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
     if (viewModel.showAnswer) {
@@ -34,7 +33,8 @@ class IeltsListeningPractice6Question
         viewModel.setSectionEnd(true);
         viewModel.nextScreen();
       } else {
-        if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+        if (viewModel
+                .questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
             null) {
           viewModel.setSectionEnd(true);
           viewModel.nextScreen();
@@ -45,27 +45,29 @@ class IeltsListeningPractice6Question
     } else {
       _setShowAnswer(viewModel);
       for (int i = 0;
-      i <
-          (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?[1].value['pairs'] as List)
-              .length;
-      i++) {
+          i <
+              (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                      ?.response?[1].value['pairs'] as List)
+                  .length;
+          i++) {
         await viewModel.setListeningAnswer(
           sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.stimulus?[1].value['right'] as List)
+                  ?.stimulus?[1].value['right'] as List)
               .firstWhere((e) =>
-          e['id'] ==
-              (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                  ?.response?[1].value['pairs'] as List)[i]['right_id'])['text'],
+                  e['id'] ==
+                  (viewModel
+                      .questions[viewModel.currentQuestion]
+                      .dynamicPayload
+                      ?.response?[1]
+                      .value['pairs'] as List)[i]['right_id'])['text'],
         );
       }
     }
   }
 
-
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
-  //  viewModel.resetValues();
+    //  viewModel.resetValues();
     viewModel.pop();
     viewModel.goBack();
   }
@@ -105,17 +107,7 @@ class IeltsListeningPractice6Question
   Widget _buildScaffold(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
-
-  Widget _buildBodyColumnWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(context: context, viewModel: viewModel),
-      );
+      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
   Widget _buildBodyColumn(
           {required BuildContext context,
@@ -130,9 +122,17 @@ class IeltsListeningPractice6Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
-        _buildAppBarWrapper(context: context, viewModel: viewModel),
+        _buildAppBarPaddingWrapper(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
+
+  Widget _buildAppBarPaddingWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildAppBarWrapper(context: context, viewModel: viewModel),
+      );
 
   Widget _buildAppBarWrapper(
           {required BuildContext context,
@@ -192,7 +192,8 @@ class IeltsListeningPractice6Question
       CountdownTimer(
         duration: viewModel.countdown,
         key: ValueKey(viewModel.countdown),
-        onEnd: ()async =>await  _nextScreen(context: context, viewModel: viewModel),
+        onEnd: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -214,6 +215,7 @@ class IeltsListeningPractice6Question
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children:
             _buildQuestionChildren(context: context, viewModel: viewModel),
       );
@@ -222,14 +224,40 @@ class IeltsListeningPractice6Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
+        _buildQuestionColumnWrapper(context: context, viewModel: viewModel),
+        verticalSpaceLarge,
+        _buildContinueButtonState(context: context, viewModel: viewModel)
+      ];
+
+  Widget _buildQuestionColumnWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildQuestionColumn(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildQuestionColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: _buildQuestionColumnChildren(
+            context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildQuestionColumnChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
         _buildImageContainer(viewModel),
         verticalSpaceMedium,
         _buildSubtitle(),
         verticalSpaceMedium,
-        _buildQuestionColumns(context: context,viewModel: viewModel),
-        verticalSpaceLarge,
-        _buildContinueButtonState(context: context,viewModel: viewModel)
+        _buildMatchingColumn(context: context, viewModel: viewModel),
       ];
 
   Widget _buildImageContainer(CoursePracticeViewModel viewModel) => SizedBox(
@@ -255,15 +283,18 @@ class IeltsListeningPractice6Question
         style: style14MG400,
       );
 
-  Widget _buildQuestionColumns( {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) => Row(
+  Widget _buildMatchingColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildQuestionColumnChildren(context: context,viewModel: viewModel),
+        children: _buildMatchingColumnChildren(
+            context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildQuestionColumnChildren(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+  List<Widget> _buildMatchingColumnChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         _buildColumnAExpandedWrapper(viewModel),
         _buildAnswerColumnWrapper(viewModel),
@@ -349,32 +380,6 @@ class IeltsListeningPractice6Question
             .toList(),
       );
 
-  Widget _buildColumnBExpandedWrapper(CoursePracticeViewModel viewModel) =>
-      Expanded(child: _buildColumnBWrapper(viewModel));
-
-  Widget _buildColumnBWrapper(CoursePracticeViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildColumnBChildren(viewModel),
-      );
-
-  List<Widget> _buildColumnBChildren(CoursePracticeViewModel viewModel) =>
-      [_buildColumnBTitle(), verticalSpaceSmall, _buildColumnB(viewModel)];
-
-  Widget _buildColumnBTitle() => Text(
-        'Column B',
-        style: style16DG600,
-      );
-
-  Widget _buildColumnB(CoursePracticeViewModel viewModel) => ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-            ?.stimulus?.last.value['right'].length,
-        itemBuilder: (context, index) => _buildColumnItemWrapper(
-            '${alphabet[index + 1]}. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.last.value['right'][index]['text']}'),
-      );
-
   Widget _buildColumnItemWrapper(String title) => SizedBox(
         height: 50,
         child: _buildColumnItem(title),
@@ -386,34 +391,40 @@ class IeltsListeningPractice6Question
       );
 
   Widget _buildContinueButtonState(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       viewModel.showAnswer
-          ? _buildReviewSection(context: context,viewModel: viewModel)
+          ? _buildReviewSection(context: context, viewModel: viewModel)
           : _buildContinueButtonWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildReviewSection(       {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
-      IeltsPracticeReviewSection(review: viewModel.answers,onTap: ()async =>await  _nextScreen(context: context, viewModel: viewModel),);
+  Widget _buildReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      IeltsPracticeReviewSection(
+        review: viewModel.answers,
+        onTap: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
+      );
 
   Widget _buildContinueButtonWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
-        padding: const EdgeInsets.only(bottom: 50),
+        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButton(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: ()async =>await  _nextScreen(context: context, viewModel: viewModel),
+        onTap: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>

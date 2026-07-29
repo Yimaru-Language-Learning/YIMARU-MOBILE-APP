@@ -16,9 +16,14 @@ class IeltsPracticeReviewSection
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildReviewColumn(viewModel);
+      _buildReviewContainer(viewModel);
 
-
+  Widget _buildReviewContainer(CoursePracticeViewModel viewModel) => Container(
+    width: double.maxFinite,
+    color: kcDeepGreen.withValues(alpha: 0.1),
+    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+    child: _buildReviewColumn(viewModel),
+  );
 
   Widget _buildReviewColumn(CoursePracticeViewModel viewModel) => Column(
         children: [
