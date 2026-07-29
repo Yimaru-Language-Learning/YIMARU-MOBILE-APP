@@ -183,6 +183,7 @@ class DuolingoReadingPractice7Question
         question,
         style: style14DG400,
         selectionColor: kcPrimaryColor,
+        key: ValueKey(viewModel.variants),
         onSelectionChanged: (cause, selection) =>
             viewModel.setHighlight(end: cause.end, start: cause.start),
       );

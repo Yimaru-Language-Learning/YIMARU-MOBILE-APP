@@ -113,15 +113,7 @@ class IeltsReadingPractice4Question
           required CoursePracticeViewModel viewModel}) =>
       SafeArea(
           child:
-              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
-
-  Widget _buildBodyColumnWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(context: context, viewModel: viewModel),
-      );
+          _buildBodyColumn(context: context, viewModel: viewModel));
 
   Widget _buildBodyColumn(
           {required BuildContext context,
@@ -136,9 +128,17 @@ class IeltsReadingPractice4Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
-        _buildAppBarWrapper(context: context, viewModel: viewModel),
+        _buildAppBarPaddingWrapper(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
+
+  Widget _buildAppBarPaddingWrapper(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildAppBarWrapper(context: context, viewModel: viewModel),
+      );
 
   Widget _buildAppBarWrapper(
           {required BuildContext context,
@@ -192,7 +192,7 @@ class IeltsReadingPractice4Question
       CountdownTimer(
         duration: viewModel.countdown,
         key: ValueKey(viewModel.countdown),
-        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
+        onEnd: ()async => await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildTitle() => Text(
@@ -215,17 +215,45 @@ class IeltsReadingPractice4Question
           child: _buildQuestionWrapper(context: context, viewModel: viewModel));
 
   Widget _buildQuestionWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children:
-            _buildQuestionChildren(context: context, viewModel: viewModel),
+        _buildQuestionChildren(context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildQuestionChildren(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      [
+        _buildQuestionColumnWrapper(context: context, viewModel: viewModel),
+        verticalSpaceLarge,
+        _buildContinueButtonState(context: context, viewModel: viewModel)
+      ];
+
+  Widget _buildQuestionColumnWrapper(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildQuestionColumn(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildQuestionColumn(
+      {required BuildContext context,
+        required CoursePracticeViewModel viewModel}) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: _buildQuestionColumnChildren(
+            context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildQuestionColumnChildren(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
@@ -239,8 +267,6 @@ class IeltsReadingPractice4Question
         _buildSubtitle('Sentence Endings'),
         verticalSpaceMedium,
         _buildOptions(viewModel),
-        verticalSpaceLarge,
-        _buildContinueButtonState(context: context, viewModel: viewModel)
       ];
 
   Widget _buildSubtitle(String label) => Text(
@@ -314,7 +340,7 @@ class IeltsReadingPractice4Question
       {required BuildContext context,
         required CoursePracticeViewModel viewModel}) =>
       Padding(
-        padding: const EdgeInsets.only(bottom: 50),
+        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
