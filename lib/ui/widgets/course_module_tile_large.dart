@@ -49,6 +49,38 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
     }*/
   }
 
+  Future<void> _onVideo(
+      {required int index,
+      required CourseLesson lesson,
+      required BuildContext context,
+      required CourseModuleViewModel viewModel}) async {
+    if (type == SubscriptionType.duolingo) {
+      if (viewModel.user?.duolingo ?? false) {
+        await viewModel.navigateToCourseLessonDetail(
+            type: type, lesson: lessons[index]);
+      } else {
+        if (first && index < 3) {
+          await viewModel.navigateToCourseLessonDetail(
+              type: type, lesson: lessons[index]);
+        } else {
+          await _showSheet(context: context, viewModel: viewModel);
+        }
+      }
+    } else {
+      if (viewModel.user?.ielts ?? false) {
+        await viewModel.navigateToCourseLessonDetail(
+            type: type, lesson: lessons[index]);
+      } else {
+        if (first && index < 3) {
+          await viewModel.navigateToCourseLessonDetail(
+              type: type, lesson: lessons[index]);
+        } else {
+          await _showSheet(context: context, viewModel: viewModel);
+        }
+      }
+    }
+  }
+
   Future<void> _showSheet(
           {required BuildContext context,
           required CourseModuleViewModel viewModel}) async =>
@@ -209,7 +241,6 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
 
   Widget _buildSheet(CourseModuleViewModel viewModel) => FinishPracticeSheet(
         onTap: viewModel.pop,
-        practice: PracticeReason.lesson,
       );
 
   Widget _buildCourseModules(CourseModuleViewModel viewModel) =>
@@ -219,8 +250,12 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildCourseLessonTile(
             lesson: lessons[index],
-            onVideoTap: () async =>
-                await viewModel.navigateToCourseLessonDetail(type:type,lesson: lessons[index]),
+            onVideoTap: () async => await _onVideo(
+                  index: index,
+                  context: context,
+                  viewModel: viewModel,
+                  lesson: viewModel.lessons[index],
+                ),
             onPracticeTap: () async => await _onPractice(
                   index: index,
                   context: context,

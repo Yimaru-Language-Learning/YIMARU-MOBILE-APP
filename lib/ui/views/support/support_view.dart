@@ -88,7 +88,9 @@ class SupportView extends StackedView<SupportViewModel> {
         verticalSpaceMedium,
         _buildTelegramSupport(viewModel),
         verticalSpaceMedium,
-        _buildInAppSupport(viewModel)
+        _buildInAppSupport(viewModel),
+        verticalSpaceMedium,
+        _buildFaqSupport(viewModel)
       ];
 
   Widget _buildCallSupport(SupportViewModel viewModel) => SupportCard(
@@ -113,5 +115,13 @@ class SupportView extends StackedView<SupportViewModel> {
         title: 'In-App support',
         subtitle: 'Write down your issue here',
         onTap: () async => await viewModel.navigateToInAppSupport(),
+      );
+
+  Widget _buildFaqSupport(SupportViewModel viewModel) => SupportCard(
+        color: kcGreen,
+        title: 'FAQ',
+        icon: Icons.question_mark,
+        subtitle: 'Visit frequently asked questions',
+        onTap: () async => await viewModel.navigateToFaqs(),
       );
 }

@@ -251,8 +251,8 @@ class DuolingoReadingPractice1Question
         color: viewModel.showAnswer
             ? kcDeepGreen.withValues(alpha: 0.1)
             : kcTransparent,
-        padding: EdgeInsets.symmetric(
-            horizontal: viewModel.showAnswer ? 15 : 0),
+        padding:
+            EdgeInsets.symmetric(horizontal: viewModel.showAnswer ? 15 : 0),
         child:
             _buildContinueButtonWrapper(context: context, viewModel: viewModel),
       );

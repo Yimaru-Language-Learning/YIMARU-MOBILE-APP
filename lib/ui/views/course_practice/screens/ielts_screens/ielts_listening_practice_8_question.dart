@@ -17,7 +17,6 @@ class IeltsListeningPractice8Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsListeningPractice8Question({super.key});
 
-
   void _setShowAnswer(CoursePracticeViewModel viewModel) {
     viewModel.setShowAnswer();
   }
@@ -33,7 +32,8 @@ class IeltsListeningPractice8Question
         viewModel.setSectionEnd(true);
         viewModel.nextScreen();
       } else {
-        if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+        if (viewModel
+                .questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
             null) {
           viewModel.setSectionEnd(true);
           viewModel.nextScreen();
@@ -106,10 +106,7 @@ class IeltsListeningPractice8Question
   Widget _buildScaffold(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-              _buildBodyColumn(context: context, viewModel: viewModel));
-
+      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
   Widget _buildBodyColumn(
           {required BuildContext context,
@@ -129,13 +126,12 @@ class IeltsListeningPractice8Question
       ];
 
   Widget _buildAppBarPaddingWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildAppBarWrapper(context: context, viewModel: viewModel),
       );
-
 
   Widget _buildAppBarWrapper(
           {required BuildContext context,
@@ -195,7 +191,8 @@ class IeltsListeningPractice8Question
       CountdownTimer(
         duration: viewModel.countdown,
         key: ValueKey(viewModel.countdown),
-        onEnd: () async=>await _nextScreen(context: context, viewModel: viewModel),
+        onEnd: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -212,19 +209,19 @@ class IeltsListeningPractice8Question
           child: _buildQuestionWrapper(context: context, viewModel: viewModel));
 
   Widget _buildQuestionWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children:
-        _buildQuestionChildren(context: context, viewModel: viewModel),
+            _buildQuestionChildren(context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildQuestionChildren(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         _buildQuestionColumnWrapper(context: context, viewModel: viewModel),
         verticalSpaceLarge,
@@ -232,16 +229,16 @@ class IeltsListeningPractice8Question
       ];
 
   Widget _buildQuestionColumnWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestionColumn(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionColumn(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -259,7 +256,6 @@ class IeltsListeningPractice8Question
         _buildSubtitle(),
         verticalSpaceMedium,
         _buildMatchingColumn(viewModel),
-
       ];
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => Container(

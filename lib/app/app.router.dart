@@ -6,18 +6,18 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i40;
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as _i41;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i49;
-import 'package:yimaru_app/models/course_catalog.dart' as _i46;
-import 'package:yimaru_app/models/course_lesson.dart' as _i45;
-import 'package:yimaru_app/models/course_module.dart' as _i47;
-import 'package:yimaru_app/models/learn_course.dart' as _i41;
-import 'package:yimaru_app/models/learn_lesson.dart' as _i43;
-import 'package:yimaru_app/models/learn_module.dart' as _i42;
-import 'package:yimaru_app/models/subscription.dart' as _i48;
-import 'package:yimaru_app/ui/common/enmus.dart' as _i44;
+import 'package:stacked_services/stacked_services.dart' as _i50;
+import 'package:yimaru_app/models/course_catalog.dart' as _i47;
+import 'package:yimaru_app/models/course_lesson.dart' as _i46;
+import 'package:yimaru_app/models/course_module.dart' as _i48;
+import 'package:yimaru_app/models/learn_course.dart' as _i42;
+import 'package:yimaru_app/models/learn_lesson.dart' as _i44;
+import 'package:yimaru_app/models/learn_module.dart' as _i43;
+import 'package:yimaru_app/models/subscription.dart' as _i49;
+import 'package:yimaru_app/ui/common/enmus.dart' as _i45;
 import 'package:yimaru_app/ui/views/account_privacy/account_privacy_view.dart'
     as _i8;
 import 'package:yimaru_app/ui/views/assessment/assessment_view.dart' as _i26;
@@ -35,6 +35,7 @@ import 'package:yimaru_app/ui/views/course_practice/course_practice_view.dart'
 import 'package:yimaru_app/ui/views/course_unit/course_unit_view.dart' as _i28;
 import 'package:yimaru_app/ui/views/downloads/downloads_view.dart' as _i7;
 import 'package:yimaru_app/ui/views/failure/failure_view.dart' as _i22;
+import 'package:yimaru_app/ui/views/faqs/faqs_view.dart' as _i40;
 import 'package:yimaru_app/ui/views/forget_password/forget_password_view.dart'
     as _i19;
 import 'package:yimaru_app/ui/views/home/home_view.dart' as _i2;
@@ -155,6 +156,8 @@ class Routes {
 
   static const inAppSupportView = '/in-app-support-view';
 
+  static const faqsView = '/faqs-view';
+
   static const all = <String>{
     homeView,
     onboardingView,
@@ -194,6 +197,7 @@ class Routes {
     mySubscriptionView,
     myProgressView,
     inAppSupportView,
+    faqsView,
   };
 }
 
@@ -351,6 +355,10 @@ class StackedRouter extends _i1.RouterBase {
       Routes.inAppSupportView,
       page: _i39.InAppSupportView,
     ),
+    _i1.RouteDef(
+      Routes.faqsView,
+      page: _i40.FaqsView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
@@ -358,7 +366,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<HomeViewArguments>(
         orElse: () => const HomeViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i2.HomeView(key: args.key),
         settings: data,
       );
@@ -367,7 +375,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<OnboardingViewArguments>(
         orElse: () => const OnboardingViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i3.OnboardingView(key: args.key),
         settings: data,
       );
@@ -376,7 +384,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<StartupViewArguments>(
         orElse: () => const StartupViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i4.StartupView(key: args.key, label: args.label),
         settings: data,
       );
@@ -385,7 +393,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ProfileViewArguments>(
         orElse: () => const ProfileViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i5.ProfileView(key: args.key),
         settings: data,
       );
@@ -394,7 +402,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ProfileDetailViewArguments>(
         orElse: () => const ProfileDetailViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i6.ProfileDetailView(key: args.key),
         settings: data,
       );
@@ -403,7 +411,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<DownloadsViewArguments>(
         orElse: () => const DownloadsViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i7.DownloadsView(key: args.key),
         settings: data,
       );
@@ -412,7 +420,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<AccountPrivacyViewArguments>(
         orElse: () => const AccountPrivacyViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i8.AccountPrivacyView(key: args.key),
         settings: data,
       );
@@ -421,7 +429,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<SupportViewArguments>(
         orElse: () => const SupportViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i9.SupportView(key: args.key),
         settings: data,
       );
@@ -430,7 +438,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<TelegramSupportViewArguments>(
         orElse: () => const TelegramSupportViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i10.TelegramSupportView(key: args.key),
         settings: data,
       );
@@ -439,7 +447,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CallSupportViewArguments>(
         orElse: () => const CallSupportViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i11.CallSupportView(key: args.key),
         settings: data,
       );
@@ -448,7 +456,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<LanguageViewArguments>(
         orElse: () => const LanguageViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i12.LanguageView(key: args.key),
         settings: data,
       );
@@ -457,7 +465,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<PrivacyPolicyViewArguments>(
         orElse: () => const PrivacyPolicyViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i13.PrivacyPolicyView(key: args.key),
         settings: data,
       );
@@ -466,7 +474,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<TermsAndConditionsViewArguments>(
         orElse: () => const TermsAndConditionsViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i14.TermsAndConditionsView(key: args.key),
         settings: data,
       );
@@ -475,7 +483,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<RegisterViewArguments>(
         orElse: () => const RegisterViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i15.RegisterView(key: args.key),
         settings: data,
       );
@@ -484,14 +492,14 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<LoginViewArguments>(
         orElse: () => const LoginViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i16.LoginView(key: args.key),
         settings: data,
       );
     },
     _i17.LearnModuleView: (data) {
       final args = data.getArgs<LearnModuleViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i17.LearnModuleView(
             key: args.key, first: args.first, course: args.course),
         settings: data,
@@ -499,7 +507,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i18.LearnLessonView: (data) {
       final args = data.getArgs<LearnLessonViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i18.LearnLessonView(
             key: args.key, first: args.first, module: args.module),
         settings: data,
@@ -509,14 +517,14 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<ForgetPasswordViewArguments>(
         orElse: () => const ForgetPasswordViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i19.ForgetPasswordView(key: args.key),
         settings: data,
       );
     },
     _i20.LearnLessonDetailView: (data) {
       final args = data.getArgs<LearnLessonDetailViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i20.LearnLessonDetailView(
             key: args.key,
             index: args.index,
@@ -528,7 +536,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i21.LearnPracticeView: (data) {
       final args = data.getArgs<LearnPracticeViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i21.LearnPracticeView(
             key: args.key,
             level: args.level,
@@ -542,7 +550,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i22.FailureView: (data) {
       final args = data.getArgs<FailureViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i22.FailureView(
             key: args.key, onTap: args.onTap, label: args.label),
         settings: data,
@@ -550,7 +558,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i23.CourseLessonDetailView: (data) {
       final args = data.getArgs<CourseLessonDetailViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i23.CourseLessonDetailView(
             key: args.key, type: args.type, lesson: args.lesson),
         settings: data,
@@ -560,7 +568,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CourseViewArguments>(
         orElse: () => const CourseViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i24.CourseView(key: args.key),
         settings: data,
       );
@@ -569,14 +577,14 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<LearnProgramViewArguments>(
         orElse: () => const LearnProgramViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i25.LearnProgramView(key: args.key),
         settings: data,
       );
     },
     _i26.AssessmentView: (data) {
       final args = data.getArgs<AssessmentViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i26.AssessmentView(key: args.key, data: args.data),
         settings: data,
@@ -586,14 +594,14 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CourseCatalogViewArguments>(
         orElse: () => const CourseCatalogViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i27.CourseCatalogView(key: args.key),
         settings: data,
       );
     },
     _i28.CourseUnitView: (data) {
       final args = data.getArgs<CourseUnitViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i28.CourseUnitView(
             key: args.key, type: args.type, catalog: args.catalog),
         settings: data,
@@ -603,14 +611,14 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<LandingViewArguments>(
         orElse: () => const LandingViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i29.LandingView(key: args.key),
         settings: data,
       );
     },
     _i30.CourseModuleView: (data) {
       final args = data.getArgs<CourseModuleViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i30.CourseModuleView(
             key: args.key,
             type: args.type,
@@ -622,7 +630,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i31.LearnCourseView: (data) {
       final args = data.getArgs<LearnCourseViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i31.LearnCourseView(key: args.key, id: args.id, first: args.first),
         settings: data,
@@ -630,7 +638,7 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i32.PaymentView: (data) {
       final args = data.getArgs<PaymentViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i32.PaymentView(
             key: args.key,
             phone: args.phone,
@@ -643,14 +651,14 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<NotificationViewArguments>(
         orElse: () => const NotificationViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i33.NotificationView(key: args.key),
         settings: data,
       );
     },
     _i34.CoursePracticeView: (data) {
       final args = data.getArgs<CoursePracticeViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i34.CoursePracticeView(
             key: args.key,
             id: args.id,
@@ -661,14 +669,14 @@ class StackedRouter extends _i1.RouterBase {
     },
     _i35.PdfView: (data) {
       final args = data.getArgs<PdfViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i35.PdfView(key: args.key, url: args.url),
         settings: data,
       );
     },
     _i36.SubscriptionView: (data) {
       final args = data.getArgs<SubscriptionViewArguments>(nullOk: false);
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i36.SubscriptionView(key: args.key, type: args.type),
         settings: data,
@@ -678,7 +686,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<MySubscriptionViewArguments>(
         orElse: () => const MySubscriptionViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i37.MySubscriptionView(key: args.key),
         settings: data,
       );
@@ -687,7 +695,7 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<MyProgressViewArguments>(
         orElse: () => const MyProgressViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i38.MyProgressView(key: args.key),
         settings: data,
       );
@@ -696,8 +704,17 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<InAppSupportViewArguments>(
         orElse: () => const InAppSupportViewArguments(),
       );
-      return _i40.MaterialPageRoute<dynamic>(
+      return _i41.MaterialPageRoute<dynamic>(
         builder: (context) => _i39.InAppSupportView(key: args.key),
+        settings: data,
+      );
+    },
+    _i40.FaqsView: (data) {
+      final args = data.getArgs<FaqsViewArguments>(
+        orElse: () => const FaqsViewArguments(),
+      );
+      return _i41.MaterialPageRoute<dynamic>(
+        builder: (context) => _i40.FaqsView(key: args.key),
         settings: data,
       );
     },
@@ -713,7 +730,7 @@ class StackedRouter extends _i1.RouterBase {
 class HomeViewArguments {
   const HomeViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -735,7 +752,7 @@ class HomeViewArguments {
 class OnboardingViewArguments {
   const OnboardingViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -760,7 +777,7 @@ class StartupViewArguments {
     this.label,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final String? label;
 
@@ -784,7 +801,7 @@ class StartupViewArguments {
 class ProfileViewArguments {
   const ProfileViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -806,7 +823,7 @@ class ProfileViewArguments {
 class ProfileDetailViewArguments {
   const ProfileDetailViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -828,7 +845,7 @@ class ProfileDetailViewArguments {
 class DownloadsViewArguments {
   const DownloadsViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -850,7 +867,7 @@ class DownloadsViewArguments {
 class AccountPrivacyViewArguments {
   const AccountPrivacyViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -872,7 +889,7 @@ class AccountPrivacyViewArguments {
 class SupportViewArguments {
   const SupportViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -894,7 +911,7 @@ class SupportViewArguments {
 class TelegramSupportViewArguments {
   const TelegramSupportViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -916,7 +933,7 @@ class TelegramSupportViewArguments {
 class CallSupportViewArguments {
   const CallSupportViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -938,7 +955,7 @@ class CallSupportViewArguments {
 class LanguageViewArguments {
   const LanguageViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -960,7 +977,7 @@ class LanguageViewArguments {
 class PrivacyPolicyViewArguments {
   const PrivacyPolicyViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -982,7 +999,7 @@ class PrivacyPolicyViewArguments {
 class TermsAndConditionsViewArguments {
   const TermsAndConditionsViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1004,7 +1021,7 @@ class TermsAndConditionsViewArguments {
 class RegisterViewArguments {
   const RegisterViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1026,7 +1043,7 @@ class RegisterViewArguments {
 class LoginViewArguments {
   const LoginViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1052,11 +1069,11 @@ class LearnModuleViewArguments {
     required this.course,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final bool first;
 
-  final _i41.LearnCourse course;
+  final _i42.LearnCourse course;
 
   @override
   String toString() {
@@ -1082,11 +1099,11 @@ class LearnLessonViewArguments {
     required this.module,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final bool first;
 
-  final _i42.LearnModule module;
+  final _i43.LearnModule module;
 
   @override
   String toString() {
@@ -1108,7 +1125,7 @@ class LearnLessonViewArguments {
 class ForgetPasswordViewArguments {
   const ForgetPasswordViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1136,13 +1153,13 @@ class LearnLessonDetailViewArguments {
     required this.hasPractice,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final int index;
 
-  final _i43.LearnLesson lesson;
+  final _i44.LearnLesson lesson;
 
-  final _i42.LearnModule module;
+  final _i43.LearnModule module;
 
   final bool hasPractice;
 
@@ -1182,7 +1199,7 @@ class LearnPracticeViewArguments {
     required this.subtitle,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final String? level;
 
@@ -1192,7 +1209,7 @@ class LearnPracticeViewArguments {
 
   final String title;
 
-  final _i44.LearnPractices practice;
+  final _i45.LearnPractices practice;
 
   final String subtitle;
 
@@ -1232,7 +1249,7 @@ class FailureViewArguments {
     required this.label,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final void Function() onTap;
 
@@ -1262,11 +1279,11 @@ class CourseLessonDetailViewArguments {
     required this.lesson,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
-  final _i44.SubscriptionType type;
+  final _i45.SubscriptionType type;
 
-  final _i45.CourseLesson lesson;
+  final _i46.CourseLesson lesson;
 
   @override
   String toString() {
@@ -1288,7 +1305,7 @@ class CourseLessonDetailViewArguments {
 class CourseViewArguments {
   const CourseViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1310,7 +1327,7 @@ class CourseViewArguments {
 class LearnProgramViewArguments {
   const LearnProgramViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1335,7 +1352,7 @@ class AssessmentViewArguments {
     required this.data,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final Map<String, dynamic> data;
 
@@ -1359,7 +1376,7 @@ class AssessmentViewArguments {
 class CourseCatalogViewArguments {
   const CourseCatalogViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1385,11 +1402,11 @@ class CourseUnitViewArguments {
     required this.catalog,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
-  final _i44.SubscriptionType type;
+  final _i45.SubscriptionType type;
 
-  final _i46.CourseCatalog catalog;
+  final _i47.CourseCatalog catalog;
 
   @override
   String toString() {
@@ -1411,7 +1428,7 @@ class CourseUnitViewArguments {
 class LandingViewArguments {
   const LandingViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1439,15 +1456,15 @@ class CourseModuleViewArguments {
     required this.catalog,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
-  final _i44.SubscriptionType type;
+  final _i45.SubscriptionType type;
 
   final bool first;
 
-  final _i47.CourseModule? module;
+  final _i48.CourseModule? module;
 
-  final _i46.CourseCatalog catalog;
+  final _i47.CourseCatalog catalog;
 
   @override
   String toString() {
@@ -1481,7 +1498,7 @@ class LearnCourseViewArguments {
     required this.first,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final int id;
 
@@ -1512,13 +1529,13 @@ class PaymentViewArguments {
     required this.subscription,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final String phone;
 
-  final _i44.PaymentMethod method;
+  final _i45.PaymentMethod method;
 
-  final _i48.Subscription subscription;
+  final _i49.Subscription subscription;
 
   @override
   String toString() {
@@ -1546,7 +1563,7 @@ class PaymentViewArguments {
 class NotificationViewArguments {
   const NotificationViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1573,13 +1590,13 @@ class CoursePracticeViewArguments {
     required this.practice,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final int id;
 
-  final _i44.SubscriptionType type;
+  final _i45.SubscriptionType type;
 
-  final _i44.CoursePractices practice;
+  final _i45.CoursePractices practice;
 
   @override
   String toString() {
@@ -1607,7 +1624,7 @@ class PdfViewArguments {
     required this.url,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   final String url;
 
@@ -1634,9 +1651,9 @@ class SubscriptionViewArguments {
     required this.type,
   });
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
-  final _i44.SubscriptionType type;
+  final _i45.SubscriptionType type;
 
   @override
   String toString() {
@@ -1658,7 +1675,7 @@ class SubscriptionViewArguments {
 class MySubscriptionViewArguments {
   const MySubscriptionViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1680,7 +1697,7 @@ class MySubscriptionViewArguments {
 class MyProgressViewArguments {
   const MyProgressViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1702,7 +1719,7 @@ class MyProgressViewArguments {
 class InAppSupportViewArguments {
   const InAppSupportViewArguments({this.key});
 
-  final _i40.Key? key;
+  final _i41.Key? key;
 
   @override
   String toString() {
@@ -1721,9 +1738,31 @@ class InAppSupportViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i49.NavigationService {
+class FaqsViewArguments {
+  const FaqsViewArguments({this.key});
+
+  final _i41.Key? key;
+
+  @override
+  String toString() {
+    return '{"key": "$key"}';
+  }
+
+  @override
+  bool operator ==(covariant FaqsViewArguments other) {
+    if (identical(this, other)) return true;
+    return other.key == key;
+  }
+
+  @override
+  int get hashCode {
+    return key.hashCode;
+  }
+}
+
+extension NavigatorStateExtension on _i50.NavigationService {
   Future<dynamic> navigateToHomeView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1739,7 +1778,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToOnboardingView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1755,7 +1794,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToStartupView({
-    _i40.Key? key,
+    _i41.Key? key,
     String? label,
     int? routerId,
     bool preventDuplicates = true,
@@ -1772,7 +1811,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToProfileView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1788,7 +1827,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToProfileDetailView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1804,7 +1843,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToDownloadsView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1820,7 +1859,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToAccountPrivacyView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1836,7 +1875,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToSupportView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1852,7 +1891,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToTelegramSupportView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1868,7 +1907,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToCallSupportView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1884,7 +1923,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToLanguageView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1900,7 +1939,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToPrivacyPolicyView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1916,7 +1955,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToTermsAndConditionsView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1932,7 +1971,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToRegisterView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1948,7 +1987,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToLoginView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1964,9 +2003,9 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToLearnModuleView({
-    _i40.Key? key,
+    _i41.Key? key,
     required bool first,
-    required _i41.LearnCourse course,
+    required _i42.LearnCourse course,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -1983,9 +2022,9 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToLearnLessonView({
-    _i40.Key? key,
+    _i41.Key? key,
     required bool first,
-    required _i42.LearnModule module,
+    required _i43.LearnModule module,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2002,7 +2041,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToForgetPasswordView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2018,10 +2057,10 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToLearnLessonDetailView({
-    _i40.Key? key,
+    _i41.Key? key,
     required int index,
-    required _i43.LearnLesson lesson,
-    required _i42.LearnModule module,
+    required _i44.LearnLesson lesson,
+    required _i43.LearnModule module,
     required bool hasPractice,
     int? routerId,
     bool preventDuplicates = true,
@@ -2043,12 +2082,12 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToLearnPracticeView({
-    _i40.Key? key,
+    _i41.Key? key,
     String? level,
     required int id,
     required String label,
     required String title,
-    required _i44.LearnPractices practice,
+    required _i45.LearnPractices practice,
     required String subtitle,
     int? routerId,
     bool preventDuplicates = true,
@@ -2072,7 +2111,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToFailureView({
-    _i40.Key? key,
+    _i41.Key? key,
     required void Function() onTap,
     required String label,
     int? routerId,
@@ -2090,9 +2129,9 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToCourseLessonDetailView({
-    _i40.Key? key,
-    required _i44.SubscriptionType type,
-    required _i45.CourseLesson lesson,
+    _i41.Key? key,
+    required _i45.SubscriptionType type,
+    required _i46.CourseLesson lesson,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2109,7 +2148,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToCourseView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2125,7 +2164,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToLearnProgramView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2141,7 +2180,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToAssessmentView({
-    _i40.Key? key,
+    _i41.Key? key,
     required Map<String, dynamic> data,
     int? routerId,
     bool preventDuplicates = true,
@@ -2158,7 +2197,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToCourseCatalogView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2174,9 +2213,9 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToCourseUnitView({
-    _i40.Key? key,
-    required _i44.SubscriptionType type,
-    required _i46.CourseCatalog catalog,
+    _i41.Key? key,
+    required _i45.SubscriptionType type,
+    required _i47.CourseCatalog catalog,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2193,7 +2232,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToLandingView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2209,11 +2248,11 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToCourseModuleView({
-    _i40.Key? key,
-    required _i44.SubscriptionType type,
+    _i41.Key? key,
+    required _i45.SubscriptionType type,
     required bool first,
-    required _i47.CourseModule? module,
-    required _i46.CourseCatalog catalog,
+    required _i48.CourseModule? module,
+    required _i47.CourseCatalog catalog,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2234,7 +2273,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToLearnCourseView({
-    _i40.Key? key,
+    _i41.Key? key,
     required int id,
     required bool first,
     int? routerId,
@@ -2252,10 +2291,10 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToPaymentView({
-    _i40.Key? key,
+    _i41.Key? key,
     required String phone,
-    required _i44.PaymentMethod method,
-    required _i48.Subscription subscription,
+    required _i45.PaymentMethod method,
+    required _i49.Subscription subscription,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2272,7 +2311,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToNotificationView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2288,10 +2327,10 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToCoursePracticeView({
-    _i40.Key? key,
+    _i41.Key? key,
     required int id,
-    required _i44.SubscriptionType type,
-    required _i44.CoursePractices practice,
+    required _i45.SubscriptionType type,
+    required _i45.CoursePractices practice,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2308,7 +2347,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToPdfView({
-    _i40.Key? key,
+    _i41.Key? key,
     required String url,
     int? routerId,
     bool preventDuplicates = true,
@@ -2325,8 +2364,8 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToSubscriptionView({
-    _i40.Key? key,
-    required _i44.SubscriptionType type,
+    _i41.Key? key,
+    required _i45.SubscriptionType type,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2342,7 +2381,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToMySubscriptionView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2358,7 +2397,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToMyProgressView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2374,7 +2413,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> navigateToInAppSupportView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2389,8 +2428,24 @@ extension NavigatorStateExtension on _i49.NavigationService {
         transition: transition);
   }
 
+  Future<dynamic> navigateToFaqsView({
+    _i41.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return navigateTo<dynamic>(Routes.faqsView,
+        arguments: FaqsViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
   Future<dynamic> replaceWithHomeView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2406,7 +2461,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithOnboardingView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2422,7 +2477,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithStartupView({
-    _i40.Key? key,
+    _i41.Key? key,
     String? label,
     int? routerId,
     bool preventDuplicates = true,
@@ -2439,7 +2494,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithProfileView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2455,7 +2510,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithProfileDetailView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2471,7 +2526,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithDownloadsView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2487,7 +2542,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithAccountPrivacyView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2503,7 +2558,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithSupportView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2519,7 +2574,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithTelegramSupportView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2535,7 +2590,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithCallSupportView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2551,7 +2606,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithLanguageView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2567,7 +2622,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithPrivacyPolicyView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2583,7 +2638,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithTermsAndConditionsView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2599,7 +2654,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithRegisterView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2615,7 +2670,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithLoginView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2631,9 +2686,9 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithLearnModuleView({
-    _i40.Key? key,
+    _i41.Key? key,
     required bool first,
-    required _i41.LearnCourse course,
+    required _i42.LearnCourse course,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2650,9 +2705,9 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithLearnLessonView({
-    _i40.Key? key,
+    _i41.Key? key,
     required bool first,
-    required _i42.LearnModule module,
+    required _i43.LearnModule module,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2669,7 +2724,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithForgetPasswordView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2685,10 +2740,10 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithLearnLessonDetailView({
-    _i40.Key? key,
+    _i41.Key? key,
     required int index,
-    required _i43.LearnLesson lesson,
-    required _i42.LearnModule module,
+    required _i44.LearnLesson lesson,
+    required _i43.LearnModule module,
     required bool hasPractice,
     int? routerId,
     bool preventDuplicates = true,
@@ -2710,12 +2765,12 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithLearnPracticeView({
-    _i40.Key? key,
+    _i41.Key? key,
     String? level,
     required int id,
     required String label,
     required String title,
-    required _i44.LearnPractices practice,
+    required _i45.LearnPractices practice,
     required String subtitle,
     int? routerId,
     bool preventDuplicates = true,
@@ -2739,7 +2794,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithFailureView({
-    _i40.Key? key,
+    _i41.Key? key,
     required void Function() onTap,
     required String label,
     int? routerId,
@@ -2757,9 +2812,9 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithCourseLessonDetailView({
-    _i40.Key? key,
-    required _i44.SubscriptionType type,
-    required _i45.CourseLesson lesson,
+    _i41.Key? key,
+    required _i45.SubscriptionType type,
+    required _i46.CourseLesson lesson,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2776,7 +2831,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithCourseView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2792,7 +2847,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithLearnProgramView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2808,7 +2863,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithAssessmentView({
-    _i40.Key? key,
+    _i41.Key? key,
     required Map<String, dynamic> data,
     int? routerId,
     bool preventDuplicates = true,
@@ -2825,7 +2880,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithCourseCatalogView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2841,9 +2896,9 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithCourseUnitView({
-    _i40.Key? key,
-    required _i44.SubscriptionType type,
-    required _i46.CourseCatalog catalog,
+    _i41.Key? key,
+    required _i45.SubscriptionType type,
+    required _i47.CourseCatalog catalog,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2860,7 +2915,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithLandingView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2876,11 +2931,11 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithCourseModuleView({
-    _i40.Key? key,
-    required _i44.SubscriptionType type,
+    _i41.Key? key,
+    required _i45.SubscriptionType type,
     required bool first,
-    required _i47.CourseModule? module,
-    required _i46.CourseCatalog catalog,
+    required _i48.CourseModule? module,
+    required _i47.CourseCatalog catalog,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2901,7 +2956,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithLearnCourseView({
-    _i40.Key? key,
+    _i41.Key? key,
     required int id,
     required bool first,
     int? routerId,
@@ -2919,10 +2974,10 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithPaymentView({
-    _i40.Key? key,
+    _i41.Key? key,
     required String phone,
-    required _i44.PaymentMethod method,
-    required _i48.Subscription subscription,
+    required _i45.PaymentMethod method,
+    required _i49.Subscription subscription,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2939,7 +2994,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithNotificationView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2955,10 +3010,10 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithCoursePracticeView({
-    _i40.Key? key,
+    _i41.Key? key,
     required int id,
-    required _i44.SubscriptionType type,
-    required _i44.CoursePractices practice,
+    required _i45.SubscriptionType type,
+    required _i45.CoursePractices practice,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2975,7 +3030,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithPdfView({
-    _i40.Key? key,
+    _i41.Key? key,
     required String url,
     int? routerId,
     bool preventDuplicates = true,
@@ -2992,8 +3047,8 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithSubscriptionView({
-    _i40.Key? key,
-    required _i44.SubscriptionType type,
+    _i41.Key? key,
+    required _i45.SubscriptionType type,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3009,7 +3064,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithMySubscriptionView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3025,7 +3080,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithMyProgressView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3041,7 +3096,7 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }
 
   Future<dynamic> replaceWithInAppSupportView({
-    _i40.Key? key,
+    _i41.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -3050,6 +3105,22 @@ extension NavigatorStateExtension on _i49.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.inAppSupportView,
         arguments: InAppSupportViewArguments(key: key),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithFaqsView({
+    _i41.Key? key,
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  }) async {
+    return replaceWith<dynamic>(Routes.faqsView,
+        arguments: FaqsViewArguments(key: key),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

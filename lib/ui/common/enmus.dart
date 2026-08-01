@@ -47,6 +47,7 @@ enum PracticeReason {
 
 // State object
 enum StateObjects {
+  faqs,
   none,
   logout,
   courses,
@@ -57,7 +58,6 @@ enum StateObjects {
   stopAudio,
   cacheImage,
   courseUnits,
-  assessments,
   startupView,
   learnLessons,
   learnModules,
@@ -73,6 +73,7 @@ enum StateObjects {
   learnPractice,
   notifications,
   subscriptions,
+  getAssessments,
   courseCatalogs,
   loginWithEmail,
   coursePractice,
@@ -86,6 +87,7 @@ enum StateObjects {
   reading8Variant,
   mySubscriptions,
   requestResetCode,
+  finishAssessment,
   profileCompletion,
   learnSubscription,
   listening1Variant,
@@ -94,6 +96,7 @@ enum StateObjects {
   learnPracticeSample,
   learnPracticeAnswer,
   assessmentQuestions,
+  updateKnowledgeLevel,
   coursePracticePrompt,
   loginWithPhoneNumber,
   coursePracticeReview,

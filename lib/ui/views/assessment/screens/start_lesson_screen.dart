@@ -16,13 +16,13 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
   const StartLessonScreen({super.key});
 
   Future<void> _start(AssessmentViewModel viewModel) async {
-    if (viewModel.proficiencyLevel != null) {
+/*    if (viewModel.proficiencyLevel != null) {
       Map<String, dynamic> data = {
         'knowledge_level': viewModel.proficiencyLevel?.toUpperCase()
       };
 
       viewModel.addUserData(data);
-    }
+    }*/
 
     await viewModel.completeProfile();
   }

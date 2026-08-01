@@ -19,11 +19,11 @@ class IeltsPracticeReviewSection
       _buildReviewContainer(viewModel);
 
   Widget _buildReviewContainer(CoursePracticeViewModel viewModel) => Container(
-    width: double.maxFinite,
-    color: kcDeepGreen.withValues(alpha: 0.1),
-    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-    child: _buildReviewColumn(viewModel),
-  );
+        width: double.maxFinite,
+        color: kcDeepGreen.withValues(alpha: 0.1),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: _buildReviewColumn(viewModel),
+      );
 
   Widget _buildReviewColumn(CoursePracticeViewModel viewModel) => Column(
         children: [
@@ -59,9 +59,6 @@ class IeltsPracticeReviewSection
         style: style14DG400,
         textAlign: TextAlign.center,
       );
-
-
-
 
   Widget _buildContinueButton() => CustomElevatedButton(
         height: 55,

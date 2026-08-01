@@ -11,7 +11,8 @@ import '../../../widgets/subscription_pricing_section.dart';
 import '../../../widgets/small_app_bar.dart';
 import '../subscription_viewmodel.dart';
 
-class LearnSubscriptionPackageScreen extends ViewModelWidget<SubscriptionViewModel> {
+class LearnSubscriptionPackageScreen
+    extends ViewModelWidget<SubscriptionViewModel> {
   const LearnSubscriptionPackageScreen({super.key});
 
   @override
@@ -125,8 +126,9 @@ class LearnSubscriptionPackageScreen extends ViewModelWidget<SubscriptionViewMod
         style: style16DG600,
       );
 
-  Widget _buildSubscriptionPricingSection() =>
-       const SubscriptionPricingSection(subtitle: 'This includes Monthly and 3-Month packages',);
+  Widget _buildSubscriptionPricingSection() => const SubscriptionPricingSection(
+        subtitle: 'This includes Monthly and 3-Month packages',
+      );
 
   Widget _buildSubscribeButton(SubscriptionViewModel viewModel) =>
       CustomElevatedButton(

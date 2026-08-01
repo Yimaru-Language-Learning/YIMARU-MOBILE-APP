@@ -17,7 +17,7 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
   @override
   void onViewModelReady(AssessmentViewModel viewModel) async {
     viewModel.initUserData(data);
-    await viewModel.getAssessments();
+    await viewModel.getInitialAssessment();
     super.onViewModelReady(viewModel);
   }
 
@@ -52,21 +52,21 @@ class AssessmentView extends StackedView<AssessmentViewModel> {
       ];
 
   Widget _buildAssessmentIntroWrapper(AssessmentViewModel viewModel) =>
-      viewModel.busy(StateObjects.assessments)
+      viewModel.busy(StateObjects.getAssessments)
           ? _buildPageLoadingIndicator(viewModel)
           : _buildAssessmentIntro(viewModel);
 
   Widget _buildPageLoadingIndicator(AssessmentViewModel viewModel) =>
       AssessmentLoadingScreen(
-        isEmpty: viewModel.assessments.isEmpty,
-        onTap: () async => await viewModel.getAssessments(),
-        isLoading: viewModel.busy(StateObjects.assessments),
-        onPop: viewModel.assessments.isEmpty ? viewModel.pop : null,
+        isEmpty: viewModel.questions.isEmpty,
+        onTap: () async => await viewModel.getInitialAssessment(),
+        isLoading: viewModel.busy(StateObjects.getAssessments),
+        onPop: viewModel.questions.isEmpty ? viewModel.pop : null,
       );
 
   Widget _buildAssessmentIntro(AssessmentViewModel viewModel) =>
       AssessmentIntroScreen(
-        hasAssessments: viewModel.assessments.isNotEmpty,
+        hasAssessments: viewModel.questions.isNotEmpty,
       );
 
   Widget _buildAssessment() => const AssessmentQuestionsScreen();

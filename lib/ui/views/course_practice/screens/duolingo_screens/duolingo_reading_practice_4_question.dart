@@ -70,10 +70,7 @@ class DuolingoReadingPractice4Question
   Widget _buildScaffold(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-          _buildBodyColumn(context: context, viewModel: viewModel));
-
+      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
   Widget _buildBodyColumn(
           {required BuildContext context,
@@ -95,8 +92,8 @@ class DuolingoReadingPractice4Question
       ];
 
   Widget _buildAppBarPaddingWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildAppBarWrapper(context: context, viewModel: viewModel),
@@ -159,11 +156,12 @@ class DuolingoReadingPractice4Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       SingleChildScrollView(
-          child: _buildQuestionPaddingWrapper(context: context, viewModel: viewModel));
+          child: _buildQuestionPaddingWrapper(
+              context: context, viewModel: viewModel));
 
   Widget _buildQuestionPaddingWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestionWrapper(context: context, viewModel: viewModel),
@@ -247,34 +245,32 @@ class DuolingoReadingPractice4Question
         color: kcBackgroundColor,
       );
 
-
-
   Widget _buildContainerWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Container(
         width: double.maxFinite,
         color: viewModel.showAnswer
             ? kcDeepGreen.withValues(alpha: 0.1)
             : kcTransparent,
-        padding: EdgeInsets.symmetric(
-            horizontal: viewModel.showAnswer ? 15 : 0),
+        padding:
+            EdgeInsets.symmetric(horizontal: viewModel.showAnswer ? 15 : 0),
         child:
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel),
+            _buildContinueButtonWrapper(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButtonWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child:
-        _buildContinueButtonColumn(context: context, viewModel: viewModel),
+            _buildContinueButtonColumn(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButtonColumn(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         children: _buildContinueButtonChildren(
@@ -282,8 +278,8 @@ class DuolingoReadingPractice4Question
       );
 
   List<Widget> _buildContinueButtonChildren(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceSmall,
         if (viewModel.showAnswer) _buildCorrectAnswer(viewModel),
@@ -291,16 +287,15 @@ class DuolingoReadingPractice4Question
         _buildContinueButton(context: context, viewModel: viewModel)
       ];
 
-
   Widget _buildCorrectAnswer(CoursePracticeViewModel viewModel) => Text(
-    'Correct Answer: ${(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['options'] as List).firstWhere((e) => e['is_correct'])['text']} ',
-    style: style16DG400,
-    textAlign: TextAlign.center,
-  );
+        'Correct Answer: ${(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['options'] as List).firstWhere((e) => e['is_correct'])['text']} ',
+        style: style16DG400,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildContinueButton(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',

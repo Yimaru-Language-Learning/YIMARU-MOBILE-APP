@@ -136,7 +136,7 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
       ];
 
   Widget _buildIcon() => const CircularIcon(
-      icon: Icons.menu_book_rounded, size: 50, color: kcSkyBlue);
+      icon: Icons.menu_book_rounded, size: 50, color: kcOrange);
 
   Widget _buildTitle() => Text(
         'Write you issue briefly',
