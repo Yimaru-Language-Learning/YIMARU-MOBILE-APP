@@ -1,32 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:yimaru_app/models/faq.dart';
 import 'package:yimaru_app/ui/common/app_strings.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../common/app_colors.dart';
 
-class PrivacyPolicyTile extends StatelessWidget {
-  final String title;
+class FaqTile extends StatelessWidget {
+  final Faq faq;
 
-  const PrivacyPolicyTile({super.key, required this.title});
+  const FaqTile({super.key, required this.faq});
 
-  IconData _getIcon() {
-    if (title == 'Introduction') {
-      return Icons.list_alt;
-    } else if (title == 'Information We Collect') {
-      return Icons.all_inbox;
-    } else if (title == 'How We Use Your Information') {
-      return Icons.lightbulb_outline;
-    } else if (title == 'Data Sharing and Disclosure') {
-      return Icons.share;
-    } else if (title == 'Your Rights and Choices') {
-      return Icons.confirmation_num;
-    } else if (title == 'Data Security') {
-      return Icons.shield_moon_outlined;
-    } else {
-      return Iconsax.pen_add;
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) => _buildExpansionTileCard();
@@ -40,7 +25,6 @@ class PrivacyPolicyTile extends StatelessWidget {
         title: _buildTitle(),
         iconColor: kcDarkGrey,
         textColor: kcDarkGrey,
-        leading: _buildIcon(),
         showTrailingIcon: true,
         initiallyExpanded: false,
         collapsedIconColor: kcDarkGrey,
@@ -56,20 +40,17 @@ class PrivacyPolicyTile extends StatelessWidget {
         children: _buildExpansionTileChildren(),
       );
 
-  Widget _buildIcon() => Icon(
-        _getIcon(),
-        color: kcPrimaryColor,
-      );
+
 
   List<Widget> _buildExpansionTileChildren() => [_buildContent()];
 
   Widget _buildTitle() => Text(
-        title,
+        faq.question ?? '',
         style: style16DG600,
       );
 
   Widget _buildContent() => Text(
-        ksPrivacyPolicy,
+        faq.answer ?? '',
         style: style14DG400,
       );
 }

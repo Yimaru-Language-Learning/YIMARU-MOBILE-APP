@@ -102,5 +102,9 @@ class ListeningMultipleChoiceCard
     required GestureTapCallback onTap,
   }) =>
       CustomSmallLeadingRadioButton(
-          onTap: onTap, title: title, selected: selected,color: kcBackgroundColor,);
+        onTap: onTap,
+        title: title,
+        selected: selected,
+        color: kcBackgroundColor,
+      );
 }

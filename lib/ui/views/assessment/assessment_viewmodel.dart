@@ -3,12 +3,14 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/models/assessment_question.dart';
 import 'package:yimaru_app/models/option.dart';
+import 'package:yimaru_app/models/practice_question.dart';
 import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
 import '../../../models/assessment.dart';
+import '../../../models/proficiency_level.dart';
 import '../../../services/api_service.dart';
 import '../../../services/localization_service.dart';
 import '../../common/app_colors.dart';
@@ -45,101 +47,65 @@ class AssessmentViewModel extends ReactiveViewModel {
   PageController get pageController => _pageController;
 
   // Assessment
+  ProficiencyLevel? _proficiencyLevel;
 
-  List<Assessment> _assessments = [];
+  ProficiencyLevel? get proficiencyLevel => _proficiencyLevel;
 
-  List<Assessment> get assessments => _assessments;
+  List<PracticeQuestion> _questions = [];
 
-  Assessment? _currentAssessment;
-
-  Assessment? get currentAssessment => _currentAssessment;
+  List<PracticeQuestion> get questions => _questions;
 
   int _currentQuestionIndex = 0;
 
   int get currentQuestionIndex => _currentQuestionIndex;
 
-  int _currentAssessmentIndex = 0;
+  final Map<String, dynamic> _answers = {};
 
-  int get currentAssessmentIndex => _currentAssessmentIndex;
-
-  String? _proficiencyLevel;
-
-  String? get proficiencyLevel => _proficiencyLevel;
+  Map<String, dynamic> get answers => _answers;
 
   final Map<String, dynamic> _selectedAnswers = {};
 
   Map<String, dynamic> get selectedAnswers => _selectedAnswers;
-
-  List<AssessmentQuestion> _assessmentQuestions = [];
-
-  List<AssessmentQuestion> get assessmentQuestions => _assessmentQuestions;
 
   // User data
   final Map<String, dynamic> _userData = {};
 
   Map<String, dynamic> get userData => _userData;
 
-  //  Assessment
-  Future<void> setFirstAssessment() async {
-    _proficiencyLevel = null;
-    _selectedAnswers.clear();
-    _currentQuestionIndex = 0;
-    _pageController.jumpToPage(_currentQuestionIndex);
-    _currentAssessment = assessments[currentAssessmentIndex];
-    await getAssessmentQuestions(_currentAssessment?.id ?? 0);
-
-    next();
-  }
-
-  Map<String, dynamic> evaluateAssessment() {
-    bool levelPassed = canPassLevel();
-    if (levelPassed) {
-      return {'passed': true, 'level': _currentAssessment?.description};
-    } else {
-      return {'passed': false, 'level': _currentAssessment?.description};
-    }
-  }
-
-  bool canPassLevel() {
-    int count = 0;
-
-    for (int i = 1; i <= _assessmentQuestions.length; i++) {
-      final answer = _selectedAnswers[i.toString()];
-
-      if (answer is Map<String, dynamic> && answer['correct'] == true) {
-        count++;
-      }
-    }
-
-    if (count >= (_currentAssessment?.passingScore ?? 0)) {
-      return true;
-    }
-
-    return false;
-  }
-
   bool isSelectedAnswer({required int question, required String answer}) {
     return _selectedAnswers[question.toString()]?['option'] == answer;
   }
 
-  void setSelectedAnswer({required int question, required Option? option}) {
+  void setSelectedAnswer(
+      {required int question, required Map<String, dynamic> option}) {
     bool correct = false;
-    if (option?.isCorrect ?? false) {
+    if (option['is_correct']) {
       correct = true;
     }
 
-    final data = {
+    final selectedAnswer = {
       question.toString(): {
         'correct': correct,
-        'option': option?.optionText,
-        'answer': _assessmentQuestions[question - 1]
-            .options
-            ?.firstWhere((e) => e.isCorrect ?? false)
-            .optionText
+        'option': option['option_text'],
+        'answer': (_questions[question - 1]
+                .dynamicPayload
+                ?.response
+                ?.first
+                .value as List)
+            .firstWhere((e) => e['is_correct'])['option_text']
       }
     };
 
-    _selectedAnswers.addAll(data);
+    final answer = {
+      question.toString(): {
+        'selected_option_ids': [option['id']],
+        'question_id': _questions[question - 1].id,
+      }
+    };
+
+    _answers.addAll(answer);
+    _selectedAnswers.addAll(selectedAnswer);
+    print(_answers);
 
     rebuildUi();
   }
@@ -158,34 +124,25 @@ class AssessmentViewModel extends ReactiveViewModel {
     _userData.addAll(data);
   }
 
+  void reset() {
+    _answers.clear();
+    _proficiencyLevel = null;
+    _selectedAnswers.clear();
+    _currentQuestionIndex = 0;
+    _pageController.jumpToPage(0);
+  }
+
   // Question navigation
   Future<void> nextQuestion() async {
     _currentQuestionIndex++;
-    Map<String, dynamic> response = evaluateAssessment();
-
-    if (_currentQuestionIndex == _assessmentQuestions.length) {
-      _currentAssessmentIndex = _currentAssessmentIndex + 1;
-      if (_currentAssessmentIndex == _assessments.length) {
-        _proficiencyLevel = response['level'];
-        next();
-      } else {
-        if (response['passed']) {
-          _selectedAnswers.clear();
-          _currentQuestionIndex = 0;
-          _proficiencyLevel = response['level'];
-          _currentAssessment = assessments[currentAssessmentIndex];
-          await getAssessmentQuestions(_currentAssessment?.id ?? 0);
-          _pageController.jumpToPage(_currentQuestionIndex);
-        } else {
-          _proficiencyLevel = response['level'];
-          next();
-        }
-      }
+    if (_currentQuestionIndex == _questions.length) {
+      next();
     } else {
-      _pageController.jumpToPage(_currentQuestionIndex);
+      _pageController.nextPage(
+        curve: Curves.easeInOutCubic,
+        duration: const Duration(milliseconds: 350),
+      );
     }
-
-    rebuildUi();
   }
 
   void previousQuestion() {
@@ -193,7 +150,6 @@ class AssessmentViewModel extends ReactiveViewModel {
       _currentQuestionIndex--;
       _pageController.previousPage(
           duration: const Duration(microseconds: 100), curve: Curves.linear);
-      rebuildUi();
     }
   }
 
@@ -280,25 +236,49 @@ class AssessmentViewModel extends ReactiveViewModel {
     }
   }
 
-  // Assessments
-  Future<void> getAssessments() async => await runBusyFuture(_getAssessments(),
-      busyObject: StateObjects.assessments);
+  // Get assessments
+  Future<void> getInitialAssessment() async =>
+      await runBusyFuture(_getInitialAssessment(),
+          busyObject: StateObjects.getAssessments);
 
-  Future<void> _getAssessments() async {
+  Future<void> _getInitialAssessment() async {
     if (await _statusChecker.checkConnection()) {
-      _assessments = await _apiService.getAssessments();
+      _questions = await _apiService.getInitialAssessment();
     }
   }
 
-  Future<void> getAssessmentQuestions(int id) async =>
-      await runBusyFuture(_getAssessmentQuestions(id),
-          busyObject: StateObjects.assessmentQuestions);
+  // Finish assessment
+  Future<void> finishAssessment() async =>
+      await runBusyFuture(_finishAssessment(),
+          busyObject: StateObjects.finishAssessment);
 
-  Future<void> _getAssessmentQuestions(int id) async {
+  Future<void> _finishAssessment() async {
     if (await _statusChecker.checkConnection()) {
-      _assessmentQuestions = await _apiService.getAssessmentQuestions(id);
-      _assessmentQuestions
-          .removeWhere((question) => question.questionType != 'MCQ');
+      Map<String, dynamic> data = {'answers': _answers.values.toList()};
+
+      Map<String, dynamic> response = await _apiService.finishAssessment(data);
+
+      if (ResponseStatus.success == response['status']) {
+        _proficiencyLevel = response['data'];
+        next();
+      } else {
+        showErrorToast(response['message']);
+        next(page: 3);
+      }
+    }
+  }
+
+  //Update knowledge level
+  Future<void> updateKnowledgeLevel() async =>
+      await runBusyFuture(_updateKnowledgeLevel(),
+          busyObject: StateObjects.finishAssessment);
+
+  Future<void> _updateKnowledgeLevel() async {
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> data = {
+        'knowledge_level': _proficiencyLevel?.level};
+
+      await _apiService.updateKnowledgeLevel(data);
     }
   }
 }

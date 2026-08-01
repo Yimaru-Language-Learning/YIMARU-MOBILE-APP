@@ -37,8 +37,11 @@ class CourseModuleViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToCourseLessonDetail({required CourseLesson lesson, required SubscriptionType type}) async =>
-      await _navigationService.navigateToCourseLessonDetailView(type:type,lesson: lesson);
+  Future<void> navigateToCourseLessonDetail(
+          {required CourseLesson lesson,
+          required SubscriptionType type}) async =>
+      await _navigationService.navigateToCourseLessonDetailView(
+          type: type, lesson: lesson);
 
   Future<void> navigateToCoursePractice(
           {required int id, required SubscriptionType type}) async =>

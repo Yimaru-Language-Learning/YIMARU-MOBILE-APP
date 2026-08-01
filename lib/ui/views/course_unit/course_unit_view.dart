@@ -190,8 +190,8 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
       CourseUnitTile(
         unit: unit,
         type: type,
-        first: first,
         index: index,
+        first: first,
         catalog: catalog,
         onLessonTap: onViewTap,
         onPracticeTap: onPracticeTap,

@@ -32,10 +32,11 @@ class CourseCatalogViewModel extends ReactiveViewModel {
       await _navigationService.navigateToCoursePracticeView(
           id: id, type: type, practice: CoursePractices.courseCatalog);
 
-  Future<void> navigateToCourseUnit({
-    required SubscriptionType type,
-    required CourseCatalog catalog}) async =>
-      await _navigationService.navigateToCourseUnitView(type:type,catalog: catalog);
+  Future<void> navigateToCourseUnit(
+          {required SubscriptionType type,
+          required CourseCatalog catalog}) async =>
+      await _navigationService.navigateToCourseUnitView(
+          type: type, catalog: catalog);
 
   // Remote api call
 

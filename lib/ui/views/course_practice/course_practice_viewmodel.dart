@@ -686,7 +686,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _showAnswer = false;
     _focusPractice = false;
     _selectedOption.clear();
-  rebuildUi();
+    rebuildUi();
   }
 
   // Question param
@@ -1347,8 +1347,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _answers.add({'sample': sample, 'response': response});
   }
 
-
-
   void setAnswer(
           {required String sample,
           required String answer,
@@ -1504,8 +1502,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
-
-  void clearAnswer(){
+  void clearAnswer() {
     _answers.clear();
   }
 
@@ -1623,7 +1620,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _questions = await _apiService.getCourseQuestions(id);
 
     final hasStimulusBlock = _questions.any((q) => q.stimulusBlockKey != null);
-    print(hasStimulusBlock);
     if (hasStimulusBlock) {
       _questions.sort((a, b) {
         final aNum = int.tryParse(

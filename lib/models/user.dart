@@ -95,7 +95,7 @@ class User {
           String? subscriptionStatus,
           List<ActiveSubscription>? activeSubscriptions}) =>
       User(
-        ielts: ielts ?? this.ielts,
+          ielts: ielts ?? this.ielts,
           learn: learn ?? this.learn,
           email: email ?? this.email,
           userId: userId ?? this.userId,

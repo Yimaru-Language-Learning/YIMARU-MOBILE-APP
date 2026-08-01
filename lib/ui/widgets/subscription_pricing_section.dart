@@ -9,7 +9,7 @@ import '../views/subscription/subscription_viewmodel.dart';
 class SubscriptionPricingSection
     extends ViewModelWidget<SubscriptionViewModel> {
   final String subtitle;
-  const SubscriptionPricingSection({super.key,required this.subtitle});
+  const SubscriptionPricingSection({super.key, required this.subtitle});
 
   @override
   Widget build(BuildContext context, SubscriptionViewModel viewModel) =>
@@ -54,8 +54,7 @@ class SubscriptionPricingSection
         style: style16DG600,
       );
 
-  Widget _buildSubtitle() =>
-      Text(subtitle, style: style14MG400);
+  Widget _buildSubtitle() => Text(subtitle, style: style14MG400);
 
   Widget _buildTileLeading() => const Icon(
         Icons.key,
@@ -90,7 +89,7 @@ class SubscriptionPricingSection
           required GestureTapCallback onTap}) =>
       SubscriptionPricingCard(
         type: type,
-        onTap:onTap,
+        onTap: onTap,
         index: index,
         price: price,
         currency: currency,

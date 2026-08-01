@@ -54,10 +54,8 @@ class SubscriptionView extends StackedView<SubscriptionViewModel>
   Widget _buildBody(SubscriptionViewModel viewModel) => IndexedStack(
       index: viewModel.currentPage, children: _buildScreens(viewModel));
 
-  List<Widget> _buildScreens(SubscriptionViewModel viewModel) => [
-    _buildSubscriptionPackageScreen(),
-        _buildLearnSubscriptionFormScreen()
-      ];
+  List<Widget> _buildScreens(SubscriptionViewModel viewModel) =>
+      [_buildSubscriptionPackageScreen(), _buildLearnSubscriptionFormScreen()];
 
   Widget _buildSubscriptionPackageScreen() => type == SubscriptionType.learn
       ? _buildLearnSubscriptionPackageScreen()

@@ -45,8 +45,6 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
       _buildScaffoldWrapper(context: context, viewModel: viewModel);

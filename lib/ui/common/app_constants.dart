@@ -9,6 +9,10 @@ String kAppUrl = 'app';
 
 String kApiUrl = 'api';
 
+String kUserUrl = 'user';
+
+String kFaqsUrl = 'faqs';
+
 String kChapaUrl = 'chapa';
 
 String kUnitsUrl = 'units';
@@ -16,6 +20,8 @@ String kUnitsUrl = 'units';
 String kCheckUrl = 'check';
 
 String kFilesUrl = 'files';
+
+String kSubmitUrl = 'submit';
 
 String kDirectUrl = 'direct';
 
@@ -71,6 +77,8 @@ String kResendOtpUrl = 'resend-otp';
 
 String kGetUserUrl = 'user-profile';
 
+String kAssessmentUrl = 'assessment';
+
 String kEngagementUrl = 'engagement';
 
 String kSubmodulesUrl = 'sub-modules';
@@ -96,6 +104,8 @@ String kSubcategoriesUrl = 'sub-categories';
 String kProgressSummary = 'progress-summary';
 
 String kPublishedVideos = 'videos/published';
+
+String kKnowledgeLevelUrl = 'knowledge-level';
 
 String kCoursePracticeQuestions = 'questions';
 
@@ -126,8 +136,6 @@ String kLessonProgressUrl = 'api/v1/progress/videos';
 String kGoogleAuthUrl = 'api/v1/auth/google/android';
 
 String kCourseProgressUrl = 'api/v1/progress/courses';
-
-String kAssessmentsUrl = 'api/v1/assessment/questions';
 
 String kLearnSubcategoriesUrl = 'human-language/sub-categories';
 

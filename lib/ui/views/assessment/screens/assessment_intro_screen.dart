@@ -14,8 +14,11 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
 
   const AssessmentIntroScreen({super.key, required this.hasAssessments});
 
-  Future<void> _next(AssessmentViewModel viewModel) async =>
-      viewModel.setFirstAssessment();
+  void _next(AssessmentViewModel viewModel){
+    viewModel.reset();
+    viewModel.next();
+  }
+
 
   @override
   Widget build(BuildContext context, AssessmentViewModel viewModel) =>
@@ -91,7 +94,7 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
 
   List<Widget> _buildLowerColumnChildren(AssessmentViewModel viewModel) => [
         if (hasAssessments) _buildContinueButton(viewModel),
-        verticalSpaceSmall,
+        verticalSpaceMedium,
         _buildSkipButtonWrapper(viewModel)
       ];
 
@@ -102,8 +105,8 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
         borderRadius: 12,
         foregroundColor: kcWhite,
         text: LocaleKeys.cont.tr(),
+        onTap:()=> _next(viewModel),
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await _next(viewModel),
       );
 
   Widget _buildSkipButtonWrapper(AssessmentViewModel viewModel) => Padding(
@@ -114,6 +117,7 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
   Widget _buildSkipButton(AssessmentViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
+        top: false,
         borderRadius: 12,
         backgroundColor: kcWhite,
         text: LocaleKeys.skip.tr(),

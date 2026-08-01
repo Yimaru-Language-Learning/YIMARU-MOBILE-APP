@@ -10,6 +10,9 @@ class SupportViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
+  Future<void> navigateToFaqs() async =>
+      await _navigationService.navigateToFaqsView();
+
   Future<void> navigateToCallSupport() async =>
       await _navigationService.navigateToCallSupportView();
 

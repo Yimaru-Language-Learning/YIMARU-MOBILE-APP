@@ -8,10 +8,20 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
+import '../../../common/enmus.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../assessment_viewmodel.dart';
 
 class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
   const AssessmentResultScreen({super.key});
+
+
+  Future<void> _next( AssessmentViewModel viewModel)async{
+    await viewModel.updateKnowledgeLevel();
+    viewModel.next();
+
+  }
+
 
   @override
   Widget build(BuildContext context, AssessmentViewModel viewModel) =>
@@ -19,8 +29,18 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildScaffoldWrapper(AssessmentViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldStack(viewModel),
       );
+
+  Widget _buildScaffoldStack(
+      AssessmentViewModel viewModel) =>
+      Stack(
+        children: [
+          _buildScaffold(viewModel),
+          _buildBodyState(viewModel)
+        ],
+      );
+
 
   Widget _buildScaffold(AssessmentViewModel viewModel) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +96,7 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       ];
 
   Widget _buildTitle(AssessmentViewModel viewModel) => Text(
-        '${LocaleKeys.likely_speaker.tr()} ${viewModel.proficiencyLevel?.toUpperCase()}',
+        '${LocaleKeys.likely_speaker.tr()} ${viewModel.proficiencyLevel?.level}',
         style: style25DG600,
         textAlign: TextAlign.center,
       );
@@ -91,7 +111,7 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       viewModel.proficiencyLevel != null ? _buildIcon(viewModel) : Container();
 
   Widget _buildIcon(AssessmentViewModel viewModel) => SvgPicture.asset(
-      'assets/icons/${viewModel.proficiencyLevel?.substring(0, 1).toLowerCase()}_${viewModel.proficiencyLevel?.substring(1).toLowerCase()}.svg');
+      'assets/icons/${viewModel.proficiencyLevel?.level?.substring(0, 1).toLowerCase()}_${viewModel.proficiencyLevel?.level?.substring(1).toLowerCase()}.svg');
 
   Widget _buildSecondarySubtitle() => Text(
         LocaleKeys.lets_start_practice.tr(),
@@ -110,7 +130,14 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         borderRadius: 12,
         foregroundColor: kcWhite,
         text: LocaleKeys.cont.tr(),
-        onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,
+        onTap: () async=> await _next(viewModel),
+
       );
+
+
+  Widget _buildBodyState(AssessmentViewModel viewModel) =>
+      viewModel.busy(StateObjects.finishAssessment)
+          ? const PageLoadingIndicator()
+          : Container();
 }

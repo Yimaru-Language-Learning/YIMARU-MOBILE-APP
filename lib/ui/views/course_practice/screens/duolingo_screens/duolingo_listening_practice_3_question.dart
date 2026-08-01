@@ -21,9 +21,9 @@ class DuolingoListeningPractice3Question
 
   const DuolingoListeningPractice3Question(
       {super.key,
-        required this.options,
-        required this.question,
-        required this.duration});
+      required this.options,
+      required this.question,
+      required this.duration});
 
   void _setShowAnswer(CoursePracticeViewModel viewModel) {
     viewModel.setShowAnswer();
@@ -31,7 +31,7 @@ class DuolingoListeningPractice3Question
 
   Future<void> _next(
       {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) async {
+      required CoursePracticeViewModel viewModel}) async {
     if (viewModel.showAnswer) {
       await viewModel.setListeningAnswer3(
         context: context,
@@ -47,7 +47,7 @@ class DuolingoListeningPractice3Question
 
   void _setOption(
       {required Map<String, dynamic> option,
-        required CoursePracticeViewModel viewModel}) {
+      required CoursePracticeViewModel viewModel}) {
     viewModel.setSelectedOption(option);
   }
 
@@ -58,8 +58,8 @@ class DuolingoListeningPractice3Question
   }
 
   Future<void> _showSheet(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) async =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) async =>
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -72,30 +72,30 @@ class DuolingoListeningPractice3Question
       _buildScaffoldWrapper(context: context, viewModel: viewModel);
 
   Widget _buildScaffoldWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Scaffold(
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
 
   Widget _buildScaffold(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
   Widget _buildBodyColumn(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         children:
-        _buildBodyColumnChildren(context: context, viewModel: viewModel),
+            _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildBodyColumnChildren(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarPaddingWrapper(context: context, viewModel: viewModel),
         _buildExpandedBody(context: context, viewModel: viewModel),
@@ -104,24 +104,24 @@ class DuolingoListeningPractice3Question
       ];
 
   Widget _buildAppBarPaddingWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildAppBarWrapper(context: context, viewModel: viewModel),
       );
 
   Widget _buildAppBarWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         children: _buildAppBarChildren(context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildAppBarChildren(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceMedium,
         _buildAppBar(context: context, viewModel: viewModel),
@@ -131,13 +131,13 @@ class DuolingoListeningPractice3Question
       ];
 
   Widget _buildAppBar(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CoursePracticeAppBar(
         onClose: () async =>
-        await _showSheet(context: context, viewModel: viewModel),
+            await _showSheet(context: context, viewModel: viewModel),
         title:
-        'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
@@ -149,53 +149,53 @@ class DuolingoListeningPractice3Question
           : _buildCountdown(viewModel);
 
   Widget _buildCountdown(CoursePracticeViewModel viewModel) => CountdownTimer(
-    duration: viewModel.countdown,
-    key: ValueKey(viewModel.countdown),
-    onEnd: () => _setShowAnswer(viewModel),
-  );
+        duration: viewModel.countdown,
+        key: ValueKey(viewModel.countdown),
+        onEnd: () => _setShowAnswer(viewModel),
+      );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
-    onClose: viewModel.pop,
-    onContinue: viewModel.pop,
-    user: viewModel.user?.firstName ?? '',
-    onCancel: () async => await _cancel(viewModel),
-  );
+        onClose: viewModel.pop,
+        onContinue: viewModel.pop,
+        user: viewModel.user?.firstName ?? '',
+        onCancel: () async => await _cancel(viewModel),
+      );
 
   Widget _buildExpandedBody(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Expanded(
           child: _buildBodyScroller(context: context, viewModel: viewModel));
 
   Widget _buildBodyScroller(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       SingleChildScrollView(
         child: _buildQuestionIndenter(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionIndenter(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestionWrapper(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children:
-        _buildQuestionChildren(context: context, viewModel: viewModel),
+            _buildQuestionChildren(context: context, viewModel: viewModel),
       );
 
   List<Widget> _buildQuestionChildren(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceLarge,
         _buildTitle(),
@@ -211,26 +211,26 @@ class DuolingoListeningPractice3Question
       ];
 
   Widget _buildTitle() => Text(
-    'Listen closely! Audio clips only play once',
-    style: style18DG700,
-    textAlign: TextAlign.center,
-  );
+        'Listen closely! Audio clips only play once',
+        style: style18DG700,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildQuestion() =>
       DwarfTile(small: true, child: _buildListenablePracticeCardWrapper());
 
   Widget _buildListenablePracticeCardWrapper() => Expanded(
-    child: _buildListenablePracticeCard(),
-  );
+        child: _buildListenablePracticeCard(),
+      );
 
   Widget _buildListenablePracticeCard() =>
       ListenableOneTimePracticeCard(question: question);
 
   Widget _buildLabel() => Text(
-    'Select the best response',
-    style: style16DG600,
-    textAlign: TextAlign.center,
-  );
+        'Select the best response',
+        style: style16DG600,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildPracticeQuestions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
@@ -245,9 +245,9 @@ class DuolingoListeningPractice3Question
       );
 
   Widget _buildPracticeCard(
-      {required String title,
-        required bool selected,
-        required GestureTapCallback onTap}) =>
+          {required String title,
+          required bool selected,
+          required GestureTapCallback onTap}) =>
       CustomSmallTrailingRadioButton(
         title: title,
         onTap: onTap,
@@ -255,31 +255,31 @@ class DuolingoListeningPractice3Question
       );
 
   Widget _buildContainerWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Container(
         width: double.maxFinite,
         color: viewModel.showAnswer
             ? kcDeepGreen.withValues(alpha: 0.1)
             : kcTransparent,
-        padding: EdgeInsets.symmetric(
-            horizontal: viewModel.showAnswer ? 15 : 0),
+        padding:
+            EdgeInsets.symmetric(horizontal: viewModel.showAnswer ? 15 : 0),
         child:
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel),
+            _buildContinueButtonWrapper(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButtonWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
         child:
-        _buildContinueButtonColumn(context: context, viewModel: viewModel),
+            _buildContinueButtonColumn(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButtonColumn(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         children: _buildContinueButtonChildren(
@@ -287,8 +287,8 @@ class DuolingoListeningPractice3Question
       );
 
   List<Widget> _buildContinueButtonChildren(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceSmall,
         if (viewModel.showAnswer) _buildCorrectAnswer(),
@@ -297,14 +297,14 @@ class DuolingoListeningPractice3Question
       ];
 
   Widget _buildCorrectAnswer() => Text(
-    'Correct Answer: ${options.firstWhere((e) => e['is_correct'])['text']} ',
-    style: style16DG400,
-    textAlign: TextAlign.center,
-  );
+        'Correct Answer: ${options.firstWhere((e) => e['is_correct'])['text']} ',
+        style: style16DG400,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildContinueButton(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',

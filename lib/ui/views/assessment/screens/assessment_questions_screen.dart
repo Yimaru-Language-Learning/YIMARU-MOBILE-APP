@@ -8,10 +8,17 @@ import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/widgets/custom_small_trailing_radio_button.dart';
 import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
+import '../../../common/enmus.dart';
+import '../../../widgets/page_loading_indicator.dart';
 import '../assessment_viewmodel.dart';
 
 class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
   const AssessmentQuestionsScreen({super.key});
+
+  Future<void> _finish(AssessmentViewModel viewModel) async {
+    await viewModel.finishAssessment();
+
+  }
 
   @override
   Widget build(BuildContext context, AssessmentViewModel viewModel) =>
@@ -25,7 +32,11 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildScaffoldWrapper(AssessmentViewModel viewModel) => Scaffold(
         backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
+        body: _buildScaffoldStack(viewModel),
+      );
+
+  Widget _buildScaffoldStack(AssessmentViewModel viewModel) => Stack(
+        children: [_buildScaffold(viewModel), _buildBodyState(viewModel)],
       );
 
   Widget _buildScaffold(AssessmentViewModel viewModel) => Column(
@@ -53,7 +64,7 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildAssessment(AssessmentViewModel viewModel) => PageView.builder(
         controller: viewModel.pageController,
-        itemCount: viewModel.assessmentQuestions.length,
+        itemCount: viewModel.questions.length,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (cotext, index) => _buildBodyScroller(viewModel),
       );
@@ -76,41 +87,42 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         _buildAnswersState(viewModel),
         _buildContinueButtonWrapper(viewModel)
       ];
+
   Widget _buildTitleState(AssessmentViewModel viewModel) =>
-      viewModel.currentQuestionIndex == viewModel.assessmentQuestions.length
+      viewModel.currentQuestionIndex == viewModel.questions.length
           ? Container()
           : _buildTitle(viewModel);
+
   Widget _buildTitle(AssessmentViewModel viewModel) => Text(
-        'Q${viewModel.currentQuestionIndex + 1}. ${viewModel.assessmentQuestions[viewModel.currentQuestionIndex].questionText} ',
+        'Q${viewModel.currentQuestionIndex + 1}. ${viewModel.questions[viewModel.currentQuestionIndex].dynamicPayload?.stimulus?.first.value} ',
         style: style16DG600,
       );
 
   Widget _buildAnswersState(AssessmentViewModel viewModel) =>
-      viewModel.currentQuestionIndex == viewModel.assessmentQuestions.length
+      viewModel.currentQuestionIndex == viewModel.questions.length
           ? Container()
           : _buildAnswers(viewModel);
 
   Widget _buildAnswers(AssessmentViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: viewModel.assessmentQuestions[viewModel.currentQuestionIndex]
-            .options?.length,
+        itemCount: viewModel.questions[viewModel.currentQuestionIndex]
+            .dynamicPayload?.response?.first.value?.length,
         itemBuilder: (context, inner) => _buildAnswer(
           onTap: () => viewModel.setSelectedAnswer(
               question: viewModel.currentQuestionIndex + 1,
-              option: viewModel
-                  .assessmentQuestions[viewModel.currentQuestionIndex]
-                  .options?[inner]),
-          title: viewModel.assessmentQuestions[viewModel.currentQuestionIndex]
-                  .options?[inner].optionText ??
-              '',
+              option: viewModel.questions[viewModel.currentQuestionIndex]
+                  .dynamicPayload?.response?.first.value?[inner]),
+          title: viewModel.questions[viewModel.currentQuestionIndex]
+              .dynamicPayload?.response?.first.value?[inner]['option_text'],
           selected: viewModel.isSelectedAnswer(
               question: viewModel.currentQuestionIndex + 1,
               answer: viewModel
-                      .assessmentQuestions[viewModel.currentQuestionIndex]
-                      .options?[inner]
-                      .optionText ??
-                  ''),
+                  .questions[viewModel.currentQuestionIndex]
+                  .dynamicPayload
+                  ?.response
+                  ?.first
+                  .value?[inner]['option_text']),
         ),
       );
 
@@ -134,9 +146,8 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         height: 55,
         borderRadius: 12,
         foregroundColor: kcWhite,
-        text: viewModel.currentQuestionIndex ==
-                viewModel.assessmentQuestions.length - 1
-            ? LocaleKeys.finish_level.tr()
+        text: viewModel.currentQuestionIndex == viewModel.questions.length - 1
+            ? LocaleKeys.finish_assessment.tr()
             : LocaleKeys.cont.tr(),
         backgroundColor: viewModel.selectedAnswers
                 .containsKey('${viewModel.currentQuestionIndex + 1}')
@@ -144,7 +155,14 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
             : kcPrimaryColor.withValues(alpha: 0.1),
         onTap: viewModel.selectedAnswers
                 .containsKey('${viewModel.currentQuestionIndex + 1}')
-            ? () => viewModel.nextQuestion()
+            ? viewModel.currentQuestionIndex == viewModel.questions.length - 1
+                ? () async => await _finish(viewModel)
+                : () => viewModel.nextQuestion()
             : null,
       );
+
+  Widget _buildBodyState(AssessmentViewModel viewModel) =>
+      viewModel.busy(StateObjects.finishAssessment)
+          ? const PageLoadingIndicator()
+          : Container();
 }

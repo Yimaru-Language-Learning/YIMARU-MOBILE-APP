@@ -10,10 +10,10 @@ import 'package:yimaru_app/ui/widgets/custom_bottom_sheet.dart';
 import 'custom_elevated_button.dart';
 
 class FinishPracticeSheet extends StatelessWidget {
-  final PracticeReason practice;
+  final PracticeReason? practice;
   final GestureTapCallback? onTap;
 
-  const FinishPracticeSheet({super.key, this.onTap, required this.practice});
+  const FinishPracticeSheet({super.key, this.onTap, this.practice});
 
   String getWarning() {
     if (practice == PracticeReason.lesson) {
@@ -21,14 +21,16 @@ class FinishPracticeSheet extends StatelessWidget {
     } else if (practice == PracticeReason.module) {
       return LocaleKeys.finish_all_practice_module.tr();
     } else if (practice == PracticeReason.previousUnit) {
-      return LocaleKeys.finish_all_practice_previouse_module.tr();
+      return LocaleKeys.finish_all_practice_previous_module.tr();
     }
     if (practice == PracticeReason.previousModule) {
-      return LocaleKeys.finish_all_practice_previouse_module.tr();
+      return LocaleKeys.finish_all_practice_previous_module.tr();
     } else if (practice == PracticeReason.previousCourse) {
-      return LocaleKeys.finish_all_practice_previouse_course.tr();
-    } else {
+      return LocaleKeys.finish_all_practice_previous_course.tr();
+    } else if (practice == PracticeReason.course) {
       return LocaleKeys.finish_all_practice_course.tr();
+    } else {
+      return LocaleKeys.subscribe_course.tr();
     }
   }
 

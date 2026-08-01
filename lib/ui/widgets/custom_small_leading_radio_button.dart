@@ -9,7 +9,11 @@ class CustomSmallLeadingRadioButton extends StatelessWidget {
   final GestureTapCallback? onTap;
 
   const CustomSmallLeadingRadioButton(
-      {super.key, required this.title,required this.color, required this.selected, this.onTap});
+      {super.key,
+      required this.title,
+      required this.color,
+      required this.selected,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) => _buildButtonWrapper();
