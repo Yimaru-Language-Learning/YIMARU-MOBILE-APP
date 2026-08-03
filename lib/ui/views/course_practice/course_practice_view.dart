@@ -53,6 +53,9 @@ import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_3_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_7_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_intro_screen.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_8_question.dart';
+import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_9_question.dart'
+    hide IeltsListeningPractice8Question;
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_section_intro.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_speaking_practice_1_variant.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_speaking_practice_2_answer.dart';
@@ -321,13 +324,19 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           59 ||
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          60 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           61 ||
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           62 ||
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           62 ||
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          63;
+          63 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          64 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          65;
 
   bool _buildIeltsIntroScreenCondition(CoursePracticeViewModel viewModel) =>
       viewModel
@@ -356,11 +365,17 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           59 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          60 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           61 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           62 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          63;
+          63 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          64 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          65;
 
   Widget? _buildIeltsIntroScreenWrapper(CoursePracticeViewModel viewModel) {
     if (_buildIeltsSectionScreenCondition(viewModel)) {
@@ -392,6 +407,10 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           } else if (viewModel
                   .questions[viewModel.currentQuestion].stimulusBlockKey ==
               'reading-section-2') {
+            return const IeltsReadingSectionIntro();
+          } else if (viewModel
+                  .questions[viewModel.currentQuestion].stimulusBlockKey ==
+              'reading-section-3') {
             return const IeltsReadingSectionIntro();
           }
           return Container();
@@ -457,6 +476,10 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return const IeltsReadingPractice6Question();
     } else if (id == 59 /*Yes / No / Not Given*/) {
       return const IeltsReadingPractice7Question();
+    } else if (id == 60 /*Heading Matching*/) {
+      return const IeltsReadingPractice8Question();
+    } else if (id == 65 /*Feature Matching*/) {
+      return const IeltsReadingPractice9Question();
     }
     return Container();
   }
@@ -496,13 +519,17 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           59 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          60 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           61 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           62 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           63 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          64;
+          64 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          65;
 
   Widget _buildIeltsAnswerScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
@@ -550,13 +577,17 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           59 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          60 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           61 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           62 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           63 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          64;
+          64 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          65;
 
   Widget _buildIeltsReviewScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
@@ -591,10 +622,14 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           58 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           59 &&
+          viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+              60 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           63 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          64;
+          64 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          65;
 
   @override
   void onViewModelReady(CoursePracticeViewModel viewModel) async {

@@ -94,6 +94,19 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   DateTime? get countdown => _countdown;
 
+  // Draggable
+  bool _isDrag = false;
+
+  bool get isDrag => _isDrag;
+
+  List<int> _usedHeadingIds = [];
+
+  List<int> get usedHeadingIds => _usedHeadingIds;
+
+  List<dynamic> _matchedAnswers = [];
+
+  List<dynamic> get matchedAnswers => _matchedAnswers;
+
   // Busy object
   String? _busyObject;
 
@@ -549,6 +562,22 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'title': 'Yes / No / Not Given',
       'type': CoursePracticeType.ielts,
     },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Heading Matching',
+      'label': 'IELTS Listening 44',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Feature Matching',
+      'label': 'IELTS Listening 45',
+      'type': CoursePracticeType.ielts,
+    }
   ];
 
   List<Map<String, dynamic>> get questionParams => _questionParams;
@@ -642,6 +671,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   void resetPlayCount(int count) {
     _playCount = count;
+    rebuildUi();
+  }
+
+  //Is drag
+  void setIsDrag(bool value) {
+    _isDrag = value;
     rebuildUi();
   }
 
@@ -897,6 +932,32 @@ class CoursePracticeViewModel extends ReactiveViewModel
       setCountdown(responseFirstSec);
     } else if (id == 59 /*Yes / No / Not Given*/) {
       _selectedQuestionParam = _questionParams.elementAt(42);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
+    } else if (id == 60 /*Heading Matching*/) {
+      _selectedQuestionParam = _questionParams.elementAt(43);
+      final count = questions[currentQuestion]
+          .dynamicPayload!
+          .stimulus![1]
+          .value['right']
+          .length;
+
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+
+      _usedHeadingIds.clear();
+      _matchedAnswers = List.filled(count, null);
+
+      setCountdown(responseFirstSec);
+    } else if (id == 65 /*Feature Matching*/) {
+      _selectedQuestionParam = _questionParams.elementAt(44);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
           ?.response
@@ -1391,6 +1452,38 @@ class CoursePracticeViewModel extends ReactiveViewModel
       setCountdown(duration);
       _selectedOption.clear();
     }
+  }
+
+  int parseId(dynamic raw) {
+    if (raw is int) return raw;
+    if (raw is String) return int.tryParse(raw) ?? -1;
+    return -1;
+  }
+
+  void onAcceptWithDetails(
+      {required int index,
+      required dynamic title,
+      required Map<String, dynamic> dragged}) {
+    _usedHeadingIds.remove(parseId(dragged['id']));
+
+    _matchedAnswers[index] = dragged;
+
+    _usedHeadingIds.add(parseId(dragged['id']));
+
+    rebuildUi();
+
+  }
+
+  void onClearTarget({
+    required int index,
+    required CoursePracticeViewModel viewModel,
+  }) {
+    final existing = _matchedAnswers[index];
+    if (existing == null) return;
+
+    _usedHeadingIds.remove(parseId(existing['id']));
+    _matchedAnswers[index] = null;
+    rebuildUi();
   }
 
   Future<void> setReadingAnswer({String? sample, String? response}) async {
