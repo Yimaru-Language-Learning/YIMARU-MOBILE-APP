@@ -47,7 +47,7 @@ class IeltsListeningPractice10Question
       }
     } else {
       _setShowAnswer(viewModel);
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 3; i++) {
         await viewModel.setListeningAnswer(
           sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
               ?.response?[i + 1].value,
@@ -98,17 +98,7 @@ class IeltsListeningPractice10Question
   Widget _buildScaffold(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
-
-  Widget _buildBodyColumnWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(context: context, viewModel: viewModel),
-      );
+      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
   Widget _buildBodyColumn(
           {required BuildContext context,
@@ -123,9 +113,17 @@ class IeltsListeningPractice10Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
-        _buildAppBarWrapper(context: context, viewModel: viewModel),
+        _buildAppBarPaddingWrapper(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
+
+  Widget _buildAppBarPaddingWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildAppBarWrapper(context: context, viewModel: viewModel),
+      );
 
   Widget _buildAppBarWrapper(
           {required BuildContext context,
@@ -185,7 +183,8 @@ class IeltsListeningPractice10Question
       CountdownTimer(
         duration: viewModel.countdown,
         key: ValueKey(viewModel.countdown),
-        onEnd: () async=> await _nextScreen(context: context, viewModel: viewModel),
+        onEnd: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -200,7 +199,6 @@ class IeltsListeningPractice10Question
           required CoursePracticeViewModel viewModel}) =>
       SingleChildScrollView(
           child: _buildQuestionWrapper(context: context, viewModel: viewModel));
-
   Widget _buildQuestionWrapper(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
@@ -213,6 +211,34 @@ class IeltsListeningPractice10Question
       );
 
   List<Widget> _buildQuestionChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
+        _buildQuestionColumnWrapper(context: context, viewModel: viewModel),
+        verticalSpaceLarge,
+        _buildContinueButtonState(context: context, viewModel: viewModel)
+      ];
+
+  Widget _buildQuestionColumnWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildQuestionColumn(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildQuestionColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _buildQuestionColumnChildren(
+            context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildQuestionColumnChildren(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
@@ -233,8 +259,6 @@ class IeltsListeningPractice10Question
             .dynamicPayload?.stimulus?[2].value),
         verticalSpaceTiny,
         _buildTextField(value: '2', viewModel: viewModel),
-        verticalSpaceLarge,
-        _buildContinueButtonState(context: context, viewModel: viewModel)
       ];
 
   Widget _buildInstruction() => Text(
@@ -279,7 +303,7 @@ class IeltsListeningPractice10Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Padding(
-        padding: const EdgeInsets.only(bottom: 50),
+        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 

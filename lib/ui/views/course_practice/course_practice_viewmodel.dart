@@ -1622,7 +1622,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _questions = await _apiService.getCourseQuestions(id);
 
     final hasStimulusBlock = _questions.any((q) => q.stimulusBlockKey != null);
-    print(hasStimulusBlock);
     if (hasStimulusBlock) {
       _questions.sort((a, b) {
         final aNum = int.tryParse(

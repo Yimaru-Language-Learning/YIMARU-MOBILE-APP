@@ -17,14 +17,13 @@ class IeltsReadingPractice7Question
     extends ViewModelWidget<CoursePracticeViewModel> {
   const IeltsReadingPractice7Question({super.key});
 
-
   void _setShowAnswer(CoursePracticeViewModel viewModel) {
     viewModel.setShowAnswer();
   }
 
   Future<void> _nextScreen(
       {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) async {
+      required CoursePracticeViewModel viewModel}) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
     if (viewModel.showAnswer) {
@@ -33,7 +32,8 @@ class IeltsReadingPractice7Question
         viewModel.setSectionEnd(true);
         viewModel.pop();
       } else {
-        if (viewModel.questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
+        if (viewModel
+                .questions[viewModel.currentQuestion + 1].stimulusBlockKey ==
             null) {
           viewModel.setSectionEnd(true);
           viewModel.nextScreen();
@@ -46,18 +46,16 @@ class IeltsReadingPractice7Question
       for (int i = 0; i < 3; i++) {
         await viewModel.setListeningAnswer(
           sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?[i+1].value['options'] as List)
-              .firstWhere((e) =>
-          e['is_correct'])['text'],
+                  ?.response?[i + 1].value['options'] as List)
+              .firstWhere((e) => e['is_correct'])['text'],
         );
       }
     }
   }
 
-
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
-  //  viewModel.resetValues();
+    //  viewModel.resetValues();
     viewModel.pop();
     viewModel.goBack();
   }
@@ -97,17 +95,7 @@ class IeltsReadingPractice7Question
   Widget _buildScaffold(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
-
-  Widget _buildBodyColumnWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(context: context, viewModel: viewModel),
-      );
+      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
   Widget _buildBodyColumn(
           {required BuildContext context,
@@ -122,9 +110,17 @@ class IeltsReadingPractice7Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
-        _buildAppBarWrapper(context: context, viewModel: viewModel),
+        _buildAppBarPaddingWrapper(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
+
+  Widget _buildAppBarPaddingWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildAppBarWrapper(context: context, viewModel: viewModel),
+      );
 
   Widget _buildAppBarWrapper(
           {required BuildContext context,
@@ -184,7 +180,8 @@ class IeltsReadingPractice7Question
       CountdownTimer(
         duration: viewModel.countdown,
         key: ValueKey(viewModel.countdown),
-        onEnd: () => _nextScreen(context: context, viewModel: viewModel),
+        onEnd: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildQuestionExpandedWrapper(
@@ -225,6 +222,7 @@ class IeltsReadingPractice7Question
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: kcDarkGrey.withValues(alpha: 0.1)),
         ),
+        margin: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestionWrapper(viewModel),
       );
 
@@ -243,7 +241,6 @@ class IeltsReadingPractice7Question
         _buildQuestion2(viewModel),
         verticalSpaceSmall,
         _buildQuestion3(viewModel),
-        verticalSpaceSmall,
       ];
 
   Widget _buildInstructionWrapper(CoursePracticeViewModel viewModel) => Padding(
@@ -286,34 +283,40 @@ class IeltsReadingPractice7Question
       );
 
   Widget _buildContinueButtonState(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       viewModel.showAnswer
-          ? _buildReviewSection(context: context,viewModel: viewModel)
+          ? _buildReviewSection(context: context, viewModel: viewModel)
           : _buildContinueButtonWrapper(context: context, viewModel: viewModel);
 
-  Widget _buildReviewSection(       {required BuildContext context,
-    required CoursePracticeViewModel viewModel}) =>
-      IeltsPracticeReviewSection(review: viewModel.answers,onTap: ()async =>await  _nextScreen(context: context, viewModel: viewModel),);
+  Widget _buildReviewSection(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      IeltsPracticeReviewSection(
+        review: viewModel.answers,
+        onTap: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
+      );
 
   Widget _buildContinueButtonWrapper(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       Padding(
-        padding: const EdgeInsets.only(bottom: 50),
+        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButton(
-      {required BuildContext context,
-        required CoursePracticeViewModel viewModel}) =>
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: 'Submit',
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: ()async =>await  _nextScreen(context: context, viewModel: viewModel),
+        onTap: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>

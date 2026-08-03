@@ -98,9 +98,19 @@ class DuolingoReadingPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
-        _buildAppBarWrapper(context: context, viewModel: viewModel),
+        _buildAppBarPaddingWrapper(context: context, viewModel: viewModel),
         _buildExpandedBody(context: context, viewModel: viewModel),
+        if (viewModel.showAnswer)
+          _buildContainerWrapper(context: context, viewModel: viewModel)
       ];
+
+  Widget _buildAppBarPaddingWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildAppBarWrapper(context: context, viewModel: viewModel),
+      );
 
   Widget _buildAppBarWrapper(
           {required BuildContext context,
@@ -115,19 +125,11 @@ class DuolingoReadingPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       [
         verticalSpaceMedium,
-        _buildAppBarIndenter(context: context, viewModel: viewModel),
+        _buildAppBar(context: context, viewModel: viewModel),
         verticalSpaceSmall,
         _buildCountdownWrapper(context: context, viewModel: viewModel),
         verticalSpaceSmall,
       ];
-
-  Widget _buildAppBarIndenter(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildAppBar(context: context, viewModel: viewModel),
-      );
 
   Widget _buildAppBar(
           {required BuildContext context,
@@ -209,10 +211,9 @@ class DuolingoReadingPractice1Question
         _buildQuestion(),
         verticalSpaceLarge,
         _buildPracticeQuestions(viewModel),
-        verticalSpaceMedium,
-        if (viewModel.showAnswer) _buildCorrectAnswer(),
-        verticalSpaceSmall,
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
+        verticalSpaceLarge,
+        if (!viewModel.showAnswer)
+          _buildContainerWrapper(context: context, viewModel: viewModel)
       ];
 
   Widget _buildQuestion() => Text(
@@ -242,10 +243,18 @@ class DuolingoReadingPractice1Question
         selected: selected,
       );
 
-  Widget _buildCorrectAnswer() => Text(
-        'Correct Answer: ${options.firstWhere((e) => e['is_correct'])['text']} ',
-        style: style16DG400,
-        textAlign: TextAlign.center,
+  Widget _buildContainerWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Container(
+        width: double.maxFinite,
+        color: viewModel.showAnswer
+            ? kcDeepGreen.withValues(alpha: 0.1)
+            : kcTransparent,
+        padding:
+            EdgeInsets.symmetric(horizontal: viewModel.showAnswer ? 15 : 0),
+        child:
+            _buildContinueButtonWrapper(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButtonWrapper(
@@ -253,7 +262,33 @@ class DuolingoReadingPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(context: context, viewModel: viewModel),
+        child:
+            _buildContinueButtonColumn(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildContinueButtonColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: _buildContinueButtonChildren(
+            context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildContinueButtonChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
+        verticalSpaceMedium,
+        if (viewModel.showAnswer) _buildCorrectAnswer(),
+        verticalSpaceSmall,
+        _buildContinueButton(context: context, viewModel: viewModel)
+      ];
+
+  Widget _buildCorrectAnswer() => Text(
+        'Correct Answer: ${options.firstWhere((e) => e['is_correct'])['text']} ',
+        style: style16DG400,
+        textAlign: TextAlign.center,
       );
 
   Widget _buildContinueButton(

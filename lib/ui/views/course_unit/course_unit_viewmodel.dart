@@ -35,7 +35,7 @@ class CourseUnitViewModel extends ReactiveViewModel {
           required SubscriptionType type,
           required CourseCatalog catalog}) async =>
       await _navigationService.navigateToCourseModuleView(
-          first: first,type: type, module: module, catalog: catalog);
+          first: first, type: type, module: module, catalog: catalog);
 
   Future<void> navigateToCoursePractice(
           {required int id, required SubscriptionType type}) async =>

@@ -500,9 +500,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           62 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          63&&
-          viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-              64;
+          63 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          64;
 
   Widget _buildIeltsAnswerScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
@@ -554,9 +554,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           62 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          63&&
-          viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-              64;
+          63 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          64;
 
   Widget _buildIeltsReviewScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel

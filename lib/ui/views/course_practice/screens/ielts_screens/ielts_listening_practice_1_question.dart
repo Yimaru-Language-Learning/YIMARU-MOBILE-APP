@@ -98,17 +98,7 @@ class IeltsListeningPractice1Question
   Widget _buildScaffold(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
-
-  Widget _buildBodyColumnWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(context: context, viewModel: viewModel),
-      );
+      SafeArea(child: _buildBodyColumn(context: context, viewModel: viewModel));
 
   Widget _buildBodyColumn(
           {required BuildContext context,
@@ -123,9 +113,17 @@ class IeltsListeningPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
-        _buildAppBarWrapper(context: context, viewModel: viewModel),
+        _buildAppBarPaddingWrapper(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(context: context, viewModel: viewModel),
       ];
+
+  Widget _buildAppBarPaddingWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildAppBarWrapper(context: context, viewModel: viewModel),
+      );
 
   Widget _buildAppBarWrapper(
           {required BuildContext context,
@@ -217,6 +215,34 @@ class IeltsListeningPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
+        _buildQuestionColumnWrapper(context: context, viewModel: viewModel),
+        verticalSpaceLarge,
+        _buildContinueButtonState(context: context, viewModel: viewModel)
+      ];
+
+  Widget _buildQuestionColumnWrapper(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildQuestionColumn(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildQuestionColumn(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _buildQuestionColumnChildren(
+            context: context, viewModel: viewModel),
+      );
+
+  List<Widget> _buildQuestionColumnChildren(
+          {required BuildContext context,
+          required CoursePracticeViewModel viewModel}) =>
+      [
         verticalSpaceMedium,
         _buildInstruction(),
         verticalSpaceMedium,
@@ -239,8 +265,6 @@ class IeltsListeningPractice1Question
             .dynamicPayload?.stimulus?[3].value),
         verticalSpaceTiny,
         _buildTextField(value: '3', viewModel: viewModel),
-        verticalSpaceLarge,
-        _buildContinueButtonState(context: context, viewModel: viewModel)
       ];
 
   Widget _buildInstruction() => Text(
@@ -277,14 +301,15 @@ class IeltsListeningPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       IeltsPracticeReviewSection(
         review: viewModel.answers,
-        onTap: ()async =>await  _nextScreen(context: context, viewModel: viewModel),
+        onTap: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildContinueButtonWrapper(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Padding(
-        padding: const EdgeInsets.only(bottom: 50),
+        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 50),
         child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
@@ -297,7 +322,8 @@ class IeltsListeningPractice1Question
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async=>await  _nextScreen(context: context, viewModel: viewModel),
+        onTap: () async =>
+            await _nextScreen(context: context, viewModel: viewModel),
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>

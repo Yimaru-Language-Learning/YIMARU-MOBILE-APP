@@ -21,7 +21,7 @@ class IeltsWritingPractice1Question
 
   void _reset(CoursePracticeViewModel viewModel) {
     practiceController.clear();
-  //  viewModel.resetValues();
+    //  viewModel.resetValues();
   }
 
   void _nextScreen(CoursePracticeViewModel viewModel) {
