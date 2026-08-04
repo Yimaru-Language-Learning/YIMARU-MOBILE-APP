@@ -45,6 +45,8 @@ String kVersionUrl = 'version';
 
 String kDevicesUrl = 'devices';
 
+String kSessionUrl = 'session';
+
 String kProgramsUrl = 'programs';
 
 String kRegisterUrl = 'register';

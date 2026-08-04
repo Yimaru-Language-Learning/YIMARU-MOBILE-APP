@@ -994,7 +994,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     Map<String, dynamic> option = {number: answer};
 
     _selectedOption.addAll(option);
-    print(_selectedOption);
 
     rebuildUi();
   }
@@ -1732,13 +1731,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
         _isSectionStart = true;
         _stimulusBlockKey = _questions[_currentQuestion].stimulusBlockKey;
       }
-      print('HERE: 1');
       await setSectionQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     } else {
-      print('HERE: 2');
-      print(_questions[_currentQuestion].questionTypeDefinitionId);
+
       await setSingleQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);

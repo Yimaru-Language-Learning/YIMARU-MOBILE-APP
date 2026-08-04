@@ -10,6 +10,7 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
 import '../../../models/assessment.dart';
+import '../../../models/assessment_session.dart';
 import '../../../models/proficiency_level.dart';
 import '../../../services/api_service.dart';
 import '../../../services/localization_service.dart';
@@ -54,6 +55,10 @@ class AssessmentViewModel extends ReactiveViewModel {
   List<PracticeQuestion> _questions = [];
 
   List<PracticeQuestion> get questions => _questions;
+
+  AssessmentSession? _session;
+
+  AssessmentSession? get session => _session;
 
   int _currentQuestionIndex = 0;
 
@@ -105,8 +110,6 @@ class AssessmentViewModel extends ReactiveViewModel {
 
     _answers.addAll(answer);
     _selectedAnswers.addAll(selectedAnswer);
-    print(_answers);
-
     rebuildUi();
   }
 
@@ -135,14 +138,10 @@ class AssessmentViewModel extends ReactiveViewModel {
   // Question navigation
   Future<void> nextQuestion() async {
     _currentQuestionIndex++;
-    if (_currentQuestionIndex == _questions.length) {
-      next();
-    } else {
-      _pageController.nextPage(
-        curve: Curves.easeInOutCubic,
-        duration: const Duration(milliseconds: 350),
-      );
-    }
+    _pageController.nextPage(
+      curve: Curves.easeInOutCubic,
+      duration: const Duration(milliseconds: 350),
+    );
   }
 
   void previousQuestion() {
@@ -243,7 +242,14 @@ class AssessmentViewModel extends ReactiveViewModel {
 
   Future<void> _getInitialAssessment() async {
     if (await _statusChecker.checkConnection()) {
-      _questions = await _apiService.getInitialAssessment();
+      Map<String, dynamic> response = await _apiService.getAssessmentSession();
+
+      if (response['status'] == ResponseStatus.success) {
+        _session = response['data'] as AssessmentSession;
+
+        _questions =
+            await _apiService.getInitialAssessment(_session?.nextLevel ?? 'A1');
+      }
     }
   }
 
@@ -254,13 +260,25 @@ class AssessmentViewModel extends ReactiveViewModel {
 
   Future<void> _finishAssessment() async {
     if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> data = {'answers': _answers.values.toList()};
+      Map<String, dynamic> data = {
+        'level': _session?.nextLevel,
+        'answers': _answers.values.toList()
+      };
 
       Map<String, dynamic> response = await _apiService.finishAssessment(data);
 
       if (ResponseStatus.success == response['status']) {
         _proficiencyLevel = response['data'];
-        next();
+        if (_proficiencyLevel?.passed ?? false) {
+          if (_proficiencyLevel?.completed ?? false) {
+            next();
+          } else {
+            reset();
+            await getInitialAssessment();
+          }
+        } else {
+          next();
+        }
       } else {
         showErrorToast(response['message']);
         next(page: 3);
@@ -275,8 +293,7 @@ class AssessmentViewModel extends ReactiveViewModel {
 
   Future<void> _updateKnowledgeLevel() async {
     if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> data = {
-        'knowledge_level': _proficiencyLevel?.level};
+      Map<String, dynamic> data = {'knowledge_level': _proficiencyLevel?.level};
 
       await _apiService.updateKnowledgeLevel(data);
     }

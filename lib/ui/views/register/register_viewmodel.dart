@@ -249,7 +249,6 @@ class RegisterViewModel extends ReactiveViewModel
   }
 
   void goBack() {
-    print('HERE');
     if (_currentPage == 1) {
       _currentPage = 0;
       rebuildUi();
@@ -368,7 +367,6 @@ class RegisterViewModel extends ReactiveViewModel
   // Register device
   Future<void> _registerDevice() async {
     String? token = await _pushNotificationService.getDeviceToken();
-    print('DEVICE TOKEN: $token');
 
     if (token != null) {
       Map<String, dynamic> deviceData = {
