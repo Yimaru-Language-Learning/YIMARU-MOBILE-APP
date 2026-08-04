@@ -29,7 +29,6 @@ class IeltsReadingPractice3Question
     if (viewModel.showAnswer) {
       viewModel.clearAnswer();
       if (viewModel.currentQuestion == viewModel.questions.length - 1) {
-        print('SHOW ANSWER: ${viewModel.showAnswer}');
 
         viewModel.setSectionEnd(true);
         viewModel.pop();

@@ -93,7 +93,7 @@ class AssessmentIntroScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   List<Widget> _buildLowerColumnChildren(AssessmentViewModel viewModel) => [
-        if (hasAssessments) _buildContinueButton(viewModel),
+        if (hasAssessments && !(viewModel.session?.completed ?? false) ) _buildContinueButton(viewModel),
         verticalSpaceMedium,
         _buildSkipButtonWrapper(viewModel)
       ];

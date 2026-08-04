@@ -17,7 +17,6 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Future<void> _finish(AssessmentViewModel viewModel) async {
     await viewModel.finishAssessment();
-
   }
 
   @override
@@ -146,9 +145,12 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         height: 55,
         borderRadius: 12,
         foregroundColor: kcWhite,
-        text: viewModel.currentQuestionIndex == viewModel.questions.length - 1
-            ? LocaleKeys.finish_assessment.tr()
-            : LocaleKeys.cont.tr(),
+        text:
+            viewModel.currentQuestionIndex == viewModel.questions.length - 1 &&
+                        (viewModel.session?.completed ??
+                    false)
+                ? LocaleKeys.finish_assessment.tr()
+                : LocaleKeys.cont.tr(),
         backgroundColor: viewModel.selectedAnswers
                 .containsKey('${viewModel.currentQuestionIndex + 1}')
             ? kcPrimaryColor
@@ -162,7 +164,7 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   Widget _buildBodyState(AssessmentViewModel viewModel) =>
-      viewModel.busy(StateObjects.finishAssessment)
+  viewModel.busy(StateObjects.finishAssessment)
           ? const PageLoadingIndicator()
           : Container();
 }

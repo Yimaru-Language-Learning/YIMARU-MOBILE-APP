@@ -14,6 +14,7 @@ import 'package:yimaru_app/services/dio_service.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
 
 import '../app/app.locator.dart';
+import '../models/assessment_session.dart';
 import '../models/course_module.dart';
 import '../models/course_practice.dart';
 import '../models/practice_question.dart';
@@ -419,45 +420,17 @@ class ApiService {
     }
   }
 
-  // Get assessment questions
-  Future<List<PracticeQuestion>> getInitialAssessment() async {
+  // Get assessment session
+  Future<Map<String, dynamic>> getAssessmentSession() async {
     try {
-      List<PracticeQuestion> questions = [];
-
       final Response response = await _service.dio.get(
-          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kAssessmentUrl/$kQuestionsUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data'] as List;
-        questions = decodedData
-            .map(
-              (e) {
-                return PracticeQuestion.fromJson(e);
-              },
-            )
-            .toList();
-        return questions;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-
-  // Finish assessment
-  Future<Map<String, dynamic>> finishAssessment(Map<String, dynamic> data) async {
-    try {
-      Response response = await _service.dio
-          .post('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kAssessmentUrl/$kSubmitUrl', data: data);
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kAssessmentUrl/$kSessionUrl');
 
       if (response.statusCode == 200) {
         return {
           'status': ResponseStatus.success,
-          'message': 'Assessment submitted successfully.',
-          'data': ProficiencyLevel.fromJson(response.data['data']),
-
+          'message': 'Assessment session fetched successfully.',
+          'data': AssessmentSession.fromJson(response.data['data']),
         };
       } else {
         return {
@@ -473,12 +446,65 @@ class ApiService {
     }
   }
 
+  // Get assessment questions
+  Future<List<PracticeQuestion>> getInitialAssessment(String level) async {
+    try {
+      List<PracticeQuestion> questions = [];
+
+      final Response response = await _service.dio.get(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kAssessmentUrl/$kQuestionsUrl?level=$level');
+
+      if (response.statusCode == 200) {
+        var data = response.data;
+        var decodedData = data['data'] as List;
+        questions = decodedData.map(
+          (e) {
+            return PracticeQuestion.fromJson(e);
+          },
+        ).toList();
+        return questions;
+      }
+      return [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Finish assessment
+  Future<Map<String, dynamic>> finishAssessment(
+      Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kAssessmentUrl/$kSubmitUrl',
+          data: data);
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Assessment submitted successfully.',
+          'data': ProficiencyLevel.fromJson(response.data['data']),
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
 
   // Update knowledge-level
-  Future<Map<String, dynamic>> updateKnowledgeLevel(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> updateKnowledgeLevel(
+      Map<String, dynamic> data) async {
     try {
-      Response response = await _service.dio
-          .put('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kUserUrl/$kKnowledgeLevelUrl', data: data);
+      Response response = await _service.dio.put(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kUserUrl/$kKnowledgeLevelUrl',
+          data: data);
 
       if (response.statusCode == 200) {
         return {
@@ -715,8 +741,6 @@ class ApiService {
     }
   }
 
-
-
   // Refresh object
   /*Future<Map<String, dynamic>> refreshObject(Map<String, dynamic> data) async {
     try {
@@ -848,7 +872,6 @@ class ApiService {
 
       final Response response = await _service.dio
           .get('$kBaseUrl/api/$kApiVersionUrl/$kModulesUrl/$id/$kPracticesUrl');
-      print('MODULE PRACTICES: ${response.data}');
 
       if (response.statusCode == 200) {
         var data = response.data;
@@ -930,7 +953,6 @@ class ApiService {
   Future<List<PracticeQuestion>> getLearnQuestions(int id) async {
     try {
       List<PracticeQuestion> questions = [];
-      print('Here');
 
       final Response response = await _service.dio.get(
           '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kQuestionSetsUrl/$id/$kQuestionsUrl');
@@ -1301,7 +1323,6 @@ class ApiService {
   Future<List<PracticeQuestion>> getCourseQuestions(int id) async {
     try {
       List<PracticeQuestion> questions = [];
-      print('Here');
 
       final Response response = await _service.dio.get(
           '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kQuestionSetsUrl/$id/$kQuestionsUrl');
