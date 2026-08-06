@@ -22,6 +22,9 @@ class CourseUnit {
   @JsonKey(name: 'sort_order')
   final int? sortOrder;
 
+  @JsonKey(name: 'access_tier')
+  final String? accessTier;
+
   @JsonKey(name: 'has_practice')
   final bool? hasPractice;
 
@@ -32,24 +35,29 @@ class CourseUnit {
   final int? modulesCount;
 
   @JsonKey(name: 'practices_count')
-  final int? practice;
+  final int? practicesCount;
 
   @JsonKey(name: 'catalog_course_id')
   final int? catalogCourseId;
+
+  @JsonKey(name: 'effective_access_tier')
+  final String? effectiveAccessTier;
 
   const CourseUnit(
       {this.id,
       this.name,
       this.access,
       this.modules,
-      this.practice,
       this.thumbnail,
       this.sortOrder,
+      this.accessTier,
       this.hasPractice,
       this.description,
       this.modulesCount,
       this.lessonsCount,
-      this.catalogCourseId});
+      this.practicesCount,
+      this.catalogCourseId,
+      this.effectiveAccessTier});
 
   factory CourseUnit.fromJson(Map<String, dynamic> json) =>
       _$CourseUnitFromJson(json);
@@ -66,22 +74,26 @@ class CourseUnit {
     int? lessonsCount,
     int? modulesCount,
     String? thumbnail,
+    String? accessTier,
+    int? practicesCount,
     String? description,
     int? catalogCourseId,
     List<CourseModule>? modules,
+    String? effectiveAccessTier,
   }) =>
       CourseUnit(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        access: access ?? this.access,
-        modules: modules ?? this.modules,
-        practice: practice ?? this.practice,
-        thumbnail: thumbnail ?? this.thumbnail,
-        sortOrder: sortOrder ?? this.sortOrder,
-        hasPractice: hasPractice ?? this.hasPractice,
-        description: description ?? this.description,
-        lessonsCount: lessonsCount ?? this.lessonsCount,
-        modulesCount: modulesCount ?? this.modulesCount,
-        catalogCourseId: catalogCourseId ?? this.catalogCourseId,
-      );
+          id: id ?? this.id,
+          name: name ?? this.name,
+          access: access ?? this.access,
+          modules: modules ?? this.modules,
+          thumbnail: thumbnail ?? this.thumbnail,
+          sortOrder: sortOrder ?? this.sortOrder,
+          accessTier: accessTier ?? this.accessTier,
+          hasPractice: hasPractice ?? this.hasPractice,
+          description: description ?? this.description,
+          lessonsCount: lessonsCount ?? this.lessonsCount,
+          modulesCount: modulesCount ?? this.modulesCount,
+          practicesCount: practice ?? this.practicesCount,
+          catalogCourseId: catalogCourseId ?? this.catalogCourseId,
+          effectiveAccessTier: effectiveAccessTier ?? this.effectiveAccessTier);
 }

@@ -14,12 +14,14 @@ CourseModule _$CourseModuleFromJson(Map<String, dynamic> json) => CourseModule(
           ? null
           : Access.fromJson(json['access'] as Map<String, dynamic>),
       unitId: (json['unit_id'] as num?)?.toInt(),
-      practice: (json['practices_count'] as num?)?.toInt(),
       thumbnail: json['thumbnail'] as String?,
       sortOrder: (json['sort_order'] as num?)?.toInt(),
+      accessTier: json['access_tier'] as String?,
       hasPractice: json['has_practice'] as bool?,
       description: json['description'] as String?,
       lessonsCount: (json['lessons_count'] as num?)?.toInt(),
+      practicesCount: (json['practices_count'] as num?)?.toInt(),
+      effectiveAccessTier: json['effective_access_tier'] as String?,
     );
 
 Map<String, dynamic> _$CourseModuleToJson(CourseModule instance) =>
@@ -32,7 +34,9 @@ Map<String, dynamic> _$CourseModuleToJson(CourseModule instance) =>
       'description': instance.description,
       'unit_id': instance.unitId,
       'sort_order': instance.sortOrder,
+      'access_tier': instance.accessTier,
       'has_practice': instance.hasPractice,
       'lessons_count': instance.lessonsCount,
-      'practices_count': instance.practice,
+      'practices_count': instance.practicesCount,
+      'effective_access_tier': instance.effectiveAccessTier,
     };

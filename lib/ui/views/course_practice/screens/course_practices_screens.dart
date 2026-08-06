@@ -31,6 +31,7 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
             context: context,
             id: viewModel.practices[index].questionSetId ?? 0);
       } else {
+
         await viewModel.navigateToCourseSubscription(SubscriptionType.duolingo);
       }
     } else {

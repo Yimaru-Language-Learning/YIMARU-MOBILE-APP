@@ -1,6 +1,6 @@
 name: yimaru_app
 publish_to: 'none'
-version: 0.1.111+113
+version: 0.1.112+114
 description: A new Flutter project.
 
 environment:
