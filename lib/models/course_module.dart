@@ -24,6 +24,9 @@ class CourseModule {
   @JsonKey(name: 'sort_order')
   final int? sortOrder;
 
+  @JsonKey(name: 'access_tier')
+  final String? accessTier;
+
   @JsonKey(name: 'has_practice')
   final bool? hasPractice;
 
@@ -31,7 +34,10 @@ class CourseModule {
   final int? lessonsCount;
 
   @JsonKey(name: 'practices_count')
-  final int? practice;
+  final int? practicesCount;
+
+  @JsonKey(name: 'effective_access_tier')
+  final String? effectiveAccessTier;
 
   const CourseModule(
       {this.id,
@@ -39,12 +45,14 @@ class CourseModule {
       this.name,
       this.access,
       this.unitId,
-      this.practice,
       this.thumbnail,
       this.sortOrder,
+      this.accessTier,
       this.hasPractice,
       this.description,
-      this.lessonsCount});
+      this.lessonsCount,
+      this.practicesCount,
+      this.effectiveAccessTier});
 
   CourseModule copyWith({
     int? id,
@@ -57,21 +65,25 @@ class CourseModule {
     bool? hasPractice,
     int? lessonsCount,
     String? thumbnail,
+    String? accessTier,
     String? description,
+    int? practicesCount,
+    String? effectiveAccessTier,
   }) =>
       CourseModule(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        icon: icon ?? this.icon,
-        access: access ?? this.access,
-        unitId: unitId ?? this.unitId,
-        practice: practice ?? this.practice,
-        thumbnail: thumbnail ?? this.thumbnail,
-        sortOrder: sortOrder ?? this.sortOrder,
-        hasPractice: hasPractice ?? this.hasPractice,
-        description: description ?? this.description,
-        lessonsCount: lessonsCount ?? this.lessonsCount,
-      );
+          id: id ?? this.id,
+          name: name ?? this.name,
+          icon: icon ?? this.icon,
+          access: access ?? this.access,
+          unitId: unitId ?? this.unitId,
+          sortOrder: sortOrder ?? this.sortOrder,
+          thumbnail: thumbnail ?? this.thumbnail,
+          accessTier: accessTier ?? this.accessTier,
+          hasPractice: hasPractice ?? this.hasPractice,
+          description: description ?? this.description,
+          lessonsCount: lessonsCount ?? this.lessonsCount,
+          practicesCount: practice ?? this.practicesCount,
+          effectiveAccessTier: effectiveAccessTier ?? this.effectiveAccessTier);
 
   factory CourseModule.fromJson(Map<String, dynamic> json) =>
       _$CourseModuleFromJson(json);
