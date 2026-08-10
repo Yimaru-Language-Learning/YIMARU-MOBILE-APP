@@ -93,7 +93,6 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   }
 
   void _onModelReady(ProfileDetailViewModel viewModel) {
-    print('MY RESPONSE: ${viewModel.user?.region}');
     phoneNumberController.text = '251900000000';
     emailController.text = viewModel.user?.email ?? '';
     lastNameController.text = viewModel.user?.lastName ?? '';

@@ -29,8 +29,6 @@ class IeltsReadingPractice3Question
     if (viewModel.showAnswer) {
       viewModel.clearAnswer();
       if (viewModel.currentQuestion == viewModel.questions.length - 1) {
-        print('SHOW ANSWER: ${viewModel.showAnswer}');
-
         viewModel.setSectionEnd(true);
         viewModel.pop();
       } else {
@@ -146,6 +144,7 @@ class IeltsReadingPractice3Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CoursePracticeAppBar(
+        reading: true,
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:

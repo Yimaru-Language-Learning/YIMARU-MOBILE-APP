@@ -94,6 +94,19 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   DateTime? get countdown => _countdown;
 
+  // Draggable
+  bool _isDrag = false;
+
+  bool get isDrag => _isDrag;
+
+  List<int> _usedHeadingIds = [];
+
+  List<int> get usedHeadingIds => _usedHeadingIds;
+
+  List<dynamic> _matchedAnswers = [];
+
+  List<dynamic> get matchedAnswers => _matchedAnswers;
+
   // Busy object
   String? _busyObject;
 
@@ -422,10 +435,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'title': 'Table completion',
       'label': 'IELTS Listening 30',
       'type': CoursePracticeType.ielts,
       'outro_title': 'Part 1 completed!',
+      'title': 'IELTS Listening - Table completion',
       'outro_subtitle':
           'You have finished part 1 , click next to proceed to part 2',
     },
@@ -487,7 +500,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 36',
+      'label': 'IELTS Reading 36',
       'title': 'Sentence Completion',
       'type': CoursePracticeType.ielts,
       'outro_title': 'Part 4 completed!',
@@ -498,14 +511,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_title': '',
       'instruction_subtitle': '',
       'title': 'Paragraph Choice',
-      'label': 'IELTS Listening 37',
+      'label': 'IELTS Reading 37',
       'type': CoursePracticeType.ielts,
     },
     {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 38',
+      'label': 'IELTS Reading 38',
       'type': CoursePracticeType.ielts,
       'title': 'IELTS Reading - Diagram Labeling',
     },
@@ -513,7 +526,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 39',
+      'label': 'IELTS Reading 39',
       'type': CoursePracticeType.ielts,
       'title': 'IELTS Reading - Sentence Completion',
     },
@@ -521,7 +534,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 40',
+      'label': 'IELTS Reading 40',
       'type': CoursePracticeType.ielts,
       'title': 'Sentence Ending Matching',
     },
@@ -529,7 +542,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 41',
+      'label': 'IELTS Reading 41',
       'type': CoursePracticeType.ielts,
       'title': 'True / False / Not Given',
     },
@@ -537,7 +550,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 42',
+      'label': 'IELTS Reading 42',
       'type': CoursePracticeType.ielts,
       'title': 'IELTS Reading -Multiple choice',
     },
@@ -545,10 +558,35 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 43',
+      'label': 'IELTS Reading 43',
       'title': 'Yes / No / Not Given',
       'type': CoursePracticeType.ielts,
     },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Heading Matching',
+      'label': 'IELTS Reading 44',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'title': 'Feature Matching',
+      'label': 'IELTS Reading 45',
+      'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Reading 46',
+      'type': CoursePracticeType.ielts,
+      'title': 'IELTS Reading - Table completion',
+
+    }
   ];
 
   List<Map<String, dynamic>> get questionParams => _questionParams;
@@ -642,6 +680,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   void resetPlayCount(int count) {
     _playCount = count;
+    rebuildUi();
+  }
+
+  //Is drag
+  void setIsDrag(bool value) {
+    _isDrag = value;
     rebuildUi();
   }
 
@@ -788,8 +832,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    } else if (id == 0 /*Table completion*/) {
+    } else if (id == 43 /*IELTS Listening - Table completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(29);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
     } else if (id == 61 /*Map/Plan/Diagram Completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(30);
       int responseLastSec = _questions[_currentQuestion]
@@ -903,6 +953,40 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
+    } else if (id == 60 /*Heading Matching*/) {
+      _selectedQuestionParam = _questionParams.elementAt(43);
+      final count = questions[currentQuestion]
+          .dynamicPayload!
+          .stimulus![1]
+          .value['right']
+          .length;
+
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+
+      _usedHeadingIds.clear();
+      _matchedAnswers = List.filled(count, null);
+
+      setCountdown(responseFirstSec);
+    } else if (id == 65 /*Feature Matching*/) {
+      _selectedQuestionParam = _questionParams.elementAt(44);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
+    }else if (id == 68 /*IELTS Reading - Table completion*/) {
+      _selectedQuestionParam = _questionParams.elementAt(45);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
     } else {
       // _selectedQuestionParam = _questionParams.elementAt(13);
     }
@@ -933,7 +1017,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     Map<String, dynamic> option = {number: answer};
 
     _selectedOption.addAll(option);
-    print(_selectedOption);
 
     rebuildUi();
   }
@@ -1071,18 +1154,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Dialogue
-  Future<bool?> showAbortDialog() async {
-    DialogResponse? response = await _dialogService.showDialog(
-      cancelTitle: 'No',
-      title: 'Recording',
-      buttonTitle: 'Yes',
+  Future<void> showAbortDialog(String passage) async =>
+await _dialogService.showDialog(
+      title: 'Passage',
+      buttonTitle: 'Close',
+      description: passage,
       barrierDismissible: true,
       cancelTitleColor: kcDarkGrey,
       buttonTitleColor: kcPrimaryColor,
-      description: 'Are you sure you want to stop recording?',
     );
-    return response?.confirmed;
-  }
+
 
   // Set highlight
   void setHighlight({required int end, required int start}) {
@@ -1395,6 +1476,37 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
+  int parseId(dynamic raw) {
+    if (raw is int) return raw;
+    if (raw is String) return int.tryParse(raw) ?? -1;
+    return -1;
+  }
+
+  void onAcceptWithDetails(
+      {required int index,
+      required dynamic title,
+      required Map<String, dynamic> dragged}) {
+    _usedHeadingIds.remove(parseId(dragged['id']));
+
+    _matchedAnswers[index] = dragged;
+
+    _usedHeadingIds.add(parseId(dragged['id']));
+
+    rebuildUi();
+  }
+
+  void onClearTarget({
+    required int index,
+    required CoursePracticeViewModel viewModel,
+  }) {
+    final existing = _matchedAnswers[index];
+    if (existing == null) return;
+
+    _usedHeadingIds.remove(parseId(existing['id']));
+    _matchedAnswers[index] = null;
+    rebuildUi();
+  }
+
   Future<void> setReadingAnswer({String? sample, String? response}) async {
     _answers.add({'sample': sample, 'response': response});
   }
@@ -1641,19 +1753,33 @@ class CoursePracticeViewModel extends ReactiveViewModel
         _isSectionStart = true;
         _stimulusBlockKey = _questions[_currentQuestion].stimulusBlockKey;
       }
-      print('HERE: 1');
       await setSectionQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     } else {
-      print('HERE: 2');
-      print(_questions[_currentQuestion].questionTypeDefinitionId);
       await setSingleQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     }
 
     _currentPage = 1;
+  }
+
+
+
+  Future<void> updatePaymentStatus() async =>
+      await runBusyFuture(_updatePaymentStatus(),
+          busyObject: StateObjects.coursePractice);
+
+  Future<void> _updatePaymentStatus() async {
+    Map<String, dynamic> response = {};
+
+    response = await _apiService.getProfileData(_user?.userId);
+
+    if (response['status'] == ResponseStatus.success) {
+      User user = response['data'] as User;
+      await _authenticationService.saveUserData(user);
+    }
   }
 
   // Finish practice
@@ -1669,6 +1795,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
      await _courseService.getCourseProgress();*/
     }
   }
+
+
+
 
   // Refresh url
   /*Future<String?> getRefreshedUrl(String value) async {

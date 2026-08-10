@@ -53,6 +53,7 @@ enum StateObjects {
   courses,
   openPdf,
   register,
+  appRating,
   verifyOtp,
   resendOtp,
   stopAudio,

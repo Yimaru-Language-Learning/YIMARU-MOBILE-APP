@@ -139,11 +139,6 @@ class AuthenticationService with ListenableServiceMixin {
       }
     }
 
-    print('STATUSES: 1');
-    print(learn);
-    print(ielts);
-    print(duolingo);
-
     _user = User(
       learn: learn,
       ielts: ielts,
@@ -221,9 +216,6 @@ class AuthenticationService with ListenableServiceMixin {
       profileCompleted: await _secureService.getBool('profileCompleted'),
       subscriptionStatus: await _secureService.getString('subscriptionStatus'),
     );
-    print('STATUSES: 2');
-
-    print(_user?.duolingo);
     notifyListeners();
     return _user;
   }

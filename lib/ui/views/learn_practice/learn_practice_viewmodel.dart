@@ -68,7 +68,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   Duration get duration => _duration;
 
   double get progress {
-    print('DURATION: ${_duration.inMilliseconds}');
     if (_duration.inMilliseconds == 0) return 0;
     return _position.inMilliseconds / _duration.inMilliseconds;
   }
@@ -255,7 +254,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
         curve: Curves.easeInOutCubic,
         duration: const Duration(milliseconds: 350),
       );
-      print('PROMPT: ${_questions[index].dynamicPayload?.stimulus?[1].value}');
       await playVoicePrompt(_questions[index]);
     } else {
       goTo(3);

@@ -337,18 +337,13 @@ class LoginViewModel extends ReactiveViewModel
 
   // Register device
   Future<void> _registerDevice() async {
-    try {
-      String? token = await _pushNotificationService.getDeviceToken();
-      print('DEVICE TOKEN: $token');
-      if (token != null) {
-        Map<String, dynamic> deviceData = {
-          "platform": Platform.isIOS ? "ios" : "android",
-          'device_token': token,
-        };
-        await _apiService.registerDevice(deviceData);
-      }
-    } catch (error) {
-      print('DEVICE REGISTRATION ERROR: $error');
+   String? token = await _pushNotificationService.getDeviceToken();
+    if (token != null) {
+      Map<String, dynamic> deviceData = {
+        "platform": "android",
+        'device_token': token,
+      };
+      await _apiService.registerDevice(deviceData);
     }
   }
 

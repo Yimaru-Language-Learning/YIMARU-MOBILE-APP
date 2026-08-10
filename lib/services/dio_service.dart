@@ -157,7 +157,6 @@ class DioService {
 
       return true;
     } catch (e) {
-      print('REFRESH EXCEPTION: ${e.toString()}');
       await _authenticationService.logout();
       await _navigationService.replaceWithLoginView();
       return false;

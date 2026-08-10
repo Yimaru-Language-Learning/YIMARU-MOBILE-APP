@@ -59,11 +59,12 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
         await viewModel.navigateToCourseLessonDetail(
             type: type, lesson: lessons[index]);
       } else {
-        if (first && index < 3) {
+        if (lesson.accessTier?.toUpperCase() == 'FREE') {
           await viewModel.navigateToCourseLessonDetail(
               type: type, lesson: lessons[index]);
         } else {
-          await _showSheet(context: context, viewModel: viewModel);
+          await viewModel
+              .navigateToCourseSubscription(SubscriptionType.duolingo);
         }
       }
     } else {
@@ -71,11 +72,11 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
         await viewModel.navigateToCourseLessonDetail(
             type: type, lesson: lessons[index]);
       } else {
-        if (first && index < 3) {
+        if (lesson.accessTier?.toUpperCase() == 'FREE') {
           await viewModel.navigateToCourseLessonDetail(
               type: type, lesson: lessons[index]);
         } else {
-          await _showSheet(context: context, viewModel: viewModel);
+          await viewModel.navigateToCourseSubscription(SubscriptionType.ielts);
         }
       }
     }
