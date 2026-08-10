@@ -76,9 +76,9 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
           await viewModel.navigateToCourseLessonDetail(
               type: type, lesson: lessons[index]);
         } else {
-          await viewModel
-              .navigateToCourseSubscription(SubscriptionType.ielts);
-        }      }
+          await viewModel.navigateToCourseSubscription(SubscriptionType.ielts);
+        }
+      }
     }
   }
 

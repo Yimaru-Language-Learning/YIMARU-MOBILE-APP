@@ -139,7 +139,6 @@ class AuthenticationService with ListenableServiceMixin {
       }
     }
 
-
     _user = User(
       learn: learn,
       ielts: ielts,

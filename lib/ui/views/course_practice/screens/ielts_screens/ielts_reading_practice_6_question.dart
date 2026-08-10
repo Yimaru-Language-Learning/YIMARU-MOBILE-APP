@@ -141,6 +141,7 @@ class IeltsReadingPractice6Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CoursePracticeAppBar(
+        reading: true,
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:

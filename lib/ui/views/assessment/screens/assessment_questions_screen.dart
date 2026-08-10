@@ -147,8 +147,7 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
         foregroundColor: kcWhite,
         text:
             viewModel.currentQuestionIndex == viewModel.questions.length - 1 &&
-                        (viewModel.session?.completed ??
-                    false)
+                    (viewModel.session?.completed ?? false)
                 ? LocaleKeys.finish_assessment.tr()
                 : LocaleKeys.cont.tr(),
         backgroundColor: viewModel.selectedAnswers
@@ -164,7 +163,7 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
       );
 
   Widget _buildBodyState(AssessmentViewModel viewModel) =>
-  viewModel.busy(StateObjects.finishAssessment)
+      viewModel.busy(StateObjects.finishAssessment)
           ? const PageLoadingIndicator()
           : Container();
 }

@@ -13,8 +13,6 @@ import 'faqs_viewmodel.dart';
 class FaqsView extends StackedView<FaqsViewModel> {
   const FaqsView({Key? key}) : super(key: key);
 
-
-
   @override
   void onViewModelReady(FaqsViewModel viewModel) async {
     await viewModel.getFAQs();
@@ -26,16 +24,16 @@ class FaqsView extends StackedView<FaqsViewModel> {
 
   @override
   Widget builder(
-      BuildContext context,
-      FaqsViewModel viewModel,
-      Widget? child,
-      ) =>
+    BuildContext context,
+    FaqsViewModel viewModel,
+    Widget? child,
+  ) =>
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(FaqsViewModel viewModel) => Scaffold(
-    backgroundColor: kcBackgroundColor,
-    body: _buildScaffold(viewModel),
-  );
+        backgroundColor: kcBackgroundColor,
+        body: _buildScaffold(viewModel),
+      );
 
   Widget _buildScaffold(FaqsViewModel viewModel) =>
       SafeArea(child: _buildBodyWrapper(viewModel));
@@ -45,57 +43,49 @@ class FaqsView extends StackedView<FaqsViewModel> {
   Widget _buildBody(FaqsViewModel viewModel) => _buildColumn(viewModel);
 
   Widget _buildColumn(FaqsViewModel viewModel) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: _buildColumnChildren(viewModel),
-  );
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _buildColumnChildren(viewModel),
+      );
 
   List<Widget> _buildColumnChildren(FaqsViewModel viewModel) => [
-    verticalSpaceMedium,
-    _buildAppBarWrapper(viewModel),
-    verticalSpaceSmall,
-    _buildContentWrapper(viewModel)
-  ];
+        verticalSpaceMedium,
+        _buildAppBarWrapper(viewModel),
+        verticalSpaceSmall,
+        _buildContentWrapper(viewModel)
+      ];
 
   Widget _buildAppBarWrapper(FaqsViewModel viewModel) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildAppbar(viewModel),
-  );
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildAppbar(viewModel),
+      );
 
   Widget _buildAppbar(FaqsViewModel viewModel) => SmallAppBar(
-    title: 'FAQs',
-    showBackButton: true,
-    onPop: viewModel.pop,
-  );
+        title: 'FAQs',
+        showBackButton: true,
+        onPop: viewModel.pop,
+      );
 
   Widget _buildContentWrapper(FaqsViewModel viewModel) =>
       Expanded(child: _buildContentColumnWrapper(viewModel));
 
   Widget _buildContentColumnWrapper(FaqsViewModel viewModel) => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 15),
-    child: _buildMenuColumnScrollView(viewModel),
-  );
-
-
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: _buildMenuColumnScrollView(viewModel),
+      );
 
   Widget _buildMenuColumnScrollView(FaqsViewModel viewModel) =>
       SingleChildScrollView(
         child: _buildMenuColumn(viewModel),
       );
 
-
-
-
-
   Widget _buildMenuColumn(FaqsViewModel viewModel) => Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: _buildMenuColumnChildren(viewModel),
-  );
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: _buildMenuColumnChildren(viewModel),
+      );
 
   List<Widget> _buildMenuColumnChildren(FaqsViewModel viewModel) =>
       [verticalSpaceLarge, _buildListViewState(viewModel)];
-
-
 
   Widget _buildListViewState(FaqsViewModel viewModel) =>
       viewModel.busy(StateObjects.faqs)
@@ -103,16 +93,15 @@ class FaqsView extends StackedView<FaqsViewModel> {
           : _buildListView(viewModel);
 
   Widget _buildProgressIndicator() => const Center(
-    child: CustomCircularProgressIndicator(color: kcPrimaryColor),
-  );
+        child: CustomCircularProgressIndicator(color: kcPrimaryColor),
+      );
 
   Widget _buildListView(FaqsViewModel viewModel) => ListView.builder(
-    shrinkWrap: true,
-    itemCount: viewModel.faqs.length,
-    physics: const NeverScrollableScrollPhysics(),
-    itemBuilder: (context, index) =>
-        _buildTile(viewModel.faqs[index]),
-  );
+        shrinkWrap: true,
+        itemCount: viewModel.faqs.length,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) => _buildTile(viewModel.faqs[index]),
+      );
 
   Widget _buildTile(Faq faq) => FaqTile(faq: faq);
 }

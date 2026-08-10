@@ -21,7 +21,8 @@ class AssessmentSession {
       this.publishedLevels,
       this.initialAssessmentCompleted});
 
-  factory AssessmentSession.fromJson(Map<String, dynamic> json) => _$AssessmentSessionFromJson(json);
+  factory AssessmentSession.fromJson(Map<String, dynamic> json) =>
+      _$AssessmentSessionFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssessmentSessionToJson(this);
 }

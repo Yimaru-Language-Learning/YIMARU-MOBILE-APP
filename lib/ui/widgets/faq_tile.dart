@@ -11,8 +11,6 @@ class FaqTile extends StatelessWidget {
 
   const FaqTile({super.key, required this.faq});
 
-
-
   @override
   Widget build(BuildContext context) => _buildExpansionTileCard();
 
@@ -39,8 +37,6 @@ class FaqTile extends StatelessWidget {
         shape: Border.all(color: kcPrimaryColor.withValues(alpha: 0.2)),
         children: _buildExpansionTileChildren(),
       );
-
-
 
   List<Widget> _buildExpansionTileChildren() => [_buildContent()];
 

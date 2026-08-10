@@ -1414,4 +1414,29 @@ class ApiService {
       return [];
     }
   }
+
+  // Rate app
+  Future<Map<String, dynamic>> rateApp(Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio
+          .post('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kRatingsUrl', data: data);
+
+      if (response.statusCode == 201) {
+        return {
+          'status': ResponseStatus.success,
+          'message': 'Rated successfully!',
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+          'message': 'Unknown Error Occurred'
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
 }
