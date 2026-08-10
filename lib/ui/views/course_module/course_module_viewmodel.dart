@@ -48,10 +48,8 @@ class CourseModuleViewModel extends ReactiveViewModel {
       await _navigationService.navigateToCoursePracticeView(
           id: id, type: type, practice: CoursePractices.lesson);
 
-
   Future<void> navigateToCourseSubscription(SubscriptionType type) async =>
       await _navigationService.navigateToSubscriptionView(type: type);
-
 
   // Remote api call
 

@@ -115,8 +115,7 @@ class PaymentViewModel extends ReactiveViewModel {
 
   // Update payment status
   Future<void> updatePaymentStatus() async =>
-      await runBusyFuture(_updatePaymentStatus(),
-          busyObject: StateObjects.learnSubscription);
+      await runBusyFuture(_updatePaymentStatus(),);
 
   Future<void> _updatePaymentStatus() async {
     Map<String, dynamic> response = {};

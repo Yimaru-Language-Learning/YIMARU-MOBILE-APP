@@ -90,7 +90,9 @@ class SupportView extends StackedView<SupportViewModel> {
         verticalSpaceMedium,
         _buildInAppSupport(viewModel),
         verticalSpaceMedium,
-        _buildFaqSupport(viewModel)
+        _buildFaqSupport(viewModel),
+        verticalSpaceMedium,
+        _buildRating(viewModel)
       ];
 
   Widget _buildCallSupport(SupportViewModel viewModel) => SupportCard(
@@ -123,5 +125,13 @@ class SupportView extends StackedView<SupportViewModel> {
         icon: Icons.question_mark,
         subtitle: 'Visit frequently asked questions',
         onTap: () async => await viewModel.navigateToFaqs(),
+      );
+
+  Widget _buildRating(SupportViewModel viewModel) => SupportCard(
+        color: kcIndigo,
+        title: 'Rate App',
+        icon: Icons.rate_review,
+        subtitle: 'Give us rating about our app',
+        onTap: () async => await viewModel.navigateToAppRating(),
       );
 }

@@ -58,39 +58,36 @@ class CourseCatalog {
       this.practicesCount,
       this.effectiveAccessTier});
 
-  CourseCatalog copyWith({
-    int? id,
-    String? name,
-    Access? access,
-    int? sortOrder,
-    int? unitsCount,
-    String? category,
-    int? modulesCount,
-    int? lessonsCount,
-    bool? hasPractice,
-    String? thumbnail,
-    String? accessTier,
-    String? description,
-    int? practicesCount,
-    String? effectiveAccessTier
-  }) =>
+  CourseCatalog copyWith(
+          {int? id,
+          String? name,
+          Access? access,
+          int? sortOrder,
+          int? unitsCount,
+          String? category,
+          int? modulesCount,
+          int? lessonsCount,
+          bool? hasPractice,
+          String? thumbnail,
+          String? accessTier,
+          String? description,
+          int? practicesCount,
+          String? effectiveAccessTier}) =>
       CourseCatalog(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        access: access ?? this.access,
-        category: category ?? this.category,
-        thumbnail: thumbnail ?? this.thumbnail,
-        sortOrder: sortOrder ?? this.sortOrder,
-        unitsCount: unitsCount ?? this.unitsCount,
-        accessTier: accessTier ?? this.accessTier,
-        hasPractice: hasPractice ?? this.hasPractice,
-        description: description ?? this.description,
-        modulesCount: modulesCount ?? this.modulesCount,
-        lessonsCount: lessonsCount ?? this.lessonsCount,
-        practicesCount: practicesCount ?? this.practicesCount,
-        effectiveAccessTier: effectiveAccessTier ?? this.effectiveAccessTier
-
-      );
+          id: id ?? this.id,
+          name: name ?? this.name,
+          access: access ?? this.access,
+          category: category ?? this.category,
+          thumbnail: thumbnail ?? this.thumbnail,
+          sortOrder: sortOrder ?? this.sortOrder,
+          unitsCount: unitsCount ?? this.unitsCount,
+          accessTier: accessTier ?? this.accessTier,
+          hasPractice: hasPractice ?? this.hasPractice,
+          description: description ?? this.description,
+          modulesCount: modulesCount ?? this.modulesCount,
+          lessonsCount: lessonsCount ?? this.lessonsCount,
+          practicesCount: practicesCount ?? this.practicesCount,
+          effectiveAccessTier: effectiveAccessTier ?? this.effectiveAccessTier);
 
   factory CourseCatalog.fromJson(Map<String, dynamic> json) =>
       _$CourseCatalogFromJson(json);

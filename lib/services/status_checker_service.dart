@@ -25,7 +25,6 @@ class StatusCheckerService {
       String version = packageInfo.version; // e.g. 1.0.0
       String versionCode = packageInfo.buildNumber; // version code
 
-
       return versionCode;
     } catch (e) {
       return null;

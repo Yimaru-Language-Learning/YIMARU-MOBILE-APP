@@ -176,6 +176,7 @@ class IeltsReadingPractice8Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CoursePracticeAppBar(
+        reading: true,
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
@@ -638,8 +639,8 @@ class IeltsReadingPractice8Question
         maxLines: 1,
         softWrap: false,
         style: style14MG400,
-    textAlign: TextAlign.center,
-  );
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildTargetCloseButton({
     required int index,
