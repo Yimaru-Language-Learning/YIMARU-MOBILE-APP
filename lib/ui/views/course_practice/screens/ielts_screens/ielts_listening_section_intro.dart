@@ -21,6 +21,11 @@ class IeltsListeningSectionIntro
 
   const IeltsListeningSectionIntro({super.key, required this.title});
 
+  Future<void> _next(CoursePracticeViewModel viewModel)async{
+    await viewModel.stopAudio();
+    viewModel.nextScreen();
+  }
+
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
     viewModel.pop();
@@ -214,12 +219,12 @@ class IeltsListeningSectionIntro
         text: 'Continue',
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: viewModel.nextScreen,
+        onTap: ()async => await _next(viewModel),
         backgroundColor: kcPrimaryColor,
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
-      viewModel.busy(StateObjects.coursePractice)
+      viewModel.busy(StateObjects.coursePractice) ||  viewModel.busy(StateObjects.stopAudio)
           ? const PageLoadingIndicator()
           : Container();
 }

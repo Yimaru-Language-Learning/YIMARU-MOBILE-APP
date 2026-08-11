@@ -18,7 +18,7 @@ class IeltsSpeakingPractice1Review
   String getQuestion(
       {required int index, required CoursePracticeViewModel viewModel}) {
     if (index >= viewModel.answers.length) return '';
-    return viewModel.answers[index]['question']?.toString() ?? '';
+    return viewModel.answers[index]['question_text']?.toString() ?? '';
   }
 
   Future<void> _next(
@@ -205,36 +205,17 @@ class IeltsSpeakingPractice1Review
           {required String question, required String number}) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildQuestionRow(question: question, number: number),
+        child: _buildQuestion(question: question, number: number),
       );
 
-  Widget _buildQuestionRow(
-          {required String question, required String number}) =>
-      Row(
-        children: [
-          _buildQuestionNumber(number),
-          horizontalSpaceSmall,
-          _buildQuestionWrapper(number: number, question: question)
-        ],
-      );
 
-  Widget _buildQuestionNumber(String number) => Text(
-        '$number.',
-        style: style16DG600,
+
+  Widget _buildQuestion( {required String question, required String number}) => Text(
+        '$number. $question',
+        style: style14DG400,
         textAlign: TextAlign.center,
       );
 
-  Widget _buildQuestionWrapper(
-          {required String question, required String number}) =>
-      Expanded(
-        child: _buildQuestion(number: number, question: question),
-      );
-
-  Widget _buildQuestion({required String question, required String number}) =>
-      ListenableReviewPracticeCard(
-        audio: question,
-        busyObject: number,
-      );
 
   Widget _buildPracticeReviewSection(
           {required BuildContext context,

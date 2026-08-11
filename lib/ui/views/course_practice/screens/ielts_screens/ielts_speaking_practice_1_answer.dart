@@ -16,6 +16,7 @@ import '../../course_practice_viewmodel.dart';
 
 class IeltsSpeakingPractice1Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
+  final String text;
   final int duration;
   final String audio;
   final String response;
@@ -23,6 +24,7 @@ class IeltsSpeakingPractice1Answer
 
   const IeltsSpeakingPractice1Answer(
       {super.key,
+      required this.text,
       required this.audio,
       required this.response,
       required this.duration,
@@ -35,7 +37,9 @@ class IeltsSpeakingPractice1Answer
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async =>
       await viewModel.setIeltsSpeakingAnswer1(
+        text: text,
         audio: audio,
+
         sample: response,
         question: question,
         duration: duration,
