@@ -653,6 +653,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   int get variant => _variant;
 
+
+  int? _countdownDuration;
+
+  int? get countdownDuration => _countdownDuration;
+
+
   // Counter time
   void setCountdown(int durationInSeconds) {
     _countdown = DateTime.now().add(
@@ -1072,6 +1078,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
               21) {
             nextIeltsSpeakingVariantScreen();
             startRecording();
+            setCountdown(_countdownDuration ?? 0);
+
           }
         }
       }
@@ -1518,6 +1526,7 @@ await _dialogService.showDialog(
 
   // Ielts speaking answer 1
   Future<void> setIeltsSpeakingAnswer1({
+    required String text,
     required String audio,
     required int duration,
     required String sample,
@@ -1525,6 +1534,7 @@ await _dialogService.showDialog(
   }) async =>
       await runBusyFuture(
           _setIeltsSpeakingAnswer1(
+            text: text,
               audio: audio,
               sample: sample,
               duration: duration,
@@ -1532,7 +1542,8 @@ await _dialogService.showDialog(
           busyObject: StateObjects.ieltsSpeaking1Variant);
 
   Future<void> _setIeltsSpeakingAnswer1(
-      {required String audio,
+
+      {    required String text,required String audio,
       required int duration,
       required String sample,
       required String question}) async {
@@ -1540,6 +1551,7 @@ await _dialogService.showDialog(
     await stopRecording();
     _answers.add({
       'question': question,
+      'question_text': text,
       'number': variants.toString(),
       'sample_voice_answer': sample,
       'busy_object': variants.toString(),
@@ -1558,6 +1570,7 @@ await _dialogService.showDialog(
 
   // Ielts speaking answer 4
   Future<void> setIeltsSpeakingAnswer4({
+    required String text,
     required String audio,
     required int duration,
     required String sample,
@@ -1565,6 +1578,7 @@ await _dialogService.showDialog(
   }) async =>
       await runBusyFuture(
           _setIeltsSpeakingAnswer4(
+            text: text,
               audio: audio,
               sample: sample,
               duration: duration,
@@ -1572,7 +1586,10 @@ await _dialogService.showDialog(
           busyObject: StateObjects.ieltsSpeaking4Variant);
 
   Future<void> _setIeltsSpeakingAnswer4(
-      {required String audio,
+      {
+        required String text,
+
+        required String audio,
       required int duration,
       required String sample,
       required String question}) async {
@@ -1580,6 +1597,7 @@ await _dialogService.showDialog(
     await stopRecording();
     _answers.add({
       'question': question,
+      'question_text':text,
       'number': variants.toString(),
       'sample_voice_answer': sample,
       'busy_object': variants.toString(),
@@ -1591,8 +1609,9 @@ await _dialogService.showDialog(
       _variants++;
       _variant = 0;
       _isSpeaking = true;
-      setCountdown(duration);
+      _countdownDuration = duration;
       await playVoicePrompt(audio);
+     // print('SET');
     }
   }
 

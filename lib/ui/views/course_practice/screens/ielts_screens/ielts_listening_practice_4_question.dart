@@ -27,8 +27,8 @@ class IeltsListeningPractice4Question
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
     FocusManager.instance.primaryFocus?.unfocus();
-/*    if (viewModel.showAnswer) {
-      viewModel.clearAnswer();*/
+    if (viewModel.showAnswer) {
+      viewModel.clearAnswer();
       if (viewModel.currentQuestion == viewModel.questions.length - 1) {
         viewModel.setSectionEnd(true);
         viewModel.pop();
@@ -42,20 +42,16 @@ class IeltsListeningPractice4Question
           viewModel.nextQuestion(context);
         }
       }
-  /*  } else {
+    } else {
       _setShowAnswer(viewModel);
-      for (int i = 0;
-          i <
-              (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-                      ?.response?[1].value['blanks'] as List)
-                  .length;
-          i++) {
-        await viewModel.setListeningAnswer(
-          sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?[1].value['blanks'] as List)[i]['text'],
-        );
-      }
-    }*/
+      for (int i = 0; i <  (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+      ?.response?[1].value['options'] as List).length; i++) {
+  await viewModel.setListeningAnswer(
+  sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+      ?.response?[1].value['options'] as List)[i]['text'],
+  );
+  }
+    }
   }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {

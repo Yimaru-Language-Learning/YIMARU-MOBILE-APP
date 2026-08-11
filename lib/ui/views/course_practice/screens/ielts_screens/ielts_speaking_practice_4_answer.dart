@@ -15,6 +15,7 @@ import '../../course_practice_viewmodel.dart';
 
 class IeltsSpeakingPractice4Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
+  final String text;
   final int duration;
   final String audio;
   final String response;
@@ -22,6 +23,7 @@ class IeltsSpeakingPractice4Answer
 
   const IeltsSpeakingPractice4Answer(
       {super.key,
+      required this.text,
       required this.audio,
       required this.response,
       required this.duration,
@@ -29,6 +31,7 @@ class IeltsSpeakingPractice4Answer
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async =>
       await viewModel.setIeltsSpeakingAnswer4(
+        text: text,
         audio: audio,
         sample: response,
         question: question,
@@ -150,9 +153,7 @@ class IeltsSpeakingPractice4Answer
       alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
 
   Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
-      VoiceRecordingState.recording == viewModel.recordingState &&
-              !viewModel.isSpeaking &&
-              !viewModel.busy(StateObjects.ieltsSpeaking4Variant)
+      VoiceRecordingState.recording == viewModel.recordingState
           ? _buildCountdown(viewModel)
           : Container();
 
