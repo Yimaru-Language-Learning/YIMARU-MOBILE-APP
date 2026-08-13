@@ -47,7 +47,7 @@ class IeltsListeningPractice1Question
       }
     } else {
       _setShowAnswer(viewModel);
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 5; i++) {
         await viewModel.setListeningAnswer(
           sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
               ?.response?[i + 1].value,
@@ -265,6 +265,11 @@ class IeltsListeningPractice1Question
             .dynamicPayload?.stimulus?[3].value),
         verticalSpaceTiny,
         _buildTextField(value: '3', viewModel: viewModel),
+        verticalSpaceMedium,
+        _buildLabel(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[4].value),
+        verticalSpaceTiny,
+        _buildTextField(value: '4', viewModel: viewModel),
       ];
 
   Widget _buildInstruction() => Text(
