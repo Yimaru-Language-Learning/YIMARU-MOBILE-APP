@@ -1,10 +1,12 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/course_practice.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/practice_question.dart';
@@ -1162,8 +1164,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
   // Dialogue
   Future<void> showAbortDialog(String passage) async =>
 await _dialogService.showDialog(
-      title: 'Passage',
-      buttonTitle: 'Close',
+      title: LocaleKeys.passage.tr(),
+      buttonTitle: LocaleKeys.close.tr(),
       description: passage,
       barrierDismissible: true,
       cancelTitleColor: kcDarkGrey,

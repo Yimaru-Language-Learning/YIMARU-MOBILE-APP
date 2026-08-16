@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../common/app_colors.dart';
@@ -55,7 +57,7 @@ class DownloadPdfCard extends StatelessWidget {
       );
 
   Widget _buildSubtitle() => Text(
-        'Download your answer',
+        LocaleKeys.download_answer.tr(),
         style: style14MG400,
       );
 
@@ -66,6 +68,6 @@ class DownloadPdfCard extends StatelessWidget {
         foregroundColor: kcWhite,
         leadingIcon: Icons.download,
         backgroundColor: kcPrimaryColor,
-        text: 'Download Feedback (PDF)',
+        text: LocaleKeys.download_feedback_pdf.tr(),
       );
 }

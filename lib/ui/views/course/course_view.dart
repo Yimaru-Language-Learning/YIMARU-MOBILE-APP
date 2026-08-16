@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../common/app_colors.dart';
+import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/course_category_card.dart';
 import '../../widgets/profile_app_bar.dart';
@@ -77,12 +79,12 @@ class CourseView extends StackedView<CourseViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Courses',
+        LocaleKeys.courses.tr(),
         style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(
-        'Choose a course to improve your professional or exam skills.',
+        LocaleKeys.choose_course_to_improve.tr(),
         style: style14DG400,
       );
 

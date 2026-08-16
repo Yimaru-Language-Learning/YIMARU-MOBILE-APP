@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
+import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/course_catalog_tile.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
@@ -124,12 +126,12 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'English Proficiency Exams',
+        LocaleKeys.english_proficiency.tr(),
         style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(
-        'Select your target exam and start preparing',
+        LocaleKeys.select_your_target_exam.tr(),
         style: style14DG400,
       );
 

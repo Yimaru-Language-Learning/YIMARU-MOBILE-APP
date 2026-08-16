@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/ielts_fill_in_the_blanks_question.dart';
 import 'package:yimaru_app/ui/widgets/instruction_card.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
@@ -291,7 +293,7 @@ class IeltsReadingPractice3Question
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

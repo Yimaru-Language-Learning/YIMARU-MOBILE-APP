@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/course_missing_word_question.dart';
@@ -195,7 +197,7 @@ class DuolingoReadingPractice3Question
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

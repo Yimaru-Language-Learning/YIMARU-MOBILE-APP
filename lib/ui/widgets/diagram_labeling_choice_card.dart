@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
 
@@ -54,7 +56,7 @@ class DiagramLabelingChoiceCard
       DropdownMenu<String?>(
         width: double.maxFinite,
         textStyle: style14MG400,
-        hintText: 'Choose paragraph',
+        hintText: LocaleKeys.choose_paragraph.tr(),
         initialSelection: viewModel.selectedOption.isNotEmpty
             ? viewModel.selectedOption.containsKey(number)
                 ? viewModel.selectedOption[number][number]

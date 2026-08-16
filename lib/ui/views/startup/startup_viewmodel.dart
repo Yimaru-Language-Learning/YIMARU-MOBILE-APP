@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/onboarding_service.dart';
 
@@ -70,7 +72,7 @@ class StartupViewModel extends ReactiveViewModel {
 
   Future<void> replaceWithFailure() async =>
       await _navigationService.replaceWithFailureView(
-          label: 'Check you internet connection',
+          label: LocaleKeys.check_internet.tr(),
           onTap: () async => await _getProfileStatus());
 
   Future<void> replaceWithOnboarding() async =>

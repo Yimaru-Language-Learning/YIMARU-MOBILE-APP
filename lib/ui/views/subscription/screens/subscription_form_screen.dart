@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/phone_number_prefix.dart';
 
 import '../../../common/app_colors.dart';
@@ -93,16 +95,16 @@ class SubscriptionFormScreen extends ViewModelWidget<SubscriptionViewModel> {
         _buildSecurePaymentWrapper()
       ];
 
-  Widget _buildFirstCard() => const LearnSubscriptionCard(
+  Widget _buildFirstCard() => LearnSubscriptionCard(
         icon: Icons.school,
-        title: '180+ New Lessons',
-        subtitle: 'Access fresh, advanced content',
+        title: LocaleKeys.tutorial_lessons_180.tr(),
+        subtitle: LocaleKeys.access_advanced_content.tr(),
       );
 
-  Widget _buildSecondCard() => const LearnSubscriptionCard(
+  Widget _buildSecondCard() => LearnSubscriptionCard(
         icon: Icons.developer_board,
-        title: 'Mastery Through Practice',
-        subtitle: 'Practice All Lessons, Modules & Levels',
+        title: LocaleKeys.mastery_through_practice.tr(),
+        subtitle: LocaleKeys.practice_all_levels.tr(),
       );
 
   Widget _buildTitleWrapper() => Align(
@@ -165,7 +167,7 @@ class SubscriptionFormScreen extends ViewModelWidget<SubscriptionViewModel> {
         height: 55,
         borderRadius: 12,
         foregroundColor: kcWhite,
-        text: 'Proceed to Payment',
+        text: LocaleKeys.proceed_to_payment.tr(),
         backgroundColor: phoneNumberController.text.isNotEmpty
             ? kcPrimaryColor
             : kcPrimaryColor.withValues(alpha: 0.1),

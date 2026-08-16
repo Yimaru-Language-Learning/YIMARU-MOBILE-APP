@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../../common/app_colors.dart';
@@ -104,16 +106,16 @@ class LearnSubscriptionPackageScreen
         style: style14MG400,
       );
 
-  Widget _buildFirstCard() => const LearnSubscriptionCard(
+  Widget _buildFirstCard() => LearnSubscriptionCard(
         icon: Icons.school,
-        title: '180+ New Lessons',
-        subtitle: 'Access fresh, advanced content',
+        title: LocaleKeys.tutorial_lessons_180.tr(),
+        subtitle: LocaleKeys.access_advanced_content.tr(),
       );
 
-  Widget _buildSecondCard() => const LearnSubscriptionCard(
+  Widget _buildSecondCard() => LearnSubscriptionCard(
         icon: Icons.developer_board,
-        title: 'Mastery Through Practice',
-        subtitle: 'Practice All Lessons, Modules & Levels',
+        title: LocaleKeys.mastery_through_practice.tr(),
+        subtitle: LocaleKeys.practice_all_levels.tr(),
       );
 
   Widget _buildHeadingWrapper() => Align(
@@ -126,15 +128,15 @@ class LearnSubscriptionPackageScreen
         style: style16DG600,
       );
 
-  Widget _buildSubscriptionPricingSection() => const SubscriptionPricingSection(
-        subtitle: 'This includes Monthly and 3-Month packages',
+  Widget _buildSubscriptionPricingSection() => SubscriptionPricingSection(
+        subtitle: LocaleKeys.includes_monthly_3month.tr(),
       );
 
   Widget _buildSubscribeButton(SubscriptionViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Subscribe Now',
+        text: LocaleKeys.subscribe_now.tr(),
         foregroundColor: kcWhite,
         onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,

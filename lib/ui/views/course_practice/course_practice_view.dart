@@ -393,23 +393,23 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
         if (viewModel.isSectionStart) {
           if (viewModel.questions[viewModel.currentQuestion].stimulusBlockKey ==
               'listening-section-1') {
-            return const IeltsListeningSectionIntro(
-                title: 'Listening - Section 1');
+            return IeltsListeningSectionIntro(
+                title: LocaleKeys.listening_section_1.tr());
           } else if (viewModel
                   .questions[viewModel.currentQuestion].stimulusBlockKey ==
               'listening-section-2') {
-            return const IeltsListeningSectionIntro(
-                title: 'Listening - Section 2');
+            return  IeltsListeningSectionIntro(
+                title: LocaleKeys.listening_section_2.tr());
           } else if (viewModel
                   .questions[viewModel.currentQuestion].stimulusBlockKey ==
               'listening-section-3') {
-            return const IeltsListeningSectionIntro(
-                title: 'Listening - Section 3');
+            return  IeltsListeningSectionIntro(
+                title: LocaleKeys.listening_section_3.tr());
           } else if (viewModel
                   .questions[viewModel.currentQuestion].stimulusBlockKey ==
               'listening-section-4') {
-            return const IeltsListeningSectionIntro(
-                title: 'Listening - Section 4');
+            return  IeltsListeningSectionIntro(
+                title: LocaleKeys.listening_section_4.tr());
           } else if (viewModel
                   .questions[viewModel.currentQuestion].stimulusBlockKey ==
               'reading-section-1') {
