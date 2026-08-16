@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
@@ -15,6 +17,7 @@ import '../../course_practice_viewmodel.dart';
 
 class IeltsSpeakingPractice4Answer
     extends ViewModelWidget<CoursePracticeViewModel> {
+  final String text;
   final int duration;
   final String audio;
   final String response;
@@ -22,6 +25,7 @@ class IeltsSpeakingPractice4Answer
 
   const IeltsSpeakingPractice4Answer(
       {super.key,
+      required this.text,
       required this.audio,
       required this.response,
       required this.duration,
@@ -29,6 +33,7 @@ class IeltsSpeakingPractice4Answer
 
   Future<void> _stopRecording(CoursePracticeViewModel viewModel) async =>
       await viewModel.setIeltsSpeakingAnswer4(
+        text: text,
         audio: audio,
         sample: response,
         question: question,
@@ -150,9 +155,7 @@ class IeltsSpeakingPractice4Answer
       alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
 
   Widget _buildCountdownState(CoursePracticeViewModel viewModel) =>
-      VoiceRecordingState.recording == viewModel.recordingState &&
-              !viewModel.isSpeaking &&
-              !viewModel.busy(StateObjects.ieltsSpeaking4Variant)
+      VoiceRecordingState.recording == viewModel.recordingState
           ? _buildCountdown(viewModel)
           : Container();
 
@@ -213,7 +216,7 @@ class IeltsSpeakingPractice4Answer
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

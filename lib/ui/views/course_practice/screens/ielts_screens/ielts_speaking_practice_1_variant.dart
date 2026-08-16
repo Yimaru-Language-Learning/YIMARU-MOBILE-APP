@@ -49,6 +49,8 @@ class IeltsSpeakingPractice1Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[2].value,
+        text: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[1].value,
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[0].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -61,6 +63,8 @@ class IeltsSpeakingPractice1Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[4].value,
+        text: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[3].value,
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[2].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -73,6 +77,8 @@ class IeltsSpeakingPractice1Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[6].value,
+        text: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[5].value,
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[4].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -85,6 +91,8 @@ class IeltsSpeakingPractice1Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[8].value,
+        text: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[7].value,
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[6].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -97,6 +105,8 @@ class IeltsSpeakingPractice1Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[10].value,
+        text: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[9].value,
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[8].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -109,6 +119,8 @@ class IeltsSpeakingPractice1Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[12].value,
+        text: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[11].value,
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[10].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -121,6 +133,8 @@ class IeltsSpeakingPractice1Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[14].value,
+        text: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[13].value,
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[12].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -133,6 +147,8 @@ class IeltsSpeakingPractice1Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[16].value,
+        text: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[15].value,
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[14].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -145,6 +161,8 @@ class IeltsSpeakingPractice1Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[18].value,
+        text: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[17].value,
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[16].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -157,6 +175,8 @@ class IeltsSpeakingPractice1Variant
         viewModel: viewModel,
         audio: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[18].value,
+        text: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.stimulus?[19].value,
         question: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[18].value,
         response: viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -167,6 +187,7 @@ class IeltsSpeakingPractice1Variant
 
   Widget _buildVariant(
           {required String audio,
+          required String text,
           required int duration,
           required String response,
           required String question,
@@ -175,12 +196,14 @@ class IeltsSpeakingPractice1Variant
         index: viewModel.variant,
         children: _buildPractice(
             audio: audio,
+            text: text,
             response: response,
             duration: duration,
             question: question),
       );
 
   List<Widget> _buildPractice({
+    required String text,
     required int duration,
     required String audio,
     required String response,
@@ -189,6 +212,7 @@ class IeltsSpeakingPractice1Variant
       [
         const IeltsSpeakingPractice1Question(),
         IeltsSpeakingPractice1Answer(
+          text: text,
           audio: audio,
           response: response,
           duration: duration,

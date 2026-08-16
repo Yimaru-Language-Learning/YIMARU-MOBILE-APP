@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/ielts_listening_instruction_card.dart';
 import 'package:yimaru_app/ui/widgets/ielts_listening_section_play_button.dart';
 
@@ -20,6 +22,11 @@ class IeltsListeningSectionIntro
   final String title;
 
   const IeltsListeningSectionIntro({super.key, required this.title});
+
+  Future<void> _next(CoursePracticeViewModel viewModel)async{
+    await viewModel.stopAudio();
+    viewModel.nextScreen();
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -211,15 +218,15 @@ class IeltsListeningSectionIntro
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
+        text: LocaleKeys.cont.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: viewModel.nextScreen,
+        onTap: ()async => await _next(viewModel),
         backgroundColor: kcPrimaryColor,
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
-      viewModel.busy(StateObjects.coursePractice)
+      viewModel.busy(StateObjects.coursePractice) ||  viewModel.busy(StateObjects.stopAudio)
           ? const PageLoadingIndicator()
           : Container();
 }

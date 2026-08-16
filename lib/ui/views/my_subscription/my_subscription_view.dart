@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../models/my_subscription.dart';
 import '../../common/app_colors.dart';
@@ -69,7 +71,7 @@ class MySubscriptionView extends StackedView<MySubscriptionViewModel> {
   Widget _buildAppbar(MySubscriptionViewModel viewModel) => SmallAppBar(
         showBackButton: true,
         onPop: viewModel.pop,
-        title: 'My Subscriptions',
+        title: LocaleKeys.my_subscriptions.tr(),
       );
 
   Widget _buildContentScrollViewWrapper(MySubscriptionViewModel viewModel) =>

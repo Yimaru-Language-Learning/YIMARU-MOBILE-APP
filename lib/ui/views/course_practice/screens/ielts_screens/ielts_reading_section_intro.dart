@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/ielts_listening_instruction_card.dart';
 import 'package:yimaru_app/ui/widgets/ielts_listening_section_play_button.dart';
 
@@ -147,7 +149,7 @@ class IeltsReadingSectionIntro
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: viewModel.nextScreen,
-        text: 'Continue to Questions',
+        text: LocaleKeys.continue_to_questions.tr(),
         backgroundColor: kcPrimaryColor,
         trailingIcon: Icons.keyboard_arrow_right_rounded,
       );

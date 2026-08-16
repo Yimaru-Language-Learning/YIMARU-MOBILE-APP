@@ -35,6 +35,10 @@ String kVideosUrl = 'videos';
 
 String kLevelsUrl = 'levels';
 
+String kSessionUrl = 'session';
+
+String kRatingsUrl = 'ratings';
+
 String kCoursesUrl = 'courses';
 
 String kModulesUrl = 'modules';

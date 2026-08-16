@@ -15,13 +15,10 @@ import '../assessment_viewmodel.dart';
 class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
   const AssessmentResultScreen({super.key});
 
-
-  Future<void> _next( AssessmentViewModel viewModel)async{
+  Future<void> _next(AssessmentViewModel viewModel) async {
     await viewModel.updateKnowledgeLevel();
     viewModel.next();
-
   }
-
 
   @override
   Widget build(BuildContext context, AssessmentViewModel viewModel) =>
@@ -32,15 +29,9 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         body: _buildScaffoldStack(viewModel),
       );
 
-  Widget _buildScaffoldStack(
-      AssessmentViewModel viewModel) =>
-      Stack(
-        children: [
-          _buildScaffold(viewModel),
-          _buildBodyState(viewModel)
-        ],
+  Widget _buildScaffoldStack(AssessmentViewModel viewModel) => Stack(
+        children: [_buildScaffold(viewModel), _buildBodyState(viewModel)],
       );
-
 
   Widget _buildScaffold(AssessmentViewModel viewModel) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,10 +122,8 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
         foregroundColor: kcWhite,
         text: LocaleKeys.cont.tr(),
         backgroundColor: kcPrimaryColor,
-        onTap: () async=> await _next(viewModel),
-
+        onTap: () async => await _next(viewModel),
       );
-
 
   Widget _buildBodyState(AssessmentViewModel viewModel) =>
       viewModel.busy(StateObjects.finishAssessment)

@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/ui_helpers.dart';
@@ -145,11 +147,11 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
       ];
 
   Widget _buildPracticeButton(CoursePracticeViewModel viewModel) =>
-      const CustomElevatedButton(
+       CustomElevatedButton(
         height: 55,
         bottom: false,
         borderRadius: 12,
-        text: 'Practice Again',
+        text: LocaleKeys.practice_again.tr(),
         foregroundColor: kcWhite,
         //  onTap: () => viewModel.goTo(0),
         backgroundColor: kcPrimaryColor,
@@ -163,7 +165,7 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Widget _buildSkipButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
+        text: LocaleKeys.cont.tr(),
         borderRadius: 12,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,

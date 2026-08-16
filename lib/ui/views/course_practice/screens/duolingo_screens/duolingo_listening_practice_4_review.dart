@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 
 import '../../../../common/app_colors.dart';
@@ -163,7 +165,7 @@ class DuolingoListeningPractice4Review
 
   Widget _buildAnswer(CoursePracticeViewModel viewModel) =>
       CoursePracticeTextCard(
-        title: 'Your response',
+        title: LocaleKeys.your_response.tr(),
         subtitle: practiceController.text,
       );
   Widget _buildPracticeReviewSection(

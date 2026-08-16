@@ -76,19 +76,19 @@ class SecondStartupScreen extends ViewModelWidget<StartupViewModel> {
 
   Widget _buildTitle() => Text.rich(
         TextSpan(
-          text: 'እንግሊዝኛ\n',
+          text: '${LocaleKeys.english.tr()}\n',
           style: style25P600,
           children: [
             TextSpan(
-              text: 'በማንኛውም',
+              text: LocaleKeys.at_any.tr(),
               style: style25P400,
             ),
             TextSpan(
-              text: ' እድሜ ',
+              text: ' ${LocaleKeys.age.tr()} ',
               style: style25P600,
             ),
             TextSpan(
-              text: 'ይማሩ!',
+              text: LocaleKeys.learn_exclamation.tr(),
               style: style25P400,
             ),
           ],

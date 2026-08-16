@@ -24,6 +24,9 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
       {required int index,
       required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+
+    await viewModel.updatePaymentStatus();
+
     if (type == SubscriptionType.duolingo) {
       if (viewModel.user?.duolingo ?? false) {
         _reset(viewModel);

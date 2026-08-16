@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
@@ -47,7 +49,7 @@ class IeltsListeningPractice2Question
       }
     } else {
       _setShowAnswer(viewModel);
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < 5; i++) {
         await viewModel.setListeningAnswer(
           sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
               ?.response?[i + 1].value,
@@ -265,6 +267,11 @@ class IeltsListeningPractice2Question
             .dynamicPayload?.stimulus?[3].value),
         verticalSpaceTiny,
         _buildTextField(value: '3', viewModel: viewModel),
+        verticalSpaceMedium,
+        _buildLabel(viewModel.questions[viewModel.currentQuestion]
+            .dynamicPayload?.stimulus?[4].value),
+        verticalSpaceTiny,
+        _buildTextField(value: '4', viewModel: viewModel),
       ];
 
   Widget _buildInstruction() => Text(
@@ -318,7 +325,7 @@ class IeltsListeningPractice2Question
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

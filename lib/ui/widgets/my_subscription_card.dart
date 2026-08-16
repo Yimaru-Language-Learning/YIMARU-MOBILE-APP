@@ -105,14 +105,14 @@ class MySubscriptionCard extends ViewModelWidget<MySubscriptionViewModel> {
           title: viewModel.busy(StateObjects.subscriptions)
               ? '-'
               : getRemainingDate(),
-          subtitle: 'Remaining days'));
+          subtitle: LocaleKeys.remaining_days.tr()));
 
   Widget _buildTotalDuration(MySubscriptionViewModel viewModel) => Expanded(
       child: CustomColumn(
           title: viewModel.busy(StateObjects.subscriptions)
               ? '-'
               : '${subscription.durationValue} ${subscription.durationUnit}',
-          subtitle: 'Duration'));
+          subtitle: LocaleKeys.duration.tr()));
 
   Widget _buildAutoRenew(MySubscriptionViewModel viewModel) => Expanded(
         child: CustomColumn(
@@ -121,14 +121,14 @@ class MySubscriptionCard extends ViewModelWidget<MySubscriptionViewModel> {
                 : (subscription.autoRenew ?? false)
                     ? 'Yes'
                     : 'No',
-            subtitle: 'Auto renew'),
+            subtitle: LocaleKeys.auto_renew.tr()),
       );
 
   Widget _buildActionButton(MySubscriptionViewModel viewModel) =>
       CustomElevatedButton(
           height: 15,
           borderRadius: 12,
-          text: 'Resubscribe',
+          text: LocaleKeys.resubscribe.tr(),
           onTap: subscription.status == 'ACTIVE'
               ? null
               : () async => await _navigate(viewModel),

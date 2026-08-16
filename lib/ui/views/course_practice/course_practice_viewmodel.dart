@@ -1,10 +1,12 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:waveform_recorder/waveform_recorder.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/course_practice.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/practice_question.dart';
@@ -435,10 +437,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'title': 'Table completion',
       'label': 'IELTS Listening 30',
       'type': CoursePracticeType.ielts,
       'outro_title': 'Part 1 completed!',
+      'title': 'IELTS Listening - Table completion',
       'outro_subtitle':
           'You have finished part 1 , click next to proceed to part 2',
     },
@@ -500,7 +502,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 36',
+      'label': 'IELTS Reading 36',
       'title': 'Sentence Completion',
       'type': CoursePracticeType.ielts,
       'outro_title': 'Part 4 completed!',
@@ -511,14 +513,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_title': '',
       'instruction_subtitle': '',
       'title': 'Paragraph Choice',
-      'label': 'IELTS Listening 37',
+      'label': 'IELTS Reading 37',
       'type': CoursePracticeType.ielts,
     },
     {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 38',
+      'label': 'IELTS Reading 38',
       'type': CoursePracticeType.ielts,
       'title': 'IELTS Reading - Diagram Labeling',
     },
@@ -526,7 +528,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 39',
+      'label': 'IELTS Reading 39',
       'type': CoursePracticeType.ielts,
       'title': 'IELTS Reading - Sentence Completion',
     },
@@ -534,7 +536,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 40',
+      'label': 'IELTS Reading 40',
       'type': CoursePracticeType.ielts,
       'title': 'Sentence Ending Matching',
     },
@@ -542,7 +544,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 41',
+      'label': 'IELTS Reading 41',
       'type': CoursePracticeType.ielts,
       'title': 'True / False / Not Given',
     },
@@ -550,7 +552,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 42',
+      'label': 'IELTS Reading 42',
       'type': CoursePracticeType.ielts,
       'title': 'IELTS Reading -Multiple choice',
     },
@@ -558,7 +560,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'label': 'IELTS Listening 43',
+      'label': 'IELTS Reading 43',
       'title': 'Yes / No / Not Given',
       'type': CoursePracticeType.ielts,
     },
@@ -567,7 +569,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_title': '',
       'instruction_subtitle': '',
       'title': 'Heading Matching',
-      'label': 'IELTS Listening 44',
+      'label': 'IELTS Reading 44',
       'type': CoursePracticeType.ielts,
     },
     {
@@ -575,8 +577,17 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_title': '',
       'instruction_subtitle': '',
       'title': 'Feature Matching',
-      'label': 'IELTS Listening 45',
+      'label': 'IELTS Reading 45',
       'type': CoursePracticeType.ielts,
+    },
+    {
+      'subtitle': '',
+      'instruction_title': '',
+      'instruction_subtitle': '',
+      'label': 'IELTS Reading 46',
+      'type': CoursePracticeType.ielts,
+      'title': 'IELTS Reading - Table completion',
+
     }
   ];
 
@@ -643,6 +654,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
   int _variant = 0;
 
   int get variant => _variant;
+
+
+  int? _countdownDuration;
+
+  int? get countdownDuration => _countdownDuration;
+
 
   // Counter time
   void setCountdown(int durationInSeconds) {
@@ -727,46 +744,46 @@ class CoursePracticeViewModel extends ReactiveViewModel
   // Question param
   Future<void> setSingleQuestionIntros(
       {required int id, required BuildContext context}) async {
-    if (id == 12 /*Speak about the photo*/) {
+    if (id == 12 /*Duolingo - Speak about the photo*/) {
       // await refreshQuestionUrl(_questions[_currentQuestion]);
       _selectedQuestionParam = _questionParams.elementAt(0);
-    } else if (id == 13 /*Read then speak*/) {
+    } else if (id == 13 /*Duolingo - Read then speak*/) {
       _selectedQuestionParam = _questionParams.elementAt(1);
-    } else if (id == 36 /*Speaking sample*/) {
+    } else if (id == 36 /*Duolingo - Speaking sample*/) {
       _selectedQuestionParam = _questionParams.elementAt(2);
-    } else if (id == 14 /*Interactive speaking*/) {
+    } else if (id == 14 /*Duolingo - Interactive speaking*/) {
       _selectedQuestionParam = _questionParams.elementAt(3);
-    } else if (id == 22 /*Speak about the photo*/) {
+    } else if (id == 22 /*Duolingo - Speak about the photo*/) {
       _selectedQuestionParam = _questionParams.elementAt(4);
-    } else if (id == 23 /*Writing sample*/) {
+    } else if (id == 23 /*Duolingo - Writing sample*/) {
       _selectedQuestionParam = _questionParams.elementAt(5);
-    } else if (id == 24 /*Interactive writing part 1*/) {
+    } else if (id == 24 /*Duolingo - Interactive writing part 1*/) {
       _selectedQuestionParam = _questionParams.elementAt(6);
-    } else if (id == 25 /*Interactive writing part 2*/) {
+    } else if (id == 25 /*Duolingo - Interactive writing part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(7);
-    } else if (id == 28 /*Listen and type*/) {
+    } else if (id == 28 /*Duolingo - Listen and type*/) {
       _selectedQuestionParam = _questionParams.elementAt(8);
-    } else if (id == 56 /*Interactive listening part 1*/) {
+    } else if (id == 56 /*Duolingo - Interactive listening part 1*/) {
       _selectedQuestionParam = _questionParams.elementAt(9);
-    } else if (id == 29 /*Interactive listening part 2*/) {
+    } else if (id == 29 /*Duolingo - Interactive listening part 2*/) {
       _selectedQuestionParam = _questionParams.elementAt(10);
-    } else if (id == 57 /*Interactive listening part 3*/) {
+    } else if (id == 57 /*Duolingo - Interactive listening part 3*/) {
       _selectedQuestionParam = _questionParams.elementAt(11);
-    } else if (id == 49 /*Read and select*/) {
+    } else if (id == 49 /*Duolingo - Read and select*/) {
       _selectedQuestionParam = _questionParams.elementAt(12);
-    } else if (id == 3 /*Fill in the blank*/) {
+    } else if (id == 3 /*Duolingo - Fill in the blank*/) {
       _selectedQuestionParam = _questionParams.elementAt(13);
-    } else if (id == 51 /*Interactive reading - complete the sentence*/) {
+    } else if (id == 51 /*Duolingo - Interactive reading - complete the sentence*/) {
       _selectedQuestionParam = _questionParams.elementAt(14);
-    } else if (id == 52 /*Interactive reading - complete the passage*/) {
+    } else if (id == 52 /*Duolingo - Interactive reading - complete the passage*/) {
       _selectedQuestionParam = _questionParams.elementAt(15);
-    } else if (id == 53 /*Interactive reading - identify the idea*/) {
+    } else if (id == 53 /*Duolingo - Interactive reading - identify the idea*/) {
       _selectedQuestionParam = _questionParams.elementAt(16);
-    } else if (id == 54 /*Interactive reading - title the passage*/) {
+    } else if (id == 54 /*Duolingo - Interactive reading - title the passage*/) {
       _selectedQuestionParam = _questionParams.elementAt(17);
-    } else if (id == 55 /*Interactive reading - highlight the answer*/) {
+    } else if (id == 55 /*Duolingo - Interactive reading - highlight the answer*/) {
       _selectedQuestionParam = _questionParams.elementAt(18);
-    } else if (id == 50 /*Read and complete*/) {
+    } else if (id == 50 /*Duolingo - Read and complete*/) {
       _selectedQuestionParam = _questionParams.elementAt(19);
     } else if (id == 17 /*IELTS Speaking – Interview*/) {
       _selectedQuestionParam = _questionParams.elementAt(20);
@@ -799,7 +816,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> setSectionQuestionIntros(
       {required int id, required BuildContext context}) async {
-    if (id == 40 /*Form Completion*/) {
+    if (id == 40 /*IELTS Listening - Form Completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(26);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -807,7 +824,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    } else if (id == 42 /*Note Completion*/) {
+    } else if (id == 42 /*IELTS Listening - Note Completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(27);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -815,7 +832,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    } else if (id == 4 /*Short Answer*/) {
+    } else if (id == 69 /*IELTS Listening - Short Answer*/) {
       _selectedQuestionParam = _questionParams.elementAt(28);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -823,9 +840,15 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    } else if (id == 0 /*Table completion*/) {
+    } else if (id == 43 /*IELTS Listening - Table completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(29);
-    } else if (id == 61 /*Map/Plan/Diagram Completion*/) {
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
+    } else if (id == 61 /*IELTS Listening - Map/Plan/Diagram Completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(30);
       int responseLastSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -836,7 +859,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           _questions[_currentQuestion].dynamicPayload?.stimulus?.first.value;
       await cacheNetworkImage(image: image, context: context);
       setCountdown(responseLastSec);
-    } else if (id == 31 /*Diagram labeling*/) {
+    } else if (id == 31 /*IELTS Listening - Diagram labeling*/) {
       _selectedQuestionParam = _questionParams.elementAt(31);
       int responseLastSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -855,7 +878,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    } else if (id == 33 /*Matching*/) {
+    } else if (id == 33 /*IELTS Listening - Matching*/) {
       _selectedQuestionParam = _questionParams.elementAt(33);
       int responseLastSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -871,7 +894,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseLastSec);
-    } else if (id == 35 /*Sentence completion*/) {
+    } else if (id == 35 /*IELTS Listening - Sentence completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(35);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -879,7 +902,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    } else if (id == 46 /*Paragraph choice*/) {
+    } else if (id == 46 /*IELTS Reading - Paragraph choice*/) {
       _selectedQuestionParam = _questionParams.elementAt(36);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -906,7 +929,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseLastSec);
-    } else if (id == 47 /*Sentence Ending Matching*/) {
+    } else if (id == 47 /*IELTS Reading - Sentence Ending Matching*/) {
       _selectedQuestionParam = _questionParams.elementAt(39);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -914,7 +937,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    } else if (id == 48 /*True / False / Not Given*/) {
+    } else if (id == 48 /*IELTS Reading - True / False / Not Given*/) {
       _selectedQuestionParam = _questionParams.elementAt(40);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -922,7 +945,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    } else if (id == 64 /*IELTS Reading - Multiple choice*/) {
+    } else if (id == 64 /*IELTS Reading - IELTS Reading - Multiple choice*/) {
       _selectedQuestionParam = _questionParams.elementAt(41);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -930,7 +953,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    } else if (id == 59 /*Yes / No / Not Given*/) {
+    } else if (id == 59 /*IELTS Reading - Yes / No / Not Given*/) {
       _selectedQuestionParam = _questionParams.elementAt(42);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -938,7 +961,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    } else if (id == 60 /*Heading Matching*/) {
+    } else if (id == 60 /*IELTS Reading - Heading Matching*/) {
       _selectedQuestionParam = _questionParams.elementAt(43);
       final count = questions[currentQuestion]
           .dynamicPayload!
@@ -956,8 +979,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _matchedAnswers = List.filled(count, null);
 
       setCountdown(responseFirstSec);
-    } else if (id == 65 /*Feature Matching*/) {
+    } else if (id == 65 /*IELTS Reading - Feature Matching*/) {
       _selectedQuestionParam = _questionParams.elementAt(44);
+      int responseFirstSec = _questions[_currentQuestion]
+          .dynamicPayload
+          ?.response
+          ?.first
+          .value['seconds'];
+      setCountdown(responseFirstSec);
+    }else if (id == 68 /*IELTS Reading - Table completion*/) {
+      _selectedQuestionParam = _questionParams.elementAt(45);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
           ?.response
@@ -994,7 +1025,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     Map<String, dynamic> option = {number: answer};
 
     _selectedOption.addAll(option);
-    print(_selectedOption);
 
     rebuildUi();
   }
@@ -1050,6 +1080,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
               21) {
             nextIeltsSpeakingVariantScreen();
             startRecording();
+            setCountdown(_countdownDuration ?? 0);
+
           }
         }
       }
@@ -1130,18 +1162,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Dialogue
-  Future<bool?> showAbortDialog() async {
-    DialogResponse? response = await _dialogService.showDialog(
-      cancelTitle: 'No',
-      title: 'Recording',
-      buttonTitle: 'Yes',
+  Future<void> showAbortDialog(String passage) async =>
+await _dialogService.showDialog(
+      title: LocaleKeys.passage.tr(),
+      buttonTitle: LocaleKeys.close.tr(),
+      description: passage,
       barrierDismissible: true,
       cancelTitleColor: kcDarkGrey,
       buttonTitleColor: kcPrimaryColor,
-      description: 'Are you sure you want to stop recording?',
     );
-    return response?.confirmed;
-  }
+
 
   // Set highlight
   void setHighlight({required int end, required int start}) {
@@ -1471,7 +1501,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     _usedHeadingIds.add(parseId(dragged['id']));
 
     rebuildUi();
-
   }
 
   void onClearTarget({
@@ -1499,6 +1528,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Ielts speaking answer 1
   Future<void> setIeltsSpeakingAnswer1({
+    required String text,
     required String audio,
     required int duration,
     required String sample,
@@ -1506,6 +1536,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }) async =>
       await runBusyFuture(
           _setIeltsSpeakingAnswer1(
+            text: text,
               audio: audio,
               sample: sample,
               duration: duration,
@@ -1513,7 +1544,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
           busyObject: StateObjects.ieltsSpeaking1Variant);
 
   Future<void> _setIeltsSpeakingAnswer1(
-      {required String audio,
+
+      {    required String text,required String audio,
       required int duration,
       required String sample,
       required String question}) async {
@@ -1521,6 +1553,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     await stopRecording();
     _answers.add({
       'question': question,
+      'question_text': text,
       'number': variants.toString(),
       'sample_voice_answer': sample,
       'busy_object': variants.toString(),
@@ -1539,6 +1572,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Ielts speaking answer 4
   Future<void> setIeltsSpeakingAnswer4({
+    required String text,
     required String audio,
     required int duration,
     required String sample,
@@ -1546,6 +1580,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }) async =>
       await runBusyFuture(
           _setIeltsSpeakingAnswer4(
+            text: text,
               audio: audio,
               sample: sample,
               duration: duration,
@@ -1553,7 +1588,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
           busyObject: StateObjects.ieltsSpeaking4Variant);
 
   Future<void> _setIeltsSpeakingAnswer4(
-      {required String audio,
+      {
+        required String text,
+
+        required String audio,
       required int duration,
       required String sample,
       required String question}) async {
@@ -1561,6 +1599,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
     await stopRecording();
     _answers.add({
       'question': question,
+      'question_text':text,
       'number': variants.toString(),
       'sample_voice_answer': sample,
       'busy_object': variants.toString(),
@@ -1572,8 +1611,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _variants++;
       _variant = 0;
       _isSpeaking = true;
-      setCountdown(duration);
+      _countdownDuration = duration;
       await playVoicePrompt(audio);
+     // print('SET');
     }
   }
 
@@ -1732,19 +1772,33 @@ class CoursePracticeViewModel extends ReactiveViewModel
         _isSectionStart = true;
         _stimulusBlockKey = _questions[_currentQuestion].stimulusBlockKey;
       }
-      print('HERE: 1');
       await setSectionQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     } else {
-      print('HERE: 2');
-      print(_questions[_currentQuestion].questionTypeDefinitionId);
       await setSingleQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     }
 
     _currentPage = 1;
+  }
+
+
+
+  Future<void> updatePaymentStatus() async =>
+      await runBusyFuture(_updatePaymentStatus(),
+          busyObject: StateObjects.coursePractice);
+
+  Future<void> _updatePaymentStatus() async {
+    Map<String, dynamic> response = {};
+
+    response = await _apiService.getProfileData(_user?.userId);
+
+    if (response['status'] == ResponseStatus.success) {
+      User user = response['data'] as User;
+      await _authenticationService.saveUserData(user);
+    }
   }
 
   // Finish practice
@@ -1760,6 +1814,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
      await _courseService.getCourseProgress();*/
     }
   }
+
+
+
 
   // Refresh url
   /*Future<String?> getRefreshedUrl(String value) async {

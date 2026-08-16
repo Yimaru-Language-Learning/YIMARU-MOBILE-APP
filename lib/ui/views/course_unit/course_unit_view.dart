@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/course_unit_tile.dart';
 
 import '../../../models/course_unit.dart';
@@ -103,7 +105,7 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
   Widget _buildAppBar(CourseUnitViewModel viewModel) => SmallAppBar(
         onPop: viewModel.pop,
         showBackButton: true,
-        title: 'Course Detail',
+        title: LocaleKeys.course_detail.tr(),
       );
 
   Widget _buildModulesColumnWrapper(CourseUnitViewModel viewModel) =>
@@ -147,11 +149,11 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
       );
 
   Widget _buildContinueButton(CourseUnitViewModel viewModel) =>
-      const CustomElevatedButton(
+      CustomElevatedButton(
           height: 55,
           borderRadius: 12,
           foregroundColor: kcWhite,
-          text: 'Continue Course',
+          text: LocaleKeys.continue_course.tr(),
           backgroundColor: kcPrimaryColor);
 
   Widget _buildListViewBuilder(CourseUnitViewModel viewModel) =>

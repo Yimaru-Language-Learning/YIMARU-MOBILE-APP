@@ -1,3 +1,5 @@
+import 'dart:js/js_wasm.dart';
+
 import 'package:json_annotation/json_annotation.dart';
 
 import 'access.dart';
@@ -19,6 +21,9 @@ class Course {
   @JsonKey(name: 'is_active')
   final bool? isActive;
 
+  @JsonKey(name: 'access_tier')
+  final String? accessTier;
+
   @JsonKey(name: 'category_id')
   final int? categoryId;
 
@@ -28,25 +33,37 @@ class Course {
   @JsonKey(name: 'has_practice')
   final bool? hasPractice;
 
+  @JsonKey(name: 'lessons_count')
+  final int? lessonsCount;
+
+  @JsonKey(name: 'practices_count')
+  final String? practicesCount;
+
   @JsonKey(name: 'intro_video_url')
   final String? introVideoUrl;
 
   @JsonKey(name: 'sub_category_id')
   final int? subCategoryId;
 
-  const Course({
-    this.id,
-    this.title,
-    this.access,
-    this.isActive,
-    this.thumbnail,
-    this.totalCount,
-    this.categoryId,
-    this.description,
-    this.hasPractice,
-    this.introVideoUrl,
-    this.subCategoryId,
-  });
+  @JsonKey(name: 'effective_access_tier')
+  final String? effectiveAccessTier;
+
+  const Course(
+      {this.id,
+      this.title,
+      this.access,
+      this.isActive,
+      this.thumbnail,
+      this.accessTier,
+      this.totalCount,
+      this.categoryId,
+      this.description,
+      this.hasPractice,
+      this.lessonsCount,
+      this.introVideoUrl,
+      this.subCategoryId,
+      this.practicesCount,
+      this.effectiveAccessTier});
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
 

@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
 import 'package:yimaru_app/models/course_module.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/course_module/course_module_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/course_lesson_tile.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
@@ -59,11 +61,12 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
         await viewModel.navigateToCourseLessonDetail(
             type: type, lesson: lessons[index]);
       } else {
-        if (first && index < 3) {
+        if (lesson.accessTier?.toUpperCase() == 'FREE') {
           await viewModel.navigateToCourseLessonDetail(
               type: type, lesson: lessons[index]);
         } else {
-          await _showSheet(context: context, viewModel: viewModel);
+          await viewModel
+              .navigateToCourseSubscription(SubscriptionType.duolingo);
         }
       }
     } else {
@@ -71,11 +74,11 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
         await viewModel.navigateToCourseLessonDetail(
             type: type, lesson: lessons[index]);
       } else {
-        if (first && index < 3) {
+        if (lesson.accessTier?.toUpperCase() == 'FREE') {
           await viewModel.navigateToCourseLessonDetail(
               type: type, lesson: lessons[index]);
         } else {
-          await _showSheet(context: context, viewModel: viewModel);
+          await viewModel.navigateToCourseSubscription(SubscriptionType.ielts);
         }
       }
     }
@@ -162,7 +165,7 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
       );
 
   Widget _buildSubtitle() => Text(
-        '0% completed',
+        LocaleKeys.zero_percent_completed.tr(),
         style: style14DG500,
       );
 
@@ -214,9 +217,9 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
       activeColor: kcPrimaryColor,
       backgroundColor: kcVeryLightGrey);
 
-  Widget _buildProgress() => const Text(
-        '0/0',
-        style: TextStyle(color: kcDarkGrey),
+  Widget _buildProgress() => Text(
+        LocaleKeys.zero_slash_zero.tr(),
+        style: const TextStyle(color: kcDarkGrey),
       );
 
   Widget _buildActionButtonWrapper(
@@ -234,7 +237,7 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
         height: 15,
         borderRadius: 12,
         onTap: onContinueTap,
-        text: 'Continue Module',
+        text: LocaleKeys.continue_module.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );

@@ -1,24 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
 
-class CoursePracticeAppBar extends StatelessWidget {
+class CoursePracticeAppBar extends ViewModelWidget<CoursePracticeViewModel> {
+  final bool reading;
   final String? title;
   final GestureTapCallback? onClose;
 
-  const CoursePracticeAppBar({super.key, this.onClose, this.title});
+  const CoursePracticeAppBar({
+    super.key,
+    this.title,
+    this.onClose,
+    this.reading = false,
+  });
 
   @override
-  Widget build(BuildContext context) => _buildAppBar();
+  Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
+      _buildAppBar(viewModel);
 
-  Widget _buildAppBar() => Stack(
+  Widget _buildAppBar(CoursePracticeViewModel viewModel) => Stack(
         alignment: Alignment.center,
-        children: _buildAppBarChildren(),
+        children: _buildAppBarChildren(viewModel),
       );
 
-  List<Widget> _buildAppBarChildren() => [
+  List<Widget> _buildAppBarChildren(CoursePracticeViewModel viewModel) => [
         if (title != null) _buildTitleWrapper(),
+        if (reading) _buildViewButtonWrapper(viewModel),
         _buildCloseButtonWrapper(),
       ];
+
+  Widget _buildViewButtonWrapper(CoursePracticeViewModel viewModel) => Align(
+        alignment: Alignment.centerRight,
+        child: _buildViewButton(viewModel),
+      );
+
+  Widget _buildViewButton(CoursePracticeViewModel viewModel) => IconButton(
+        icon: _buildViewIcon(),
+        padding: const EdgeInsets.only(top: 5, right: 50),
+        onPressed: () => viewModel.showAbortDialog(viewModel
+            .questions[viewModel.currentQuestion]
+            .sharedStimulus
+            ?.first
+            .stimulus
+            ?.first
+            .value),
+      );
+
+  Widget _buildViewIcon() => const Icon(
+        Icons.visibility,
+        color: kcPrimaryColor,
+      );
 
   Widget _buildCloseButtonWrapper() => Align(
         alignment: Alignment.centerRight,

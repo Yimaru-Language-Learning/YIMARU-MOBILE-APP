@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/sentence_matching_option.dart';
 import 'package:yimaru_app/ui/widgets/sentence_matching_question.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/app_constants.dart';
@@ -153,6 +155,7 @@ class IeltsReadingPractice4Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CoursePracticeAppBar(
+        reading: true,
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
@@ -349,7 +352,7 @@ class IeltsReadingPractice4Question
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

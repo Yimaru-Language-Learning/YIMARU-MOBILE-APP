@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
@@ -153,6 +155,7 @@ class IeltsReadingPractice9Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CoursePracticeAppBar(
+        reading: true,
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
@@ -305,7 +308,7 @@ class IeltsReadingPractice9Question
         itemBuilder: (context, index) => _buildColumnItemWrapper(
             alignment: Alignment.center,
             title:
-            '${alphabet[index + 1]}. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value['left'][index]['text']}'),
+                '${alphabet[index + 1]}. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value['left'][index]['text']}'),
       );
 
   Widget _buildMatchingColumn(CoursePracticeViewModel viewModel) => Row(
@@ -320,9 +323,7 @@ class IeltsReadingPractice9Question
       ];
 
   Widget _buildColumnBottomExpandedWrapper(CoursePracticeViewModel viewModel) =>
-      Expanded(
-          flex: 2,
-          child: _buildColumnB(viewModel));
+      Expanded(flex: 2, child: _buildColumnB(viewModel));
 
   Widget _buildColumnB(CoursePracticeViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
@@ -330,11 +331,14 @@ class IeltsReadingPractice9Question
         itemCount: viewModel.questions[viewModel.currentQuestion].dynamicPayload
             ?.stimulus?[1].value['right'].length,
         itemBuilder: (context, index) => _buildColumnItemWrapper(
-          alignment: Alignment.centerLeft,
-          title:   '${index + 1}. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value['right'][index]['text']}'),
+            alignment: Alignment.centerLeft,
+            title:
+                '${index + 1}. ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?[1].value['right'][index]['text']}'),
       );
 
-  Widget _buildColumnItemWrapper({required String title,required Alignment alignment}) => Container(
+  Widget _buildColumnItemWrapper(
+          {required String title, required Alignment alignment}) =>
+      Container(
         height: 50,
         alignment: alignment,
         child: _buildColumnItem(title),
@@ -429,7 +433,7 @@ class IeltsReadingPractice9Question
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

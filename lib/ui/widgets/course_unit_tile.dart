@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_module.dart';
 import 'package:yimaru_app/models/course_unit.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/course_module_tile_small.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
@@ -127,7 +129,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
       );
 
   Widget _buildSubtitle() => Text(
-        '0% completed',
+        LocaleKeys.zero_percent_completed.tr(),
         style: style14DG500,
       );
 
@@ -180,9 +182,9 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
       activeColor: kcPrimaryColor,
       backgroundColor: kcVeryLightGrey);
 
-  Widget _buildProgress() => const Text(
-        '0/0',
-        style: TextStyle(color: kcDarkGrey),
+  Widget _buildProgress() => Text(
+        LocaleKeys.zero_slash_zero.tr(),
+        style: const TextStyle(color: kcDarkGrey),
       );
 
   Widget _buildActionButtonState(
@@ -221,7 +223,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         height: 15,
         borderRadius: 12,
         onTap: onLessonTap,
-        text: 'View Module',
+        text: LocaleKeys.view_module.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );
@@ -240,7 +242,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         height: 15,
         borderRadius: 12,
         onTap: onPracticeTap,
-        text: 'View Practices',
+        text: LocaleKeys.view_practices.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );

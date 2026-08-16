@@ -114,11 +114,11 @@ InputDecoration inputDecoration(
     InputDecoration(
       filled: true,
       hintText: hint,
-      border: border,
+      border: universalBorder,
       suffixIcon: suffix,
-      errorBorder: errorBorder,
-      enabledBorder: enabledBorder,
-      focusedBorder: focusedBorder,
+      errorBorder: universalErrorBorder,
+      enabledBorder: universalEnabledBorder,
+      focusedBorder: universalFocusedBorder,
       fillColor:
           focus || filled ? kcPrimaryColor.withValues(alpha: 0.09) : kcWhite,
     );
@@ -132,16 +132,15 @@ Border rightBorder = Border(
 
 DateFormat format = DateFormat("d MMM, yyyy");
 
-OutlineInputBorder border =
+OutlineInputBorder universalBorder =
     const OutlineInputBorder(borderSide: BorderSide(color: kcPrimaryColor));
-OutlineInputBorder errorBorder =
+OutlineInputBorder universalErrorBorder =
     const OutlineInputBorder(borderSide: BorderSide(color: kcPrimaryColor));
-OutlineInputBorder enabledBorder =
+OutlineInputBorder universalEnabledBorder =
     const OutlineInputBorder(borderSide: BorderSide(color: kcPrimaryColor));
-OutlineInputBorder focusedBorder =
+OutlineInputBorder universalFocusedBorder =
     const OutlineInputBorder(borderSide: BorderSide(color: kcPrimaryColor));
-
-UnderlineInputBorder searchBorder =
+UnderlineInputBorder universalSearchBorder =
     const UnderlineInputBorder(borderSide: BorderSide(color: kcPrimaryColor));
 
 OutlineInputBorder dropdownBorder = OutlineInputBorder(
@@ -150,6 +149,12 @@ OutlineInputBorder dropdownBorder = OutlineInputBorder(
     color: kcVeryLightGrey,
   ),
   borderRadius: BorderRadius.circular(15),
+);
+
+// Table border
+OutlineInputBorder tableBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(10),
+  borderSide: const BorderSide(color:kcLightGrey),
 );
 
 TextStyle defaultPinTextStyle = const TextStyle(

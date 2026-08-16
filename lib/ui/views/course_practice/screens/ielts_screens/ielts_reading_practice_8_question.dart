@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_constants.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
@@ -176,6 +178,7 @@ class IeltsReadingPractice8Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CoursePracticeAppBar(
+        reading: true,
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
@@ -638,8 +641,8 @@ class IeltsReadingPractice8Question
         maxLines: 1,
         softWrap: false,
         style: style14MG400,
-    textAlign: TextAlign.center,
-  );
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildTargetCloseButton({
     required int index,
@@ -689,7 +692,7 @@ class IeltsReadingPractice8Question
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

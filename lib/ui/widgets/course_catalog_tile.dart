@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
 import '../../models/course_catalog.dart';
@@ -114,7 +116,7 @@ class CourseCatalogTile extends ViewModelWidget<CourseCatalogViewModel> {
         height: 15,
         borderRadius: 8,
         onTap: onCourseTap,
-        text: 'Start Course',
+        text: LocaleKeys.start_course.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );
@@ -127,7 +129,7 @@ class CourseCatalogTile extends ViewModelWidget<CourseCatalogViewModel> {
         height: 15,
         borderRadius: 8,
         onTap: onPracticeTap,
-        text: 'Take Mock Exam',
+        text: LocaleKeys.take_mock_exam.tr(),
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
