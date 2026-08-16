@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/helper_functions.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
@@ -60,7 +62,7 @@ class CourseCard extends StatelessWidget {
         width: 200,
         onTap: onTap,
         borderRadius: 12,
-        text: 'Start Course',
+        text: LocaleKeys.start_course.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );

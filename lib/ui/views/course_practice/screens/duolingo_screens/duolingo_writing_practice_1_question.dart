@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -207,7 +209,7 @@ class DuolingoWritingPractice1Question
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: practiceController.text.isNotEmpty &&

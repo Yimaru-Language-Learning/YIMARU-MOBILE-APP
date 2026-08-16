@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
@@ -88,7 +90,7 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
   Widget _buildAppbar(InAppSupportViewModel viewModel) => SmallAppBar(
         onPop: viewModel.pop,
         showBackButton: true,
-        title: 'In-App support',
+        title: LocaleKeys.in_app_support.tr(),
       );
 
   Widget _buildExpandedColumn(InAppSupportViewModel viewModel) =>
@@ -217,7 +219,7 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
   Widget _buildContinueButton(InAppSupportViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Report',
+        text: LocaleKeys.report.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: subjectController.text.isNotEmpty &&

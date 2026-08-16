@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/circular_countdown_timer.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
@@ -187,7 +189,7 @@ class DuolingoSpeakingPractice1Question
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Start Speaking',
+        text: LocaleKeys.start_speaking.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _next(viewModel),

@@ -1,8 +1,10 @@
 import 'package:chewie/chewie.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
@@ -175,11 +177,10 @@ class LearnLessonDetailViewModel extends ReactiveViewModel {
   Future<void> replaceWithLearnPractice(int id) async =>
       await _navigationService.replaceWithLearnPracticeView(
         id: id,
-        label: 'Start Practice',
+        label: LocaleKeys.start_practice.tr(),
         practice: LearnPractices.lesson,
-        title: 'Let\'s practice what you just learnt!',
-        subtitle:
-            'I’ll ask you a few questions, and you can respond naturally.',
+        title: LocaleKeys.practice_what_you_learned.tr(),
+        subtitle: LocaleKeys.ask_you_few_actions.tr(),
       );
 
   // Remote api call

@@ -173,8 +173,8 @@ class ProfileView extends StackedView<ProfileViewModel> {
 
   Widget _buildSubscriptionCard(ProfileViewModel viewModel) => ProfileCard(
         icon: Icons.download,
-        title: 'My Subscriptions',
-        subtitle: 'Active all subscriptions and enjoy.',
+        title: LocaleKeys.my_subscriptions.tr(),
+        subtitle: LocaleKeys.active_all_subscriptions.tr(),
         onTap: () async => await viewModel.navigateToMySubscription(),
       );
 

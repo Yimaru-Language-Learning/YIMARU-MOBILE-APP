@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/widgets/course_practice_app_bar.dart';
 
@@ -241,7 +243,7 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
+        text: LocaleKeys.cont.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

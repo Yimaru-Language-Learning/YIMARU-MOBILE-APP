@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -9,6 +10,7 @@ import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/voice_recorder_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
@@ -207,9 +209,9 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   // Dialogue
   Future<bool?> showAbortDialog() async {
     DialogResponse? response = await _dialogService.showDialog(
-      cancelTitle: 'No',
-      title: 'Recording',
-      buttonTitle: 'Yes',
+      cancelTitle: LocaleKeys.no.tr(),
+      title: LocaleKeys.recording.tr(),
+      buttonTitle: LocaleKeys.yes.tr(),
       barrierDismissible: true,
       cancelTitleColor: kcDarkGrey,
       buttonTitleColor: kcPrimaryColor,

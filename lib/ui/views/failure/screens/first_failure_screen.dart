@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/failure/failure_viewmodel.dart';
 
@@ -74,19 +76,19 @@ class FirstFailureScreen extends ViewModelWidget<FailureViewModel> {
 
   Widget _buildTitle() => Text.rich(
         TextSpan(
-          text: 'እንግሊዝኛ\n',
+          text: '${LocaleKeys.english.tr()}\n',
           style: style25W600,
           children: [
             TextSpan(
-              text: 'በማንኛውም',
+              text: LocaleKeys.at_any.tr(),
               style: style25W400,
             ),
             TextSpan(
-              text: ' ሰዓት ',
+              text: ' ${LocaleKeys.time.tr()} ',
               style: style25W600,
             ),
             TextSpan(
-              text: 'ይማሩ!',
+              text: LocaleKeys.learn_exclamation.tr(),
               style: style25W400,
             ),
           ],
@@ -134,7 +136,7 @@ class FirstFailureScreen extends ViewModelWidget<FailureViewModel> {
       );
 
   Widget _buildRetryButton() => Text(
-        'Retry',
+        LocaleKeys.retry.tr(),
         style: style16W600.copyWith(
             fontStyle: FontStyle.italic, decoration: TextDecoration.underline),
       );

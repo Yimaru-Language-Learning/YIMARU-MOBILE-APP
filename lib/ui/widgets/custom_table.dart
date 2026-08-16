@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 class CustomTable extends StatefulWidget {
@@ -219,7 +221,7 @@ class _CustomTableState extends State<CustomTable> {
             isDense: true,
             hintStyle: style14DG400,
             fillColor: kcVeryLightGrey.withValues(alpha: 0.5),
-            hintText: 'Enter ${_columns[colIdx].toLowerCase()}...',
+            hintText: '${LocaleKeys.enter.tr()} ${_columns[colIdx].toLowerCase()}...',
             border: tableBorder,
             focusedBorder: tableBorder,
             enabledBorder: tableBorder,

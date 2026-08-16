@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 
 import '../common/app_colors.dart';
@@ -33,7 +35,7 @@ class CourseProgressSection extends ViewModelWidget<MyProgressViewModel> {
   List<Widget> _buildColumnChildren(MyProgressViewModel viewModel) => [
         _buildIcon(),
         verticalSpaceSmall,
-        _buildTitle('Course'),
+        _buildTitle(LocaleKeys.course.tr()),
         verticalSpaceMedium,
         _buildExpansionTileWrapper(viewModel)
       ];
@@ -111,15 +113,15 @@ class CourseProgressSection extends ViewModelWidget<MyProgressViewModel> {
       ];
 
   Widget _buildWatchedVideos() =>
-      const CustomColumn(title: '0/0', subtitle: 'Videos');
+      CustomColumn(title: LocaleKeys.zero_slash_zero.tr(), subtitle: LocaleKeys.videos.tr());
 
   Widget _buildCompletedPractices() =>
-      const CustomColumn(title: '0/0', subtitle: 'Practices');
+      CustomColumn(title: LocaleKeys.zero_slash_zero.tr(), subtitle: LocaleKeys.practice.tr());
 
-  Widget _buildActionButton() => const CustomElevatedButton(
+  Widget _buildActionButton() => CustomElevatedButton(
         height: 15,
         borderRadius: 12,
-        text: 'Continue Course',
+        text: LocaleKeys.continue_course.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );

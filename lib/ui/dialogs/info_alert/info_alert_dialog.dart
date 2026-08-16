@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../../common/translations/locale_keys.g.dart';
 import 'info_alert_dialog_model.dart';
 
 const double _graphicSize = 60;
@@ -85,9 +87,9 @@ class InfoAlertDialog extends StackedView<InfoAlertDialogModel> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Text(
-                  'Got it',
-                  style: TextStyle(
+                child: Text(
+                  LocaleKeys.got_it.tr(),
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

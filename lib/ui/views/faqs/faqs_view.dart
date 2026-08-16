@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/faq.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
@@ -60,7 +62,7 @@ class FaqsView extends StackedView<FaqsViewModel> {
       );
 
   Widget _buildAppbar(FaqsViewModel viewModel) => SmallAppBar(
-        title: 'FAQs',
+        title: LocaleKeys.faqs.tr(),
         showBackButton: true,
         onPop: viewModel.pop,
       );

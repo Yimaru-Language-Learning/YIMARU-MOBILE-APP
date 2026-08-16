@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/ui_helpers.dart';
@@ -184,7 +186,7 @@ class IeltsWritingPractice2Question
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Submit Task',
+        text: LocaleKeys.submit_task.tr(),
         foregroundColor: kcWhite,
         backgroundColor: practiceController.text.isNotEmpty &&
                 !viewModel.hasPracticeValidationMessage

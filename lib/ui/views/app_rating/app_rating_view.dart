@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
+import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
 import '../../common/validators/form_validator.dart';
 import '../../widgets/circular_icon.dart';
@@ -108,7 +110,7 @@ class AppRatingView extends StackedView<AppRatingViewModel>
   Widget _buildAppbar(AppRatingViewModel viewModel) => SmallAppBar(
         onPop: viewModel.pop,
         showBackButton: true,
-        title: 'App Rating',
+        title: LocaleKeys.app_rating.tr(),
       );
 
   Widget _buildExpandedColumn(AppRatingViewModel viewModel) =>
@@ -149,13 +151,13 @@ class AppRatingView extends StackedView<AppRatingViewModel>
       const CircularIcon(icon: Icons.rate_review, size: 50, color: kcIndigo);
 
   Widget _buildTitle() => Text(
-        'Write you rating here.',
+        LocaleKeys.write_rating.tr(),
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle() => Text(
-        'Give us you rating here.',
+        LocaleKeys.give_rating.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );
@@ -174,7 +176,7 @@ class AppRatingView extends StackedView<AppRatingViewModel>
 
   Widget _buildReviewLabel() => CustomFormLabel(
         style: style16DG600,
-        label: 'Review target',
+        label: LocaleKeys.review_target.tr(),
       );
 
   Widget _buildTargetRadioButtonWrapper(AppRatingViewModel viewModel) => Row(
@@ -209,7 +211,7 @@ class AppRatingView extends StackedView<AppRatingViewModel>
       );
 
   Widget _buildAppTitle() => Text(
-        'App',
+        LocaleKeys.app.tr(),
         style: style14DG500,
       );
 
@@ -235,7 +237,7 @@ class AppRatingView extends StackedView<AppRatingViewModel>
       );
 
   Widget _buildCourseTitle() => Text(
-        'Course',
+        LocaleKeys.course.tr(),
         style: style14DG500,
       );
 
@@ -261,7 +263,7 @@ class AppRatingView extends StackedView<AppRatingViewModel>
       );
 
   Widget _buildSubCourseTitle() => Text(
-        'Sub-course',
+        LocaleKeys.sub_course.tr(),
         style: style14DG500,
       );
 
@@ -279,7 +281,7 @@ class AppRatingView extends StackedView<AppRatingViewModel>
 
   Widget _buildRatingLabel() => CustomFormLabel(
         style: style16DG600,
-        label: 'How do you rate us ?',
+        label: LocaleKeys.how_do_you_rate.tr(),
       );
 
   Widget _buildRatingDropdown(AppRatingViewModel viewModel) =>
@@ -305,7 +307,7 @@ class AppRatingView extends StackedView<AppRatingViewModel>
       );
 
   Widget _buildHint() => Text(
-        'Rate us',
+        LocaleKeys.rate_us.tr(),
         style: style14DG400,
       );
 
@@ -316,7 +318,7 @@ class AppRatingView extends StackedView<AppRatingViewModel>
         onTap: viewModel.setReviewFocus,
         decoration: inputDecoration(
             focus: viewModel.focusReview,
-            hint: 'Describe you comment here.',
+            hint: LocaleKeys.describe_comment.tr(),
             filled: reviewController.text.isNotEmpty),
       );
 
@@ -334,7 +336,7 @@ class AppRatingView extends StackedView<AppRatingViewModel>
   Widget _buildContinueButton(AppRatingViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Report',
+        text: LocaleKeys.report.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: reviewController.text.isNotEmpty

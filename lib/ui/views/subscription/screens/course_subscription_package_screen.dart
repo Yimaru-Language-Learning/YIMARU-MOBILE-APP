@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../../common/app_colors.dart';
@@ -105,15 +107,15 @@ class CourseSubscriptionPackageScreen
         style: style14MG400,
       );
 
-  Widget _buildFirstCard() => const LearnSubscriptionCard(
+  Widget _buildFirstCard() => LearnSubscriptionCard(
         icon: Icons.school,
-        title: '50+ Tutorial Lessons',
-        subtitle: 'Access fresh, tailored content',
+        title: LocaleKeys.tutorial_lessons_50.tr(),
+        subtitle: LocaleKeys.access_fresh_content.tr(),
       );
 
-  Widget _buildSecondCard() => const LearnSubscriptionCard(
+  Widget _buildSecondCard() => LearnSubscriptionCard(
         icon: Icons.developer_board,
-        title: 'Master Through Practice',
+        title: LocaleKeys.master_through_practice.tr(),
         subtitle:
             '•Practice all question types\n•Skill Specific Exams\n•Mock Exams',
       );
@@ -137,7 +139,7 @@ class CourseSubscriptionPackageScreen
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Subscribe Now',
+        text: LocaleKeys.subscribe_now.tr(),
         foregroundColor: kcWhite,
         onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,

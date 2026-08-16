@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 class IeltsListeningInstructionCard extends StatelessWidget {
@@ -59,7 +61,7 @@ class IeltsListeningInstructionCard extends StatelessWidget {
       [_buildTitle(), verticalSpaceTiny, _buildSubtitle()];
 
   Widget _buildTitle() => Text(
-        'Important Instruction',
+        LocaleKeys.important_instruction.tr(),
         style: style16DG600,
         textAlign: TextAlign.center,
       );
@@ -69,14 +71,16 @@ class IeltsListeningInstructionCard extends StatelessWidget {
           style: style14DG400,
           children: [
             TextSpan(
-                style: style14MG400, text: 'You will hear an audio recording'),
+              style: style14MG400,
+              text: LocaleKeys.will_hear_audio.tr(),
+            ),
             TextSpan(
               style: style12R700,
-              text: ' one time only during the exam ',
+              text: LocaleKeys.one_time_only.tr(),
             ),
             TextSpan(
               style: style14MG400,
-              text: 'You can replay here for tutorial purposes.',
+              text: LocaleKeys.replay_for_tutorial.tr(),
             ),
           ],
         ),
@@ -96,7 +100,7 @@ class IeltsListeningInstructionCard extends StatelessWidget {
       );
 
   Widget _buildWarning() => Text(
-        'Please wear headphones for best quality.',
+        LocaleKeys.wear_headphones.tr(),
         style: style14P600,
       );
 }
