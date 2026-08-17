@@ -50,6 +50,7 @@ class MainApp extends StatelessWidget {
 
   Widget _buildMaterialApp(BuildContext context) => MaterialApp(
         locale: context.locale,
+        debugShowCheckedModeBanner: false,
         initialRoute: Routes.startupView,
         theme: ThemeData(fontFamily: 'Aeonik'),
         navigatorKey: StackedService.navigatorKey,

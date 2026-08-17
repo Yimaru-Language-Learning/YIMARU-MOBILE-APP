@@ -33,6 +33,37 @@ class ApiService {
   // Dependency injection
   final _service = locator<DioService>();
 
+  // Delete account
+  Future<Map<String, dynamic>> requestAccountDeletion() async {
+    try {
+      final Response response =
+          await _service.dio.delete('$kBaseUrl/$kUserBaseUrl/$kMeUrl');
+
+      if (response.statusCode == 200) {
+        return {
+          'status': ResponseStatus.success,
+          'message': response.data['message'],
+          'data': response.data['data'],
+        };
+      }
+
+      return {
+        'status': ResponseStatus.failure,
+        'message': response.data['message'] ?? 'Unknown Error Occurred',
+      };
+    } on DioException catch (e) {
+      final responseData = e.response?.data;
+      final message = responseData is Map<String, dynamic>
+          ? responseData['message']?.toString()
+          : responseData?.toString();
+
+      return {
+        'status': ResponseStatus.failure,
+        'message': message ?? 'Unable to request account deletion',
+      };
+    }
+  }
+
   // Register with email
   Future<Map<String, dynamic>> registerWithEmail(
       Map<String, dynamic> data) async {

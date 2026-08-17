@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
     androidClientId:
         '900714037062-4trqu7ln6en4kcm6gadk0uo01qijn1mk.apps.googleusercontent.com',
     iosClientId:
-        '900714037062-3qqf7urii8vg99id91nmmuvom3fm5c1u.apps.googleusercontent.com',
-    iosBundleId: 'com.yimaru.lms.testapp',
+        '900714037062-35bg0hsou56hg37mbcbpiar9uti7tcku.apps.googleusercontent.com',
+    iosBundleId: 'com.yimaru.lms.app',
   );
 }

@@ -25,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.900714037062-3qqf7urii8vg99id91nmmuvom3fm5c1u</string>
+				<string>com.googleusercontent.apps.900714037062-35bg0hsou56hg37mbcbpiar9uti7tcku</string>
 			</array>
 		</dict>
 	</array>
@@ -37,8 +37,12 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Yimaru uses the camera only when you choose to take an optional profile photo for personalization.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Yimaru uses the microphone to record your speaking practice answers.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Yimaru accesses your photo library only when you choose an optional profile photo for personalization.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

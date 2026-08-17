@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/custom_list_tile.dart';
 
@@ -84,8 +85,10 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
         children: _buildContentChildren(viewModel),
       );
 
-  List<Widget> _buildContentChildren(AccountPrivacyViewModel viewModel) =>
-      [_buildMenuColumnScrollView(viewModel), _buildDeleteButtonWrapper()];
+  List<Widget> _buildContentChildren(AccountPrivacyViewModel viewModel) => [
+        _buildMenuColumnScrollView(viewModel),
+        _buildDeleteButtonWrapper(viewModel)
+      ];
 
   Widget _buildMenuColumnScrollView(AccountPrivacyViewModel viewModel) =>
       SingleChildScrollView(
@@ -147,15 +150,22 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
 
   Widget _buildDivider() => const Divider(color: kcVeryLightGrey);
 
-  Widget _buildDeleteButtonWrapper() => Padding(
+  Widget _buildDeleteButtonWrapper(AccountPrivacyViewModel viewModel) =>
+      Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildDeleteButton(),
+        child: _buildDeleteButton(viewModel),
       );
-  Widget _buildDeleteButton() => CustomElevatedButton(
+  Widget _buildDeleteButton(AccountPrivacyViewModel viewModel) =>
+      CustomElevatedButton(
         height: 55,
         borderRadius: 12,
         foregroundColor: kcRed,
-        text: LocaleKeys.delete_account.tr(),
+        text: viewModel.busy(StateObjects.accountDeletion)
+            ? LocaleKeys.please_wait.tr()
+            : LocaleKeys.delete_account.tr(),
         backgroundColor: kcRed.withValues(alpha: 0.25),
+        onTap: viewModel.busy(StateObjects.accountDeletion)
+            ? null
+            : () async => await viewModel.deleteAccount(),
       );
 }

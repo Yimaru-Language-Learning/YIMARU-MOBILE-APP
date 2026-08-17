@@ -112,6 +112,9 @@
   "change_language": "ቋንቋ ቀይር",
   "terms_and_conditions": "ውሎች እና ሁኔታዎች",
   "delete_account": "መለያ ሰርዝ",
+  "delete_account_confirmation": "መለያዎ ከ15 ቀናት በኋላ ሙሉ በሙሉ ይሰረዛል። ወዲያውኑ ከመለያዎ ይወጣሉ። መቀጠል ይፈልጋሉ?",
+  "account_deletion_requested": "የመለያ ስረዛ ጥያቄዎ ተቀብሏል። መለያዎ ከ15 ቀናት በኋላ ሙሉ በሙሉ ይሰረዛል።",
+  "account_deletion_failed": "የመለያ ስረዛ ጥያቄውን ማስገባት አልተቻለም። እባክዎ እንደገና ይሞክሩ።",
   "language_preference": "የቋንቋ ምርጫ",
   "choose_your_language": "ለውጦችን አስቀምጥ",
   "switch_language_anytime": "ቋንቋዎችን በማንኛውም ጊዜ መቀየር ይችላሉ",
@@ -205,4 +208,3 @@
 
 
 }
-

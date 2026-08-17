@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>900714037062-3qqf7urii8vg99id91nmmuvom3fm5c1u.apps.googleusercontent.com</string>
+	<string>900714037062-35bg0hsou56hg37mbcbpiar9uti7tcku.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.900714037062-3qqf7urii8vg99id91nmmuvom3fm5c1u</string>
+	<string>com.googleusercontent.apps.900714037062-35bg0hsou56hg37mbcbpiar9uti7tcku</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>900714037062-4trqu7ln6en4kcm6gadk0uo01qijn1mk.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.yimaru.lms.testapp</string>
+	<string>com.yimaru.lms.app</string>
 	<key>PROJECT_ID</key>
 	<string>yimaru-academy-5e7e2</string>
 	<key>STORAGE_BUCKET</key>

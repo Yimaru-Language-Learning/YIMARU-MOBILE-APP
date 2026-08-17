@@ -50,6 +50,7 @@ enum StateObjects {
   faqs,
   none,
   logout,
+  accountDeletion,
   courses,
   openPdf,
   register,
