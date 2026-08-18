@@ -62,6 +62,7 @@ class DuolingoReadingPractice7Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -128,8 +129,9 @@ class DuolingoReadingPractice7Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -177,9 +179,10 @@ class DuolingoReadingPractice7Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Passage',
+        LocaleKeys.passage_label.tr(),
         style: style16DG600,
       );
+
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => SelectableText(
         question,

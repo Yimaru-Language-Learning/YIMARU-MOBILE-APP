@@ -83,6 +83,7 @@ class IeltsListeningPractice3Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -149,7 +150,7 @@ class IeltsListeningPractice3Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -160,7 +161,7 @@ class IeltsListeningPractice3Question
       );
 
   Widget _buildTitle() => Text(
-        'Short Answer',
+        LocaleKeys.short_answer.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -275,7 +276,7 @@ class IeltsListeningPractice3Question
       ];
 
   Widget _buildInstruction() => Text(
-        'Answer the questions below. ',
+        LocaleKeys.answer_questions_below.tr(),
         style: style16DG600,
         textAlign: TextAlign.center,
       );
@@ -292,7 +293,7 @@ class IeltsListeningPractice3Question
       TextField(
         style: style14MG400,
         decoration: inputDecoration(
-            focus: true, filled: true, hint: 'Start writing here...'),
+            focus: true, filled: true, hint: LocaleKeys.start_writing_here.tr()),
         onChanged: (change) => viewModel.updateAnswer(value, change),
       );
 

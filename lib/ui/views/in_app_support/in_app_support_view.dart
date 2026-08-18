@@ -55,6 +55,7 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(InAppSupportViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -141,13 +142,13 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
       icon: Icons.menu_book_rounded, size: 50, color: kcOrange);
 
   Widget _buildTitle() => Text(
-        'Write you issue briefly',
+        LocaleKeys.write_issue_briefly_title.tr(),
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle() => Text(
-        'Connect with our support team for quick assistance and community updates',
+        LocaleKeys.connect_support_assistance.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );
@@ -157,7 +158,7 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
         controller: subjectController,
         onTap: viewModel.setSubjectFocus,
         decoration: inputDecoration(
-            hint: 'Issue subject',
+            hint: LocaleKeys.issue_subject_label.tr(),
             focus: viewModel.focusSubject,
             filled: subjectController.text.isNotEmpty),
       );
@@ -177,7 +178,7 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
         controller: typeController,
         onTap: viewModel.setTypeFocus,
         decoration: inputDecoration(
-            hint: 'Issue type',
+            hint: LocaleKeys.issue_type_label.tr(),
             focus: viewModel.focusType,
             filled: typeController.text.isNotEmpty),
       );
@@ -201,7 +202,7 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
         onTap: viewModel.setDescriptionFocus,
         decoration: inputDecoration(
             focus: viewModel.focusDescription,
-            hint: 'Describe the issue you faced.',
+            hint: LocaleKeys.describe_issue_hint.tr(),
             filled: descriptionController.text.isNotEmpty),
       );
 

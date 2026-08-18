@@ -79,6 +79,7 @@ class IeltsReadingPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -146,7 +147,7 @@ class IeltsReadingPractice1Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -180,7 +181,7 @@ class IeltsReadingPractice1Question
       );
 
   Widget _buildTitle() => Text(
-        'Paragraph Choice',
+        LocaleKeys.paragraph_choice.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );

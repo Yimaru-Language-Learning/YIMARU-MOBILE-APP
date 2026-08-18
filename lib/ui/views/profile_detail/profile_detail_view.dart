@@ -137,6 +137,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
           {required BuildContext context,
           required ProfileDetailViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldState(context: context, viewModel: viewModel),
       );
@@ -428,13 +429,9 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         contentPadding: EdgeInsets.zero,
       );
 
-  Widget _buildMaleTitle() => const Text(
-        'Male',
-        style: TextStyle(
-          fontSize: 14,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w500,
-        ),
+  Widget _buildMaleTitle() => Text(
+        LocaleKeys.male.tr(),
+        style: style14DG500,
       );
 
   Widget _buildFemaleRadioButton(ProfileDetailViewModel viewModel) =>
@@ -458,13 +455,9 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         contentPadding: EdgeInsets.zero,
       );
 
-  Widget _buildFemaleTitle() => const Text(
-        'Female',
-        style: TextStyle(
-          fontSize: 14,
-          color: kcDarkGrey,
-          fontWeight: FontWeight.w500,
-        ),
+  Widget _buildFemaleTitle() => Text(
+        LocaleKeys.female.tr(),
+        style: style14DG500,
       );
 
   Widget _buildPhoneNumberFormFieldSection(ProfileDetailViewModel viewModel) =>

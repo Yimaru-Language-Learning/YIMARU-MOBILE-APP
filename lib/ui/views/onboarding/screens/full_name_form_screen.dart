@@ -31,6 +31,7 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(OnboardingViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );
@@ -94,7 +95,7 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
       );
 
   Widget _buildTitle() => Text(
-        '${LocaleKeys.what_should_we_call_you.tr()} 😊',
+        LocaleKeys.what_should_we_call_you_title.tr(),
         style: style25DG600,
       );
 

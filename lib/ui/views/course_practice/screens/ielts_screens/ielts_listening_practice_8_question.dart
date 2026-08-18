@@ -91,6 +91,7 @@ class IeltsListeningPractice8Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -157,7 +158,7 @@ class IeltsListeningPractice8Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -168,7 +169,7 @@ class IeltsListeningPractice8Question
       );
 
   Widget _buildTitle() => Text(
-        'Matching',
+        LocaleKeys.matching.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -280,7 +281,7 @@ class IeltsListeningPractice8Question
       );
 
   Widget _buildSubtitle() => Text(
-        'Label the diagram below. Write the letter from the second column for each answer',
+        LocaleKeys.label_diagram_write_letter.tr(),
         style: style14MG400,
       );
 

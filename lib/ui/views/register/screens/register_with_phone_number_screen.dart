@@ -50,6 +50,7 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
           {required BuildContext context,
           required RegisterViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );

@@ -52,6 +52,7 @@ class IeltsListeningSectionIntro
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -118,7 +119,7 @@ class IeltsListeningSectionIntro
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -159,9 +160,9 @@ class IeltsListeningSectionIntro
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSubtitle() => const ProgressStatus(
+  Widget _buildSubtitle() => ProgressStatus(
         color: kcPrimaryColor,
-        status: 'READY TO LISTEN',
+        status: LocaleKeys.ready_to_listen_status.tr(),
       );
 
   Widget _buildSpeakingIndicator() => const SpeakingIndicator(size: 50);
@@ -175,13 +176,13 @@ class IeltsListeningSectionIntro
   Widget _buildPlayButton() => const IeltsListeningSectionPlayButton();
 
   Widget _buildInstruction() => Text(
-        'Once you press play, you cannot stop or restart the audio.',
+        LocaleKeys.cannot_stop_restart_audio_info.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildWarning() => Text(
-        'Complete the audio to proceed',
+        LocaleKeys.complete_audio_to_proceed_warning.tr(),
         style: style12DG400,
         textAlign: TextAlign.center,
       );

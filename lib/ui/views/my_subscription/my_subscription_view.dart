@@ -34,6 +34,7 @@ class MySubscriptionView extends StackedView<MySubscriptionViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(MySubscriptionViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(viewModel),
       );
@@ -98,7 +99,7 @@ class MySubscriptionView extends StackedView<MySubscriptionViewModel> {
       ];
 
   Widget _buildText() => Text(
-        'Continue learning with your favorite platforms.',
+        LocaleKeys.continue_learning_favorite.tr(),
         style: style14DG400,
       );
 

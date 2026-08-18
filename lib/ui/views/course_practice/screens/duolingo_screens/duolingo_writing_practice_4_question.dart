@@ -50,6 +50,7 @@ class DuolingoWritingPractice4Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -107,8 +108,9 @@ class DuolingoWritingPractice4Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.writing_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -151,10 +153,16 @@ class DuolingoWritingPractice4Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write a follow-up response for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds',
+        LocaleKeys.write_follow_up_seconds.tr(args: [
+          viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.first.value['seconds']
+                  .toString() ??
+              ''
+        ]),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeTextCard(
@@ -170,8 +178,9 @@ class DuolingoWritingPractice4Question
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,
-            hint: 'Start writing here...',
+            hint: LocaleKeys.start_writing_here.tr(),
             filled: practiceController.text.isNotEmpty),
+
       );
 
   Widget _buildPracticeWrapper(CoursePracticeViewModel viewModel) =>

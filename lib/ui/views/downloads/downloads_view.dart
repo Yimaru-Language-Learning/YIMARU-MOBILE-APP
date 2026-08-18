@@ -27,6 +27,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(DownloadsViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );
@@ -178,13 +179,13 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
       );
 
   Widget _buildEmptyTitle() => Text(
-        'Looking for something to download?',
+        LocaleKeys.looking_for_download.tr(),
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildEmptySubtitle() => Text(
-        'Start by exploring your learning materials and save them for offline access.',
+        LocaleKeys.explore_materials_offline.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );

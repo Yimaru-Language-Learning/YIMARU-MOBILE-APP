@@ -36,6 +36,7 @@ class HomeView extends StackedView<HomeViewModel> {
       );
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         body: getViewForIndex(viewModel.currentPage),
         bottomNavigationBar: _buildBottomNav(viewModel),
       );

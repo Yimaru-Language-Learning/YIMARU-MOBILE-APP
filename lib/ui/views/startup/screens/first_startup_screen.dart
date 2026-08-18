@@ -19,6 +19,7 @@ class FirstStartupScreen extends ViewModelWidget<StartupViewModel> {
       _buildScaffoldWrapper();
 
   Widget _buildScaffoldWrapper() => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcPrimaryColor,
         body: _buildScaffoldPadding(),
       );

@@ -51,6 +51,7 @@ class DuolingoSpeakingPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -115,8 +116,9 @@ class DuolingoSpeakingPractice1Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -145,10 +147,11 @@ class DuolingoSpeakingPractice1Question
       ];
 
   Widget _buildTitle() => Text(
-        'Prepare to speak about the photo',
+        LocaleKeys.prepare_speak_photo.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildTimerStackWrapper(CoursePracticeViewModel viewModel) =>
       CircularCountdownTimer(
@@ -156,10 +159,11 @@ class DuolingoSpeakingPractice1Question
       );
 
   Widget _buildSubtitle() => Text(
-        'Prep time',
+        LocaleKeys.prep_time.tr(),
         style: style16DG400,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildImageContainer(CoursePracticeViewModel viewModel) => SizedBox(
         width: 250,

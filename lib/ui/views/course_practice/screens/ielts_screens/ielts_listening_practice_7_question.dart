@@ -81,6 +81,7 @@ class IeltsListeningPractice7Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -147,7 +148,7 @@ class IeltsListeningPractice7Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -158,7 +159,7 @@ class IeltsListeningPractice7Question
       );
 
   Widget _buildTitle() => Text(
-        'Multiple Choice',
+        LocaleKeys.multiple_choice.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );

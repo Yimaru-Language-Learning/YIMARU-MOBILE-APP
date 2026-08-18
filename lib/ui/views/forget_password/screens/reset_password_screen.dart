@@ -59,6 +59,7 @@ class ResetPasswordScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           {required BuildContext context,
           required ForgetPasswordViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );

@@ -22,6 +22,7 @@ class CourseSubscriptionPackageScreen
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(SubscriptionViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -98,12 +99,12 @@ class CourseSubscriptionPackageScreen
       );
 
   Widget _buildTitle() => Text(
-        'Unlock the full course',
+        LocaleKeys.unlock_full_course.tr(),
         style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(
-        'Get ready to pass your English proficiency test with a top score.',
+        LocaleKeys.proficiency_test_ready.tr(),
         style: style14MG400,
       );
 
@@ -116,8 +117,7 @@ class CourseSubscriptionPackageScreen
   Widget _buildSecondCard() => LearnSubscriptionCard(
         icon: Icons.developer_board,
         title: LocaleKeys.master_through_practice.tr(),
-        subtitle:
-            '•Practice all question types\n•Skill Specific Exams\n•Mock Exams',
+        subtitle: LocaleKeys.practice_all_questions_bullet.tr(),
       );
 
   Widget _buildHeadingWrapper() => Align(
@@ -126,13 +126,12 @@ class CourseSubscriptionPackageScreen
       );
 
   Widget _buildHeading() => Text(
-        'Choose Your Learning Plan',
+        LocaleKeys.choose_learning_plan.tr(),
         style: style16DG600,
       );
 
-  Widget _buildSubscriptionPricingSection() => const SubscriptionPricingSection(
-        subtitle:
-            'The plan includes four months of unlimited access to all lessons, practice sessions, and mock exams.',
+  Widget _buildSubscriptionPricingSection() => SubscriptionPricingSection(
+        subtitle: LocaleKeys.plan_includes_four_months.tr(),
       );
 
   Widget _buildSubscribeButton(SubscriptionViewModel viewModel) =>
@@ -165,7 +164,7 @@ class CourseSubscriptionPackageScreen
       );
 
   Widget _buildTileTitle() => Text(
-        'Unlock All Lessons & Practices',
+        LocaleKeys.unlock_all_lessons_practices.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );

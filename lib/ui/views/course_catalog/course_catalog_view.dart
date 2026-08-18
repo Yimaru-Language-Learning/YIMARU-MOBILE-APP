@@ -72,6 +72,7 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(CourseCatalogViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );

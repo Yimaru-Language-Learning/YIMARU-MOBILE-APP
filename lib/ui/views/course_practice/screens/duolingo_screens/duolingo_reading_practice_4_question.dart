@@ -65,6 +65,7 @@ class DuolingoReadingPractice4Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -121,8 +122,9 @@ class DuolingoReadingPractice4Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -198,9 +200,10 @@ class DuolingoReadingPractice4Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Passage',
+        LocaleKeys.passage_label.tr(),
         style: style16DG600,
       );
+
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CourseMissingWordQuestion(
@@ -210,9 +213,10 @@ class DuolingoReadingPractice4Question
       );
 
   Widget _buildSubtitle() => Text(
-        'Select the best sentence to complete the passage',
+        LocaleKeys.select_best_sentence_passage.tr(),
         style: style16DG600,
       );
+
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
@@ -290,10 +294,15 @@ class DuolingoReadingPractice4Question
       ];
 
   Widget _buildCorrectAnswer(CoursePracticeViewModel viewModel) => Text(
-        'Correct Answer: ${(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['options'] as List).firstWhere((e) => e['is_correct'])['text']} ',
+        LocaleKeys.correct_answer_label.tr(args: [
+          (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.last.value['options'] as List)
+              .firstWhere((e) => e['is_correct'])['text']
+        ]),
         style: style16DG400,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildContinueButton(
           {required BuildContext context,

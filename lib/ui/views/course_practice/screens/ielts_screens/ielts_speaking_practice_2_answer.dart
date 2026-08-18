@@ -52,6 +52,7 @@ class IeltsSpeakingPractice2Answer
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -111,7 +112,7 @@ class IeltsSpeakingPractice2Answer
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -122,7 +123,7 @@ class IeltsSpeakingPractice2Answer
       );
 
   Widget _buildTitle() => Text(
-        'Part 1: Cue Card ',
+        LocaleKeys.part1_cue_card.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -161,7 +162,7 @@ class IeltsSpeakingPractice2Answer
           : const SizedBox(height: 20);
 
   Widget _buildSpeakerLabel() =>
-      const SpeakingLabel(label: 'You are speaking...');
+       SpeakingLabel(label: LocaleKeys.you_are_speaking_status.tr());
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState

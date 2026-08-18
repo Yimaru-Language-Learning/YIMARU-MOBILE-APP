@@ -35,7 +35,7 @@ class OverallProgressWrapper extends StatelessWidget {
       [_buildProgressInfo(), _buildProgress()];
 
   Widget _buildProgressInfo() => Text(
-        'Overall Progress',
+        LocaleKeys.overall_progress.tr(),
         style: style16DG600,
       );
 
