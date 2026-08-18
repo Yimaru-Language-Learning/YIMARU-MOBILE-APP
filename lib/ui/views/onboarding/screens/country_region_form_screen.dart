@@ -49,6 +49,7 @@ class CountryRegionFormScreen extends ViewModelWidget<OnboardingViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(OnboardingViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );

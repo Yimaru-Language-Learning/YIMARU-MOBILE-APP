@@ -62,6 +62,7 @@ class DuolingoReadingPractice8Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -118,8 +119,9 @@ class DuolingoReadingPractice8Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -171,9 +173,10 @@ class DuolingoReadingPractice8Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Complete the Passage',
+        LocaleKeys.complete_passage.tr(),
         style: style16DG600,
       );
+
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => Text(
         question,
@@ -188,8 +191,9 @@ class DuolingoReadingPractice8Question
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,
-            hint: 'Start writing here...',
+            hint: LocaleKeys.start_writing_here.tr(),
             filled: practiceController.text.isNotEmpty),
+
       );
 
   Widget _buildPracticeWrapper(CoursePracticeViewModel viewModel) =>

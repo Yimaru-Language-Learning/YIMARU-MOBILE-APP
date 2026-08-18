@@ -92,6 +92,7 @@ class IeltsListeningPractice6Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -158,7 +159,7 @@ class IeltsListeningPractice6Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -169,7 +170,7 @@ class IeltsListeningPractice6Question
       );
 
   Widget _buildTitle() => Text(
-        'Diagram Labeling',
+        LocaleKeys.diagram_labeling.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -281,7 +282,7 @@ class IeltsListeningPractice6Question
       );
 
   Widget _buildSubtitle() => Text(
-        'Label the diagram below. Write the letter from the second column for each answer',
+        LocaleKeys.label_diagram_write_letter.tr(),
         style: style14MG400,
       );
 
@@ -315,7 +316,7 @@ class IeltsListeningPractice6Question
       [_buildColumnATitle(), verticalSpaceSmall, _buildColumnA(viewModel)];
 
   Widget _buildColumnATitle() => Text(
-        'Column A',
+        LocaleKeys.column_a.tr(),
         style: style16DG600,
       );
 

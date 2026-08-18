@@ -43,7 +43,7 @@ class LearnPracticeCard extends ViewModelWidget<LearnPracticeViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Practice $index',
+        '${LocaleKeys.practice.tr()} $index',
         style: style18DG700,
       );
 

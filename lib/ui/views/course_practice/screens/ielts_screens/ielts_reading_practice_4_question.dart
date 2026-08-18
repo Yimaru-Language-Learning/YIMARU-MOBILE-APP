@@ -92,6 +92,7 @@ class IeltsReadingPractice4Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -159,7 +160,7 @@ class IeltsReadingPractice4Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -194,7 +195,7 @@ class IeltsReadingPractice4Question
       );
 
   Widget _buildTitle() => Text(
-        'Sentence Ending Matching',
+        LocaleKeys.sentence_ending_matching.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -258,11 +259,11 @@ class IeltsReadingPractice4Question
         verticalSpaceMedium,
         _buildInstruction(viewModel),
         verticalSpaceMedium,
-        _buildSubtitle('Questions'),
+        _buildSubtitle(LocaleKeys.questions_subtitle.tr()),
         verticalSpaceMedium,
         _buildQuestions(viewModel),
         verticalSpaceMedium,
-        _buildSubtitle('Sentence Endings'),
+        _buildSubtitle(LocaleKeys.sentence_endings_subtitle.tr()),
         verticalSpaceMedium,
         _buildOptions(viewModel),
       ];

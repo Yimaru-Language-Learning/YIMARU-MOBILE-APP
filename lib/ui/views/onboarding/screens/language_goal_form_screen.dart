@@ -28,11 +28,11 @@ class LanguageGoalFormScreens extends ViewModelWidget<OnboardingViewModel> {
   String getSubtitle(int index) {
     switch (index) {
       case 0:
-        return 'I know some English, but i want to learn to speak it';
+        return LocaleKeys.know_some_english_want_learn.tr();
       case 1:
-        return 'I already speak English, but I want more practice.';
+        return LocaleKeys.already_speak_english_want_practice.tr();
       case 2:
-        return 'I want courses for IELTS, TOEFL, Duolingo, or work';
+        return LocaleKeys.want_courses_ielts_toefl.tr();
     }
     return '';
   }
@@ -58,6 +58,7 @@ class LanguageGoalFormScreens extends ViewModelWidget<OnboardingViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(OnboardingViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );
@@ -117,8 +118,7 @@ class LanguageGoalFormScreens extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildTitle(OnboardingViewModel viewModel) => Text.rich(
         TextSpan(
-            text:
-                '${LocaleKeys.hello.tr()} ${viewModel.userData['first_name']},',
+            text: LocaleKeys.hello_user.tr(args: [viewModel.userData['first_name'] ?? '']),
             style: style18P600.copyWith(fontSize: 22),
             children: [
               TextSpan(

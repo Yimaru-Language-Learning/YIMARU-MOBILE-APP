@@ -22,6 +22,7 @@ class LearnSubscriptionPackageScreen
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(SubscriptionViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -97,12 +98,12 @@ class LearnSubscriptionPackageScreen
       );
 
   Widget _buildTitle() => Text(
-        'Unlock Next Module',
+        LocaleKeys.unlock_next_module.tr(),
         style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(
-        'Unlock the next level to keep growing your English skills.',
+        LocaleKeys.unlock_next_level_growth.tr(),
         style: style14MG400,
       );
 
@@ -124,7 +125,7 @@ class LearnSubscriptionPackageScreen
       );
 
   Widget _buildHeading() => Text(
-        'Choose Your Learning Plan',
+        LocaleKeys.choose_learning_plan.tr(),
         style: style16DG600,
       );
 
@@ -162,7 +163,7 @@ class LearnSubscriptionPackageScreen
       );
 
   Widget _buildTileTitle() => Text(
-        'Unlock All Lessons & Practices',
+        LocaleKeys.unlock_all_lessons_practices.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );

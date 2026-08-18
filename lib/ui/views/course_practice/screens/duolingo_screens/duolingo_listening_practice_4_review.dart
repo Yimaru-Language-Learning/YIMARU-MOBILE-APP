@@ -42,6 +42,7 @@ class DuolingoListeningPractice4Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -94,8 +95,9 @@ class DuolingoListeningPractice4Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -143,10 +145,11 @@ class DuolingoListeningPractice4Review
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write summary of the conversation you just had.',
+        LocaleKeys.write_summary_conversation.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -165,7 +168,7 @@ class DuolingoListeningPractice4Review
 
   Widget _buildAnswer(CoursePracticeViewModel viewModel) =>
       CoursePracticeTextCard(
-        title: LocaleKeys.your_response.tr(),
+        title: LocaleKeys.your_response_label.tr(),
         subtitle: practiceController.text,
       );
   Widget _buildPracticeReviewSection(

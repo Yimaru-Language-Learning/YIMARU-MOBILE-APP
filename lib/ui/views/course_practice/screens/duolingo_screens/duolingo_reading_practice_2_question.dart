@@ -76,6 +76,7 @@ class DuolingoReadingPractice2Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -132,8 +133,9 @@ class DuolingoReadingPractice2Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -205,10 +207,11 @@ class DuolingoReadingPractice2Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Complete the sentence with correct word',
+        LocaleKeys.complete_sentence_correct_word.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       DuolingoFillInTheBlankQuestion(
@@ -276,10 +279,11 @@ class DuolingoReadingPractice2Question
       ];
 
   Widget _buildCorrectAnswer() => Text(
-        'Correct Answer: ${response.first['text']} ',
+        LocaleKeys.correct_answer_label.tr(args: [response.first['text']]),
         style: style16DG400,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildContinueButton(
           {required BuildContext context,

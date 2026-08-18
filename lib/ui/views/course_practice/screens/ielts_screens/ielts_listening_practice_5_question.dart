@@ -92,6 +92,7 @@ class IeltsListeningPractice5Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -158,7 +159,7 @@ class IeltsListeningPractice5Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -169,7 +170,7 @@ class IeltsListeningPractice5Question
       );
 
   Widget _buildTitle() => Text(
-        'Map/Plan/Diagram Completion',
+        LocaleKeys.map_plan_diagram_completion.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -281,7 +282,7 @@ class IeltsListeningPractice5Question
       );
 
   Widget _buildSubtitle() => Text(
-        'Label the map below. Write the correct letter, A-H, next to Questions 31-36',
+        LocaleKeys.label_map_write_correct_letter.tr(),
         style: style14MG400,
       );
 

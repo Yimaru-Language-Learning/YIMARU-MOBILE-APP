@@ -19,6 +19,7 @@ class ThirdStartupScreen extends ViewModelWidget<StartupViewModel> {
       _buildScaffoldWrapper();
 
   Widget _buildScaffoldWrapper() => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcWhite,
         body: _buildScaffoldPadding(),
       );

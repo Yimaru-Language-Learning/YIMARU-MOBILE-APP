@@ -59,6 +59,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
           {required BuildContext context,
           required LearnPracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
@@ -181,7 +182,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       [_buildImage(15), horizontalSpaceTiny, _buildPartnerName()];
 
   Widget _buildPartnerName() => Text.rich(
-        TextSpan(text: 'Daniel', style: style14DG600, children: [
+        TextSpan(text: LocaleKeys.daniel.tr(), style: style14DG600, children: [
           TextSpan(
             text: ' - ${LocaleKeys.speaking_partner.tr()}',
             style: style14MG400,

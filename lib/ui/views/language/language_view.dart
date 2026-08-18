@@ -30,6 +30,7 @@ class LanguageView extends StackedView<LanguageViewModel> {
           {required BuildContext context,
           required LanguageViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );

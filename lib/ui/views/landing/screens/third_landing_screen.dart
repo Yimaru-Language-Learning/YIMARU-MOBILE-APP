@@ -18,6 +18,7 @@ class ThirdLandingScreen extends ViewModelWidget<LandingViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(LandingViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcWhite,
         body: _buildScaffoldPadding(viewModel),
       );

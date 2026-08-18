@@ -80,6 +80,7 @@ class IeltsReadingPractice5Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -147,7 +148,7 @@ class IeltsReadingPractice5Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -158,7 +159,7 @@ class IeltsReadingPractice5Question
       );
 
   Widget _buildTitle() => Text(
-        'True / False / Not Given',
+        LocaleKeys.true_false_not_given.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 class InstructionCard extends StatelessWidget {
@@ -28,7 +30,7 @@ class InstructionCard extends StatelessWidget {
   List<Widget> _buildColumnChildren() => [_buildTitle(), _buildSubtitle()];
 
   Widget _buildTitle() => Text(
-        'Instructions',
+        LocaleKeys.instructions_title.tr(),
         style: style16P600,
       );
 

@@ -202,7 +202,7 @@ class AssessmentViewModel extends ReactiveViewModel {
       title: LocaleKeys.abort_assessment.tr(),
       cancelTitleColor: kcDarkGrey,
       buttonTitleColor: kcPrimaryColor,
-      description: 'Are you sure to abort the assessment ?',
+      description: LocaleKeys.abort_assessment_warning.tr(),
     );
     return response?.confirmed;
   }

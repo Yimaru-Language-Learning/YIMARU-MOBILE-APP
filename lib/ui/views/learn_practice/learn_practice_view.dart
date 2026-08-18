@@ -100,6 +100,7 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
       );
 
   Widget _buildScaffoldWrapper(LearnPracticeViewModel viewModel) => Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildBodyState(viewModel),
       );

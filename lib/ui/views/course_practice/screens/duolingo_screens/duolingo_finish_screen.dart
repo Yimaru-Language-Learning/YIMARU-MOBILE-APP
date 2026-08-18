@@ -50,6 +50,7 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldState(context: context, viewModel: viewModel),
       );
@@ -124,8 +125,22 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${_getTitle(viewModel)} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
+  String _getTitle(CoursePracticeViewModel viewModel) {
+    CoursePracticeType type = viewModel.selectedQuestionParam['type'];
+    if (type == CoursePracticeType.speaking) {
+      return LocaleKeys.speaking_practice.tr();
+    } else if (type == CoursePracticeType.writing) {
+      return LocaleKeys.writing_practice.tr();
+    } else if (type == CoursePracticeType.listening) {
+      return LocaleKeys.listening_practice.tr();
+    } else {
+      return LocaleKeys.reading_practice.tr();
+    }
+  }
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,

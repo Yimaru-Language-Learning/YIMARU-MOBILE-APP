@@ -215,7 +215,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
       barrierDismissible: true,
       cancelTitleColor: kcDarkGrey,
       buttonTitleColor: kcPrimaryColor,
-      description: 'Are you sure you want to stop recording?',
+      description: LocaleKeys.stop_recording_warning.tr(),
     );
     return response?.confirmed;
   }
@@ -279,6 +279,20 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   /*Future<String?> refreshUrl(String url) async =>
       await _learnService.refreshObject(url);*/
 
+
+  // Update payment status
+
+  Future<void> _updatePaymentStatus() async {
+    Map<String, dynamic> response = {};
+
+    response = await _apiService.getProfileData(_user?.userId);
+
+    if (response['status'] == ResponseStatus.success) {
+      User user = response['data'] as User;
+      await _authenticationService.saveUserData(user);
+    }
+  }
+
   // Learn practice
   Future<void> getLearnPractices(
           {required int id, required LearnPractices practice}) async =>
@@ -287,16 +301,20 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   Future<void> _getLearnPractices(
       {required int id, required LearnPractices practice}) async {
+
     if (await _statusChecker.checkConnection()) {
       if (practice == LearnPractices.course) {
+        await _updatePaymentStatus();
         _practices = await _apiService.getLearnCoursePractices(id);
         //  await refreshPracticeImages(_practices);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else if (practice == LearnPractices.module) {
+        await _updatePaymentStatus();
         _practices = await _apiService.getLearnModulePractices(id);
         //  await refreshPracticeImages(_practices);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else {
+        await _updatePaymentStatus();
         _practices = await _apiService.getLearnLessonPractices(id);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       }
@@ -306,6 +324,10 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   Future<void> _getLearnPracticeQuestions(int id) async {
     _questions = await _apiService.getLearnQuestions(id);
   }
+
+
+
+
 
   // Complete practice
   Future<void> completeLearnPractice() async =>
