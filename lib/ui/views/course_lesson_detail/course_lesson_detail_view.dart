@@ -58,7 +58,7 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
 
   Widget _buildScaffoldWrapper(CourseLessonDetailViewmodel viewModel) =>
       Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );

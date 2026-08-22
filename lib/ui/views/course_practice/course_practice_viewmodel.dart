@@ -573,7 +573,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'label': 'IELTS Reading 46',
       'type': CoursePracticeType.ielts,
       'title': 'IELTS Reading - Table completion',
-
     }
   ];
 
@@ -588,7 +587,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     'outro_subtitle': LocaleKeys.great_work_session.tr(),
     'intro_subtitle': LocaleKeys.prepare_speak_30s.tr(),
   };
-
 
   Map<String, dynamic> get selectedQuestionParam => _selectedQuestionParam;
 
@@ -641,10 +639,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   int get variant => _variant;
 
-
-  int? _countdownDuration;
-
-  int? get countdownDuration => _countdownDuration;
 
 
   // Counter time
@@ -759,15 +753,20 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(12);
     } else if (id == 3 /*Duolingo - Fill in the blank*/) {
       _selectedQuestionParam = _questionParams.elementAt(13);
-    } else if (id == 51 /*Duolingo - Interactive reading - complete the sentence*/) {
+    } else if (id ==
+        51 /*Duolingo - Interactive reading - complete the sentence*/) {
       _selectedQuestionParam = _questionParams.elementAt(14);
-    } else if (id == 52 /*Duolingo - Interactive reading - complete the passage*/) {
+    } else if (id ==
+        52 /*Duolingo - Interactive reading - complete the passage*/) {
       _selectedQuestionParam = _questionParams.elementAt(15);
-    } else if (id == 53 /*Duolingo - Interactive reading - identify the idea*/) {
+    } else if (id ==
+        53 /*Duolingo - Interactive reading - identify the idea*/) {
       _selectedQuestionParam = _questionParams.elementAt(16);
-    } else if (id == 54 /*Duolingo - Interactive reading - title the passage*/) {
+    } else if (id ==
+        54 /*Duolingo - Interactive reading - title the passage*/) {
       _selectedQuestionParam = _questionParams.elementAt(17);
-    } else if (id == 55 /*Duolingo - Interactive reading - highlight the answer*/) {
+    } else if (id ==
+        55 /*Duolingo - Interactive reading - highlight the answer*/) {
       _selectedQuestionParam = _questionParams.elementAt(18);
     } else if (id == 50 /*Duolingo - Read and complete*/) {
       _selectedQuestionParam = _questionParams.elementAt(19);
@@ -973,7 +972,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    }else if (id == 68 /*IELTS Reading - Table completion*/) {
+    } else if (id == 68 /*IELTS Reading - Table completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(45);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -1066,8 +1065,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
               21) {
             nextIeltsSpeakingVariantScreen();
             startRecording();
-            setCountdown(_countdownDuration ?? 0);
-
           }
         }
       }
@@ -1149,15 +1146,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Dialogue
   Future<void> showAbortDialog(String passage) async =>
-await _dialogService.showDialog(
-      title: LocaleKeys.passage.tr(),
-      buttonTitle: LocaleKeys.close.tr(),
-      description: passage,
-      barrierDismissible: true,
-      cancelTitleColor: kcDarkGrey,
-      buttonTitleColor: kcPrimaryColor,
-    );
-
+      await _dialogService.showDialog(
+        title: LocaleKeys.passage.tr(),
+        buttonTitle: LocaleKeys.close.tr(),
+        description: passage,
+        barrierDismissible: true,
+        cancelTitleColor: kcDarkGrey,
+        buttonTitleColor: kcPrimaryColor,
+      );
 
   // Set highlight
   void setHighlight({required int end, required int start}) {
@@ -1522,7 +1518,7 @@ await _dialogService.showDialog(
   }) async =>
       await runBusyFuture(
           _setIeltsSpeakingAnswer1(
-            text: text,
+              text: text,
               audio: audio,
               sample: sample,
               duration: duration,
@@ -1530,8 +1526,8 @@ await _dialogService.showDialog(
           busyObject: StateObjects.ieltsSpeaking1Variant);
 
   Future<void> _setIeltsSpeakingAnswer1(
-
-      {    required String text,required String audio,
+      {required String text,
+      required String audio,
       required int duration,
       required String sample,
       required String question}) async {
@@ -1566,7 +1562,7 @@ await _dialogService.showDialog(
   }) async =>
       await runBusyFuture(
           _setIeltsSpeakingAnswer4(
-            text: text,
+              text: text,
               audio: audio,
               sample: sample,
               duration: duration,
@@ -1574,10 +1570,8 @@ await _dialogService.showDialog(
           busyObject: StateObjects.ieltsSpeaking4Variant);
 
   Future<void> _setIeltsSpeakingAnswer4(
-      {
-        required String text,
-
-        required String audio,
+      {required String text,
+      required String audio,
       required int duration,
       required String sample,
       required String question}) async {
@@ -1585,7 +1579,7 @@ await _dialogService.showDialog(
     await stopRecording();
     _answers.add({
       'question': question,
-      'question_text':text,
+      'question_text': text,
       'number': variants.toString(),
       'sample_voice_answer': sample,
       'busy_object': variants.toString(),
@@ -1597,9 +1591,8 @@ await _dialogService.showDialog(
       _variants++;
       _variant = 0;
       _isSpeaking = true;
-      _countdownDuration = duration;
+      setCountdown(duration + 10);
       await playVoicePrompt(audio);
-     // print('SET');
     }
   }
 
@@ -1770,8 +1763,6 @@ await _dialogService.showDialog(
     _currentPage = 1;
   }
 
-
-
   // Update payment status
   Future<void> updatePaymentStatus() async =>
       await runBusyFuture(_updatePaymentStatus(),
@@ -1800,9 +1791,6 @@ await _dialogService.showDialog(
      await _courseService.getCourseProgress();*/
     }
   }
-
-
-
 
   // Refresh url
   /*Future<String?> getRefreshedUrl(String value) async {

@@ -27,7 +27,7 @@ class CallSupportView extends StackedView<CallSupportViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(CallSupportViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );

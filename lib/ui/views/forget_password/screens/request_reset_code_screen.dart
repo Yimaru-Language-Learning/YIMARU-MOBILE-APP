@@ -54,7 +54,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           {required BuildContext context,
           required ForgetPasswordViewModel viewModel}) =>
       Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
@@ -138,6 +138,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           {required BuildContext context,
           required ForgetPasswordViewModel viewModel}) =>
       [
+        verticalSpaceMedium,
         _buildUpperColumn(viewModel),
         getPadding(context),
         _buildContinueButtonWrapper(viewModel)

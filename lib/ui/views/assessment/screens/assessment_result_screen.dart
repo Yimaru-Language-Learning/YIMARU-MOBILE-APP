@@ -25,7 +25,7 @@ class AssessmentResultScreen extends ViewModelWidget<AssessmentViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(AssessmentViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(viewModel),
       );

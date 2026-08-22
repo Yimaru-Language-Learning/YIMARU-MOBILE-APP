@@ -34,7 +34,7 @@ class MySubscriptionView extends StackedView<MySubscriptionViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(MySubscriptionViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(viewModel),
       );

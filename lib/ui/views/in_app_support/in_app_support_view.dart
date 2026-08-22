@@ -55,7 +55,7 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(InAppSupportViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );

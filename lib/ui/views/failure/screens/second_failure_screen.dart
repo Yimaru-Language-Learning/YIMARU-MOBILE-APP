@@ -18,7 +18,7 @@ class SecondFailureScreen extends ViewModelWidget<FailureViewModel> {
       _buildScaffoldWrapper();
 
   Widget _buildScaffoldWrapper() => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: Colors.amber,
         body: _buildScaffoldPadding(),
       );

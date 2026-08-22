@@ -19,7 +19,7 @@ class LearnPracticeCompletionScreen
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(LearnPracticeViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );

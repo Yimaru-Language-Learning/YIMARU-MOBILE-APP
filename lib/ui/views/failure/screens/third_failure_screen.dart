@@ -19,7 +19,7 @@ class ThirdFailureScreen extends ViewModelWidget<FailureViewModel> {
       _buildScaffoldWrapper();
 
   Widget _buildScaffoldWrapper() => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcWhite,
         body: _buildScaffoldPadding(),
       );
