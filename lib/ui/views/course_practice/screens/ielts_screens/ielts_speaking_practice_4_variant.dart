@@ -37,7 +37,7 @@ class IeltsSpeakingPractice4Variant
       _buildScaffold(viewModel);
 
   Widget _buildScaffold(CoursePracticeViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _getVariant(viewModel),
       );

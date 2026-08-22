@@ -43,7 +43,7 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildSafeWrapper(context: context, viewModel: viewModel),
       );

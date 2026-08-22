@@ -40,7 +40,7 @@ class IeltsSpeakingPractice3Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );

@@ -31,7 +31,7 @@ class MyProgressView extends StackedView<MyProgressViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(MyProgressViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );

@@ -22,7 +22,7 @@ class LearnSubscriptionPackageScreen
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(SubscriptionViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );

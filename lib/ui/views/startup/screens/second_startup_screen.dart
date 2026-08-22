@@ -19,7 +19,7 @@ class SecondStartupScreen extends ViewModelWidget<StartupViewModel> {
       _buildScaffoldWrapper();
 
   Widget _buildScaffoldWrapper() => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: Colors.amber,
         body: _buildScaffoldPadding(),
       );

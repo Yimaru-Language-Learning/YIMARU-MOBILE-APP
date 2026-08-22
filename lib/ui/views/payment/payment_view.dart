@@ -52,7 +52,7 @@ class PaymentView extends StackedView<PaymentViewModel> {
 
   Widget _buildScaffoldWrapper(PaymentViewModel viewModel) =>
       Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         body: _buildScaffoldState(viewModel));
 
   Widget _buildScaffoldState(PaymentViewModel viewModel) =>

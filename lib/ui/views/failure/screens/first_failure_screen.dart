@@ -19,7 +19,7 @@ class FirstFailureScreen extends ViewModelWidget<FailureViewModel> {
       _buildScaffoldWrapper();
 
   Widget _buildScaffoldWrapper() => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcPrimaryColor,
         body: _buildScaffoldPadding(),
       );

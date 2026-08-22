@@ -23,7 +23,7 @@ class StartupView extends StackedView<StartupViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(StartupViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcPrimaryColor,
         body: _buildStartupScreens(viewModel),
       );

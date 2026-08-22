@@ -61,7 +61,7 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
           {required BuildContext context,
           required RegisterViewModel viewModel}) =>
       Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
@@ -98,7 +98,6 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
           required RegisterViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
-        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
@@ -146,6 +145,7 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
           {required BuildContext context,
           required RegisterViewModel viewModel}) =>
       [
+        verticalSpaceMedium,
         _buildUpperColumn(viewModel),
         getPadding(context),
         _buildContinueButtonWrapper(viewModel)

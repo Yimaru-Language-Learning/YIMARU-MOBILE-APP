@@ -27,7 +27,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(DownloadsViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );

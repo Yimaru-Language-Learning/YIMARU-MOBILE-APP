@@ -75,7 +75,7 @@ class AppRatingView extends StackedView<AppRatingViewModel>
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(AppRatingViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );

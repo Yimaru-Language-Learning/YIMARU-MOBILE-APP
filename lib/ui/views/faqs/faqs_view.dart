@@ -33,7 +33,7 @@ class FaqsView extends StackedView<FaqsViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(FaqsViewModel viewModel) => Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );

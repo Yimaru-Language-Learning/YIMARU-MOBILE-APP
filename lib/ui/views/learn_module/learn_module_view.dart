@@ -81,7 +81,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
           {required BuildContext context,
           required LearnModuleViewModel viewModel}) =>
       Scaffold(
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
