@@ -388,7 +388,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
               69;
 
   Widget? _buildIeltsIntroScreenWrapper(CoursePracticeViewModel viewModel) {
+
     if (_buildIeltsSectionScreenCondition(viewModel)) {
+
       if (viewModel.stimulusBlockKey != null) {
         if (viewModel.isSectionStart) {
           if (viewModel.questions[viewModel.currentQuestion].stimulusBlockKey ==

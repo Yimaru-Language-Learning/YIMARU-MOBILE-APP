@@ -801,6 +801,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> setSectionQuestionIntros(
       {required int id, required BuildContext context}) async {
+
+    print(id);
     if (id == 40 /*IELTS Listening - Form Completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(26);
       int responseFirstSec = _questions[_currentQuestion]
@@ -864,13 +866,19 @@ class CoursePracticeViewModel extends ReactiveViewModel
           .value['seconds'];
       setCountdown(responseFirstSec);
     } else if (id == 33 /*IELTS Listening - Matching*/) {
+      print('HERE 1');
       _selectedQuestionParam = _questionParams.elementAt(33);
+      print('HERE 2');
+
       int responseLastSec = _questions[_currentQuestion]
           .dynamicPayload
           ?.response
-          ?.last
+          ?.first
           .value['seconds'];
+      print('HERE 3');
       setCountdown(responseLastSec);
+      print('HERE 4');
+
     } else if (id == 34 /*IELTS Listening - Summary completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(34);
       int responseLastSec = _questions[_currentQuestion]
@@ -1748,19 +1756,26 @@ class CoursePracticeViewModel extends ReactiveViewModel
       });
 
       if (_questions[_currentQuestion].stimulusBlockKey != null) {
+
         _isSectionStart = true;
         _stimulusBlockKey = _questions[_currentQuestion].stimulusBlockKey;
       }
+      print('QUESTIONS 1: ${_questions.length}');
+
       await setSectionQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
+      print('QUESTIONS 2: ${_questions.length}');
+
     } else {
+
       await setSingleQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     }
 
     _currentPage = 1;
+
   }
 
   // Update payment status
