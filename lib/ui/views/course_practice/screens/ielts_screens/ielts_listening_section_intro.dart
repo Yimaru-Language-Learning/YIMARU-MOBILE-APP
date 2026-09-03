@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/ielts_listening_instruction_card.dart';
 import 'package:yimaru_app/ui/widgets/ielts_listening_section_play_button.dart';
 
@@ -50,6 +52,7 @@ class IeltsListeningSectionIntro
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -116,7 +119,7 @@ class IeltsListeningSectionIntro
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -157,9 +160,9 @@ class IeltsListeningSectionIntro
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSubtitle() => const ProgressStatus(
+  Widget _buildSubtitle() => ProgressStatus(
         color: kcPrimaryColor,
-        status: 'READY TO LISTEN',
+        status: LocaleKeys.ready_to_listen_status.tr(),
       );
 
   Widget _buildSpeakingIndicator() => const SpeakingIndicator(size: 50);
@@ -173,13 +176,13 @@ class IeltsListeningSectionIntro
   Widget _buildPlayButton() => const IeltsListeningSectionPlayButton();
 
   Widget _buildInstruction() => Text(
-        'Once you press play, you cannot stop or restart the audio.',
+        LocaleKeys.cannot_stop_restart_audio_info.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildWarning() => Text(
-        'Complete the audio to proceed',
+        LocaleKeys.complete_audio_to_proceed_warning.tr(),
         style: style12DG400,
         textAlign: TextAlign.center,
       );
@@ -216,7 +219,7 @@ class IeltsListeningSectionIntro
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
+        text: LocaleKeys.cont.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: ()async => await _next(viewModel),

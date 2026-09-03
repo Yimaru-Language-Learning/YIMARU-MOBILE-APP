@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/sentence_matching_option.dart';
 import 'package:yimaru_app/ui/widgets/sentence_matching_question.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/app_constants.dart';
@@ -90,6 +92,7 @@ class IeltsReadingPractice4Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -157,7 +160,7 @@ class IeltsReadingPractice4Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -192,7 +195,7 @@ class IeltsReadingPractice4Question
       );
 
   Widget _buildTitle() => Text(
-        'Sentence Ending Matching',
+        LocaleKeys.sentence_ending_matching.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -256,11 +259,11 @@ class IeltsReadingPractice4Question
         verticalSpaceMedium,
         _buildInstruction(viewModel),
         verticalSpaceMedium,
-        _buildSubtitle('Questions'),
+        _buildSubtitle(LocaleKeys.questions_subtitle.tr()),
         verticalSpaceMedium,
         _buildQuestions(viewModel),
         verticalSpaceMedium,
-        _buildSubtitle('Sentence Endings'),
+        _buildSubtitle(LocaleKeys.sentence_endings_subtitle.tr()),
         verticalSpaceMedium,
         _buildOptions(viewModel),
       ];
@@ -350,7 +353,7 @@ class IeltsReadingPractice4Question
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

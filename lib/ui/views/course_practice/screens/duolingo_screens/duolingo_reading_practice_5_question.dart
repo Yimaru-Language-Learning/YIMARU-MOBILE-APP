@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -62,6 +64,7 @@ class DuolingoReadingPractice5Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -118,8 +121,9 @@ class DuolingoReadingPractice5Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(
           {required BuildContext context,
@@ -196,9 +200,10 @@ class DuolingoReadingPractice5Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Passage',
+        LocaleKeys.passage_label.tr(),
         style: style16DG600,
       );
+
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => Text(
         viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus
@@ -207,9 +212,10 @@ class DuolingoReadingPractice5Question
       );
 
   Widget _buildSubtitle() => Text(
-        'Select the idea that is described in the passage',
+        LocaleKeys.select_idea_described_passage.tr(),
         style: style16DG600,
       );
+
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
@@ -287,17 +293,22 @@ class DuolingoReadingPractice5Question
       ];
 
   Widget _buildCorrectAnswer(CoursePracticeViewModel viewModel) => Text(
-        'Correct Answer: ${(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['options'] as List).firstWhere((e) => e['is_correct'])['text']} ',
+        LocaleKeys.correct_answer_label.tr(args: [
+          (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.last.value['options'] as List)
+              .firstWhere((e) => e['is_correct'])['text']
+        ]),
         style: style16DG400,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildContinueButton(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

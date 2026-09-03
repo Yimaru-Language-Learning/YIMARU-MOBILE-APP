@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -6,6 +7,7 @@ import 'package:yimaru_app/models/option.dart';
 import 'package:yimaru_app/models/practice_question.dart';
 import 'package:yimaru_app/services/status_checker_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
@@ -194,13 +196,13 @@ class AssessmentViewModel extends ReactiveViewModel {
 
   Future<bool?> showAbortDialog() async {
     DialogResponse? response = await _dialogService.showDialog(
-      cancelTitle: 'No',
-      buttonTitle: 'Yes',
+      cancelTitle: LocaleKeys.no.tr(),
+      buttonTitle: LocaleKeys.yes.tr(),
       barrierDismissible: true,
-      title: 'Abort Assessment',
+      title: LocaleKeys.abort_assessment.tr(),
       cancelTitleColor: kcDarkGrey,
       buttonTitleColor: kcPrimaryColor,
-      description: 'Are you sure to abort the assessment ?',
+      description: LocaleKeys.abort_assessment_warning.tr(),
     );
     return response?.confirmed;
   }

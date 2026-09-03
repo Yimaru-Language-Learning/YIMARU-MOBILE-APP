@@ -47,6 +47,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
           {required BuildContext context,
           required RegisterViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
@@ -85,7 +86,6 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
           required RegisterViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
-        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
@@ -133,6 +133,7 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
           {required BuildContext context,
           required RegisterViewModel viewModel}) =>
       [
+        verticalSpaceMedium,
         _buildUpperColumn(viewModel),
         getPadding(context),
         _buildLowerColumn(viewModel)

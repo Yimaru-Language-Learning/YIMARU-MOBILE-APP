@@ -1,6 +1,8 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
@@ -52,6 +54,7 @@ class DuolingoSpeakingPractice4Preparation
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -119,8 +122,9 @@ class DuolingoSpeakingPractice4Preparation
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -160,16 +164,23 @@ class DuolingoSpeakingPractice4Preparation
       ];
 
   Widget _buildTitle() => Text(
-        'Prepare to have a conversation',
+        LocaleKeys.prepare_conversation.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
 
+
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        'You will listen to questions and have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds to answer each',
+        LocaleKeys.listen_questions_answer_seconds.tr(args: [
+          viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.first.value['seconds']
+                  .toString() ??
+              ''
+        ]),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildQuestion() => Image.asset('assets/icons/dwarf.png');
 
@@ -182,7 +193,7 @@ class DuolingoSpeakingPractice4Preparation
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Start',
+        text: LocaleKeys.start.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

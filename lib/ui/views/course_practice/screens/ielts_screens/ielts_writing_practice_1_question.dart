@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/ui_helpers.dart';
@@ -54,6 +56,7 @@ class IeltsWritingPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -110,7 +113,7 @@ class IeltsWritingPractice1Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.writing_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -186,7 +189,7 @@ class IeltsWritingPractice1Question
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,
-            hint: 'Start writing here...',
+            hint: LocaleKeys.start_writing_here.tr(),
             filled: practiceController.text.isNotEmpty),
       );
 
@@ -210,7 +213,7 @@ class IeltsWritingPractice1Question
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Submit Task',
+        text: LocaleKeys.submit_task.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         onTap: () => _nextScreen(viewModel),

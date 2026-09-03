@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/custom_table.dart';
 import 'package:yimaru_app/ui/widgets/ielts_fill_in_the_blanks_question.dart';
 import 'package:yimaru_app/ui/widgets/instruction_card.dart';
@@ -78,6 +80,7 @@ class IeltsListeningPractice4Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -144,7 +147,7 @@ class IeltsListeningPractice4Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -155,7 +158,7 @@ class IeltsListeningPractice4Question
       );
 
   Widget _buildTitle() => Text(
-        'Table Completion',
+        LocaleKeys.table_completion.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -279,7 +282,7 @@ class IeltsListeningPractice4Question
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

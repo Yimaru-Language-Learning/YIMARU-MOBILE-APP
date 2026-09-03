@@ -1,7 +1,9 @@
 import 'package:chewie/chewie.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/course_lesson_detail/course_lesson_detail_viewmodel.dart';
 
 import '../../common/app_colors.dart';
@@ -56,6 +58,7 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
 
   Widget _buildScaffoldWrapper(CourseLessonDetailViewmodel viewModel) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -186,7 +189,7 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Start Assessment',
+        text: LocaleKeys.start_assessment.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _navigate(viewModel),

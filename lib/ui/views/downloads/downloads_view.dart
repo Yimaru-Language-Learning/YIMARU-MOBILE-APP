@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/download_card.dart';
 
@@ -25,6 +27,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(DownloadsViewModel viewModel) => Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );
@@ -55,7 +58,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
   Widget _buildAppbar(DownloadsViewModel viewModel) => SmallAppBar(
         onPop: viewModel.pop,
         showBackButton: true,
-        title: 'Offline Downloads',
+        title: LocaleKeys.offline_downloads.tr(),
       );
 
   Widget _buildContentWrapper(DownloadsViewModel viewModel) =>
@@ -97,7 +100,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
   Widget _buildStorageInfo() => Text.rich(
         TextSpan(text: '1.2GB', style: style14P600, children: [
           TextSpan(
-            text: ' used of 2GB',
+            text: ' ${LocaleKeys.used_of.tr()} 2GB',
             style: style14DG600,
           )
         ]),
@@ -107,7 +110,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
       onPressed: viewModel.setShowDownload, child: _buildManageText());
 
   Widget _buildManageText() => Text(
-        'Manage Storage',
+        LocaleKeys.manage_storage.tr(),
         style: style14P600,
       );
 
@@ -176,13 +179,13 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
       );
 
   Widget _buildEmptyTitle() => Text(
-        'Looking for something to download?',
+        LocaleKeys.looking_for_download.tr(),
         style: style25DG600,
         textAlign: TextAlign.center,
       );
 
   Widget _buildEmptySubtitle() => Text(
-        'Start by exploring your learning materials and save them for offline access.',
+        LocaleKeys.explore_materials_offline.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );
@@ -195,7 +198,7 @@ class DownloadsView extends StackedView<DownloadsViewModel> {
         height: 55,
         borderRadius: 12,
         foregroundColor: kcWhite,
-        text: 'Go to Learn Section',
+        text: LocaleKeys.go_to_learn.tr(),
         backgroundColor: kcPrimaryColor,
         onTap: viewModel.setShowDownload,
       );

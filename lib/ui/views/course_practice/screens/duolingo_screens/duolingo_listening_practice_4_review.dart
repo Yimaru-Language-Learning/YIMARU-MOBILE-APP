@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 
 import '../../../../common/app_colors.dart';
@@ -40,6 +42,7 @@ class DuolingoListeningPractice4Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -92,8 +95,9 @@ class DuolingoListeningPractice4Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -141,10 +145,11 @@ class DuolingoListeningPractice4Review
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write summary of the conversation you just had.',
+        LocaleKeys.write_summary_conversation.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -163,7 +168,7 @@ class DuolingoListeningPractice4Review
 
   Widget _buildAnswer(CoursePracticeViewModel viewModel) =>
       CoursePracticeTextCard(
-        title: 'Your response',
+        title: LocaleKeys.your_response_label.tr(),
         subtitle: practiceController.text,
       );
   Widget _buildPracticeReviewSection(

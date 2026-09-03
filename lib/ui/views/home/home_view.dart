@@ -36,6 +36,7 @@ class HomeView extends StackedView<HomeViewModel> {
       );
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(
+        
         body: getViewForIndex(viewModel.currentPage),
         bottomNavigationBar: _buildBottomNav(viewModel),
       );

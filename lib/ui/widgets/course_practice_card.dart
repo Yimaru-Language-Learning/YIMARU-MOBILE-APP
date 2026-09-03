@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../common/ui_helpers.dart';
 import 'custom_elevated_button.dart';
@@ -50,7 +52,7 @@ class CoursePracticeCard extends StatelessWidget {
         width: 200,
         onTap: onTap,
         borderRadius: 8,
-        text: 'Take Assessment',
+        text: LocaleKeys.take_assessment.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
       );

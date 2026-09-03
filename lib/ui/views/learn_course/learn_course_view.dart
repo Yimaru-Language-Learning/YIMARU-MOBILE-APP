@@ -77,6 +77,7 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
           {required BuildContext context,
           required LearnCourseViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );

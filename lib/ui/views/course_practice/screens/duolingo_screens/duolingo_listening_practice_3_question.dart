@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/dwarf_tile.dart';
@@ -75,6 +77,7 @@ class DuolingoListeningPractice3Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -137,8 +140,9 @@ class DuolingoListeningPractice3Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
@@ -211,10 +215,11 @@ class DuolingoListeningPractice3Question
       ];
 
   Widget _buildTitle() => Text(
-        'Listen closely! Audio clips only play once',
+        LocaleKeys.listen_closely_once.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildQuestion() =>
       DwarfTile(small: true, child: _buildListenablePracticeCardWrapper());
@@ -227,10 +232,11 @@ class DuolingoListeningPractice3Question
       ListenableOneTimePracticeCard(question: question);
 
   Widget _buildLabel() => Text(
-        'Select the best response',
+        LocaleKeys.select_best_response.tr(),
         style: style16DG600,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildPracticeQuestions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
@@ -297,17 +303,18 @@ class DuolingoListeningPractice3Question
       ];
 
   Widget _buildCorrectAnswer() => Text(
-        'Correct Answer: ${options.firstWhere((e) => e['is_correct'])['text']} ',
+        LocaleKeys.correct_answer_label.tr(args: [options.firstWhere((e) => e['is_correct'])['text']]),
         style: style16DG400,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildContinueButton(
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

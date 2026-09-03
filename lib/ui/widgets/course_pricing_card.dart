@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../common/ui_helpers.dart';
 
@@ -35,12 +37,12 @@ class CoursePricingCard extends StatelessWidget {
       );
 
   Widget _buildTileTitle() => Text(
-        'One-Time Unlock',
+        LocaleKeys.one_time_unlock.tr(),
         style: style16DG600,
       );
 
   Widget _buildTileSubtitle() =>
-      Text('Lifetime access to A2 level', style: style14MG400);
+      Text(LocaleKeys.lifetime_access_a2.tr(), style: style14MG400);
 
   Widget _buildTileLeading() => const Icon(
         Icons.key,
@@ -68,12 +70,12 @@ class CoursePricingCard extends StatelessWidget {
       );
 
   Widget _buildPriceCardTitle() => Text(
-        '3,999 ETB',
+        LocaleKeys.etb_3999.tr(),
         style: style16DG600,
       );
 
   Widget _buildPriceCardSubtitle() => Text(
-        'One-time payment',
+        LocaleKeys.one_time_payment.tr(),
         style: style14DG400,
       );
 }

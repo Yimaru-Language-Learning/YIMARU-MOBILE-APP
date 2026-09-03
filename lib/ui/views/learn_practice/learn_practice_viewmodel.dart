@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -9,6 +10,7 @@ import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/voice_recorder_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
@@ -209,13 +211,13 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   // Dialogue
   Future<bool?> showAbortDialog() async {
     DialogResponse? response = await _dialogService.showDialog(
-      cancelTitle: 'No',
-      title: 'Recording',
-      buttonTitle: 'Yes',
+      cancelTitle: LocaleKeys.no.tr(),
+      title: LocaleKeys.recording.tr(),
+      buttonTitle: LocaleKeys.yes.tr(),
       barrierDismissible: true,
       cancelTitleColor: kcDarkGrey,
       buttonTitleColor: kcPrimaryColor,
-      description: 'Are you sure you want to stop recording?',
+      description: LocaleKeys.stop_recording_warning.tr(),
     );
     return response?.confirmed;
   }
@@ -279,6 +281,20 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   /*Future<String?> refreshUrl(String url) async =>
       await _learnService.refreshObject(url);*/
 
+
+  // Update payment status
+
+  Future<void> _updatePaymentStatus() async {
+    Map<String, dynamic> response = {};
+
+    response = await _apiService.getProfileData(_user?.userId);
+
+    if (response['status'] == ResponseStatus.success) {
+      User user = response['data'] as User;
+      await _authenticationService.saveUserData(user);
+    }
+  }
+
   // Learn practice
   Future<void> getLearnPractices(
           {required int id, required LearnPractices practice}) async =>
@@ -287,16 +303,20 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   Future<void> _getLearnPractices(
       {required int id, required LearnPractices practice}) async {
+
     if (await _statusChecker.checkConnection()) {
       if (practice == LearnPractices.course) {
+        await _updatePaymentStatus();
         _practices = await _apiService.getLearnCoursePractices(id);
         //  await refreshPracticeImages(_practices);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else if (practice == LearnPractices.module) {
+        await _updatePaymentStatus();
         _practices = await _apiService.getLearnModulePractices(id);
         //  await refreshPracticeImages(_practices);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else {
+        await _updatePaymentStatus();
         _practices = await _apiService.getLearnLessonPractices(id);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       }
@@ -306,6 +326,10 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   Future<void> _getLearnPracticeQuestions(int id) async {
     _questions = await _apiService.getLearnQuestions(id);
   }
+
+
+
+
 
   // Complete practice
   Future<void> completeLearnPractice() async =>

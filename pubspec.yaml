@@ -1,6 +1,6 @@
 name: yimaru_app
 publish_to: 'none'
-version: 0.1.115+117
+version: 0.1.119+121
 description: A new Flutter project.
 
 environment:
@@ -71,7 +71,6 @@ dev_dependencies:
 
 dependency_overrides:
   intl: ^0.20.2
-
 
 flutter:
   uses-material-design: true

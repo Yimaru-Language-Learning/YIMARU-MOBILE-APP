@@ -52,6 +52,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
           {required BuildContext context,
           required ProfileViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
@@ -173,8 +174,8 @@ class ProfileView extends StackedView<ProfileViewModel> {
 
   Widget _buildSubscriptionCard(ProfileViewModel viewModel) => ProfileCard(
         icon: Icons.download,
-        title: 'My Subscriptions',
-        subtitle: 'Active all subscriptions and enjoy.',
+        title: LocaleKeys.my_subscriptions.tr(),
+        subtitle: LocaleKeys.active_all_subscriptions.tr(),
         onTap: () async => await viewModel.navigateToMySubscription(),
       );
 

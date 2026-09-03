@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../../common/app_colors.dart';
@@ -20,6 +22,7 @@ class CourseSubscriptionPackageScreen
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(SubscriptionViewModel viewModel) => Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -96,26 +99,25 @@ class CourseSubscriptionPackageScreen
       );
 
   Widget _buildTitle() => Text(
-        'Unlock the full course',
+        LocaleKeys.unlock_full_course.tr(),
         style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(
-        'Get ready to pass your English proficiency test with a top score.',
+        LocaleKeys.proficiency_test_ready.tr(),
         style: style14MG400,
       );
 
-  Widget _buildFirstCard() => const LearnSubscriptionCard(
+  Widget _buildFirstCard() => LearnSubscriptionCard(
         icon: Icons.school,
-        title: '50+ Tutorial Lessons',
-        subtitle: 'Access fresh, tailored content',
+        title: LocaleKeys.tutorial_lessons_50.tr(),
+        subtitle: LocaleKeys.access_fresh_content.tr(),
       );
 
-  Widget _buildSecondCard() => const LearnSubscriptionCard(
+  Widget _buildSecondCard() => LearnSubscriptionCard(
         icon: Icons.developer_board,
-        title: 'Master Through Practice',
-        subtitle:
-            '•Practice all question types\n•Skill Specific Exams\n•Mock Exams',
+        title: LocaleKeys.master_through_practice.tr(),
+        subtitle: LocaleKeys.practice_all_questions_bullet.tr(),
       );
 
   Widget _buildHeadingWrapper() => Align(
@@ -124,20 +126,19 @@ class CourseSubscriptionPackageScreen
       );
 
   Widget _buildHeading() => Text(
-        'Choose Your Learning Plan',
+        LocaleKeys.choose_learning_plan.tr(),
         style: style16DG600,
       );
 
-  Widget _buildSubscriptionPricingSection() => const SubscriptionPricingSection(
-        subtitle:
-            'The plan includes four months of unlimited access to all lessons, practice sessions, and mock exams.',
+  Widget _buildSubscriptionPricingSection() => SubscriptionPricingSection(
+        subtitle: LocaleKeys.plan_includes_four_months.tr(),
       );
 
   Widget _buildSubscribeButton(SubscriptionViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
         borderRadius: 12,
-        text: 'Subscribe Now',
+        text: LocaleKeys.subscribe_now.tr(),
         foregroundColor: kcWhite,
         onTap: () => viewModel.next(),
         backgroundColor: kcPrimaryColor,
@@ -163,7 +164,7 @@ class CourseSubscriptionPackageScreen
       );
 
   Widget _buildTileTitle() => Text(
-        'Unlock All Lessons & Practices',
+        LocaleKeys.unlock_all_lessons_practices.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );

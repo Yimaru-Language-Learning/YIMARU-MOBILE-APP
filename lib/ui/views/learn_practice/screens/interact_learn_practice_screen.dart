@@ -56,6 +56,7 @@ class InteractLearnPracticeScreen
           {required BuildContext context,
           required LearnPracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
@@ -155,7 +156,7 @@ class InteractLearnPracticeScreen
               : const SizedBox(height: 20);
 
   Widget _buildListeningLabel() => Text(
-        'Daniel ${LocaleKeys.speaking.tr()}',
+        '${LocaleKeys.daniel.tr()} ${LocaleKeys.speaking.tr()}',
         style: style14P400,
         textAlign: TextAlign.center,
       );

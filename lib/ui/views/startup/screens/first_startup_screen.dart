@@ -19,6 +19,7 @@ class FirstStartupScreen extends ViewModelWidget<StartupViewModel> {
       _buildScaffoldWrapper();
 
   Widget _buildScaffoldWrapper() => Scaffold(
+        
         backgroundColor: kcPrimaryColor,
         body: _buildScaffoldPadding(),
       );
@@ -76,19 +77,19 @@ class FirstStartupScreen extends ViewModelWidget<StartupViewModel> {
 
   Widget _buildTitle() => Text.rich(
         TextSpan(
-          text: 'እንግሊዝኛ\n',
+          text: '${LocaleKeys.english.tr()}\n',
           style: style25W600,
           children: [
             TextSpan(
-              text: 'በማንኛውም',
+              text: LocaleKeys.at_any.tr(),
               style: style25W400,
             ),
             TextSpan(
-              text: ' ሰዓት ',
+              text: ' ${LocaleKeys.time.tr()} ',
               style: style25W600,
             ),
             TextSpan(
-              text: 'ይማሩ!',
+              text: LocaleKeys.learn_exclamation.tr(),
               style: style25W400,
             ),
           ],
@@ -131,8 +132,9 @@ class FirstStartupScreen extends ViewModelWidget<StartupViewModel> {
         _buildIndicatorWrapper(),
       ];
 
-  Widget _buildLoadingText() =>
-      Text('${label ?? LocaleKeys.loading.tr()} ...', style: style16W600);
+  Widget _buildLoadingText() => Text(
+      '${label ?? LocaleKeys.loading.tr()} ...',
+      style: style16W600);
 
   Widget _buildIndicatorWrapper() => SizedBox(
         width: 16,

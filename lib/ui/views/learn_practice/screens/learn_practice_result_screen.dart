@@ -58,6 +58,7 @@ class LearnPracticeResultScreen
           {required BuildContext context,
           required LearnPracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );

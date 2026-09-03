@@ -53,6 +53,7 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
   Widget _buildScaffoldWrapper(
           {required BuildContext context, required LoginViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
@@ -85,7 +86,6 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
           {required BuildContext context, required LoginViewModel viewModel}) =>
       [
         _buildAppBar(viewModel),
-        verticalSpaceMedium,
         _buildExpandedBody(context: context, viewModel: viewModel)
       ];
 
@@ -127,6 +127,7 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
   List<Widget> _buildBodyChildren(
           {required BuildContext context, required LoginViewModel viewModel}) =>
       [
+        verticalSpaceMedium,
         _buildUpperColumn(viewModel),
         getPadding(context),
         _buildContinueButtonWrapper(viewModel)

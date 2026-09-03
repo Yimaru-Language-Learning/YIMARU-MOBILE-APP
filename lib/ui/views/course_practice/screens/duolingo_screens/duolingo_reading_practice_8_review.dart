@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
+
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 
@@ -36,6 +39,7 @@ class DuolingoReadingPractice8Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -88,8 +92,9 @@ class DuolingoReadingPractice8Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -134,13 +139,14 @@ class DuolingoReadingPractice8Review
             '1. ${viewModel.answers.elementAt(0)['question']}'),
         verticalSpaceTiny,
         _buildAnswerWrapper(
-            'Your Answer: ${viewModel.answers.elementAt(0)['response']}'),
+            '${LocaleKeys.your_answer_is.tr()} ${viewModel.answers.elementAt(0)['response']}'),
         verticalSpaceMedium,
         _buildQuestionWrapper(
             '1. ${viewModel.answers.elementAt(1)['question']}'),
         verticalSpaceTiny,
         _buildAnswerWrapper(
-            'Your Answer: ${viewModel.answers.elementAt(1)['response']}'),
+            '${LocaleKeys.your_answer_is.tr()} ${viewModel.answers.elementAt(1)['response']}'),
+
         verticalSpaceMedium,
         verticalSpaceLarge,
         _buildPracticeReviewSection(context: context, viewModel: viewModel)
@@ -152,9 +158,10 @@ class DuolingoReadingPractice8Review
       );
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Complete the Passage',
+        LocaleKeys.complete_passage.tr(),
         style: style16DG600,
       );
+
 
   Widget _buildQuestionWrapper(String question) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

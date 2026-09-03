@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/course_module_tile_large.dart';
@@ -6,6 +7,7 @@ import '../../../models/course_catalog.dart';
 import '../../../models/course_module.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
+import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
 import '../../widgets/small_app_bar.dart';
@@ -44,6 +46,7 @@ class CourseModuleView extends StackedView<CourseModuleViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(CourseModuleViewModel viewModel) => Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -73,7 +76,7 @@ class CourseModuleView extends StackedView<CourseModuleViewModel> {
   Widget _buildAppBar(CourseModuleViewModel viewModel) => SmallAppBar(
         onPop: viewModel.pop,
         showBackButton: true,
-        title: 'Module Detail',
+        title: LocaleKeys.module_detail.tr(),
       );
 
   Widget _buildModulesColumnWrapper(CourseModuleViewModel viewModel) =>

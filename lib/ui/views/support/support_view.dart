@@ -24,6 +24,7 @@ class SupportView extends StackedView<SupportViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(SupportViewModel viewModel) => Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -114,24 +115,24 @@ class SupportView extends StackedView<SupportViewModel> {
   Widget _buildInAppSupport(SupportViewModel viewModel) => SupportCard(
         color: kcOrange,
         icon: Icons.menu_book,
-        title: 'In-App support',
-        subtitle: 'Write down your issue here',
+        title: LocaleKeys.in_app_support.tr(),
+        subtitle: LocaleKeys.write_issue_here.tr(),
         onTap: () async => await viewModel.navigateToInAppSupport(),
       );
 
   Widget _buildFaqSupport(SupportViewModel viewModel) => SupportCard(
         color: kcGreen,
-        title: 'FAQ',
+        title: LocaleKeys.faqs.tr(),
         icon: Icons.question_mark,
-        subtitle: 'Visit frequently asked questions',
+        subtitle: LocaleKeys.visit_faqs.tr(),
         onTap: () async => await viewModel.navigateToFaqs(),
       );
 
   Widget _buildRating(SupportViewModel viewModel) => SupportCard(
         color: kcIndigo,
-        title: 'Rate App',
+        title: LocaleKeys.app_rating.tr(),
         icon: Icons.rate_review,
-        subtitle: 'Give us rating about our app',
+        subtitle: LocaleKeys.give_rating.tr(),
         onTap: () async => await viewModel.navigateToAppRating(),
       );
 }

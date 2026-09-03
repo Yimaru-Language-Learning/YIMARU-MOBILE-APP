@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 
@@ -16,6 +18,7 @@ class SecondLandingScreen extends ViewModelWidget<LandingViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(LandingViewModel viewModel) => Scaffold(
+        
         backgroundColor: Colors.amber,
         body: _buildScaffoldPadding(viewModel),
       );
@@ -74,19 +77,19 @@ class SecondLandingScreen extends ViewModelWidget<LandingViewModel> {
 
   Widget _buildTitle() => Text.rich(
         TextSpan(
-          text: 'እንግሊዝኛ\n',
+          text: '${LocaleKeys.english.tr()}\n',
           style: style25P600,
           children: [
             TextSpan(
-              text: 'በማንኛውም',
+              text: LocaleKeys.at_any.tr(),
               style: style25P400,
             ),
             TextSpan(
-              text: ' እድሜ ',
+              text: ' ${LocaleKeys.age.tr()} ',
               style: style25P600,
             ),
             TextSpan(
-              text: 'ይማሩ!',
+              text: LocaleKeys.learn_exclamation.tr(),
               style: style25P400,
             ),
           ],
@@ -128,7 +131,7 @@ class SecondLandingScreen extends ViewModelWidget<LandingViewModel> {
       CustomElevatedButton(
         height: 55,
         borderRadius: 25,
-        text: 'Get Started',
+        text: LocaleKeys.get_started.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         onTap: () async => await viewModel.setFirstTimeInstall(),

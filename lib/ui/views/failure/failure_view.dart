@@ -27,6 +27,7 @@ class FailureView extends StackedView<FailureViewModel> {
       _buildScaffoldWrapper();
 
   Widget _buildScaffoldWrapper() => Scaffold(
+        
         backgroundColor: kcPrimaryColor,
         body: _buildStartupScreens(),
       );

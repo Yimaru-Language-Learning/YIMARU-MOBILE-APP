@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/ielts_practice_review_section.dart';
 
 import '../../../../common/app_colors.dart';
@@ -81,6 +83,7 @@ class IeltsListeningPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -147,7 +150,7 @@ class IeltsListeningPractice1Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -158,7 +161,7 @@ class IeltsListeningPractice1Question
       );
 
   Widget _buildTitle() => Text(
-        'Form Completion',
+        LocaleKeys.form_completion.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -273,7 +276,7 @@ class IeltsListeningPractice1Question
       ];
 
   Widget _buildInstruction() => Text(
-        'Complete the form below',
+        LocaleKeys.complete_form_below.tr(),
         style: style16DG600,
         textAlign: TextAlign.center,
       );
@@ -290,7 +293,7 @@ class IeltsListeningPractice1Question
       TextField(
         style: style14MG400,
         decoration: inputDecoration(
-            focus: true, filled: true, hint: 'Start writing here...'),
+            focus: true, filled: true, hint: LocaleKeys.start_writing_here.tr()),
         onChanged: (change) => viewModel.updateAnswer(value, change),
       );
 
@@ -323,7 +326,7 @@ class IeltsListeningPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

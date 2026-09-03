@@ -40,6 +40,7 @@ class LearnPracticeDescriptionScreen
           {required BuildContext context,
           required LearnPracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
@@ -133,12 +134,15 @@ class LearnPracticeDescriptionScreen
       ];
 
   Widget _buildTitle(LearnPracticeViewModel viewModel) => Text.rich(
-        TextSpan(text: 'Speaking Practice: ', style: style14DG600, children: [
-          TextSpan(
-            style: style14MG400,
-            text: viewModel.practices.first.title ?? '',
-          )
-        ]),
+        TextSpan(
+            text: LocaleKeys.speaking_practice_label.tr(),
+            style: style14DG600,
+            children: [
+              TextSpan(
+                style: style14MG400,
+                text: viewModel.practices.first.title ?? '',
+              )
+            ]),
       );
 
   Widget _buildSubtitle(LearnPracticeViewModel viewModel) => Text(

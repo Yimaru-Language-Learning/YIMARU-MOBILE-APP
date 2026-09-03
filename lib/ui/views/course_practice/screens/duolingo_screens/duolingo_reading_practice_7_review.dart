@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 
 import '../../../../common/app_colors.dart';
@@ -36,6 +38,7 @@ class DuolingoReadingPractice7Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -88,8 +91,9 @@ class DuolingoReadingPractice7Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -169,9 +173,10 @@ class DuolingoReadingPractice7Review
       );
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Passage',
+        LocaleKeys.passage_label.tr(),
         style: style16DG600,
       );
+
 
   Widget _buildQuestionWrapper(String question) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -203,7 +208,7 @@ class DuolingoReadingPractice7Review
           children: [
             //TextSpan(text: start),
             TextSpan(
-              text: 'Your Answer: $middle',
+              text: '${LocaleKeys.your_answer_is.tr()} $middle',
               // style: style14P400,
             ),
             //TextSpan(text: end),

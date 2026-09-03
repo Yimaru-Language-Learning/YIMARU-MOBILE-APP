@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/listenable_repetitive_practice_card.dart';
@@ -54,6 +56,7 @@ class DuolingoListeningPractice2Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -129,8 +132,9 @@ class DuolingoListeningPractice2Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
@@ -177,10 +181,11 @@ class DuolingoListeningPractice2Question
       ];
 
   Widget _buildTitle() => Text(
-        'Listen to the audio message and type your response.',
+        LocaleKeys.listen_audio_type_response.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       ListenableRepetitivePracticeCard(
@@ -200,7 +205,8 @@ class DuolingoListeningPractice2Question
       TextField(
         style: style14MG400,
         decoration: inputDecoration(
-            focus: true, filled: true, hint: 'Start writing here...'),
+            focus: true, filled: true, hint: LocaleKeys.start_writing_here.tr()),
+
         onChanged: (change) => viewModel.updateAnswer(value, change),
       );
 
@@ -226,7 +232,7 @@ class DuolingoListeningPractice2Question
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Submit',
+        text: LocaleKeys.submit.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,

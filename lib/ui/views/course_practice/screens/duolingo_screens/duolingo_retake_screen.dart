@@ -1,8 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
+import '../../../../common/enmus.dart';
 import '../../../../common/ui_helpers.dart';
 import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
@@ -40,6 +43,7 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildSafeWrapper(context: context, viewModel: viewModel),
       );
@@ -107,8 +111,22 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${_getTitle(viewModel)} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
+  String _getTitle(CoursePracticeViewModel viewModel) {
+    CoursePracticeType type = viewModel.selectedQuestionParam['type'];
+    if (type == CoursePracticeType.speaking) {
+      return LocaleKeys.speaking_practice.tr();
+    } else if (type == CoursePracticeType.writing) {
+      return LocaleKeys.writing_practice.tr();
+    } else if (type == CoursePracticeType.listening) {
+      return LocaleKeys.listening_practice.tr();
+    } else {
+      return LocaleKeys.reading_practice.tr();
+    }
+  }
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -145,11 +163,11 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
       ];
 
   Widget _buildPracticeButton(CoursePracticeViewModel viewModel) =>
-      const CustomElevatedButton(
+       CustomElevatedButton(
         height: 55,
         bottom: false,
         borderRadius: 12,
-        text: 'Practice Again',
+        text: LocaleKeys.practice_again.tr(),
         foregroundColor: kcWhite,
         //  onTap: () => viewModel.goTo(0),
         backgroundColor: kcPrimaryColor,
@@ -163,7 +181,7 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
   Widget _buildSkipButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
+        text: LocaleKeys.cont.tr(),
         borderRadius: 12,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,

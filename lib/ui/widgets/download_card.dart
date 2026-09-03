@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../common/app_colors.dart';
@@ -141,7 +143,7 @@ class DownloadCard extends StatelessWidget {
   Widget _buildRemoveButton() => CustomElevatedButton(
         width: 110,
         height: 15,
-        text: 'Remove',
+        text: LocaleKeys.remove.tr(),
         borderRadius: 12,
         foregroundColor: kcRed,
         backgroundColor: kcRed.withValues(alpha: 0.25),

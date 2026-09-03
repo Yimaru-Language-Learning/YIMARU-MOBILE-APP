@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_view.form.dart';
@@ -61,6 +63,7 @@ class DuolingoListeningPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -127,8 +130,9 @@ class DuolingoListeningPractice1Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -181,19 +185,21 @@ class DuolingoListeningPractice1Question
       ];
 
   Widget _buildTitle() => Text(
-        'Type what you hear',
+        LocaleKeys.type_what_you_hear.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildQuestion() =>
       ListenableRepetitivePracticeCard(question: question);
 
   Widget _buildLabel() => Text(
-        'Your Answer',
+        LocaleKeys.your_answer.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
+
 
   Widget _buildPracticeFormField(CoursePracticeViewModel viewModel) =>
       TextFormField(
@@ -204,8 +210,9 @@ class DuolingoListeningPractice1Question
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,
-            hint: 'Start writing here...',
+            hint: LocaleKeys.start_writing_here.tr(),
             filled: practiceController.text.isNotEmpty),
+
       );
 
   Widget _buildPracticeWrapper(CoursePracticeViewModel viewModel) =>
@@ -227,7 +234,7 @@ class DuolingoListeningPractice1Question
   Widget _buildContinueButton(CoursePracticeViewModel viewModel) =>
       CustomElevatedButton(
           height: 55,
-          text: 'Submit',
+          text: LocaleKeys.submit.tr(),
           borderRadius: 12,
           foregroundColor: kcWhite,
           backgroundColor: kcPrimaryColor,

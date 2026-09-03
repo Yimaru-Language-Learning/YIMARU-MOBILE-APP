@@ -44,6 +44,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(RegisterViewModel viewModel) => Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -67,7 +68,6 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
 
   List<Widget> _buildScaffoldChildren(RegisterViewModel viewModel) => [
         _buildAppBar(viewModel),
-        verticalSpaceMedium,
         _buildExpandedBody(viewModel)
       ];
 
@@ -101,7 +101,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
       );
 
   List<Widget> _buildBodyColumnChildren(RegisterViewModel viewModel) => [
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildTitle(),
         verticalSpaceMedium,
         _buildPasswordLabel(LocaleKeys.password.tr()),

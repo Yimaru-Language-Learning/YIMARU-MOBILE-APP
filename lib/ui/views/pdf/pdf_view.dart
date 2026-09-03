@@ -25,6 +25,7 @@ class PdfView extends StackedView<PdfViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(PdfViewModel viewModel) => Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(viewModel),
       );

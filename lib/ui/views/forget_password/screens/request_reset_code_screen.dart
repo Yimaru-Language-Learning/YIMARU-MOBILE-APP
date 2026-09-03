@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/views/forget_password/forget_password_viewmodel.dart';
 
@@ -52,6 +54,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           {required BuildContext context,
           required ForgetPasswordViewModel viewModel}) =>
       Scaffold(
+        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );
@@ -135,6 +138,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           {required BuildContext context,
           required ForgetPasswordViewModel viewModel}) =>
       [
+        verticalSpaceMedium,
         _buildUpperColumn(viewModel),
         getPadding(context),
         _buildContinueButtonWrapper(viewModel)
@@ -159,12 +163,12 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Reset password',
+        LocaleKeys.reset_password_title.tr(),
         style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        'Enter your email, we will send you a reset code.',
+        LocaleKeys.enter_email_reset_code_subtitle.tr(),
         style: style14DG400,
       );
 
@@ -174,7 +178,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         onTap: viewModel.setEmailFocus,
         keyboardType: TextInputType.emailAddress,
         decoration: inputDecoration(
-            hint: 'Email',
+            hint: LocaleKeys.email.tr(),
             focus: viewModel.focusEmail,
             filled: emailController.text.isNotEmpty),
       );
@@ -198,7 +202,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
   Widget _buildContinueButton(ForgetPasswordViewModel viewModel) =>
       CustomElevatedButton(
         height: 55,
-        text: 'Continue',
+        text: LocaleKeys.cont.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
         onTap: emailController.text.isNotEmpty &&

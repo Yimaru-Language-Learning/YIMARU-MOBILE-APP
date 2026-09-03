@@ -51,7 +51,9 @@ class PaymentView extends StackedView<PaymentViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(PaymentViewModel viewModel) =>
-      Scaffold(body: _buildScaffoldState(viewModel));
+      Scaffold(
+        
+        body: _buildScaffoldState(viewModel));
 
   Widget _buildScaffoldState(PaymentViewModel viewModel) =>
       viewModel.busy(StateObjects.learnSubscription)
