@@ -18,13 +18,7 @@ class LearningProgressCard extends ViewModelWidget<MyProgressViewModel> {
 
   @override
   Widget build(BuildContext context, MyProgressViewModel viewModel) =>
-      _buildContainerWrapper(viewModel);
-
-  Widget _buildContainerWrapper(MyProgressViewModel viewModel) =>
-      GestureDetector(
-        onTap: onTap,
-        child: _buildContainer(viewModel),
-      );
+      _buildContainer(viewModel);
 
   Widget _buildContainer(MyProgressViewModel viewModel) => Container(
         height: 320,
@@ -53,7 +47,7 @@ class LearningProgressCard extends ViewModelWidget<MyProgressViewModel> {
         verticalSpaceSmall,
         _buildLearningStatus(viewModel),
         verticalSpaceMedium,
-        _buildActionButton(),
+        _buildActionButton(viewModel),
       ];
 
   Widget _buildIcon() => const Icon(
@@ -115,12 +109,14 @@ class LearningProgressCard extends ViewModelWidget<MyProgressViewModel> {
               : '${viewModel.totalProgress.toString()}%',
           subtitle: LocaleKeys.progress_percentage.tr()));
 
-  Widget _buildActionButton() => CustomElevatedButton(
+  Widget _buildActionButton(MyProgressViewModel viewModel) =>
+      CustomElevatedButton(
         height: 15,
         width: 200,
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         text: LocaleKeys.continue_learning.tr(),
+        onTap: () async => await viewModel.navigateToLearnProgram(),
       );
 }

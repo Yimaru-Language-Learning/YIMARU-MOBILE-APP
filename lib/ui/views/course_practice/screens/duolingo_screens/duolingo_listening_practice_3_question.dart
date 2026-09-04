@@ -34,6 +34,7 @@ class DuolingoListeningPractice3Question
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (viewModel.showAnswer) {
       await viewModel.setListeningAnswer3(
         context: context,
@@ -77,7 +78,6 @@ class DuolingoListeningPractice3Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -142,7 +142,6 @@ class DuolingoListeningPractice3Question
         title:
             '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
-
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdownState(viewModel));
@@ -220,7 +219,6 @@ class DuolingoListeningPractice3Question
         textAlign: TextAlign.center,
       );
 
-
   Widget _buildQuestion() =>
       DwarfTile(small: true, child: _buildListenablePracticeCardWrapper());
 
@@ -236,7 +234,6 @@ class DuolingoListeningPractice3Question
         style: style16DG600,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildPracticeQuestions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
@@ -303,11 +300,11 @@ class DuolingoListeningPractice3Question
       ];
 
   Widget _buildCorrectAnswer() => Text(
-        LocaleKeys.correct_answer_label.tr(args: [options.firstWhere((e) => e['is_correct'])['text']]),
+        LocaleKeys.correct_answer_label
+            .tr(args: [options.firstWhere((e) => e['is_correct'])['text']]),
         style: style16DG400,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildContinueButton(
           {required BuildContext context,

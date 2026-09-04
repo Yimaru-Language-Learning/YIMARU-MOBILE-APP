@@ -8,10 +8,13 @@ import '../../common/ui_helpers.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
 import '../../widgets/profile_app_bar.dart';
 import '../../widgets/learn_program_tile.dart';
+import '../../widgets/small_app_bar.dart';
 import 'learn_program_viewmodel.dart';
 
 class LearnProgramView extends StackedView<LearnProgramViewModel> {
-  const LearnProgramView({Key? key}) : super(key: key);
+  final bool showAppBar;
+  const LearnProgramView({Key? key, required this.showAppBar})
+      : super(key: key);
 
   @override
   void onViewModelReady(LearnProgramViewModel viewModel) async {
@@ -32,7 +35,6 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(LearnProgramViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -53,13 +55,22 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
   Widget _buildColumn(LearnProgramViewModel viewModel) => Column(
         children: [
           verticalSpaceMedium,
-          _buildAppBar(viewModel),
+          _buildAppBarState(viewModel),
           verticalSpaceMedium,
           _buildProgramsColumnWrapper(viewModel)
         ],
       );
 
-  Widget _buildAppBar(LearnProgramViewModel viewModel) => ProfileAppBar(
+  Widget _buildAppBarState(LearnProgramViewModel viewModel) => showAppBar
+      ? _buildProfileAppBar(viewModel)
+      : _buildSmallAppBar(viewModel);
+
+  Widget _buildSmallAppBar(LearnProgramViewModel viewModel) => SmallAppBar(
+        showBackButton: true,
+        onPop: viewModel.pop,
+      );
+
+  Widget _buildProfileAppBar(LearnProgramViewModel viewModel) => ProfileAppBar(
         name: viewModel.user?.firstName,
         profileImage: viewModel.user?.profilePicture,
         unreadCount: viewModel.unreadCount.toString(),

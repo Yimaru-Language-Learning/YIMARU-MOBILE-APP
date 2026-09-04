@@ -6,7 +6,6 @@ import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
 import '../views/course_practice/course_practice_viewmodel.dart';
-import 'custom_circular_progress_indicator.dart';
 import 'custom_elevated_button.dart';
 
 class IeltsPracticeReviewSection

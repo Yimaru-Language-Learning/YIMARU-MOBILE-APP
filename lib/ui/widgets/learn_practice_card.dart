@@ -53,7 +53,7 @@ class LearnPracticeCard extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildStartButton(LearnPracticeViewModel viewModel) =>
-       CustomElevatedButton(
+      CustomElevatedButton(
         height: 50,
         width: 200,
         borderRadius: 8,

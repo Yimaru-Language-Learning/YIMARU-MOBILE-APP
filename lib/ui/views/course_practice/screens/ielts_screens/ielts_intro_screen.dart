@@ -108,7 +108,6 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );

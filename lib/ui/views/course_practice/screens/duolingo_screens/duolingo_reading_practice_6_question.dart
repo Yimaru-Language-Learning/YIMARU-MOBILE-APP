@@ -23,6 +23,7 @@ class DuolingoReadingPractice6Question
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (viewModel.showAnswer) {
       if (viewModel.currentQuestion == viewModel.questions.length - 1) {
         viewModel.nextScreen();
@@ -64,7 +65,6 @@ class DuolingoReadingPractice6Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -123,7 +123,6 @@ class DuolingoReadingPractice6Question
         title:
             '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
-
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -202,7 +201,6 @@ class DuolingoReadingPractice6Question
         style: style16DG600,
       );
 
-
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => Text(
         viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus
             ?.first.value,
@@ -213,7 +211,6 @@ class DuolingoReadingPractice6Question
         LocaleKeys.select_best_title_passage.tr(),
         style: style16DG600,
       );
-
 
   Widget _buildPracticeOptions(CoursePracticeViewModel viewModel) =>
       ListView.builder(
@@ -298,7 +295,6 @@ class DuolingoReadingPractice6Question
         style: style16DG400,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildContinueButton(
           {required BuildContext context,

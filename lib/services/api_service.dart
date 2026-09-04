@@ -5,7 +5,6 @@ import 'package:yimaru_app/models/in_app_notification.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/models/learn_practice.dart';
 import 'package:yimaru_app/models/learn_program.dart';
-import 'package:yimaru_app/models/assessment_question.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
 import 'package:yimaru_app/models/my_subscription.dart';
@@ -24,7 +23,6 @@ import '../models/learn_course.dart';
 import '../models/learn_module.dart';
 import '../models/proficiency_level.dart';
 import '../models/subscription.dart';
-import '../models/assessment.dart';
 import '../models/learn_subscription_request.dart';
 import '../models/progress_summary.dart';
 import '../ui/common/enmus.dart';
@@ -998,7 +996,8 @@ class ApiService {
   }
 
   // Complete lesson
-  Future<Map<String, dynamic>> completePractice(int id) async {
+  Future<Map<String, dynamic>> completePractice(
+      {required int id, required Map<String, dynamic> data}) async {
     try {
       Response response = await _service.dio.post(
         '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kProgressUrl/$kPracticesUrl/$id/$kCompleteUrl',

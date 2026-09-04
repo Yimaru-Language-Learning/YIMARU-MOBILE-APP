@@ -2,7 +2,6 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../models/field_option.dart';
 import '../../../services/api_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';

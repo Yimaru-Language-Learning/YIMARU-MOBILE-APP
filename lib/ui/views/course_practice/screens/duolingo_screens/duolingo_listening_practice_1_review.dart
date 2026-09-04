@@ -32,6 +32,7 @@ class DuolingoListeningPractice1Review
   }
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
     viewModel.nextScreen();
   }
@@ -60,7 +61,6 @@ class DuolingoListeningPractice1Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -125,7 +125,6 @@ class DuolingoListeningPractice1Review
         title:
             '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
-
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -213,7 +212,6 @@ class DuolingoListeningPractice1Review
         textAlign: TextAlign.center,
       );
 
-
   Widget _buildQuestionRowWrapper(
           {required String question, required String number}) =>
       Padding(
@@ -259,7 +257,6 @@ class DuolingoListeningPractice1Review
         style: style18DG700,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildPracticeResponsesWrapper({
     required String number,

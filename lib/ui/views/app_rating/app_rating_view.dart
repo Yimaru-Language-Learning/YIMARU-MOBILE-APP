@@ -9,7 +9,6 @@ import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
 import '../../common/validators/form_validator.dart';
 import '../../widgets/circular_icon.dart';
-import '../../widgets/custom_dropdown.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_form_label.dart';
 import '../../widgets/page_loading_indicator.dart';
@@ -51,8 +50,6 @@ class AppRatingView extends StackedView<AppRatingViewModel>
       'stars': int.parse(viewModel.selectedRating ?? '0'),
     };
 
-
-
     await viewModel.rateApp(data);
   }
 
@@ -75,7 +72,6 @@ class AppRatingView extends StackedView<AppRatingViewModel>
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(AppRatingViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -115,7 +111,10 @@ class AppRatingView extends StackedView<AppRatingViewModel>
       );
 
   Widget _buildExpandedColumn(AppRatingViewModel viewModel) =>
-      Expanded(child: _buildColumnWrapper(viewModel));
+      Expanded(child: _buildColumnScrollerWrapper(viewModel));
+
+  Widget _buildColumnScrollerWrapper(AppRatingViewModel viewModel) =>
+      SingleChildScrollView(child: _buildColumnWrapper(viewModel));
 
   Widget _buildColumnWrapper(AppRatingViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

@@ -29,6 +29,7 @@ class DuolingoReadingPractice7Question
   });
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.setReadingAnswer7(
       sample: response,
       duration: duration,
@@ -62,7 +63,6 @@ class DuolingoReadingPractice7Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -132,7 +132,6 @@ class DuolingoReadingPractice7Question
             '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -182,7 +181,6 @@ class DuolingoReadingPractice7Question
         LocaleKeys.passage_label.tr(),
         style: style16DG600,
       );
-
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) => SelectableText(
         question,

@@ -448,7 +448,9 @@
   "will_write_seconds": "ለ{} ሰከንዶች ይጽፋሉ።",
   "prepare_speak_photo": "ስለ ፎቶው ለመናገር ይዘጋጁ",
   "prepare_speak_topic": "ስለ ተሰጠው ርዕስ ለመናገር ይዘጋጁ",
-  "sentence_completion": "የዓረፍተ ነገር ማጠናቀቅ"
+  "sentence_completion": "የዓረፍተ ነገር ማጠናቀቅ",
+  "content": "ይዘት",
+  "ios_purchase": "ይህ ይዘት የሚገኘው በሃርድ ኮፒ (የታተመ ቅጂ) ብቻ ነው። የፊዚካል ቅጂውን ለመግዛት ከድጋፍ ቡድናችን ጋር ያግኙ።"
 }
 
 

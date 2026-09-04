@@ -41,7 +41,6 @@ class IeltsSpeakingPractice1Answer
       await viewModel.setIeltsSpeakingAnswer1(
         text: text,
         audio: audio,
-
         sample: response,
         question: question,
         duration: duration,
@@ -72,7 +71,6 @@ class IeltsSpeakingPractice1Answer
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -212,7 +210,7 @@ class IeltsSpeakingPractice1Answer
           : const SizedBox(height: 20);
 
   Widget _buildSpeakerLabel() =>
-       SpeakingLabel(label: LocaleKeys.you_are_speaking_status.tr());
+      SpeakingLabel(label: LocaleKeys.you_are_speaking_status.tr());
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState

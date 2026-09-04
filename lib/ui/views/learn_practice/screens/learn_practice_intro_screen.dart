@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -31,7 +33,13 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
     if (viewModel.user?.learn ?? false) {
       viewModel.goTo(1);
     } else {
-      await viewModel.navigateToLearnSubscription();
+
+      if(Platform.isIOS){
+        await viewModel.showAbortDialog();
+      }else{
+        await viewModel.navigateToLearnSubscription();
+      }
+
     }
   }
 
@@ -59,7 +67,6 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
           {required BuildContext context,
           required LearnPracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );

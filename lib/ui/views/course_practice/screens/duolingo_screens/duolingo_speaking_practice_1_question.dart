@@ -21,6 +21,7 @@ class DuolingoSpeakingPractice1Question
   });
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.startRecording();
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds']);
@@ -51,7 +52,6 @@ class DuolingoSpeakingPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -119,7 +119,6 @@ class DuolingoSpeakingPractice1Question
             '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -152,7 +151,6 @@ class DuolingoSpeakingPractice1Question
         textAlign: TextAlign.center,
       );
 
-
   Widget _buildTimerStackWrapper(CoursePracticeViewModel viewModel) =>
       CircularCountdownTimer(
         onEnd: () async => await _next(viewModel),
@@ -163,7 +161,6 @@ class DuolingoSpeakingPractice1Question
         style: style16DG400,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildImageContainer(CoursePracticeViewModel viewModel) => SizedBox(
         width: 250,

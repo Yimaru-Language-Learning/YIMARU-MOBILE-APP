@@ -58,7 +58,6 @@ class LanguageGoalFormScreens extends ViewModelWidget<OnboardingViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(OnboardingViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );
@@ -118,7 +117,8 @@ class LanguageGoalFormScreens extends ViewModelWidget<OnboardingViewModel> {
 
   Widget _buildTitle(OnboardingViewModel viewModel) => Text.rich(
         TextSpan(
-            text: LocaleKeys.hello_user.tr(args: [viewModel.userData['first_name'] ?? '']),
+            text: LocaleKeys.hello_user
+                .tr(args: [viewModel.userData['first_name'] ?? '']),
             style: style18P600.copyWith(fontSize: 22),
             children: [
               TextSpan(

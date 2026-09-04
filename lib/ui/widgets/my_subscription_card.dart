@@ -10,7 +10,6 @@ import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
 import '../views/my_subscription/my_subscription_viewmodel.dart';
 import 'custom_elevated_button.dart';
-import 'custom_linear_progress_indicator.dart';
 
 class MySubscriptionCard extends ViewModelWidget<MySubscriptionViewModel> {
   final GestureTapCallback? onTap;

@@ -26,7 +26,6 @@ class LandingView extends StackedView<LandingViewModel> {
       _buildLandingScreensWrapper(viewModel);
 
   Widget _buildLandingScreensWrapper(LandingViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcPrimaryColor,
         body: _buildLandingScreens(viewModel),
       );

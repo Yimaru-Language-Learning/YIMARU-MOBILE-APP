@@ -464,7 +464,9 @@ class CodegenLoader extends AssetLoader{
   "will_write_seconds": "ለ{} ሰከንዶች ይጽፋሉ።",
   "prepare_speak_photo": "ስለ ፎቶው ለመናገር ይዘጋጁ",
   "prepare_speak_topic": "ስለ ተሰጠው ርዕስ ለመናገር ይዘጋጁ",
-  "sentence_completion": "የዓረፍተ ነገር ማጠናቀቅ"
+  "sentence_completion": "የዓረፍተ ነገር ማጠናቀቅ",
+  "content": "ይዘት",
+  "ios_purchase": "ይህ ይዘት የሚገኘው በሃርድ ኮፒ (የታተመ ቅጂ) ብቻ ነው። የፊዚካል ቅጂውን ለመግዛት ከድጋፍ ቡድናችን ጋር ያግኙ።"
 };
 static const Map<String,dynamic> _en = {
   "loading": "Loading",
@@ -916,7 +918,9 @@ static const Map<String,dynamic> _en = {
   "will_write_seconds": "You will write for {} seconds.",
   "prepare_speak_photo": "Prepare to speak about the photo",
   "prepare_speak_topic": "Prepare to speak about the topic below",
-  "sentence_completion": "Sentence completion"
+  "sentence_completion": "Sentence completion",
+  "content": "Content",
+  "ios_purchase": "This content is only available on hard copy. Contact our supports to purchase the physical copy."
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"am": _am, "en": _en};
 }

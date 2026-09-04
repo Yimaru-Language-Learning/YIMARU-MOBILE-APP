@@ -23,6 +23,7 @@ class DuolingoSpeakingPractice1Review
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
 
     if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -56,7 +57,6 @@ class DuolingoSpeakingPractice1Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -125,7 +125,6 @@ class DuolingoSpeakingPractice1Review
             '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -174,7 +173,6 @@ class DuolingoSpeakingPractice1Review
         style: style18DG700,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildImageContainer(
           {required BuildContext context,

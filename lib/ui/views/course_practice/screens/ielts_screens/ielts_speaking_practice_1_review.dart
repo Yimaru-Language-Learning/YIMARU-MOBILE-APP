@@ -8,7 +8,6 @@ import '../../../../common/translations/locale_keys.g.dart';
 import '../../../../common/ui_helpers.dart';
 import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
-import '../../../../widgets/listenable_review_practice_card.dart';
 import '../../../../widgets/page_loading_indicator.dart';
 import '../../../../widgets/speaking_practice_review_section.dart';
 import '../../course_practice_viewmodel.dart';
@@ -26,6 +25,7 @@ class IeltsSpeakingPractice1Review
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
 
     if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -59,7 +59,6 @@ class IeltsSpeakingPractice1Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -211,14 +210,12 @@ class IeltsSpeakingPractice1Review
         child: _buildQuestion(question: question, number: number),
       );
 
-
-
-  Widget _buildQuestion( {required String question, required String number}) => Text(
+  Widget _buildQuestion({required String question, required String number}) =>
+      Text(
         '$number. $question',
         style: style14DG400,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildPracticeReviewSection(
           {required BuildContext context,

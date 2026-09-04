@@ -1,5 +1,6 @@
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:safe_device/safe_device.dart';
 import 'package:yimaru_app/services/secure_storage_service.dart';
 
 import '../app/app.locator.dart';
@@ -7,6 +8,25 @@ import '../app/app.locator.dart';
 class StatusCheckerService {
   // Dependency injection
   final storage = locator<SecureStorageService>();
+
+  // Developer mode
+  bool? _isDeveloperModeEnabled;
+
+  bool? get isDeveloperModeEnabled => _isDeveloperModeEnabled;
+
+  // Developer mode
+  Future<void> checkDeveloperMode() async {
+    try {
+      _isDeveloperModeEnabled = await SafeDevice.isDevelopmentModeEnable ;
+    } catch (e) {
+      _isDeveloperModeEnabled = false;
+    }
+  }
+
+  Future<bool> isRestricted() async {
+    await checkDeveloperMode();
+    return _isDeveloperModeEnabled ?? false;
+  }
 
   // Check internet connection
   Future<bool> checkConnection() async {
