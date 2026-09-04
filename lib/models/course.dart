@@ -1,4 +1,3 @@
-import 'dart:js/js_wasm.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 

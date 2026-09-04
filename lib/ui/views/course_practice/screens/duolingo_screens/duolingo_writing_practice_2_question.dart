@@ -20,6 +20,7 @@ class DuolingoWritingPractice2Question
       {super.key, required this.practiceController});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds']);
     viewModel.nextScreen();
@@ -49,7 +50,6 @@ class DuolingoWritingPractice2Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -110,7 +110,6 @@ class DuolingoWritingPractice2Question
             '${LocaleKeys.writing_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -156,7 +155,6 @@ class DuolingoWritingPractice2Question
         textAlign: TextAlign.center,
       );
 
-
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
         LocaleKeys.will_write_seconds.tr(args: [
           viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -167,7 +165,6 @@ class DuolingoWritingPractice2Question
         style: style14DG400,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeTextCard(

@@ -112,17 +112,18 @@ class CourseProgressSection extends ViewModelWidget<MyProgressViewModel> {
         horizontalSpaceMedium,
       ];
 
-  Widget _buildWatchedVideos() =>
-      CustomColumn(title: LocaleKeys.zero_slash_zero.tr(), subtitle: LocaleKeys.videos.tr());
+  Widget _buildWatchedVideos() => CustomColumn(
+      title: LocaleKeys.zero_slash_zero.tr(), subtitle: LocaleKeys.videos.tr());
 
-  Widget _buildCompletedPractices() =>
-      CustomColumn(title: LocaleKeys.zero_slash_zero.tr(), subtitle: LocaleKeys.practice.tr());
+  Widget _buildCompletedPractices() => CustomColumn(
+      title: LocaleKeys.zero_slash_zero.tr(),
+      subtitle: LocaleKeys.practice.tr());
 
   Widget _buildActionButton() => CustomElevatedButton(
         height: 15,
         borderRadius: 12,
-        text: LocaleKeys.continue_course.tr(),
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
+        text: LocaleKeys.continue_course.tr(),
       );
 }

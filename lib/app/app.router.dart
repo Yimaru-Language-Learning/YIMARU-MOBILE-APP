@@ -582,11 +582,10 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i25.LearnProgramView: (data) {
-      final args = data.getArgs<LearnProgramViewArguments>(
-        orElse: () => const LearnProgramViewArguments(),
-      );
+      final args = data.getArgs<LearnProgramViewArguments>(nullOk: false);
       return _i42.MaterialPageRoute<dynamic>(
-        builder: (context) => _i25.LearnProgramView(key: args.key),
+        builder: (context) =>
+            _i25.LearnProgramView(key: args.key, showAppBar: args.showAppBar),
         settings: data,
       );
     },
@@ -1342,24 +1341,29 @@ class CourseViewArguments {
 }
 
 class LearnProgramViewArguments {
-  const LearnProgramViewArguments({this.key});
+  const LearnProgramViewArguments({
+    this.key,
+    required this.showAppBar,
+  });
 
   final _i42.Key? key;
 
+  final bool showAppBar;
+
   @override
   String toString() {
-    return '{"key": "$key"}';
+    return '{"key": "$key", "showAppBar": "$showAppBar"}';
   }
 
   @override
   bool operator ==(covariant LearnProgramViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key;
+    return other.key == key && other.showAppBar == showAppBar;
   }
 
   @override
   int get hashCode {
-    return key.hashCode;
+    return key.hashCode ^ showAppBar.hashCode;
   }
 }
 
@@ -2204,6 +2208,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
 
   Future<dynamic> navigateToLearnProgramView({
     _i42.Key? key,
+    required bool showAppBar,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2211,7 +2216,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.learnProgramView,
-        arguments: LearnProgramViewArguments(key: key),
+        arguments: LearnProgramViewArguments(key: key, showAppBar: showAppBar),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -2903,6 +2908,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
 
   Future<dynamic> replaceWithLearnProgramView({
     _i42.Key? key,
+    required bool showAppBar,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -2910,7 +2916,7 @@ extension NavigatorStateExtension on _i51.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.learnProgramView,
-        arguments: LearnProgramViewArguments(key: key),
+        arguments: LearnProgramViewArguments(key: key, showAppBar: showAppBar),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

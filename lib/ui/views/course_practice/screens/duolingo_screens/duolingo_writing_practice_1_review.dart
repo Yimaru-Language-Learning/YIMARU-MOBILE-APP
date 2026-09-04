@@ -45,7 +45,6 @@ class DuolingoWritingPractice1Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -102,7 +101,6 @@ class DuolingoWritingPractice1Review
         title:
             '${LocaleKeys.writing_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
-
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -175,7 +173,6 @@ class DuolingoWritingPractice1Review
         style: style18DG700,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildImageContainer(CoursePracticeViewModel viewModel) => SizedBox(
         width: 250,

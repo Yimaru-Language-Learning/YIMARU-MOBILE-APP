@@ -53,7 +53,6 @@ class DuolingoWritingPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -77,7 +76,6 @@ class DuolingoWritingPractice1Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:
             _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
@@ -112,7 +110,6 @@ class DuolingoWritingPractice1Question
         title:
             '${LocaleKeys.writing_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
-
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -152,7 +149,7 @@ class DuolingoWritingPractice1Question
           verticalSpaceTiny,
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildContinueButtonWrapper(viewModel)
       ];
 
@@ -166,7 +163,6 @@ class DuolingoWritingPractice1Question
         style: style18DG700,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildImageContainer(CoursePracticeViewModel viewModel) => SizedBox(
         width: 250,
@@ -196,7 +192,6 @@ class DuolingoWritingPractice1Question
             focus: true,
             hint: LocaleKeys.start_writing_here.tr(),
             filled: practiceController.text.isNotEmpty),
-
       );
 
   Widget _buildPracticeWrapper(CoursePracticeViewModel viewModel) =>

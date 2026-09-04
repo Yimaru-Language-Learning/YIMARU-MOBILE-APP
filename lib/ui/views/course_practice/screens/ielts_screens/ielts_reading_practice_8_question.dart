@@ -12,7 +12,6 @@ import '../../../../widgets/countdown_timer.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
 import '../../../../widgets/custom_elevated_button.dart';
 import '../../../../widgets/ielts_practice_review_section.dart';
-import '../../../../widgets/instruction_card.dart';
 import '../../../../widgets/page_loading_indicator.dart';
 import '../../course_practice_viewmodel.dart';
 
@@ -52,8 +51,6 @@ class IeltsReadingPractice8Question
   Future<void> _nextScreen(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
-    FocusManager.instance.primaryFocus?.unfocus();
-
     if (viewModel.showAnswer) {
       viewModel.clearAnswer();
       if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -116,7 +113,6 @@ class IeltsReadingPractice8Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -578,7 +574,7 @@ class IeltsReadingPractice8Question
         margin: const EdgeInsets.symmetric(vertical: 12),
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          color: highlight ? kcPrimaryColor.withOpacity(.08) : kcWhite,
+          color: highlight ? kcPrimaryColor.withValues(alpha: .08) : kcWhite,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color:

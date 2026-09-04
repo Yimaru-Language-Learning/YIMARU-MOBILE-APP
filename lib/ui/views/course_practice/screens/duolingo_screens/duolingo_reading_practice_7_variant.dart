@@ -24,7 +24,6 @@ class DuolingoReadingPractice7Variant
       _buildScaffold(viewModel);
 
   Widget _buildScaffold(CoursePracticeViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _getVariant(viewModel),
       );

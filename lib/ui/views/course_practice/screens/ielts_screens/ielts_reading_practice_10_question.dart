@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/custom_table.dart';
-import 'package:yimaru_app/ui/widgets/ielts_fill_in_the_blanks_question.dart';
 import 'package:yimaru_app/ui/widgets/instruction_card.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
@@ -47,8 +46,12 @@ class IeltsReadingPractice10Question
     } else {
       _setShowAnswer(viewModel);
 
-      for (int i = 0; i <  (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-          ?.response?[1].value['options'] as List).length; i++) {
+      for (int i = 0;
+          i <
+              (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                      ?.response?[1].value['options'] as List)
+                  .length;
+          i++) {
         await viewModel.setListeningAnswer(
           sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
               ?.response?[1].value['options'] as List)[i]['text'],
@@ -81,7 +84,6 @@ class IeltsReadingPractice10Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -257,9 +259,9 @@ class IeltsReadingPractice10Question
             .dynamicPayload?.stimulus?.first.value,
       );
 
-  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CustomTable(data: viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?[1].value);
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) => CustomTable(
+      data: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+          ?.stimulus?[1].value);
 
   Widget _buildContinueButtonState(
           {required BuildContext context,

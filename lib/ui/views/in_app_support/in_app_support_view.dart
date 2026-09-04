@@ -55,7 +55,6 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(InAppSupportViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -95,7 +94,10 @@ class InAppSupportView extends StackedView<InAppSupportViewModel>
       );
 
   Widget _buildExpandedColumn(InAppSupportViewModel viewModel) =>
-      Expanded(child: _buildColumnWrapper(viewModel));
+      Expanded(child: _buildColumnScrollerWrapper(viewModel));
+
+  Widget _buildColumnScrollerWrapper(InAppSupportViewModel viewModel) =>
+      SingleChildScrollView(child: _buildColumnWrapper(viewModel));
 
   Widget _buildColumnWrapper(InAppSupportViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

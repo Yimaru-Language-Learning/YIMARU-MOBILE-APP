@@ -25,6 +25,7 @@ import 'package:yimaru_app/services/onboarding_service.dart';
 import 'package:yimaru_app/services/in_app_notification_service.dart';
 import 'package:yimaru_app/services/push_notification_service.dart';
 import 'package:yimaru_app/services/cache_image_service.dart';
+import 'package:yimaru_app/services/developer_mode_service.dart';
 // @stacked-import
 
 @GenerateMocks(
@@ -64,6 +65,7 @@ import 'package:yimaru_app/services/cache_image_service.dart';
     MockSpec<PushNotificationService>(
         onMissingStub: OnMissingStub.returnDefault),
     MockSpec<CacheImageService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<DeveloperModeService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
   ],
 )
@@ -98,6 +100,7 @@ void registerServices() {
   getAndRegisterInAppNotificationService();
   getAndRegisterPushNotificationService();
   getAndRegisterCacheImageService();
+  getAndRegisterDeveloperModeService();
 // @stacked-mock-register
 }
 
@@ -313,6 +316,13 @@ MockCacheImageService getAndRegisterCacheImageService() {
   _removeRegistrationIfExists<CacheImageService>();
   final service = MockCacheImageService();
   locator.registerSingleton<CacheImageService>(service);
+  return service;
+}
+
+MockDeveloperModeService getAndRegisterDeveloperModeService() {
+  _removeRegistrationIfExists<DeveloperModeService>();
+  final service = MockDeveloperModeService();
+  locator.registerSingleton<DeveloperModeService>(service);
   return service;
 }
 // @stacked-mock-create

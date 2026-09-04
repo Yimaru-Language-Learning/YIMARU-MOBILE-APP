@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:yimaru_app/models/parent.dart';
 
 part 'course_practice.g.dart';
 
@@ -10,6 +11,8 @@ class CoursePractice {
 
   @JsonKey(name: 'lesson_id')
   final int? lessonId;
+
+  final List<Parent>? parents;
 
   @JsonKey(name: 'persona_id')
   final int? personaId;
@@ -32,6 +35,7 @@ class CoursePractice {
   const CoursePractice(
       {this.id,
       this.title,
+      this.parents,
       this.lessonId,
       this.quickTips,
       this.storyImage,

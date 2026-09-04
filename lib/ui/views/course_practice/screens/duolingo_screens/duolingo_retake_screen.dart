@@ -43,7 +43,6 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildSafeWrapper(context: context, viewModel: viewModel),
       );
@@ -127,7 +126,6 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
     }
   }
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -163,7 +161,7 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
       ];
 
   Widget _buildPracticeButton(CoursePracticeViewModel viewModel) =>
-       CustomElevatedButton(
+      CustomElevatedButton(
         height: 55,
         bottom: false,
         borderRadius: 12,

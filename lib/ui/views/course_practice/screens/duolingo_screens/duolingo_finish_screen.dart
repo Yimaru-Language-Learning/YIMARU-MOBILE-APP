@@ -21,8 +21,8 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
       {super.key, required this.title, required this.subtitle});
 
   Future<void> _navigate(CoursePracticeViewModel viewModel) async {
-    await viewModel.completeCoursePractice(
-        viewModel.practices[viewModel.currentPractice].id ?? 0);
+    await viewModel
+        .completeCoursePractice(viewModel.practices[viewModel.currentPractice]);
     viewModel.pop();
   }
 
@@ -50,7 +50,6 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldState(context: context, viewModel: viewModel),
       );
@@ -140,7 +139,6 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
       return LocaleKeys.reading_practice.tr();
     }
   }
-
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,

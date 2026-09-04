@@ -51,7 +51,6 @@ class DuolingoSpeakingPractice3Answer
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -112,7 +111,6 @@ class DuolingoSpeakingPractice3Answer
             '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -167,7 +165,6 @@ class DuolingoSpeakingPractice3Answer
 
   Widget _buildSpeakerLabel() =>
       SpeakingLabel(label: LocaleKeys.you_are_speaking_status.tr());
-
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState

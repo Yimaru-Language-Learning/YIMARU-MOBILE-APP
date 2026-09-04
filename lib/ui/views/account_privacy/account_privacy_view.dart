@@ -26,7 +26,6 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(AccountPrivacyViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(viewModel),
       );
@@ -85,9 +84,9 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
         children: _buildContentChildren(viewModel),
       );
 
-  List<Widget> _buildContentChildren(AccountPrivacyViewModel viewModel) =>
-      [_buildMenuColumnScrollView(viewModel),
-       // _buildDeleteButtonWrapper()
+  List<Widget> _buildContentChildren(AccountPrivacyViewModel viewModel) => [
+        _buildMenuColumnScrollView(viewModel),
+        // _buildDeleteButtonWrapper()
       ];
 
   Widget _buildMenuColumnScrollView(AccountPrivacyViewModel viewModel) =>

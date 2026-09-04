@@ -39,7 +39,6 @@ class DuolingoReadingPractice8Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -95,7 +94,6 @@ class DuolingoReadingPractice8Review
             '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -146,7 +144,6 @@ class DuolingoReadingPractice8Review
         verticalSpaceTiny,
         _buildAnswerWrapper(
             '${LocaleKeys.your_answer_is.tr()} ${viewModel.answers.elementAt(1)['response']}'),
-
         verticalSpaceMedium,
         verticalSpaceLarge,
         _buildPracticeReviewSection(context: context, viewModel: viewModel)
@@ -161,7 +158,6 @@ class DuolingoReadingPractice8Review
         LocaleKeys.complete_passage.tr(),
         style: style16DG600,
       );
-
 
   Widget _buildQuestionWrapper(String question) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

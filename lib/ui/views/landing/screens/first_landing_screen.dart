@@ -18,7 +18,6 @@ class FirstLandingScreen extends ViewModelWidget<LandingViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(LandingViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcPrimaryColor,
         body: _buildScaffoldPadding(viewModel),
       );

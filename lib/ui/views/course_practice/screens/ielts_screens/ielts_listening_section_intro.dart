@@ -23,7 +23,8 @@ class IeltsListeningSectionIntro
 
   const IeltsListeningSectionIntro({super.key, required this.title});
 
-  Future<void> _next(CoursePracticeViewModel viewModel)async{
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
     viewModel.nextScreen();
   }
@@ -52,7 +53,6 @@ class IeltsListeningSectionIntro
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -222,12 +222,13 @@ class IeltsListeningSectionIntro
         text: LocaleKeys.cont.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: ()async => await _next(viewModel),
+        onTap: () async => await _next(viewModel),
         backgroundColor: kcPrimaryColor,
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
-      viewModel.busy(StateObjects.coursePractice) ||  viewModel.busy(StateObjects.stopAudio)
+      viewModel.busy(StateObjects.coursePractice) ||
+              viewModel.busy(StateObjects.stopAudio)
           ? const PageLoadingIndicator()
           : Container();
 }

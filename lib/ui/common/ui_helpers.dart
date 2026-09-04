@@ -154,7 +154,7 @@ OutlineInputBorder dropdownBorder = OutlineInputBorder(
 // Table border
 OutlineInputBorder tableBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(10),
-  borderSide: const BorderSide(color:kcLightGrey),
+  borderSide: const BorderSide(color: kcLightGrey),
 );
 
 TextStyle defaultPinTextStyle = const TextStyle(

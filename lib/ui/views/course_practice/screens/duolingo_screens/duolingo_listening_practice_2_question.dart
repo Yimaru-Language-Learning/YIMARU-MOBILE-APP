@@ -20,6 +20,7 @@ class DuolingoListeningPractice2Question
   const DuolingoListeningPractice2Question({super.key});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
     for (int i = 0; i < 3; i++) {
       await viewModel.setListeningAnswer(
@@ -56,7 +57,6 @@ class DuolingoListeningPractice2Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -90,7 +90,6 @@ class DuolingoListeningPractice2Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:
             _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
@@ -100,8 +99,7 @@ class DuolingoListeningPractice2Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildQuestionWrapper(viewModel),
-        _buildContinueButtonWrapper(viewModel)
+        _buildQuestionExpandedWrapper(viewModel),
       ];
 
   Widget _buildAppBarWrapper(
@@ -135,7 +133,6 @@ class DuolingoListeningPractice2Question
             '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
       alignment: Alignment.centerRight, child: _buildCountdown(viewModel));
 
@@ -149,6 +146,14 @@ class DuolingoListeningPractice2Question
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
         onCancel: () async => await _cancel(viewModel),
+      );
+
+  Widget _buildQuestionExpandedWrapper(CoursePracticeViewModel viewModel) =>
+      Expanded(child: _buildQuestionScroller(viewModel));
+
+  Widget _buildQuestionScroller(CoursePracticeViewModel viewModel) =>
+      SingleChildScrollView(
+        child: _buildQuestionWrapper(viewModel),
       );
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Column(
@@ -177,7 +182,8 @@ class DuolingoListeningPractice2Question
             .dynamicPayload?.stimulus?[3].value),
         verticalSpaceTiny,
         _buildTextField(value: '2', viewModel: viewModel),
-        verticalSpaceSmall,
+        verticalSpaceLarge,
+        _buildContinueButtonWrapper(viewModel)
       ];
 
   Widget _buildTitle() => Text(
@@ -185,7 +191,6 @@ class DuolingoListeningPractice2Question
         style: style18DG700,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       ListenableRepetitivePracticeCard(
@@ -205,8 +210,9 @@ class DuolingoListeningPractice2Question
       TextField(
         style: style14MG400,
         decoration: inputDecoration(
-            focus: true, filled: true, hint: LocaleKeys.start_writing_here.tr()),
-
+            focus: true,
+            filled: true,
+            hint: LocaleKeys.start_writing_here.tr()),
         onChanged: (change) => viewModel.updateAnswer(value, change),
       );
 

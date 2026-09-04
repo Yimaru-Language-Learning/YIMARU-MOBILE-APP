@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
@@ -24,7 +26,6 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
       {required int index,
       required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
-
     await viewModel.updatePaymentStatus();
 
     if (type == SubscriptionType.duolingo) {
@@ -34,7 +35,11 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
             context: context,
             id: viewModel.practices[index].questionSetId ?? 0);
       } else {
-        await viewModel.navigateToCourseSubscription(SubscriptionType.duolingo);
+        if(Platform.isIOS){
+          await viewModel.showPurchaseDialog();
+        }else{
+          await viewModel.navigateToCourseSubscription(SubscriptionType.duolingo);
+        }
       }
     } else {
       if (viewModel.user?.ielts ?? false) {
@@ -43,7 +48,11 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
             context: context,
             id: viewModel.practices[index].questionSetId ?? 0);
       } else {
-        await viewModel.navigateToCourseSubscription(SubscriptionType.ielts);
+        if(Platform.isIOS){
+          await viewModel.showPurchaseDialog();
+        }else{
+          await viewModel.navigateToCourseSubscription(SubscriptionType.ielts);
+        }
       }
     }
   }
@@ -56,7 +65,6 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );

@@ -207,18 +207,16 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   }
 
   // Dialogue
-  Future<bool?> showAbortDialog() async {
-    DialogResponse? response = await _dialogService.showDialog(
-      cancelTitle: LocaleKeys.no.tr(),
-      title: LocaleKeys.recording.tr(),
-      buttonTitle: LocaleKeys.yes.tr(),
+  Future<void> showAbortDialog() async =>
+    await _dialogService.showDialog(
       barrierDismissible: true,
       cancelTitleColor: kcDarkGrey,
+      title: LocaleKeys.content.tr(),
       buttonTitleColor: kcPrimaryColor,
-      description: LocaleKeys.stop_recording_warning.tr(),
+      buttonTitle: LocaleKeys.close.tr(),
+      description: LocaleKeys.ios_purchase.tr(),
     );
-    return response?.confirmed;
-  }
+
 
   // In-app navigation
   void goTo(int page) {
@@ -267,6 +265,8 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     questionSetController.jumpToPage(0);
   }
 
+
+
   // Navigation
   void pop() => _navigationService.back();
 
@@ -278,7 +278,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   // Refresh url
   /*Future<String?> refreshUrl(String url) async =>
       await _learnService.refreshObject(url);*/
-
 
   // Update payment status
 
@@ -301,7 +300,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   Future<void> _getLearnPractices(
       {required int id, required LearnPractices practice}) async {
-
     if (await _statusChecker.checkConnection()) {
       if (practice == LearnPractices.course) {
         await _updatePaymentStatus();
@@ -325,10 +323,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     _questions = await _apiService.getLearnQuestions(id);
   }
 
-
-
-
-
   // Complete practice
   Future<void> completeLearnPractice() async =>
       await runBusyFuture(_completeLearnPractice(),
@@ -336,8 +330,15 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   Future<void> _completeLearnPractice() async {
     if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> data = {
+        'parent_id': _practices.first.parents?.first.parentId ?? 0,
+        'parent_kind': _practices.first.parents?.first.parentKind?.toUpperCase()
+      };
       await stopAudio();
-      await _apiService.completePractice(_practices.first.id ?? 0);
+      await _apiService.completePractice(
+        data: data,
+        id: _practices.first.id ?? 0,
+      );
       await _learnService.getLearnProgress();
     }
   }
