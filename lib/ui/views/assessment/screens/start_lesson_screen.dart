@@ -32,7 +32,6 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(AssessmentViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(viewModel),
       );

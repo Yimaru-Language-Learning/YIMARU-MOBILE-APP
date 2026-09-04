@@ -173,15 +173,20 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       return const DuolingoReadingPractice1Variant();
     } else if (id == 3 /*Duolingo - Fill in the blank*/) {
       return const DuolingoReadingPractice2Variant();
-    } else if (id == 51 /*Duolingo - Interactive reading - complete the sentence*/) {
+    } else if (id ==
+        51 /*Duolingo - Interactive reading - complete the sentence*/) {
       return const DuolingoReadingPractice3Question();
-    } else if (id == 52 /*Duolingo - Interactive reading - complete the passage*/) {
+    } else if (id ==
+        52 /*Duolingo - Interactive reading - complete the passage*/) {
       return const DuolingoReadingPractice4Question();
-    } else if (id == 53 /*Duolingo - Interactive reading - identify the idea*/) {
+    } else if (id ==
+        53 /*Duolingo - Interactive reading - identify the idea*/) {
       return const DuolingoReadingPractice5Question();
-    } else if (id == 54 /*Duolingo - Interactive reading - title the passage*/) {
+    } else if (id ==
+        54 /*Duolingo - Interactive reading - title the passage*/) {
       return const DuolingoReadingPractice6Question();
-    } else if (id == 55 /*Duolingo - Interactive reading - highlight the answer*/) {
+    } else if (id ==
+        55 /*Duolingo - Interactive reading - highlight the answer*/) {
       return const DuolingoReadingPractice7Variant();
     } else if (id == 50 /*Duolingo - Read and complete*/) {
       return DuolingoReadingPractice8Variant(
@@ -288,9 +293,11 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     } else if (id == 57 /*Duolingo - Interactive listening part 3*/) {
       return DuolingoListeningPractice4Review(
           practiceController: practiceController);
-    } else if (id == 51 /*Duolingo - Interactive reading - complete the sentence*/) {
+    } else if (id ==
+        51 /*Duolingo - Interactive reading - complete the sentence*/) {
       return const DuolingoReadingPractice3Review();
-    } else if (id == 55 /*Duolingo - Interactive reading - highlight the answer*/) {
+    } else if (id ==
+        55 /*Duolingo - Interactive reading - highlight the answer*/) {
       return const DuolingoReadingPractice7Review();
     } else if (id == 50 /*Duolingo - Read and complete*/) {
       return const DuolingoReadingPractice8Review();
@@ -300,9 +307,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
   }
 
   bool _buildIeltsSectionScreenCondition(CoursePracticeViewModel viewModel) =>
-      viewModel
-              .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          1  ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          1 ||
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           31 ||
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
@@ -340,13 +346,12 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           65 ||
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          68||
-          viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-              69;
+          68 ||
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          69;
 
   bool _buildIeltsIntroScreenCondition(CoursePracticeViewModel viewModel) =>
-      viewModel
-              .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           1 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           31 &&
@@ -384,13 +389,11 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           65 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           68 &&
-          viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-              69;
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          69;
 
   Widget? _buildIeltsIntroScreenWrapper(CoursePracticeViewModel viewModel) {
-
     if (_buildIeltsSectionScreenCondition(viewModel)) {
-
       if (viewModel.stimulusBlockKey != null) {
         if (viewModel.isSectionStart) {
           if (viewModel.questions[viewModel.currentQuestion].stimulusBlockKey ==
@@ -400,17 +403,17 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           } else if (viewModel
                   .questions[viewModel.currentQuestion].stimulusBlockKey ==
               'listening-section-2') {
-            return  IeltsListeningSectionIntro(
+            return IeltsListeningSectionIntro(
                 title: LocaleKeys.listening_section_2.tr());
           } else if (viewModel
                   .questions[viewModel.currentQuestion].stimulusBlockKey ==
               'listening-section-3') {
-            return  IeltsListeningSectionIntro(
+            return IeltsListeningSectionIntro(
                 title: LocaleKeys.listening_section_3.tr());
           } else if (viewModel
                   .questions[viewModel.currentQuestion].stimulusBlockKey ==
               'listening-section-4') {
-            return  IeltsListeningSectionIntro(
+            return IeltsListeningSectionIntro(
                 title: LocaleKeys.listening_section_4.tr());
           } else if (viewModel
                   .questions[viewModel.currentQuestion].stimulusBlockKey ==
@@ -546,8 +549,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           65 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-          68 &&viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-  69;
+          68 &&
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          69;
 
   Widget _buildIeltsAnswerScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
@@ -567,8 +571,7 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
   }
 
   bool _buildIeltsReviewScreenCondition(CoursePracticeViewModel viewModel) =>
-      viewModel
-              .questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           1 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           31 &&
@@ -608,8 +611,8 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
           65 &&
       viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
           68 &&
-          viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
-              69;
+      viewModel.questions[viewModel.currentQuestion].questionTypeDefinitionId !=
+          69;
 
   Widget _buildIeltsReviewScreen(CoursePracticeViewModel viewModel) {
     int id = viewModel
@@ -697,7 +700,6 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
       );
 
   Widget _buildScaffoldWrapper(CoursePracticeViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildBodyState(viewModel),
       );

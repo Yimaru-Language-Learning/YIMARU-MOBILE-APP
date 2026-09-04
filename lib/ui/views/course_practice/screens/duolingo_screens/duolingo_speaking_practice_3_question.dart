@@ -21,8 +21,8 @@ class DuolingoSpeakingPractice3Question
   });
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
-    if (!await viewModel.startRecording()) return;
-
+   FocusManager.instance.primaryFocus?.unfocus();
+    await viewModel.startRecording();
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds']);
     viewModel.nextScreen();
@@ -52,7 +52,6 @@ class DuolingoSpeakingPractice3Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -123,7 +122,6 @@ class DuolingoSpeakingPractice3Question
             '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -169,7 +167,6 @@ class DuolingoSpeakingPractice3Question
         textAlign: TextAlign.center,
       );
 
-
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
         LocaleKeys.speak_topic_below_seconds.tr(args: [
           viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -180,7 +177,6 @@ class DuolingoSpeakingPractice3Question
         style: style14DG400,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
       CoursePracticeTextCard(

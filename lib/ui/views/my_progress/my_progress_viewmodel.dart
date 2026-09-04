@@ -1,5 +1,6 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:yimaru_app/app/app.router.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../services/course_service.dart';
@@ -7,7 +8,7 @@ import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 
-class MyProgressViewModel extends BaseViewModel {
+class MyProgressViewModel extends ReactiveViewModel {
   // Dependency injection
   final _learnService = locator<LearnService>();
 
@@ -50,6 +51,12 @@ class MyProgressViewModel extends BaseViewModel {
 
   // Navigation
   void pop() => _navigationService.back();
+
+  Future<void> navigateToCourseCatalog() async =>
+      await _navigationService.navigateToCourseCatalogView();
+
+  Future<void> navigateToLearnProgram() async =>
+      await _navigationService.navigateToLearnProgramView(showAppBar: false);
 
   // Remote api
 

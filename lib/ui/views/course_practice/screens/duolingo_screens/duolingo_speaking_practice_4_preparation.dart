@@ -54,7 +54,6 @@ class DuolingoSpeakingPractice4Preparation
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -125,7 +124,6 @@ class DuolingoSpeakingPractice4Preparation
             '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -169,7 +167,6 @@ class DuolingoSpeakingPractice4Preparation
         textAlign: TextAlign.center,
       );
 
-
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
         LocaleKeys.listen_questions_answer_seconds.tr(args: [
           viewModel.questions[viewModel.currentQuestion].dynamicPayload
@@ -180,7 +177,6 @@ class DuolingoSpeakingPractice4Preparation
         style: style14DG400,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildQuestion() => Image.asset('assets/icons/dwarf.png');
 

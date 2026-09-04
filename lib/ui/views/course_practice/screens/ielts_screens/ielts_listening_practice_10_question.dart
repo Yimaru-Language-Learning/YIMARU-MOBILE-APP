@@ -29,9 +29,8 @@ class IeltsListeningPractice10Question
   Future<void> _nextScreen(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
-    FocusManager.instance.primaryFocus?.unfocus();
     _reset(viewModel);
-
+    FocusManager.instance.primaryFocus?.unfocus();
     if (viewModel.showAnswer) {
       viewModel.clearAnswer();
       if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -83,7 +82,6 @@ class IeltsListeningPractice10Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -282,7 +280,9 @@ class IeltsListeningPractice10Question
       TextField(
         style: style14MG400,
         decoration: inputDecoration(
-            focus: true, filled: true, hint: LocaleKeys.start_writing_here.tr()),
+            focus: true,
+            filled: true,
+            hint: LocaleKeys.start_writing_here.tr()),
         onChanged: (change) => viewModel.updateAnswer(value, change),
       );
 

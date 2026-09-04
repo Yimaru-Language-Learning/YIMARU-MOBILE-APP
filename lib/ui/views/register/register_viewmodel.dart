@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:stacked/stacked.dart';
@@ -419,8 +421,8 @@ class RegisterViewModel extends ReactiveViewModel
 
     if (token != null) {
       Map<String, dynamic> deviceData = {
-        "platform": "android",
         'device_token': token,
+        'platform': Platform.isAndroid ? 'android':'ios',
       };
       await _apiService.registerDevice(deviceData);
     }

@@ -42,7 +42,6 @@ class DuolingoListeningPractice4Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -98,7 +97,6 @@ class DuolingoListeningPractice4Review
             '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
-
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
@@ -149,7 +147,6 @@ class DuolingoListeningPractice4Review
         style: style18DG700,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

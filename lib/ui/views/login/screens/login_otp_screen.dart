@@ -53,7 +53,6 @@ class LoginOtpScreen extends ViewModelWidget<LoginViewModel> {
   Widget _buildScaffoldWrapper(
           {required BuildContext context, required LoginViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldContainer(context: context, viewModel: viewModel),
       );

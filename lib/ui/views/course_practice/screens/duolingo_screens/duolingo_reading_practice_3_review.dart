@@ -41,7 +41,6 @@ class DuolingoReadingPractice3Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -96,7 +95,6 @@ class DuolingoReadingPractice3Review
         title:
             '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
-
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -153,7 +151,6 @@ class DuolingoReadingPractice3Review
         style: style18DG700,
         textAlign: TextAlign.center,
       );
-
 
   Widget _buildQuestionWrapper(CoursePracticeViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),

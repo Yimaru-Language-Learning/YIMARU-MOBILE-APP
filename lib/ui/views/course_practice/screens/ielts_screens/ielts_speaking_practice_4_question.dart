@@ -40,7 +40,6 @@ class IeltsSpeakingPractice4Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -126,7 +125,7 @@ class IeltsSpeakingPractice4Question
       [_buildSpeakerLabel(), verticalSpaceMedium, _buildSpeakingIndicator()];
 
   Widget _buildSpeakerLabel() =>
-       SpeakingLabel(label: LocaleKeys.examiner_is_speaking.tr());
+      SpeakingLabel(label: LocaleKeys.examiner_is_speaking.tr());
 
   Widget _buildSpeakingIndicator() => const SpeakingIndicator(size: 75);
 }

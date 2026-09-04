@@ -8,6 +8,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 
 import '../../../services/authentication_service.dart';
+import '../../../services/developer_mode_service.dart';
 import '../../../services/in_app_notification_service.dart';
 
 class HomeViewModel extends ReactiveViewModel {
@@ -16,13 +17,18 @@ class HomeViewModel extends ReactiveViewModel {
 
   final _bottomSheetService = locator<BottomSheetService>();
 
+  final _developerModeService = locator<DeveloperModeService>();
+
   final _authenticationService = locator<AuthenticationService>();
 
   final _inAppNotificationService = locator<InAppNotificationService>();
 
   @override
-  List<ListenableServiceMixin> get listenableServices =>
-      [_authenticationService, _inAppNotificationService];
+  List<ListenableServiceMixin> get listenableServices => [
+        _authenticationService,
+        _developerModeService,
+        _inAppNotificationService
+      ];
 
   // Current user
   User? get _user => _authenticationService.user;
@@ -34,10 +40,15 @@ class HomeViewModel extends ReactiveViewModel {
 
   StateObjects get state => _state;
 
+  // Developer mode
+  bool get isDeveloperModeEnabled => _developerModeService.developerModeEnabled;
+
+
   // Bottom navigation
   int _currentPage = 0;
 
   int get currentPage => _currentPage;
+
 
   // Bottom navigation
   void showBottomSheet() {

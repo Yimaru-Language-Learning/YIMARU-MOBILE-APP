@@ -36,7 +36,6 @@ class TopicFormScreen extends ViewModelWidget<OnboardingViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(OnboardingViewModel viewModel) => Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(viewModel),
       );

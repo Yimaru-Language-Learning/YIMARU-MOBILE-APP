@@ -101,7 +101,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   bool get isDrag => _isDrag;
 
-  List<int> _usedHeadingIds = [];
+  final List<int> _usedHeadingIds = [];
 
   List<int> get usedHeadingIds => _usedHeadingIds;
 
@@ -639,8 +639,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   int get variant => _variant;
 
-
-
   // Counter time
   void setCountdown(int durationInSeconds) {
     _countdown = DateTime.now().add(
@@ -801,7 +799,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> setSectionQuestionIntros(
       {required int id, required BuildContext context}) async {
-
     print(id);
     if (id == 40 /*IELTS Listening - Form Completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(26);
@@ -878,7 +875,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
       print('HERE 3');
       setCountdown(responseLastSec);
       print('HERE 4');
-
     } else if (id == 34 /*IELTS Listening - Summary completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(34);
       int responseLastSec = _questions[_currentQuestion]
@@ -1155,7 +1151,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Dialogue
-  Future<void> showAbortDialog(String passage) async =>
+  Future<void> showPassageAbortDialog(String passage) async =>
       await _dialogService.showDialog(
         title: LocaleKeys.passage.tr(),
         buttonTitle: LocaleKeys.close.tr(),
@@ -1163,6 +1159,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
         barrierDismissible: true,
         cancelTitleColor: kcDarkGrey,
         buttonTitleColor: kcPrimaryColor,
+      );
+
+  Future<void> showPurchaseDialog() async =>
+      await _dialogService.showDialog(
+        barrierDismissible: true,
+        cancelTitleColor: kcDarkGrey,
+        title: LocaleKeys.content.tr(),
+        buttonTitleColor: kcPrimaryColor,
+        buttonTitle: LocaleKeys.close.tr(),
+        description: LocaleKeys.ios_purchase.tr(),
       );
 
   // Set highlight
@@ -1513,7 +1519,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> setWritingAnswer(
       {required String sample, required String response}) async {
-    FocusManager.instance.primaryFocus?.unfocus();
     _answers.add({'sample': sample, 'response': response});
     nextScreen();
   }
@@ -1758,7 +1763,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
       });
 
       if (_questions[_currentQuestion].stimulusBlockKey != null) {
-
         _isSectionStart = true;
         _stimulusBlockKey = _questions[_currentQuestion].stimulusBlockKey;
       }
@@ -1768,16 +1772,13 @@ class CoursePracticeViewModel extends ReactiveViewModel
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
       print('QUESTIONS 2: ${_questions.length}');
-
     } else {
-
       await setSingleQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
     }
 
     _currentPage = 1;
-
   }
 
   // Update payment status
@@ -1797,20 +1798,23 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Complete practice
-  Future<void> completeCoursePractice(int id) async =>
-      await runBusyFuture(_completeCoursePractice(id),
+  Future<void> completeCoursePractice(CoursePractice practice) async =>
+      await runBusyFuture(_completeCoursePractice(practice),
           busyObject: StateObjects.completeCoursePractice);
 
-  Future<void> _completeCoursePractice(int id) async {
+  Future<void> _completeCoursePractice(CoursePractice practice) async {
     if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> data = {
+        'parent_id': practice.parents?.first.parentId ?? 0,
+        'parent_kind': practice.parents?.first.parentKind?.toUpperCase() ?? ''
+      };
       await stopAudio();
-      /* await _apiService.completePractice(id);
-     await _courseService.getCourseProgress();*/
+      await _apiService.completePractice(data: data, id: practice.id ?? 0);
+      await _courseService.getCourseProgress();
     }
   }
-
-  // Refresh url
-  /*Future<String?> getRefreshedUrl(String value) async {
+// Refresh url
+/*Future<String?> getRefreshedUrl(String value) async {
     final String? refreshedUrl = await _courseService.refreshObject(value);
 
     if (refreshedUrl != null) {
@@ -1819,6 +1823,4 @@ class CoursePracticeViewModel extends ReactiveViewModel
       return null;
     }
   }*/
-
-  String getReadableImage(String image) => getReadableUrl(image) ?? '';
 }

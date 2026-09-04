@@ -22,6 +22,7 @@ class DuolingoSpeakingPractice3Review
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
 
     if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -55,7 +56,6 @@ class DuolingoSpeakingPractice3Review
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffoldStack(context: context, viewModel: viewModel),
       );
@@ -123,7 +123,6 @@ class DuolingoSpeakingPractice3Review
         title:
             '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
-
 
   Widget _buildCountdownWrapper(CoursePracticeViewModel viewModel) => Align(
         alignment: Alignment.centerRight,

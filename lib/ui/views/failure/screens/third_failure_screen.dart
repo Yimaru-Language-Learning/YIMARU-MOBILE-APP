@@ -19,7 +19,6 @@ class ThirdFailureScreen extends ViewModelWidget<FailureViewModel> {
       _buildScaffoldWrapper();
 
   Widget _buildScaffoldWrapper() => Scaffold(
-        
         backgroundColor: kcWhite,
         body: _buildScaffoldPadding(),
       );

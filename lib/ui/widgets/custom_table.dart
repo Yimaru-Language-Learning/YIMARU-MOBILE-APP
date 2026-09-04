@@ -67,8 +67,7 @@ class _CustomTableState extends State<CustomTable> {
     return _buildTableWrapper(number);
   }
 
-  Widget _buildTableWrapper(int number) =>
-      Card(
+  Widget _buildTableWrapper(int number) => Card(
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -77,87 +76,73 @@ class _CustomTableState extends State<CustomTable> {
         child: _buildTableClipWrapper(number),
       );
 
-  Widget _buildTableClipWrapper(int number) =>
-      ClipRRect(
+  Widget _buildTableClipWrapper(int number) => ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: _buildTableScrollerWrapper(number),
       );
 
-  Widget _buildTableScrollerWrapper(int number) =>
-      SingleChildScrollView(
+  Widget _buildTableScrollerWrapper(int number) => SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            minWidth: MediaQuery
-                .of(context)
-                .size
-                .width - 32,
+            minWidth: MediaQuery.of(context).size.width - 32,
           ),
           child: _buildTable(number),
         ),
       );
 
-  Widget _buildTable(int number) =>
-      Table(
+  Widget _buildTable(int number) => Table(
         columnWidths: {
           for (int i = 0; i < _columns.length; i++) i: const FlexColumnWidth(),
         },
-        border:  TableBorder(
+        border: TableBorder(
           bottom: BorderSide(color: kcVeryLightGrey.withValues(alpha: 0.25)),
-          horizontalInside: BorderSide(color: kcLightGrey.withValues(alpha: 0.25)),
+          horizontalInside:
+              BorderSide(color: kcLightGrey.withValues(alpha: 0.25)),
         ),
         children: _buildTableRowChildren(number),
       );
 
-  List<TableRow> _buildTableRowChildren(int number) =>
-      [
+  List<TableRow> _buildTableRowChildren(int number) => [
         _buildTableHeaderWrapper(),
-        ..._rows
-            .asMap()
-            .entries
-            .map((rowEntry) =>
-            _buildTableRowWrapper(
+        ..._rows.asMap().entries.map((rowEntry) => _buildTableRowWrapper(
               number: number,
               row: rowEntry.value,
               rowIdx: rowEntry.key,
             )),
       ];
 
-  TableRow _buildTableHeaderWrapper() =>
-      TableRow(
-        decoration: BoxDecoration(color: kcVeryLightGrey.withValues(alpha: 0.75)),
+  TableRow _buildTableHeaderWrapper() => TableRow(
+        decoration:
+            BoxDecoration(color: kcVeryLightGrey.withValues(alpha: 0.75)),
         children: _columns.map((col) => _buildTableHeader(col)).toList(),
       );
 
-  Widget _buildTableHeader(String col) =>
-      Padding(
+  Widget _buildTableHeader(String col) => Padding(
         padding: const EdgeInsets.all(16),
         child: _buildTableHeaderText(col),
       );
 
-  Widget _buildTableHeaderText(String col) =>
-      Text(
+  Widget _buildTableHeaderText(String col) => Text(
         col,
         style: style14DG400,
       );
 
-  TableRow _buildTableRowWrapper({required int rowIdx,
-    required int number,
-    required List<String> row}) =>
+  TableRow _buildTableRowWrapper(
+          {required int rowIdx,
+          required int number,
+          required List<String> row}) =>
       TableRow(
         children: row
             .asMap()
             .entries
-            .map((cellEntry) =>
-            _buildTableRow(
-              rowIdx: rowIdx,
-              cell: cellEntry.value,
-              colIdx: cellEntry.key,
-              number: number,
-              isEmpty: cellEntry.value
-                  .trim()
-                  .isEmpty,
-            ))
+            .map((cellEntry) => _buildTableRow(
+                  rowIdx: rowIdx,
+                  cell: cellEntry.value,
+                  colIdx: cellEntry.key,
+                  number: number,
+                  isEmpty: cellEntry.value.trim().isEmpty,
+                ))
             .toList(),
       );
 
@@ -202,8 +187,7 @@ class _CustomTableState extends State<CustomTable> {
         ],
       );
 
-  Widget _buildNumbering(int number) =>
-      Text(
+  Widget _buildNumbering(int number) => Text(
         '${number++}.',
         style: style14DG400,
       );
@@ -221,7 +205,8 @@ class _CustomTableState extends State<CustomTable> {
             isDense: true,
             hintStyle: style14DG400,
             fillColor: kcVeryLightGrey.withValues(alpha: 0.5),
-            hintText: '${LocaleKeys.enter.tr()} ${_columns[colIdx].toLowerCase()}...',
+            hintText:
+                '${LocaleKeys.enter.tr()} ${_columns[colIdx].toLowerCase()}...',
             border: tableBorder,
             focusedBorder: tableBorder,
             enabledBorder: tableBorder,
@@ -233,8 +218,7 @@ class _CustomTableState extends State<CustomTable> {
         ),
       );
 
-  Widget _buildCell(String cell) =>
-      Text(
+  Widget _buildCell(String cell) => Text(
         cell,
         style: style14DG400.copyWith(height: 1.5),
       );

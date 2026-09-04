@@ -44,6 +44,8 @@ class LearnProgramViewModel extends ReactiveViewModel {
   List<LearnProgram> get learnPrograms => _learnPrograms;
 
   // Navigation
+  void pop() => _navigationService.back();
+
   Future<void> navigateToNotification() async =>
       await _navigationService.navigateToNotificationView();
 

@@ -18,7 +18,6 @@ class SecondLandingScreen extends ViewModelWidget<LandingViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(LandingViewModel viewModel) => Scaffold(
-        
         backgroundColor: Colors.amber,
         body: _buildScaffoldPadding(viewModel),
       );

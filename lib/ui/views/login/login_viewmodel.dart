@@ -340,8 +340,9 @@ class LoginViewModel extends ReactiveViewModel
    String? token = await _pushNotificationService.getDeviceToken();
     if (token != null) {
       Map<String, dynamic> deviceData = {
-        "platform": "android",
         'device_token': token,
+        'platform': Platform.isAndroid ? 'android':'ios',
+
       };
       await _apiService.registerDevice(deviceData);
     }

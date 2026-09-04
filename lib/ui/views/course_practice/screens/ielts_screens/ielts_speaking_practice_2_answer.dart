@@ -52,7 +52,6 @@ class IeltsSpeakingPractice2Answer
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(context: context, viewModel: viewModel),
       );
@@ -162,7 +161,7 @@ class IeltsSpeakingPractice2Answer
           : const SizedBox(height: 20);
 
   Widget _buildSpeakerLabel() =>
-       SpeakingLabel(label: LocaleKeys.you_are_speaking_status.tr());
+      SpeakingLabel(label: LocaleKeys.you_are_speaking_status.tr());
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState

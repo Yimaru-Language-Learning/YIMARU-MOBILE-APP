@@ -8,7 +8,7 @@ import 'package:yimaru_app/ui/views/learn_program/learn_program_view.dart';
 import 'package:yimaru_app/ui/views/profile/profile_view.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
-import '../../widgets/coming_soon.dart';
+import '../../widgets/developer_mode.dart';
 import '../course/course_view.dart';
 import 'home_viewmodel.dart';
 
@@ -29,14 +29,18 @@ class HomeView extends StackedView<HomeViewModel> {
           BuildContext context, HomeViewModel viewModel, Widget? child) =>
       KeyedSubtree(
           key: ValueKey(context.locale.languageCode),
-          child: _buildScaffoldStack(viewModel));
+          child: _buildScaffoldState(viewModel));
+
+  Widget _buildScaffoldState(HomeViewModel viewModel) =>
+     viewModel.isDeveloperModeEnabled
+          ? _buildDeveloperMode()
+          : _buildScaffoldStack(viewModel);
 
   Widget _buildScaffoldStack(HomeViewModel viewModel) => Stack(
         children: [_buildScaffold(viewModel), _buildLogoutState(viewModel)],
       );
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(
-        
         body: getViewForIndex(viewModel.currentPage),
         bottomNavigationBar: _buildBottomNav(viewModel),
       );
@@ -80,7 +84,7 @@ class HomeView extends StackedView<HomeViewModel> {
   Widget getViewForIndex(int index) {
     switch (index) {
       case 0:
-        return const LearnProgramView();
+        return const LearnProgramView(showAppBar: true);
       case 1:
         // return const ComingSoon();
         return const CourseView();
@@ -94,4 +98,6 @@ class HomeView extends StackedView<HomeViewModel> {
       viewModel.state == StateObjects.logout
           ? const PageLoadingIndicator()
           : Container();
+
+  Widget _buildDeveloperMode() => const DeveloperMode();
 }

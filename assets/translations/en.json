@@ -453,7 +453,10 @@
   "will_write_seconds": "You will write for {} seconds.",
   "prepare_speak_photo": "Prepare to speak about the photo",
   "prepare_speak_topic": "Prepare to speak about the topic below",
-  "sentence_completion": "Sentence completion"
+  "sentence_completion": "Sentence completion",
+  "content": "Content",
+  "ios_purchase": "This content is only available on hard copy. Contact our supports to purchase the physical copy."
+
 }
 
 

@@ -11,7 +11,6 @@ class ComingSoon extends StatelessWidget {
   Widget build(BuildContext context) => _buildScaffoldWrapper();
 
   Widget _buildScaffoldWrapper() => Scaffold(
-        
         backgroundColor: kcBackgroundColor,
         body: _buildScaffold(),
       );
