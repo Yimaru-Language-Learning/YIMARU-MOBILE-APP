@@ -429,7 +429,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       );
 
   Widget _buildMaleTitle() => Text(
-        LocaleKeys.male.tr(),
+        'male'.tr(),
         style: style14DG500,
       );
 
@@ -455,7 +455,7 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
       );
 
   Widget _buildFemaleTitle() => Text(
-        LocaleKeys.female.tr(),
+        'female'.tr(),
         style: style14DG500,
       );
 

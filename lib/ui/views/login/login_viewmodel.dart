@@ -272,13 +272,21 @@ class LoginViewModel extends ReactiveViewModel
       Map<String, dynamic> response = await _apiService.appleAuth(data);
 
       if (response['status'] == ResponseStatus.success) {
+        final appleName = [credential?.givenName, credential?.familyName]
+            .whereType<String>()
+            .map((part) => part.trim())
+            .where((part) => part.isNotEmpty)
+            .join(' ');
         User user = response['data'] as User;
         Map<String, dynamic> data = {
           'userId': user.userId,
           'accessToken': user.accessToken,
           'refreshToken': user.refreshToken
         };
-        await _authenticationService.saveUserCredential(data);
+        await _authenticationService.saveUserCredential(
+          data,
+          onboardingName: appleName,
+        );
         await _registerDevice();
         clearUserData();
         await replaceWithStartUp();

@@ -4,6 +4,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import '../../../app/app.locator.dart';
 import '../../../models/field_option.dart';
+import '../../../services/authentication_service.dart';
 import '../../../services/google_auth_service.dart';
 import '../../../services/localization_service.dart';
 import '../../../services/onboarding_service.dart';
@@ -17,6 +18,8 @@ class OnboardingViewModel extends ReactiveViewModel
 
   final _googleAuthService = locator<GoogleAuthService>();
 
+  final _authenticationService = locator<AuthenticationService>();
+
   final _onboardingService = locator<OnboardingService>();
 
   final _localizationService = locator<LocalizationService>();
@@ -29,6 +32,9 @@ class OnboardingViewModel extends ReactiveViewModel
   GoogleSignInAccount? get _googleUser => _googleAuthService.googleUser;
 
   GoogleSignInAccount? get googleUser => _googleUser;
+
+  String get initialFullName =>
+      _authenticationService.onboardingName ?? googleUser?.displayName ?? '';
 
   // Languages
   Map<String, dynamic> get _selectedLanguage =>

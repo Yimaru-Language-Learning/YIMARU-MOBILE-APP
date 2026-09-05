@@ -67,7 +67,6 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
           _buildScaffold(context: context, viewModel: viewModel),
           _buildRegisterWithEmailState(viewModel),
           _buildRegisterWithGoogleState(viewModel),
-          _buildRegisterWithAppleState(viewModel)
         ],
       );
 
@@ -167,7 +166,10 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildEmailFormField(RegisterViewModel viewModel) => TextFormField(
         controller: emailController,
-        onTap: viewModel.setEmailFocus,
+        readOnly: viewModel.isAppleEmailLocked,
+        showCursor: !viewModel.isAppleEmailLocked,
+        enableInteractiveSelection: !viewModel.isAppleEmailLocked,
+        onTap: viewModel.isAppleEmailLocked ? null : viewModel.setEmailFocus,
         keyboardType: TextInputType.emailAddress,
         decoration: inputDecoration(
             hint: LocaleKeys.email.tr(),
@@ -210,11 +212,13 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         foregroundColor: kcWhite,
         text: LocaleKeys.cont.tr(),
         onTap: emailController.text.isNotEmpty &&
-                !viewModel.hasEmailValidationMessage
+                !viewModel.hasEmailValidationMessage &&
+                !viewModel.busy(StateObjects.registerWithApple)
             ? () => _addUserData(viewModel)
             : null,
         backgroundColor: emailController.text.isNotEmpty &&
-                !viewModel.hasEmailValidationMessage
+                !viewModel.hasEmailValidationMessage &&
+                !viewModel.busy(StateObjects.registerWithApple)
             ? kcPrimaryColor
             : kcPrimaryColor.withValues(alpha: 0.1),
       );
@@ -229,7 +233,9 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         foregroundColor: kcPrimaryColor,
         text: LocaleKeys.register_with_google.tr(),
         leadingImage: 'assets/icons/google.png',
-        onTap: () async => await viewModel.registerWithGoogle(),
+        onTap: viewModel.busy(StateObjects.registerWithApple)
+            ? null
+            : () async => await viewModel.registerWithGoogle(),
       );
 
   Widget _buildRegisterWithAppleButton(RegisterViewModel viewModel) =>
@@ -241,7 +247,9 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         foregroundColor: kcPrimaryColor,
         text: LocaleKeys.register_with_apple.tr(),
         leadingIcon: Icons.apple,
-        onTap: () async => await viewModel.registerWithApple(),
+        onTap: viewModel.busy(StateObjects.registerWithApple)
+            ? null
+            : () async => await viewModel.registerWithApple(),
       );
 
   Widget _buildOptionTextDivider() => const OptionTextDivider();
@@ -256,7 +264,9 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
         leadingIcon: Icons.phone,
         borderColor: kcPrimaryColor,
         foregroundColor: kcPrimaryColor,
-        onTap: () => viewModel.goTo(page: 1),
+        onTap: viewModel.busy(StateObjects.registerWithApple)
+            ? null
+            : () => viewModel.goTo(page: 1),
         text: LocaleKeys.register_with_phone.tr(),
       );
 
@@ -267,11 +277,6 @@ class RegisterWithEmailScreen extends ViewModelWidget<RegisterViewModel> {
 
   Widget _buildRegisterWithGoogleState(RegisterViewModel viewModel) =>
       viewModel.busy(StateObjects.registerWithGoogle)
-          ? const PageLoadingIndicator()
-          : Container();
-
-  Widget _buildRegisterWithAppleState(RegisterViewModel viewModel) =>
-      viewModel.busy(StateObjects.registerWithApple)
           ? const PageLoadingIndicator()
           : Container();
 }

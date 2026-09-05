@@ -22,6 +22,11 @@ class AuthenticationService with ListenableServiceMixin {
 
   User? get user => _user;
 
+  // Prefill for onboarding in the current authenticated session only.
+  String? _onboardingName;
+
+  String? get onboardingName => _onboardingName;
+
   // Initialization
   AuthenticationService() {
     listenToReactiveValues([_user, _state, _localizationService]);
@@ -61,7 +66,11 @@ class AuthenticationService with ListenableServiceMixin {
   }
 
   // Save user credential
-  Future<void> saveUserCredential(Map<String, dynamic> data) async {
+  Future<void> saveUserCredential(
+    Map<String, dynamic> data, {
+    String? onboardingName,
+  }) async {
+    _onboardingName = null;
     await _secureService.setInt('userId', data['userId']);
     await _secureService.setString('accessToken', data['accessToken']);
     await _secureService.setString('refreshToken', data['refreshToken']);
@@ -71,6 +80,8 @@ class AuthenticationService with ListenableServiceMixin {
       accessToken: await _secureService.getString('accessToken'),
       refreshToken: await _secureService.getString('refreshToken'),
     );
+    final name = onboardingName?.trim();
+    _onboardingName = name == null || name.isEmpty ? null : name;
   }
 
   // Save profile status
@@ -222,6 +233,7 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Logout
   Future<void> logout() async {
+    _onboardingName = null;
     _state = StateObjects.logout;
     notifyListeners();
 

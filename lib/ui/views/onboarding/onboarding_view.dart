@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -27,7 +28,13 @@ class OnboardingView extends StackedView<OnboardingViewModel>
   const OnboardingView({Key? key}) : super(key: key);
 
   void _initUserData(OnboardingViewModel viewModel) {
-    fullNameController.text = viewModel.googleUser?.displayName ?? '';
+    fullNameController.text = viewModel.initialFullName;
+    if (kDebugMode && fullNameController.text.trim().isEmpty) {
+      debugPrint(
+        '[Onboarding] No name available to prefill "What should we call you?". '
+        'Manual entry is required.',
+      );
+    }
   }
 
   void _initClearData() {

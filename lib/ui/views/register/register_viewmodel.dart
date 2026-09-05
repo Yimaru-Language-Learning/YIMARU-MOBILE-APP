@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
@@ -17,10 +18,21 @@ import '../../../services/google_auth_service.dart';
 import '../../../services/localization_service.dart';
 import '../../../services/push_notification_service.dart';
 import '../../../services/status_checker_service.dart';
+import 'register_view.form.dart';
 
 class RegisterViewModel extends ReactiveViewModel
     with FormStateHelper
     implements FormViewModel {
+  RegisterViewModel({
+    void Function(String)? appleSuccessNotifier,
+    void Function(String)? appleErrorNotifier,
+  })  : _appleSuccessNotifier = appleSuccessNotifier ?? showSuccessToast,
+        _appleErrorNotifier = appleErrorNotifier ?? showErrorToast;
+
+  final void Function(String) _appleSuccessNotifier;
+
+  final void Function(String) _appleErrorNotifier;
+
   final _apiService = locator<ApiService>();
 
   final _statusChecker = locator<StatusCheckerService>();
@@ -63,6 +75,12 @@ class RegisterViewModel extends ReactiveViewModel
   bool _focusEmail = false;
 
   bool get focusEmail => _focusEmail;
+
+  bool _isAppleEmailLocked = false;
+
+  bool get isAppleEmailLocked => _isAppleEmailLocked;
+
+  String? _emailBeforeApple;
 
   // Password
   bool _length = false;
@@ -227,6 +245,30 @@ class RegisterViewModel extends ReactiveViewModel
   // Reset register with email screen
   void resetRegisterWithEmailScreen() {
     _focusEmail = false;
+    _isAppleEmailLocked = false;
+    _emailBeforeApple = null;
+    rebuildUi();
+  }
+
+  void _lockAppleEmail(String? email) {
+    _emailBeforeApple = emailValue;
+    final normalizedEmail = email?.trim();
+    if (normalizedEmail != null && normalizedEmail.isNotEmpty) {
+      emailValue = normalizedEmail;
+    }
+    _focusEmail = false;
+    _isAppleEmailLocked = true;
+    FocusManager.instance.primaryFocus?.unfocus();
+    rebuildUi();
+  }
+
+  void _restoreEmailAfterAppleFailure() {
+    if (!_isAppleEmailLocked) return;
+
+    final previousEmail = _emailBeforeApple;
+    _emailBeforeApple = null;
+    _isAppleEmailLocked = false;
+    emailValue = previousEmail ?? '';
     rebuildUi();
   }
 
@@ -352,16 +394,28 @@ class RegisterViewModel extends ReactiveViewModel
       busyObject: StateObjects.registerWithApple);
 
   Future<void> _appleLogin() async {
-    if (await _statusChecker.checkConnection()) {
+    var completed = false;
+
+    try {
+      if (!await _statusChecker.checkConnection()) return;
+
       await _appleAuthService.appleAuth();
 
       final credential = _appleAuthService.appleCredential;
       final identityToken = credential?.identityToken;
 
       if (identityToken == null || identityToken.isEmpty) {
-        showErrorToast('Apple login failed. Please try again.');
+        _appleErrorNotifier('Apple login failed. Please try again.');
         return;
       }
+
+      _lockAppleEmail(_appleAuthService.emailForDisplay);
+
+      final appleName = [credential?.givenName, credential?.familyName]
+          .whereType<String>()
+          .map((part) => part.trim())
+          .where((part) => part.isNotEmpty)
+          .join(' ');
 
       Map<String, dynamic> data = {
         'id_token': identityToken,
@@ -381,13 +435,25 @@ class RegisterViewModel extends ReactiveViewModel
           'accessToken': user.accessToken,
           'refreshToken': user.refreshToken
         };
-        await _authenticationService.saveUserCredential(data);
+        await _authenticationService.saveUserCredential(
+          data,
+          onboardingName: appleName,
+        );
         clearUserData();
         await replaceWithStartUp();
-        showSuccessToast(response['message']);
+        completed = true;
+        _appleSuccessNotifier(response['message']);
       } else {
-        showErrorToast(response['message']);
+        _appleErrorNotifier(response['message']);
       }
+    } on SignInWithAppleAuthorizationException catch (error) {
+      if (error.code != AuthorizationErrorCode.canceled) {
+        _appleErrorNotifier('Apple login failed. Please try again.');
+      }
+    } catch (_) {
+      _appleErrorNotifier('Apple login failed. Please try again.');
+    } finally {
+      if (!completed) _restoreEmailAfterAppleFailure();
     }
   }
 

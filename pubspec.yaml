@@ -1,6 +1,6 @@
 name: yimaru_app
 publish_to: 'none'
-version: 0.1.121+123
+version: 0.1.122+124
 description: A new Flutter project.
 
 environment:
@@ -96,4 +96,3 @@ flutter_native_splash:
   android_12:
     color: "#9E2891"
     image: assets/icons/splash_logo.png
-
