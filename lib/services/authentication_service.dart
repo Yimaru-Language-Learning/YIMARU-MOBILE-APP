@@ -176,7 +176,6 @@ class AuthenticationService with ListenableServiceMixin {
   // Update user data
   Future<void> updateUserData(Map<String, dynamic> data) async {
     await _secureService.setString('region', data['region']);
-    await _secureService.setString('gender', data['gender']);
     await _secureService.setString('country', data['country']);
     await _secureService.setString('lastName', data['last_name']);
     await _secureService.setString('birthday', data['birth_day']);

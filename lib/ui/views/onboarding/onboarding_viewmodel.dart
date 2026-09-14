@@ -67,25 +67,6 @@ class OnboardingViewModel extends ReactiveViewModel
   FieldOption? get selectedEducationalBackground =>
       _selectedEducationalBackground;
 
-  // Gender
-  final List<String> _gendersEn = [
-    'Male',
-    'Female',
-  ];
-
-  List<String> get gendersEn => _gendersEn;
-
-  final List<String> _gendersAm = [
-    'ወንድ',
-    'ሴት',
-  ];
-
-  List<String> get gendersAm => _gendersAm;
-
-  String? _selectedGender;
-
-  String? get selectedGender => _selectedGender;
-
   // Age group
   List<FieldOption> get _ageGroups => _onboardingService.ageGroups;
 
@@ -174,14 +155,6 @@ class OnboardingViewModel extends ReactiveViewModel
 
   bool isSelectedEducationalBackground(FieldOption value) =>
       _selectedEducationalBackground == value;
-
-  // Gender
-  void setSelectedGender(String gender) {
-    _selectedGender = gender;
-    rebuildUi();
-  }
-
-  bool isSelectedGender(String value) => _selectedGender == value;
 
   // Age group
   void setSelectedAgeGroup(FieldOption value) {
@@ -291,12 +264,6 @@ class OnboardingViewModel extends ReactiveViewModel
   // Reset full name form screen
   void resetFullNameFormScreen() {
     _focusFullName = false;
-    rebuildUi();
-  }
-
-  // Reset gender form screen
-  void resetGenderFormScreen() {
-    _selectedGender = null;
     rebuildUi();
   }
 

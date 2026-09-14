@@ -46,11 +46,6 @@ class ProfileDetailViewModel extends ReactiveViewModel
 
   bool get focusLastName => _focusLastName;
 
-  // Gender
-  String? _selectedGender;
-
-  String? get selectedGender => _selectedGender;
-
   // First name
   bool _focusPhoneNumber = false;
 
@@ -98,12 +93,6 @@ class ProfileDetailViewModel extends ReactiveViewModel
   // Last name
   void setLastNameFocus() {
     _focusLastName = true;
-    rebuildUi();
-  }
-
-  // Gender
-  void setSelectedGender(String value) {
-    _selectedGender = value;
     rebuildUi();
   }
 

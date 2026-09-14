@@ -8,7 +8,6 @@ import 'package:yimaru_app/ui/views/onboarding/screens/challenge_form_screen.dar
 import 'package:yimaru_app/ui/views/onboarding/screens/country_region_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/educational_background_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/full_name_form_screen.dart';
-import 'package:yimaru_app/ui/views/onboarding/screens/gender_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/learning_goal_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/language_goal_form_screen.dart';
 import 'package:yimaru_app/ui/views/onboarding/screens/occupation_form_screen.dart';
@@ -47,23 +46,21 @@ class OnboardingView extends StackedView<OnboardingViewModel>
       fullNameController.clear();
       viewModel.resetFullNameFormScreen();
     } else if (viewModel.currentPage == 1) {
-      viewModel.resetGenderFormScreen();
-    } else if (viewModel.currentPage == 2) {
       viewModel.resetAgeGroupFormScreen();
-    } else if (viewModel.currentPage == 3) {
+    } else if (viewModel.currentPage == 2) {
       viewModel.resetEducationalBackgroundFormScreen();
-    } else if (viewModel.currentPage == 4) {
+    } else if (viewModel.currentPage == 3) {
       viewModel.resetOccupationFormScreen();
-    } else if (viewModel.currentPage == 5) {
+    } else if (viewModel.currentPage == 4) {
       regionController.clear();
       viewModel.resetCountryRegionFormScreen();
-    } else if (viewModel.currentPage == 6) {
+    } else if (viewModel.currentPage == 5) {
       viewModel.resetLearningGoalFormScreen();
-    } else if (viewModel.currentPage == 7) {
+    } else if (viewModel.currentPage == 6) {
       viewModel.resetLanguageGoalFormScreen();
-    } else if (viewModel.currentPage == 8) {
+    } else if (viewModel.currentPage == 7) {
       viewModel.resetChallengeFormScreen();
-    } else if (viewModel.currentPage == 9) {
+    } else if (viewModel.currentPage == 8) {
       viewModel.resetTopicFormScreen();
     }
   }
@@ -110,7 +107,6 @@ class OnboardingView extends StackedView<OnboardingViewModel>
 
   List<Widget> _buildScreens() => [
         _buildFullNameForm(),
-        _buildGenderForm(),
         _buildAgeGroupForm(),
         _buildEducationalBackgroundForm(),
         _buildOccupationForm(),
@@ -123,8 +119,6 @@ class OnboardingView extends StackedView<OnboardingViewModel>
 
   Widget _buildFullNameForm() =>
       FullNameFormScreen(fullNameController: fullNameController);
-
-  Widget _buildGenderForm() => const GenderFormScreen();
 
   Widget _buildAgeGroupForm() => const AgeGroupFormScreen();
 

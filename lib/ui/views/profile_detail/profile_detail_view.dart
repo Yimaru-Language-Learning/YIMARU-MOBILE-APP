@@ -45,7 +45,6 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
 
   Future<void> _update(ProfileDetailViewModel viewModel) async {
     Map<String, dynamic> data = {
-      'gender': viewModel.selectedGender,
       'region': viewModel.dropdownRegion
           ? viewModel.selectedRegion?.code
           : regionController.text,
@@ -99,7 +98,6 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
     firstNameController.text = viewModel.user?.firstName ?? '';
     _checkRegion(viewModel);
     viewModel.clearUserData();
-    viewModel.setSelectedGender(viewModel.user?.gender ?? '');
     viewModel.setSelectedOccupation(viewModel.occupations
         .where((e) => (e.code ?? '') == viewModel.user?.occupation)
         .first);
@@ -233,8 +231,6 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
         verticalSpaceMedium,
         _buildNameFormSection(viewModel),
         verticalSpaceMedium,
-        _buildGenderFormFieldWrapper(viewModel),
-        verticalSpaceSmall,
         _buildPhoneNumberFormFieldSection(viewModel),
         verticalSpaceTiny,
         _buildEmailFormFieldSection(viewModel),
@@ -378,85 +374,6 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   Widget _buildLastNameValidator(ProfileDetailViewModel viewModel) => Text(
         viewModel.lastNameValidationMessage!,
         style: validationStyle,
-      );
-
-  Widget _buildGenderFormFieldWrapper(ProfileDetailViewModel viewModel) =>
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildGenderFormFieldChildren(viewModel),
-      );
-
-  List<Widget> _buildGenderFormFieldChildren(
-          ProfileDetailViewModel viewModel) =>
-      [
-        _buildGenderLabel(),
-        verticalSpaceTiny,
-        _buildRadioButtonWrapper(viewModel),
-      ];
-
-  Widget _buildGenderLabel() => CustomFormLabel(
-        style: style16DG600,
-        label: LocaleKeys.gender.tr(),
-      );
-
-  Widget _buildRadioButtonWrapper(ProfileDetailViewModel viewModel) => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: _buildRadioButtonChildren(viewModel),
-      );
-
-  List<Widget> _buildRadioButtonChildren(ProfileDetailViewModel viewModel) =>
-      [_buildMaleRadioButton(viewModel), _buildFemaleRadioButton(viewModel)];
-
-  Widget _buildMaleRadioButton(ProfileDetailViewModel viewModel) =>
-      RadioGroup<String?>(
-          groupValue: viewModel.selectedGender,
-          onChanged: (value) => viewModel.setSelectedGender(value ?? ''),
-          child: _buildMaleRadioTileWrapper(viewModel));
-
-  Widget _buildMaleRadioTileWrapper(ProfileDetailViewModel viewModel) =>
-      Container(
-          width: 125,
-          alignment: Alignment.centerLeft,
-          child: _buildMaleRadioTile(viewModel));
-
-  Widget _buildMaleRadioTile(ProfileDetailViewModel viewModel) =>
-      RadioListTile<String?>(
-        value: 'male',
-        title: _buildMaleTitle(),
-        activeColor: kcPrimaryColor,
-        contentPadding: EdgeInsets.zero,
-      );
-
-  Widget _buildMaleTitle() => Text(
-        'male'.tr(),
-        style: style14DG500,
-      );
-
-  Widget _buildFemaleRadioButton(ProfileDetailViewModel viewModel) =>
-      RadioGroup<String?>(
-          groupValue: viewModel.selectedGender,
-          onChanged: (value) => viewModel.setSelectedGender(value ?? ''),
-          child: _buildFemaleRadioTileWrapper(viewModel));
-
-  Widget _buildFemaleRadioTileWrapper(ProfileDetailViewModel viewModel) =>
-      Container(
-        width: 125,
-        alignment: Alignment.centerLeft,
-        child: _buildFemaleRadioTile(viewModel),
-      );
-
-  Widget _buildFemaleRadioTile(ProfileDetailViewModel viewModel) =>
-      RadioListTile<String?>(
-        value: 'female',
-        title: _buildFemaleTitle(),
-        activeColor: kcPrimaryColor,
-        contentPadding: EdgeInsets.zero,
-      );
-
-  Widget _buildFemaleTitle() => Text(
-        'female'.tr(),
-        style: style14DG500,
       );
 
   Widget _buildPhoneNumberFormFieldSection(ProfileDetailViewModel viewModel) =>
