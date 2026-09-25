@@ -33,6 +33,7 @@ class DuolingoReadingPractice1Question
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (viewModel.showAnswer) {
       await viewModel.setListeningAnswer3(
         context: context,
@@ -140,7 +141,7 @@ class DuolingoReadingPractice1Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildCountdownWrapper(
@@ -288,7 +289,8 @@ class DuolingoReadingPractice1Question
       ];
 
   Widget _buildCorrectAnswer() => Text(
-        'Correct Answer: ${options.firstWhere((e) => e['is_correct'])['text']} ',
+        LocaleKeys.correct_answer_label
+            .tr(args: [options.firstWhere((e) => e['is_correct'])['text']]),
         style: style16DG400,
         textAlign: TextAlign.center,
       );

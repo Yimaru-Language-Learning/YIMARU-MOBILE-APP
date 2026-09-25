@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
+
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
 import 'package:yimaru_app/ui/widgets/listenable_review_practice_card.dart';
@@ -29,6 +32,7 @@ class DuolingoListeningPractice1Review
   }
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
     viewModel.nextScreen();
   }
@@ -119,7 +123,7 @@ class DuolingoListeningPractice1Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -203,7 +207,7 @@ class DuolingoListeningPractice1Review
       );
 
   Widget _buildTitle() => Text(
-        'Type what you hear',
+        LocaleKeys.type_what_you_hear.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -249,7 +253,7 @@ class DuolingoListeningPractice1Review
       );
 
   Widget _buildLabel() => Text(
-        'Your Answer',
+        LocaleKeys.your_answer.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );

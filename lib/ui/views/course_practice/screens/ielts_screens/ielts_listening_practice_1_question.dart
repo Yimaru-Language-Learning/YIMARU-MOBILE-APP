@@ -29,8 +29,8 @@ class IeltsListeningPractice1Question
   Future<void> _nextScreen(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
-    FocusManager.instance.primaryFocus?.unfocus();
     _reset(viewModel);
+    FocusManager.instance.primaryFocus?.unfocus();
 
     if (viewModel.showAnswer) {
       viewModel.clearAnswer();
@@ -292,7 +292,9 @@ class IeltsListeningPractice1Question
       TextField(
         style: style14MG400,
         decoration: inputDecoration(
-            focus: true, filled: true, hint: LocaleKeys.start_writing_here.tr()),
+            focus: true,
+            filled: true,
+            hint: LocaleKeys.start_writing_here.tr()),
         onChanged: (change) => viewModel.updateAnswer(value, change),
       );
 

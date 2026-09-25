@@ -207,18 +207,16 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   }
 
   // Dialogue
-  Future<bool?> showAbortDialog() async {
-    DialogResponse? response = await _dialogService.showDialog(
-      cancelTitle: LocaleKeys.no.tr(),
-      title: LocaleKeys.recording.tr(),
-      buttonTitle: LocaleKeys.yes.tr(),
+  Future<void> showAbortDialog() async =>
+    await _dialogService.showDialog(
       barrierDismissible: true,
       cancelTitleColor: kcDarkGrey,
+      title: LocaleKeys.content.tr(),
       buttonTitleColor: kcPrimaryColor,
-      description: 'Are you sure you want to stop recording?',
+      buttonTitle: LocaleKeys.close.tr(),
+      description: LocaleKeys.ios_purchase.tr(),
     );
-    return response?.confirmed;
-  }
+
 
   // In-app navigation
   void goTo(int page) {
@@ -267,6 +265,8 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     questionSetController.jumpToPage(0);
   }
 
+
+
   // Navigation
   void pop() => _navigationService.back();
 
@@ -279,6 +279,19 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   /*Future<String?> refreshUrl(String url) async =>
       await _learnService.refreshObject(url);*/
 
+  // Update payment status
+
+  Future<void> _updatePaymentStatus() async {
+    Map<String, dynamic> response = {};
+
+    response = await _apiService.getProfileData(_user?.userId);
+
+    if (response['status'] == ResponseStatus.success) {
+      User user = response['data'] as User;
+      await _authenticationService.saveUserData(user);
+    }
+  }
+
   // Learn practice
   Future<void> getLearnPractices(
           {required int id, required LearnPractices practice}) async =>
@@ -289,14 +302,17 @@ class LearnPracticeViewModel extends ReactiveViewModel {
       {required int id, required LearnPractices practice}) async {
     if (await _statusChecker.checkConnection()) {
       if (practice == LearnPractices.course) {
+        await _updatePaymentStatus();
         _practices = await _apiService.getLearnCoursePractices(id);
         //  await refreshPracticeImages(_practices);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else if (practice == LearnPractices.module) {
+        await _updatePaymentStatus();
         _practices = await _apiService.getLearnModulePractices(id);
         //  await refreshPracticeImages(_practices);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       } else {
+        await _updatePaymentStatus();
         _practices = await _apiService.getLearnLessonPractices(id);
         await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
       }
@@ -314,8 +330,15 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   Future<void> _completeLearnPractice() async {
     if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> data = {
+        'parent_id': _practices.first.parents?.first.parentId ?? 0,
+        'parent_kind': _practices.first.parents?.first.parentKind?.toUpperCase()
+      };
       await stopAudio();
-      await _apiService.completePractice(_practices.first.id ?? 0);
+      await _apiService.completePractice(
+        data: data,
+        id: _practices.first.id ?? 0,
+      );
       await _learnService.getLearnProgress();
     }
   }

@@ -18,6 +18,7 @@ class DuolingoReadingPractice3Question
   const DuolingoReadingPractice3Question({super.key});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     List samples = (viewModel.questions[viewModel.currentQuestion]
             .dynamicPayload?.response?.last.value['blanks'] as List)
         .map(
@@ -111,7 +112,7 @@ class DuolingoReadingPractice3Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -153,7 +154,7 @@ class DuolingoReadingPractice3Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Read the passage below and answer the questions that follow.',
+        LocaleKeys.read_passage_answer_questions.tr(),
         style: style16DG600,
       );
 

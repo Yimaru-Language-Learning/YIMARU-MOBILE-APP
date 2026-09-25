@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -31,7 +33,13 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
     if (viewModel.user?.learn ?? false) {
       viewModel.goTo(1);
     } else {
-      await viewModel.navigateToLearnSubscription();
+
+      if(Platform.isIOS){
+        await viewModel.showAbortDialog();
+      }else{
+        await viewModel.navigateToLearnSubscription();
+      }
+
     }
   }
 
@@ -181,7 +189,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       [_buildImage(15), horizontalSpaceTiny, _buildPartnerName()];
 
   Widget _buildPartnerName() => Text.rich(
-        TextSpan(text: 'Daniel', style: style14DG600, children: [
+        TextSpan(text: LocaleKeys.daniel.tr(), style: style14DG600, children: [
           TextSpan(
             text: ' - ${LocaleKeys.speaking_partner.tr()}',
             style: style14MG400,

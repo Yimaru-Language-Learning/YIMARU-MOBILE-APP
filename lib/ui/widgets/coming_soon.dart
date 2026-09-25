@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 class ComingSoon extends StatelessWidget {
@@ -37,9 +39,9 @@ class ComingSoon extends StatelessWidget {
 
   Widget _buildIcon() => Image.asset('assets/images/coming_soon.png');
 
-  Widget _buildTitle() => const Text(
-        'Launching Very Soon!',
-        style: TextStyle(
+  Widget _buildTitle() => Text(
+        LocaleKeys.launching_very_soon.tr(),
+        style: const TextStyle(
           fontSize: 22,
           color: kcMediumGrey,
           fontWeight: FontWeight.w700,

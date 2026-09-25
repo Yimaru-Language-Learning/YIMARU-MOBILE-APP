@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../common/app_colors.dart';
+import '../../../../common/translations/locale_keys.g.dart';
 import '../../../../common/ui_helpers.dart';
 import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
@@ -96,7 +98,7 @@ class IeltsSpeakingPractice3Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -107,7 +109,7 @@ class IeltsSpeakingPractice3Question
       );
 
   Widget _buildTitle() => Text(
-        'Part 2: Follow up',
+        LocaleKeys.part2_follow_up.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -124,7 +126,7 @@ class IeltsSpeakingPractice3Question
       [_buildSpeakerLabel(), verticalSpaceMedium, _buildSpeakingIndicator()];
 
   Widget _buildSpeakerLabel() =>
-      const SpeakingLabel(label: 'Examiner is speaking...');
+      SpeakingLabel(label: LocaleKeys.examiner_is_speaking.tr());
 
   Widget _buildSpeakingIndicator() => const SpeakingIndicator(size: 75);
 }

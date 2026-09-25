@@ -38,7 +38,7 @@ class CoursePracticeAppBar extends ViewModelWidget<CoursePracticeViewModel> {
   Widget _buildViewButton(CoursePracticeViewModel viewModel) => IconButton(
         icon: _buildViewIcon(),
         padding: const EdgeInsets.only(top: 5, right: 50),
-        onPressed: () => viewModel.showAbortDialog(viewModel
+        onPressed: () => viewModel.showPassageAbortDialog(viewModel
             .questions[viewModel.currentQuestion]
             .sharedStimulus
             ?.first

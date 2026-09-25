@@ -12,7 +12,6 @@ import '../../../../widgets/countdown_timer.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
 import '../../../../widgets/custom_elevated_button.dart';
 import '../../../../widgets/ielts_practice_review_section.dart';
-import '../../../../widgets/instruction_card.dart';
 import '../../../../widgets/page_loading_indicator.dart';
 import '../../course_practice_viewmodel.dart';
 
@@ -52,8 +51,6 @@ class IeltsReadingPractice8Question
   Future<void> _nextScreen(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
-    FocusManager.instance.primaryFocus?.unfocus();
-
     if (viewModel.showAnswer) {
       viewModel.clearAnswer();
       if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -182,7 +179,7 @@ class IeltsReadingPractice8Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -193,7 +190,7 @@ class IeltsReadingPractice8Question
       );
 
   Widget _buildTitle() => Text(
-        'Heading Matching',
+        LocaleKeys.heading_matching.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -334,7 +331,7 @@ class IeltsReadingPractice8Question
       );
 
   Widget _buildTopColumnTitle() => Text(
-        'List of Headings',
+        LocaleKeys.list_of_headings_label.tr(),
         style: style16DG600,
         textAlign: TextAlign.center,
       );
@@ -577,7 +574,7 @@ class IeltsReadingPractice8Question
         margin: const EdgeInsets.symmetric(vertical: 12),
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          color: highlight ? kcPrimaryColor.withOpacity(.08) : kcWhite,
+          color: highlight ? kcPrimaryColor.withValues(alpha: .08) : kcWhite,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color:
@@ -606,7 +603,7 @@ class IeltsReadingPractice8Question
               highlight: highlight,
               hasAnswer: hasAnswer,
               viewModel: viewModel)
-          : _buildTargetTitle('Drag heading here');
+          : _buildTargetTitle(LocaleKeys.drag_heading_here_hint.tr());
 
   Widget _buildTargetRow({
     required int index,

@@ -90,7 +90,7 @@ class DuolingoReadingPractice7Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -171,7 +171,7 @@ class DuolingoReadingPractice7Review
       );
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Passage',
+        LocaleKeys.passage_label.tr(),
         style: style16DG600,
       );
 

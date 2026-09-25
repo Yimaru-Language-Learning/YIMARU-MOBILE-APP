@@ -84,9 +84,9 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
         children: _buildContentChildren(viewModel),
       );
 
-  List<Widget> _buildContentChildren(AccountPrivacyViewModel viewModel) =>
-      [_buildMenuColumnScrollView(viewModel),
-       // _buildDeleteButtonWrapper()
+  List<Widget> _buildContentChildren(AccountPrivacyViewModel viewModel) => [
+        _buildMenuColumnScrollView(viewModel),
+        // _buildDeleteButtonWrapper()
       ];
 
   Widget _buildMenuColumnScrollView(AccountPrivacyViewModel viewModel) =>

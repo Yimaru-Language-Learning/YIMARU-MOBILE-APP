@@ -137,6 +137,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
           {required BuildContext context,
           required ForgetPasswordViewModel viewModel}) =>
       [
+        verticalSpaceMedium,
         _buildUpperColumn(viewModel),
         getPadding(context),
         _buildContinueButtonWrapper(viewModel)
@@ -161,12 +162,12 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Reset password',
+        LocaleKeys.reset_password_title.tr(),
         style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(
-        'Enter your email, we will send you a reset code.',
+        LocaleKeys.enter_email_reset_code_subtitle.tr(),
         style: style14DG400,
       );
 
@@ -176,7 +177,7 @@ class RequestCodeScreen extends ViewModelWidget<ForgetPasswordViewModel> {
         onTap: viewModel.setEmailFocus,
         keyboardType: TextInputType.emailAddress,
         decoration: inputDecoration(
-            hint: 'Email',
+            hint: LocaleKeys.email.tr(),
             focus: viewModel.focusEmail,
             filled: emailController.text.isNotEmpty),
       );

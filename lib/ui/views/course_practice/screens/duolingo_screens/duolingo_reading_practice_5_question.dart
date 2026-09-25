@@ -23,6 +23,7 @@ class DuolingoReadingPractice5Question
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (viewModel.showAnswer) {
       if (viewModel.currentQuestion == viewModel.questions.length - 1) {
         viewModel.nextScreen();
@@ -120,7 +121,7 @@ class DuolingoReadingPractice5Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(
@@ -198,7 +199,7 @@ class DuolingoReadingPractice5Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Passage',
+        LocaleKeys.passage_label.tr(),
         style: style16DG600,
       );
 
@@ -209,7 +210,7 @@ class DuolingoReadingPractice5Question
       );
 
   Widget _buildSubtitle() => Text(
-        'Select the idea that is described in the passage',
+        LocaleKeys.select_idea_described_passage.tr(),
         style: style16DG600,
       );
 
@@ -289,7 +290,11 @@ class DuolingoReadingPractice5Question
       ];
 
   Widget _buildCorrectAnswer(CoursePracticeViewModel viewModel) => Text(
-        'Correct Answer: ${(viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.last.value['options'] as List).firstWhere((e) => e['is_correct'])['text']} ',
+        LocaleKeys.correct_answer_label.tr(args: [
+          (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.last.value['options'] as List)
+              .firstWhere((e) => e['is_correct'])['text']
+        ]),
         style: style16DG400,
         textAlign: TextAlign.center,
       );

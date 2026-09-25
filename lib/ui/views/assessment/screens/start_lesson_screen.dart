@@ -91,17 +91,10 @@ class StartLessonScreen extends ViewModelWidget<AssessmentViewModel> {
 
   Widget _buildIcon() => SvgPicture.asset('assets/icons/mascot.svg');
 
-  Widget _buildTitle(AssessmentViewModel viewModel) => Text.rich(
-        TextSpan(
-          text: LocaleKeys.welcome_abroad.tr(),
-          style: style25DG600,
-          children: [
-            TextSpan(
-              style: style25DG600,
-              text: ', ${viewModel.userData['first_name']}!',
-            ),
-          ],
-        ),
+  Widget _buildTitle(AssessmentViewModel viewModel) => Text(
+        LocaleKeys.hello_user
+            .tr(args: [viewModel.userData['first_name'] ?? '']),
+        style: style25DG600,
       );
 
   Widget _buildSubtitle() => Text(

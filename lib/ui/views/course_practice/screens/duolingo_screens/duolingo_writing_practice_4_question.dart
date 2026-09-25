@@ -20,11 +20,13 @@ class DuolingoWritingPractice4Question
   const DuolingoWritingPractice4Question(
       {super.key, required this.practiceController});
 
-  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async =>
-      await viewModel.setWritingAnswer(
-          response: practiceController.text,
-          sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value);
+  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    await viewModel.setWritingAnswer(
+        response: practiceController.text,
+        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?.last.value);
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -107,7 +109,7 @@ class DuolingoWritingPractice4Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.writing_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -151,7 +153,12 @@ class DuolingoWritingPractice4Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write a follow-up response for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds',
+        LocaleKeys.write_follow_up_seconds.tr(args: [
+          viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.first.value['seconds']
+                  .toString() ??
+              ''
+        ]),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -170,7 +177,7 @@ class DuolingoWritingPractice4Question
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,
-            hint: 'Start writing here...',
+            hint: LocaleKeys.start_writing_here.tr(),
             filled: practiceController.text.isNotEmpty),
       );
 

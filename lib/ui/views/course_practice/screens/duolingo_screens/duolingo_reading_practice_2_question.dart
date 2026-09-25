@@ -2,9 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/widgets/course_missing_word_question.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_fill_in_the_blank_question.dart';
-import 'package:yimaru_app/ui/widgets/ielts_fill_in_the_blanks_question.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
@@ -13,7 +11,6 @@ import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/countdown_timer.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
 import '../../../../widgets/custom_elevated_button.dart';
-import '../../../../widgets/duolingo_practice_review_section.dart';
 import '../../../../widgets/reading_practice_option_card.dart';
 import '../../course_practice_viewmodel.dart';
 
@@ -40,6 +37,7 @@ class DuolingoReadingPractice2Question
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (viewModel.showAnswer) {
       await viewModel.setReadingAnswer2(
         duration: duration,
@@ -132,7 +130,7 @@ class DuolingoReadingPractice2Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -205,7 +203,7 @@ class DuolingoReadingPractice2Question
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Complete the sentence with correct word',
+        LocaleKeys.complete_sentence_correct_word.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -276,7 +274,7 @@ class DuolingoReadingPractice2Question
       ];
 
   Widget _buildCorrectAnswer() => Text(
-        'Correct Answer: ${response.first['text']} ',
+        LocaleKeys.correct_answer_label.tr(args: [response.first['text']]),
         style: style16DG400,
         textAlign: TextAlign.center,
       );

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/custom_table.dart';
-import 'package:yimaru_app/ui/widgets/ielts_fill_in_the_blanks_question.dart';
-import 'package:yimaru_app/ui/widgets/instruction_card.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
@@ -29,6 +27,7 @@ class IeltsListeningPractice4Question
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
     FocusManager.instance.primaryFocus?.unfocus();
+
     if (viewModel.showAnswer) {
       viewModel.clearAnswer();
       if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -46,13 +45,17 @@ class IeltsListeningPractice4Question
       }
     } else {
       _setShowAnswer(viewModel);
-      for (int i = 0; i <  (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-      ?.response?[1].value['options'] as List).length; i++) {
-  await viewModel.setListeningAnswer(
-  sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
-      ?.response?[1].value['options'] as List)[i]['text'],
-  );
-  }
+      for (int i = 0;
+          i <
+              (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                      ?.response?[1].value['options'] as List)
+                  .length;
+          i++) {
+        await viewModel.setListeningAnswer(
+          sample: (viewModel.questions[viewModel.currentQuestion].dynamicPayload
+              ?.response?[1].value['options'] as List)[i]['text'],
+        );
+      }
     }
   }
 
@@ -146,7 +149,7 @@ class IeltsListeningPractice4Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -157,7 +160,7 @@ class IeltsListeningPractice4Question
       );
 
   Widget _buildTitle() => Text(
-        'Table Completion',
+        LocaleKeys.table_completion.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -242,15 +245,13 @@ class IeltsListeningPractice4Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       [
-
         verticalSpaceMedium,
         _buildQuestion(viewModel),
       ];
 
-
-  Widget _buildQuestion(CoursePracticeViewModel viewModel) =>
-      CustomTable(data: viewModel.questions[viewModel.currentQuestion]
-          .dynamicPayload?.stimulus?.first.value);
+  Widget _buildQuestion(CoursePracticeViewModel viewModel) => CustomTable(
+      data: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+          ?.stimulus?.first.value);
 
   Widget _buildContinueButtonState(
           {required BuildContext context,

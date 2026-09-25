@@ -12,7 +12,6 @@ import '../../../../widgets/countdown_timer.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
 import '../../../../widgets/custom_elevated_button.dart';
 import '../../../../widgets/ielts_practice_review_section.dart';
-import '../../../../widgets/instruction_card.dart';
 import '../../../../widgets/page_loading_indicator.dart';
 import '../../course_practice_viewmodel.dart';
 
@@ -159,7 +158,7 @@ class IeltsReadingPractice9Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -170,7 +169,7 @@ class IeltsReadingPractice9Question
       );
 
   Widget _buildTitle() => Text(
-        'Feature Matching',
+        LocaleKeys.feature_matching.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -294,7 +293,7 @@ class IeltsReadingPractice9Question
       );
 
   Widget _buildTopColumnTitle() => Text(
-        'List of Features',
+        LocaleKeys.list_of_features.tr(),
         style: style16DG600,
         textAlign: TextAlign.center,
       );

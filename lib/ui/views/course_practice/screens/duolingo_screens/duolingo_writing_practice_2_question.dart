@@ -20,6 +20,7 @@ class DuolingoWritingPractice2Question
       {super.key, required this.practiceController});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds']);
     viewModel.nextScreen();
@@ -106,7 +107,7 @@ class DuolingoWritingPractice2Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.writing_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -149,13 +150,18 @@ class DuolingoWritingPractice2Question
       ];
 
   Widget _buildTitle() => Text(
-        'Prepare to write about the topic below',
+        LocaleKeys.prepare_write_topic.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        'You will write for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds.',
+        LocaleKeys.will_write_seconds.tr(args: [
+          viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.first.value['seconds']
+                  .toString() ??
+              ''
+        ]),
         style: style14DG400,
         textAlign: TextAlign.center,
       );

@@ -121,7 +121,7 @@ class DuolingoSpeakingPractice4Preparation
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -162,13 +162,18 @@ class DuolingoSpeakingPractice4Preparation
       ];
 
   Widget _buildTitle() => Text(
-        'Prepare to have a conversation',
+        LocaleKeys.prepare_conversation.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        'You will listen to questions and have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds to answer each',
+        LocaleKeys.listen_questions_answer_seconds.tr(args: [
+          viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.first.value['seconds']
+                  .toString() ??
+              ''
+        ]),
         style: style14DG400,
         textAlign: TextAlign.center,
       );

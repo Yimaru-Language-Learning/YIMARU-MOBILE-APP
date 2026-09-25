@@ -29,8 +29,8 @@ class IeltsListeningPractice2Question
   Future<void> _nextScreen(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
-    FocusManager.instance.primaryFocus?.unfocus();
     _reset(viewModel);
+    FocusManager.instance.primaryFocus?.unfocus();
 
     if (viewModel.showAnswer) {
       viewModel.clearAnswer();
@@ -149,7 +149,7 @@ class IeltsListeningPractice2Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -160,7 +160,7 @@ class IeltsListeningPractice2Question
       );
 
   Widget _buildTitle() => Text(
-        'Note Completion',
+        LocaleKeys.note_completion.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -275,7 +275,7 @@ class IeltsListeningPractice2Question
       ];
 
   Widget _buildInstruction() => Text(
-        'Complete the following note',
+        LocaleKeys.complete_following_note.tr(),
         style: style16DG600,
         textAlign: TextAlign.center,
       );
@@ -292,7 +292,9 @@ class IeltsListeningPractice2Question
       TextField(
         style: style14MG400,
         decoration: inputDecoration(
-            focus: true, filled: true, hint: 'Start writing here...'),
+            focus: true,
+            filled: true,
+            hint: LocaleKeys.start_writing_here.tr()),
         onChanged: (change) => viewModel.updateAnswer(value, change),
       );
 

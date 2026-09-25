@@ -6,9 +6,7 @@ import '../models/access.dart';
 import '../models/course_catalog.dart';
 import '../models/course_lesson.dart';
 import '../models/course_module.dart';
-import '../models/course_progress.dart';
 import '../models/course_unit.dart';
-import '../models/progress_summary.dart';
 
 class CourseService with ListenableServiceMixin {
   // Dependency injection
@@ -20,17 +18,17 @@ class CourseService with ListenableServiceMixin {
   }
 
   // Completed count
-  int _completedCount = 0;
+  final int _completedCount = 0;
 
   int get completedCount => _completedCount;
 
   // Total count
-  int _totalCount = 0;
+  final int _totalCount = 0;
 
   int get totalCount => _totalCount;
 
   // Total progress
-  int _totalProgress = 0;
+  final int _totalProgress = 0;
 
   int get totalProgress => _totalProgress;
 

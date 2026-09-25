@@ -99,7 +99,7 @@ class ChallengeFormScreen extends ViewModelWidget<OnboardingViewModel> {
       );
 
   Widget _buildSubtitle() => Text(
-        '${LocaleKeys.evey_one_has_strugle.tr()} 😊',
+        LocaleKeys.everyone_has_struggles_subtitle.tr(),
         style: style14MG400,
       );
 

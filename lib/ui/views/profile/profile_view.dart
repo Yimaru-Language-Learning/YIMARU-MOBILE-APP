@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -165,6 +167,7 @@ class ProfileView extends StackedView<ProfileViewModel> {
       children: _buildSettingsChildren(viewModel));
 
   List<Widget> _buildSettingsChildren(ProfileViewModel viewModel) => [
+    if(!Platform.isIOS)
         _buildSubscriptionCard(viewModel),
         _buildProgressCard(viewModel),
         _buildAccountCard(viewModel),

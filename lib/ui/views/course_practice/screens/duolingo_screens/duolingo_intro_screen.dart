@@ -105,23 +105,28 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
-    } else if (id == 51 /*Duolingo - Interactive reading - complete the sentence*/) {
+    } else if (id ==
+        51 /*Duolingo - Interactive reading - complete the sentence*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
-    } else if (id == 52 /*Duolingo - Interactive reading - complete the passage*/) {
+    } else if (id ==
+        52 /*Duolingo - Interactive reading - complete the passage*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
-    } else if (id == 53 /*Duolingo - Interactive reading - identify the idea*/) {
+    } else if (id ==
+        53 /*Duolingo - Interactive reading - identify the idea*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
-    } else if (id == 54 /*Duolingo - Interactive reading - title the passage*/) {
+    } else if (id ==
+        54 /*Duolingo - Interactive reading - title the passage*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
-    } else if (id == 55 /*Duolingo - Interactive reading - highlight the answer*/) {
+    } else if (id ==
+        55 /*Duolingo - Interactive reading - highlight the answer*/) {
       int responseFirstSec = viewModel.questions[viewModel.currentQuestion]
           .dynamicPayload?.response?.first.value['seconds'];
       viewModel.setCountdown(responseFirstSec);
@@ -225,8 +230,20 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${_getTitle()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
+  String _getTitle() {
+    if (type == CoursePracticeType.speaking) {
+      return LocaleKeys.speaking_practice.tr();
+    } else if (type == CoursePracticeType.writing) {
+      return LocaleKeys.writing_practice.tr();
+    } else if (type == CoursePracticeType.listening) {
+      return LocaleKeys.listening_practice.tr();
+    } else {
+      return LocaleKeys.reading_practice.tr();
+    }
+  }
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,

@@ -101,7 +101,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   bool get isDrag => _isDrag;
 
-  List<int> _usedHeadingIds = [];
+  final List<int> _usedHeadingIds = [];
 
   List<int> get usedHeadingIds => _usedHeadingIds;
 
@@ -175,183 +175,169 @@ class CoursePracticeViewModel extends ReactiveViewModel
     {
       'label': 'Duolingo Speaking 01',
       'type': CoursePracticeType.speaking,
-      'intro_title': 'Speak About the Photo',
-      'outro_title': 'Speaking Practice Completed',
-      'outro_subtitle': 'You’ve finished this speaking session. Great work!',
-      'intro_subtitle':
-          'Prepare to speak for at least 30 seconds about the photo you are shown'
+      'intro_title': LocaleKeys.speak_about_photo.tr(),
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
+      'intro_subtitle': LocaleKeys.prepare_speak_30s.tr()
     },
     {
       'label': 'Duolingo Speaking 02',
-      'intro_title': 'Read, Then Speak',
+      'intro_title': LocaleKeys.read_then_speak.tr(),
       'type': CoursePracticeType.speaking,
-      'outro_title': 'Speaking Practice Completed',
-      'intro_subtitle': 'You will speak about the given topic',
-      'outro_subtitle': 'You’ve finished this speaking session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_subtitle': LocaleKeys.speak_given_topic.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Speaking 03',
-      'intro_title': 'Speaking Sample',
+      'intro_title': LocaleKeys.speaking_sample.tr(),
       'type': CoursePracticeType.speaking,
-      'outro_title': 'Speaking Practice Completed',
-      'intro_subtitle': 'You’ll speak for 1–3 minutes about a given topic.',
-      'outro_subtitle': 'You’ve finished this speaking session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_subtitle': LocaleKeys.speak_1_3m.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Speaking 04',
       'type': CoursePracticeType.speaking,
-      'intro_title': 'Interactive Speaking',
-      'outro_title': 'Speaking Practice Completed',
-      'intro_subtitle': ' You’ll answer a series of short questions.',
-      'outro_subtitle': 'You’ve finished this speaking session. Great work!',
+      'intro_title': LocaleKeys.interactive_speaking.tr(),
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_subtitle': LocaleKeys.answer_short_questions.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Writing 05',
       'type': CoursePracticeType.writing,
-      'intro_title': 'Write About the Photo',
-      'outro_title': 'Writing Practice Completed',
-      'outro_subtitle': 'You’ve finished this writing session. Great work!',
-      'intro_subtitle':
-          'You will see a picture and write a short description based on what you observe. Focus on clear, simple sentences.'
+      'intro_title': LocaleKeys.write_about_photo.tr(),
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
+      'intro_subtitle': LocaleKeys.write_short_description_photo.tr()
     },
     {
       'label': 'Duolingo Writing 06',
-      'intro_title': 'Writing Sample',
+      'intro_title': LocaleKeys.writing_sample.tr(),
       'type': CoursePracticeType.writing,
-      'outro_title': 'Writing Practice Completed',
-      'outro_subtitle': 'You’ve finished this writing session. Great work!',
-      'intro_subtitle':
-          'You will write a longer response based on a given question. Your writing will be shared with institutions as part of your score.'
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
+      'intro_subtitle': LocaleKeys.write_longer_response_shared.tr()
     },
     {
       'label': 'Duolingo Writing 07',
       'type': CoursePracticeType.writing,
-      'outro_title': 'Writing Practice Completed',
-      'intro_title': 'Interactive Writing Part 1',
-      'outro_subtitle': 'You’ve finished this writing session. Great work!',
-      'intro_subtitle':
-          ' You will write short and simple sentences.  Focus on basic ideas and clear meaning.  Write naturally and manage your time.'
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_title': LocaleKeys.interactive_writing_part1.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
+      'intro_subtitle': LocaleKeys.write_short_simple_sentences.tr()
     },
     {
       'label': 'Duolingo Writing 08',
       'type': CoursePracticeType.writing,
-      'intro_title': 'Interactive Writing Part 2',
-      'outro_title': 'Writing Practice Completed',
-      'outro_subtitle': 'You’ve finished this writing session. Great work!',
-      'intro_subtitle':
-          ' You will continue writing on a related idea.  Add more details using clear sentences.  Stay focused and complete your response within the time.'
+      'intro_title': LocaleKeys.interactive_writing_part2.tr(),
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
+      'intro_subtitle': LocaleKeys.continue_writing_related.tr()
     },
     {
       'label': 'Duolingo Listening 09',
-      'intro_title': 'Listen and Type',
+      'intro_title': LocaleKeys.listen_and_type.tr(),
       'type': CoursePracticeType.listening,
-      'outro_title': 'Listening Practice Completed',
-      'intro_subtitle':
-          'You will hear a short audio clip. Type exactly what you hear.',
-      'outro_subtitle': 'You’ve finished this Listening session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_subtitle': LocaleKeys.hear_short_audio_type.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Listening 10',
       'type': CoursePracticeType.listening,
-      'outro_title': 'Listening Practice Completed',
-      'intro_title': 'Interactive Listening - Part 1',
-      'intro_subtitle': ' Listen carefully and complete the missing words.',
-      'outro_subtitle': 'You’ve finished this Listening session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_title': LocaleKeys.interactive_listening_part1.tr(),
+      'intro_subtitle': LocaleKeys.listen_complete_missing.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Listening 11',
       'type': CoursePracticeType.listening,
-      'outro_title': 'Listening Practice Completed',
-      'intro_title': 'Interactive Listening - Part 2',
-      'intro_subtitle': 'Listen and choose the correct option.',
-      'outro_subtitle': 'You’ve finished this Listening session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_title': LocaleKeys.interactive_listening_part2.tr(),
+      'intro_subtitle': LocaleKeys.listen_choose_correct.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Listening 12',
       'type': CoursePracticeType.listening,
-      'outro_title': 'Listening Practice Completed',
-      'intro_title': 'Interactive Listening - Part 3',
-      'intro_subtitle': 'Write a summary of the conversation you just had',
-      'outro_subtitle': 'You’ve finished this Listening session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_title': LocaleKeys.interactive_listening_part3.tr(),
+      'intro_subtitle': LocaleKeys.write_summary_conversation.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Reading 13',
-      'intro_title': 'Read and Select',
+      'intro_title': LocaleKeys.read_and_select.tr(),
       'type': CoursePracticeType.reading,
-      'outro_title': 'Reading Practice Completed',
-      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
-      'intro_subtitle':
-          'Read the sentence and select the option that correctly completes the meaning.',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
+      'intro_subtitle': LocaleKeys.read_select_correct.tr(),
     },
     {
       'label': 'Duolingo Reading 14',
-      'intro_title': 'Fill in the blank',
+      'intro_title': LocaleKeys.fill_in_blank.tr(),
       'type': CoursePracticeType.reading,
-      'outro_title': 'Reading Practice Completed',
-      'intro_subtitle':
-          'Complete the sentences by filling in the missing words',
-      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_subtitle': LocaleKeys.complete_sentences_filling.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Reading 15',
       'type': CoursePracticeType.reading,
-      'outro_title': 'Reading Practice Completed',
-      'intro_title': 'Interactive Reading Complete the Sentence',
-      'intro_subtitle':
-          'Read the passage and complete the interactive activities.',
-      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_title': LocaleKeys.interactive_reading_complete_sentence.tr(),
+      'intro_subtitle': LocaleKeys.read_passage_complete_interactive.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Reading 16',
       'type': CoursePracticeType.reading,
-      'outro_title': 'Reading Practice Completed',
-      'intro_title': 'Interactive Reading Complete the Passage',
-      'intro_subtitle':
-          'Read the passage and complete the interactive activities.',
-      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_title': LocaleKeys.interactive_reading_complete_passage.tr(),
+      'intro_subtitle': LocaleKeys.read_passage_complete_interactive.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Reading 17',
       'type': CoursePracticeType.reading,
-      'outro_title': 'Reading Practice Completed',
-      'intro_title': 'Interactive Reading Identify the Idea',
-      'intro_subtitle':
-          'Read the passage and complete the interactive activities.',
-      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_title': LocaleKeys.interactive_reading_identify_idea.tr(),
+      'intro_subtitle': LocaleKeys.read_passage_complete_interactive.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Reading 18',
       'type': CoursePracticeType.reading,
-      'outro_title': 'Reading Practice Completed',
-      'intro_title': 'Interactive Reading Title the Passage',
-      'intro_subtitle':
-          'Read the passage and complete the interactive activities.',
-      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_title': LocaleKeys.interactive_reading_title_passage.tr(),
+      'intro_subtitle': LocaleKeys.read_passage_complete_interactive.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Reading 19',
       'type': CoursePracticeType.reading,
-      'outro_title': 'Reading Practice Completed',
-      'intro_title': 'Interactive Reading Highlight the Answer',
-      'intro_subtitle':
-          'Read the passage and complete the interactive activities.',
-      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_title': LocaleKeys.interactive_reading_highlight_answer.tr(),
+      'intro_subtitle': LocaleKeys.read_passage_complete_interactive.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'label': 'Duolingo Reading 20',
       'type': CoursePracticeType.reading,
-      'intro_title': 'Read and Complete',
-      'outro_title': 'Reading Practice Completed',
-      'intro_subtitle':
-          'Read the passage and complete the interactive activities.',
-      'outro_subtitle': 'You’ve finished this Reading session. Great work!',
+      'intro_title': LocaleKeys.read_and_complete.tr(),
+      'outro_title': LocaleKeys.practice_completed.tr(),
+      'intro_subtitle': LocaleKeys.read_passage_complete_interactive.tr(),
+      'outro_subtitle': LocaleKeys.great_work_session.tr(),
     },
     {
       'subtitle': '4–5 minutes',
       'label': 'IELTS Speaking 21',
       'type': CoursePracticeType.ielts,
       'instruction_title': 'What to expect:',
-      'title': 'IELTS Speaking – Interview',
+      'title': LocaleKeys.ielts_speaking_interview.tr(),
       'instruction_subtitle':
           ' You’ll answer simple questions about everyday topics',
     },
@@ -360,7 +346,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_subtitle': '',
       'label': 'IELTS Speaking 22',
       'type': CoursePracticeType.ielts,
-      'title': 'IELTS Speaking – Cue Card Part 1',
+      'title': LocaleKeys.ielts_speaking_cue_card_part1.tr(),
       'subtitle':
           '1 minute to prepare and make notes. Then you speak for 1–2 minutes on the topic.',
     },
@@ -369,14 +355,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_subtitle': '',
       'label': 'IELTS Speaking 23',
       'type': CoursePracticeType.ielts,
-      'title': 'IELTS Speaking – Cue Card Part 2',
+      'title': LocaleKeys.ielts_speaking_cue_card_part2.tr(),
       'subtitle':
           'The examiner asks related questions. You answer with more detail and opinions.',
     },
     {
       'label': 'IELTS Speaking 24',
       'type': CoursePracticeType.ielts,
-      'title': 'IELTS Speaking – Discussion',
+      'title': LocaleKeys.ielts_speaking_discussion.tr(),
       'instruction_title': 'What to expect:',
       'subtitle': 'The discussion lasts about 4–5 minutes.',
       'instruction_subtitle':
@@ -386,7 +372,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'label': 'IELTS Writing 25',
       'type': CoursePracticeType.ielts,
-      'title': 'IELTS Writing – Part 1',
+      'title': LocaleKeys.ielts_writing_part1.tr(),
       'instruction_title': 'What to expect:',
       'instruction_subtitle':
           'Summarize a graph or chart in ~150 words with a formal style.',
@@ -395,7 +381,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'label': 'IELTS Writing 26',
       'type': CoursePracticeType.ielts,
-      'title': 'IELTS Writing – Part 2',
+      'title': LocaleKeys.ielts_writing_part2.tr(),
       'instruction_title': 'What to expect:',
       'instruction_subtitle':
           'Give your opinion with reasons.  Write ~ 250 words.',
@@ -404,34 +390,34 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'title': 'Form Completion',
+      'title': LocaleKeys.form_completion.tr(),
       'label': 'IELTS Listening 27',
       'type': CoursePracticeType.ielts,
-      'outro_title': 'Part 1 completed!',
+      'outro_title': LocaleKeys.part_completed.tr(args: ['1']),
       'outro_subtitle':
-          'You have finished part 1 , click next to proceed to part 2',
+          LocaleKeys.finished_part_click_next.tr(args: ['1', '2']),
     },
     {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'title': 'Note Completion',
+      'title': LocaleKeys.note_completion.tr(),
       'label': 'IELTS Listening 28',
       'type': CoursePracticeType.ielts,
-      'outro_title': 'Part 1 completed!',
+      'outro_title': LocaleKeys.part_completed.tr(args: ['1']),
       'outro_subtitle':
-          'You have finished part 1 , click next to proceed to part 2',
+          LocaleKeys.finished_part_click_next.tr(args: ['1', '2']),
     },
     {
       'subtitle': '',
-      'title': 'Short Answer',
+      'title': LocaleKeys.short_answer.tr(),
       'instruction_title': '',
       'instruction_subtitle': '',
       'label': 'IELTS Listening 29',
       'type': CoursePracticeType.ielts,
-      'outro_title': 'Part 1 completed!',
+      'outro_title': LocaleKeys.part_completed.tr(args: ['1']),
       'outro_subtitle':
-          'You have finished part 1 , click next to proceed to part 2',
+          LocaleKeys.finished_part_click_next.tr(args: ['1', '2']),
     },
     {
       'subtitle': '',
@@ -439,10 +425,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_subtitle': '',
       'label': 'IELTS Listening 30',
       'type': CoursePracticeType.ielts,
-      'outro_title': 'Part 1 completed!',
+      'outro_title': LocaleKeys.part_completed.tr(args: ['1']),
       'title': 'IELTS Listening - Table completion',
       'outro_subtitle':
-          'You have finished part 1 , click next to proceed to part 2',
+          LocaleKeys.finished_part_click_next.tr(args: ['1', '2']),
     },
     {
       'subtitle': '',
@@ -450,21 +436,21 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_subtitle': '',
       'label': 'IELTS Listening 31',
       'type': CoursePracticeType.ielts,
-      'outro_title': 'Part 2 completed!',
-      'title': 'Map/Plan/Diagram Completion',
+      'outro_title': LocaleKeys.part_completed.tr(args: ['2']),
+      'title': LocaleKeys.map_plan_diagram_completion.tr(),
       'outro_subtitle':
-          'You have finished part 3 , click next to proceed to part 3',
+          LocaleKeys.finished_part_click_next.tr(args: ['2', '3']),
     },
     {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'title': 'Diagram labeling',
+      'title': LocaleKeys.diagram_labeling.tr(),
       'label': 'IELTS Listening 32',
       'type': CoursePracticeType.ielts,
-      'outro_title': 'Part 2 completed!',
+      'outro_title': LocaleKeys.part_completed.tr(args: ['2']),
       'outro_subtitle':
-          'You have finished part 3 , click next to proceed to part 3',
+          LocaleKeys.finished_part_click_next.tr(args: ['2', '3']),
     },
     {
       'subtitle': '',
@@ -472,21 +458,21 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_subtitle': '',
       'label': 'IELTS Listening 33',
       'type': CoursePracticeType.ielts,
-      'outro_title': 'Part 3 completed!',
+      'outro_title': LocaleKeys.part_completed.tr(args: ['3']),
       'title': 'IELTS Listening Multiple choice',
       'outro_subtitle':
-          'You have finished part 3 , click next to proceed to part 4',
+          LocaleKeys.finished_part_click_next.tr(args: ['3', '4']),
     },
     {
       'subtitle': '',
-      'title': 'Matching',
+      'title': LocaleKeys.matching.tr(),
       'instruction_title': '',
       'instruction_subtitle': '',
       'label': 'IELTS Listening 34',
       'type': CoursePracticeType.ielts,
-      'outro_title': 'Part 3 completed!',
+      'outro_title': LocaleKeys.part_completed.tr(args: ['3']),
       'outro_subtitle':
-          'You have finished part 3 , click next to proceed to part 4',
+          LocaleKeys.finished_part_click_next.tr(args: ['3', '4']),
     },
     {
       'subtitle': '',
@@ -494,8 +480,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_subtitle': '',
       'label': 'IELTS Listening 35',
       'type': CoursePracticeType.ielts,
-      'outro_title': 'Part 4 completed!',
-      'outro_subtitle': 'You have finished part 4',
+      'outro_title': LocaleKeys.part_completed.tr(args: ['4']),
+      'outro_subtitle': LocaleKeys.part_completed.tr(args: ['4']),
       'title': 'IELTS Listening - Summary Completion',
     },
     {
@@ -503,16 +489,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_title': '',
       'instruction_subtitle': '',
       'label': 'IELTS Reading 36',
-      'title': 'Sentence Completion',
+      'title': LocaleKeys.form_completion.tr(),
       'type': CoursePracticeType.ielts,
-      'outro_title': 'Part 4 completed!',
-      'outro_subtitle': 'You have finished part 4',
+      'outro_title': LocaleKeys.part_completed.tr(args: ['4']),
+      'outro_subtitle': LocaleKeys.part_completed.tr(args: ['4']),
     },
     {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'title': 'Paragraph Choice',
+      'title': LocaleKeys.paragraph_choice.tr(),
       'label': 'IELTS Reading 37',
       'type': CoursePracticeType.ielts,
     },
@@ -522,7 +508,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_subtitle': '',
       'label': 'IELTS Reading 38',
       'type': CoursePracticeType.ielts,
-      'title': 'IELTS Reading - Diagram Labeling',
+      'title': LocaleKeys.diagram_labeling.tr(),
     },
     {
       'subtitle': '',
@@ -530,7 +516,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_subtitle': '',
       'label': 'IELTS Reading 39',
       'type': CoursePracticeType.ielts,
-      'title': 'IELTS Reading - Sentence Completion',
+      'title': LocaleKeys.form_completion.tr(),
     },
     {
       'subtitle': '',
@@ -546,7 +532,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_subtitle': '',
       'label': 'IELTS Reading 41',
       'type': CoursePracticeType.ielts,
-      'title': 'True / False / Not Given',
+      'title': LocaleKeys.true_false_not_given.tr(),
     },
     {
       'subtitle': '',
@@ -561,14 +547,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'instruction_title': '',
       'instruction_subtitle': '',
       'label': 'IELTS Reading 43',
-      'title': 'Yes / No / Not Given',
+      'title': LocaleKeys.yes_no_not_given.tr(),
       'type': CoursePracticeType.ielts,
     },
     {
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'title': 'Heading Matching',
+      'title': LocaleKeys.heading_matching.tr(),
       'label': 'IELTS Reading 44',
       'type': CoursePracticeType.ielts,
     },
@@ -576,7 +562,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'subtitle': '',
       'instruction_title': '',
       'instruction_subtitle': '',
-      'title': 'Feature Matching',
+      'title': LocaleKeys.feature_matching.tr(),
       'label': 'IELTS Reading 45',
       'type': CoursePracticeType.ielts,
     },
@@ -587,7 +573,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
       'label': 'IELTS Reading 46',
       'type': CoursePracticeType.ielts,
       'title': 'IELTS Reading - Table completion',
-
     }
   ];
 
@@ -595,13 +580,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   // Selected question param
   Map<String, dynamic> _selectedQuestionParam = {
-    'label': 'Duolingo Speaking 01',
-    'intro_title': 'Speak About the Photo',
+    'label': '${LocaleKeys.speaking_practice.tr()} 01',
+    'intro_title': LocaleKeys.speak_about_photo.tr(),
     'type': CoursePracticeType.speaking,
-    'outro_title': 'Speaking Practice Completed',
-    'outro_subtitle': 'You’ve finished this speaking session. Great work!',
-    'intro_subtitle':
-        'Prepare to speak for at least 30 seconds about the photo you are shown',
+    'outro_title': LocaleKeys.practice_completed.tr(),
+    'outro_subtitle': LocaleKeys.great_work_session.tr(),
+    'intro_subtitle': LocaleKeys.prepare_speak_30s.tr(),
   };
 
   Map<String, dynamic> get selectedQuestionParam => _selectedQuestionParam;
@@ -654,12 +638,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
   int _variant = 0;
 
   int get variant => _variant;
-
-
-  int? _countdownDuration;
-
-  int? get countdownDuration => _countdownDuration;
-
 
   // Counter time
   void setCountdown(int durationInSeconds) {
@@ -773,15 +751,20 @@ class CoursePracticeViewModel extends ReactiveViewModel
       _selectedQuestionParam = _questionParams.elementAt(12);
     } else if (id == 3 /*Duolingo - Fill in the blank*/) {
       _selectedQuestionParam = _questionParams.elementAt(13);
-    } else if (id == 51 /*Duolingo - Interactive reading - complete the sentence*/) {
+    } else if (id ==
+        51 /*Duolingo - Interactive reading - complete the sentence*/) {
       _selectedQuestionParam = _questionParams.elementAt(14);
-    } else if (id == 52 /*Duolingo - Interactive reading - complete the passage*/) {
+    } else if (id ==
+        52 /*Duolingo - Interactive reading - complete the passage*/) {
       _selectedQuestionParam = _questionParams.elementAt(15);
-    } else if (id == 53 /*Duolingo - Interactive reading - identify the idea*/) {
+    } else if (id ==
+        53 /*Duolingo - Interactive reading - identify the idea*/) {
       _selectedQuestionParam = _questionParams.elementAt(16);
-    } else if (id == 54 /*Duolingo - Interactive reading - title the passage*/) {
+    } else if (id ==
+        54 /*Duolingo - Interactive reading - title the passage*/) {
       _selectedQuestionParam = _questionParams.elementAt(17);
-    } else if (id == 55 /*Duolingo - Interactive reading - highlight the answer*/) {
+    } else if (id ==
+        55 /*Duolingo - Interactive reading - highlight the answer*/) {
       _selectedQuestionParam = _questionParams.elementAt(18);
     } else if (id == 50 /*Duolingo - Read and complete*/) {
       _selectedQuestionParam = _questionParams.elementAt(19);
@@ -816,6 +799,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> setSectionQuestionIntros(
       {required int id, required BuildContext context}) async {
+    print(id);
     if (id == 40 /*IELTS Listening - Form Completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(26);
       int responseFirstSec = _questions[_currentQuestion]
@@ -879,13 +863,18 @@ class CoursePracticeViewModel extends ReactiveViewModel
           .value['seconds'];
       setCountdown(responseFirstSec);
     } else if (id == 33 /*IELTS Listening - Matching*/) {
+      print('HERE 1');
       _selectedQuestionParam = _questionParams.elementAt(33);
+      print('HERE 2');
+
       int responseLastSec = _questions[_currentQuestion]
           .dynamicPayload
           ?.response
-          ?.last
+          ?.first
           .value['seconds'];
+      print('HERE 3');
       setCountdown(responseLastSec);
+      print('HERE 4');
     } else if (id == 34 /*IELTS Listening - Summary completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(34);
       int responseLastSec = _questions[_currentQuestion]
@@ -987,7 +976,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
           ?.first
           .value['seconds'];
       setCountdown(responseFirstSec);
-    }else if (id == 68 /*IELTS Reading - Table completion*/) {
+    } else if (id == 68 /*IELTS Reading - Table completion*/) {
       _selectedQuestionParam = _questionParams.elementAt(45);
       int responseFirstSec = _questions[_currentQuestion]
           .dynamicPayload
@@ -1080,8 +1069,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
               21) {
             nextIeltsSpeakingVariantScreen();
             startRecording();
-            setCountdown(_countdownDuration ?? 0);
-
           }
         }
       }
@@ -1162,16 +1149,25 @@ class CoursePracticeViewModel extends ReactiveViewModel
   }
 
   // Dialogue
-  Future<void> showAbortDialog(String passage) async =>
-await _dialogService.showDialog(
-      title: LocaleKeys.passage.tr(),
-      buttonTitle: LocaleKeys.close.tr(),
-      description: passage,
-      barrierDismissible: true,
-      cancelTitleColor: kcDarkGrey,
-      buttonTitleColor: kcPrimaryColor,
-    );
+  Future<void> showPassageAbortDialog(String passage) async =>
+      await _dialogService.showDialog(
+        title: LocaleKeys.passage.tr(),
+        buttonTitle: LocaleKeys.close.tr(),
+        description: passage,
+        barrierDismissible: true,
+        cancelTitleColor: kcDarkGrey,
+        buttonTitleColor: kcPrimaryColor,
+      );
 
+  Future<void> showPurchaseDialog() async =>
+      await _dialogService.showDialog(
+        barrierDismissible: true,
+        cancelTitleColor: kcDarkGrey,
+        title: LocaleKeys.content.tr(),
+        buttonTitleColor: kcPrimaryColor,
+        buttonTitle: LocaleKeys.close.tr(),
+        description: LocaleKeys.ios_purchase.tr(),
+      );
 
   // Set highlight
   void setHighlight({required int end, required int start}) {
@@ -1521,7 +1517,6 @@ await _dialogService.showDialog(
 
   Future<void> setWritingAnswer(
       {required String sample, required String response}) async {
-    FocusManager.instance.primaryFocus?.unfocus();
     _answers.add({'sample': sample, 'response': response});
     nextScreen();
   }
@@ -1536,7 +1531,7 @@ await _dialogService.showDialog(
   }) async =>
       await runBusyFuture(
           _setIeltsSpeakingAnswer1(
-            text: text,
+              text: text,
               audio: audio,
               sample: sample,
               duration: duration,
@@ -1544,8 +1539,8 @@ await _dialogService.showDialog(
           busyObject: StateObjects.ieltsSpeaking1Variant);
 
   Future<void> _setIeltsSpeakingAnswer1(
-
-      {    required String text,required String audio,
+      {required String text,
+      required String audio,
       required int duration,
       required String sample,
       required String question}) async {
@@ -1580,7 +1575,7 @@ await _dialogService.showDialog(
   }) async =>
       await runBusyFuture(
           _setIeltsSpeakingAnswer4(
-            text: text,
+              text: text,
               audio: audio,
               sample: sample,
               duration: duration,
@@ -1588,10 +1583,8 @@ await _dialogService.showDialog(
           busyObject: StateObjects.ieltsSpeaking4Variant);
 
   Future<void> _setIeltsSpeakingAnswer4(
-      {
-        required String text,
-
-        required String audio,
+      {required String text,
+      required String audio,
       required int duration,
       required String sample,
       required String question}) async {
@@ -1599,7 +1592,7 @@ await _dialogService.showDialog(
     await stopRecording();
     _answers.add({
       'question': question,
-      'question_text':text,
+      'question_text': text,
       'number': variants.toString(),
       'sample_voice_answer': sample,
       'busy_object': variants.toString(),
@@ -1611,9 +1604,8 @@ await _dialogService.showDialog(
       _variants++;
       _variant = 0;
       _isSpeaking = true;
-      _countdownDuration = duration;
+      setCountdown(duration + 10);
       await playVoicePrompt(audio);
-     // print('SET');
     }
   }
 
@@ -1772,9 +1764,12 @@ await _dialogService.showDialog(
         _isSectionStart = true;
         _stimulusBlockKey = _questions[_currentQuestion].stimulusBlockKey;
       }
+      print('QUESTIONS 1: ${_questions.length}');
+
       await setSectionQuestionIntros(
           context: context,
           id: _questions[_currentQuestion].questionTypeDefinitionId ?? 0);
+      print('QUESTIONS 2: ${_questions.length}');
     } else {
       await setSingleQuestionIntros(
           context: context,
@@ -1784,8 +1779,7 @@ await _dialogService.showDialog(
     _currentPage = 1;
   }
 
-
-
+  // Update payment status
   Future<void> updatePaymentStatus() async =>
       await runBusyFuture(_updatePaymentStatus(),
           busyObject: StateObjects.coursePractice);
@@ -1801,25 +1795,24 @@ await _dialogService.showDialog(
     }
   }
 
-  // Finish practice
   // Complete practice
-  Future<void> completeCoursePractice(int id) async =>
-      await runBusyFuture(_completeCoursePractice(id),
+  Future<void> completeCoursePractice(CoursePractice practice) async =>
+      await runBusyFuture(_completeCoursePractice(practice),
           busyObject: StateObjects.completeCoursePractice);
 
-  Future<void> _completeCoursePractice(int id) async {
+  Future<void> _completeCoursePractice(CoursePractice practice) async {
     if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> data = {
+        'parent_id': practice.parents?.first.parentId ?? 0,
+        'parent_kind': practice.parents?.first.parentKind?.toUpperCase() ?? ''
+      };
       await stopAudio();
-      /* await _apiService.completePractice(id);
-     await _courseService.getCourseProgress();*/
+      await _apiService.completePractice(data: data, id: practice.id ?? 0);
+      await _courseService.getCourseProgress();
     }
   }
-
-
-
-
-  // Refresh url
-  /*Future<String?> getRefreshedUrl(String value) async {
+// Refresh url
+/*Future<String?> getRefreshedUrl(String value) async {
     final String? refreshedUrl = await _courseService.refreshObject(value);
 
     if (refreshedUrl != null) {
@@ -1828,6 +1821,4 @@ await _dialogService.showDialog(
       return null;
     }
   }*/
-
-  String getReadableImage(String image) => getReadableUrl(image) ?? '';
 }

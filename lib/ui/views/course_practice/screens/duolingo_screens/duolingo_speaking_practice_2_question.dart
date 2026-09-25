@@ -19,6 +19,7 @@ class DuolingoSpeakingPractice2Question
   const DuolingoSpeakingPractice2Question({super.key});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.startRecording();
     viewModel.setCountdown(viewModel.questions[viewModel.currentQuestion]
         .dynamicPayload?.response?.first.value['seconds']);
@@ -116,7 +117,7 @@ class DuolingoSpeakingPractice2Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -160,13 +161,18 @@ class DuolingoSpeakingPractice2Question
       );
 
   Widget _buildTitle() => Text(
-        'Prepare to speak about the topic below',
+        LocaleKeys.prepare_speak_topic.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle(CoursePracticeViewModel viewModel) => Text(
-        'You will have ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.stimulus?.first.value['seconds']} seconds to speak',
+        LocaleKeys.speak_topic_below_seconds.tr(args: [
+          viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.stimulus?.first.value['seconds']
+                  .toString() ??
+              ''
+        ]),
         style: style14DG400,
         textAlign: TextAlign.center,
       );

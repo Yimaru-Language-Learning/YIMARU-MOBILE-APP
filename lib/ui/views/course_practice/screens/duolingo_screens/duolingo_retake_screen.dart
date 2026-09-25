@@ -5,6 +5,7 @@ import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
+import '../../../../common/enmus.dart';
 import '../../../../common/ui_helpers.dart';
 import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
@@ -109,8 +110,21 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${_getTitle(viewModel)} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
+  String _getTitle(CoursePracticeViewModel viewModel) {
+    CoursePracticeType type = viewModel.selectedQuestionParam['type'];
+    if (type == CoursePracticeType.speaking) {
+      return LocaleKeys.speaking_practice.tr();
+    } else if (type == CoursePracticeType.writing) {
+      return LocaleKeys.writing_practice.tr();
+    } else if (type == CoursePracticeType.listening) {
+      return LocaleKeys.listening_practice.tr();
+    } else {
+      return LocaleKeys.reading_practice.tr();
+    }
+  }
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
@@ -147,7 +161,7 @@ class DuolingoRetakeScreen extends ViewModelWidget<CoursePracticeViewModel> {
       ];
 
   Widget _buildPracticeButton(CoursePracticeViewModel viewModel) =>
-       CustomElevatedButton(
+      CustomElevatedButton(
         height: 55,
         bottom: false,
         borderRadius: 12,

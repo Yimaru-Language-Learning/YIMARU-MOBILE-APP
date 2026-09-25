@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../common/app_colors.dart';
+import '../../../../common/translations/locale_keys.g.dart';
 import '../../../../common/ui_helpers.dart';
 import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
@@ -94,7 +96,7 @@ class IeltsSpeakingPractice2Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -105,7 +107,7 @@ class IeltsSpeakingPractice2Review
       );
 
   Widget _buildTitle() => Text(
-        'Part 1: Cue Card',
+        LocaleKeys.part1_cue_card.tr(),
         style: style18DG600,
         textAlign: TextAlign.center,
       );

@@ -113,12 +113,12 @@ class SubscriptionFormScreen extends ViewModelWidget<SubscriptionViewModel> {
       );
 
   Widget _buildTitle() => Text(
-        'Unlock Next Module',
+        LocaleKeys.unlock_next_module.tr(),
         style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(
-        'Enter payment phone number, this will be used to process the payment.',
+        LocaleKeys.enter_payment_phone.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );
@@ -189,7 +189,7 @@ class SubscriptionFormScreen extends ViewModelWidget<SubscriptionViewModel> {
       child: _buildPaymentText());
 
   Widget _buildPaymentText() => Text(
-        'Proceed with telebirr',
+        LocaleKeys.proceed_with_telebirr.tr(),
         style: phoneNumberController.text.isNotEmpty
             ? style16P600
             : style16P600.copyWith(
@@ -216,7 +216,7 @@ class SubscriptionFormScreen extends ViewModelWidget<SubscriptionViewModel> {
       );
 
   Widget _buildTileTitle() => Text(
-        'Unlock All Lessons & Practices',
+        LocaleKeys.unlock_all_lessons_practices.tr(),
         style: style14MG400,
         textAlign: TextAlign.center,
       );

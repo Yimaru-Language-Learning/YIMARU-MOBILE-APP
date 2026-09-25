@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/duolingo_practice_review_section.dart';
@@ -96,7 +99,7 @@ class DuolingoWritingPractice1Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.writing_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -161,7 +164,12 @@ class DuolingoWritingPractice1Review
       );
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write a description of the image below for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds',
+        LocaleKeys.write_description_image_seconds.tr(args: [
+          viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.first.value['seconds']
+                  .toString() ??
+              ''
+        ]),
         style: style18DG700,
         textAlign: TextAlign.center,
       );

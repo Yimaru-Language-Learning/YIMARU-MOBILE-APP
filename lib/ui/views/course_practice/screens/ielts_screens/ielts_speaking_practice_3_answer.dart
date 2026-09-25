@@ -110,7 +110,7 @@ class IeltsSpeakingPractice3Answer
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -121,7 +121,7 @@ class IeltsSpeakingPractice3Answer
       );
 
   Widget _buildTitle() => Text(
-        'Part 2: Follow up',
+        LocaleKeys.part2_follow_up.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -160,7 +160,7 @@ class IeltsSpeakingPractice3Answer
           : const SizedBox(height: 20);
 
   Widget _buildSpeakerLabel() =>
-      const SpeakingLabel(label: 'You are speaking...');
+      SpeakingLabel(label: LocaleKeys.you_are_speaking_status.tr());
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState

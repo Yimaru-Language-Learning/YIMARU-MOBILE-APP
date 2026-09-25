@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../common/app_colors.dart';
+import '../../../../common/translations/locale_keys.g.dart';
 import '../../../../common/ui_helpers.dart';
 import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/circular_countdown_timer.dart';
@@ -103,7 +105,7 @@ class IeltsSpeakingPractice2Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -114,7 +116,7 @@ class IeltsSpeakingPractice2Question
       );
 
   Widget _buildTitle() => Text(
-        'Part 1: Cue Card',
+        LocaleKeys.part1_cue_card.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -152,13 +154,13 @@ class IeltsSpeakingPractice2Question
       );
 
   Widget _buildSubtitle() => Text(
-        'Prep time',
+        LocaleKeys.prep_time.tr(),
         style: style16DG400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildActionLabel() => Text(
-        'Tap the microphone to speak',
+        LocaleKeys.tap_microphone.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );

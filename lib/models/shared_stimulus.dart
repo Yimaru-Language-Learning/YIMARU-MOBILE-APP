@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:yimaru_app/models/dynamic_payload.dart';
 
 import 'dynamic_item.dart';
 

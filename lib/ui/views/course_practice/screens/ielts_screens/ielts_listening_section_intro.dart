@@ -23,7 +23,8 @@ class IeltsListeningSectionIntro
 
   const IeltsListeningSectionIntro({super.key, required this.title});
 
-  Future<void> _next(CoursePracticeViewModel viewModel)async{
+  Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
     viewModel.nextScreen();
   }
@@ -118,7 +119,7 @@ class IeltsListeningSectionIntro
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -159,9 +160,9 @@ class IeltsListeningSectionIntro
         textAlign: TextAlign.center,
       );
 
-  Widget _buildSubtitle() => const ProgressStatus(
+  Widget _buildSubtitle() => ProgressStatus(
         color: kcPrimaryColor,
-        status: 'READY TO LISTEN',
+        status: LocaleKeys.ready_to_listen_status.tr(),
       );
 
   Widget _buildSpeakingIndicator() => const SpeakingIndicator(size: 50);
@@ -175,13 +176,13 @@ class IeltsListeningSectionIntro
   Widget _buildPlayButton() => const IeltsListeningSectionPlayButton();
 
   Widget _buildInstruction() => Text(
-        'Once you press play, you cannot stop or restart the audio.',
+        LocaleKeys.cannot_stop_restart_audio_info.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildWarning() => Text(
-        'Complete the audio to proceed',
+        LocaleKeys.complete_audio_to_proceed_warning.tr(),
         style: style12DG400,
         textAlign: TextAlign.center,
       );
@@ -221,12 +222,13 @@ class IeltsListeningSectionIntro
         text: LocaleKeys.cont.tr(),
         borderRadius: 12,
         foregroundColor: kcWhite,
-        onTap: ()async => await _next(viewModel),
+        onTap: () async => await _next(viewModel),
         backgroundColor: kcPrimaryColor,
       );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
-      viewModel.busy(StateObjects.coursePractice) ||  viewModel.busy(StateObjects.stopAudio)
+      viewModel.busy(StateObjects.coursePractice) ||
+              viewModel.busy(StateObjects.stopAudio)
           ? const PageLoadingIndicator()
           : Container();
 }

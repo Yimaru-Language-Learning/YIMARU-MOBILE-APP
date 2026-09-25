@@ -1,12 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
+import '../../../../common/translations/locale_keys.g.dart';
 import '../../../../common/ui_helpers.dart';
 import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
-import '../../../../widgets/listenable_review_practice_card.dart';
 import '../../../../widgets/page_loading_indicator.dart';
 import '../../../../widgets/speaking_practice_review_section.dart';
 import '../../course_practice_viewmodel.dart';
@@ -24,6 +25,7 @@ class IeltsSpeakingPractice4Review
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
 
     if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -119,7 +121,7 @@ class IeltsSpeakingPractice4Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -189,7 +191,7 @@ class IeltsSpeakingPractice4Review
       ];
 
   Widget _buildTitle() => Text(
-        'Interview',
+        LocaleKeys.interview.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -200,13 +202,12 @@ class IeltsSpeakingPractice4Review
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: _buildQuestion(question: question, number: number),
       );
-  Widget _buildQuestion( {required String question, required String number}) => Text(
-    '$number. $question',
-    style: style14DG400,
-    textAlign: TextAlign.center,
-  );
-
-
+  Widget _buildQuestion({required String question, required String number}) =>
+      Text(
+        '$number. $question',
+        style: style14DG400,
+        textAlign: TextAlign.center,
+      );
 
   Widget _buildPracticeReviewSection(
           {required BuildContext context,

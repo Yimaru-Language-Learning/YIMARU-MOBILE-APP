@@ -94,7 +94,7 @@ class FullNameFormScreen extends ViewModelWidget<OnboardingViewModel> {
       );
 
   Widget _buildTitle() => Text(
-        '${LocaleKeys.what_should_we_call_you.tr()} 😊',
+        LocaleKeys.what_should_we_call_you_title.tr(),
         style: style25DG600,
       );
 

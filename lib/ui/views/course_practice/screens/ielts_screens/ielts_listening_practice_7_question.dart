@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/listening_multiple_choice_card.dart';
-import 'package:yimaru_app/ui/widgets/reading_multiple_choice_card.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
@@ -147,7 +146,7 @@ class IeltsListeningPractice7Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -158,7 +157,7 @@ class IeltsListeningPractice7Question
       );
 
   Widget _buildTitle() => Text(
-        'Multiple Choice',
+        LocaleKeys.multiple_choice.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );

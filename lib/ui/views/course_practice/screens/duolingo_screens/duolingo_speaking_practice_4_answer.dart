@@ -131,7 +131,7 @@ class DuolingoSpeakingPractice4Answer
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -183,13 +183,13 @@ class DuolingoSpeakingPractice4Answer
           : _buildActionLabel();
 
   Widget _buildResponseLabel() => Text(
-        'Thank you for the response',
+        LocaleKeys.thank_you_for_response.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
 
   Widget _buildActionLabel() => Text(
-        'Tap the microphone to speak',
+        LocaleKeys.tap_microphone.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
@@ -200,7 +200,7 @@ class DuolingoSpeakingPractice4Answer
           : const SizedBox(height: 20);
 
   Widget _buildSpeakerLabel() =>
-      const SpeakingLabel(label: 'You are speaking...');
+      SpeakingLabel(label: LocaleKeys.you_are_speaking_status.tr());
 
   Widget _buildSpeakingIndicatorState(CoursePracticeViewModel viewModel) =>
       VoiceRecordingState.recording == viewModel.recordingState

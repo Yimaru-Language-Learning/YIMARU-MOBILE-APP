@@ -1,6 +1,6 @@
 name: yimaru_app
 publish_to: 'none'
-version: 0.1.116+118
+version: 0.1.122+124
 description: A new Flutter project.
 
 environment:
@@ -21,6 +21,7 @@ dependencies:
   iconsax: ^0.0.8
   chewie: ^1.13.0
   smart_auth: ^3.2.0
+  safe_device: ^1.4.1
   flutter_svg: ^2.2.3
   stacked_shared: any
   image_picker: ^1.2.1

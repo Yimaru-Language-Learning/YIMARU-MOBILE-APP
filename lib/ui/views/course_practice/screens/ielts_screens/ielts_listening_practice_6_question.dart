@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/app_constants.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../../common/app_colors.dart';
@@ -158,7 +157,7 @@ class IeltsListeningPractice6Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -169,7 +168,7 @@ class IeltsListeningPractice6Question
       );
 
   Widget _buildTitle() => Text(
-        'Diagram Labeling',
+        LocaleKeys.diagram_labeling.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -281,7 +280,7 @@ class IeltsListeningPractice6Question
       );
 
   Widget _buildSubtitle() => Text(
-        'Label the diagram below. Write the letter from the second column for each answer',
+        LocaleKeys.label_diagram_write_letter.tr(),
         style: style14MG400,
       );
 
@@ -315,7 +314,7 @@ class IeltsListeningPractice6Question
       [_buildColumnATitle(), verticalSpaceSmall, _buildColumnA(viewModel)];
 
   Widget _buildColumnATitle() => Text(
-        'Column A',
+        LocaleKeys.column_a.tr(),
         style: style16DG600,
       );
 

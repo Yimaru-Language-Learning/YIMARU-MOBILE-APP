@@ -21,8 +21,8 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
       {super.key, required this.title, required this.subtitle});
 
   Future<void> _navigate(CoursePracticeViewModel viewModel) async {
-    await viewModel.completeCoursePractice(
-        viewModel.practices[viewModel.currentPractice].id ?? 0);
+    await viewModel
+        .completeCoursePractice(viewModel.practices[viewModel.currentPractice]);
     viewModel.pop();
   }
 
@@ -124,8 +124,21 @@ class DuolingoFinishScreen extends ViewModelWidget<CoursePracticeViewModel> {
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${_getTitle(viewModel)} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
+
+  String _getTitle(CoursePracticeViewModel viewModel) {
+    CoursePracticeType type = viewModel.selectedQuestionParam['type'];
+    if (type == CoursePracticeType.speaking) {
+      return LocaleKeys.speaking_practice.tr();
+    } else if (type == CoursePracticeType.writing) {
+      return LocaleKeys.writing_practice.tr();
+    } else if (type == CoursePracticeType.listening) {
+      return LocaleKeys.listening_practice.tr();
+    } else {
+      return LocaleKeys.reading_practice.tr();
+    }
+  }
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,

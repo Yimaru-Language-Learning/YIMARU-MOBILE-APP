@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/countdown_timer.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
+import '../../../../common/translations/locale_keys.g.dart';
 import '../../../../common/ui_helpers.dart';
 import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
@@ -21,6 +23,7 @@ class DuolingoSpeakingPractice1Review
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
 
     if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -119,7 +122,7 @@ class DuolingoSpeakingPractice1Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -166,7 +169,7 @@ class DuolingoSpeakingPractice1Review
       const CountdownTimer(time: '00:00');
 
   Widget _buildTitle() => Text(
-        'Speak about the photo below',
+        LocaleKeys.speak_about_photo_below.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );

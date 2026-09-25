@@ -53,16 +53,9 @@ class CancelPracticeSheet extends StatelessWidget {
         radius: 45,
       );
 
-  Widget _buildMessage() => Text.rich(
-        TextSpan(
-            text: '${LocaleKeys.almost_there.tr()},',
-            style: style18DG700,
-            children: [
-              TextSpan(
-                text: '  $user',
-                style: style18P600,
-              )
-            ]),
+  Widget _buildMessage() => Text(
+        LocaleKeys.almost_there_user.tr(args: [user]),
+        style: style18DG700,
       );
 
   Widget _buildSubtitle() => Text(

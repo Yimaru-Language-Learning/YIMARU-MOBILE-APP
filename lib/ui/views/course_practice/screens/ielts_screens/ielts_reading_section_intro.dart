@@ -2,8 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
-import 'package:yimaru_app/ui/widgets/ielts_listening_instruction_card.dart';
-import 'package:yimaru_app/ui/widgets/ielts_listening_section_play_button.dart';
 
 import '../../../../common/app_colors.dart';
 import '../../../../common/enmus.dart';
@@ -12,10 +10,7 @@ import '../../../../widgets/cancel_practice_sheet.dart';
 import '../../../../widgets/course_practice_app_bar.dart';
 import '../../../../widgets/course_practice_text_card.dart';
 import '../../../../widgets/custom_elevated_button.dart';
-import '../../../../widgets/custom_linear_progress_indicator.dart';
 import '../../../../widgets/page_loading_indicator.dart';
-import '../../../../widgets/progress_status.dart';
-import '../../../../widgets/speaking_indicator.dart';
 import '../../course_practice_viewmodel.dart';
 
 class IeltsReadingSectionIntro
@@ -111,7 +106,7 @@ class IeltsReadingSectionIntro
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Reading practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.reading_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(

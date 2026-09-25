@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:yimaru_app/models/faq.dart';
-import 'package:yimaru_app/ui/common/app_strings.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
 import '../common/app_colors.dart';

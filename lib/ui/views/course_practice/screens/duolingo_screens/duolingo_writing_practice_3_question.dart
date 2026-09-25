@@ -20,11 +20,13 @@ class DuolingoWritingPractice3Question
   const DuolingoWritingPractice3Question(
       {super.key, required this.practiceController});
 
-  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async =>
-      await viewModel.setWritingAnswer(
-          response: practiceController.text,
-          sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
-              ?.response?.last.value);
+  Future<void> _nextScreen(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+    await viewModel.setWritingAnswer(
+        response: practiceController.text,
+        sample: viewModel.questions[viewModel.currentQuestion].dynamicPayload
+            ?.response?.last.value);
+  }
 
   Future<void> _cancel(CoursePracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -73,7 +75,6 @@ class DuolingoWritingPractice3Question
           {required BuildContext context,
           required CoursePracticeViewModel viewModel}) =>
       Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:
             _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
@@ -84,7 +85,6 @@ class DuolingoWritingPractice3Question
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
         _buildQuestionExpandedWrapper(viewModel),
-        _buildContinueButtonWrapper(viewModel)
       ];
 
   Widget _buildAppBarWrapper(
@@ -107,7 +107,7 @@ class DuolingoWritingPractice3Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Writing practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.writing_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -148,10 +148,17 @@ class DuolingoWritingPractice3Question
           verticalSpaceTiny,
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
+        verticalSpaceLarge,
+        _buildContinueButtonWrapper(viewModel)
       ];
 
   Widget _buildTitle(CoursePracticeViewModel viewModel) => Text(
-        'Write about the topic below for ${viewModel.questions[viewModel.currentQuestion].dynamicPayload?.response?.first.value['seconds']} seconds.',
+        LocaleKeys.write_about_topic_below_seconds.tr(args: [
+          viewModel.questions[viewModel.currentQuestion].dynamicPayload
+                  ?.response?.first.value['seconds']
+                  .toString() ??
+              ''
+        ]),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -171,7 +178,7 @@ class DuolingoWritingPractice3Question
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,
-            hint: 'Start writing here...',
+            hint: LocaleKeys.start_writing_here.tr(),
             filled: practiceController.text.isNotEmpty),
       );
 

@@ -30,6 +30,7 @@ class DuolingoListeningPractice1Question
       required this.practiceController});
 
   Future<void> _next(CoursePracticeViewModel viewModel) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     String answer = practiceController.text;
     practiceController.clear();
     await viewModel.setListeningAnswer1(
@@ -105,7 +106,7 @@ class DuolingoListeningPractice1Question
           required CoursePracticeViewModel viewModel}) =>
       [
         _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildBodyScroller(viewModel),
+        _buildBodyExpandedWrapper(viewModel),
       ];
 
   Widget _buildAppBarWrapper(
@@ -129,7 +130,7 @@ class DuolingoListeningPractice1Question
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Listening practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.listening_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -152,6 +153,9 @@ class DuolingoListeningPractice1Question
         key: ValueKey(viewModel.countdown),
         onEnd: () async => await _next(viewModel),
       );
+
+  Widget _buildBodyExpandedWrapper(CoursePracticeViewModel viewModel) =>
+      Expanded(child: _buildBodyScroller(viewModel));
 
   Widget _buildBodyScroller(CoursePracticeViewModel viewModel) =>
       SingleChildScrollView(
@@ -178,12 +182,12 @@ class DuolingoListeningPractice1Question
           verticalSpaceTiny,
         if (viewModel.hasPracticeValidationMessage && viewModel.focusPractice)
           _buildPracticeWrapper(viewModel),
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildContinueButtonWrapper(viewModel)
       ];
 
   Widget _buildTitle() => Text(
-        'Type what you hear',
+        LocaleKeys.type_what_you_hear.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -192,7 +196,7 @@ class DuolingoListeningPractice1Question
       ListenableRepetitivePracticeCard(question: question);
 
   Widget _buildLabel() => Text(
-        'Your Answer',
+        LocaleKeys.your_answer.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
@@ -206,7 +210,7 @@ class DuolingoListeningPractice1Question
         onTap: viewModel.setPracticeFocus,
         decoration: inputDecoration(
             focus: true,
-            hint: 'Start writing here...',
+            hint: LocaleKeys.start_writing_here.tr(),
             filled: practiceController.text.isNotEmpty),
       );
 

@@ -131,9 +131,8 @@ class FirstStartupScreen extends ViewModelWidget<StartupViewModel> {
         _buildIndicatorWrapper(),
       ];
 
-  Widget _buildLoadingText() => Text(
-      '${label ?? LocaleKeys.loading.tr()} ...',
-      style: style16W600);
+  Widget _buildLoadingText() =>
+      Text('${label ?? LocaleKeys.loading.tr()} ...', style: style16W600);
 
   Widget _buildIndicatorWrapper() => SizedBox(
         width: 16,

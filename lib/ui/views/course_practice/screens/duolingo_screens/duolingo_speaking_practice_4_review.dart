@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
+
 import 'package:stacked/stacked.dart';
 
 import '../../../../common/app_colors.dart';
@@ -25,6 +28,7 @@ class DuolingoSpeakingPractice4Review
   Future<void> _next(
       {required BuildContext context,
       required CoursePracticeViewModel viewModel}) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     await viewModel.stopAudio();
 
     if (viewModel.currentQuestion == viewModel.questions.length - 1) {
@@ -120,7 +124,7 @@ class DuolingoSpeakingPractice4Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -187,7 +191,7 @@ class DuolingoSpeakingPractice4Review
       Expanded(child: _buildDwarfLabel(viewModel));
 
   Widget _buildDwarfLabel(CoursePracticeViewModel viewModel) => Text(
-        'Listen the questions',
+        LocaleKeys.listen_questions.tr(),
         style: style16DG600,
       );
 

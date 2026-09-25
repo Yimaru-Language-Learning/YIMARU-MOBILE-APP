@@ -43,7 +43,7 @@ class LearnPracticeCard extends ViewModelWidget<LearnPracticeViewModel> {
       ];
 
   Widget _buildTitle() => Text(
-        'Practice $index',
+        '${LocaleKeys.practice.tr()} $index',
         style: style18DG700,
       );
 
@@ -53,7 +53,7 @@ class LearnPracticeCard extends ViewModelWidget<LearnPracticeViewModel> {
       );
 
   Widget _buildStartButton(LearnPracticeViewModel viewModel) =>
-       CustomElevatedButton(
+      CustomElevatedButton(
         height: 50,
         width: 200,
         borderRadius: 8,

@@ -155,7 +155,7 @@ class InteractLearnPracticeScreen
               : const SizedBox(height: 20);
 
   Widget _buildListeningLabel() => Text(
-        'Daniel ${LocaleKeys.speaking.tr()}',
+        '${LocaleKeys.daniel.tr()} ${LocaleKeys.speaking.tr()}',
         style: style14P400,
         textAlign: TextAlign.center,
       );

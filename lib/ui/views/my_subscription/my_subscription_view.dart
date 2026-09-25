@@ -98,7 +98,7 @@ class MySubscriptionView extends StackedView<MySubscriptionViewModel> {
       ];
 
   Widget _buildText() => Text(
-        'Continue learning with your favorite platforms.',
+        LocaleKeys.continue_learning_favorite.tr(),
         style: style14DG400,
       );
 

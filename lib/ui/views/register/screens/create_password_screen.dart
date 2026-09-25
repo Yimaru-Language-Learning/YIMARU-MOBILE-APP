@@ -65,11 +65,8 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
         children: _buildScaffoldChildren(viewModel),
       );
 
-  List<Widget> _buildScaffoldChildren(RegisterViewModel viewModel) => [
-        _buildAppBar(viewModel),
-        verticalSpaceMedium,
-        _buildExpandedBody(viewModel)
-      ];
+  List<Widget> _buildScaffoldChildren(RegisterViewModel viewModel) =>
+      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
 
   Widget _buildAppBar(RegisterViewModel viewModel) => LargeAppBar(
         showBackButton: true,
@@ -101,7 +98,7 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
       );
 
   List<Widget> _buildBodyColumnChildren(RegisterViewModel viewModel) => [
-        verticalSpaceMedium,
+        verticalSpaceLarge,
         _buildTitle(),
         verticalSpaceMedium,
         _buildPasswordLabel(LocaleKeys.password.tr()),

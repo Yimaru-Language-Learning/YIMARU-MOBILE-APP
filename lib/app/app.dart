@@ -65,6 +65,7 @@ import 'package:yimaru_app/ui/views/my_progress/my_progress_view.dart';
 import 'package:yimaru_app/ui/views/in_app_support/in_app_support_view.dart';
 import 'package:yimaru_app/ui/views/faqs/faqs_view.dart';
 import 'package:yimaru_app/ui/views/app_rating/app_rating_view.dart';
+import 'package:yimaru_app/services/developer_mode_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -138,6 +139,7 @@ import 'package:yimaru_app/ui/views/app_rating/app_rating_view.dart';
     LazySingleton(classType: InAppNotificationService),
     LazySingleton(classType: PushNotificationService),
     LazySingleton(classType: CacheImageService),
+    LazySingleton(classType: DeveloperModeService),
 // @stacked-service
   ],
   bottomsheets: [

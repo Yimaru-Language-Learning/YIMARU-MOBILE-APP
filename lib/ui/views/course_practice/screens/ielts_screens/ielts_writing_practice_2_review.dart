@@ -97,7 +97,7 @@ class IeltsWritingPractice2Review
         onClose: () async =>
             await _showSheet(context: context, viewModel: viewModel),
         title:
-            'Speaking practice (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
+            '${LocaleKeys.writing_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -124,13 +124,13 @@ class IeltsWritingPractice2Review
       ];
 
   Widget _buildTitle() => Text(
-        'Your Writing Feedback Report Is Ready',
+        LocaleKeys.writing_feedback_report_ready.tr(),
         style: style18DG700,
         textAlign: TextAlign.center,
       );
 
   Widget _buildSubtitle() => Text(
-        'Preview your answer and cross check it with the sample answer',
+        LocaleKeys.preview_answer_cross_check.tr(),
         style: style14DG400,
         textAlign: TextAlign.center,
       );
