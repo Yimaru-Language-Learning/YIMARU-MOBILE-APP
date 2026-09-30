@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
+import 'package:yimaru_app/ui/widgets/course_phone_number_dialog.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
@@ -13,48 +14,86 @@ import '../course_practice_viewmodel.dart';
 class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
   final SubscriptionType type;
   final TextEditingController practiceController;
+  final TextEditingController phoneNumberController;
 
-  const CoursePracticesScreens(
-      {super.key, required this.type, required this.practiceController});
+  const CoursePracticesScreens({
+    super.key,
+    required this.type,
+    required this.practiceController,
+    required this.phoneNumberController,
+  });
 
   void _reset(CoursePracticeViewModel viewModel) {
     viewModel.resetValues();
     practiceController.clear();
   }
 
-  Future<void> _navigate(
-      {required int index,
-      required BuildContext context,
-      required CoursePracticeViewModel viewModel}) async {
+  Future<void> _navigate({
+    required int index,
+    required BuildContext context,
+    required CoursePracticeViewModel viewModel,
+  }) async {
     await viewModel.updatePaymentStatus();
+
+    if (!context.mounted) return;
 
     if (type == SubscriptionType.duolingo) {
       if (viewModel.user?.duolingo ?? false) {
         _reset(viewModel);
         await viewModel.getCoursePracticeQuestions(
-            context: context,
-            id: viewModel.practices[index].questionSetId ?? 0);
+          context: context,
+          id: viewModel.practices[index].questionSetId ?? 0,
+        );
       } else {
-        if(Platform.isIOS){
-          await viewModel.showPurchaseDialog();
-        }else{
-          await viewModel.navigateToCourseSubscription(SubscriptionType.duolingo);
+        if (Platform.isIOS) {
+          Map<String,dynamic> data = {'category': 'DUOLINGO'};
+          if (viewModel.user?.phoneNumber != null) {
+            await viewModel.showPurchaseDialog();
+          } else {
+            await _showDialog(context: context, viewModel: viewModel);
+          }
+          await viewModel.iosCheckout(data);
+        } else {
+          await viewModel
+              .navigateToCourseSubscription(SubscriptionType.duolingo);
         }
       }
     } else {
       if (viewModel.user?.ielts ?? false) {
         _reset(viewModel);
         await viewModel.getCoursePracticeQuestions(
-            context: context,
-            id: viewModel.practices[index].questionSetId ?? 0);
+          context: context,
+          id: viewModel.practices[index].questionSetId ?? 0,
+        );
       } else {
-        if(Platform.isIOS){
-          await viewModel.showPurchaseDialog();
-        }else{
+        if (Platform.isIOS) {
+          Map<String,dynamic> data = {'category': 'IELTS'};
+          if (viewModel.user?.phoneNumber != null) {
+            await viewModel.showPurchaseDialog();
+          } else {
+            await _showDialog(context: context, viewModel: viewModel);
+          }
+          await viewModel.iosCheckout(data);
+        } else {
           await viewModel.navigateToCourseSubscription(SubscriptionType.ielts);
         }
       }
     }
+  }
+
+  Future<void> _showDialog({
+    required BuildContext context,
+    required CoursePracticeViewModel viewModel,
+  }) async {
+    if (!context.mounted) return;
+    await showDialog(
+      context: context,
+      builder: (context) => ViewModelBuilder<CoursePracticeViewModel>.reactive(
+        disposeViewModel: false,
+        viewModelBuilder: () => viewModel,
+        builder: (context, model, child) => _buildDialog(viewModel),
+      ),
+    );
   }
 
   @override
@@ -153,7 +192,7 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
         shrinkWrap: true,
         itemCount: viewModel.practices.length,
         physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => _buildCard(
+        itemBuilder: (cxt, index) => _buildCard(
           title: viewModel.practices[index].title ?? '',
           onTap: () async => await _navigate(
               index: index, context: context, viewModel: viewModel),
@@ -173,5 +212,12 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
       CoursePracticeCard(
         title: title,
         onTap: onTap,
+      );
+
+  Widget _buildDialog(CoursePracticeViewModel viewModel) =>
+      CoursePhoneNumberDialog(
+        onClose: viewModel.pop,
+        phoneNumberController: phoneNumberController,
+        onSubmit: () async =>await viewModel.updateProfile(phoneNumberController.text),
       );
 }

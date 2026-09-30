@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked_annotations.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_finish_screen.dart';
@@ -14,10 +15,16 @@ import 'package:yimaru_app/ui/views/learn_practice/screens/learn_practice_intro_
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 import '../../common/app_colors.dart';
+import '../../common/validators/form_validator.dart';
 import '../../widgets/cancel_practice_sheet.dart';
 import 'learn_practice_viewmodel.dart';
+import 'learn_practice_view.form.dart';
 
-class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
+@FormView(fields: [
+  FormTextField(
+      name: 'phoneNumber', validator: FormValidator.validatePhoneNumberForm),
+])
+class LearnPracticeView extends StackedView<LearnPracticeViewModel>     with $LearnPracticeView{
   final int id;
   final String label;
   final String title;
@@ -144,6 +151,7 @@ class LearnPracticeView extends StackedView<LearnPracticeViewModel> {
         label: label,
         practice: practice,
         subtitle: subtitle,
+    phoneNumberController: phoneNumberController,
       );
 
   Widget _buildLearnPracticeElementsScreen() =>

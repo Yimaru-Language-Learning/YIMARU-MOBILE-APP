@@ -14,6 +14,7 @@ import 'package:yimaru_app/ui/common/validators/form_validator.dart';
 const bool _autoTextFieldValidation = true;
 
 const String PracticeValueKey = 'practice';
+const String PhoneNumberValueKey = 'phoneNumber';
 
 final Map<String, TextEditingController>
     _CoursePracticeViewTextEditingControllers = {};
@@ -23,13 +24,17 @@ final Map<String, FocusNode> _CoursePracticeViewFocusNodes = {};
 final Map<String, String? Function(String?)?>
     _CoursePracticeViewTextValidations = {
   PracticeValueKey: FormValidator.validateForm,
+  PhoneNumberValueKey: FormValidator.validatePhoneNumberForm,
 };
 
 mixin $CoursePracticeView {
   TextEditingController get practiceController =>
       _getFormTextEditingController(PracticeValueKey);
+  TextEditingController get phoneNumberController =>
+      _getFormTextEditingController(PhoneNumberValueKey);
 
   FocusNode get practiceFocusNode => _getFormFocusNode(PracticeValueKey);
+  FocusNode get phoneNumberFocusNode => _getFormFocusNode(PhoneNumberValueKey);
 
   TextEditingController _getFormTextEditingController(
     String key, {
@@ -56,6 +61,7 @@ mixin $CoursePracticeView {
   /// with the latest textController values
   void syncFormWithViewModel(FormStateHelper model) {
     practiceController.addListener(() => _updateFormData(model));
+    phoneNumberController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -68,6 +74,7 @@ mixin $CoursePracticeView {
   )
   void listenToFormUpdated(FormViewModel model) {
     practiceController.addListener(() => _updateFormData(model));
+    phoneNumberController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -78,6 +85,7 @@ mixin $CoursePracticeView {
       model.formValueMap
         ..addAll({
           PracticeValueKey: practiceController.text,
+          PhoneNumberValueKey: phoneNumberController.text,
         }),
     );
 
@@ -120,6 +128,8 @@ extension ValueProperties on FormStateHelper {
   }
 
   String? get practiceValue => this.formValueMap[PracticeValueKey] as String?;
+  String? get phoneNumberValue =>
+      this.formValueMap[PhoneNumberValueKey] as String?;
 
   set practiceValue(String? value) {
     this.setData(
@@ -133,30 +143,53 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
+  set phoneNumberValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({PhoneNumberValueKey: value}),
+    );
+
+    if (_CoursePracticeViewTextEditingControllers.containsKey(
+        PhoneNumberValueKey)) {
+      _CoursePracticeViewTextEditingControllers[PhoneNumberValueKey]?.text =
+          value ?? '';
+    }
+  }
+
   bool get hasPractice =>
       this.formValueMap.containsKey(PracticeValueKey) &&
       (practiceValue?.isNotEmpty ?? false);
+  bool get hasPhoneNumber =>
+      this.formValueMap.containsKey(PhoneNumberValueKey) &&
+      (phoneNumberValue?.isNotEmpty ?? false);
 
   bool get hasPracticeValidationMessage =>
       this.fieldsValidationMessages[PracticeValueKey]?.isNotEmpty ?? false;
+  bool get hasPhoneNumberValidationMessage =>
+      this.fieldsValidationMessages[PhoneNumberValueKey]?.isNotEmpty ?? false;
 
   String? get practiceValidationMessage =>
       this.fieldsValidationMessages[PracticeValueKey];
+  String? get phoneNumberValidationMessage =>
+      this.fieldsValidationMessages[PhoneNumberValueKey];
 }
 
 extension Methods on FormStateHelper {
   void setPracticeValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[PracticeValueKey] = validationMessage;
+  void setPhoneNumberValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[PhoneNumberValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
   void clearForm() {
     practiceValue = '';
+    phoneNumberValue = '';
   }
 
   /// Validates text input fields on the Form
   void validateForm() {
     this.setValidationMessages({
       PracticeValueKey: getValidationMessage(PracticeValueKey),
+      PhoneNumberValueKey: getValidationMessage(PhoneNumberValueKey),
     });
   }
 }
@@ -177,4 +210,5 @@ String? getValidationMessage(String key) {
 void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
       PracticeValueKey: getValidationMessage(PracticeValueKey),
+      PhoneNumberValueKey: getValidationMessage(PhoneNumberValueKey),
     });

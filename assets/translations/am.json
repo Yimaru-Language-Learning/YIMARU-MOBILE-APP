@@ -449,9 +449,10 @@
   "prepare_speak_photo": "ስለ ፎቶው ለመናገር ይዘጋጁ",
   "prepare_speak_topic": "ስለ ተሰጠው ርዕስ ለመናገር ይዘጋጁ",
   "sentence_completion": "የዓረፍተ ነገር ማጠናቀቅ",
-  "content": "ይዘት",
-  "ios_purchase": "ይህ ይዘት የሚገኘው በሃርድ ኮፒ (የታተመ ቅጂ) ብቻ ነው። የፊዚካል ቅጂውን ለመግዛት ከድጋፍ ቡድናችን ጋር ያግኙ።"
-}
+  "notice": "ማስታወቂያ",
+  "ios_purchase": "ይህ ይዘት በቅርቡ ይገኛል። ለእርስዎ እንዲገኝ እየሰራን ስለሆነ እባክዎ ትንሽ ይቆዩ።",
+  "profile_completion": "የመገለጫ ማጠናቀቂያ",
+  "complete_profile": "እባክዎ ለመቀጠል መገለጫዎን ያጠናቅቁ"}
 
 
 

@@ -3,8 +3,8 @@
 // ignore_for_file: constant_identifier_names
 
 abstract class  LocaleKeys {
-  static const male = "male";
-  static const female = "female";
+  static const male = 'male';
+  static const female = 'female';
   static const loading = 'loading';
   static const welcome_back = 'welcome_back';
   static const checking_user_info = 'checking_user_info';
@@ -453,7 +453,9 @@ abstract class  LocaleKeys {
   static const prepare_speak_photo = 'prepare_speak_photo';
   static const prepare_speak_topic = 'prepare_speak_topic';
   static const sentence_completion = 'sentence_completion';
-  static const content = 'content';
+  static const notice = 'notice';
   static const ios_purchase = 'ios_purchase';
+  static const profile_completion = 'profile_completion';
+  static const complete_profile = 'complete_profile';
 
 }

@@ -109,6 +109,8 @@ String kProgressSummary = 'progress-summary';
 
 String kPublishedVideos = 'videos/published';
 
+String kIosCheckout = 'request-checkout-link';
+
 String kKnowledgeLevelUrl = 'knowledge-level';
 
 String kCoursePracticeQuestions = 'questions';

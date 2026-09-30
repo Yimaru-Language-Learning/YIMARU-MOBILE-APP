@@ -118,6 +118,7 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('lastName', data.lastName ?? '');
     await _secureService.setString('firstName', data.firstName ?? '');
     await _secureService.setString('occupation', data.occupation ?? '');
+    await _secureService.setString('phoneNumber', data.phoneNumber ?? '');
 
     if (subscriptions.isNotEmpty) {
       for (ActiveSubscription subscription in subscriptions) {
@@ -153,6 +154,7 @@ class AuthenticationService with ListenableServiceMixin {
       birthday: data.birthday,
       firstName: data.firstName,
       occupation: data.occupation,
+      phoneNumber: data.phoneNumber,
       accessToken: _user?.accessToken,
       refreshToken: _user?.refreshToken,
       profileCompleted: data.profileCompleted,
@@ -171,6 +173,7 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('birthday', data['birth_day']);
     await _secureService.setString('firstName', data['first_name']);
     await _secureService.setString('occupation', data['occupation']);
+    await _secureService.setString('phoneNumber', data['phone_number']);
 
     _user = _user?.copyWith(
       region: await _secureService.getString('region'),
@@ -180,6 +183,18 @@ class AuthenticationService with ListenableServiceMixin {
       birthday: await _secureService.getString('birthday'),
       firstName: await _secureService.getString('firstName'),
       occupation: await _secureService.getString('occupation'),
+      phoneNumber: await _secureService.getString('phoneNumber')
+    );
+
+    notifyListeners();
+  }
+
+  // Update phone number
+  Future<void> updatePhoneNumber(Map<String, dynamic> data) async {
+    await _secureService.setString('phoneNumber', data['phone_number']);
+
+    _user = _user?.copyWith(
+      phoneNumber: await _secureService.getString('phoneNumber'),
     );
 
     notifyListeners();
@@ -210,6 +225,7 @@ class AuthenticationService with ListenableServiceMixin {
       firstName: await _secureService.getString('firstName'),
       occupation: await _secureService.getString('occupation'),
       accessToken: await _secureService.getString('accessToken'),
+      phoneNumber: await _secureService.getString('phoneNumber'),
       refreshToken: await _secureService.getString('refreshToken'),
       userInfoLoaded: await _secureService.getBool('userInfoLoaded'),
       profilePicture: await _secureService.getString('profilePicture'),

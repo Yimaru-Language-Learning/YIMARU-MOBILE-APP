@@ -17,7 +17,7 @@ class StatusCheckerService {
   // Developer mode
   Future<void> checkDeveloperMode() async {
     try {
-      _isDeveloperModeEnabled = await SafeDevice.isDevelopmentModeEnable ;
+      _isDeveloperModeEnabled = await SafeDevice.isDevelopmentModeEnable;
     } catch (e) {
       _isDeveloperModeEnabled = false;
     }

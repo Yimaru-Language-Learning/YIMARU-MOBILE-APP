@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
+import 'package:yimaru_app/ui/widgets/learn_phone_number_dialog.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/enmus.dart';
 import '../../../common/ui_helpers.dart';
 import '../../../widgets/cancel_practice_sheet.dart';
+import '../../../widgets/course_phone_number_dialog.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/small_app_bar.dart';
 import '../../../widgets/speaking_partner_image.dart';
@@ -20,6 +22,8 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
   final String? level;
   final String subtitle;
   final LearnPractices practice;
+  final TextEditingController phoneNumberController;
+
 
   const LearnPracticeIntroScreen(
       {super.key,
@@ -27,20 +31,42 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       required this.label,
       required this.title,
       required this.subtitle,
-      required this.practice});
+      required this.practice,required this.phoneNumberController});
 
-  Future<void> _practice(LearnPracticeViewModel viewModel) async {
+  Future<void> _practice({
+    required BuildContext context,
+    required LearnPracticeViewModel viewModel,
+  }) async {
     if (viewModel.user?.learn ?? false) {
       viewModel.goTo(1);
     } else {
-
-      if(Platform.isIOS){
-        await viewModel.showAbortDialog();
-      }else{
+      if (Platform.isAndroid) {
+        Map<String,dynamic> data = {'category': 'IELTS'};
+        if (viewModel.user?.phoneNumber != null) {
+          await viewModel.showPurchaseDialog();
+        } else {
+          await _showDialog(context: context, viewModel: viewModel);
+        }
+        await viewModel.iosCheckout(data);
+      } else {
         await viewModel.navigateToLearnSubscription();
       }
-
     }
+  }
+
+  Future<void> _showDialog({
+    required BuildContext context,
+    required LearnPracticeViewModel viewModel,
+  }) async {
+    if (!context.mounted) return;
+    await showDialog(
+      context: context,
+      builder: (context) => ViewModelBuilder<LearnPracticeViewModel>.reactive(
+        viewModelBuilder: () => viewModel,
+        disposeViewModel: false,
+        builder: (context, model, child) => _buildDialog(viewModel),
+      ),
+    );
   }
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
@@ -101,7 +127,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
           verticalSpaceMedium,
           _buildAppBar(context: context, viewModel: viewModel),
           verticalSpaceMedium,
-          _buildBodyColumnWrapper(viewModel),
+          _buildBodyColumnWrapper(context: context, viewModel: viewModel),
         ],
       );
 
@@ -121,18 +147,21 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildBodyColumnWrapper(LearnPracticeViewModel viewModel) => Expanded(
-        child: _buildBodyColumn(viewModel),
+  Widget _buildBodyColumnWrapper({required BuildContext context,
+    required LearnPracticeViewModel viewModel}) => Expanded(
+        child: _buildBodyColumn(context: context, viewModel: viewModel),
       );
 
-  Widget _buildBodyColumn(LearnPracticeViewModel viewModel) => Column(
+  Widget _buildBodyColumn({required BuildContext context,
+    required LearnPracticeViewModel viewModel}) => Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyColumnChildren(viewModel),
+        children: _buildBodyColumnChildren(context: context, viewModel: viewModel),
       );
 
-  List<Widget> _buildBodyColumnChildren(LearnPracticeViewModel viewModel) => [
+  List<Widget> _buildBodyColumnChildren({required BuildContext context,
+    required LearnPracticeViewModel viewModel}) => [
         _buildPracticeColumnWrapper(viewModel),
-        _buildContinueButtonWrapper(viewModel)
+        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
       ];
 
   Widget _buildPracticeColumnWrapper(LearnPracticeViewModel viewModel) =>
@@ -210,19 +239,28 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
         textAlign: TextAlign.center,
       );
 
-  Widget _buildContinueButtonWrapper(LearnPracticeViewModel viewModel) =>
+  Widget _buildContinueButtonWrapper({required BuildContext context,
+    required LearnPracticeViewModel viewModel}) =>
       Padding(
         padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
+        child: _buildContinueButton(context: context, viewModel: viewModel),
       );
 
-  Widget _buildContinueButton(LearnPracticeViewModel viewModel) =>
+  Widget _buildContinueButton({required BuildContext context,
+    required LearnPracticeViewModel viewModel}) =>
       CustomElevatedButton(
         height: 55,
         text: label,
         borderRadius: 12,
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
-        onTap: () async => await _practice(viewModel),
+        onTap: () async => await _practice(context: context, viewModel: viewModel),
+      );
+
+  Widget _buildDialog(        LearnPracticeViewModel viewModel) =>
+      LearnPhoneNumberDialog(
+        onClose: viewModel.pop,
+        phoneNumberController: phoneNumberController,
+        onSubmit: () async =>await viewModel.updateProfile(phoneNumberController.text),
       );
 }
