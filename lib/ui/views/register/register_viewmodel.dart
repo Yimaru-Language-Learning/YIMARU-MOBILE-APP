@@ -488,7 +488,7 @@ class RegisterViewModel extends ReactiveViewModel
     if (token != null) {
       Map<String, dynamic> deviceData = {
         'device_token': token,
-        'platform': Platform.isAndroid ? 'android':'ios',
+        'platform': Platform.isAndroid ? 'android' : 'ios',
       };
       await _apiService.registerDevice(deviceData);
     }

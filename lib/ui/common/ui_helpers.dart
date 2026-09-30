@@ -114,8 +114,8 @@ InputDecoration inputDecoration(
     InputDecoration(
       filled: true,
       hintText: hint,
-      border: universalBorder,
       suffixIcon: suffix,
+      border: universalBorder,
       errorBorder: universalErrorBorder,
       enabledBorder: universalEnabledBorder,
       focusedBorder: universalFocusedBorder,

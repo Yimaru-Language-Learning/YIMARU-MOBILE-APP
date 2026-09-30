@@ -32,7 +32,7 @@ class HomeView extends StackedView<HomeViewModel> {
           child: _buildScaffoldState(viewModel));
 
   Widget _buildScaffoldState(HomeViewModel viewModel) =>
-     viewModel.isDeveloperModeEnabled
+      viewModel.isDeveloperModeEnabled
           ? _buildDeveloperMode()
           : _buildScaffoldStack(viewModel);
 

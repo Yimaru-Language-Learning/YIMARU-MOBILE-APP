@@ -19,8 +19,11 @@ import '../../../services/audio_player_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/app_colors.dart';
+import '../../common/ui_helpers.dart';
 
-class LearnPracticeViewModel extends ReactiveViewModel {
+class LearnPracticeViewModel extends ReactiveViewModel
+    with FormStateHelper
+    implements FormViewModel {
   // Dependency injection
 
   final _apiService = locator<ApiService>();
@@ -73,6 +76,11 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     if (_duration.inMilliseconds == 0) return 0;
     return _position.inMilliseconds / _duration.inMilliseconds;
   }
+
+  // Phone number
+  bool _focusPhoneNumber = false;
+
+  bool get focusPhoneNumber => _focusPhoneNumber;
 
   // Voice recorder
   WaveformRecorderController get _waveController =>
@@ -129,6 +137,14 @@ class LearnPracticeViewModel extends ReactiveViewModel {
 
   PageController get questionController => _questionController;
 
+
+  // Phone number
+  void setPhoneNumberFocus() {
+    _focusPhoneNumber = true;
+    rebuildUi();
+  }
+
+
   // Voice recorder
   Future<void> stopRecording() async {
     await _voiceRecorderService.stopRecording();
@@ -156,6 +172,7 @@ class LearnPracticeViewModel extends ReactiveViewModel {
       rebuildUi();
     });
   }
+
 
   Future<void> playVoicePrompt(PracticeQuestion question) async =>
       await runBusyFuture(_playVoicePrompt(question),
@@ -209,16 +226,14 @@ class LearnPracticeViewModel extends ReactiveViewModel {
   }
 
   // Dialogue
-  Future<void> showAbortDialog() async =>
-    await _dialogService.showDialog(
-      barrierDismissible: true,
-      cancelTitleColor: kcDarkGrey,
-      title: LocaleKeys.content.tr(),
-      buttonTitleColor: kcPrimaryColor,
-      buttonTitle: LocaleKeys.close.tr(),
-      description: LocaleKeys.ios_purchase.tr(),
-    );
-
+  Future<void> showPurchaseDialog() async => await _dialogService.showDialog(
+        barrierDismissible: true,
+        cancelTitleColor: kcDarkGrey,
+        title: LocaleKeys.notice.tr(),
+        buttonTitleColor: kcPrimaryColor,
+        buttonTitle: LocaleKeys.close.tr(),
+        description: LocaleKeys.ios_purchase.tr(),
+      );
 
   // In-app navigation
   void goTo(int page) {
@@ -266,8 +281,6 @@ class LearnPracticeViewModel extends ReactiveViewModel {
     _answers.clear();
     questionSetController.jumpToPage(0);
   }
-
-
 
   // Navigation
   void pop() => _navigationService.back();
@@ -342,6 +355,43 @@ class LearnPracticeViewModel extends ReactiveViewModel {
         id: _practices.first.id ?? 0,
       );
       await _learnService.getLearnProgress();
+    }
+  }
+
+  // Update  profile
+  Future<void> updateProfile(String phoneNumber) async => await runBusyFuture(_updateProfile(phoneNumber),
+      busyObject: StateObjects.profileUpdate);
+
+  Future<void> _updateProfile(String phoneNumber) async {
+
+    Map<String, dynamic> data = {
+      'gender': user?.gender,
+      'region': user?.region,
+      'country':user?.country,
+      'phone_number': phoneNumber,
+      'last_name': user?.lastName,
+      'first_name': user?.firstName,
+      'occupation': user?.occupation,
+      'birth_day': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    };
+
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response =
+      await _apiService.completeProfile(data);
+      if (response['status'] == ResponseStatus.success) {
+        await _authenticationService.updateUserData(data);
+        pop();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  // Ios checkout
+  Future<void> iosCheckout(Map<String, dynamic> data) async {
+    if (await _statusChecker.checkConnection()) {
+      await _apiService.iosCheckout(data);
     }
   }
 

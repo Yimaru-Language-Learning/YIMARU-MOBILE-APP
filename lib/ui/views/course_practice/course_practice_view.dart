@@ -98,6 +98,8 @@ import 'screens/ielts_screens/ielts_writing_practice_2_review.dart';
 
 @FormView(fields: [
   FormTextField(name: 'practice', validator: FormValidator.validateForm),
+  FormTextField(
+      name: 'phoneNumber', validator: FormValidator.validatePhoneNumberForm),
 ])
 class CoursePracticeView extends StackedView<CoursePracticeViewModel>
     with $CoursePracticeView {
@@ -731,7 +733,9 @@ class CoursePracticeView extends StackedView<CoursePracticeViewModel>
 
   Widget _buildCoursePracticesScreen(CoursePracticeViewModel viewModel) =>
       CoursePracticesScreens(
-          practiceController: practiceController, type: type);
+          practiceController: practiceController,
+          phoneNumberController: phoneNumberController,
+          type: type);
 
   Widget _buildPracticesView(CoursePracticeViewModel viewModel) =>
       PageView.builder(

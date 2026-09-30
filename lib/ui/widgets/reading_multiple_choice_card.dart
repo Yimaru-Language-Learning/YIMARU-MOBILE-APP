@@ -5,7 +5,6 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import 'package:yimaru_app/ui/views/course_practice/course_practice_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/custom_small_leading_radio_button.dart';
 
-
 class ReadingMultipleChoiceCard
     extends ViewModelWidget<CoursePracticeViewModel> {
   final String number;

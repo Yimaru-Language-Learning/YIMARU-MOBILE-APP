@@ -92,10 +92,11 @@ class ProfileDetailView extends StackedView<ProfileDetailViewModel>
   }
 
   void _onModelReady(ProfileDetailViewModel viewModel) {
-    phoneNumberController.text = '251900000000';
     emailController.text = viewModel.user?.email ?? '';
     lastNameController.text = viewModel.user?.lastName ?? '';
     firstNameController.text = viewModel.user?.firstName ?? '';
+    phoneNumberController.text = viewModel.user?.phoneNumber ?? '';
+
     _checkRegion(viewModel);
     viewModel.clearUserData();
     viewModel.setSelectedOccupation(viewModel.occupations

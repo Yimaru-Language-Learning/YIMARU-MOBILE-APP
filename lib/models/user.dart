@@ -38,6 +38,9 @@ class User {
   @JsonKey(name: 'access_token')
   final String? accessToken;
 
+  @JsonKey(name: 'phone_number')
+  final String? phoneNumber;
+
   @JsonKey(name: 'refresh_token')
   final String? refreshToken;
 
@@ -67,6 +70,7 @@ class User {
       this.firstName,
       this.occupation,
       this.accessToken,
+      this.phoneNumber,
       this.refreshToken,
       this.profilePicture,
       this.userInfoLoaded,
@@ -88,6 +92,7 @@ class User {
           String? firstName,
           String? occupation,
           String? accessToken,
+          String? phoneNumber,
           String? refreshToken,
           bool? userInfoLoaded,
           bool? profileCompleted,
@@ -108,6 +113,7 @@ class User {
           firstName: firstName ?? this.firstName,
           occupation: occupation ?? this.occupation,
           accessToken: accessToken ?? this.accessToken,
+          phoneNumber: phoneNumber ?? this.phoneNumber,
           refreshToken: refreshToken ?? this.refreshToken,
           userInfoLoaded: userInfoLoaded ?? this.userInfoLoaded,
           profilePicture: profilePicture ?? this.profilePicture,
