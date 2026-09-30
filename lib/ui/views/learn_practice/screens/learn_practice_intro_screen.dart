@@ -40,7 +40,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
     if (viewModel.user?.learn ?? false) {
       viewModel.goTo(1);
     } else {
-      if (Platform.isAndroid) {
+      if (Platform.isIOS) {
         Map<String,dynamic> data = {'category': 'IELTS'};
         if (viewModel.user?.phoneNumber != null) {
           await viewModel.showPurchaseDialog();
