@@ -471,7 +471,7 @@ class CodegenLoader extends AssetLoader{
   "prepare_speak_topic": "Prepare to speak about the topic below",
   "sentence_completion": "Sentence completion",
   "notice": "Notice",
-  "ios_purchase": "This content is coming soon. Thank you for your patience while we prepare it for you.",
+  "ios_purchase": "This content is only available on hard copy. Contact our supports to purchase the physical copy.",
   "profile_completion": "Profile completion",
   "complete_profile": "Please complete your profile to continue"
 };
@@ -932,7 +932,7 @@ static const Map<String,dynamic> _am = {
   "prepare_speak_topic": "ስለ ተሰጠው ርዕስ ለመናገር ይዘጋጁ",
   "sentence_completion": "የዓረፍተ ነገር ማጠናቀቅ",
   "notice": "ማስታወቂያ",
-  "ios_purchase": "ይህ ይዘት በቅርቡ ይገኛል። ለእርስዎ እንዲገኝ እየሰራን ስለሆነ እባክዎ ትንሽ ይቆዩ።",
+  "ios_purchase": "ይህ ይዘት የሚገኘው በሃርድ ኮፒ (የታተመ ቅጂ) ብቻ ነው። የፊዚካል ቅጂውን ለመግዛት ከድጋፍ ቡድናችን ጋር ያግኙ።",
   "profile_completion": "የመገለጫ ማጠናቀቂያ",
   "complete_profile": "እባክዎ ለመቀጠል መገለጫዎን ያጠናቅቁ"
 };
