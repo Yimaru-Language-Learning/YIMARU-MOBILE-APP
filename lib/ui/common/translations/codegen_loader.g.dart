@@ -468,7 +468,22 @@ class CodegenLoader extends AssetLoader{
   "notice": "Notice",
   "ios_purchase": "This content is coming soon. Thank you for your patience while we prepare it for you.",
   "profile_completion": "Profile completion",
-  "complete_profile": "Please complete your profile to continue"
+  "complete_profile": "Please complete your profile to continue",
+  "manual_payment_title": "Want to pay directly instead?",
+  "manual_payment_description": "Deposit into this account and share your receipt with our Telegram account, @yimarusup.",
+  "manual_payment_account_number": "Account number:",
+  "manual_payment_account_holder": "Account holder:",
+  "manual_payment_bank": "Bank:",
+  "manual_payment_bank_name": "Commercial Bank of Ethiopia",
+  "manual_payment_confirmation": "Access will be activated after our team confirms your payment. If you were already charged, contact us before paying again.",
+  "manual_payment_open_telegram": "Open Telegram",
+  "manual_payment_close": "Close",
+  "manual_payment_uncertain_title": "Let's check your payment first",
+  "manual_payment_uncertain_description": "We could not confirm the payment status. It may still be processing. Do not pay again yet. Contact @yimarusup on Telegram so our team can check it.",
+  "manual_payment_telegram_error": "Could not open Telegram. Contact @yimarusup or copy the link below.",
+  "manual_payment_copy_link": "Copy Telegram link",
+  "manual_payment_link_copied": "Telegram link copied",
+  "manual_payment_start_failed": "Could not open checkout"
 };
 static const Map<String,dynamic> _am = {
   "loading": "በመጫን ላይ",
@@ -924,7 +939,22 @@ static const Map<String,dynamic> _am = {
   "notice": "ማስታወቂያ",
   "ios_purchase": "ይህ ይዘት በቅርቡ ይገኛል። ለእርስዎ እንዲገኝ እየሰራን ስለሆነ እባክዎ ትንሽ ይቆዩ።",
   "profile_completion": "የመገለጫ ማጠናቀቂያ",
-  "complete_profile": "እባክዎ ለመቀጠል መገለጫዎን ያጠናቅቁ"
+  "complete_profile": "እባክዎ ለመቀጠል መገለጫዎን ያጠናቅቁ",
+  "manual_payment_title": "በቀጥታ መክፈል ይፈልጋሉ?",
+  "manual_payment_description": "በዚህ ሂሳብ ገንዘብ ያስገቡና ደረሰኝዎን በቴሌግራም ለ @yimarusup ይላኩ።",
+  "manual_payment_account_number": "የሂሳብ ቁጥር፦",
+  "manual_payment_account_holder": "የሂሳብ ባለቤት፦",
+  "manual_payment_bank": "ባንክ፦",
+  "manual_payment_bank_name": "የኢትዮጵያ ንግድ ባንክ",
+  "manual_payment_confirmation": "ቡድናችን ክፍያዎን ካረጋገጠ በኋላ አገልግሎቱ ይከፈታል። ገንዘብ ከሂሳብዎ ከተቀነሰ እንደገና ከመክፈልዎ በፊት ያነጋግሩን።",
+  "manual_payment_open_telegram": "ቴሌግራም ክፈት",
+  "manual_payment_close": "ዝጋ",
+  "manual_payment_uncertain_title": "መጀመሪያ ክፍያዎን እናረጋግጥ",
+  "manual_payment_uncertain_description": "የክፍያውን ሁኔታ ማረጋገጥ አልቻልንም። ክፍያው በሂደት ላይ ሊሆን ይችላል። እባክዎ እንደገና አይክፈሉ። ቡድናችን እንዲያረጋግጥ በቴሌግራም @yimarusup ያነጋግሩ።",
+  "manual_payment_telegram_error": "ቴሌግራም መክፈት አልተቻለም። @yimarusup ያነጋግሩ ወይም ከታች ያለውን ማገናኛ ይቅዱ።",
+  "manual_payment_copy_link": "የቴሌግራም ማገናኛ ቅዳ",
+  "manual_payment_link_copied": "የቴሌግራም ማገናኛ ተቀድቷል",
+  "manual_payment_start_failed": "የክፍያ ገጹን መክፈት አልተቻለም"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": _en, "am": _am};
 }

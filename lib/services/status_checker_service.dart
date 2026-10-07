@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:safe_device/safe_device.dart';
@@ -16,6 +17,11 @@ class StatusCheckerService {
 
   // Developer mode
   Future<void> checkDeveloperMode() async {
+    if (kDebugMode) {
+      _isDeveloperModeEnabled = false;
+      return;
+    }
+
     try {
       _isDeveloperModeEnabled = await SafeDevice.isDevelopmentModeEnable;
     } catch (e) {

@@ -452,8 +452,23 @@
   "notice": "ማስታወቂያ",
   "ios_purchase": "ይህ ይዘት በቅርቡ ይገኛል። ለእርስዎ እንዲገኝ እየሰራን ስለሆነ እባክዎ ትንሽ ይቆዩ።",
   "profile_completion": "የመገለጫ ማጠናቀቂያ",
-  "complete_profile": "እባክዎ ለመቀጠል መገለጫዎን ያጠናቅቁ"}
-
+  "complete_profile": "እባክዎ ለመቀጠል መገለጫዎን ያጠናቅቁ",
+  "manual_payment_title": "በቀጥታ መክፈል ይፈልጋሉ?",
+  "manual_payment_description": "በዚህ ሂሳብ ገንዘብ ያስገቡና ደረሰኝዎን በቴሌግራም ለ @yimarusup ይላኩ።",
+  "manual_payment_account_number": "የሂሳብ ቁጥር፦",
+  "manual_payment_account_holder": "የሂሳብ ባለቤት፦",
+  "manual_payment_bank": "ባንክ፦",
+  "manual_payment_bank_name": "የኢትዮጵያ ንግድ ባንክ",
+  "manual_payment_confirmation": "ቡድናችን ክፍያዎን ካረጋገጠ በኋላ አገልግሎቱ ይከፈታል። ገንዘብ ከሂሳብዎ ከተቀነሰ እንደገና ከመክፈልዎ በፊት ያነጋግሩን።",
+  "manual_payment_open_telegram": "ቴሌግራም ክፈት",
+  "manual_payment_close": "ዝጋ",
+  "manual_payment_uncertain_title": "መጀመሪያ ክፍያዎን እናረጋግጥ",
+  "manual_payment_uncertain_description": "የክፍያውን ሁኔታ ማረጋገጥ አልቻልንም። ክፍያው በሂደት ላይ ሊሆን ይችላል። እባክዎ እንደገና አይክፈሉ። ቡድናችን እንዲያረጋግጥ በቴሌግራም @yimarusup ያነጋግሩ።",
+  "manual_payment_telegram_error": "ቴሌግራም መክፈት አልተቻለም። @yimarusup ያነጋግሩ ወይም ከታች ያለውን ማገናኛ ይቅዱ።",
+  "manual_payment_copy_link": "የቴሌግራም ማገናኛ ቅዳ",
+  "manual_payment_link_copied": "የቴሌግራም ማገናኛ ተቀድቷል",
+  "manual_payment_start_failed": "የክፍያ ገጹን መክፈት አልተቻለም"
+}
 
 
 

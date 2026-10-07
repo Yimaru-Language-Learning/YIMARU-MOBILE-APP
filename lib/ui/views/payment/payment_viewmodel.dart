@@ -11,6 +11,10 @@ import '../../../services/authentication_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 
+enum PaymentFailure { failed, uncertain }
+
+enum CheckoutOutcome { success, failed, cancelled, uncertain }
+
 class PaymentViewModel extends ReactiveViewModel {
   // Dependency injection
 
@@ -36,6 +40,43 @@ class PaymentViewModel extends ReactiveViewModel {
 
   LearnSubscriptionRequest? get request => _request;
 
+  PaymentFailure? _startFailure;
+  PaymentFailure? get startFailure => _startFailure;
+  bool _failureDialogShown = false;
+  bool _handlingCheckoutResult = false;
+
+  bool claimFailureDialog() {
+    if (_failureDialogShown) return false;
+    _failureDialogShown = true;
+    return true;
+  }
+
+  bool beginCheckoutResult() {
+    if (_handlingCheckoutResult) return false;
+    _handlingCheckoutResult = true;
+    return true;
+  }
+
+  Future<CheckoutOutcome> checkCheckoutOutcome() async {
+    final sessionId = _request?.sessionId;
+    if (sessionId == null || sessionId.isEmpty) {
+      return CheckoutOutcome.uncertain;
+    }
+    final status = await _apiService.getCheckoutPaymentStatus(sessionId);
+    switch (status) {
+      case 'SUCCESS':
+        return CheckoutOutcome.success;
+      case 'FAILED':
+      case 'EXPIRED':
+        return CheckoutOutcome.failed;
+      case 'CANCELLED':
+      case 'CANCELED':
+        return CheckoutOutcome.cancelled;
+      default:
+        return CheckoutOutcome.uncertain;
+    }
+  }
+
   // Navigation
   void pop() => _navigationService.back();
 
@@ -58,59 +99,72 @@ class PaymentViewModel extends ReactiveViewModel {
       {required String phone,
       required PaymentMethod method,
       required Subscription subscription}) async {
-    if (method == PaymentMethod.sdk) {
-      await _createLearnSubscriptionRequest(
-          phone: phone, subscription: subscription);
-    } else {
-      await _createLearnDirectPaymentRequest(
-          phone: phone, subscription: subscription);
+    _request = null;
+    _startFailure = null;
+    _failureDialogShown = false;
+    _handlingCheckoutResult = false;
+    try {
+      // No request has been sent when the connection check fails.
+      if (!await _statusChecker.checkConnection()) {
+        _startFailure = PaymentFailure.failed;
+        return;
+      }
+      final response = method == PaymentMethod.sdk
+          ? await _createLearnSubscriptionRequest(
+              phone: phone, subscription: subscription)
+          : await _createLearnDirectPaymentRequest(
+              phone: phone, subscription: subscription);
+      if (response['status'] == ResponseStatus.success) {
+        final request = response['data'];
+        final uri = request is LearnSubscriptionRequest
+            ? Uri.tryParse(request.paymentUrl ?? '')
+            : null;
+        if (uri != null &&
+            uri.host.isNotEmpty &&
+            (uri.scheme == 'https' || uri.scheme == 'http')) {
+          _request = request as LearnSubscriptionRequest;
+        } else {
+          // The payment may exist even though its checkout URL is missing.
+          _startFailure = PaymentFailure.uncertain;
+        }
+      } else {
+        _startFailure = response['payment_outcome_unknown'] == false
+            ? PaymentFailure.failed
+            : PaymentFailure.uncertain;
+      }
+    } catch (_) {
+      _startFailure = PaymentFailure.uncertain;
     }
   }
 
-  Future<void> _createLearnSubscriptionRequest(
+  Future<Map<String, dynamic>> _createLearnSubscriptionRequest(
       {required String phone, required Subscription subscription}) async {
-    if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> data = {
-        'provider': 'CHAPA',
-        'phone': '251$phone',
-        'email': 'test@gmail.com',
-        'plan_id': subscription.id,
-      };
+    Map<String, dynamic> data = {
+      'provider': 'CHAPA',
+      'phone': '251$phone',
+      'email': 'test@gmail.com',
+      'plan_id': subscription.id,
+    };
 
-      Map<String, dynamic> response =
-          await _apiService.createSubscriptionRequest(data);
-
-      if (response['status'] == ResponseStatus.success) {
-        _request = response['data'];
-      }
-    }
+    return _apiService.createSubscriptionRequest(data);
   }
 
 // Create direct payment
   Future<void> createDirectPaymentRequest(
           {required String phone, required Subscription subscription}) async =>
-      await runBusyFuture(
-          _createLearnDirectPaymentRequest(
-              phone: phone, subscription: subscription),
-          busyObject: StateObjects.learnSubscription);
+      initiate(
+          phone: phone, method: PaymentMethod.ussd, subscription: subscription);
 
-  Future<void> _createLearnDirectPaymentRequest(
+  Future<Map<String, dynamic>> _createLearnDirectPaymentRequest(
       {required String phone, required Subscription subscription}) async {
-    if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> data = {
-        'phone': '251$phone',
-        'email': 'test@gmail.com',
-        'plan_id': subscription.id,
-        'payment_method': 'telebirr',
-      };
+    Map<String, dynamic> data = {
+      'phone': '251$phone',
+      'email': 'test@gmail.com',
+      'plan_id': subscription.id,
+      'payment_method': 'telebirr',
+    };
 
-      Map<String, dynamic> response =
-          await _apiService.createDirectPaymentRequest(data);
-
-      if (response['status'] == ResponseStatus.success) {
-        _request = response['data'];
-      }
-    }
+    return _apiService.createDirectPaymentRequest(data);
   }
 
   // Update payment status

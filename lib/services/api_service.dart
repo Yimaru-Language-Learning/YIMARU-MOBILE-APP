@@ -1069,6 +1069,12 @@ class ApiService {
       return {
         'status': ResponseStatus.failure,
         'message': e.response?.data.toString(),
+        'payment_outcome_unknown': _paymentOutcomeUnknown(e),
+      };
+    } catch (_) {
+      return {
+        'status': ResponseStatus.failure,
+        'payment_outcome_unknown': true,
       };
     }
   }
@@ -1097,7 +1103,32 @@ class ApiService {
       return {
         'status': ResponseStatus.failure,
         'message': e.response?.data.toString(),
+        'payment_outcome_unknown': _paymentOutcomeUnknown(e),
       };
+    } catch (_) {
+      return {
+        'status': ResponseStatus.failure,
+        'payment_outcome_unknown': true,
+      };
+    }
+  }
+
+  // A lost response or server error does not prove that no payment was created.
+  bool _paymentOutcomeUnknown(DioException error) {
+    final statusCode = error.response?.statusCode;
+    return statusCode == null || statusCode >= 500 || statusCode == 408;
+  }
+
+  Future<String?> getCheckoutPaymentStatus(String sessionId) async {
+    try {
+      final response = await _service.dio.get(
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kPaymentsUrl/'
+        '$kVerifySubscriptionUrl/${Uri.encodeComponent(sessionId)}',
+      );
+      final status = response.data['data']['status'];
+      return status is String ? status.toUpperCase() : null;
+    } catch (_) {
+      return null;
     }
   }
 
