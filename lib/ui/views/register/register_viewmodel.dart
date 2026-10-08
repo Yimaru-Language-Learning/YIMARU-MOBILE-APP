@@ -368,6 +368,13 @@ class RegisterViewModel extends ReactiveViewModel
 
   // Register device
   Future<void> _registerDevice() async {
+    if (Platform.isAndroid) {
+      final userId = _authenticationService.user?.userId;
+      if (userId != null) {
+        _pushNotificationService.syncDeviceTokenForSession(userId);
+      }
+      return;
+    }
     String? token = await _pushNotificationService.getDeviceToken();
 
     if (token != null) {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -12,6 +14,7 @@ import '../../../services/api_service.dart';
 import '../../../services/image_downloader_service.dart';
 import '../../../services/in_app_update_service.dart';
 import '../../../services/localization_service.dart';
+import '../../../services/push_notification_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
 
@@ -57,6 +60,10 @@ class StartupViewModel extends ReactiveViewModel {
     } else {
       if (loggedIn) {
         await _authenticationService.getUser();
+        final userId = _user?.userId;
+        if (Platform.isAndroid && userId != null) {
+          locator<PushNotificationService>().syncDeviceTokenForSession(userId);
+        }
         await _getProfileStatus();
       } else {
         // Removable

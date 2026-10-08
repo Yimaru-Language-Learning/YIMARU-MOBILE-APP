@@ -142,11 +142,16 @@ class ApiService {
     }
   }
 
-  Future<void> registerDevice(Map<String, dynamic> data) async {
+  Future<void> registerDevice(Map<String, dynamic> data,
+      {CancelToken? cancelToken, bool backgroundSync = false}) async {
     try {
       await _service.dio.post(
         '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kDevicesUrl/$kRegisterUrl',
         data: data,
+        cancelToken: cancelToken,
+        options: backgroundSync
+            ? Options(extra: {DioService.backgroundDeviceRegistration: true})
+            : null,
       );
     } on DioException {
       rethrow;

@@ -9,6 +9,10 @@ import '../app/app.locator.dart';
 import '../ui/common/app_constants.dart';
 
 class DioService {
+  // Background token sync must not log credentials or initiate a logout/refresh.
+  // The normal app requests still own authentication recovery.
+  static const backgroundDeviceRegistration = 'backgroundDeviceRegistration';
+
   // Dependency injection
   final _navigationService = locator<NavigationService>();
   final _authenticationService = locator<AuthenticationService>();
@@ -44,6 +48,10 @@ class DioService {
     Response response,
     ResponseInterceptorHandler handler,
   ) {
+    if (response.requestOptions.extra[backgroundDeviceRegistration] == true) {
+      handler.next(response);
+      return;
+    }
     debugPrint('✅✅✅✅INITIALIZING RESPONSE✅✅✅✅');
     debugPrint('✅ ${response.statusCode} ${response.requestOptions.uri}');
     debugPrint('✅ DATA: ${response.data}');
@@ -57,7 +65,6 @@ class DioService {
     RequestInterceptorHandler handler,
   ) async {
     final access = await _authenticationService.getAccessToken();
-    final refresh = await _authenticationService.getRefreshToken();
 
     if (access != null) {
       options.headers['Authorization'] = 'Bearer $access';
@@ -65,6 +72,13 @@ class DioService {
 
     options.headers['Accept'] = 'application/json';
     options.headers['Content-Type'] = 'application/json';
+
+    if (options.extra[backgroundDeviceRegistration] == true) {
+      handler.next(options);
+      return;
+    }
+
+    final refresh = await _authenticationService.getRefreshToken();
 
     debugPrint('️️➡️➡️➡️➡️INITIALIZING REQUEST➡️➡️➡️➡️');
     debugPrint('➡️ ${options.method} ${options.uri}');
@@ -81,6 +95,10 @@ class DioService {
     DioException error,
     ErrorInterceptorHandler handler,
   ) async {
+    if (error.requestOptions.extra[backgroundDeviceRegistration] == true) {
+      handler.next(error);
+      return;
+    }
     debugPrint('❌❌❌❌INITIALIZING ERROR❌❌❌❌');
     debugPrint('❌ ${error.response?.data} ${error.requestOptions.uri}');
     debugPrint('❌ ${error.response?.statusCode} ${error.requestOptions.uri}');

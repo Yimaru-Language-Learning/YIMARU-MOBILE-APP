@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/models/active_subscription.dart';
@@ -7,6 +9,7 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 
 import 'google_auth_service.dart';
 import 'localization_service.dart';
+import 'push_notification_service.dart';
 
 class AuthenticationService with ListenableServiceMixin {
   // Dependency injection
@@ -58,10 +61,15 @@ class AuthenticationService with ListenableServiceMixin {
   }) async {
     await _secureService.setString('accessToken', access);
     await _secureService.setString('refreshToken', refresh);
+    if (Platform.isAndroid && locator.isRegistered<PushNotificationService>()) {
+      locator<PushNotificationService>().deviceTokenCredentialsUpdated();
+    }
   }
 
   // Save user credential
   Future<void> saveUserCredential(Map<String, dynamic> data) async {
+    // Cancel old-account work before any credential fields are overwritten.
+    _resetAndroidDeviceSync();
     await _secureService.setInt('userId', data['userId']);
     await _secureService.setString('accessToken', data['accessToken']);
     await _secureService.setString('refreshToken', data['refreshToken']);
@@ -71,6 +79,17 @@ class AuthenticationService with ListenableServiceMixin {
       accessToken: await _secureService.getString('accessToken'),
       refreshToken: await _secureService.getString('refreshToken'),
     );
+    final userId = _user?.userId;
+    if (Platform.isAndroid && userId != null &&
+        locator.isRegistered<PushNotificationService>()) {
+      locator<PushNotificationService>().syncDeviceTokenForSession(userId);
+    }
+  }
+
+  void _resetAndroidDeviceSync() {
+    if (Platform.isAndroid && locator.isRegistered<PushNotificationService>()) {
+      locator<PushNotificationService>().resetDeviceTokenSync();
+    }
   }
 
   // Save profile status
@@ -238,6 +257,7 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Logout
   Future<void> logout() async {
+    _resetAndroidDeviceSync();
     _state = StateObjects.logout;
     notifyListeners();
 
