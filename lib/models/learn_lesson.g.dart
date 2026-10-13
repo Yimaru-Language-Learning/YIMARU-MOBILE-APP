@@ -17,6 +17,7 @@ LearnLesson _$LearnLessonFromJson(Map<String, dynamic> json) => LearnLesson(
       thumbnail: json['thumbnail'] as String?,
       sortOrder: (json['sort_order'] as num?)?.toInt(),
       description: json['description'] as String?,
+      hasPractice: json['has_practice'] as bool?,
     );
 
 Map<String, dynamic> _$LearnLessonToJson(LearnLesson instance) =>
@@ -26,6 +27,7 @@ Map<String, dynamic> _$LearnLessonToJson(LearnLesson instance) =>
       'access': instance.access,
       'thumbnail': instance.thumbnail,
       'description': instance.description,
+      'has_practice': instance.hasPractice,
       'module_id': instance.moduleId,
       'sort_order': instance.sortOrder,
       'video_url': instance.videoUrl,

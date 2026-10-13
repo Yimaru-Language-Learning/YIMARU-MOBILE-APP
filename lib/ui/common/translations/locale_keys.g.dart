@@ -472,5 +472,10 @@ abstract class  LocaleKeys {
   static const manual_payment_copy_link = 'manual_payment_copy_link';
   static const manual_payment_link_copied = 'manual_payment_link_copied';
   static const manual_payment_start_failed = 'manual_payment_start_failed';
+  static const load_error_title = 'load_error_title';
+  static const automated_reminders = 'automated_reminders';
+  static const automated_reminders_description = 'automated_reminders_description';
+  static const reminder_save_failed = 'reminder_save_failed';
+  static const load_error_description = 'load_error_description';
 
 }

@@ -483,7 +483,12 @@ class CodegenLoader extends AssetLoader{
   "manual_payment_telegram_error": "Could not open Telegram. Contact @yimarusup or copy the link below.",
   "manual_payment_copy_link": "Copy Telegram link",
   "manual_payment_link_copied": "Telegram link copied",
-  "manual_payment_start_failed": "Could not open checkout"
+  "manual_payment_start_failed": "Could not open checkout",
+  "load_error_title": "Something went wrong",
+  "load_error_description": "We couldn't load this content. Please try again.",
+  "automated_reminders": "Automated reminders",
+  "automated_reminders_description": "Subscription and inactivity reminders by email and push. Essential account messages are not affected.",
+  "reminder_save_failed": "Could not save your preference. Please try again."
 };
 static const Map<String,dynamic> _am = {
   "loading": "በመጫን ላይ",
@@ -954,7 +959,12 @@ static const Map<String,dynamic> _am = {
   "manual_payment_telegram_error": "ቴሌግራም መክፈት አልተቻለም። @yimarusup ያነጋግሩ ወይም ከታች ያለውን ማገናኛ ይቅዱ።",
   "manual_payment_copy_link": "የቴሌግራም ማገናኛ ቅዳ",
   "manual_payment_link_copied": "የቴሌግራም ማገናኛ ተቀድቷል",
-  "manual_payment_start_failed": "የክፍያ ገጹን መክፈት አልተቻለም"
+  "manual_payment_start_failed": "የክፍያ ገጹን መክፈት አልተቻለም",
+  "load_error_title": "ችግር ተፈጥሯል",
+  "load_error_description": "ይህን ይዘት መጫን አልቻልንም። እባክዎ እንደገና ይሞክሩ።",
+  "automated_reminders": "ራስ-ሰር ማስታወሻዎች",
+  "automated_reminders_description": "የደንበኝነት እና የአጠቃቀም ማስታወሻዎች በኢሜይል እና በፑሽ። አስፈላጊ የመለያ መልዕክቶች አይቋረጡም።",
+  "reminder_save_failed": "ምርጫዎን ማስቀመጥ አልቻልንም። እባክዎ እንደገና ይሞክሩ።"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": _en, "am": _am};
 }

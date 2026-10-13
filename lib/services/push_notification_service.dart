@@ -84,8 +84,8 @@ class PushNotificationService {
     }
   }
 
-  AndroidDeviceTokenSync get _androidSync => _androidTokenSync ??=
-      AndroidDeviceTokenSync(
+  AndroidDeviceTokenSync get _androidSync =>
+      _androidTokenSync ??= AndroidDeviceTokenSync(
         getToken: getDeviceToken,
         getAuthenticatedUserId: () async {
           final auth = locator<AuthenticationService>();
@@ -119,16 +119,15 @@ class PushNotificationService {
 
   void _listenForAndroidRecovery() {
     if (_lifecycleListener != null) return;
-    _androidSync.setForeground(
-        WidgetsBinding.instance.lifecycleState == null ||
-            WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed);
+    _androidSync.setForeground(WidgetsBinding.instance.lifecycleState == null ||
+        WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed);
     _lifecycleListener = AppLifecycleListener(
       onStateChange: (state) =>
           _androidSync.setForeground(state == AppLifecycleState.resumed),
     );
-    _internetSubscription = (_internetStatusChanges ??
-            InternetConnection().onStatusChange)
-        .listen((status) {
+    _internetSubscription =
+        (_internetStatusChanges ?? InternetConnection().onStatusChange).listen(
+            (status) {
       if (status == InternetStatus.connected && _androidSync.hasPendingSync) {
         _androidSync.requestSync();
       }

@@ -1,4 +1,5 @@
 import 'package:stacked/stacked.dart';
+import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/learn_program.dart';
@@ -57,12 +58,14 @@ class LearnProgramViewModel extends ReactiveViewModel {
 
   // Learn programs
   Future<void> getLearnPrograms() async =>
-      await runBusyFuture(_getLearnPrograms(),
+      await runReadLoad(() => _getLearnPrograms(),
           busyObject: StateObjects.learnPrograms);
 
   Future<void> _getLearnPrograms() async {
     if (await _statusChecker.checkConnection()) {
       await _learnService.getLearnPrograms();
+    } else {
+      throw StateError('No internet connection');
     }
   }
 }

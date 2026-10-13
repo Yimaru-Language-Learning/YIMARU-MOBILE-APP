@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../common/app_colors.dart';
+import '../../common/enmus.dart';
 import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/course_progress_section.dart';
 import '../../widgets/learning_progress_card.dart';
 import '../../widgets/small_app_bar.dart';
+import '../../widgets/retryable_content.dart';
 import 'my_progress_viewmodel.dart';
 
 class MyProgressView extends StackedView<MyProgressViewModel> {
@@ -74,7 +76,12 @@ class MyProgressView extends StackedView<MyProgressViewModel> {
 
   Widget _buildContentWrapper(MyProgressViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildContentColumn(viewModel),
+        child: RetryableContent(
+          isLoading: viewModel.busy(StateObjects.progressSummary),
+          hasError: viewModel.hasErrorForKey(StateObjects.progressSummary),
+          onRetry: viewModel.getProgressSummary,
+          builder: () => _buildContentColumn(viewModel),
+        ),
       );
 
   Widget _buildContentColumn(MyProgressViewModel viewModel) => Column(

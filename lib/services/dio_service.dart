@@ -12,6 +12,10 @@ class DioService {
   // Background token sync must not log credentials or initiate a logout/refresh.
   // The normal app requests still own authentication recovery.
   static const backgroundDeviceRegistration = 'backgroundDeviceRegistration';
+  // Hide reminder traffic from credential-bearing debug logs without disabling 401 recovery.
+  static const privateReminderRequest = 'privateReminderRequest';
+  // Optional activity must not refresh credentials, clear a session, or navigate.
+  static const backgroundReminderActivity = 'backgroundReminderActivity';
 
   // Dependency injection
   final _navigationService = locator<NavigationService>();
@@ -48,7 +52,8 @@ class DioService {
     Response response,
     ResponseInterceptorHandler handler,
   ) {
-    if (response.requestOptions.extra[backgroundDeviceRegistration] == true) {
+    if (response.requestOptions.extra[backgroundDeviceRegistration] == true ||
+        response.requestOptions.extra[privateReminderRequest] == true) {
       handler.next(response);
       return;
     }
@@ -73,7 +78,8 @@ class DioService {
     options.headers['Accept'] = 'application/json';
     options.headers['Content-Type'] = 'application/json';
 
-    if (options.extra[backgroundDeviceRegistration] == true) {
+    if (options.extra[backgroundDeviceRegistration] == true ||
+        options.extra[privateReminderRequest] == true) {
       handler.next(options);
       return;
     }
@@ -95,14 +101,17 @@ class DioService {
     DioException error,
     ErrorInterceptorHandler handler,
   ) async {
-    if (error.requestOptions.extra[backgroundDeviceRegistration] == true) {
+    if (error.requestOptions.extra[backgroundDeviceRegistration] == true ||
+        error.requestOptions.extra[backgroundReminderActivity] == true) {
       handler.next(error);
       return;
     }
-    debugPrint('❌❌❌❌INITIALIZING ERROR❌❌❌❌');
-    debugPrint('❌ ${error.response?.data} ${error.requestOptions.uri}');
-    debugPrint('❌ ${error.response?.statusCode} ${error.requestOptions.uri}');
-    debugPrint('❌❌❌❌FINALIZING ERROR❌❌❌❌');
+    if (error.requestOptions.extra[privateReminderRequest] != true) {
+      debugPrint('❌❌❌❌INITIALIZING ERROR❌❌❌❌');
+      debugPrint('❌ ${error.response?.data} ${error.requestOptions.uri}');
+      debugPrint('❌ ${error.response?.statusCode} ${error.requestOptions.uri}');
+      debugPrint('❌❌❌❌FINALIZING ERROR❌❌❌❌');
+    }
     if (error.response?.statusCode == 401 &&
         !_isRefreshRequest(error.requestOptions)) {
       return _handle401(error, handler);

@@ -15,6 +15,7 @@ import '../common/ui_helpers.dart';
 import '../views/course_unit/course_unit_viewmodel.dart';
 import 'custom_circular_progress_indicator.dart';
 import 'custom_elevated_button.dart';
+import 'retryable_content.dart';
 
 class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
   final int index;
@@ -253,9 +254,14 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
       );
 
   Widget _buildCourseModulesState(CourseUnitViewModel viewModel) =>
-      viewModel.busy(index)
-          ? _buildProgressIndicatorWrapper()
-          : _buildCourseModules(viewModel);
+      RetryableContent(
+        isLoading: viewModel.busy(index),
+        hasError: viewModel.hasErrorForKey(index),
+        onRetry: () =>
+            viewModel.getCourseModules(index: index, id: unit.id ?? 0),
+        loading: _buildProgressIndicatorWrapper(),
+        builder: () => _buildCourseModules(viewModel),
+      );
 
   Widget _buildProgressIndicatorWrapper() => SizedBox(
         height: 50,
@@ -269,7 +275,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
 
   Widget _buildCourseModules(CourseUnitViewModel viewModel) => ListView.builder(
         shrinkWrap: true,
-        itemCount: unit.modules?.length,
+        itemCount: unit.modules?.length ?? 0,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _buildCourseModuleCard(
             module: unit.modules?[index],

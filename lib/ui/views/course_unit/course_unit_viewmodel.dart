@@ -1,4 +1,5 @@
 import 'package:stacked/stacked.dart';
+import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
@@ -46,22 +47,26 @@ class CourseUnitViewModel extends ReactiveViewModel {
 
   // Course units
   Future<void> getCourseUnits(int id) async =>
-      await runBusyFuture(_getCourseUnits(id),
+      await runReadLoad(() => _getCourseUnits(id),
           busyObject: StateObjects.courseUnits);
 
   Future<void> _getCourseUnits(int id) async {
     if (await _statusChecker.checkConnection()) {
       await _courseService.getCourseUnits(id);
+    } else {
+      throw StateError('No internet connection');
     }
   }
 
   Future<void> getCourseModules({required int id, required int index}) async =>
-      await runBusyFuture(_getCourseModules(id: id, index: index),
+      await runReadLoad(() => _getCourseModules(id: id, index: index),
           busyObject: index);
 
   Future<void> _getCourseModules({required int id, required int index}) async {
     if (await _statusChecker.checkConnection()) {
       await _courseService.getCourseModules(id: id, index: index);
+    } else {
+      throw StateError('No internet connection');
     }
   }
 }

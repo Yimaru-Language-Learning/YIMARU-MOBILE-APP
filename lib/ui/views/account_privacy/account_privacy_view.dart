@@ -9,8 +9,14 @@ import '../../common/ui_helpers.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/small_app_bar.dart';
 import 'account_privacy_viewmodel.dart';
+import '../../widgets/retryable_content.dart';
 
 class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
+  @override
+  void onViewModelReady(AccountPrivacyViewModel viewModel) {
+    viewModel.loadReminders();
+  }
+
   const AccountPrivacyView({Key? key}) : super(key: key);
 
   @override
@@ -85,7 +91,7 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
       );
 
   List<Widget> _buildContentChildren(AccountPrivacyViewModel viewModel) => [
-        _buildMenuColumnScrollView(viewModel),
+        Expanded(child: _buildMenuColumnScrollView(viewModel)),
         // _buildDeleteButtonWrapper()
       ];
 
@@ -105,6 +111,27 @@ class AccountPrivacyView extends StackedView<AccountPrivacyViewModel> {
         _buildHeader(LocaleKeys.app_settings.tr()),
         verticalSpaceSmall,
         _buildLanguageMenu(viewModel),
+        RetryableContent(
+          isLoading: viewModel.busy(AccountPrivacyViewModel.reminderLoadKey),
+          hasError:
+              viewModel.hasErrorForKey(AccountPrivacyViewModel.reminderLoadKey),
+          onRetry: viewModel.loadReminders,
+          builder: () => Column(mainAxisSize: MainAxisSize.min, children: [
+            SwitchListTile.adaptive(
+              title: Text(LocaleKeys.automated_reminders.tr()),
+              subtitle: Text(LocaleKeys.automated_reminders_description.tr()),
+              value: viewModel.remindersEnabled ?? false,
+              onChanged: viewModel.remindersEnabled == null ||
+                      viewModel.busy(AccountPrivacyViewModel.reminderSaveKey)
+                  ? null
+                  : viewModel.setReminders,
+            ),
+            if (viewModel
+                .hasErrorForKey(AccountPrivacyViewModel.reminderSaveKey))
+              Text(LocaleKeys.reminder_save_failed.tr(),
+                  style: const TextStyle(color: kcRed)),
+          ]),
+        ),
         _buildDividerWrapper(),
         verticalSpaceMedium,
         _buildHeader(LocaleKeys.legal_and_information.tr()),

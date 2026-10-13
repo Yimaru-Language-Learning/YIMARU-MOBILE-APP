@@ -1,4 +1,5 @@
 import 'package:stacked/stacked.dart';
+import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
@@ -87,7 +88,7 @@ class SubscriptionViewModel extends FormViewModel {
 
   // Subscriptions
   Future<void> getSubscriptions(SubscriptionType type) async =>
-      await runBusyFuture(_getSubscriptions(type),
+      await runReadLoad(() => _getSubscriptions(type),
           busyObject: StateObjects.subscriptions);
 
   Future<void> _getSubscriptions(SubscriptionType type) async {
@@ -100,6 +101,8 @@ class SubscriptionViewModel extends FormViewModel {
       } else {
         _subscriptions = await _apiService.getSubscriptions('IELTS');
       }
+    } else {
+      throw StateError('No internet connection');
     }
   }
 }

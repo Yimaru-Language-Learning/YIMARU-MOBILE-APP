@@ -1,4 +1,5 @@
 import 'package:chewie/chewie.dart';
+import 'package:flutter/widgets.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -46,6 +47,44 @@ class LearnLessonDetailViewModel extends ReactiveViewModel {
 
   List<LearnLesson> get lessons => _lessons;
 
+  LearnLesson? _lesson;
+  LearnLesson? get currentLesson => _lesson;
+  bool _closed = false;
+  bool _leaving = false;
+
+  void bindLesson(LearnLesson lesson) {
+    _lesson = lesson;
+    _learnService.addListener(_updateLesson);
+    _updateLesson();
+  }
+
+  void _updateLesson() {
+    final previous = _lesson;
+    if (_closed ||
+        previous == null ||
+        _learnService.lessonSync.loadedModuleId != previous.moduleId) {
+      return;
+    }
+    final matches = lessons.where((item) => item.id == previous.id);
+    if (matches.isEmpty || matches.first.access?.isAccessible == false) {
+      if (_leaving) return;
+      _leaving = true;
+      if (_chewieController?.isFullScreen == true) {
+        _chewieController!.exitFullScreen();
+      }
+      // Stacked iterates its listeners directly; dispose after notification ends.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (disposed || _closed) return;
+        close();
+        pop();
+      });
+      WidgetsBinding.instance.scheduleFrame();
+      return;
+    }
+    _lesson = matches.first;
+    notifyListeners();
+  }
+
   // Video player config
   int _lastCheckpoint = 0;
 
@@ -63,8 +102,19 @@ class LearnLessonDetailViewModel extends ReactiveViewModel {
 
   // Video player
   void close() {
-    _videoPlayerController?.dispose();
+    if (_closed) return;
+    _closed = true;
+    _learnService.removeListener(_updateLesson);
     _chewieController?.dispose();
+    _videoPlayerController?.dispose();
+    _chewieController = null;
+    _videoPlayerController = null;
+  }
+
+  @override
+  void dispose() {
+    close();
+    super.dispose();
   }
 
   Future<void> pause() async {
@@ -82,6 +132,8 @@ class LearnLessonDetailViewModel extends ReactiveViewModel {
 
     final playableUrl = await _vimeoService.getVideoUrl(url);
 
+    if (_closed || _leaving) return;
+
     if (playableUrl == null) {
       throw Exception("Unable to load video");
     }
@@ -89,7 +141,14 @@ class LearnLessonDetailViewModel extends ReactiveViewModel {
     _videoPlayerController =
         VideoPlayerController.networkUrl(Uri.parse(playableUrl));
 
-    await _videoPlayerController!.initialize();
+    try {
+      await _videoPlayerController!.initialize();
+    } catch (_) {
+      if (_closed) return;
+      rethrow;
+    }
+
+    if (_closed || _leaving) return;
 
     _videoPlayerController!.addListener(() async {
       final controller = _videoPlayerController;

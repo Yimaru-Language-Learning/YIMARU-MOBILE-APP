@@ -7,6 +7,8 @@ import '../models/course_catalog.dart';
 import '../models/course_lesson.dart';
 import '../models/course_module.dart';
 import '../models/course_unit.dart';
+import 'lesson_list_sync.dart';
+import 'lesson_realtime_service.dart';
 
 class CourseService with ListenableServiceMixin {
   // Dependency injection
@@ -52,6 +54,16 @@ class CourseService with ListenableServiceMixin {
 
   List<CourseLesson> get lessons => _lessons;
 
+  late final lessonSync = LessonListSync<CourseLesson>(
+    fetch: _apiService.getCourseLessons,
+    onError: (_) => notifyListeners(),
+    apply: (lessons) {
+      _lessons = lessons
+        ..sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
+      notifyListeners();
+    },
+  );
+
   // Course catalogs
   Future<void> getCourseCatalogs() async {
     _catalogs = await _apiService.getCourseCatalogs();
@@ -88,9 +100,14 @@ class CourseService with ListenableServiceMixin {
 
   // Course units
   Future<void> getCourseLessons(int id) async {
-    _lessons = await _apiService.getCourseLessons(id);
-    _lessons.sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
-    notifyListeners();
+    final loading = lessonSync.load(id);
+    if (locator.isRegistered<LessonRealtimeService>()) {
+      locator<LessonRealtimeService>().watch('exam_prep', id,
+          refresh: lessonSync.changed,
+          reset: lessonSync.reset,
+          setForeground: lessonSync.setForeground);
+    }
+    await loading;
   }
 
   // Learn progress

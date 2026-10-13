@@ -10,6 +10,8 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 import 'google_auth_service.dart';
 import 'localization_service.dart';
 import 'push_notification_service.dart';
+import 'lesson_realtime_service.dart';
+import 'reminder_activity_service.dart';
 
 class AuthenticationService with ListenableServiceMixin {
   // Dependency injection
@@ -61,6 +63,9 @@ class AuthenticationService with ListenableServiceMixin {
   }) async {
     await _secureService.setString('accessToken', access);
     await _secureService.setString('refreshToken', refresh);
+    if (locator.isRegistered<LessonRealtimeService>()) {
+      locator<LessonRealtimeService>().credentialsUpdated();
+    }
     if (Platform.isAndroid && locator.isRegistered<PushNotificationService>()) {
       locator<PushNotificationService>().deviceTokenCredentialsUpdated();
     }
@@ -68,8 +73,14 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Save user credential
   Future<void> saveUserCredential(Map<String, dynamic> data) async {
+    if (locator.isRegistered<ReminderActivityService>()) {
+      locator<ReminderActivityService>().endSession();
+    }
     // Cancel old-account work before any credential fields are overwritten.
     _resetAndroidDeviceSync();
+    if (locator.isRegistered<LessonRealtimeService>()) {
+      locator<LessonRealtimeService>().reset();
+    }
     await _secureService.setInt('userId', data['userId']);
     await _secureService.setString('accessToken', data['accessToken']);
     await _secureService.setString('refreshToken', data['refreshToken']);
@@ -80,7 +91,11 @@ class AuthenticationService with ListenableServiceMixin {
       refreshToken: await _secureService.getString('refreshToken'),
     );
     final userId = _user?.userId;
-    if (Platform.isAndroid && userId != null &&
+    if (userId != null && locator.isRegistered<ReminderActivityService>()) {
+      locator<ReminderActivityService>().beginSession(userId);
+    }
+    if (Platform.isAndroid &&
+        userId != null &&
         locator.isRegistered<PushNotificationService>()) {
       locator<PushNotificationService>().syncDeviceTokenForSession(userId);
     }
@@ -195,15 +210,14 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('phoneNumber', data['phone_number']);
 
     _user = _user?.copyWith(
-      region: await _secureService.getString('region'),
-      gender: await _secureService.getString('gender'),
-      country: await _secureService.getString('country'),
-      lastName: await _secureService.getString('lastName'),
-      birthday: await _secureService.getString('birthday'),
-      firstName: await _secureService.getString('firstName'),
-      occupation: await _secureService.getString('occupation'),
-      phoneNumber: await _secureService.getString('phoneNumber')
-    );
+        region: await _secureService.getString('region'),
+        gender: await _secureService.getString('gender'),
+        country: await _secureService.getString('country'),
+        lastName: await _secureService.getString('lastName'),
+        birthday: await _secureService.getString('birthday'),
+        firstName: await _secureService.getString('firstName'),
+        occupation: await _secureService.getString('occupation'),
+        phoneNumber: await _secureService.getString('phoneNumber'));
 
     notifyListeners();
   }
@@ -257,7 +271,13 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Logout
   Future<void> logout() async {
+    if (locator.isRegistered<ReminderActivityService>()) {
+      locator<ReminderActivityService>().endSession();
+    }
     _resetAndroidDeviceSync();
+    if (locator.isRegistered<LessonRealtimeService>()) {
+      locator<LessonRealtimeService>().reset();
+    }
     _state = StateObjects.logout;
     notifyListeners();
 

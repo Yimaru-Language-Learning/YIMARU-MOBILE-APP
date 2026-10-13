@@ -1,4 +1,5 @@
 import 'package:stacked/stacked.dart';
+import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 
@@ -63,13 +64,15 @@ class MyProgressViewModel extends ReactiveViewModel {
   // Learning progress
 
   Future<void> getProgressSummary() async =>
-      runBusyFuture(_getProgressSummary(),
+      runReadLoad(() => _getProgressSummary(),
           busyObject: StateObjects.progressSummary);
 
   Future<void> _getProgressSummary() async {
     if (await _statusCheckerService.checkConnection()) {
       // await _courseService.getCourseProgress();
       await _learnService.getProgressSummary();
+    } else {
+      throw StateError('No internet connection');
     }
   }
 }

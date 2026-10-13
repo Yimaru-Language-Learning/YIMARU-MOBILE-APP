@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
+import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/learn_module.dart';
@@ -64,13 +65,15 @@ class LearnModuleViewModel extends ReactiveViewModel {
 
   // Learn modules
   Future<void> getLearnModules(int id) async =>
-      await runBusyFuture(_getLearnModules(id),
+      await runReadLoad(() => _getLearnModules(id),
           busyObject: StateObjects.learnModules);
 
   Future<void> _getLearnModules(int id) async {
     if (await _statusChecker.checkConnection()) {
       await _learnService.getLearnModules(id);
       // await refreshModuleImages(_modules);
+    } else {
+      throw StateError('No internet connection');
     }
   }
 

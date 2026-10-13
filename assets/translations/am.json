@@ -467,9 +467,12 @@
   "manual_payment_telegram_error": "ቴሌግራም መክፈት አልተቻለም። @yimarusup ያነጋግሩ ወይም ከታች ያለውን ማገናኛ ይቅዱ።",
   "manual_payment_copy_link": "የቴሌግራም ማገናኛ ቅዳ",
   "manual_payment_link_copied": "የቴሌግራም ማገናኛ ተቀድቷል",
-  "manual_payment_start_failed": "የክፍያ ገጹን መክፈት አልተቻለም"
+  "manual_payment_start_failed": "የክፍያ ገጹን መክፈት አልተቻለም",
+  "load_error_title": "ችግር ተፈጥሯል",
+  "load_error_description": "ይህን ይዘት መጫን አልቻልንም። እባክዎ እንደገና ይሞክሩ።",
+  "automated_reminders": "ራስ-ሰር ማስታወሻዎች",
+  "automated_reminders_description": "የደንበኝነት እና የአጠቃቀም ማስታወሻዎች በኢሜይል እና በፑሽ። አስፈላጊ የመለያ መልዕክቶች አይቋረጡም።",
+  "reminder_save_failed": "ምርጫዎን ማስቀመጥ አልቻልንም። እባክዎ እንደገና ይሞክሩ።"
 }
-
-
 
 

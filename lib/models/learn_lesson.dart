@@ -16,6 +16,9 @@ class LearnLesson {
 
   final String? description;
 
+  @JsonKey(name: 'has_practice')
+  final bool? hasPractice;
+
   @JsonKey(name: 'module_id')
   final int? moduleId;
 
@@ -34,6 +37,7 @@ class LearnLesson {
     this.thumbnail,
     this.sortOrder,
     this.description,
+    this.hasPractice,
   });
 
   LearnLesson copyWith({
@@ -45,6 +49,7 @@ class LearnLesson {
     String? videoUrl,
     String? thumbnail,
     String? description,
+    bool? hasPractice,
   }) {
     return LearnLesson(
       id: id ?? this.id,
@@ -55,6 +60,7 @@ class LearnLesson {
       sortOrder: sortOrder ?? this.sortOrder,
       thumbnail: thumbnail ?? this.thumbnail,
       description: description ?? this.description,
+      hasPractice: hasPractice ?? this.hasPractice,
     );
   }
 

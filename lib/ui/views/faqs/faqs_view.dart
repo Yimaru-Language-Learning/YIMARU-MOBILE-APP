@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/retryable_content.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/faq.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
@@ -89,10 +90,13 @@ class FaqsView extends StackedView<FaqsViewModel> {
   List<Widget> _buildMenuColumnChildren(FaqsViewModel viewModel) =>
       [verticalSpaceLarge, _buildListViewState(viewModel)];
 
-  Widget _buildListViewState(FaqsViewModel viewModel) =>
-      viewModel.busy(StateObjects.faqs)
-          ? _buildProgressIndicator()
-          : _buildListView(viewModel);
+  Widget _buildListViewState(FaqsViewModel viewModel) => RetryableContent(
+        isLoading: viewModel.busy(StateObjects.faqs),
+        hasError: viewModel.hasErrorForKey(StateObjects.faqs),
+        onRetry: () => viewModel.getFAQs(),
+        loading: _buildProgressIndicator(),
+        builder: () => _buildListView(viewModel),
+      );
 
   Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),

@@ -8,6 +8,9 @@ import 'package:yimaru_app/ui/views/subscription/subscription_view.form.dart';
 import 'package:yimaru_app/ui/views/subscription/subscription_viewmodel.dart';
 
 import '../../common/enmus.dart';
+import '../../common/app_colors.dart';
+import '../../widgets/retryable_content.dart';
+import '../../widgets/small_app_bar.dart';
 import '../../common/validators/form_validator.dart';
 
 @FormView(fields: [
@@ -51,8 +54,24 @@ class SubscriptionView extends StackedView<SubscriptionViewModel>
       },
       child: _buildBody(viewModel));
 
-  Widget _buildBody(SubscriptionViewModel viewModel) => IndexedStack(
-      index: viewModel.currentPage, children: _buildScreens(viewModel));
+  Widget _buildBody(SubscriptionViewModel viewModel) =>
+      viewModel.hasErrorForKey(StateObjects.subscriptions)
+          ? Scaffold(
+              backgroundColor: kcBackgroundColor,
+              body: SafeArea(
+                child: Column(children: [
+                  SmallAppBar(showBackButton: true, onPop: viewModel.goBack),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: LoadErrorIndicator(
+                          onRetry: () => viewModel.getSubscriptions(type)),
+                    ),
+                  ),
+                ]),
+              ),
+            )
+          : IndexedStack(
+              index: viewModel.currentPage, children: _buildScreens(viewModel));
 
   List<Widget> _buildScreens(SubscriptionViewModel viewModel) =>
       [_buildSubscriptionPackageScreen(), _buildLearnSubscriptionFormScreen()];
