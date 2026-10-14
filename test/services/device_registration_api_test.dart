@@ -9,6 +9,8 @@ import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 
 class RegistrationTestAuth extends Mock implements AuthenticationService {
+  @override
+  int get sessionGeneration => 0;
   int refreshUserReads = 0;
 
   @override
@@ -79,11 +81,13 @@ void main() {
     await expectLater(
       api.registerDevice({'device_token': 'token', 'platform': 'android'},
           backgroundSync: true),
-      throwsA(isA<DioException>().having(
-          (error) => error.response?.statusCode, 'status', 401)),
+      throwsA(isA<DioException>()
+          .having((error) => error.response?.statusCode, 'status', 401)),
     );
-    expect((locator<AuthenticationService>() as RegistrationTestAuth)
-        .refreshUserReads, 0);
+    expect(
+        (locator<AuthenticationService>() as RegistrationTestAuth)
+            .refreshUserReads,
+        0);
   });
 
   test('cancelled registration never reaches transport', () async {
@@ -102,8 +106,8 @@ void main() {
     await expectLater(
       api.registerDevice({'device_token': 'token', 'platform': 'android'},
           cancelToken: cancellation, backgroundSync: true),
-      throwsA(isA<DioException>().having(
-          (error) => error.type, 'type', DioExceptionType.cancel)),
+      throwsA(isA<DioException>()
+          .having((error) => error.type, 'type', DioExceptionType.cancel)),
     );
     expect(transportReached, isFalse);
   });

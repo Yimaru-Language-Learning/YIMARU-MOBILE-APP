@@ -32,7 +32,7 @@ class SecureStorageService {
 
   // Clear storage data
   Future<void> clear() async {
-    _storage.deleteAll();
+    await _storage.deleteAll();
   }
 
   // Get boolean data from storage

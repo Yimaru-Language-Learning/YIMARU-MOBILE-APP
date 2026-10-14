@@ -26,6 +26,17 @@ class AuthenticationService with ListenableServiceMixin {
   User? _user;
 
   User? get user => _user;
+  int _sessionGeneration = 0;
+  int get sessionGeneration => _sessionGeneration;
+  Future<void> _credentialWrite = Future.value();
+
+  // Serialize login/logout/rotation so a late secure-storage write cannot
+  // overwrite a newer account. Invalidate old work before waiting for the lock.
+  Future<void> _writeCredentials(Future<void> Function() action) {
+    final write = _credentialWrite.then((_) => action());
+    _credentialWrite = write.then((_) {}, onError: (Object _) {});
+    return write;
+  }
 
   // Initialization
   AuthenticationService() {
@@ -39,6 +50,7 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Check user logged in
   Future<bool> userLoggedIn() async {
+    await _credentialWrite;
     if (await _secureService.getString('userId') != null) {
       return true;
     }
@@ -46,33 +58,58 @@ class AuthenticationService with ListenableServiceMixin {
   }
 
   // Get access token
-  Future<String?> getAccessToken() async =>
-      await _secureService.getString('accessToken');
+  Future<String?> getAccessToken() async {
+    await _credentialWrite;
+    return _secureService.getString('accessToken');
+  }
 
   // Get refresh token
-  Future<String?> getRefreshToken() async =>
-      await _secureService.getString('refreshToken');
+  Future<String?> getRefreshToken() async {
+    await _credentialWrite;
+    return _secureService.getString('refreshToken');
+  }
 
   // Get user id
-  Future<int?> getUserId() async => await _secureService.getInt('userId');
+  Future<int?> getUserId() async {
+    await _credentialWrite;
+    return _secureService.getInt('userId');
+  }
 
   // Save tokens
   Future<void> saveTokens({
     required String access,
     required String refresh,
-  }) async {
-    await _secureService.setString('accessToken', access);
-    await _secureService.setString('refreshToken', refresh);
-    if (locator.isRegistered<LessonRealtimeService>()) {
-      locator<LessonRealtimeService>().credentialsUpdated();
-    }
-    if (Platform.isAndroid && locator.isRegistered<PushNotificationService>()) {
-      locator<PushNotificationService>().deviceTokenCredentialsUpdated();
-    }
-  }
+    int? expectedSessionGeneration,
+  }) =>
+      _writeCredentials(() async {
+        if (expectedSessionGeneration != null &&
+            expectedSessionGeneration != _sessionGeneration) {
+          return;
+        }
+        await _secureService.setString('accessToken', access);
+        await _secureService.setString('refreshToken', refresh);
+        if (expectedSessionGeneration != null &&
+            expectedSessionGeneration != _sessionGeneration) {
+          return;
+        }
+        _user = _user?.copyWith(accessToken: access, refreshToken: refresh);
+        notifyListeners();
+        if (locator.isRegistered<LessonRealtimeService>()) {
+          locator<LessonRealtimeService>().credentialsUpdated();
+        }
+        if (Platform.isAndroid &&
+            locator.isRegistered<PushNotificationService>()) {
+          locator<PushNotificationService>().deviceTokenCredentialsUpdated();
+        }
+      });
 
   // Save user credential
-  Future<void> saveUserCredential(Map<String, dynamic> data) async {
+  Future<void> saveUserCredential(Map<String, dynamic> data) {
+    _sessionGeneration++;
+    return _writeCredentials(() => _saveUserCredential(data));
+  }
+
+  Future<void> _saveUserCredential(Map<String, dynamic> data) async {
     if (locator.isRegistered<ReminderActivityService>()) {
       locator<ReminderActivityService>().endSession();
     }
@@ -244,7 +281,10 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Get user data
   Future<User?> getUser() async {
-    _user = User(
+    final generation = _sessionGeneration;
+    await _credentialWrite;
+    if (generation != _sessionGeneration) return _user;
+    final restored = User(
       learn: await _secureService.getBool('learn'),
       ielts: await _secureService.getBool('ielts'),
       userId: await _secureService.getInt('userId'),
@@ -265,12 +305,19 @@ class AuthenticationService with ListenableServiceMixin {
       profileCompleted: await _secureService.getBool('profileCompleted'),
       subscriptionStatus: await _secureService.getString('subscriptionStatus'),
     );
+    if (generation != _sessionGeneration) return _user;
+    _user = restored;
     notifyListeners();
     return _user;
   }
 
   // Logout
-  Future<void> logout() async {
+  Future<void> logout() {
+    _sessionGeneration++;
+    return _writeCredentials(_logout);
+  }
+
+  Future<void> _logout() async {
     if (locator.isRegistered<ReminderActivityService>()) {
       locator<ReminderActivityService>().endSession();
     }

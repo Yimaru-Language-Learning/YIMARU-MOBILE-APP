@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
-import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 
 import '../app/app.locator.dart';
@@ -22,20 +21,29 @@ class DioService {
   final _authenticationService = locator<AuthenticationService>();
 
   // Initialization
-  final Dio _dio = Dio();
+  final Dio _dio;
 
   Dio get dio => _dio;
 
-  final Dio _refreshDio = Dio(); // separate instance
-
-  bool _isRefreshing = false;
-  final List<void Function()> _retryQueue = [];
+  // No auth interceptor: a refresh cannot refresh itself.
+  final Dio _refreshDio;
+  Future<bool>? _refreshing;
+  int? _refreshGeneration;
+  static const _sessionKey = 'authSessionGeneration';
+  static const _accessKey = 'requestAccessToken';
+  static const _retriedKey = 'authRetried';
 
   // Initialization
-  DioService() {
+  DioService({Dio? client, Dio? refreshClient})
+      : _dio = client ?? Dio(),
+        _refreshDio = refreshClient ?? Dio() {
     _dio.options
       ..baseUrl = kBaseUrl
       ..connectTimeout = const Duration(seconds: 10)
+      ..receiveTimeout = const Duration(seconds: 15);
+    _refreshDio.options
+      ..connectTimeout = const Duration(seconds: 10)
+      ..sendTimeout = const Duration(seconds: 10)
       ..receiveTimeout = const Duration(seconds: 15);
 
     _dio.interceptors.add(
@@ -58,8 +66,7 @@ class DioService {
       return;
     }
     debugPrint('✅✅✅✅INITIALIZING RESPONSE✅✅✅✅');
-    debugPrint('✅ ${response.statusCode} ${response.requestOptions.uri}');
-    debugPrint('✅ DATA: ${response.data}');
+    debugPrint('✅ ${response.statusCode} ${response.requestOptions.uri.path}');
     debugPrint('✅✅✅✅FINALIZING RESPONSE✅✅✅✅');
 
     handler.next(response);
@@ -69,10 +76,22 @@ class DioService {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
+    options.extra[_sessionKey] ??= _authenticationService.sessionGeneration;
     final access = await _authenticationService.getAccessToken();
+    if (options.extra[_sessionKey] !=
+        _authenticationService.sessionGeneration) {
+      handler.reject(DioException(
+          requestOptions: options,
+          type: DioExceptionType.cancel,
+          error: 'Authentication session changed'));
+      return;
+    }
+    options.extra[_accessKey] = access;
 
     if (access != null) {
       options.headers['Authorization'] = 'Bearer $access';
+    } else {
+      options.headers.remove('Authorization');
     }
 
     options.headers['Accept'] = 'application/json';
@@ -84,13 +103,9 @@ class DioService {
       return;
     }
 
-    final refresh = await _authenticationService.getRefreshToken();
-
     debugPrint('️️➡️➡️➡️➡️INITIALIZING REQUEST➡️➡️➡️➡️');
-    debugPrint('➡️ ${options.method} ${options.uri}');
-    debugPrint('➡️ REFRESH: $refresh');
-    debugPrint('➡️ HEADERS: ${options.headers}');
-    debugPrint('➡️ DATA: ${options.data}');
+    // Never log credentials, login payloads, or token-bearing query strings.
+    debugPrint('➡️ ${options.method} ${options.uri.path}');
     debugPrint('️️➡️➡️➡️➡️FINALIZING REQUEST➡️➡️➡️➡️');
 
     handler.next(options);
@@ -108,8 +123,8 @@ class DioService {
     }
     if (error.requestOptions.extra[privateReminderRequest] != true) {
       debugPrint('❌❌❌❌INITIALIZING ERROR❌❌❌❌');
-      debugPrint('❌ ${error.response?.data} ${error.requestOptions.uri}');
-      debugPrint('❌ ${error.response?.statusCode} ${error.requestOptions.uri}');
+      debugPrint(
+          '❌ ${error.response?.statusCode} ${error.requestOptions.uri.path}');
       debugPrint('❌❌❌❌FINALIZING ERROR❌❌❌❌');
     }
     if (error.response?.statusCode == 401 &&
@@ -125,67 +140,106 @@ class DioService {
     ErrorInterceptorHandler handler,
   ) async {
     final requestOptions = error.requestOptions;
-
-    if (_isRefreshing) {
-      _retryQueue.add(() async {
-        final response = await _dio.fetch(requestOptions);
-        handler.resolve(response);
-      });
+    final generation = requestOptions.extra[_sessionKey];
+    if (generation != _authenticationService.sessionGeneration ||
+        requestOptions.extra[_retriedKey] == true) {
+      handler.next(error);
       return;
     }
-
-    _isRefreshing = true;
-
     try {
-      final refreshed = await _refreshToken();
-
-      if (!refreshed) {
-        handler.reject(error);
+      final currentAccess = await _authenticationService.getAccessToken();
+      if (generation != _authenticationService.sessionGeneration) {
+        handler.next(error);
         return;
       }
-
-      final response = await _dio.fetch(requestOptions);
-
-      for (final retry in _retryQueue) {
-        retry();
+      // A delayed 401 may belong to the token that another request refreshed.
+      if (currentAccess == null ||
+          currentAccess == requestOptions.extra[_accessKey]) {
+        if (!await _refreshForSession(generation as int)) {
+          handler.next(error);
+          return;
+        }
       }
-      _retryQueue.clear();
-
-      handler.resolve(response);
-    } catch (e) {
-      handler.reject(error);
-    } finally {
-      _isRefreshing = false;
+      if (generation != _authenticationService.sessionGeneration) {
+        handler.next(error);
+        return;
+      }
+      requestOptions.extra[_retriedKey] = true;
+      final data = requestOptions.data;
+      if (data is FormData && data.isFinalized) {
+        requestOptions.data = data.clone();
+      }
+      // Every waiter retries independently; one failure cannot strand the others.
+      handler.resolve(await _dio.fetch(requestOptions));
+    } on DioException catch (failure) {
+      handler.reject(DioException(
+          requestOptions: requestOptions,
+          type: failure.type,
+          response: failure.response,
+          error: failure.error));
+    } catch (failure) {
+      handler
+          .reject(DioException(requestOptions: requestOptions, error: failure));
     }
   }
 
-  // Refresh token
-  Future<bool> _refreshToken() async {
-    final User? user = await _authenticationService.getUser();
+  Future<bool> _refreshForSession(int generation) {
+    if (_refreshing != null && _refreshGeneration == generation) {
+      return _refreshing!;
+    }
+    late final Future<bool> flight;
+    flight = _refreshToken(generation).whenComplete(() {
+      if (identical(_refreshing, flight)) {
+        _refreshing = null;
+        _refreshGeneration = null;
+      }
+    });
+    _refreshGeneration = generation;
+    return _refreshing = flight;
+  }
 
-    if (user?.refreshToken == null) return false;
-
+  Future<bool> _refreshToken(int generation) async {
+    final user = await _authenticationService.getUser();
+    if (generation != _authenticationService.sessionGeneration ||
+        user?.refreshToken == null ||
+        user!.refreshToken!.isEmpty) {
+      return false;
+    }
     try {
-      Map<String, dynamic> data = {
-        'role': 'USER',
-        'user_id': user?.userId,
-        'access_token': user?.accessToken,
-        'refresh_token': user?.refreshToken
-      };
       final response = await _refreshDio.post(
         '$kBaseUrl/$kRefreshTokenUrl',
-        data: data,
+        data: {
+          'access_token': user.accessToken,
+          'refresh_token': user.refreshToken
+        },
       );
-
+      if (generation != _authenticationService.sessionGeneration) return false;
+      final body = response.data;
+      final tokens = body is Map ? (body['data'] ?? body) : null;
+      final access = tokens is Map ? tokens['access_token'] : null;
+      final refresh = tokens is Map ? tokens['refresh_token'] : null;
+      if (access is! String ||
+          access.isEmpty ||
+          refresh is! String ||
+          refresh.isEmpty ||
+          refresh == user.refreshToken) {
+        throw StateError('Invalid refresh response');
+      }
       await _authenticationService.saveTokens(
-        access: response.data['access_token'],
-        refresh: response.data['refresh_token'],
+        access: access,
+        refresh: refresh,
+        expectedSessionGeneration: generation,
       );
-
-      return true;
-    } catch (e) {
-      await _authenticationService.logout();
-      await _navigationService.replaceWithLoginView();
+      return generation == _authenticationService.sessionGeneration;
+    } on DioException catch (error) {
+      final status = error.response?.statusCode;
+      if (status != 401 && status != 403) rethrow;
+      if (generation == _authenticationService.sessionGeneration) {
+        await _authenticationService.logout();
+        if (_authenticationService.sessionGeneration == generation + 1) {
+          await _navigationService.replaceWithLoginView();
+        }
+      }
       return false;
     }
   }

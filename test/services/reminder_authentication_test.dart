@@ -9,6 +9,8 @@ import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 
 class _Auth extends Mock implements AuthenticationService {
+  @override
+  int get sessionGeneration => 0;
   int refreshReads = 0;
   int logouts = 0;
   @override
