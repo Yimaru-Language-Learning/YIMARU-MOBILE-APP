@@ -471,8 +471,8 @@
   "load_error_title": "Something went wrong",
   "load_error_description": "We couldn't load this content. Please try again.",
   "automated_reminders": "Automated reminders",
-  "automated_reminders_description": "Subscription and inactivity reminders by email and push. Essential account messages are not affected.",
-  "reminder_save_failed": "Could not save your preference. Please try again."
+  "automated_reminders_description": "Subscription reminders, inactivity reminders, and new-course announcements by email and push. Essential account messages are not affected.",
+  "reminder_save_failed": "Could not save your preference. Please try again.",
+  "practice_completion_failed": "We couldn't save your progress. Tap Retry to save it without repeating the practice.",
+  "practice_progress_refresh_failed": "Your progress was saved, but we couldn't refresh it. Tap Retry."
 }
-
-

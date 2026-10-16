@@ -487,8 +487,10 @@ class CodegenLoader extends AssetLoader{
   "load_error_title": "Something went wrong",
   "load_error_description": "We couldn't load this content. Please try again.",
   "automated_reminders": "Automated reminders",
-  "automated_reminders_description": "Subscription and inactivity reminders by email and push. Essential account messages are not affected.",
-  "reminder_save_failed": "Could not save your preference. Please try again."
+  "automated_reminders_description": "Subscription reminders, inactivity reminders, and new-course announcements by email and push. Essential account messages are not affected.",
+  "reminder_save_failed": "Could not save your preference. Please try again.",
+  "practice_completion_failed": "We couldn't save your progress. Tap Retry to save it without repeating the practice.",
+  "practice_progress_refresh_failed": "Your progress was saved, but we couldn't refresh it. Tap Retry."
 };
 static const Map<String,dynamic> _am = {
   "loading": "በመጫን ላይ",
@@ -963,8 +965,10 @@ static const Map<String,dynamic> _am = {
   "load_error_title": "ችግር ተፈጥሯል",
   "load_error_description": "ይህን ይዘት መጫን አልቻልንም። እባክዎ እንደገና ይሞክሩ።",
   "automated_reminders": "ራስ-ሰር ማስታወሻዎች",
-  "automated_reminders_description": "የደንበኝነት እና የአጠቃቀም ማስታወሻዎች በኢሜይል እና በፑሽ። አስፈላጊ የመለያ መልዕክቶች አይቋረጡም።",
-  "reminder_save_failed": "ምርጫዎን ማስቀመጥ አልቻልንም። እባክዎ እንደገና ይሞክሩ።"
+  "automated_reminders_description": "የደንበኝነት እና የአጠቃቀም ማስታወሻዎች፣ እንዲሁም የአዲስ ኮርስ ማስታወቂያዎች በኢሜይል እና በፑሽ። አስፈላጊ የመለያ መልዕክቶች አይቋረጡም።",
+  "reminder_save_failed": "ምርጫዎን ማስቀመጥ አልቻልንም። እባክዎ እንደገና ይሞክሩ።",
+  "practice_completion_failed": "እድገትዎን ማስቀመጥ አልቻልንም። ልምምዱን ሳይደግሙ ለማስቀመጥ እንደገና ሞክርን ይጫኑ።",
+  "practice_progress_refresh_failed": "እድገትዎ ተቀምጧል፣ ነገር ግን ማደስ አልቻልንም። እንደገና ሞክርን ይጫኑ።"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": _en, "am": _am};
 }

@@ -10,6 +10,7 @@ import '../models/learn_module.dart';
 import '../models/learn_program.dart';
 import '../models/progress_summary.dart';
 import 'api_service.dart';
+import 'authentication_service.dart';
 import 'lesson_list_sync.dart';
 import 'lesson_realtime_service.dart';
 
@@ -116,7 +117,14 @@ class LearnService with ListenableServiceMixin {
 
   // Learn progress
   Future<void> getLearnProgress() async {
+    final auth = locator.isRegistered<AuthenticationService>()
+        ? locator<AuthenticationService>()
+        : null;
+    final generation = auth?.sessionGeneration;
     final summaries = await _apiService.getProgressSummary();
+    // A completion refresh may outlive logout/login. Do not apply an old
+    // learner's unlocks to the lists now being used by another account.
+    if (auth != null && auth.sessionGeneration != generation) return;
 
     /// PROGRAM ACCESS MAP
     final Map<int, Access?> programAccessMap = {};

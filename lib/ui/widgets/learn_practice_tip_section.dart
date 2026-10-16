@@ -32,7 +32,11 @@ class LearnPracticeTipSection extends ViewModelWidget<LearnPracticeViewModel> {
       [_buildTitleWrapper(), verticalSpaceTiny, _buildContent(viewModel)];
 
   Widget _buildTitleWrapper() => Row(
-        children: [_buildLeading(), horizontalSpaceSmall, _buildTitle()],
+        children: [
+          _buildLeading(),
+          horizontalSpaceSmall,
+          Expanded(child: _buildTitle()),
+        ],
       );
 
   Widget _buildLeading() => const Icon(

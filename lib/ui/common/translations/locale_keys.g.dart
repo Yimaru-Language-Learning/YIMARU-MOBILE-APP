@@ -477,5 +477,7 @@ abstract class  LocaleKeys {
   static const automated_reminders_description = 'automated_reminders_description';
   static const reminder_save_failed = 'reminder_save_failed';
   static const load_error_description = 'load_error_description';
+  static const practice_completion_failed = 'practice_completion_failed';
+  static const practice_progress_refresh_failed = 'practice_progress_refresh_failed';
 
 }

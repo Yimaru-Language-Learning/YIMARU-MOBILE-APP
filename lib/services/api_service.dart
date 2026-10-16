@@ -1052,6 +1052,7 @@ class ApiService {
     try {
       Response response = await _service.dio.post(
         '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kProgressUrl/$kPracticesUrl/$id/$kCompleteUrl',
+        data: data,
       );
 
       if (response.statusCode == 200) {
