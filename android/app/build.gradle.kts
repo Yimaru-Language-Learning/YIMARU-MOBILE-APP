@@ -44,7 +44,10 @@ android {
             keyAlias = keystoreProperties["keyAlias"] as String
             keyPassword = keystoreProperties["keyPassword"] as String
             storePassword = keystoreProperties["storePassword"] as String
-            storeFile = keystoreProperties["storeFile"]?.let { file(it as String) }
+            // Makefile release builds select the external upload key without
+            // copying it or changing the local, ignored signing credentials.
+            storeFile = (providers.environmentVariable("YIMARU_UPLOAD_KEYSTORE").orNull
+                ?: keystoreProperties.getProperty("storeFile"))?.let { file(it) }
         }
     }
 
