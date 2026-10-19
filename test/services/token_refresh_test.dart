@@ -6,9 +6,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/models/user.dart';
+import 'package:yimaru_app/services/app_request_metadata.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/dio_service.dart';
 
@@ -95,26 +97,49 @@ void main() {
   late Future<ResponseBody> Function(RequestOptions) refresh;
   int refreshCalls = 0;
   int protectedCalls = 0;
+  int metadataReads = 0;
   final refreshBodies = <Map<String, dynamic>>[];
   setUp(() {
     auth = _Auth();
     navigation = _Navigation();
     refreshCalls = protectedCalls = 0;
+    metadataReads = 0;
     refreshBodies.clear();
     locator.registerSingleton<AuthenticationService>(auth);
     locator.registerSingleton<NavigationService>(navigation);
     final client = Dio()
       ..httpClientAdapter = _Adapter((options) {
+        expect(options.headers['X-App-Version'], '1.5.2');
+        expect(options.headers['X-App-Build'], '83');
+        expect(options.headers['X-App-Platform'], 'ios');
         protectedCalls++;
         return protected(options);
       });
     refreshClient = Dio()
       ..httpClientAdapter = _Adapter((options) {
+        expect(options.headers['X-App-Version'], '1.5.2');
+        expect(options.headers['X-App-Build'], '83');
+        expect(options.headers['X-App-Platform'], 'ios');
         refreshCalls++;
         refreshBodies.add(Map<String, dynamic>.from(options.data));
         return refresh(options);
       });
-    service = DioService(client: client, refreshClient: refreshClient);
+    service = DioService(
+      client: client,
+      refreshClient: refreshClient,
+      appMetadata: AppRequestMetadata(
+        platform: 'ios',
+        loadPackageInfo: () async {
+          metadataReads++;
+          return PackageInfo(
+            appName: 'Yimaru',
+            packageName: 'test.yimaru',
+            version: '1.5.2',
+            buildNumber: '83',
+          );
+        },
+      ),
+    );
     protected = (options) async => _body(
         options.headers['Authorization'] == 'Bearer old-access' ? 401 : 200);
     refresh = (_) async => _body(200, {
@@ -146,6 +171,18 @@ void main() {
     }
     expect(condition(), isTrue);
   }
+
+  test('login and restored-session requests carry the same cached build',
+      () async {
+    auth.access = null;
+    protected = (_) async => _body(200);
+    await service.dio
+        .post('/auth/login', data: {'email': 'tester@example.com'});
+    auth.access = 'restored-access';
+    await request();
+    expect(protectedCalls, 2);
+    expect(metadataReads, 1);
+  });
 
   test('two expired-access cycles save and use the rotated token', () async {
     expect((await request()).statusCode, 200);
