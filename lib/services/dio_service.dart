@@ -6,6 +6,7 @@ import 'package:yimaru_app/services/authentication_service.dart';
 
 import '../app/app.locator.dart';
 import '../ui/common/app_constants.dart';
+import 'app_request_metadata.dart';
 
 class DioService {
   // Background token sync must not log credentials or initiate a logout/refresh.
@@ -27,6 +28,7 @@ class DioService {
 
   // No auth interceptor: a refresh cannot refresh itself.
   final Dio _refreshDio;
+  final AppRequestMetadata _appMetadata;
   Future<bool>? _refreshing;
   int? _refreshGeneration;
   static const _sessionKey = 'authSessionGeneration';
@@ -34,9 +36,10 @@ class DioService {
   static const _retriedKey = 'authRetried';
 
   // Initialization
-  DioService({Dio? client, Dio? refreshClient})
+  DioService({Dio? client, Dio? refreshClient, AppRequestMetadata? appMetadata})
       : _dio = client ?? Dio(),
-        _refreshDio = refreshClient ?? Dio() {
+        _refreshDio = refreshClient ?? Dio(),
+        _appMetadata = appMetadata ?? AppRequestMetadata() {
     _dio.options
       ..baseUrl = kBaseUrl
       ..connectTimeout = const Duration(seconds: 10)
@@ -45,6 +48,14 @@ class DioService {
       ..connectTimeout = const Duration(seconds: 10)
       ..sendTimeout = const Duration(seconds: 10)
       ..receiveTimeout = const Duration(seconds: 15);
+
+    // Refresh deliberately bypasses auth interception, but needs build context.
+    _refreshDio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        options.headers.addAll(await _appMetadata.headers);
+        handler.next(options);
+      },
+    ));
 
     _dio.interceptors.add(
       InterceptorsWrapper(
@@ -77,6 +88,7 @@ class DioService {
     RequestInterceptorHandler handler,
   ) async {
     options.extra[_sessionKey] ??= _authenticationService.sessionGeneration;
+    options.headers.addAll(await _appMetadata.headers);
     final access = await _authenticationService.getAccessToken();
     if (options.extra[_sessionKey] !=
         _authenticationService.sessionGeneration) {
