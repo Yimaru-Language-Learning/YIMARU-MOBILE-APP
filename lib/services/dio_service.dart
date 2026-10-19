@@ -25,6 +25,25 @@ class DioService {
 
   Dio get dio => _dio;
 
+  // Deliberately bypass auth refresh, session reads and credential-bearing logs.
+  // The snapshot belongs to the account whose logout is being serialized.
+  Future<void> unregisterDevice(String token,
+      {required String accessToken}) async {
+    final cancellation = CancelToken();
+    try {
+      await _refreshDio
+          .post(
+            '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kDevicesUrl/unregister',
+            data: {'device_token': token},
+            options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
+            cancelToken: cancellation,
+          )
+          .timeout(const Duration(seconds: 3));
+    } finally {
+      cancellation.cancel('Logout cleanup finished');
+    }
+  }
+
   // No auth interceptor: a refresh cannot refresh itself.
   final Dio _refreshDio;
   Future<bool>? _refreshing;

@@ -344,6 +344,14 @@ class AuthenticationService with ListenableServiceMixin {
     _state = StateObjects.logout;
     notifyListeners();
 
+    if (locator.isRegistered<PushNotificationService>()) {
+      try {
+        await locator<PushNotificationService>().prepareForLogout(
+            accessToken: await _secureService.getString('accessToken'));
+      } catch (_) {
+        // Plugin/network cleanup must never prevent local logout.
+      }
+    }
     bool firstTimeInstall = await isFirstTimeInstall();
     String language = await _localizationService.selectedLanguage['code'];
 

@@ -246,6 +246,9 @@ class ApiService {
     }
   }
 
+  Future<void> unregisterDevice(String token, {required String accessToken}) =>
+      _service.unregisterDevice(token, accessToken: accessToken);
+
   // Resend otp
   Future<Map<String, dynamic>> resendOtp(Map<String, dynamic> data) async {
     try {

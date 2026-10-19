@@ -43,6 +43,7 @@ class DeviceTokenSync {
   CancelToken? _uploadCancellation;
 
   bool get hasPendingSync => _pending;
+  String? get currentToken => _latestToken;
 
   void _log(String message) {
     if (kDebugMode) debugPrint('[FCM Sync] $message');

@@ -6,6 +6,7 @@ import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/google_auth_service.dart';
 import 'package:yimaru_app/services/localization_service.dart';
 import 'package:yimaru_app/services/secure_storage_service.dart';
+import 'package:yimaru_app/services/push_notification_service.dart';
 
 class _Storage extends Mock implements SecureStorageService {
   final values = <String, Object>{};
@@ -56,6 +57,13 @@ class _Google extends Mock implements GoogleAuthService {
   Future<void> logout() async {}
 }
 
+class _Push extends Mock implements PushNotificationService {
+  final Future<void> Function(String?) cleanup;
+  _Push(this.cleanup);
+  @override
+  Future<void> prepareForLogout({String? accessToken}) => cleanup(accessToken);
+}
+
 void main() {
   late _Storage storage;
   late AuthenticationService auth;
@@ -83,6 +91,30 @@ void main() {
         expectedSessionGeneration: auth.sessionGeneration);
     expect(await auth.getAccessToken(), 'new-a');
     expect(auth.user?.refreshToken, 'new-r');
+  });
+
+  test(
+      'logout cleans push using a credential snapshot before deleting credentials',
+      () async {
+    var calls = 0;
+    locator.registerSingleton<PushNotificationService>(_Push((access) async {
+      calls++;
+      expect(access, 'a');
+      expect(storage.values['userId'], 7);
+    }));
+    await auth.logout();
+    expect(calls, 1);
+    expect(await auth.getAccessToken(), isNull);
+    expect(await auth.getUserId(), isNull);
+  });
+
+  test('push cleanup failure never prevents local logout', () async {
+    locator.registerSingleton<PushNotificationService>(_Push((_) async {
+      throw StateError('native plugin temporarily unavailable');
+    }));
+    await auth.logout();
+    expect(await auth.getAccessToken(), isNull);
+    expect(auth.user, isNull);
   });
   test('stale rotation after a new login cannot write either token', () async {
     final generation = auth.sessionGeneration;

@@ -12,6 +12,7 @@ class RegistrationTestAuth extends Mock implements AuthenticationService {
   @override
   int get sessionGeneration => 0;
   int refreshUserReads = 0;
+  int accessReads = 0;
 
   @override
   Future<User?> getUser() async {
@@ -20,7 +21,11 @@ class RegistrationTestAuth extends Mock implements AuthenticationService {
   }
 
   @override
-  Future<String?> getAccessToken() async => 'test-access-token';
+  Future<String?> getAccessToken() async {
+    accessReads++;
+    return 'test-access-token';
+  }
+
   @override
   Future<String?> getRefreshToken() async => null;
 }
@@ -33,6 +38,52 @@ void main() {
     locator.registerSingleton<NavigationService>(RegistrationTestNavigation());
   });
   tearDown(() => locator.reset());
+
+  for (final status in [200, 401, 503]) {
+    test(
+        'logout cleanup uses captured credentials without session reads; HTTP $status',
+        () async {
+      final detached = Dio();
+      final transport = DioService(refreshClient: detached);
+      addTearDown(() {
+        transport.dio.close();
+        detached.close();
+      });
+      locator.registerSingleton<DioService>(transport);
+      final api = ApiService();
+      var requests = 0;
+      detached.interceptors
+          .add(InterceptorsWrapper(onRequest: (options, handler) {
+        requests++;
+        expect(options.uri.path, '/api/v1/devices/unregister');
+        expect(options.headers['Authorization'], 'Bearer old-snapshot');
+        expect(options.data, {'device_token': 'old-installation-token'});
+        if (status == 200) {
+          handler
+              .resolve(Response(requestOptions: options, statusCode: status));
+        } else {
+          handler.reject(
+              DioException(
+                  requestOptions: options,
+                  type: DioExceptionType.badResponse,
+                  response:
+                      Response(requestOptions: options, statusCode: status)),
+              true);
+        }
+      }));
+      final request = api.unregisterDevice('old-installation-token',
+          accessToken: 'old-snapshot');
+      if (status == 200) {
+        await request;
+      } else {
+        await expectLater(request, throwsA(isA<DioException>()));
+      }
+      final auth = locator<AuthenticationService>() as RegistrationTestAuth;
+      expect(requests, 1);
+      expect(auth.accessReads, 0);
+      expect(auth.refreshUserReads, 0);
+    });
+  }
 
   for (final platform in ['android', 'ios']) {
     test(

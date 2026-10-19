@@ -15,6 +15,7 @@ extension BoolParsing on String {
 }
 
 class SecureStorageService {
+  static const pendingPushTokenCleanupKey = 'pendingPushTokenCleanup';
   // Initialization
   late final FlutterSecureStorage _storage;
 
@@ -32,6 +33,18 @@ class SecureStorageService {
 
   // Clear storage data
   Future<void> clear() async {
+    // Preserve unfinished installation-token cleanup throughout logout, even
+    // if the process exits while account credentials are being removed.
+    if (await getBool(pendingPushTokenCleanupKey) == true) {
+      final keys = (await _storage.readAll()).keys.toList();
+      await _storage.delete(key: 'userId');
+      for (final key in keys) {
+        if (key != pendingPushTokenCleanupKey && key != 'userId') {
+          await _storage.delete(key: key);
+        }
+      }
+      return;
+    }
     await _storage.deleteAll();
   }
 

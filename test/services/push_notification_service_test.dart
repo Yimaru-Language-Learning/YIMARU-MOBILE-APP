@@ -13,6 +13,7 @@ import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/services/api_service.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/push_notification_service.dart';
+import 'package:yimaru_app/services/secure_storage_service.dart';
 import 'package:dio/dio.dart';
 
 class TestMessaging extends Mock implements FirebaseMessaging {
@@ -26,6 +27,13 @@ class TestMessaging extends Mock implements FirebaseMessaging {
   String? fcmToken = 'test-fcm';
   FirebaseException? tokenError;
   bool failTopic = false;
+  bool failPermission = true;
+  bool failPresentation = false;
+  bool failInitialMessage = false;
+  bool failDeletion = false;
+  int initialMessageReads = 0;
+  int deletions = 0;
+  Completer<void>? deletionGate;
 
   @override
   Future<String?> getAPNSToken() async => apnsToken;
@@ -43,8 +51,9 @@ class TestMessaging extends Mock implements FirebaseMessaging {
     bool badge = false,
     bool sound = false,
   }) async {
-    expect([alert, badge, sound], [true, true, true]);
+    expectSync([alert, badge, sound], [true, true, true]);
     presentations++;
+    if (failPresentation) throw StateError('temporary native failure');
   }
 
   @override
@@ -54,7 +63,21 @@ class TestMessaging extends Mock implements FirebaseMessaging {
   }
 
   @override
-  Future<RemoteMessage?> getInitialMessage() async => null;
+  Future<RemoteMessage?> getInitialMessage() async {
+    initialMessageReads++;
+    if (failInitialMessage) {
+      throw StateError('temporary initial-message failure');
+    }
+    return null;
+  }
+
+  @override
+  Future<void> deleteToken() async {
+    deletions++;
+    if (deletionGate != null) await deletionGate!.future;
+    if (failDeletion) throw StateError('offline');
+    fcmToken = 'fresh-token-$deletions';
+  }
 
   @override
   Future<void> subscribeToTopic(String topic) async {
@@ -74,7 +97,20 @@ class TestMessaging extends Mock implements FirebaseMessaging {
     bool providesAppNotificationSettings = false,
   }) async {
     permissionRequests++;
-    throw Exception('Permission/plugin unavailable');
+    if (failPermission) throw Exception('Permission/plugin unavailable');
+    return _NotificationSettings();
+  }
+}
+
+class _NotificationSettings extends Mock implements NotificationSettings {}
+
+class _Storage extends Mock implements SecureStorageService {
+  final values = <String, bool>{};
+  @override
+  Future<bool?> getBool(String key) async => values[key];
+  @override
+  Future<void> setBool(String key, bool value) async {
+    values[key] = value;
   }
 }
 
@@ -105,6 +141,17 @@ class _Api extends Mock implements ApiService {
   final registrations = <Map<String, dynamic>>[];
   final backgroundFlags = <bool>[];
   final cancellations = <CancelToken?>[];
+  final unregistrations = <String>[];
+  final logoutCredentials = <String>[];
+  bool failUnregister = false;
+  @override
+  Future<void> unregisterDevice(String token,
+      {required String accessToken}) async {
+    unregistrations.add(token);
+    logoutCredentials.add(accessToken);
+    if (failUnregister) throw StateError('offline');
+  }
+
   @override
   Future<void> registerDevice(Map<String, dynamic> data,
       {CancelToken? cancelToken, bool backgroundSync = false}) async {
@@ -115,6 +162,180 @@ class _Api extends Mock implements ApiService {
 }
 
 void main() {
+  testWidgets('iOS retries only failed initialization stages on resume',
+      (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    final messaging = TestMessaging()
+      ..failPermission = false
+      ..failPresentation = true
+      ..failInitialMessage = true;
+    final service = PushNotificationService(
+      messaging: messaging,
+      isAndroid: false,
+      isIOS: true,
+      internetStatusChanges: const Stream<InternetStatus>.empty(),
+    );
+    addTearDown(() async {
+      await service.dispose();
+      await messaging.refreshes.close();
+    });
+    try {
+      await service.initialize();
+      expect(messaging.presentations, 1);
+      messaging
+        ..failPresentation = false
+        ..failInitialMessage = false;
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pump();
+      expect(messaging.presentations, 2);
+      expect(messaging.initialMessageReads, 2);
+      expect(messaging.permissionRequests, 1);
+      expect(messaging.refreshSubscriptions, 1);
+      await service.initialize();
+      expect(messaging.presentations, 2);
+      expect(messaging.initialMessageReads, 2);
+    } finally {
+      debugDefaultTargetPlatformOverride = null;
+    }
+  });
+
+  testWidgets(
+      'permission exceptions recover on reconnect without repeated prompts after success',
+      (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    final messaging = TestMessaging();
+    final connectivity = StreamController<InternetStatus>.broadcast();
+    final service = PushNotificationService(
+      messaging: messaging,
+      isAndroid: false,
+      isIOS: true,
+      internetStatusChanges: connectivity.stream,
+    );
+    addTearDown(() async {
+      await service.dispose();
+      await messaging.refreshes.close();
+      await connectivity.close();
+    });
+    try {
+      await service.initialize();
+      messaging.failPermission = false;
+      connectivity.add(InternetStatus.connected);
+      await tester.pump();
+      expect(messaging.permissionRequests, 2);
+      connectivity.add(InternetStatus.connected);
+      await tester.pump();
+      expect(messaging.permissionRequests, 2);
+      expect(messaging.presentations, 1);
+      expect(messaging.refreshSubscriptions, 1);
+    } finally {
+      debugDefaultTargetPlatformOverride = null;
+    }
+  });
+
+  for (final restarting in [false, true]) {
+    testWidgets(
+        'offline logout cleanup blocks old-token registration; restart=$restarting',
+        (tester) async {
+      final storage = _Storage();
+      final auth = _Auth();
+      final api = _Api()..failUnregister = true;
+      locator.registerSingleton<SecureStorageService>(storage);
+      locator.registerSingleton<AuthenticationService>(auth);
+      locator.registerSingleton<ApiService>(api);
+      final messaging = TestMessaging()..failDeletion = true;
+      final connectivity = StreamController<InternetStatus>.broadcast();
+      PushNotificationService createService() => PushNotificationService(
+            messaging: messaging,
+            isAndroid: false,
+            isIOS: true,
+            internetStatusChanges: connectivity.stream,
+          );
+      var service = createService();
+      addTearDown(() async {
+        await service.dispose();
+        await messaging.refreshes.close();
+        await connectivity.close();
+        await locator.reset();
+      });
+      await service.updateFCMToken();
+      service.syncDeviceTokenForSession(7);
+      await tester.pump();
+      expect(api.registrations, hasLength(1));
+      await service.prepareForLogout(accessToken: 'old-access');
+      expect(api.unregistrations, ['test-fcm']);
+      expect(api.logoutCredentials, ['old-access']);
+      expect(storage.values[PushNotificationService.pendingTokenCleanupKey],
+          isTrue);
+      if (restarting) {
+        await tester.runAsync(service.dispose);
+        service = createService();
+        await service.updateFCMToken();
+      }
+      auth.id = 8;
+      service.syncDeviceTokenForSession(8);
+      messaging.refreshes.add('test-fcm');
+      await tester.pump();
+      expect(api.registrations, hasLength(1));
+      messaging.failDeletion = false;
+      connectivity.add(InternetStatus.connected);
+      await tester.pump();
+      expect(api.registrations, hasLength(2));
+      expect(
+          api.registrations.last['device_token'], startsWith('fresh-token-'));
+      expect(storage.values[PushNotificationService.pendingTokenCleanupKey],
+          isFalse);
+    });
+  }
+
+  testWidgets(
+      'logout unregisters and invalidates; delayed invalidation cannot delete a new session token',
+      (tester) async {
+    final storage = _Storage();
+    final auth = _Auth();
+    final api = _Api();
+    locator.registerSingleton<SecureStorageService>(storage);
+    locator.registerSingleton<AuthenticationService>(auth);
+    locator.registerSingleton<ApiService>(api);
+    final messaging = TestMessaging();
+    final service = PushNotificationService(
+      messaging: messaging,
+      isAndroid: true,
+      isIOS: false,
+      internetStatusChanges: const Stream<InternetStatus>.empty(),
+    );
+    addTearDown(() async {
+      await service.dispose();
+      await messaging.refreshes.close();
+      await locator.reset();
+    });
+    await service.updateFCMToken();
+    service.syncDeviceTokenForSession(7);
+    await tester.pump();
+    messaging.deletionGate = Completer<void>();
+    var loggedOut = false;
+    final logout = service
+        .prepareForLogout(accessToken: 'old-access')
+        .then((_) => loggedOut = true);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
+    await logout;
+    expect(loggedOut, isTrue);
+    expect(service.hasPendingTokenCleanup, isTrue);
+    auth.id = 8;
+    service.syncDeviceTokenForSession(8);
+    messaging.refreshes.add('old-refresh-during-cleanup');
+    await tester.pump();
+    expect(api.registrations, hasLength(1));
+    expect(messaging.deletions, 1);
+    messaging.deletionGate!.complete();
+    await tester.pump();
+    expect(api.registrations, hasLength(2));
+    expect(api.registrations.last['device_token'], 'fresh-token-1');
+    expect(messaging.deletions, 1);
+    expect(api.unregistrations, ['test-fcm']);
+  });
+
   testWidgets(
       'logs listener attachment and refresh events without token values',
       (tester) async {

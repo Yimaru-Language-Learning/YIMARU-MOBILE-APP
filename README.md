@@ -48,6 +48,21 @@ includes Push Notifications, background fetch/remote notifications, and the APNs
 entitlement. Keep Firebase method swizzling enabled. Device registration uses
 the existing backend endpoint with `platform: ios`; APNs-not-ready, network
 recovery, token rotation, restored sessions, and logout use the shared sync worker.
+The backend must include the device-ownership fix: registering one installation
+preserves other devices and transfers a shared token away from its previous account.
+No database migration is required.
+
+Logout unregisters the token using captured credentials and invalidates it in FCM.
+If invalidation fails, an encrypted cleanup marker survives logout/restart; the
+installation cannot register for another account until cleanup succeeds. Offline
+logout cannot immediately revoke a token on an unreachable provider, and already
+queued/displayed notifications cannot be recalled. Recovery runs on reconnect/resume.
+Failed native initialization steps retry without repeating successful permission
+requests or attaching duplicate listeners.
+
+Firebase Messaging is pinned to `16.1.3` for its UIScene notification-tap fix;
+its required Firebase Core version is pinned to `4.6.0`. Keep the lockfile when
+building either platform; do not independently upgrade the remaining dependencies.
 
 Before distributing an iOS build:
 
