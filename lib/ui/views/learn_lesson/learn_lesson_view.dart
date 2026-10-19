@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/retryable_content.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/models/learn_module.dart';
@@ -204,9 +205,14 @@ class LearnLessonView extends StackedView<LearnLessonViewModel> {
   Widget _buildListViewBuilder(
           {required BuildContext context,
           required LearnLessonViewModel viewModel}) =>
-      viewModel.busy(StateObjects.learnLessons)
-          ? _buildProgressIndicator()
-          : _buildListView(context: context, viewModel: viewModel);
+      RetryableContent(
+        isLoading: viewModel.busy(StateObjects.learnLessons),
+        hasError: viewModel.lessonLoadFailed,
+        keepContentOnError: viewModel.lessons.isNotEmpty,
+        onRetry: () => viewModel.getLessons(module.id ?? 0),
+        loading: _buildProgressIndicator(),
+        builder: () => _buildListView(context: context, viewModel: viewModel),
+      );
 
   Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),

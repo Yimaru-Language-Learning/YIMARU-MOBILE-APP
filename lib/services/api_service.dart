@@ -26,8 +26,37 @@ import '../models/subscription.dart';
 import '../models/learn_subscription_request.dart';
 import '../models/progress_summary.dart';
 import '../ui/common/enmus.dart';
+import 'read_request_failure.dart';
 
 class ApiService {
+  Future<void> recordReminderActivity(CancelToken cancellation) async {
+    await _service.dio.post('$kBaseUrl/api/v1/users/me/activity',
+        cancelToken: cancellation,
+        options: Options(extra: {
+          DioService.privateReminderRequest: true,
+          DioService.backgroundReminderActivity: true,
+        }));
+  }
+
+  Future<bool> getReminderPreference() async {
+    final response = await _service.dio.get(
+        '$kBaseUrl/api/v1/users/me/reminder-preferences',
+        options: Options(extra: {DioService.privateReminderRequest: true}));
+    final enabled = response.data['data']['enabled'];
+    if (enabled is! bool) throw StateError('Invalid reminder preference');
+    return enabled;
+  }
+
+  Future<bool> setReminderPreference(bool enabled) async {
+    final response = await _service.dio.put(
+        '$kBaseUrl/api/v1/users/me/reminder-preferences',
+        data: {'enabled': enabled},
+        options: Options(extra: {DioService.privateReminderRequest: true}));
+    final saved = response.data['data']['enabled'];
+    if (saved is! bool) throw StateError('Invalid reminder preference');
+    return saved;
+  }
+
   // Dependency injection
   final _service = locator<DioService>();
 
@@ -201,11 +230,16 @@ class ApiService {
     }
   }
 
-  Future<void> registerDevice(Map<String, dynamic> data) async {
+  Future<void> registerDevice(Map<String, dynamic> data,
+      {CancelToken? cancelToken, bool backgroundSync = false}) async {
     try {
       await _service.dio.post(
         '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kDevicesUrl/$kRegisterUrl',
         data: data,
+        cancelToken: cancelToken,
+        options: backgroundSync
+            ? Options(extra: {DioService.backgroundDeviceRegistration: true})
+            : null,
       );
     } on DioException {
       rethrow;
@@ -473,6 +507,7 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
@@ -846,6 +881,7 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
@@ -870,6 +906,7 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
@@ -918,6 +955,7 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
@@ -948,25 +986,37 @@ class ApiService {
 
   // Get learn lessons
   Future<List<LearnLesson>> getLearnLessons(int id) async {
+    final rows = await _getModuleLessons(
+        '$kBaseUrl/api/$kApiVersionUrl/$kModulesUrl/$id/$kLessonsUrl');
+    return rows.map(LearnLesson.fromJson).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> _getModuleLessons(String url) async {
+    final rows = <Map<String, dynamic>>[];
     try {
-      List<LearnLesson> lessons = [];
-
-      final Response response = await _service.dio
-          .get('$kBaseUrl/api/$kApiVersionUrl/$kModulesUrl/$id/$kLessonsUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data']['lessons'] as List;
-        lessons = decodedData.map(
-          (e) {
-            return LearnLesson.fromJson(e);
-          },
-        ).toList();
-        return lessons;
+      while (true) {
+        final response = await _service.dio
+            .get(url, queryParameters: {'limit': 200, 'offset': rows.length});
+        if (response.statusCode != 200) {
+          throw StateError('Unable to fetch lessons');
+        }
+        final data = response.data['data'];
+        final page = (data['lessons'] as List?) ?? [];
+        rows.addAll(page.map((row) => Map<String, dynamic>.from(row)));
+        final total = (data['total_count'] as num?)?.toInt();
+        if (page.isEmpty ||
+            (total != null ? rows.length >= total : page.length < 200)) {
+          break;
+        }
       }
-      return [];
-    } catch (e) {
-      return [];
+      return rows;
+    } on DioException catch (error) {
+      // A removed/hidden module is authoritative; network/server errors are not.
+      if (error.response?.statusCode == 403 ||
+          error.response?.statusCode == 404) {
+        return [];
+      }
+      rethrow;
     }
   }
 
@@ -1050,6 +1100,7 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
@@ -1060,6 +1111,7 @@ class ApiService {
     try {
       Response response = await _service.dio.post(
         '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kProgressUrl/$kPracticesUrl/$id/$kCompleteUrl',
+        data: data,
       );
 
       if (response.statusCode == 200) {
@@ -1100,6 +1152,7 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
@@ -1128,6 +1181,12 @@ class ApiService {
       return {
         'status': ResponseStatus.failure,
         'message': e.response?.data.toString(),
+        'payment_outcome_unknown': _paymentOutcomeUnknown(e),
+      };
+    } catch (_) {
+      return {
+        'status': ResponseStatus.failure,
+        'payment_outcome_unknown': true,
       };
     }
   }
@@ -1156,7 +1215,32 @@ class ApiService {
       return {
         'status': ResponseStatus.failure,
         'message': e.response?.data.toString(),
+        'payment_outcome_unknown': _paymentOutcomeUnknown(e),
       };
+    } catch (_) {
+      return {
+        'status': ResponseStatus.failure,
+        'payment_outcome_unknown': true,
+      };
+    }
+  }
+
+  // A lost response or server error does not prove that no payment was created.
+  bool _paymentOutcomeUnknown(DioException error) {
+    final statusCode = error.response?.statusCode;
+    return statusCode == null || statusCode >= 500 || statusCode == 408;
+  }
+
+  Future<String?> getCheckoutPaymentStatus(String sessionId) async {
+    try {
+      final response = await _service.dio.get(
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kPaymentsUrl/'
+        '$kVerifySubscriptionUrl/${Uri.encodeComponent(sessionId)}',
+      );
+      final status = response.data['data']['status'];
+      return status is String ? status.toUpperCase() : null;
+    } catch (_) {
+      return null;
     }
   }
 
@@ -1205,6 +1289,7 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
@@ -1229,6 +1314,7 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
@@ -1253,6 +1339,7 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
@@ -1277,32 +1364,16 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
 
   // Get course lessons
   Future<List<CourseLesson>> getCourseLessons(int id) async {
-    try {
-      List<CourseLesson> lessons = [];
-
-      final Response response = await _service.dio.get(
-          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kExamPrepUrl/$kModulesUrl/$id/$kLessonsUrl');
-
-      if (response.statusCode == 200) {
-        var data = response.data;
-        var decodedData = data['data']['lessons'] as List;
-        lessons = decodedData.map(
-          (e) {
-            return CourseLesson.fromJson(e);
-          },
-        ).toList();
-        return lessons;
-      }
-      return [];
-    } catch (e) {
-      return [];
-    }
+    final rows = await _getModuleLessons(
+        '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kExamPrepUrl/$kModulesUrl/$id/$kLessonsUrl');
+    return rows.map(CourseLesson.fromJson).toList();
   }
 
   // Course catalog practices
@@ -1469,6 +1540,7 @@ class ApiService {
       }
       return [];
     } catch (e) {
+      if (isRetryableReadFailure(e)) rethrow;
       return [];
     }
   }
@@ -1498,12 +1570,12 @@ class ApiService {
     }
   }
 
-
   // Rate app
   Future<Map<String, dynamic>> iosCheckout(Map<String, dynamic> data) async {
     try {
-      Response response = await _service.dio
-          .post('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kSubscriptionsUrl/$kIosCheckout', data: data);
+      Response response = await _service.dio.post(
+          '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kSubscriptionsUrl/$kIosCheckout',
+          data: data);
 
       if (response.statusCode == 201) {
         return {

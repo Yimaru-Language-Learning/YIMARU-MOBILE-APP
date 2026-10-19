@@ -1,4 +1,5 @@
 import 'package:stacked/stacked.dart';
+import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
@@ -29,12 +30,14 @@ class MySubscriptionViewModel extends BaseViewModel {
 
   // My subscriptions
   Future<void> getMySubscriptions() async =>
-      await runBusyFuture(_getMySubscriptions(),
+      await runReadLoad(() => _getMySubscriptions(),
           busyObject: StateObjects.mySubscriptions);
 
   Future<void> _getMySubscriptions() async {
     if (await _statusChecker.checkConnection()) {
       _subscriptions = await _apiService.getMySubscriptions();
+    } else {
+      throw StateError('No internet connection');
     }
   }
 }

@@ -30,10 +30,12 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
 
   @override
   void onViewModelReady(CourseLessonDetailViewmodel viewModel) async {
+    viewModel.bindLesson(lesson);
+    final current = viewModel.currentLesson ?? lesson;
     await viewModel.initializePlayer(
-      lessonId: 0,
-      moduleId: 0,
-      url: lesson.videoUrl ?? '',
+      lessonId: current.id ?? 0,
+      moduleId: current.unitModuleId ?? 0,
+      url: current.videoUrl ?? '',
     );
     super.onViewModelReady(viewModel);
   }
@@ -102,7 +104,8 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
           CourseLessonDetailViewmodel viewModel) =>
       [
         _buildLevelsColumnWrapper(viewModel),
-        if (lesson.hasPractice ?? false) _buildPracticeButtonWrapper(viewModel)
+        if ((viewModel.currentLesson ?? lesson).hasPractice ?? false)
+          _buildPracticeButtonWrapper(viewModel)
       ];
 
   Widget _buildLevelsColumnWrapper(CourseLessonDetailViewmodel viewModel) =>
@@ -125,9 +128,9 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
         verticalSpaceMedium,
         _buildVideoPlayerWrapper(viewModel),
         verticalSpaceMedium,
-        _buildTitleWrapper(),
+        _buildTitleWrapper(viewModel),
         verticalSpaceMedium,
-        _buildDescriptionWrapper(),
+        _buildDescriptionWrapper(viewModel),
       ];
 
   Widget _buildVideoPlayerWrapper(CourseLessonDetailViewmodel viewModel) =>
@@ -154,23 +157,24 @@ class CourseLessonDetailView extends StackedView<CourseLessonDetailViewmodel> {
 
   Widget _buildEmptyVideoPlayer() => const EmptyVideoPlayer();
 
-  Widget _buildTitleWrapper() => Padding(
+  Widget _buildTitleWrapper(CourseLessonDetailViewmodel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildTitle(),
+        child: _buildTitle(viewModel),
       );
 
-  Widget _buildTitle() => Text(
-        lesson.title ?? '',
+  Widget _buildTitle(CourseLessonDetailViewmodel viewModel) => Text(
+        (viewModel.currentLesson ?? lesson).title ?? '',
         style: style16DG600,
       );
 
-  Widget _buildDescriptionWrapper() => Padding(
+  Widget _buildDescriptionWrapper(CourseLessonDetailViewmodel viewModel) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildDescription(),
+        child: _buildDescription(viewModel),
       );
 
-  Widget _buildDescription() => Text(
-        lesson.description ?? '',
+  Widget _buildDescription(CourseLessonDetailViewmodel viewModel) => Text(
+        (viewModel.currentLesson ?? lesson).description ?? '',
         style: style14DG400,
       );
 

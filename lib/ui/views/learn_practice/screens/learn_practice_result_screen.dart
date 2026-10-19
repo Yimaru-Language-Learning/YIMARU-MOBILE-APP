@@ -21,7 +21,8 @@ class LearnPracticeResultScreen
   const LearnPracticeResultScreen({super.key, required this.practice});
 
   Future<void> _navigate(LearnPracticeViewModel viewModel) async {
-    await viewModel.completeLearnPractice();
+    final completed = await viewModel.completeLearnPractice();
+    if (!completed || viewModel.disposed) return;
     if (practice == LearnPractices.course) {
       viewModel.goTo(6);
     } else if (practice == LearnPractices.module) {
@@ -164,9 +165,23 @@ class LearnPracticeResultScreen
   List<Widget> _buildLowerButtonsSectionChildren(
           LearnPracticeViewModel viewModel) =>
       [
+        if (viewModel.completionFailed) ...[
+          Semantics(
+            liveRegion: true,
+            child: Text(
+              (viewModel.completionSaved
+                      ? LocaleKeys.practice_progress_refresh_failed
+                      : LocaleKeys.practice_completion_failed)
+                  .tr(),
+              textAlign: TextAlign.center,
+              style: style14DG500,
+            ),
+          ),
+          verticalSpaceMedium,
+        ],
         _buildContinueButton(viewModel),
         verticalSpaceSmall,
-        _buildPracticeAgainButton(viewModel),
+        if (!viewModel.completionSaved) _buildPracticeAgainButton(viewModel),
         verticalSpaceMedium,
       ];
 
@@ -175,7 +190,8 @@ class LearnPracticeResultScreen
         height: 55,
         borderRadius: 12,
         foregroundColor: kcWhite,
-        text: LocaleKeys.cont.tr(),
+        text: (viewModel.completionFailed ? LocaleKeys.retry : LocaleKeys.cont)
+            .tr(),
         backgroundColor: kcPrimaryColor,
         onTap: () async => await _navigate(viewModel),
       );
@@ -186,7 +202,7 @@ class LearnPracticeResultScreen
         borderRadius: 12,
         backgroundColor: kcWhite,
         borderColor: kcPrimaryColor,
-        text: LocaleKeys.retry.tr(),
+        text: LocaleKeys.practice_again.tr(),
         foregroundColor: kcPrimaryColor,
         onTap: () async => await _retry(viewModel),
       );

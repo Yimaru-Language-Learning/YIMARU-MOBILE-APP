@@ -148,6 +148,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   List<CoursePractice> get practices => _practices;
 
+  int? _practiceParentId;
+  String? _practiceParentKind;
+
   // Practice questions
   String? _refreshedUrl;
 
@@ -1734,6 +1737,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> _getCoursePractices(
       {required int id, required CoursePractices practice}) async {
+    _practiceParentId = null;
+    _practiceParentKind = null;
     if (await _statusChecker.checkConnection()) {
       if (practice == CoursePractices.courseCatalog) {
         _practices = await _apiService.getCourseCatalogPractices(id);
@@ -1741,6 +1746,16 @@ class CoursePracticeViewModel extends ReactiveViewModel
         _practices = await _apiService.getCourseUnitPractices(id);
       } else {
         _practices = await _apiService.getCourseLessonPractices(id);
+      }
+      // The shared completion API now sends its body. Preserve the location
+      // opened by the learner here too, rather than a reused practice's first link.
+      if (id > 0 && _practices.isNotEmpty) {
+        _practiceParentId = id;
+        _practiceParentKind = practice == CoursePractices.courseCatalog
+            ? 'CATALOG_COURSE'
+            : practice == CoursePractices.unit
+                ? 'UNIT'
+                : 'LESSON';
       }
     }
   }
@@ -1814,10 +1829,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
           busyObject: StateObjects.completeCoursePractice);
 
   Future<void> _completeCoursePractice(CoursePractice practice) async {
+    if (_practiceParentId == null || _practiceParentKind == null) return;
     if (await _statusChecker.checkConnection()) {
       Map<String, dynamic> data = {
-        'parent_id': practice.parents?.first.parentId ?? 0,
-        'parent_kind': practice.parents?.first.parentKind?.toUpperCase() ?? ''
+        'parent_id': _practiceParentId,
+        'parent_kind': _practiceParentKind,
       };
       await stopAudio();
       await _apiService.completePractice(data: data, id: practice.id ?? 0);

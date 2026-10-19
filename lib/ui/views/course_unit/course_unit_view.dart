@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/retryable_content.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
@@ -157,9 +158,13 @@ class CourseUnitView extends StackedView<CourseUnitViewModel> {
           backgroundColor: kcPrimaryColor);
 
   Widget _buildListViewBuilder(CourseUnitViewModel viewModel) =>
-      viewModel.busy(StateObjects.courseUnits)
-          ? _buildProgressIndicator()
-          : _buildListView(viewModel);
+      RetryableContent(
+        isLoading: viewModel.busy(StateObjects.courseUnits),
+        hasError: viewModel.hasErrorForKey(StateObjects.courseUnits),
+        onRetry: () => viewModel.getCourseUnits(catalog.id ?? 0),
+        loading: _buildProgressIndicator(),
+        builder: () => _buildListView(viewModel),
+      );
 
   Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),

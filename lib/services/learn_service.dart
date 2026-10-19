@@ -10,6 +10,9 @@ import '../models/learn_module.dart';
 import '../models/learn_program.dart';
 import '../models/progress_summary.dart';
 import 'api_service.dart';
+import 'authentication_service.dart';
+import 'lesson_list_sync.dart';
+import 'lesson_realtime_service.dart';
 
 class LearnService with ListenableServiceMixin {
   // Dependency injection
@@ -56,6 +59,16 @@ class LearnService with ListenableServiceMixin {
 
   List<LearnLesson> get lessons => _lessons;
 
+  late final lessonSync = LessonListSync<LearnLesson>(
+    fetch: _apiService.getLearnLessons,
+    onError: (_) => notifyListeners(),
+    apply: (lessons) {
+      _lessons = lessons
+        ..sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
+      notifyListeners();
+    },
+  );
+
   // Learn programs
   /*Future<String?> refreshObject(String url) async {
     Map<String, dynamic> data = {'reference': url};
@@ -92,14 +105,26 @@ class LearnService with ListenableServiceMixin {
 
   // Learn lessons
   Future<void> getLearnLessons(int id) async {
-    _lessons = await _apiService.getLearnLessons(id);
-    _lessons.sort((a, b) => (a.sortOrder ?? 0).compareTo(b.sortOrder ?? 0));
-    notifyListeners();
+    final loading = lessonSync.load(id);
+    if (locator.isRegistered<LessonRealtimeService>()) {
+      locator<LessonRealtimeService>().watch('lms', id,
+          refresh: lessonSync.changed,
+          reset: lessonSync.reset,
+          setForeground: lessonSync.setForeground);
+    }
+    await loading;
   }
 
   // Learn progress
   Future<void> getLearnProgress() async {
+    final auth = locator.isRegistered<AuthenticationService>()
+        ? locator<AuthenticationService>()
+        : null;
+    final generation = auth?.sessionGeneration;
     final summaries = await _apiService.getProgressSummary();
+    // A completion refresh may outlive logout/login. Do not apply an old
+    // learner's unlocks to the lists now being used by another account.
+    if (auth != null && auth.sessionGeneration != generation) return;
 
     /// PROGRAM ACCESS MAP
     final Map<int, Access?> programAccessMap = {};
@@ -187,6 +212,10 @@ class LearnService with ListenableServiceMixin {
 
   Future<void> getProgressSummary() async {
     final summaries = await _apiService.getProgressSummary();
+
+    // A successful reload replaces totals; retrying must not accumulate them.
+    _totalCount = 0;
+    _completedCount = 0;
 
     for (final ProgressSummary summary in summaries) {
       _totalCount = _totalCount + (summary.access?.totalCount ?? 0);

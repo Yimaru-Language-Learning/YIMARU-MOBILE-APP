@@ -1,4 +1,5 @@
 import 'package:stacked/stacked.dart';
+import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
@@ -46,12 +47,14 @@ class NotificationViewModel extends ReactiveViewModel {
 
   // Notifications
   Future<void> getAllNotifications() async =>
-      await runBusyFuture(_getAllNotifications(),
+      await runReadLoad(() => _getAllNotifications(),
           busyObject: StateObjects.notifications);
 
   Future<void> _getAllNotifications() async {
     if (await _statusChecker.checkConnection()) {
       await _inAppNotificationService.getAllNotifications();
+    } else {
+      throw StateError('No internet connection');
     }
   }
 

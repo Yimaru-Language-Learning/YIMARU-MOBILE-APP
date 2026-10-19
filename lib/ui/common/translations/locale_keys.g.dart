@@ -460,5 +460,27 @@ abstract class  LocaleKeys {
   static const ios_purchase = 'ios_purchase';
   static const profile_completion = 'profile_completion';
   static const complete_profile = 'complete_profile';
+  static const manual_payment_title = 'manual_payment_title';
+  static const manual_payment_description = 'manual_payment_description';
+  static const manual_payment_account_number = 'manual_payment_account_number';
+  static const manual_payment_account_holder = 'manual_payment_account_holder';
+  static const manual_payment_bank = 'manual_payment_bank';
+  static const manual_payment_bank_name = 'manual_payment_bank_name';
+  static const manual_payment_confirmation = 'manual_payment_confirmation';
+  static const manual_payment_open_telegram = 'manual_payment_open_telegram';
+  static const manual_payment_close = 'manual_payment_close';
+  static const manual_payment_uncertain_title = 'manual_payment_uncertain_title';
+  static const manual_payment_uncertain_description = 'manual_payment_uncertain_description';
+  static const manual_payment_telegram_error = 'manual_payment_telegram_error';
+  static const manual_payment_copy_link = 'manual_payment_copy_link';
+  static const manual_payment_link_copied = 'manual_payment_link_copied';
+  static const manual_payment_start_failed = 'manual_payment_start_failed';
+  static const load_error_title = 'load_error_title';
+  static const automated_reminders = 'automated_reminders';
+  static const automated_reminders_description = 'automated_reminders_description';
+  static const reminder_save_failed = 'reminder_save_failed';
+  static const load_error_description = 'load_error_description';
+  static const practice_completion_failed = 'practice_completion_failed';
+  static const practice_progress_refresh_failed = 'practice_progress_refresh_failed';
 
 }

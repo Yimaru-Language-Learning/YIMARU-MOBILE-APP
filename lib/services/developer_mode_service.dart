@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:safe_device/safe_device.dart';
@@ -27,6 +28,9 @@ class DeveloperModeService with ListenableServiceMixin {
 
   void _init() {
     listenToReactiveValues([_developerModeEnabled]);
+    // Allow development on devices with Developer Options enabled.
+    if (kDebugMode) return;
+
     _check();
     _pollTimer = Timer.periodic(_pollInterval, (_) => _check());
 
@@ -41,7 +45,7 @@ class DeveloperModeService with ListenableServiceMixin {
   }
 
   Future<void> _check() async {
-    if (_isDisposed) return;
+    if (kDebugMode || _isDisposed) return;
     try {
       final currentlyEnabled = await SafeDevice.isDevelopmentModeEnable;
 

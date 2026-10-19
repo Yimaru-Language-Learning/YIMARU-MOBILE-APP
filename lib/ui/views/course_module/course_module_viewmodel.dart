@@ -1,4 +1,5 @@
 import 'package:stacked/stacked.dart';
+import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
@@ -34,6 +35,10 @@ class CourseModuleViewModel extends ReactiveViewModel {
 
   List<CourseLesson> get lessons => _lessons;
 
+  bool get lessonLoadFailed =>
+      hasErrorForKey(StateObjects.courseLessons) ||
+      _courseService.lessonSync.lastError != null;
+
   // Navigation
   void pop() => _navigationService.back();
 
@@ -55,12 +60,14 @@ class CourseModuleViewModel extends ReactiveViewModel {
 
   // Course modules
   Future<void> getCourseLessons(int id) async =>
-      await runBusyFuture(_getCourseLessons(id),
+      await runReadLoad(() => _getCourseLessons(id),
           busyObject: StateObjects.courseLessons);
 
   Future<void> _getCourseLessons(int id) async {
     if (await _statusChecker.checkConnection()) {
       await _courseService.getCourseLessons(id);
+    } else {
+      throw StateError('No internet connection');
     }
   }
 }

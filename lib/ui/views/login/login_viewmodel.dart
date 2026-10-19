@@ -345,7 +345,15 @@ class LoginViewModel extends ReactiveViewModel
 
   // Register device
   Future<void> _registerDevice() async {
-   String? token = await _pushNotificationService.getDeviceToken();
+    if (Platform.isAndroid || Platform.isIOS) {
+      // Register after saving credentials without blocking login on APNs/FCM.
+      final userId = _authenticationService.user?.userId;
+      if (userId != null) {
+        _pushNotificationService.syncDeviceTokenForSession(userId);
+      }
+      return;
+    }
+    String? token = await _pushNotificationService.getDeviceToken();
     if (token != null) {
       Map<String, dynamic> deviceData = {
         'device_token': token,

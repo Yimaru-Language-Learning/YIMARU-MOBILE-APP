@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/retryable_content.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/widgets/notification_card.dart';
 
@@ -84,9 +85,13 @@ class NotificationView extends StackedView<NotificationViewModel> {
       );
 
   Widget _buildListViewBuilder(NotificationViewModel viewModel) =>
-      viewModel.busy(StateObjects.notifications)
-          ? _buildProgressIndicator()
-          : _buildListView(viewModel);
+      RetryableContent(
+        isLoading: viewModel.busy(StateObjects.notifications),
+        hasError: viewModel.hasErrorForKey(StateObjects.notifications),
+        onRetry: () => viewModel.getAllNotifications(),
+        loading: _buildProgressIndicator(),
+        builder: () => _buildListView(viewModel),
+      );
 
   Widget _buildProgressIndicator() => const Center(
         child: CustomCircularProgressIndicator(color: kcPrimaryColor),

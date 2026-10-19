@@ -37,9 +37,11 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
 
   @override
   void onViewModelReady(LearnLessonDetailViewModel viewModel) async {
+    viewModel.bindLesson(lesson);
+    final current = viewModel.currentLesson ?? lesson;
     await viewModel.initializePlayer(
-      lessonId: lesson.id ?? 0,
-      url: lesson.videoUrl ?? '',
+      lessonId: current.id ?? 0,
+      url: current.videoUrl ?? '',
     );
     super.onViewModelReady(viewModel);
   }
@@ -107,7 +109,8 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
   List<Widget> _buildBodyColumnChildren(LearnLessonDetailViewModel viewModel) =>
       [
         _buildLevelsColumnWrapper(viewModel),
-        if (hasPractice) _buildPracticeButtonWrapper(viewModel)
+        if (viewModel.currentLesson?.hasPractice ?? hasPractice)
+          _buildPracticeButtonWrapper(viewModel)
       ];
 
   Widget _buildLevelsColumnWrapper(LearnLessonDetailViewModel viewModel) =>
@@ -128,20 +131,20 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
           LearnLessonDetailViewModel viewModel) =>
       [
         verticalSpaceMedium,
-        _buildTitleWrapper(),
+        _buildTitleWrapper(viewModel),
         verticalSpaceLarge,
         _buildVideoPlayerWrapper(viewModel),
         verticalSpaceMedium,
-        _buildDescriptionWrapper(),
+        _buildDescriptionWrapper(viewModel),
       ];
 
-  Widget _buildTitleWrapper() => Padding(
+  Widget _buildTitleWrapper(LearnLessonDetailViewModel viewModel) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildTitle(),
+        child: _buildTitle(viewModel),
       );
 
-  Widget _buildTitle() => Text(
-        lesson.title ?? '',
+  Widget _buildTitle(LearnLessonDetailViewModel viewModel) => Text(
+        (viewModel.currentLesson ?? lesson).title ?? '',
         style: style16DG600,
       );
 
@@ -169,13 +172,14 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
 
   Widget _buildEmptyVideoPlayer() => const EmptyVideoPlayer();
 
-  Widget _buildDescriptionWrapper() => Padding(
+  Widget _buildDescriptionWrapper(LearnLessonDetailViewModel viewModel) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildDescription(),
+        child: _buildDescription(viewModel),
       );
 
-  Widget _buildDescription() => Text(
-        lesson.description ?? '',
+  Widget _buildDescription(LearnLessonDetailViewModel viewModel) => Text(
+        (viewModel.currentLesson ?? lesson).description ?? '',
         style: style14DG400,
       );
 
@@ -196,7 +200,7 @@ class LearnLessonDetailView extends StackedView<LearnLessonDetailViewModel> {
         foregroundColor: kcWhite,
         backgroundColor: kcPrimaryColor,
         text: LocaleKeys.take_practice.tr(),
-        onTap: () async =>
-            await _onPractice(lesson: lesson, viewModel: viewModel),
+        onTap: () async => await _onPractice(
+            lesson: viewModel.currentLesson ?? lesson, viewModel: viewModel),
       );
 }

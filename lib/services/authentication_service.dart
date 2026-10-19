@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/models/active_subscription.dart';
@@ -7,6 +9,9 @@ import 'package:yimaru_app/ui/common/enmus.dart';
 
 import 'google_auth_service.dart';
 import 'localization_service.dart';
+import 'push_notification_service.dart';
+import 'lesson_realtime_service.dart';
+import 'reminder_activity_service.dart';
 
 class AuthenticationService with ListenableServiceMixin {
   // Dependency injection
@@ -21,6 +26,17 @@ class AuthenticationService with ListenableServiceMixin {
   User? _user;
 
   User? get user => _user;
+  int _sessionGeneration = 0;
+  int get sessionGeneration => _sessionGeneration;
+  Future<void> _credentialWrite = Future.value();
+
+  // Serialize login/logout/rotation so a late secure-storage write cannot
+  // overwrite a newer account. Invalidate old work before waiting for the lock.
+  Future<void> _writeCredentials(Future<void> Function() action) {
+    final write = _credentialWrite.then((_) => action());
+    _credentialWrite = write.then((_) {}, onError: (Object _) {});
+    return write;
+  }
 
   // Prefill for onboarding in the current authenticated session only.
   String? _onboardingName;
@@ -39,6 +55,7 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Check user logged in
   Future<bool> userLoggedIn() async {
+    await _credentialWrite;
     if (await _secureService.getString('userId') != null) {
       return true;
     }
@@ -46,31 +63,76 @@ class AuthenticationService with ListenableServiceMixin {
   }
 
   // Get access token
-  Future<String?> getAccessToken() async =>
-      await _secureService.getString('accessToken');
+  Future<String?> getAccessToken() async {
+    await _credentialWrite;
+    return _secureService.getString('accessToken');
+  }
 
   // Get refresh token
-  Future<String?> getRefreshToken() async =>
-      await _secureService.getString('refreshToken');
+  Future<String?> getRefreshToken() async {
+    await _credentialWrite;
+    return _secureService.getString('refreshToken');
+  }
 
   // Get user id
-  Future<int?> getUserId() async => await _secureService.getInt('userId');
+  Future<int?> getUserId() async {
+    await _credentialWrite;
+    return _secureService.getInt('userId');
+  }
 
   // Save tokens
   Future<void> saveTokens({
     required String access,
     required String refresh,
-  }) async {
-    await _secureService.setString('accessToken', access);
-    await _secureService.setString('refreshToken', refresh);
-  }
+    int? expectedSessionGeneration,
+  }) =>
+      _writeCredentials(() async {
+        if (expectedSessionGeneration != null &&
+            expectedSessionGeneration != _sessionGeneration) {
+          return;
+        }
+        await _secureService.setString('accessToken', access);
+        await _secureService.setString('refreshToken', refresh);
+        if (expectedSessionGeneration != null &&
+            expectedSessionGeneration != _sessionGeneration) {
+          return;
+        }
+        _user = _user?.copyWith(accessToken: access, refreshToken: refresh);
+        notifyListeners();
+        if (locator.isRegistered<LessonRealtimeService>()) {
+          locator<LessonRealtimeService>().credentialsUpdated();
+        }
+        if ((Platform.isAndroid || Platform.isIOS) &&
+            locator.isRegistered<PushNotificationService>()) {
+          locator<PushNotificationService>().deviceTokenCredentialsUpdated();
+        }
+      });
 
   // Save user credential
   Future<void> saveUserCredential(
     Map<String, dynamic> data, {
     String? onboardingName,
-  }) async {
+  }) {
+    final generation = ++_sessionGeneration;
     _onboardingName = null;
+    return _writeCredentials(() async {
+      await _saveUserCredential(data);
+      // A queued logout or another login must not revive an old Apple name.
+      if (generation != _sessionGeneration) return;
+      final name = onboardingName?.trim();
+      _onboardingName = name == null || name.isEmpty ? null : name;
+    });
+  }
+
+  Future<void> _saveUserCredential(Map<String, dynamic> data) async {
+    if (locator.isRegistered<ReminderActivityService>()) {
+      locator<ReminderActivityService>().endSession();
+    }
+    // Cancel old-account work before any credential fields are overwritten.
+    _resetDeviceSync();
+    if (locator.isRegistered<LessonRealtimeService>()) {
+      locator<LessonRealtimeService>().reset();
+    }
     await _secureService.setInt('userId', data['userId']);
     await _secureService.setString('accessToken', data['accessToken']);
     await _secureService.setString('refreshToken', data['refreshToken']);
@@ -80,8 +142,22 @@ class AuthenticationService with ListenableServiceMixin {
       accessToken: await _secureService.getString('accessToken'),
       refreshToken: await _secureService.getString('refreshToken'),
     );
-    final name = onboardingName?.trim();
-    _onboardingName = name == null || name.isEmpty ? null : name;
+    final userId = _user?.userId;
+    if (userId != null && locator.isRegistered<ReminderActivityService>()) {
+      locator<ReminderActivityService>().beginSession(userId);
+    }
+    if ((Platform.isAndroid || Platform.isIOS) &&
+        userId != null &&
+        locator.isRegistered<PushNotificationService>()) {
+      locator<PushNotificationService>().syncDeviceTokenForSession(userId);
+    }
+  }
+
+  void _resetDeviceSync() {
+    if ((Platform.isAndroid || Platform.isIOS) &&
+        locator.isRegistered<PushNotificationService>()) {
+      locator<PushNotificationService>().resetDeviceTokenSync();
+    }
   }
 
   // Save profile status
@@ -186,15 +262,14 @@ class AuthenticationService with ListenableServiceMixin {
     await _secureService.setString('phoneNumber', data['phone_number']);
 
     _user = _user?.copyWith(
-      region: await _secureService.getString('region'),
-      gender: await _secureService.getString('gender'),
-      country: await _secureService.getString('country'),
-      lastName: await _secureService.getString('lastName'),
-      birthday: await _secureService.getString('birthday'),
-      firstName: await _secureService.getString('firstName'),
-      occupation: await _secureService.getString('occupation'),
-      phoneNumber: await _secureService.getString('phoneNumber')
-    );
+        region: await _secureService.getString('region'),
+        gender: await _secureService.getString('gender'),
+        country: await _secureService.getString('country'),
+        lastName: await _secureService.getString('lastName'),
+        birthday: await _secureService.getString('birthday'),
+        firstName: await _secureService.getString('firstName'),
+        occupation: await _secureService.getString('occupation'),
+        phoneNumber: await _secureService.getString('phoneNumber'));
 
     notifyListeners();
   }
@@ -221,7 +296,10 @@ class AuthenticationService with ListenableServiceMixin {
 
   // Get user data
   Future<User?> getUser() async {
-    _user = User(
+    final generation = _sessionGeneration;
+    await _credentialWrite;
+    if (generation != _sessionGeneration) return _user;
+    final restored = User(
       learn: await _secureService.getBool('learn'),
       ielts: await _secureService.getBool('ielts'),
       userId: await _secureService.getInt('userId'),
@@ -242,13 +320,27 @@ class AuthenticationService with ListenableServiceMixin {
       profileCompleted: await _secureService.getBool('profileCompleted'),
       subscriptionStatus: await _secureService.getString('subscriptionStatus'),
     );
+    if (generation != _sessionGeneration) return _user;
+    _user = restored;
     notifyListeners();
     return _user;
   }
 
   // Logout
-  Future<void> logout() async {
+  Future<void> logout() {
+    _sessionGeneration++;
     _onboardingName = null;
+    return _writeCredentials(_logout);
+  }
+
+  Future<void> _logout() async {
+    if (locator.isRegistered<ReminderActivityService>()) {
+      locator<ReminderActivityService>().endSession();
+    }
+    _resetDeviceSync();
+    if (locator.isRegistered<LessonRealtimeService>()) {
+      locator<LessonRealtimeService>().reset();
+    }
     _state = StateObjects.logout;
     notifyListeners();
 

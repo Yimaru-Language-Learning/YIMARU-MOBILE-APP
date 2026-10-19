@@ -1,4 +1,5 @@
 import 'package:stacked/stacked.dart';
+import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
@@ -27,11 +28,13 @@ class FaqsViewModel extends BaseViewModel {
 
   // Profile detail fields
   Future<void> getFAQs() async =>
-      await runBusyFuture(_getFAQs(), busyObject: StateObjects.faqs);
+      await runReadLoad(() => _getFAQs(), busyObject: StateObjects.faqs);
 
   Future<void> _getFAQs() async {
     if (await _statusChecker.checkConnection()) {
       _faqs = await _apiService.getFaqs();
+    } else {
+      throw StateError('No internet connection');
     }
   }
 }

@@ -1,26 +1,67 @@
 import 'package:chewie/chewie.dart';
+import 'package:flutter/widgets.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:video_player/video_player.dart';
-import 'package:yimaru_app/services/api_service.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
-import '../../../services/status_checker_service.dart';
 import '../../../services/vimeo_service.dart';
+import '../../../services/course_service.dart';
+import '../../../models/course_lesson.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 
 class CourseLessonDetailViewmodel extends ReactiveViewModel {
   // Dependency injection
 
-  final _apiService = locator<ApiService>();
-
   final _vimeoService = locator<VimeoService>();
 
-  final _statusChecker = locator<StatusCheckerService>();
-
   final _navigationService = locator<NavigationService>();
+
+  final _courseService = locator<CourseService>();
+
+  @override
+  List<ListenableServiceMixin> get listenableServices => [_courseService];
+
+  CourseLesson? _lesson;
+  CourseLesson? get currentLesson => _lesson;
+  bool _closed = false;
+  bool _leaving = false;
+
+  void bindLesson(CourseLesson lesson) {
+    _lesson = lesson;
+    _courseService.addListener(_updateLesson);
+    _updateLesson();
+  }
+
+  void _updateLesson() {
+    final previous = _lesson;
+    if (_closed ||
+        previous == null ||
+        _courseService.lessonSync.loadedModuleId != previous.unitModuleId) {
+      return;
+    }
+    final matches =
+        _courseService.lessons.where((item) => item.id == previous.id);
+    if (matches.isEmpty || matches.first.access?.isAccessible == false) {
+      if (_leaving) return;
+      _leaving = true;
+      if (_chewieController?.isFullScreen == true) {
+        _chewieController!.exitFullScreen();
+      }
+      // Stacked iterates its listeners directly; dispose after notification ends.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (disposed || _closed) return;
+        close();
+        pop();
+      });
+      WidgetsBinding.instance.scheduleFrame();
+      return;
+    }
+    _lesson = matches.first;
+    notifyListeners();
+  }
 
   // Video player config
   bool _lessonCompleted = false;
@@ -35,8 +76,19 @@ class CourseLessonDetailViewmodel extends ReactiveViewModel {
 
   // Video player
   void close() {
-    _videoPlayerController?.dispose();
+    if (_closed) return;
+    _closed = true;
+    _courseService.removeListener(_updateLesson);
     _chewieController?.dispose();
+    _videoPlayerController?.dispose();
+    _chewieController = null;
+    _videoPlayerController = null;
+  }
+
+  @override
+  void dispose() {
+    close();
+    super.dispose();
   }
 
   Future<void> pause() async {
@@ -57,6 +109,8 @@ class CourseLessonDetailViewmodel extends ReactiveViewModel {
       required int moduleId}) async {
     final playableUrl = await _vimeoService.getVideoUrl(url);
 
+    if (_closed || _leaving) return;
+
     if (playableUrl == null) {
       throw Exception("Unable to load video");
     }
@@ -64,7 +118,14 @@ class CourseLessonDetailViewmodel extends ReactiveViewModel {
     _videoPlayerController =
         VideoPlayerController.networkUrl(Uri.parse(playableUrl));
 
-    await _videoPlayerController?.initialize();
+    try {
+      await _videoPlayerController?.initialize();
+    } catch (_) {
+      if (_closed) return;
+      rethrow;
+    }
+
+    if (_closed || _leaving) return;
 
     // Listen for video completion
     _videoPlayerController?.addListener(() async {

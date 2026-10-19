@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
+import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/models/learn_lesson.dart';
@@ -42,6 +43,10 @@ class LearnLessonViewModel extends ReactiveViewModel {
 
   List<LearnLesson> get lessons => _lessons;
 
+  bool get lessonLoadFailed =>
+      hasErrorForKey(StateObjects.learnLessons) ||
+      _learnService.lessonSync.lastError != null;
+
   // Navigation
   void pop() => _navigationService.back();
 
@@ -71,13 +76,16 @@ class LearnLessonViewModel extends ReactiveViewModel {
   // Remote api call
 
   // Learn lessons
-  Future<void> getLessons(int id) async => await runBusyFuture(_getLessons(id),
-      busyObject: StateObjects.learnLessons);
+  Future<void> getLessons(int id) async =>
+      await runReadLoad(() => _getLessons(id),
+          busyObject: StateObjects.learnLessons);
 
   Future<void> _getLessons(int id) async {
     if (await _statusChecker.checkConnection()) {
       await _learnService.getLearnLessons(id);
       // await refreshLessonImages(_lessons);
+    } else {
+      throw StateError('No internet connection');
     }
   }
 

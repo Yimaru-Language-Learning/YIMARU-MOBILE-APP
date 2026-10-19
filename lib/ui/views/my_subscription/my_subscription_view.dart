@@ -11,6 +11,7 @@ import '../../widgets/my_subscription_card.dart';
 import '../../widgets/page_loading_indicator.dart';
 import '../../widgets/small_app_bar.dart';
 import 'my_subscription_viewmodel.dart';
+import '../../widgets/retryable_content.dart';
 
 class MySubscriptionView extends StackedView<MySubscriptionViewModel> {
   const MySubscriptionView({Key? key}) : super(key: key);
@@ -94,7 +95,12 @@ class MySubscriptionView extends StackedView<MySubscriptionViewModel> {
         verticalSpaceMedium,
         _buildText(),
         verticalSpaceMedium,
-        _buildSubscriptions(viewModel)
+        RetryableContent(
+          isLoading: viewModel.busy(StateObjects.mySubscriptions),
+          hasError: viewModel.hasErrorForKey(StateObjects.mySubscriptions),
+          onRetry: viewModel.getMySubscriptions,
+          builder: () => _buildSubscriptions(viewModel),
+        )
       ];
 
   Widget _buildText() => Text(

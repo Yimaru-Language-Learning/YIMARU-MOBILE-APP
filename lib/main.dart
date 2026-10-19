@@ -11,11 +11,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:yimaru_app/services/push_notification_service.dart';
 import 'package:yimaru_app/ui/common/translations/codegen_loader.g.dart';
 import 'firebase_options.dart';
+import 'services/lesson_realtime_service.dart';
+import 'services/reminder_activity_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await setupLocator();
+  locator<LessonRealtimeService>().initialize();
+  locator<ReminderActivityService>().initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await locator<PushNotificationService>().initialize();
   await EasyLocalization.ensureInitialized();

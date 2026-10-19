@@ -11,6 +11,7 @@ import 'package:yimaru_app/ui/common/ui_helpers.dart';
 import '../../../app/app.locator.dart';
 import '../../../services/localization_service.dart';
 import '../../common/app_colors.dart';
+import '../../common/retryable_load.dart';
 
 class AccountPrivacyViewModel extends ReactiveViewModel {
   AccountPrivacyViewModel({
@@ -22,6 +23,18 @@ class AccountPrivacyViewModel extends ReactiveViewModel {
   final void Function(String) _successNotifier;
   final void Function(String) _errorNotifier;
 
+  static const reminderLoadKey = 'reminderPreferenceLoad';
+  static const reminderSaveKey = 'reminderPreferenceSave';
+  bool? remindersEnabled;
+  Future<void> loadReminders() => runReadLoad(() async {
+        final enabled = await locator<ApiService>().getReminderPreference();
+        if (!disposed) remindersEnabled = enabled;
+      }, busyObject: reminderLoadKey);
+  Future<void> setReminders(bool enabled) => runReadLoad(() async {
+        final saved =
+            await locator<ApiService>().setReminderPreference(enabled);
+        if (!disposed) remindersEnabled = saved;
+      }, busyObject: reminderSaveKey);
   // Dependency injection
   final _apiService = locator<ApiService>();
 

@@ -26,6 +26,8 @@ import '../services/image_picker_service.dart';
 import '../services/in_app_notification_service.dart';
 import '../services/in_app_update_service.dart';
 import '../services/learn_service.dart';
+import '../services/lesson_realtime_service.dart';
+import '../services/reminder_activity_service.dart';
 import '../services/localization_service.dart';
 import '../services/onboarding_service.dart';
 import '../services/permission_handler_service.dart';
@@ -68,6 +70,8 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => UrlLauncherService());
   locator.registerLazySingleton(() => PhoneCallerService());
   locator.registerLazySingleton(() => LearnService());
+  locator.registerLazySingleton(() => LessonRealtimeService());
+  locator.registerLazySingleton(() => ReminderActivityService());
   locator.registerLazySingleton(() => LocalizationService());
   locator.registerLazySingleton(() => OnboardingService());
   locator.registerLazySingleton(() => AppleAuthService());

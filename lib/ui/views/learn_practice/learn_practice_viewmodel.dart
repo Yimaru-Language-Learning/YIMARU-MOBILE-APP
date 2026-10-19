@@ -109,6 +109,22 @@ class LearnPracticeViewModel extends ReactiveViewModel
 
   List<LearnPractice> get practices => _practices;
 
+  int? _practiceParentId;
+  LearnPractices? _practiceKind;
+  int? _practiceSessionGeneration;
+  bool _completionInFlight = false;
+  bool _completionSaved = false;
+  bool _completionFailed = false;
+
+  bool get completionSaved => _completionSaved;
+  bool get completionFailed => _completionFailed;
+
+  bool get _hasActivePractice =>
+      !disposed &&
+      _practiceParentId != null &&
+      _practiceKind != null &&
+      _practiceSessionGeneration == _authenticationService.sessionGeneration;
+
   final Map<int, String> _refreshedImages = {};
 
   Map<int, String> get refreshedImages => _refreshedImages;
@@ -137,13 +153,11 @@ class LearnPracticeViewModel extends ReactiveViewModel
 
   PageController get questionController => _questionController;
 
-
   // Phone number
   void setPhoneNumberFocus() {
     _focusPhoneNumber = true;
     rebuildUi();
   }
-
 
   // Voice recorder
   Future<void> stopRecording() async {
@@ -172,7 +186,6 @@ class LearnPracticeViewModel extends ReactiveViewModel
       rebuildUi();
     });
   }
-
 
   Future<void> playVoicePrompt(PracticeQuestion question) async =>
       await runBusyFuture(_playVoicePrompt(question),
@@ -203,7 +216,6 @@ class LearnPracticeViewModel extends ReactiveViewModel
   Future<void> _playAudio(
       {required Map<String, dynamic> answer, required Voice voice}) async {
     if (voice == Voice.recorded) {
-      print(answer['recorded_voice_answer']);
       await _audioPlayerService.playLocal(answer['recorded_voice_answer']);
     } else {
       await _audioPlayerService.playUrl(answer['sample_voice_answer']);
@@ -277,9 +289,12 @@ class LearnPracticeViewModel extends ReactiveViewModel
 
   // Reset
   Future<void> reset() async {
+    if (_completionInFlight || disposed) return;
+    _completionSaved = false;
+    _completionFailed = false;
     goTo(0);
     _answers.clear();
-    questionSetController.jumpToPage(0);
+    if (questionSetController.hasClients) questionSetController.jumpToPage(0);
   }
 
   // Navigation
@@ -297,11 +312,14 @@ class LearnPracticeViewModel extends ReactiveViewModel
   // Update payment status
 
   Future<void> _updatePaymentStatus() async {
+    final generation = _authenticationService.sessionGeneration;
     Map<String, dynamic> response = {};
 
     response = await _apiService.getProfileData(_user?.userId);
 
-    if (response['status'] == ResponseStatus.success) {
+    if (!disposed &&
+        generation == _authenticationService.sessionGeneration &&
+        response['status'] == ResponseStatus.success) {
       User user = response['data'] as User;
       await _authenticationService.saveUserData(user);
     }
@@ -309,65 +327,119 @@ class LearnPracticeViewModel extends ReactiveViewModel
 
   // Learn practice
   Future<void> getLearnPractices(
-          {required int id, required LearnPractices practice}) async =>
-      await runBusyFuture(_getLearnPractices(id: id, practice: practice),
-          busyObject: StateObjects.learnPractice);
+      {required int id, required LearnPractices practice}) async {
+    if (disposed || _completionInFlight || busy(StateObjects.learnPractice)) {
+      return;
+    }
+    await runBusyFuture(
+        Future<void>.sync(() => _getLearnPractices(id: id, practice: practice)),
+        busyObject: StateObjects.learnPractice);
+  }
 
   Future<void> _getLearnPractices(
       {required int id, required LearnPractices practice}) async {
-    if (await _statusChecker.checkConnection()) {
-      if (practice == LearnPractices.course) {
-        await _updatePaymentStatus();
-        _practices = await _apiService.getLearnCoursePractices(id);
-        //  await refreshPracticeImages(_practices);
-        await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
-      } else if (practice == LearnPractices.module) {
-        await _updatePaymentStatus();
-        _practices = await _apiService.getLearnModulePractices(id);
-        //  await refreshPracticeImages(_practices);
-        await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
-      } else {
-        await _updatePaymentStatus();
-        _practices = await _apiService.getLearnLessonPractices(id);
-        await _getLearnPracticeQuestions(_practices.first.questionSetId ?? 0);
+    final generation = _authenticationService.sessionGeneration;
+    _practiceParentId = null;
+    _practiceKind = null;
+    _practiceSessionGeneration = null;
+    _completionSaved = false;
+    _completionFailed = false;
+    _practices = [];
+    _questions = [];
+    if (id <= 0 || !await _statusChecker.checkConnection() || disposed) return;
+
+    await _updatePaymentStatus();
+    if (disposed || generation != _authenticationService.sessionGeneration) {
+      return;
+    }
+
+    final List<LearnPractice> practices;
+    if (practice == LearnPractices.course) {
+      practices = await _apiService.getLearnCoursePractices(id);
+    } else if (practice == LearnPractices.module) {
+      practices = await _apiService.getLearnModulePractices(id);
+    } else {
+      practices = await _apiService.getLearnLessonPractices(id);
+    }
+    if (disposed ||
+        generation != _authenticationService.sessionGeneration ||
+        practices.isEmpty ||
+        (practices.first.id ?? 0) <= 0 ||
+        (practices.first.questionSetId ?? 0) <= 0) {
+      return;
+    }
+
+    final questions =
+        await _apiService.getLearnQuestions(practices.first.questionSetId!);
+    if (disposed || generation != _authenticationService.sessionGeneration) {
+      return;
+    }
+    _practices = practices;
+    _questions = questions;
+    // Bind completion to the navigation location, never parents.first: one
+    // practice may be reused in a different lesson, module, or course.
+    _practiceParentId = id;
+    _practiceKind = practice;
+    _practiceSessionGeneration = generation;
+  }
+
+  // Complete practice
+  Future<bool> completeLearnPractice() async {
+    if (disposed || _completionInFlight) return false;
+    _completionInFlight = true;
+    _completionFailed = false;
+    setBusyForObject(StateObjects.completeLearnPractice, true);
+    var success = false;
+    try {
+      if (!_hasActivePractice ||
+          _practices.isEmpty ||
+          _questions.isEmpty ||
+          !await _statusChecker.checkConnection() ||
+          !_hasActivePractice) {
+        return false;
+      }
+      if (!_completionSaved) {
+        await stopAudio();
+        if (!_hasActivePractice) return false;
+        final response = await _apiService.completePractice(
+          id: _practices.first.id!,
+          data: {
+            'parent_id': _practiceParentId,
+            'parent_kind': _practiceKind!.name.toUpperCase(),
+          },
+        );
+        if (!_hasActivePractice ||
+            response['status'] != ResponseStatus.success) {
+          return false;
+        }
+        _completionSaved = true;
+      }
+      // A failed refresh must not turn a confirmed save into another POST.
+      await _learnService.getLearnProgress();
+      success = _hasActivePractice;
+      return success;
+    } catch (_) {
+      // Keep answers on the results screen; never expose raw server details.
+      return false;
+    } finally {
+      _completionInFlight = false;
+      if (!disposed) {
+        _completionFailed = !success;
+        setBusyForObject(StateObjects.completeLearnPractice, false);
       }
     }
   }
 
-  Future<void> _getLearnPracticeQuestions(int id) async {
-    _questions = await _apiService.getLearnQuestions(id);
-  }
-
-  // Complete practice
-  Future<void> completeLearnPractice() async =>
-      await runBusyFuture(_completeLearnPractice(),
-          busyObject: StateObjects.completeLearnPractice);
-
-  Future<void> _completeLearnPractice() async {
-    if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> data = {
-        'parent_id': _practices.first.parents?.first.parentId ?? 0,
-        'parent_kind': _practices.first.parents?.first.parentKind?.toUpperCase()
-      };
-      await stopAudio();
-      await _apiService.completePractice(
-        data: data,
-        id: _practices.first.id ?? 0,
-      );
-      await _learnService.getLearnProgress();
-    }
-  }
-
   // Update  profile
-  Future<void> updateProfile(String phoneNumber) async => await runBusyFuture(_updateProfile(phoneNumber),
-      busyObject: StateObjects.profileUpdate);
+  Future<void> updateProfile(String phoneNumber) async =>
+      await runBusyFuture(_updateProfile(phoneNumber),
+          busyObject: StateObjects.profileUpdate);
 
   Future<void> _updateProfile(String phoneNumber) async {
-
     Map<String, dynamic> data = {
       'gender': user?.gender,
       'region': user?.region,
-      'country':user?.country,
+      'country': user?.country,
       'phone_number': phoneNumber,
       'last_name': user?.lastName,
       'first_name': user?.firstName,
@@ -376,8 +448,7 @@ class LearnPracticeViewModel extends ReactiveViewModel
     };
 
     if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response =
-      await _apiService.completeProfile(data);
+      Map<String, dynamic> response = await _apiService.completeProfile(data);
       if (response['status'] == ResponseStatus.success) {
         await _authenticationService.updateUserData(data);
         pop();
