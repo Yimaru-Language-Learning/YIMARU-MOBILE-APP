@@ -157,6 +157,8 @@ class PremiumPurchaseService {
                   ownedDialog = ModalRoute.of(dialogContext);
                   return PremiumPhoneDialog(
                     initialPhone: status['phone_number'] as String,
+                    useSavedPhone: status['has_phone'] == true ||
+                        (status['phone_number'] as String).trim().isNotEmpty,
                     isCurrent: current,
                     sendCode: (phone) => api.sendCheckoutPhoneCode(phone,
                         cancelToken: cancellation),

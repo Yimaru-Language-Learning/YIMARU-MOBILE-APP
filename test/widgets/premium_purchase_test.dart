@@ -68,7 +68,9 @@ class _Api implements ApiService {
   bool? phoneVerified;
   bool failPhoneStatus = false;
   bool failCodeSend = false;
+  bool contactChanged = false;
   int codeSends = 0;
+  final requestedPhones = <String>[];
   final verifiedCodes = <String>[];
   bool loseVerificationResponse = false;
   Map<String, dynamic>? serverPhone;
@@ -89,6 +91,16 @@ class _Api implements ApiService {
   Future<void> sendCheckoutPhoneCode(String phone,
       {CancelToken? cancelToken}) async {
     codeSends++;
+    requestedPhones.add(phone);
+    if (contactChanged) {
+      final request = RequestOptions(path: '/otp');
+      throw DioException(
+          requestOptions: request,
+          response: Response(
+              requestOptions: request,
+              statusCode: 409,
+              data: {'error': 'checkout_phone_changed'}));
+    }
     if (failCodeSend) throw StateError('SMS unavailable');
   }
 
@@ -632,5 +644,83 @@ void main() {
     expect(auth.user?.phoneNumber, '251712345678');
     expect(find.textContaining('arrange delivery'), findsOneWidget);
     expect(api.events, isEmpty);
+  });
+
+  testWidgets(
+      'saved unverified phone is fixed; verify it before hardcopy and checkout',
+      (tester) async {
+    auth.user = auth.user?.copyWith(phoneNumber: '251712345678');
+    api.phoneVerified = false;
+    await open(tester);
+    final field = tester.widget<TextField>(find.byType(TextField));
+    expect(field.readOnly, isTrue);
+    expect(field.controller?.text, '712345678');
+    expect(find.textContaining('already attached'), findsOneWidget);
+    await tester.tap(find.widgetWithText(TextButton, 'Send verification code'));
+    await tester.pumpAndSettle();
+    expect(api.requestedPhones, ['251712345678']);
+    expect(find.widgetWithText(TextButton, 'Change number'), findsNothing);
+    expect(find.textContaining('arrange delivery'), findsNothing);
+    expect(api.events, isEmpty);
+    await tester.enterText(find.byType(TextFormField).last, '000000');
+    await tester.tap(find.widgetWithText(TextButton, 'Verify number'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('arrange delivery'), findsNothing);
+    expect(api.events, isEmpty);
+    await tester.enterText(find.byType(TextFormField).last, '123456');
+    await tester.tap(find.widgetWithText(TextButton, 'Verify number'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('arrange delivery'), findsOneWidget);
+    expect(api.events, ['save:251712345678']);
+    await continueDialog(tester);
+    expect(api.events, ['save:251712345678', 'send:LEARN_ENGLISH']);
+  });
+
+  testWidgets(
+      'already verified saved phone skips OTP and never asks for another number',
+      (tester) async {
+    auth.user = auth.user?.copyWith(phoneNumber: '251712345678');
+    await open(tester);
+    expect(find.byType(TextFormField), findsNothing);
+    expect(api.requestedPhones, isEmpty);
+    expect(find.textContaining('arrange delivery'), findsOneWidget);
+    await continueDialog(tester);
+    expect(api.events, ['send:LEARN_ENGLISH']);
+  });
+
+  testWidgets(
+      'unsupported attached phone blocks checkout without offering replacement',
+      (tester) async {
+    api.serverPhone = {
+      'phone_number': '+12025550123',
+      'has_phone': true,
+      'verified': false
+    };
+    await open(tester);
+    expect(find.textContaining('Contact support to update'), findsOneWidget);
+    expect(find.byType(TextFormField), findsNothing);
+    expect(
+        tester
+            .widget<TextButton>(
+                find.widgetWithText(TextButton, 'Send verification code'))
+            .onPressed,
+        isNull);
+    expect(find.widgetWithText(TextButton, 'Change number'), findsNothing);
+    expect(api.requestedPhones, isEmpty);
+    expect(api.events, isEmpty);
+  });
+
+  testWidgets(
+      'a newly attached contact on another device requires reopening, not replacement',
+      (tester) async {
+    await open(tester);
+    api.contactChanged = true;
+    await tester.enterText(find.byType(TextFormField), '712345678');
+    await tester.tap(find.widgetWithText(TextButton, 'Send verification code'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Reopen this flow'), findsOneWidget);
+    expect(api.verifiedCodes, isEmpty);
+    expect(api.events, isEmpty);
+    expect(find.textContaining('arrange delivery'), findsNothing);
   });
 }

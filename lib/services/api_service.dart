@@ -1599,6 +1599,7 @@ class ApiService {
     if (response.statusCode != 200 ||
         data is! Map ||
         data['verified'] is! bool ||
+        (data['has_phone'] != null && data['has_phone'] is! bool) ||
         data['phone_number'] is! String) {
       throw StateError('Could not check verified contact');
     }

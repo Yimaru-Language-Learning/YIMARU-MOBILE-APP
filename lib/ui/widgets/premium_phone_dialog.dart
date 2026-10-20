@@ -9,10 +9,12 @@ class PremiumPhoneDialog extends StatefulWidget {
   const PremiumPhoneDialog(
       {super.key,
       this.initialPhone = '',
+      this.useSavedPhone = false,
       required this.sendCode,
       required this.verifyPhone,
       required this.isCurrent});
   final String initialPhone;
+  final bool useSavedPhone;
   final Future<void> Function(String) sendCode;
   final Future<bool> Function(String, String) verifyPhone;
   final bool Function() isCurrent;
@@ -29,6 +31,24 @@ class _PremiumPhoneDialogState extends State<PremiumPhoneDialog> {
   String? _error;
   bool _sent = false;
   DateTime? _resendAt;
+  bool get _unsupportedSavedPhone =>
+      widget.useSavedPhone &&
+      !RegExp(r'^251[79][0-9]{8}$').hasMatch(widget.initialPhone);
+
+  String _errorKey(Object error, String fallback) {
+    if (error is DioException) {
+      final data = error.response?.data;
+      if (error.response?.statusCode == 409 &&
+          data is Map &&
+          data['error'] == 'checkout_phone_changed') {
+        return 'checkout_phone_reverify';
+      }
+      if (error.response?.statusCode == 429) {
+        return 'checkout_otp_wait';
+      }
+    }
+    return fallback;
+  }
 
   @override
   void initState() {
@@ -39,6 +59,7 @@ class _PremiumPhoneDialogState extends State<PremiumPhoneDialog> {
 
   Future<void> _send({bool validate = true}) async {
     if (_saving ||
+        _unsupportedSavedPhone ||
         (validate && !_form.currentState!.validate()) ||
         !widget.isCurrent()) {
       return;
@@ -62,10 +83,7 @@ class _PremiumPhoneDialogState extends State<PremiumPhoneDialog> {
       }
     } catch (error) {
       if (mounted) {
-        setState(() => _error =
-            error is DioException && error.response?.statusCode == 429
-                ? 'checkout_otp_wait'
-                : 'checkout_otp_send_failed');
+        setState(() => _error = _errorKey(error, 'checkout_otp_send_failed'));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -91,10 +109,7 @@ class _PremiumPhoneDialogState extends State<PremiumPhoneDialog> {
       }
     } catch (error) {
       if (mounted) {
-        setState(() => _error =
-            error is DioException && error.response?.statusCode == 429
-                ? 'checkout_otp_wait'
-                : 'checkout_otp_invalid');
+        setState(() => _error = _errorKey(error, 'checkout_otp_invalid'));
       }
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -120,24 +135,34 @@ class _PremiumPhoneDialogState extends State<PremiumPhoneDialog> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(LocaleKeys.complete_profile.tr()),
+                      Text((widget.useSavedPhone
+                              ? 'checkout_phone_on_file'
+                              : LocaleKeys.complete_profile)
+                          .tr()),
                       const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _phone,
-                        enabled: !_saving && !_sent,
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(9)
-                        ],
-                        decoration: InputDecoration(
-                            labelText: LocaleKeys.phone_number.tr(),
-                            prefixText: '+251 '),
-                        validator: (value) =>
-                            RegExp(r'^[79][0-9]{8}$').hasMatch(value ?? '')
-                                ? null
-                                : 'checkout_phone_invalid'.tr(),
-                      ),
+                      if (_unsupportedSavedPhone) ...[
+                        SelectableText(widget.initialPhone),
+                        const SizedBox(height: 12),
+                        Text('checkout_phone_saved_invalid'.tr(),
+                            style: const TextStyle(color: kcRed)),
+                      ] else
+                        TextFormField(
+                          controller: _phone,
+                          readOnly: widget.useSavedPhone,
+                          enabled: !_saving && !_sent,
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(9)
+                          ],
+                          decoration: InputDecoration(
+                              labelText: LocaleKeys.phone_number.tr(),
+                              prefixText: '+251 '),
+                          validator: (value) =>
+                              RegExp(r'^[79][0-9]{8}$').hasMatch(value ?? '')
+                                  ? null
+                                  : 'checkout_phone_invalid'.tr(),
+                        ),
                       if (_sent) ...[
                         const SizedBox(height: 12),
                         Text('checkout_otp_sent'.tr()),
@@ -156,16 +181,17 @@ class _PremiumPhoneDialogState extends State<PremiumPhoneDialog> {
                                   ? null
                                   : 'checkout_otp_invalid'.tr(),
                         ),
-                        TextButton(
-                            onPressed: _saving
-                                ? null
-                                : () {
-                                    setState(() {
-                                      _sent = false;
-                                      _error = null;
-                                    });
-                                  },
-                            child: Text('checkout_phone_change'.tr())),
+                        if (!widget.useSavedPhone)
+                          TextButton(
+                              onPressed: _saving
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        _sent = false;
+                                        _error = null;
+                                      });
+                                    },
+                              child: Text('checkout_phone_change'.tr())),
                         TextButton(
                             onPressed: _saving
                                 ? null
@@ -194,7 +220,9 @@ class _PremiumPhoneDialogState extends State<PremiumPhoneDialog> {
                 onPressed: _saving ? null : () => Navigator.pop(context, false),
                 child: Text(LocaleKeys.cancel.tr())),
             TextButton(
-                onPressed: _saving ? null : (_sent ? _save : _send),
+                onPressed: _saving || _unsupportedSavedPhone
+                    ? null
+                    : (_sent ? _save : _send),
                 child: Text((_saving
                         ? LocaleKeys.please_wait
                         : (_sent ? 'checkout_otp_verify' : 'checkout_otp_send'))
