@@ -22,6 +22,7 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
       required CourseCatalog course,
       required CourseCatalogViewModel viewModel}) async {
     await viewModel.navigateToCoursePractice(
+        context: context,
         id: course.id ?? 0,
         type: course.category == 'IELTS'
             ? SubscriptionType.ielts
@@ -160,6 +161,7 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
               course: viewModel.catalogs[index]),
           catalog: viewModel.catalogs[index],
           onCourseTap: () async => await viewModel.navigateToCourseUnit(
+              context: context,
               catalog: viewModel.catalogs[index],
               type: viewModel.catalogs[index].category == 'IELTS'
                   ? SubscriptionType.ielts

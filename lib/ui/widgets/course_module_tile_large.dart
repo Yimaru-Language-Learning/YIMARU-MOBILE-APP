@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -34,7 +36,7 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
       required CourseLesson lesson,
       required BuildContext context,
       required CourseModuleViewModel viewModel}) async {
-    await viewModel.navigateToCoursePractice(type: type, id: lesson.id ?? 0);
+    await viewModel.navigateToCoursePractice(type: type, id: lesson.id ?? 0, context: context);
 
     /* if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
       if (lesson.access?.isAccessible ?? false) {
@@ -56,29 +58,36 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
       required CourseLesson lesson,
       required BuildContext context,
       required CourseModuleViewModel viewModel}) async {
+    // The shared iOS gate honors inherited tiers and refreshes stale local
+    // subscription flags. Keep the existing Android path below unchanged.
+    if (Platform.isIOS && lesson.effectiveAccessTier != null) {
+      await viewModel.navigateToCourseLessonDetail(
+          type: type, lesson: lesson, context: context);
+      return;
+    }
     if (type == SubscriptionType.duolingo) {
       if (viewModel.user?.duolingo ?? false) {
         await viewModel.navigateToCourseLessonDetail(
-            type: type, lesson: lessons[index]);
+            type: type, lesson: lessons[index], context: context);
       } else {
         if (lesson.accessTier?.toUpperCase() == 'FREE') {
           await viewModel.navigateToCourseLessonDetail(
-              type: type, lesson: lessons[index]);
+              type: type, lesson: lessons[index], context: context);
         } else {
           await viewModel
-              .navigateToCourseSubscription(SubscriptionType.duolingo);
+              .navigateToCourseSubscription(SubscriptionType.duolingo, context: context);
         }
       }
     } else {
       if (viewModel.user?.ielts ?? false) {
         await viewModel.navigateToCourseLessonDetail(
-            type: type, lesson: lessons[index]);
+            type: type, lesson: lessons[index], context: context);
       } else {
         if (lesson.accessTier?.toUpperCase() == 'FREE') {
           await viewModel.navigateToCourseLessonDetail(
-              type: type, lesson: lessons[index]);
+              type: type, lesson: lessons[index], context: context);
         } else {
-          await viewModel.navigateToCourseSubscription(SubscriptionType.ielts);
+          await viewModel.navigateToCourseSubscription(SubscriptionType.ielts, context: context);
         }
       }
     }

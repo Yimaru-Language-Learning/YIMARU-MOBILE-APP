@@ -1,4 +1,5 @@
 import 'package:stacked/stacked.dart';
+import 'package:flutter/widgets.dart';
 import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
@@ -7,6 +8,7 @@ import 'package:yimaru_app/models/course_lesson.dart';
 import '../../../app/app.locator.dart';
 import '../../../models/user.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/premium_purchase_service.dart';
 import '../../../services/course_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../common/enmus.dart';
@@ -43,18 +45,37 @@ class CourseModuleViewModel extends ReactiveViewModel {
   void pop() => _navigationService.back();
 
   Future<void> navigateToCourseLessonDetail(
-          {required CourseLesson lesson,
-          required SubscriptionType type}) async =>
-      await _navigationService.navigateToCourseLessonDetailView(
-          type: type, lesson: lesson);
+      {required CourseLesson lesson,
+      required SubscriptionType type,
+      BuildContext? context}) async {
+    if (await interceptIosPremium(type,
+        effectiveAccessTier: lesson.effectiveAccessTier,
+        access: lesson.access,
+        context: context)) {
+      return;
+    }
+    await _navigationService.navigateToCourseLessonDetailView(
+        type: type, lesson: lesson);
+  }
 
   Future<void> navigateToCoursePractice(
-          {required int id, required SubscriptionType type}) async =>
-      await _navigationService.navigateToCoursePracticeView(
-          id: id, type: type, practice: CoursePractices.lesson);
+      {required int id,
+      required SubscriptionType type,
+      BuildContext? context}) async {
+    final lesson = lessons.where((item) => item.id == id).firstOrNull;
+    if (await interceptIosPremium(type,
+        effectiveAccessTier: lesson?.effectiveAccessTier,
+        access: lesson?.access,
+        context: context)) {
+      return;
+    }
+    await _navigationService.navigateToCoursePracticeView(
+        id: id, type: type, practice: CoursePractices.lesson);
+  }
 
-  Future<void> navigateToCourseSubscription(SubscriptionType type) async =>
-      await _navigationService.navigateToSubscriptionView(type: type);
+  Future<void> navigateToCourseSubscription(SubscriptionType type,
+          {BuildContext? context}) =>
+      locator<PremiumPurchaseService>().open(type, context: context);
 
   // Remote api call
 

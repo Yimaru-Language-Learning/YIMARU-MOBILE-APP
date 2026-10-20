@@ -12,6 +12,7 @@ LearnLesson _$LearnLessonFromJson(Map<String, dynamic> json) => LearnLesson(
       access: json['access'] == null
           ? null
           : Access.fromJson(json['access'] as Map<String, dynamic>),
+      effectiveAccessTier: json['effective_access_tier'] as String?,
       videoUrl: json['video_url'] as String?,
       moduleId: (json['module_id'] as num?)?.toInt(),
       thumbnail: json['thumbnail'] as String?,
@@ -25,6 +26,7 @@ Map<String, dynamic> _$LearnLessonToJson(LearnLesson instance) =>
       'id': instance.id,
       'title': instance.title,
       'access': instance.access,
+      'effective_access_tier': instance.effectiveAccessTier,
       'thumbnail': instance.thumbnail,
       'description': instance.description,
       'has_practice': instance.hasPractice,

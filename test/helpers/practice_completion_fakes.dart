@@ -5,6 +5,9 @@ import 'package:mockito/mockito.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/models/learn_practice.dart';
+import 'package:yimaru_app/models/learn_course.dart';
+import 'package:yimaru_app/models/learn_module.dart';
+import 'package:yimaru_app/models/learn_lesson.dart';
 import 'package:yimaru_app/models/parent.dart';
 import 'package:yimaru_app/models/practice_question.dart';
 import 'package:yimaru_app/models/user.dart';
@@ -71,6 +74,12 @@ class CompletionAudio extends Mock implements AudioPlayerService {
 }
 
 class CompletionLearn extends Mock implements LearnService {
+  @override
+  List<LearnCourse> courses = [];
+  @override
+  List<LearnModule> modules = [];
+  @override
+  List<LearnLesson> lessons = [];
   int refreshes = 0;
   bool fail = false;
   @override

@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/widgets/course_phone_number_dialog.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../common/ui_helpers.dart';
@@ -39,61 +36,31 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
 
     if (type == SubscriptionType.duolingo) {
       if (viewModel.user?.duolingo ?? false) {
+        if (!context.mounted) return;
         _reset(viewModel);
         await viewModel.getCoursePracticeQuestions(
           context: context,
           id: viewModel.practices[index].questionSetId ?? 0,
         );
       } else {
-        if (Platform.isIOS) {
-          Map<String,dynamic> data = {'category': 'DUOLINGO'};
-          if (viewModel.user?.phoneNumber != null) {
-            await viewModel.showPurchaseDialog();
-          } else {
-            await _showDialog(context: context, viewModel: viewModel);
-          }
-          await viewModel.iosCheckout(data);
-        } else {
-          await viewModel
-              .navigateToCourseSubscription(SubscriptionType.duolingo);
-        }
+        if (!context.mounted) return;
+        await viewModel.navigateToCourseSubscription(
+            SubscriptionType.duolingo, context: context);
       }
     } else {
       if (viewModel.user?.ielts ?? false) {
+        if (!context.mounted) return;
         _reset(viewModel);
         await viewModel.getCoursePracticeQuestions(
           context: context,
           id: viewModel.practices[index].questionSetId ?? 0,
         );
       } else {
-        if (Platform.isIOS) {
-          Map<String,dynamic> data = {'category': 'IELTS'};
-          if (viewModel.user?.phoneNumber != null) {
-            await viewModel.showPurchaseDialog();
-          } else {
-            await _showDialog(context: context, viewModel: viewModel);
-          }
-          await viewModel.iosCheckout(data);
-        } else {
-          await viewModel.navigateToCourseSubscription(SubscriptionType.ielts);
-        }
+        if (!context.mounted) return;
+        await viewModel.navigateToCourseSubscription(
+            SubscriptionType.ielts, context: context);
       }
     }
-  }
-
-  Future<void> _showDialog({
-    required BuildContext context,
-    required CoursePracticeViewModel viewModel,
-  }) async {
-    if (!context.mounted) return;
-    await showDialog(
-      context: context,
-      builder: (context) => ViewModelBuilder<CoursePracticeViewModel>.reactive(
-        disposeViewModel: false,
-        viewModelBuilder: () => viewModel,
-        builder: (context, model, child) => _buildDialog(viewModel),
-      ),
-    );
   }
 
   @override
@@ -214,10 +181,4 @@ class CoursePracticesScreens extends ViewModelWidget<CoursePracticeViewModel> {
         onTap: onTap,
       );
 
-  Widget _buildDialog(CoursePracticeViewModel viewModel) =>
-      CoursePhoneNumberDialog(
-        onClose: viewModel.pop,
-        phoneNumberController: phoneNumberController,
-        onSubmit: () async =>await viewModel.updateProfile(phoneNumberController.text),
-      );
 }

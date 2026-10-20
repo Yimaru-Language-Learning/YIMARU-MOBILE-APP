@@ -3,6 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:yimaru_app/app/app.locator.dart';
 import 'package:yimaru_app/models/course_practice.dart';
+import 'package:yimaru_app/models/course_catalog.dart';
+import 'package:yimaru_app/models/course_unit.dart';
+import 'package:yimaru_app/models/course_lesson.dart';
 import 'package:yimaru_app/models/parent.dart';
 import 'package:yimaru_app/services/cache_image_service.dart';
 import 'package:yimaru_app/services/course_service.dart';
@@ -28,6 +31,12 @@ class _ExamApi extends CompletionApi {
 
 class _Course extends Mock implements CourseService {
   @override
+  final catalogs = const [CourseCatalog(id: 100, effectiveAccessTier: 'FREE')];
+  @override
+  final units = const [CourseUnit(id: 100, effectiveAccessTier: 'FREE')];
+  @override
+  final lessons = const [CourseLesson(id: 100, effectiveAccessTier: 'FREE')];
+  @override
   Future<void> getCourseProgress() async {}
 }
 
@@ -49,6 +58,8 @@ void main() {
       locator.registerSingleton<CacheImageService>(CacheImageService());
       final model = CoursePracticeViewModel();
       await model.getCoursePractices(id: 100, practice: kind);
+      fixture.auth.generation++;
+      await model.getCoursePractices(id: 100, practice: kind);
       await model.completeCoursePractice(model.practices.single);
       expect(api.payloads.single, {
         'parent_kind': kind == CoursePractices.courseCatalog
@@ -58,6 +69,7 @@ void main() {
                 : 'LESSON',
         'parent_id': 100,
       });
+      await model.getCoursePractices(id: 61, practice: kind);
       model.dispose();
     });
   }

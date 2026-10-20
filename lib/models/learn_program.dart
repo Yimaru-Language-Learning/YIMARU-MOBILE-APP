@@ -11,6 +11,9 @@ class LearnProgram {
 
   final Access? access;
 
+  @JsonKey(name: 'effective_access_tier')
+  final String? effectiveAccessTier;
+
   final String? description;
 
   @JsonKey(name: 'sort_order')
@@ -20,6 +23,7 @@ class LearnProgram {
     this.id,
     this.name,
     this.access,
+    this.effectiveAccessTier,
     this.sortOrder,
     this.description,
   });
@@ -28,6 +32,7 @@ class LearnProgram {
     int? id,
     String? name,
     Access? access,
+    String? effectiveAccessTier,
     int? sortOrder,
     String? description,
   }) {
@@ -35,6 +40,7 @@ class LearnProgram {
       id: id ?? this.id,
       name: name ?? this.name,
       access: access ?? this.access,
+      effectiveAccessTier: effectiveAccessTier ?? this.effectiveAccessTier,
       sortOrder: sortOrder ?? this.sortOrder,
       description: description ?? this.description,
     );

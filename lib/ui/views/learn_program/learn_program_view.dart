@@ -107,6 +107,7 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
         itemBuilder: (context, index) => _buildTile(
           program: viewModel.learnPrograms[index],
           onTap: () async => await viewModel.navigateToLearnCourse(
+              context: context,
               first: index == 0, id: viewModel.learnPrograms[index].id ?? 0),
         ),
       );

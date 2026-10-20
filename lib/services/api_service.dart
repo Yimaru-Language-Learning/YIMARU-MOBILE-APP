@@ -1573,16 +1573,39 @@ class ApiService {
     }
   }
 
-  // Rate app
-  Future<Map<String, dynamic>> iosCheckout(Map<String, dynamic> data) async {
+  Future<String> addContactPhone(String phone,
+      {CancelToken? cancelToken}) async {
+    final response = await _service.dio.patch(
+        '$kBaseUrl/api/v1/user/contact-phone',
+        data: {'phone_number': phone},
+        cancelToken: cancelToken);
+    final body = response.data;
+    final details = body is Map ? body['data'] : null;
+    final saved = details is Map ? details['phone_number'] : null;
+    if (response.statusCode != 200 ||
+        saved is! String ||
+        saved.trim().isEmpty) {
+      throw StateError('Could not save contact phone');
+    }
+    return saved;
+  }
+
+  // Request delivery once; never automatically retry a checkout-link send.
+  Future<Map<String, dynamic>> iosCheckout(Map<String, dynamic> data,
+      {CancelToken? cancelToken}) async {
     try {
       Response response = await _service.dio.post(
           '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kSubscriptionsUrl/$kIosCheckout',
-          data: data);
+          data: data,
+          cancelToken: cancelToken);
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200 &&
+          response.data is Map &&
+          response.data['data'] is Map &&
+          ['sms', 'email'].contains(response.data['data']?['channel'])) {
         return {
           'status': ResponseStatus.success,
+          'channel': response.data['data']['channel'],
         };
       } else {
         return {
@@ -1592,7 +1615,7 @@ class ApiService {
     } on DioException catch (e) {
       return {
         'status': ResponseStatus.failure,
-        'message': e.response?.data.toString(),
+        'statusCode': e.response?.statusCode,
       };
     }
   }

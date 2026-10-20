@@ -13,6 +13,7 @@ import '../../../models/learn_lesson.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/premium_purchase_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 import '../../../services/vimeo_service.dart';
@@ -230,8 +231,8 @@ class LearnLessonDetailViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnSubscription() async => await _navigationService
-      .navigateToSubscriptionView(type: SubscriptionType.learn);
+  Future<void> navigateToLearnSubscription({required BuildContext context}) =>
+      locator<PremiumPurchaseService>().open(SubscriptionType.learn, context: context);
 
   Future<void> replaceWithLearnPractice(int id) async =>
       await _navigationService.replaceWithLearnPracticeView(

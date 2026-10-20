@@ -26,6 +26,7 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
     if (viewModel.user?.learn ?? false) {
       if (course.access?.isCompleted ?? false) {
         await viewModel.navigateToLearnPractice(
+            context: context,
             id: course.id ?? 0, level: course.name ?? '');
       } else {
         if (course.access?.isAccessible ?? false) {
@@ -42,6 +43,7 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
       }
     } else {
       await viewModel.navigateToLearnPractice(
+          context: context,
           id: course.id ?? 0, level: course.name ?? '');
     }
   }
@@ -163,6 +165,7 @@ class LearnCourseView extends StackedView<LearnCourseViewModel> {
               viewModel: viewModel,
               course: viewModel.courses[index]),
           onViewTap: () async => await viewModel.navigateToLearnModule(
+              context: context,
               first: first && index == 0, course: viewModel.courses[index]),
         ),
         separatorBuilder: (context, index) => verticalSpaceSmall,

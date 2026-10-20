@@ -12,6 +12,9 @@ class LearnLesson {
 
   final Access? access;
 
+  @JsonKey(name: 'effective_access_tier')
+  final String? effectiveAccessTier;
+
   final String? thumbnail;
 
   final String? description;
@@ -32,6 +35,7 @@ class LearnLesson {
     this.id,
     this.title,
     this.access,
+    this.effectiveAccessTier,
     this.videoUrl,
     this.moduleId,
     this.thumbnail,
@@ -46,6 +50,7 @@ class LearnLesson {
     int? moduleId,
     int? sortOrder,
     Access? access,
+    String? effectiveAccessTier,
     String? videoUrl,
     String? thumbnail,
     String? description,
@@ -55,6 +60,7 @@ class LearnLesson {
       id: id ?? this.id,
       title: title ?? this.title,
       access: access ?? this.access,
+      effectiveAccessTier: effectiveAccessTier ?? this.effectiveAccessTier,
       videoUrl: videoUrl ?? this.videoUrl,
       moduleId: moduleId ?? this.moduleId,
       sortOrder: sortOrder ?? this.sortOrder,

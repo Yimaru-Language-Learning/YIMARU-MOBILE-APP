@@ -12,6 +12,7 @@ import '../../../app/app.locator.dart';
 import '../../../models/practice_question.dart';
 import '../../../models/user.dart';
 import '../../../services/api_service.dart';
+import '../../../services/premium_purchase_service.dart';
 import '../../../services/audio_player_service.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/cache_image_service.dart';
@@ -21,7 +22,6 @@ import '../../../services/voice_recorder_service.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/helper_functions.dart';
-import '../../common/ui_helpers.dart';
 
 class CoursePracticeViewModel extends ReactiveViewModel
     with FormStateHelper
@@ -1176,15 +1176,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
         buttonTitleColor: kcPrimaryColor,
       );
 
-  Future<void> showPurchaseDialog() async => await _dialogService.showDialog(
-        barrierDismissible: true,
-        cancelTitleColor: kcDarkGrey,
-        title: LocaleKeys.notice.tr(),
-        buttonTitleColor: kcPrimaryColor,
-        buttonTitle: LocaleKeys.close.tr(),
-        description: LocaleKeys.ios_purchase.tr(),
-      );
-
   // Set highlight
   void setHighlight({required int end, required int start}) {
     _end = end;
@@ -1724,8 +1715,8 @@ class CoursePracticeViewModel extends ReactiveViewModel
   Future<void> navigateToPdf(String url) async =>
       await _navigationService.navigateToPdfView(url: url);
 
-  Future<void> navigateToCourseSubscription(SubscriptionType type) async =>
-      await _navigationService.navigateToSubscriptionView(type: type);
+  Future<void> navigateToCourseSubscription(SubscriptionType type, {BuildContext? context}) =>
+      locator<PremiumPurchaseService>().open(type, context: context);
 
   // Remote api call
 
@@ -1737,6 +1728,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
 
   Future<void> _getCoursePractices(
       {required int id, required CoursePractices practice}) async {
+    final generation = _authenticationService.sessionGeneration;
     _practiceParentId = null;
     _practiceParentKind = null;
     if (await _statusChecker.checkConnection()) {
@@ -1749,6 +1741,9 @@ class CoursePracticeViewModel extends ReactiveViewModel
       }
       // The shared completion API now sends its body. Preserve the location
       // opened by the learner here too, rather than a reused practice's first link.
+      if (disposed || generation != _authenticationService.sessionGeneration) {
+        return;
+      }
       if (id > 0 && _practices.isNotEmpty) {
         _practiceParentId = id;
         _practiceParentKind = practice == CoursePractices.courseCatalog
@@ -1813,11 +1808,14 @@ class CoursePracticeViewModel extends ReactiveViewModel
           busyObject: StateObjects.paymentStatus);
 
   Future<void> _updatePaymentStatus() async {
+    final generation = _authenticationService.sessionGeneration;
     Map<String, dynamic> response = {};
 
     response = await _apiService.getProfileData(_user?.userId);
 
-    if (response['status'] == ResponseStatus.success) {
+    if (!disposed &&
+        generation == _authenticationService.sessionGeneration &&
+        response['status'] == ResponseStatus.success) {
       User user = response['data'] as User;
       await _authenticationService.saveUserData(user);
     }
@@ -1841,41 +1839,6 @@ class CoursePracticeViewModel extends ReactiveViewModel
     }
   }
 
-  // Update  profile
-  Future<void> updateProfile(String phoneNumber) async =>
-      await runBusyFuture(_updateProfile(phoneNumber),
-          busyObject: StateObjects.profileUpdate);
-
-  Future<void> _updateProfile(String phoneNumber) async {
-    Map<String, dynamic> data = {
-      'gender': user?.gender,
-      'region': user?.region,
-      'country': user?.country,
-      'phone_number': phoneNumber,
-      'last_name': user?.lastName,
-      'first_name': user?.firstName,
-      'occupation': user?.occupation,
-      'birth_day': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-    };
-
-    if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response = await _apiService.completeProfile(data);
-      if (response['status'] == ResponseStatus.success) {
-        await _authenticationService.updateUserData(data);
-        pop();
-        showSuccessToast(response['message']);
-      } else {
-        showErrorToast(response['message']);
-      }
-    }
-  }
-
-  // Ios checkout
-  Future<void> iosCheckout(Map<String, dynamic> data) async {
-    if (await _statusChecker.checkConnection()) {
-      await _apiService.iosCheckout(data);
-    }
-  }
 // Refresh url
 /*Future<String?> getRefreshedUrl(String value) async {
     final String? refreshedUrl = await _courseService.refreshObject(value);

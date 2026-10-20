@@ -11,9 +11,15 @@ import 'package:yimaru_app/services/push_notification_service.dart';
 class _Storage extends Mock implements SecureStorageService {
   final values = <String, Object>{};
   Completer<void>? tokenWrite, clearGate, userRead;
+  Completer<void>? phoneWrite;
+  bool writingPhone = false;
   bool writing = false, clearing = false, reading = false;
   @override
   Future<void> setString(String key, String value) async {
+    if (key == 'phoneNumber' && phoneWrite != null) {
+      writingPhone = true;
+      await phoneWrite!.future;
+    }
     if (key == 'accessToken' && tokenWrite != null) {
       writing = true;
       await tokenWrite!.future;
@@ -91,6 +97,46 @@ void main() {
         expectedSessionGeneration: auth.sessionGeneration);
     expect(await auth.getAccessToken(), 'new-a');
     expect(auth.user?.refreshToken, 'new-r');
+  });
+
+  test('saved contact phone persists without changing other profile fields',
+      () async {
+    storage.values['birthday'] = '2000-01-01';
+    await auth.saveContactPhone('251912345678',
+        expectedSessionGeneration: auth.sessionGeneration);
+    expect(auth.user?.phoneNumber, '251912345678');
+    expect(storage.values['phoneNumber'], '251912345678');
+    expect(storage.values['birthday'], '2000-01-01');
+    expect(await auth.getAccessToken(), 'a');
+  });
+
+  test('old contact response after logout cannot write into the next session',
+      () async {
+    final generation = auth.sessionGeneration;
+    await auth.logout();
+    await auth.saveUserCredential(
+        {'userId': 8, 'accessToken': 'b', 'refreshToken': 'br'});
+    await auth.saveContactPhone('251912345678',
+        expectedSessionGeneration: generation);
+    expect(auth.user?.userId, 8);
+    expect(auth.user?.phoneNumber, isNull);
+    expect(storage.values['phoneNumber'], isNull);
+  });
+
+  test('logout serializes behind an in-flight contact write and clears it',
+      () async {
+    storage.phoneWrite = Completer<void>();
+    final save = auth.saveContactPhone('251912345678',
+        expectedSessionGeneration: auth.sessionGeneration);
+    await until(() => storage.writingPhone);
+    final logout = auth.logout();
+    final login = auth.saveUserCredential(
+        {'userId': 8, 'accessToken': 'b', 'refreshToken': 'br'});
+    storage.phoneWrite!.complete();
+    await Future.wait([save, logout, login]);
+    expect(auth.user?.userId, 8);
+    expect(auth.user?.phoneNumber, isNull);
+    expect(storage.values['phoneNumber'], isNull);
   });
 
   test(

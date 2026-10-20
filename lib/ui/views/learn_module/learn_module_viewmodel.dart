@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter/widgets.dart';
+import '../../../services/premium_purchase_service.dart';
 import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
@@ -47,19 +49,36 @@ class LearnModuleViewModel extends ReactiveViewModel {
   void pop() => _navigationService.back();
 
   Future<void> navigateToLearnLesson(
-          {required bool first, required LearnModule module}) async =>
-      await _navigationService.navigateToLearnLessonView(
-          first: first, module: module);
+      {required bool first,
+      required LearnModule module,
+      BuildContext? context}) async {
+    if (await interceptIosPremium(SubscriptionType.learn,
+        effectiveAccessTier: module.effectiveAccessTier,
+        access: module.access,
+        context: context)) {
+      return;
+    }
+    await _navigationService.navigateToLearnLessonView(
+        first: first, module: module);
+  }
 
   Future<void> navigateToLearnPractice(
-          {required int id, required String module}) async =>
-      await _navigationService.navigateToLearnPracticeView(
-        id: id,
-        practice: LearnPractices.module,
-        label: LocaleKeys.begin_module_practice.tr(),
-        subtitle: LocaleKeys.lets_quickly_review.tr(),
-        title: '${LocaleKeys.lets_practice_module.tr()} $module',
-      );
+      {required int id, required String module, BuildContext? context}) async {
+    final item = modules.where((item) => item.id == id).firstOrNull;
+    if (await interceptIosPremium(SubscriptionType.learn,
+        effectiveAccessTier: item?.effectiveAccessTier,
+        access: item?.access,
+        context: context)) {
+      return;
+    }
+    await _navigationService.navigateToLearnPracticeView(
+      id: id,
+      practice: LearnPractices.module,
+      label: LocaleKeys.begin_module_practice.tr(),
+      subtitle: LocaleKeys.lets_quickly_review.tr(),
+      title: '${LocaleKeys.lets_practice_module.tr()} $module',
+    );
+  }
 
   // Remote api call
 

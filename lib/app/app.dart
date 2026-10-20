@@ -69,6 +69,7 @@ import 'package:yimaru_app/ui/views/app_rating/app_rating_view.dart';
 import 'package:yimaru_app/services/developer_mode_service.dart';
 import 'package:yimaru_app/services/lesson_realtime_service.dart';
 import 'package:yimaru_app/services/reminder_activity_service.dart';
+import 'package:yimaru_app/services/premium_purchase_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -139,6 +140,7 @@ import 'package:yimaru_app/services/reminder_activity_service.dart';
     LazySingleton(classType: LearnService),
     LazySingleton(classType: LessonRealtimeService),
     LazySingleton(classType: ReminderActivityService),
+    LazySingleton(classType: PremiumPurchaseService),
     LazySingleton(classType: LocalizationService),
     LazySingleton(classType: OnboardingService),
     LazySingleton(classType: AppleAuthService),

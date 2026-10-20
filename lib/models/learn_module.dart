@@ -13,6 +13,9 @@ class LearnModule {
 
   final Access? access;
 
+  @JsonKey(name: 'effective_access_tier')
+  final String? effectiveAccessTier;
+
   final String? description;
 
   @JsonKey(name: 'program_id')
@@ -29,6 +32,7 @@ class LearnModule {
     this.icon,
     this.name,
     this.access,
+    this.effectiveAccessTier,
     this.courseId,
     this.sortOrder,
     this.programId,
@@ -41,6 +45,7 @@ class LearnModule {
     String? name,
     int? courseId,
     Access? access,
+    String? effectiveAccessTier,
     int? programId,
     int? sortOrder,
     String? description,
@@ -50,6 +55,7 @@ class LearnModule {
       icon: icon ?? this.icon,
       name: name ?? this.name,
       access: access ?? this.access,
+      effectiveAccessTier: effectiveAccessTier ?? this.effectiveAccessTier,
       courseId: courseId ?? this.courseId,
       sortOrder: sortOrder ?? this.sortOrder,
       programId: programId ?? this.programId,

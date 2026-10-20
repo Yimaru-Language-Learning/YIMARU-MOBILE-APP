@@ -30,6 +30,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
     if (viewModel.user?.learn ?? false) {
       if (module.access?.isCompleted ?? false) {
         await viewModel.navigateToLearnPractice(
+            context: context,
             id: module.id ?? 0, module: module.name ?? '');
       } else {
         if (module.access?.isAccessible ?? false) {
@@ -46,6 +47,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
       }
     } else {
       await viewModel.navigateToLearnPractice(
+          context: context,
           id: module.id ?? 0, module: module.name ?? '');
     }
   }
@@ -211,6 +213,7 @@ class LearnModuleView extends StackedView<LearnModuleViewModel> {
             module: viewModel.modules[index],
           ),
           onModuleTap: () async => await viewModel.navigateToLearnLesson(
+              context: context,
               first: first && index == 0, module: viewModel.modules[index]),
         ),
       );

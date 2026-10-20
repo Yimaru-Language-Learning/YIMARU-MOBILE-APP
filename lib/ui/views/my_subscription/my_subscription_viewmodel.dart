@@ -1,9 +1,10 @@
 import 'package:stacked/stacked.dart';
+import 'package:flutter/widgets.dart';
 import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../app/app.router.dart';
+import '../../../services/premium_purchase_service.dart';
 import '../../../models/my_subscription.dart';
 import '../../../services/api_service.dart';
 import '../../../services/status_checker_service.dart';
@@ -24,8 +25,9 @@ class MySubscriptionViewModel extends BaseViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToSubscription(SubscriptionType type) async {
-    await _navigationService.navigateToSubscriptionView(type: type);
+  Future<void> navigateToSubscription(SubscriptionType type,
+      {required BuildContext context}) async {
+    await locator<PremiumPurchaseService>().open(type, context: context);
   }
 
   // My subscriptions

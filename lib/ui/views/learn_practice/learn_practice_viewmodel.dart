@@ -1,5 +1,4 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -10,16 +9,13 @@ import 'package:yimaru_app/models/user.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
 import 'package:yimaru_app/services/voice_recorder_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 
 import '../../../app/app.locator.dart';
-import '../../../app/app.router.dart';
 import '../../../services/api_service.dart';
+import '../../../services/premium_purchase_service.dart';
 import '../../../services/audio_player_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
-import '../../common/app_colors.dart';
-import '../../common/ui_helpers.dart';
 
 class LearnPracticeViewModel extends ReactiveViewModel
     with FormStateHelper
@@ -29,8 +25,6 @@ class LearnPracticeViewModel extends ReactiveViewModel
   final _apiService = locator<ApiService>();
 
   final _learnService = locator<LearnService>();
-
-  final _dialogService = locator<DialogService>();
 
   final _statusChecker = locator<StatusCheckerService>();
 
@@ -237,16 +231,6 @@ class LearnPracticeViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
-  // Dialogue
-  Future<void> showPurchaseDialog() async => await _dialogService.showDialog(
-        barrierDismissible: true,
-        cancelTitleColor: kcDarkGrey,
-        title: LocaleKeys.notice.tr(),
-        buttonTitleColor: kcPrimaryColor,
-        buttonTitle: LocaleKeys.close.tr(),
-        description: LocaleKeys.ios_purchase.tr(),
-      );
-
   // In-app navigation
   void goTo(int page) {
     _currentPage = page;
@@ -300,8 +284,8 @@ class LearnPracticeViewModel extends ReactiveViewModel
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnSubscription() async => await _navigationService
-      .navigateToSubscriptionView(type: SubscriptionType.learn);
+  Future<void> navigateToLearnSubscription({BuildContext? context}) =>
+      locator<PremiumPurchaseService>().open(SubscriptionType.learn, context: context);
 
   // Remote api call
 
@@ -427,42 +411,6 @@ class LearnPracticeViewModel extends ReactiveViewModel
         _completionFailed = !success;
         setBusyForObject(StateObjects.completeLearnPractice, false);
       }
-    }
-  }
-
-  // Update  profile
-  Future<void> updateProfile(String phoneNumber) async =>
-      await runBusyFuture(_updateProfile(phoneNumber),
-          busyObject: StateObjects.profileUpdate);
-
-  Future<void> _updateProfile(String phoneNumber) async {
-    Map<String, dynamic> data = {
-      'gender': user?.gender,
-      'region': user?.region,
-      'country': user?.country,
-      'phone_number': phoneNumber,
-      'last_name': user?.lastName,
-      'first_name': user?.firstName,
-      'occupation': user?.occupation,
-      'birth_day': DateFormat('yyyy-MM-dd').format(DateTime.now()),
-    };
-
-    if (await _statusChecker.checkConnection()) {
-      Map<String, dynamic> response = await _apiService.completeProfile(data);
-      if (response['status'] == ResponseStatus.success) {
-        await _authenticationService.updateUserData(data);
-        pop();
-        showSuccessToast(response['message']);
-      } else {
-        showErrorToast(response['message']);
-      }
-    }
-  }
-
-  // Ios checkout
-  Future<void> iosCheckout(Map<String, dynamic> data) async {
-    if (await _statusChecker.checkConnection()) {
-      await _apiService.iosCheckout(data);
     }
   }
 

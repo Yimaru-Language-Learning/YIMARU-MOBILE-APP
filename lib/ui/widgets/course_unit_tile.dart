@@ -280,6 +280,7 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
         itemBuilder: (context, index) => _buildCourseModuleCard(
             module: unit.modules?[index],
             onTap: () async => await viewModel.navigateToCourseModule(
+                context: context,
                 first: first && index == 0,
                 type: type,
                 catalog: catalog,

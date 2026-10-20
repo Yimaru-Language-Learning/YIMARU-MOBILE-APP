@@ -275,6 +275,16 @@ class AuthenticationService with ListenableServiceMixin {
   }
 
   // Update phone number
+  Future<void> saveContactPhone(String phone,
+          {required int expectedSessionGeneration}) =>
+      _writeCredentials(() async {
+        if (expectedSessionGeneration != _sessionGeneration) return;
+        await _secureService.setString('phoneNumber', phone);
+        if (expectedSessionGeneration != _sessionGeneration) return;
+        _user = _user?.copyWith(phoneNumber: phone);
+        notifyListeners();
+      });
+
   Future<void> updatePhoneNumber(Map<String, dynamic> data) async {
     await _secureService.setString('phoneNumber', data['phone_number']);
 

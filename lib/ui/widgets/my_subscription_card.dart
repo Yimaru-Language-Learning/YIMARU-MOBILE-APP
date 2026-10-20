@@ -26,37 +26,47 @@ class MySubscriptionCard extends ViewModelWidget<MySubscriptionViewModel> {
     return remaining.inDays.toString();
   }
 
-  Future<void> _navigate(MySubscriptionViewModel viewModel) async {
+  Future<void> _navigate(
+      MySubscriptionViewModel viewModel, BuildContext context) async {
     if (subscription.category == 'LEARN_ENGLISH') {
-      await viewModel.navigateToSubscription(SubscriptionType.learn);
+      await viewModel.navigateToSubscription(SubscriptionType.learn,
+          context: context);
     } else if (subscription.category == 'DUOLINGO') {
-      await viewModel.navigateToSubscription(SubscriptionType.duolingo);
+      await viewModel.navigateToSubscription(SubscriptionType.duolingo,
+          context: context);
     } else {
-      await viewModel.navigateToSubscription(SubscriptionType.ielts);
+      await viewModel.navigateToSubscription(SubscriptionType.ielts,
+          context: context);
     }
   }
 
   @override
   Widget build(BuildContext context, MySubscriptionViewModel viewModel) =>
-      _buildContainer(viewModel);
+      _buildContainer(viewModel, context);
 
-  Widget _buildContainer(MySubscriptionViewModel viewModel) => Container(
+  Widget _buildContainer(
+          MySubscriptionViewModel viewModel, BuildContext context) =>
+      Container(
         height: 300,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: kcPrimaryColor.withValues(alpha: 0.1),
         ),
-        child: _buildColumn(viewModel),
+        child: _buildColumn(viewModel, context),
       );
 
-  Widget _buildColumn(MySubscriptionViewModel viewModel) => Column(
+  Widget _buildColumn(
+          MySubscriptionViewModel viewModel, BuildContext context) =>
+      Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildColumnChildren(viewModel),
+        children: _buildColumnChildren(viewModel, context),
       );
 
-  List<Widget> _buildColumnChildren(MySubscriptionViewModel viewModel) => [
+  List<Widget> _buildColumnChildren(
+          MySubscriptionViewModel viewModel, BuildContext context) =>
+      [
         _buildIcon(),
         verticalSpaceSmall,
         _buildTitle(),
@@ -65,7 +75,7 @@ class MySubscriptionCard extends ViewModelWidget<MySubscriptionViewModel> {
         verticalSpaceMedium,
         _buildStatusSection(viewModel),
         verticalSpaceMedium,
-        _buildActionButton(viewModel),
+        _buildActionButton(viewModel, context),
       ];
 
   Widget _buildIcon() => const Icon(
@@ -123,14 +133,15 @@ class MySubscriptionCard extends ViewModelWidget<MySubscriptionViewModel> {
             subtitle: LocaleKeys.auto_renew.tr()),
       );
 
-  Widget _buildActionButton(MySubscriptionViewModel viewModel) =>
+  Widget _buildActionButton(
+          MySubscriptionViewModel viewModel, BuildContext context) =>
       CustomElevatedButton(
           height: 15,
           borderRadius: 12,
           text: LocaleKeys.resubscribe.tr(),
           onTap: subscription.status == 'ACTIVE'
               ? null
-              : () async => await _navigate(viewModel),
+              : () async => await _navigate(viewModel, context),
           foregroundColor: kcWhite,
           leadingIcon: Icons.restart_alt,
           backgroundColor: subscription.status == 'ACTIVE'

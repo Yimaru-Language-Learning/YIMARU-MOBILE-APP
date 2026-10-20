@@ -1,4 +1,6 @@
 import 'package:stacked/stacked.dart';
+import 'package:flutter/widgets.dart';
+import '../../../services/premium_purchase_service.dart';
 import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
@@ -29,15 +31,33 @@ class CourseCatalogViewModel extends ReactiveViewModel {
   void pop() => _navigationService.back();
 
   Future<void> navigateToCoursePractice(
-          {required int id, required SubscriptionType type}) async =>
-      await _navigationService.navigateToCoursePracticeView(
-          id: id, type: type, practice: CoursePractices.courseCatalog);
+      {required int id,
+      required SubscriptionType type,
+      BuildContext? context}) async {
+    final catalog = catalogs.where((item) => item.id == id).firstOrNull;
+    if (await interceptIosPremium(type,
+        effectiveAccessTier: catalog?.effectiveAccessTier,
+        access: catalog?.access,
+        context: context)) {
+      return;
+    }
+    await _navigationService.navigateToCoursePracticeView(
+        id: id, type: type, practice: CoursePractices.courseCatalog);
+  }
 
   Future<void> navigateToCourseUnit(
-          {required SubscriptionType type,
-          required CourseCatalog catalog}) async =>
-      await _navigationService.navigateToCourseUnitView(
-          type: type, catalog: catalog);
+      {required SubscriptionType type,
+      required CourseCatalog catalog,
+      BuildContext? context}) async {
+    if (await interceptIosPremium(type,
+        effectiveAccessTier: catalog.effectiveAccessTier,
+        access: catalog.access,
+        context: context)) {
+      return;
+    }
+    await _navigationService.navigateToCourseUnitView(
+        type: type, catalog: catalog);
+  }
 
   // Remote api call
 

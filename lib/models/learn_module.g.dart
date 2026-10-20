@@ -13,6 +13,7 @@ LearnModule _$LearnModuleFromJson(Map<String, dynamic> json) => LearnModule(
       access: json['access'] == null
           ? null
           : Access.fromJson(json['access'] as Map<String, dynamic>),
+      effectiveAccessTier: json['effective_access_tier'] as String?,
       courseId: (json['course_id'] as num?)?.toInt(),
       sortOrder: (json['sort_order'] as num?)?.toInt(),
       programId: (json['program_id'] as num?)?.toInt(),
@@ -25,6 +26,7 @@ Map<String, dynamic> _$LearnModuleToJson(LearnModule instance) =>
       'icon': instance.icon,
       'name': instance.name,
       'access': instance.access,
+      'effective_access_tier': instance.effectiveAccessTier,
       'description': instance.description,
       'program_id': instance.programId,
       'course_id': instance.courseId,

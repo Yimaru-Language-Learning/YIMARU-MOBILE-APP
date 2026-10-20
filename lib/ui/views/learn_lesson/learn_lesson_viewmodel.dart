@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter/widgets.dart';
 import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
@@ -11,6 +12,7 @@ import '../../../app/app.locator.dart';
 import '../../../models/learn_module.dart';
 import '../../../models/user.dart';
 import '../../../services/authentication_service.dart';
+import '../../../services/premium_purchase_service.dart';
 import '../../../services/learn_service.dart';
 import '../../../services/status_checker_service.dart';
 
@@ -50,28 +52,41 @@ class LearnLessonViewModel extends ReactiveViewModel {
   // Navigation
   void pop() => _navigationService.back();
 
-  Future<void> navigateToLearnPractice(int id) async =>
-      await _navigationService.navigateToLearnPracticeView(
-        id: id,
-        practice: LearnPractices.lesson,
-        label: LocaleKeys.start_practice.tr(),
-        title: LocaleKeys.lets_practice_module.tr(),
-        subtitle: LocaleKeys.ask_you_few_actions.tr(),
-      );
+  Future<void> navigateToLearnPractice(int id, {BuildContext? context}) async {
+    final lesson = lessons.where((item) => item.id == id).firstOrNull;
+    if (await interceptIosPremium(SubscriptionType.learn,
+        effectiveAccessTier: lesson?.effectiveAccessTier,
+        access: lesson?.access,
+        context: context)) {
+      return;
+    }
+    await _navigationService.navigateToLearnPracticeView(
+      id: id,
+      practice: LearnPractices.lesson,
+      label: LocaleKeys.start_practice.tr(),
+      title: LocaleKeys.lets_practice_module.tr(),
+      subtitle: LocaleKeys.ask_you_few_actions.tr(),
+    );
+  }
 
-  Future<void> navigateToLearnSubscription() async => await _navigationService
-      .navigateToSubscriptionView(type: SubscriptionType.learn);
+  Future<void> navigateToLearnSubscription({required BuildContext context}) =>
+      locator<PremiumPurchaseService>().open(SubscriptionType.learn, context: context);
 
   Future<void> navigateToLearnLessonDetail(
-          {required int index,
-          required bool hasPractice,
-          required LearnLesson lesson,
-          required LearnModule module}) async =>
-      await _navigationService.navigateToLearnLessonDetailView(
-          index: index,
-          lesson: lesson,
-          module: module,
-          hasPractice: hasPractice);
+      {required int index,
+      required bool hasPractice,
+      required LearnLesson lesson,
+      required LearnModule module,
+      BuildContext? context}) async {
+    if (await interceptIosPremium(SubscriptionType.learn,
+        effectiveAccessTier: lesson.effectiveAccessTier,
+        access: lesson.access,
+        context: context)) {
+      return;
+    }
+    await _navigationService.navigateToLearnLessonDetailView(
+        index: index, lesson: lesson, module: module, hasPractice: hasPractice);
+  }
 
   // Remote api call
 
