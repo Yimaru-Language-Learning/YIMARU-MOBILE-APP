@@ -1,6 +1,5 @@
 import 'package:stacked/stacked.dart';
 import 'package:flutter/widgets.dart';
-import '../../../services/premium_purchase_service.dart';
 import '../../common/retryable_load.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
@@ -54,13 +53,7 @@ class LearnProgramViewModel extends ReactiveViewModel {
 
   Future<void> navigateToLearnCourse(
       {required int id, required bool first, BuildContext? context}) async {
-    final program = learnPrograms.where((item) => item.id == id).firstOrNull;
-    if (await interceptIosPremium(SubscriptionType.learn,
-        effectiveAccessTier: program?.effectiveAccessTier,
-        access: program?.access,
-        context: context)) {
-      return;
-    }
+    // Browsing the hierarchy is not a purchase action. Paywall lessons/practices.
     await _navigationService.navigateToLearnCourseView(id: id, first: first);
   }
 

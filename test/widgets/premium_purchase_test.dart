@@ -65,6 +65,47 @@ class _Api implements ApiService {
   Completer<Map<String, dynamic>>? delayedProfile;
   final tokens = <CancelToken?>[];
   bool failRead = false;
+  bool? phoneVerified;
+  bool failPhoneStatus = false;
+  bool failCodeSend = false;
+  int codeSends = 0;
+  final verifiedCodes = <String>[];
+  bool loseVerificationResponse = false;
+  Map<String, dynamic>? serverPhone;
+  @override
+  Future<Map<String, dynamic>> getCheckoutPhone(
+      {CancelToken? cancelToken}) async {
+    if (failPhoneStatus) throw StateError('status unavailable');
+    if (serverPhone != null) return serverPhone!;
+    final phone =
+        locator<AuthenticationService>().user?.phoneNumber?.trim() ?? '';
+    return {
+      'phone_number': phone,
+      'verified': phoneVerified ?? phone.isNotEmpty
+    };
+  }
+
+  @override
+  Future<void> sendCheckoutPhoneCode(String phone,
+      {CancelToken? cancelToken}) async {
+    codeSends++;
+    if (failCodeSend) throw StateError('SMS unavailable');
+  }
+
+  @override
+  Future<String> verifyCheckoutPhone(String phone, String code,
+      {CancelToken? cancelToken}) async {
+    verifiedCodes.add(code);
+    if (code != '123456') throw StateError('invalid code');
+    if (loseVerificationResponse) {
+      serverPhone = {'phone_number': phone, 'verified': true};
+      throw DioException(
+          requestOptions: RequestOptions(path: '/verify'),
+          type: DioExceptionType.receiveTimeout);
+    }
+    return addContactPhone(phone, cancelToken: cancelToken);
+  }
+
   bool malformedRead = false;
   User profile = const User(userId: 7);
   Map<String, dynamic> result = {
@@ -210,6 +251,23 @@ void main() {
   }
 
   Future<void> continueDialog(WidgetTester tester) async {
+    final send = find.widgetWithText(TextButton, 'Send verification code');
+    if (send.evaluate().isNotEmpty) {
+      await tester.ensureVisible(send);
+      await tester.tap(send);
+      await tester.pumpAndSettle();
+      if (find.widgetWithText(TextButton, 'Verify number').evaluate().isEmpty) {
+        return;
+      }
+    }
+    final verify = find.widgetWithText(TextButton, 'Verify number');
+    if (verify.evaluate().isNotEmpty) {
+      await tester.enterText(find.byType(TextFormField).last, '123456');
+      await tester.ensureVisible(verify);
+      await tester.tap(verify);
+      await tester.pumpAndSettle();
+      return;
+    }
     await tester.ensureVisible(find.widgetWithText(TextButton, 'Continue'));
     await tester.tap(find.widgetWithText(TextButton, 'Continue'));
     await tester.pumpAndSettle();
@@ -224,7 +282,7 @@ void main() {
     await tester.enterText(find.byType(TextFormField), '912345678');
     await continueDialog(tester);
     expect(api.events, ['save:251912345678']);
-    expect(find.textContaining('only available on hard copy'), findsOneWidget);
+    expect(find.textContaining('arrange delivery'), findsOneWidget);
     await continueDialog(tester);
     expect(api.events.last, 'send:LEARN_ENGLISH');
     expect(find.textContaining('sent by SMS'), findsOneWidget);
@@ -233,20 +291,20 @@ void main() {
     await tester.tap(find.text('Premium'));
     await tester.pumpAndSettle();
     expect(find.byType(TextFormField), findsNothing);
-    expect(find.textContaining('only available on hard copy'), findsOneWidget);
+    expect(find.textContaining('arrange delivery'), findsOneWidget);
   });
 
   for (final type in [SubscriptionType.ielts, SubscriptionType.duolingo]) {
-    testWidgets('$type existing phone → hardcopy → correct category/email',
+    testWidgets('$type existing phone → hardcopy → correct category/SMS',
         (tester) async {
       auth.user = auth.user?.copyWith(phoneNumber: '251912345678');
-      api.result['channel'] = 'email';
+      api.result['channel'] = 'sms';
       await open(tester, type: type);
       expect(find.byType(TextFormField), findsNothing);
       await continueDialog(tester);
       expect(api.events,
           ['send:${type == SubscriptionType.ielts ? 'IELTS' : 'DUOLINGO'}']);
-      expect(find.textContaining('sent by email'), findsOneWidget);
+      expect(find.textContaining('sent by SMS'), findsOneWidget);
     });
   }
 
@@ -260,12 +318,12 @@ void main() {
     api.failSave = true;
     await tester.enterText(find.byType(TextFormField), '712345678');
     await continueDialog(tester);
-    expect(find.textContaining('Could not save this number'), findsOneWidget);
+    expect(find.textContaining('Could not verify this code'), findsOneWidget);
     expect(auth.user?.phoneNumber, isNull);
-    expect(find.textContaining('only available on hard copy'), findsNothing);
+    expect(find.textContaining('arrange delivery'), findsNothing);
     api.failSave = false;
     await continueDialog(tester);
-    expect(find.textContaining('only available on hard copy'), findsOneWidget);
+    expect(find.textContaining('arrange delivery'), findsOneWidget);
   });
 
   for (final hasPhone in [false, true]) {
@@ -310,8 +368,7 @@ void main() {
       auth.user = auth.user?.copyWith(phoneNumber: '251912345678');
       api.delayedDelivery = Completer<Map<String, dynamic>>();
       await open(tester, type: type, subscriptionCard: true);
-      expect(
-          find.textContaining('only available on hard copy'), findsOneWidget);
+      expect(find.textContaining('arrange delivery'), findsOneWidget);
       await continueDialog(tester);
       final navigator = StackedService.navigatorKey!.currentState!;
       unawaited(navigator.push<void>(MaterialPageRoute(
@@ -351,7 +408,7 @@ void main() {
     await tester.tap(find.text('New purchase'));
     await tester.pumpAndSettle();
     expect(api.tokens.single?.isCancelled, isTrue);
-    expect(find.textContaining('only available on hard copy'), findsOneWidget);
+    expect(find.textContaining('arrange delivery'), findsOneWidget);
     await continueDialog(tester);
     oldReply.complete({'status': ResponseStatus.success, 'channel': 'email'});
     await tester.pumpAndSettle();
@@ -359,85 +416,6 @@ void main() {
     expect(find.textContaining('sent by SMS'), findsOneWidget);
     expect(api.events, ['send:LEARN_ENGLISH', 'send:IELTS']);
   });
-
-  testWidgets('phone conflict recovers own saved contact before hardcopy/send',
-      (tester) async {
-    api.conflictSave = true;
-    // The actual /user/user-profile response uses id, not user_id. Session
-    // guards protect this authenticated read even when User.userId is absent.
-    api.profile = User.fromJson({'id': 7, 'phone_number': '251712345678'});
-    expect(api.profile.userId, isNull);
-    await open(tester);
-    await tester.enterText(find.byType(TextFormField), '912345678');
-    await continueDialog(tester);
-    expect(auth.user?.phoneNumber, '251712345678');
-    expect(api.events, ['save:251912345678', 'profile']);
-    expect(find.textContaining('only available on hard copy'), findsOneWidget);
-    await continueDialog(tester);
-    expect(api.events, ['save:251912345678', 'profile', 'send:LEARN_ENGLISH']);
-    expect(find.textContaining('sent by SMS'), findsOneWidget);
-  });
-
-  for (final failure in ['empty', 'failed', 'malformed', 'wrong account']) {
-    testWidgets('phone conflict does not recover from $failure profile',
-        (tester) async {
-      api.conflictSave = true;
-      api.failRead = failure == 'failed';
-      api.malformedRead = failure == 'malformed';
-      api.profile = failure == 'empty'
-          ? const User(userId: 7, phoneNumber: '  ')
-          : User(
-              userId: failure == 'wrong account' ? 8 : 7,
-              phoneNumber: '251712345678');
-      await open(tester);
-      await tester.enterText(find.byType(TextFormField), '912345678');
-      await continueDialog(tester);
-      expect(find.textContaining('Could not save this number'), findsOneWidget);
-      expect(find.textContaining('only available on hard copy'), findsNothing);
-      expect(auth.user?.phoneNumber, isNull);
-      expect(api.events, ['save:251912345678', 'profile']);
-      // Only a deliberate user retry reattempts; no automatic save or delivery.
-      api.failRead = false;
-      api.malformedRead = false;
-      api.profile = const User(userId: 7, phoneNumber: '251712345678');
-      await continueDialog(tester);
-      expect(auth.user?.phoneNumber, '251712345678');
-      expect(
-          find.textContaining('only available on hard copy'), findsOneWidget);
-      expect(api.events,
-          ['save:251912345678', 'profile', 'save:251912345678', 'profile']);
-    });
-  }
-
-  for (final switchAccount in [false, true]) {
-    testWidgets(
-        'phone recovery ignores late reads after account switch=$switchAccount',
-        (tester) async {
-      api.conflictSave = true;
-      api.delayedProfile = Completer<Map<String, dynamic>>();
-      await open(tester);
-      await tester.enterText(find.byType(TextFormField), '912345678');
-      await continueDialog(tester);
-      if (switchAccount) {
-        auth.sessionGeneration++;
-        auth.user = const User(userId: 8, phoneNumber: '251911111111');
-      } else {
-        unawaited(StackedService.navigatorKey!.currentState!.push<void>(
-            MaterialPageRoute(
-                builder: (_) => const Scaffold(body: Text('Another page')))));
-        await tester.pumpAndSettle();
-      }
-      api.delayedProfile!.complete({
-        'status': ResponseStatus.success,
-        'data': const User(userId: 7, phoneNumber: '251712345678')
-      });
-      await tester.pumpAndSettle();
-      expect(auth.user?.phoneNumber, switchAccount ? '251911111111' : null);
-      expect(find.textContaining('only available on hard copy'), findsNothing);
-      expect(api.events, ['save:251912345678', 'profile']);
-      expect(tester.takeException(), isNull);
-    });
-  }
 
   testWidgets(
       'account switch during phone save cannot send or overwrite new account',
@@ -452,7 +430,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(auth.user?.phoneNumber, '251712345678');
     expect(api.events, ['save:251912345678']);
-    expect(find.textContaining('only available on hard copy'), findsNothing);
+    expect(find.textContaining('arrange delivery'), findsNothing);
   });
 
   testWidgets('blank phone is missing; Amharic dialog scrolls with large text',
@@ -525,7 +503,7 @@ void main() {
       expect(find.text('Content opened'), findsNothing);
       expect(
           find.textContaining('could not check your access'), findsOneWidget);
-      expect(find.textContaining('only available on hard copy'), findsNothing);
+      expect(find.textContaining('arrange delivery'), findsNothing);
       expect(api.events, ['profile']);
       await tester.tap(find.widgetWithText(TextButton, 'Retry'));
       await tester.pumpAndSettle();
@@ -568,7 +546,7 @@ void main() {
     api.delayedDelivery = null;
     await tester.tap(find.text('Premium'));
     await tester.pumpAndSettle();
-    expect(find.textContaining('only available on hard copy'), findsOneWidget);
+    expect(find.textContaining('arrange delivery'), findsOneWidget);
     expect(api.tokens.single?.isCancelled, isTrue);
     await continueDialog(tester);
     expect(find.textContaining('sent by SMS'), findsOneWidget);
@@ -577,5 +555,82 @@ void main() {
     expect(find.textContaining('sent by email'), findsNothing);
     expect(find.textContaining('sent by SMS'), findsOneWidget);
     expect(api.events, ['send:LEARN_ENGLISH', 'send:LEARN_ENGLISH']);
+  });
+
+  testWidgets('an existing unverified phone still requires an SMS code',
+      (tester) async {
+    auth.user = auth.user
+        ?.copyWith(phoneNumber: '251712345678', email: 'verified@example.test');
+    api.phoneVerified = false;
+    await open(tester);
+    expect(find.text('Profile completion'), findsOneWidget);
+    expect(find.textContaining('arrange delivery'), findsNothing);
+    await continueDialog(tester);
+    expect(api.codeSends, 1);
+    expect(api.verifiedCodes, ['123456']);
+    expect(find.textContaining('arrange delivery'), findsOneWidget);
+    expect(api.events.where((e) => e.startsWith('send:')), isEmpty);
+  });
+
+  testWidgets(
+      'bad code and premature resend never advance or send a checkout link',
+      (tester) async {
+    await open(tester);
+    await tester.enterText(find.byType(TextFormField), '712345678');
+    await tester.tap(find.widgetWithText(TextButton, 'Send verification code'));
+    await tester.pumpAndSettle();
+    expect(auth.user?.phoneNumber, isNull);
+    await tester.enterText(find.byType(TextFormField).last, '000000');
+    await tester.tap(find.widgetWithText(TextButton, 'Verify number'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Could not verify this code'), findsOneWidget);
+    await tester.tap(find.widgetWithText(TextButton, 'Resend code'));
+    await tester.pumpAndSettle();
+    expect(api.codeSends, 1);
+    expect(find.textContaining('60 seconds'), findsOneWidget);
+    expect(api.events, isEmpty);
+  });
+
+  testWidgets(
+      'verification SMS failure leaves the phone unchanged and never sends a link',
+      (tester) async {
+    api.failCodeSend = true;
+    await open(tester);
+    await tester.enterText(find.byType(TextFormField), '912345678');
+    await continueDialog(tester);
+    expect(find.textContaining('Could not confirm the verification SMS'),
+        findsOneWidget);
+    expect(api.codeSends, 1);
+    expect(api.verifiedCodes, isEmpty);
+    expect(auth.user?.phoneNumber, isNull);
+    expect(api.events, isEmpty);
+  });
+
+  testWidgets(
+      'phone status failure retries only its GET before showing verification',
+      (tester) async {
+    api.failPhoneStatus = true;
+    await open(tester);
+    expect(find.text('Retry'), findsOneWidget);
+    api.failPhoneStatus = false;
+    await tester.tap(find.widgetWithText(TextButton, 'Retry'));
+    await tester.pumpAndSettle();
+    expect(find.text('Profile completion'), findsOneWidget);
+    expect(api.codeSends, 0);
+    expect(api.events, isEmpty);
+  });
+
+  testWidgets(
+      'a lost verification response is reconciled by a GET, never another SMS',
+      (tester) async {
+    api.loseVerificationResponse = true;
+    await open(tester);
+    await tester.enterText(find.byType(TextFormField), '712345678');
+    await continueDialog(tester);
+    expect(api.codeSends, 1);
+    expect(api.verifiedCodes, ['123456']);
+    expect(auth.user?.phoneNumber, '251712345678');
+    expect(find.textContaining('arrange delivery'), findsOneWidget);
+    expect(api.events, isEmpty);
   });
 }

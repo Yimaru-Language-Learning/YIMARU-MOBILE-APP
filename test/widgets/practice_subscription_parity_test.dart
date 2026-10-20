@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -38,6 +39,10 @@ class _Auth implements AuthenticationService {
 
 class _Api implements ApiService {
   final events = <String>[];
+  @override
+  Future<Map<String, dynamic>> getCheckoutPhone(
+          {CancelToken? cancelToken}) async =>
+      {'phone_number': '251912345678', 'verified': true};
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
@@ -192,8 +197,7 @@ void main() {
             expect(find.byType(AlertDialog), findsNothing);
           } else if (isIOS) {
             expect(navigation.categories, isEmpty);
-            expect(find.textContaining('only available on hard copy'),
-                findsOneWidget);
+            expect(find.textContaining('arrange delivery'), findsOneWidget);
             await tester.tap(find.widgetWithText(TextButton, 'Cancel'));
             await tester.pumpAndSettle();
             expect(learn.starts + exam.starts, 0);

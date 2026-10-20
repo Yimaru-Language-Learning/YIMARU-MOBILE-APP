@@ -25,23 +25,69 @@ void main() {
     await locator.reset();
   });
 
+  test(
+      'phone verification uses authenticated contact endpoints, not login or full profile updates',
+      () async {
+    final calls = <String>[];
+    transport.dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (request, handler) {
+      calls.add('${request.method}:${request.uri.path}');
+      if (request.method == 'GET') {
+        handler
+            .resolve(Response(requestOptions: request, statusCode: 200, data: {
+          'data': {'phone_number': '251712345678', 'verified': false}
+        }));
+      } else if (request.path.endsWith('/otp')) {
+        expect(request.data, {'phone_number': '251712345678'});
+        handler.resolve(Response(requestOptions: request, statusCode: 200));
+      } else {
+        expect(request.data, {'phone_number': '251712345678', 'otp': '123456'});
+        handler
+            .resolve(Response(requestOptions: request, statusCode: 200, data: {
+          'data': {'phone_number': '251712345678', 'verified': true}
+        }));
+      }
+    }));
+    expect((await api.getCheckoutPhone())['verified'], false);
+    await api.sendCheckoutPhoneCode('251712345678');
+    expect(await api.verifyCheckoutPhone('251712345678', '123456'),
+        '251712345678');
+    expect(calls, [
+      'GET:/api/v1/user/checkout-phone',
+      'POST:/api/v1/user/checkout-phone/otp',
+      'POST:/api/v1/user/checkout-phone/verify'
+    ]);
+  });
+
+  test('a verification response cannot adopt a different phone', () async {
+    transport.dio.interceptors.add(InterceptorsWrapper(
+        onRequest: (request, handler) => handler.resolve(
+                Response(requestOptions: request, statusCode: 200, data: {
+              'data': {'phone_number': '251912345678', 'verified': true}
+            }))));
+    await expectLater(
+        api.verifyCheckoutPhone('251712345678', '123456'), throwsStateError);
+  });
+
   for (final channel in ['sms', 'email']) {
-    test('HTTP 200 $channel delivery is recognized', () async {
+    test('HTTP 200 $channel is only accepted for SMS', () async {
       transport.dio.interceptors
           .add(InterceptorsWrapper(onRequest: (request, handler) {
         expect(request.path, endsWith('/subscriptions/request-checkout-link'));
-        expect(request.data, {'category': 'LEARN_ENGLISH'});
+        expect(request.data,
+            {'category': 'LEARN_ENGLISH', 'delivery': 'verified_sms'});
         handler
             .resolve(Response(requestOptions: request, statusCode: 200, data: {
           'data': {'channel': channel}
         }));
       }));
       final result = await api.iosCheckout({'category': 'LEARN_ENGLISH'});
-      expect(result['status'], ResponseStatus.success);
-      expect(result['channel'], channel);
+      expect(result['status'],
+          channel == 'sms' ? ResponseStatus.success : ResponseStatus.failure);
+      if (channel == 'sms') expect(result['channel'], channel);
     });
   }
-  for (final status in [400, 409, 429, 500, 503]) {
+  for (final status in [400, 409, 422, 429, 500, 503]) {
     test('HTTP $status is recoverable and never automatically resends',
         () async {
       var sends = 0;
@@ -112,13 +158,15 @@ void main() {
     test('phone save preserves HTTP $status for caller-controlled recovery',
         () async {
       var requests = 0;
-      transport.dio.interceptors.add(InterceptorsWrapper(
-          onRequest: (request, handler) {
+      transport.dio.interceptors
+          .add(InterceptorsWrapper(onRequest: (request, handler) {
         requests++;
-        handler.reject(DioException(requestOptions: request,
+        handler.reject(DioException(
+            requestOptions: request,
             response: Response(requestOptions: request, statusCode: status)));
       }));
-      await expectLater(api.addContactPhone('251912345678'),
+      await expectLater(
+          api.addContactPhone('251912345678'),
           throwsA(isA<DioException>().having(
               (error) => error.response?.statusCode, 'status', status)));
       expect(requests, 1);

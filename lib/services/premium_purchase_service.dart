@@ -15,6 +15,7 @@ import 'api_service.dart';
 import 'authentication_service.dart';
 import 'ios_premium_checkout_flow.dart';
 
+// Used at premium course/lesson/practice actions, not programme/module browsing.
 // Only intercept subscription locks. Sequential/prerequisite locks keep their
 // existing handling; inherited FREE and OPEN_LEARNER content stays accessible.
 // Practice Start separately preserves the subscription-only check on Android
@@ -123,6 +124,7 @@ class PremiumPurchaseService {
     final userId = auth.user?.userId;
     if (userId == null) return;
     final cancellation = CancelToken();
+    bool phoneReady = false;
     ModalRoute<dynamic>? ownedDialog;
     bool current() =>
         origin.mounted &&
@@ -134,49 +136,68 @@ class PremiumPurchaseService {
       await _flow.run(
         isCurrent: current,
         onSuperseded: () => cancellation.cancel('Purchase flow superseded'),
-        needsPhone: () => auth.user?.phoneNumber?.trim().isEmpty ?? true,
-        collectPhone: () async =>
-            await showDialog<bool>(
-              context: origin,
-              builder: (dialogContext) {
-                ownedDialog = ModalRoute.of(dialogContext);
-                return PremiumPhoneDialog(
-                  isCurrent: current,
-                  savePhone: (phone) async {
-                    if (!current()) return false;
-                    final api = locator<ApiService>();
-                    String saved;
-                    try {
-                      saved = await api.addContactPhone(phone,
-                          cancelToken: cancellation);
-                    } on DioException catch (error) {
-                      if (error.response?.statusCode != 409 || !current()) {
-                        rethrow;
-                      }
-                      // Another device may have filled the missing contact.
-                      // Recover our own saved phone; never overwrite it or
-                      // adopt a number belonging to a different account.
-                      final response = await api.getProfileData(userId);
+        needsPhone: () => !phoneReady,
+        collectPhone: () async {
+          final api = locator<ApiService>();
+          final status = await _readAccess<Map<String, dynamic>>(
+            context: origin,
+            isCurrent: current,
+            read: () => api.getCheckoutPhone(cancelToken: cancellation),
+          );
+          if (!origin.mounted || !current() || status == null) return false;
+          if (status['verified'] == true &&
+              RegExp(r'^251[79][0-9]{8}$')
+                  .hasMatch(status['phone_number'] as String)) {
+            phoneReady = true;
+            return true;
+          }
+          return await showDialog<bool>(
+                context: origin,
+                builder: (dialogContext) {
+                  ownedDialog = ModalRoute.of(dialogContext);
+                  return PremiumPhoneDialog(
+                    initialPhone: status['phone_number'] as String,
+                    isCurrent: current,
+                    sendCode: (phone) => api.sendCheckoutPhoneCode(phone,
+                        cancelToken: cancellation),
+                    verifyPhone: (phone, code) async {
                       if (!current()) return false;
-                      final profile = response['data'];
-                      if (response['status'] != ResponseStatus.success ||
-                          profile is! User ||
-                          (profile.userId != null &&
-                              profile.userId != userId) ||
-                          (profile.phoneNumber?.trim().isEmpty ?? true)) {
-                        throw StateError('Could not recover saved contact');
+                      String saved;
+                      try {
+                        saved = await api.verifyCheckoutPhone(phone, code,
+                            cancelToken: cancellation);
+                      } on DioException {
+                        if (!current() || cancellation.isCancelled) {
+                          return false;
+                        }
+                        // Verification may have committed before its response
+                        // was lost. Reconcile our own exact phone with a GET;
+                        // never resend an OTP or adopt a different contact.
+                        final status = await api.getCheckoutPhone(
+                            cancelToken: cancellation);
+                        if (!current() ||
+                            status['verified'] != true ||
+                            status['phone_number'] != phone) {
+                          rethrow;
+                        }
+                        saved = phone;
                       }
-                      saved = profile.phoneNumber!.trim();
-                    }
-                    if (!current()) return false;
-                    await auth.saveContactPhone(saved,
-                        expectedSessionGeneration: generation);
-                    return current();
-                  },
-                );
-              },
-            ) ??
-            false,
+                      if (!current()) return false;
+                      try {
+                        await auth.saveContactPhone(saved,
+                            expectedSessionGeneration: generation);
+                      } catch (_) {
+                        // A local-cache failure cannot undo server verification.
+                        // Delivery rechecks the server contact, not this cache.
+                      }
+                      phoneReady = current();
+                      return phoneReady;
+                    },
+                  );
+                },
+              ) ??
+              false;
+        },
         confirmHardcopy: () async =>
             await showDialog<bool>(
               context: origin,
@@ -211,11 +232,12 @@ class PremiumPurchaseService {
           if (result['status'] == ResponseStatus.success) {
             message = result['channel'] == 'sms'
                 ? 'checkout_link_sms'
-                : 'checkout_link_email';
+                : 'checkout_link_uncertain';
           } else {
             message = switch (result['statusCode']) {
               429 => 'checkout_link_recent',
               409 => 'checkout_already_subscribed',
+              422 => 'checkout_phone_reverify',
               _ => 'checkout_link_uncertain',
             };
           }

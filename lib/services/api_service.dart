@@ -1590,19 +1590,62 @@ class ApiService {
     return saved;
   }
 
+  Future<Map<String, dynamic>> getCheckoutPhone(
+      {CancelToken? cancelToken}) async {
+    final response = await _service.dio
+        .get('$kBaseUrl/api/v1/user/checkout-phone', cancelToken: cancelToken);
+    final body = response.data;
+    final data = body is Map ? body['data'] : null;
+    if (response.statusCode != 200 ||
+        data is! Map ||
+        data['verified'] is! bool ||
+        data['phone_number'] is! String) {
+      throw StateError('Could not check verified contact');
+    }
+    return Map<String, dynamic>.from(data);
+  }
+
+  Future<void> sendCheckoutPhoneCode(String phone,
+      {CancelToken? cancelToken}) async {
+    final response = await _service.dio.post(
+        '$kBaseUrl/api/v1/user/checkout-phone/otp',
+        data: {'phone_number': phone},
+        cancelToken: cancelToken);
+    if (response.statusCode != 200) {
+      throw StateError('Could not request verification');
+    }
+  }
+
+  Future<String> verifyCheckoutPhone(String phone, String code,
+      {CancelToken? cancelToken}) async {
+    final response = await _service.dio.post(
+        '$kBaseUrl/api/v1/user/checkout-phone/verify',
+        data: {'phone_number': phone, 'otp': code},
+        cancelToken: cancelToken);
+    final body = response.data;
+    final data = body is Map ? body['data'] : null;
+    if (response.statusCode != 200 ||
+        data is! Map ||
+        data['verified'] != true ||
+        data['phone_number'] != phone) {
+      throw StateError('Could not verify contact');
+    }
+    return phone;
+  }
+
   // Request delivery once; never automatically retry a checkout-link send.
   Future<Map<String, dynamic>> iosCheckout(Map<String, dynamic> data,
       {CancelToken? cancelToken}) async {
     try {
       Response response = await _service.dio.post(
           '$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kSubscriptionsUrl/$kIosCheckout',
-          data: data,
+          data: {...data, 'delivery': 'verified_sms'},
           cancelToken: cancelToken);
 
       if (response.statusCode == 200 &&
           response.data is Map &&
           response.data['data'] is Map &&
-          ['sms', 'email'].contains(response.data['data']?['channel'])) {
+          response.data['data']?['channel'] == 'sms') {
         return {
           'status': ResponseStatus.success,
           'channel': response.data['data']['channel'],

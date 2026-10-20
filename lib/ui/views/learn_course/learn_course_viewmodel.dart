@@ -43,7 +43,8 @@ class LearnCourseViewModel extends ReactiveViewModel {
   void pop() => _navigationService.back();
 
   Future<void> navigateToLearnSubscription({required BuildContext context}) =>
-      locator<PremiumPurchaseService>().open(SubscriptionType.learn, context: context);
+      locator<PremiumPurchaseService>()
+          .open(SubscriptionType.learn, context: context);
 
   Future<void> navigateToLearnModule(
       {required bool first,

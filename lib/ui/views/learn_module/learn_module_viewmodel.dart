@@ -52,12 +52,6 @@ class LearnModuleViewModel extends ReactiveViewModel {
       {required bool first,
       required LearnModule module,
       BuildContext? context}) async {
-    if (await interceptIosPremium(SubscriptionType.learn,
-        effectiveAccessTier: module.effectiveAccessTier,
-        access: module.access,
-        context: context)) {
-      return;
-    }
     await _navigationService.navigateToLearnLessonView(
         first: first, module: module);
   }

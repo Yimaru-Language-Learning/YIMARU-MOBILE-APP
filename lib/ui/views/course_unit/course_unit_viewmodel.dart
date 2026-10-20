@@ -38,12 +38,6 @@ class CourseUnitViewModel extends ReactiveViewModel {
       required SubscriptionType type,
       required CourseCatalog catalog,
       BuildContext? context}) async {
-    if (await interceptIosPremium(type,
-        effectiveAccessTier: module?.effectiveAccessTier,
-        access: module?.access,
-        context: context)) {
-      return;
-    }
     await _navigationService.navigateToCourseModuleView(
         first: first, type: type, module: module, catalog: catalog);
   }
