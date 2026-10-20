@@ -297,7 +297,7 @@ void main() {
     expect(find.textContaining('arrange delivery'), findsOneWidget);
     await continueDialog(tester);
     expect(api.events.last, 'send:LEARN_ENGLISH');
-    expect(find.textContaining('sent by SMS'), findsOneWidget);
+    expect(find.text('Check your SMS inbox now'), findsOneWidget);
     await tester.tap(find.widgetWithText(TextButton, 'Close'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Premium'));
@@ -316,7 +316,7 @@ void main() {
       await continueDialog(tester);
       expect(api.events,
           ['send:${type == SubscriptionType.ielts ? 'IELTS' : 'DUOLINGO'}']);
-      expect(find.textContaining('sent by SMS'), findsOneWidget);
+      expect(find.text('Check your SMS inbox now'), findsOneWidget);
     });
   }
 
@@ -425,7 +425,7 @@ void main() {
     oldReply.complete({'status': ResponseStatus.success, 'channel': 'email'});
     await tester.pumpAndSettle();
     expect(find.textContaining('sent by email'), findsNothing);
-    expect(find.textContaining('sent by SMS'), findsOneWidget);
+    expect(find.text('Check your SMS inbox now'), findsOneWidget);
     expect(api.events, ['send:LEARN_ENGLISH', 'send:IELTS']);
   });
 
@@ -499,7 +499,7 @@ void main() {
       api.result = {'status': ResponseStatus.failure, 'statusCode': status};
       await open(tester);
       await continueDialog(tester);
-      expect(find.textContaining('sent by SMS'), findsNothing);
+      expect(find.text('Check your SMS inbox now'), findsNothing);
       expect(find.byType(AlertDialog), findsOneWidget);
       expect(api.events, ['send:LEARN_ENGLISH']);
     });
@@ -561,11 +561,11 @@ void main() {
     expect(find.textContaining('arrange delivery'), findsOneWidget);
     expect(api.tokens.single?.isCancelled, isTrue);
     await continueDialog(tester);
-    expect(find.textContaining('sent by SMS'), findsOneWidget);
+    expect(find.text('Check your SMS inbox now'), findsOneWidget);
     oldReply.complete({'status': ResponseStatus.success, 'channel': 'email'});
     await tester.pumpAndSettle();
     expect(find.textContaining('sent by email'), findsNothing);
-    expect(find.textContaining('sent by SMS'), findsOneWidget);
+    expect(find.text('Check your SMS inbox now'), findsOneWidget);
     expect(api.events, ['send:LEARN_ENGLISH', 'send:LEARN_ENGLISH']);
   });
 
@@ -689,26 +689,59 @@ void main() {
   });
 
   testWidgets(
-      'unsupported attached phone blocks checkout without offering replacement',
+      'verified Ethiopian phone eligibility does not use profile country',
       (tester) async {
+    auth.user = auth.user?.copyWith(country: 'United States');
     api.serverPhone = {
-      'phone_number': '+12025550123',
+      'phone_number': '251912345678',
       'has_phone': true,
-      'verified': false
+      'verified': true
     };
     await open(tester);
-    expect(find.textContaining('Contact support to update'), findsOneWidget);
     expect(find.byType(TextFormField), findsNothing);
-    expect(
-        tester
-            .widget<TextButton>(
-                find.widgetWithText(TextButton, 'Send verification code'))
-            .onPressed,
-        isNull);
-    expect(find.widgetWithText(TextButton, 'Change number'), findsNothing);
-    expect(api.requestedPhones, isEmpty);
-    expect(api.events, isEmpty);
+    expect(find.textContaining('arrange delivery'), findsOneWidget);
+    await continueDialog(tester);
+    expect(api.events, ['send:LEARN_ENGLISH']);
   });
+
+  testWidgets('foreign contact does not block an existing active subscription',
+      (tester) async {
+    api.profile = const User(
+        userId: 7,
+        phoneNumber: '+12025550123',
+        activeSubscriptions: [
+          ActiveSubscription(category: 'LEARN_ENGLISH', status: 'ACTIVE')
+        ]);
+    await open(tester, checkAccess: true);
+    expect(find.text('Content opened'), findsOneWidget);
+    expect(find.byType(AlertDialog), findsNothing);
+    expect(api.events, ['profile']);
+    expect(api.requestedPhones, isEmpty);
+  });
+
+  for (final verified in [false, true]) {
+    for (final language in ['en', 'am']) {
+      testWidgets(
+          'foreign saved phone (verified=$verified, $language) shows no checkout modal or SMS',
+          (tester) async {
+        // The server contact, not a stale local profile/country, is authoritative.
+        auth.user = auth.user
+            ?.copyWith(phoneNumber: '251712345678', country: 'Ethiopia');
+        api.serverPhone = {
+          'phone_number': '+12025550123',
+          'has_phone': true,
+          'verified': verified
+        };
+        await open(tester, language: language);
+        expect(find.byType(SnackBar), findsOneWidget);
+        expect(find.byType(AlertDialog), findsNothing);
+        expect(find.byType(TextFormField), findsNothing);
+        expect(api.requestedPhones, isEmpty);
+        expect(api.verifiedCodes, isEmpty);
+        expect(api.events, isEmpty);
+      });
+    }
+  }
 
   testWidgets(
       'a newly attached contact on another device requires reopening, not replacement',

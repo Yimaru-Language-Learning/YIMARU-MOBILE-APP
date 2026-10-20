@@ -145,9 +145,17 @@ class PremiumPurchaseService {
             read: () => api.getCheckoutPhone(cancelToken: cancellation),
           );
           if (!origin.mounted || !current() || status == null) return false;
-          if (status['verified'] == true &&
-              RegExp(r'^251[79][0-9]{8}$')
-                  .hasMatch(status['phone_number'] as String)) {
+          final phone = status['phone_number'] as String;
+          final isLocal = RegExp(r'^251[79][0-9]{8}$').hasMatch(phone);
+          if (!isLocal &&
+              (phone.trim().isNotEmpty || status['has_phone'] == true)) {
+            // Do not present phone collection or a hardcopy offer that this
+            // saved contact cannot use. Never replace an existing number here.
+            ScaffoldMessenger.of(origin).showSnackBar(
+                SnackBar(content: Text('checkout_local_only'.tr())));
+            return false;
+          }
+          if (status['verified'] == true && isLocal) {
             phoneReady = true;
             return true;
           }
