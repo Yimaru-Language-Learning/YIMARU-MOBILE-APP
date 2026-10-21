@@ -56,8 +56,7 @@ import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_7_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_intro_screen.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_8_question.dart';
-import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_9_question.dart'
-    hide IeltsListeningPractice8Question;
+import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_practice_9_question.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_reading_section_intro.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_speaking_practice_1_variant.dart';
 import 'package:yimaru_app/ui/views/course_practice/screens/ielts_screens/ielts_speaking_practice_2_answer.dart';

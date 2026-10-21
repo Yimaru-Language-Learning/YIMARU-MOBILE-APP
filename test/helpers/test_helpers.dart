@@ -28,6 +28,8 @@ import 'package:yimaru_app/services/cache_image_service.dart';
 import 'package:yimaru_app/services/developer_mode_service.dart';
 // @stacked-import
 
+import 'test_helpers.mocks.dart';
+
 @GenerateMocks(
   [],
   customMocks: [
@@ -45,18 +47,14 @@ import 'package:yimaru_app/services/developer_mode_service.dart';
     MockSpec<GoogleAuthService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<ImageDownloaderService>(
         onMissingStub: OnMissingStub.returnDefault),
-    MockSpec<NotificationService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<SmartAuthService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<CourseService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<AudioPlayerService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<VoiceRecorderService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<InAppUpdateService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<VimeoService>(onMissingStub: OnMissingStub.returnDefault),
-    MockSpec<VimeoService>(onMissingStub: OnMissingStub.returnDefault),
-    MockSpec<UrlLauncherService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<UrlLauncherService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<PhoneCallerService>(onMissingStub: OnMissingStub.returnDefault),
-    MockSpec<LearnService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<LearnService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<LocalizationService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<OnboardingService>(onMissingStub: OnMissingStub.returnDefault),
@@ -82,19 +80,16 @@ void registerServices() {
   getAndRegisterImagePickerService();
   getAndRegisterGoogleAuthService();
   getAndRegisterImageDownloaderService();
-  getAndRegisterNotificationService();
   getAndRegisterSmartAuthService();
   getAndRegisterCourseService();
   getAndRegisterAudioPlayerService();
   getAndRegisterVoiceRecorderService();
   getAndRegisterInAppUpdateService();
   getAndRegisterVimeoService();
-  getAndRegisterVimeoService();
-  getAndRegisterUrlLauncherService();
   getAndRegisterUrlLauncherService();
   getAndRegisterPhoneCallerService();
   getAndRegisterLearnService();
-  getAndRegisterLearnService();
+
   getAndRegisterLocalizationService();
   getAndRegisterOnboardingService();
   getAndRegisterInAppNotificationService();

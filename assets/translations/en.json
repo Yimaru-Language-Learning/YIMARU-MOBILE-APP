@@ -450,10 +450,15 @@
   "prepare_speak_topic": "Prepare to speak about the topic below",
   "sentence_completion": "Sentence completion",
   "content": "Content",
-  "ios_purchase": "This content is only available on hard copy. Contact our supports to purchase the physical copy."
-
+  "ios_purchase": "This content is only available on hard copy. Contact our supports to purchase the physical copy.",
+  "referral_code": "Referral code (optional)",
+  "have_referral_code": "Have a referral code? Add it here",
+  "hide_referral_code": "Hide",
+  "enter_referral_code": "Enter code (e.g. BEZA20)",
+  "referred_by": "Referred by {}",
+  "invalid_referral_code": "Invalid or inactive referral code",
+  "apply_clipboard_code": "Found referral code '{}' — Tap to apply"
 }
-
 
 
 

@@ -15,6 +15,7 @@ import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/obscure_password.dart';
 import '../../../widgets/page_loading_indicator.dart';
+import '../../../widgets/referral_code_input.dart';
 import '../register_view.form.dart';
 
 class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
@@ -124,6 +125,8 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
         _buildCharLengthValidator(viewModel),
         _buildPasswordMatchValidator(viewModel),
         _buildCheckBox(viewModel),
+        verticalSpaceSmall,
+        _buildReferralCodeSection(viewModel),
         verticalSpaceSmall,
         _buildSignUpButton(viewModel),
         verticalSpaceMedium
@@ -272,4 +275,15 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
       viewModel.busy(StateObjects.register)
           ? const PageLoadingIndicator()
           : Container();
+
+  Widget _buildReferralCodeSection(RegisterViewModel viewModel) =>
+      ReferralCodeInputWidget(
+        controller: viewModel.referralCodeController,
+        isVerifying: viewModel.isVerifyingReferral,
+        isValid: viewModel.isReferralValid,
+        influencerName: viewModel.verifiedInfluencerName,
+        errorMessage: viewModel.referralErrorMessage,
+        onCodeChanged: viewModel.onReferralCodeChanged,
+        onClear: viewModel.clearReferral,
+      );
 }

@@ -67,4 +67,9 @@ class SecureStorageService {
   Future<void> setBool(String key, bool value) async {
     await _storage.write(key: key, value: value.toString());
   }
+
+  // Delete data by key
+  Future<void> delete(String key) async {
+    await _storage.delete(key: key);
+  }
 }
