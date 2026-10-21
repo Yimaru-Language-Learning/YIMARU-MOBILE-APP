@@ -30,6 +30,7 @@ import '../services/onboarding_service.dart';
 import '../services/permission_handler_service.dart';
 import '../services/phone_caller_service.dart';
 import '../services/push_notification_service.dart';
+import '../services/referral_service.dart';
 import '../services/secure_storage_service.dart';
 import '../services/smart_auth_service.dart';
 import '../services/status_checker_service.dart';
@@ -73,4 +74,5 @@ Future<void> setupLocator(
   locator.registerLazySingleton(() => PushNotificationService());
   locator.registerLazySingleton(() => CacheImageService());
   locator.registerLazySingleton(() => DeveloperModeService());
+  locator.registerLazySingleton(() => ReferralService());
 }

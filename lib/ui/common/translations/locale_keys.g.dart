@@ -455,5 +455,12 @@ abstract class  LocaleKeys {
   static const sentence_completion = 'sentence_completion';
   static const content = 'content';
   static const ios_purchase = 'ios_purchase';
+  static const referral_code = 'Referral Code';
+  static const have_referral_code = 'Have Referral Code?';
+  static const hide_referral_code = 'Hide Referral Code';
+  static const enter_referral_code = 'Enter Referral Code';
+  static const referred_by = 'Referred by';
+  static const invalid_referral_code = 'Invalid Referral Code';
+  static const apply_clipboard_code = 'apply_clipboard_code';
 
 }

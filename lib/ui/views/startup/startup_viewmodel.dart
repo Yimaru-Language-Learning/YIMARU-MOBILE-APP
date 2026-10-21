@@ -13,6 +13,7 @@ import '../../../services/image_downloader_service.dart';
 import '../../../services/in_app_update_service.dart';
 import '../../../services/localization_service.dart';
 import '../../../services/status_checker_service.dart';
+import '../../../services/referral_service.dart';
 import '../../common/enmus.dart';
 
 class StartupViewModel extends ReactiveViewModel {
@@ -32,6 +33,8 @@ class StartupViewModel extends ReactiveViewModel {
   final _authenticationService = locator<AuthenticationService>();
 
   final _imageDownloaderService = locator<ImageDownloaderService>();
+
+  final _referralService = locator<ReferralService>();
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
@@ -58,6 +61,7 @@ class StartupViewModel extends ReactiveViewModel {
       if (loggedIn) {
         await _authenticationService.getUser();
         await _getProfileStatus();
+        await _referralService.attributePendingIfAny();
       } else {
         // Removable
         await _navigationService.replaceWithLoginView();

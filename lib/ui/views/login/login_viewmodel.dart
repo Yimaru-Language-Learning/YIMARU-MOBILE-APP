@@ -14,6 +14,7 @@ import '../../../services/google_auth_service.dart';
 import '../../../services/localization_service.dart';
 import '../../../services/push_notification_service.dart';
 import '../../../services/status_checker_service.dart';
+import '../../../services/referral_service.dart';
 import '../../common/enmus.dart';
 import '../../common/ui_helpers.dart';
 
@@ -33,6 +34,8 @@ class LoginViewModel extends ReactiveViewModel
   final _authenticationService = locator<AuthenticationService>();
 
   final _pushNotificationService = locator<PushNotificationService>();
+
+  final _referralService = locator<ReferralService>();
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
@@ -201,6 +204,7 @@ class LoginViewModel extends ReactiveViewModel
 
         await _authenticationService.saveUserCredential(data);
         await _registerDevice();
+        await _referralService.attributePendingIfAny();
         clearUserData();
         await replaceWithStartUp();
         showSuccessToast(response['message']);
@@ -233,6 +237,7 @@ class LoginViewModel extends ReactiveViewModel
         };
         await _authenticationService.saveUserCredential(data);
         await _registerDevice();
+        await _referralService.attributePendingIfAny();
         clearUserData();
         await replaceWithStartUp();
         showSuccessToast(response['message']);
@@ -277,6 +282,7 @@ class LoginViewModel extends ReactiveViewModel
 
         await _authenticationService.saveUserCredential(data);
         await _registerDevice();
+        await _referralService.attributePendingIfAny();
         await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
