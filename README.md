@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+For server backups, Hostinger snapshots, signing setup, and closed-testing-first Android releases, see [Operations handover](OPERATIONS_README.md). The existing [technical handover](HANDOVER.md) covers application architecture.
+
 ## Android releases
 
 Run these from the project root:
