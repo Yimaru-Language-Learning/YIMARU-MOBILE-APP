@@ -1,5 +1,6 @@
 // Endpoints
-String kBaseUrl = 'https://api.yimaruacademy.com';
+// String kBaseUrl = 'https://api.yimaruacademy.com';
+String kBaseUrl = 'http://192.168.0.4:8080';
 String kMeUrl = 'me';
 
 String kLmsUrl = 'lms';
