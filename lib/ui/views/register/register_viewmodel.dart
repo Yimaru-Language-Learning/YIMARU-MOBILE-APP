@@ -446,7 +446,11 @@ class RegisterViewModel extends ReactiveViewModel
 
         await _authenticationService.saveUserCredential(userData);
         await _registerDevice();
-        await _referralService.markAttributedDone();
+        // Note: markAttributedDone() is intentionally NOT called here.
+        // The registration handler sends referral_code to the backend in a goroutine.
+        // If that goroutine fails, the pending code stays in SecureStorage so
+        // attributePendingIfAny() can retry it on the next startup login.
+        // markAttributedDone() is called by attributeUser() on actual success.
         await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
