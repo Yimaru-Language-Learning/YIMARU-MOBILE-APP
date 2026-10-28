@@ -9,6 +9,7 @@ import 'package:yimaru_app/app/app.router.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:yimaru_app/services/push_notification_service.dart';
+import 'package:yimaru_app/services/referral_service.dart';
 import 'package:yimaru_app/ui/common/translations/codegen_loader.g.dart';
 import 'firebase_options.dart';
 
@@ -18,6 +19,7 @@ Future<void> main() async {
   await setupLocator();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await locator<PushNotificationService>().initialize();
+  await locator<ReferralService>().initialize();
   await EasyLocalization.ensureInitialized();
   setupDialogUi();
   setupBottomSheetUi();

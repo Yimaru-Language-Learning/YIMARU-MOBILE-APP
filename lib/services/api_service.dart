@@ -1439,8 +1439,80 @@ class ApiService {
     }
   }
 
+  // Verify referral code
+  Future<Map<String, dynamic>> verifyReferralCode(String code) async {
+    try {
+      final cleanCode = code.trim().toUpperCase();
+      Response response =
+          await _service.dio.get('$kBaseUrl/$kReferralVerifyUrl/$cleanCode');
 
-  // Rate app
+      if (response.statusCode == 200 && response.data != null) {
+        final resData = response.data['data'] as Map<String, dynamic>?;
+        return {
+          'status': ResponseStatus.success,
+          'message': response.data['message'] ?? 'Code verified',
+          'data': resData,
+        };
+      }
+      return {
+        'status': ResponseStatus.failure,
+        'message': response.data?['message'] ?? 'Invalid referral code',
+      };
+    } on DioException catch (e) {
+      String msg = 'Invalid referral code';
+      if (e.response?.data is Map && e.response?.data['message'] != null) {
+        msg = e.response?.data['message'];
+      }
+      return {
+        'status': ResponseStatus.failure,
+        'message': msg,
+      };
+    } catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': 'Unable to verify referral code',
+      };
+    }
+  }
+
+  // Attribute referral
+  Future<Map<String, dynamic>> attributeReferral(
+      Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio.post(
+        '$kBaseUrl/$kReferralAttributeUrl',
+        data: data,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return {
+          'status': ResponseStatus.success,
+          'message': response.data['message'] ?? 'Attributed successfully',
+          'data': response.data['data'],
+        };
+      }
+      return {
+        'status': ResponseStatus.failure,
+        'message': response.data?['message'] ?? 'Attribution failed',
+      };
+    } on DioException catch (e) {
+      String msg = 'Attribution failed';
+      if (e.response?.data is Map && e.response?.data['message'] != null) {
+        msg = e.response?.data['message'];
+      }
+      return {
+        'status': ResponseStatus.failure,
+        'message': msg,
+      };
+    } catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': 'Attribution error',
+      };
+    }
+  }
+
+  // iOS Checkout
   Future<Map<String, dynamic>> iosCheckout(Map<String, dynamic> data) async {
     try {
       Response response = await _service.dio

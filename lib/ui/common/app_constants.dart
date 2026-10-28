@@ -1,6 +1,6 @@
 // Endpoints
-String kBaseUrl = 'https://api.yimaruacademy.com';
-
+// String kBaseUrl = 'https://api.yimaruacademy.com';
+String kBaseUrl = 'http://192.168.0.4:8080';
 String kMeUrl = 'me';
 
 String kLmsUrl = 'lms';
@@ -144,6 +144,10 @@ String kGoogleAuthUrl = 'api/v1/auth/google/android';
 String kCourseProgressUrl = 'api/v1/progress/courses';
 
 String kLearnSubcategoriesUrl = 'human-language/sub-categories';
+
+String kReferralVerifyUrl = 'api/v1/referral/verify';
+
+String kReferralAttributeUrl = 'api/v1/referral/attribute';
 
 String kEmptyImagePath = '/data/user/0/com.yimaru.lms.app/app_flutter';
 

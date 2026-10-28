@@ -58,6 +58,7 @@ class RegisterView extends StackedView<RegisterViewModel> with $RegisterView {
   void onViewModelReady(RegisterViewModel viewModel) {
     _initClearData();
     syncFormWithViewModel(viewModel);
+    viewModel.initReferral();
     super.onViewModelReady(viewModel);
   }
 

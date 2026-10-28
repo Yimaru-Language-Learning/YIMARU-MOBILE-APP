@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:yimaru_app/app/app.router.dart';
 import 'package:yimaru_app/services/api_service.dart';
 import 'package:yimaru_app/services/authentication_service.dart';
+import 'package:yimaru_app/services/referral_service.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/ui_helpers.dart';
 
@@ -33,6 +35,8 @@ class RegisterViewModel extends ReactiveViewModel
   final _authenticationService = locator<AuthenticationService>();
 
   final _pushNotificationService = locator<PushNotificationService>();
+
+  final _referralService = locator<ReferralService>();
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
@@ -124,6 +128,84 @@ class RegisterViewModel extends ReactiveViewModel
   final Map<String, dynamic> _userData = {};
 
   Map<String, dynamic> get userData => _userData;
+
+  // Referral code state
+  final TextEditingController referralCodeController = TextEditingController();
+  Timer? _referralDebounceTimer;
+  bool _isVerifyingReferral = false;
+  bool get isVerifyingReferral => _isVerifyingReferral;
+  bool _isReferralValid = false;
+  bool get isReferralValid => _isReferralValid;
+  String? _verifiedInfluencerName;
+  String? get verifiedInfluencerName => _verifiedInfluencerName;
+  String? _referralErrorMessage;
+  String? get referralErrorMessage => _referralErrorMessage;
+
+  Future<void> initReferral() async {
+    final pendingCode = await _referralService.getPendingReferralCode();
+    if (pendingCode != null && pendingCode.trim().isNotEmpty) {
+      referralCodeController.text = pendingCode.trim().toUpperCase();
+      await verifyReferral(pendingCode);
+    }
+  }
+
+  void onReferralCodeChanged(String value) {
+    _referralDebounceTimer?.cancel();
+    final clean = value.trim().toUpperCase();
+    if (clean.isEmpty) {
+      _isReferralValid = false;
+      _verifiedInfluencerName = null;
+      _referralErrorMessage = null;
+      _isVerifyingReferral = false;
+      _userData.remove('referral_code');
+      rebuildUi();
+      return;
+    }
+
+    _isVerifyingReferral = true;
+    _referralErrorMessage = null;
+    rebuildUi();
+
+    _referralDebounceTimer = Timer(const Duration(milliseconds: 500), () async {
+      await verifyReferral(clean);
+    });
+  }
+
+  Future<void> verifyReferral(String code) async {
+    _isVerifyingReferral = true;
+    rebuildUi();
+
+    final res = await _referralService.verifyReferralCode(code);
+    _isVerifyingReferral = false;
+
+    if (res['status'] == ResponseStatus.success) {
+      _isReferralValid = true;
+      final data = res['data'] as Map<String, dynamic>?;
+      _verifiedInfluencerName = data?['influencer_name'];
+      _referralErrorMessage = null;
+      _userData['referral_code'] = code.trim().toUpperCase();
+      await _referralService.savePendingReferral(code,
+          attributionType: 'PROMO_CODE');
+    } else {
+      _isReferralValid = false;
+      _verifiedInfluencerName = null;
+      _referralErrorMessage = res['message'] ?? 'Invalid referral code';
+      _userData.remove('referral_code');
+    }
+    rebuildUi();
+  }
+
+  void clearReferral() {
+    _referralDebounceTimer?.cancel();
+    referralCodeController.clear();
+    _isReferralValid = false;
+    _verifiedInfluencerName = null;
+    _referralErrorMessage = null;
+    _isVerifyingReferral = false;
+    _userData.remove('referral_code');
+    _referralService.clearPendingReferral();
+    rebuildUi();
+  }
 
   // Email
   void setEmailFocus() {
@@ -297,6 +379,11 @@ class RegisterViewModel extends ReactiveViewModel
 
   Future<void> _register(SignUpMethod type) async {
     if (await _statusChecker.checkConnection()) {
+      if (referralCodeController.text.trim().isNotEmpty && _isReferralValid) {
+        _userData['referral_code'] =
+            referralCodeController.text.trim().toUpperCase();
+      }
+
       Map<String, dynamic> response =
           await _apiService.registerWithEmail(_userData);
 
@@ -333,6 +420,7 @@ class RegisterViewModel extends ReactiveViewModel
         };
         await _authenticationService.saveUserCredential(data);
         await _registerDevice();
+        await _referralService.attributePendingIfAny();
         clearUserData();
         await replaceWithStartUp();
         showSuccessToast(response['message']);
@@ -358,6 +446,11 @@ class RegisterViewModel extends ReactiveViewModel
 
         await _authenticationService.saveUserCredential(userData);
         await _registerDevice();
+        // Note: markAttributedDone() is intentionally NOT called here.
+        // The registration handler sends referral_code to the backend in a goroutine.
+        // If that goroutine fails, the pending code stays in SecureStorage so
+        // attributePendingIfAny() can retry it on the next startup login.
+        // markAttributedDone() is called by attributeUser() on actual success.
         await replaceWithStartUp();
         showSuccessToast(response['message']);
       } else {
@@ -395,5 +488,12 @@ class RegisterViewModel extends ReactiveViewModel
         showErrorToast(response['message']);
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _referralDebounceTimer?.cancel();
+    referralCodeController.dispose();
+    super.dispose();
   }
 }

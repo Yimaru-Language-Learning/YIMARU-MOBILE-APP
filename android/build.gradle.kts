@@ -17,6 +17,9 @@ subprojects {
 }
 subprojects {
     project.evaluationDependsOn(":app")
+    plugins.withId("com.android.library") {
+        pluginManager.apply("org.jetbrains.kotlin.android")
+    }
 }
 
 tasks.register<Delete>("clean") {

@@ -13,6 +13,7 @@ import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/large_app_bar.dart';
 import '../../../widgets/page_loading_indicator.dart';
 import '../../../widgets/phone_number_prefix.dart';
+import '../../../widgets/referral_code_input.dart';
 import '../register_view.form.dart';
 import '../register_viewmodel.dart';
 
@@ -159,6 +160,8 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
         if (viewModel.hasPhoneNumberValidationMessage &&
             viewModel.focusPhoneNumber)
           _buildPhoneNumberValidatorWrapper(viewModel),
+        verticalSpaceMedium,
+        _buildReferralCodeSection(viewModel),
       ];
 
   Widget _buildTitle() => Text(
@@ -263,4 +266,15 @@ class RegisterWithPhoneNumberScreen extends ViewModelWidget<RegisterViewModel> {
       viewModel.busy(StateObjects.register)
           ? const PageLoadingIndicator()
           : Container();
+
+  Widget _buildReferralCodeSection(RegisterViewModel viewModel) =>
+      ReferralCodeInputWidget(
+        controller: viewModel.referralCodeController,
+        isVerifying: viewModel.isVerifyingReferral,
+        isValid: viewModel.isReferralValid,
+        influencerName: viewModel.verifiedInfluencerName,
+        errorMessage: viewModel.referralErrorMessage,
+        onCodeChanged: viewModel.onReferralCodeChanged,
+        onClear: viewModel.clearReferral,
+      );
 }

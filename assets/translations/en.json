@@ -449,12 +449,19 @@
   "prepare_speak_photo": "Prepare to speak about the photo",
   "prepare_speak_topic": "Prepare to speak about the topic below",
   "sentence_completion": "Sentence completion",
+  "content": "Content",
   "notice": "Notice",
   "ios_purchase": "This content is coming soon. Thank you for your patience while we prepare it for you.",
   "profile_completion": "Profile completion",
-  "complete_profile": "Please complete your profile to continue"
+  "complete_profile": "Please complete your profile to continue",
+  "referral_code": "Referral code (optional)",
+  "have_referral_code": "Have a referral code? Add it here",
+  "hide_referral_code": "Hide",
+  "enter_referral_code": "Enter code (e.g. BEZA20)",
+  "referred_by": "Referred by {}",
+  "invalid_referral_code": "Invalid or inactive referral code",
+  "apply_clipboard_code": "Found referral code '{}' — Tap to apply"
 }
-
 
 
 

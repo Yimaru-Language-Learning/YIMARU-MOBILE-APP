@@ -449,11 +449,19 @@
   "prepare_speak_photo": "ስለ ፎቶው ለመናገር ይዘጋጁ",
   "prepare_speak_topic": "ስለ ተሰጠው ርዕስ ለመናገር ይዘጋጁ",
   "sentence_completion": "የዓረፍተ ነገር ማጠናቀቅ",
+  "content": "ይዘት",
   "notice": "ማስታወቂያ",
   "ios_purchase": "ይህ ይዘት በቅርቡ ይገኛል። ለእርስዎ እንዲገኝ እየሰራን ስለሆነ እባክዎ ትንሽ ይቆዩ።",
   "profile_completion": "የመገለጫ ማጠናቀቂያ",
-  "complete_profile": "እባክዎ ለመቀጠል መገለጫዎን ያጠናቅቁ"}
-
+  "complete_profile": "እባክዎ ለመቀጠል መገለጫዎን ያጠናቅቁ",
+  "referral_code": "የሪፈራል ኮድ (አማራጭ)",
+  "have_referral_code": "የሪፈራል ኮድ አለዎት? እዚህ ያስገቡ",
+  "hide_referral_code": "ደብቅ",
+  "enter_referral_code": "ኮድ ያስገቡ (ለምሳሌ፦ BEZA20)",
+  "referred_by": "በ{} የተጋበዙ",
+  "invalid_referral_code": "ልክ ያልሆነ ወይም የማይሰራ የሪፈራል ኮድ",
+  "apply_clipboard_code": "የተገኘ የሪፈራል ኮድ '{}' — ለመጠቀም ይጫኑ"
+}
 
 
 

@@ -76,7 +76,7 @@ class SubscriptionPricingSection
           type: viewModel.subscriptions[index].name ?? '',
           onTap: () => viewModel.setSelectedPricing(index),
           currency: viewModel.subscriptions[index].currency ?? '',
-          price: viewModel.subscriptions[index].price.toString() ?? '',
+          price: viewModel.subscriptions[index].price.toString(),
         ),
       );
 

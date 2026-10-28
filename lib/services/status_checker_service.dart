@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:safe_device/safe_device.dart';
@@ -24,6 +25,7 @@ class StatusCheckerService {
   }
 
   Future<bool> isRestricted() async {
+    if (kDebugMode) return false;
     await checkDeveloperMode();
     return _isDeveloperModeEnabled ?? false;
   }

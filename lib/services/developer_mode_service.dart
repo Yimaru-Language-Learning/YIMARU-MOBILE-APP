@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:safe_device/safe_device.dart';
@@ -23,7 +24,7 @@ class DeveloperModeService with ListenableServiceMixin {
 
   Stream<bool> get statusStream => _statusController.stream;
 
-  bool get developerModeEnabled => _developerModeEnabled.value;
+  bool get developerModeEnabled => kDebugMode ? false : _developerModeEnabled.value;
 
   void _init() {
     listenToReactiveValues([_developerModeEnabled]);
