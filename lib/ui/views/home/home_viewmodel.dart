@@ -43,12 +43,10 @@ class HomeViewModel extends ReactiveViewModel {
   // Developer mode
   bool get isDeveloperModeEnabled => _developerModeService.developerModeEnabled;
 
-
   // Bottom navigation
   int _currentPage = 0;
 
   int get currentPage => _currentPage;
-
 
   // Bottom navigation
   void showBottomSheet() {

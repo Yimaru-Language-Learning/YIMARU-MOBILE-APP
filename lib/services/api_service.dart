@@ -1511,4 +1511,27 @@ class ApiService {
       };
     }
   }
+
+  // iOS Checkout
+  Future<Map<String, dynamic>> iosCheckout(Map<String, dynamic> data) async {
+    try {
+      Response response = await _service.dio
+          .post('$kBaseUrl/$kApiUrl/$kApiVersionUrl/$kSubscriptionsUrl/$kIosCheckout', data: data);
+
+      if (response.statusCode == 201) {
+        return {
+          'status': ResponseStatus.success,
+        };
+      } else {
+        return {
+          'status': ResponseStatus.failure,
+        };
+      }
+    } on DioException catch (e) {
+      return {
+        'status': ResponseStatus.failure,
+        'message': e.response?.data.toString(),
+      };
+    }
+  }
 }

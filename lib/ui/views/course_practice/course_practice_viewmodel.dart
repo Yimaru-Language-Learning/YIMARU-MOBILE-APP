@@ -21,6 +21,7 @@ import '../../../services/voice_recorder_service.dart';
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
 import '../../common/helper_functions.dart';
+import '../../common/ui_helpers.dart';
 
 class CoursePracticeViewModel extends ReactiveViewModel
     with FormStateHelper
@@ -137,6 +138,11 @@ class CoursePracticeViewModel extends ReactiveViewModel
   bool _focusPractice = false;
 
   bool get focusPractice => _focusPractice;
+
+  // Phone number
+  bool _focusPhoneNumber = false;
+
+  bool get focusPhoneNumber => _focusPhoneNumber;
 
   List<CoursePractice> _practices = [];
 
@@ -675,6 +681,12 @@ class CoursePracticeViewModel extends ReactiveViewModel
     rebuildUi();
   }
 
+  // Phone number
+  void setPhoneNumberFocus() {
+    _focusPhoneNumber = true;
+    rebuildUi();
+  }
+
   // Practice
   void setPracticeFocus() {
     _focusPractice = true;
@@ -1159,11 +1171,10 @@ class CoursePracticeViewModel extends ReactiveViewModel
         buttonTitleColor: kcPrimaryColor,
       );
 
-  Future<void> showPurchaseDialog() async =>
-      await _dialogService.showDialog(
+  Future<void> showPurchaseDialog() async => await _dialogService.showDialog(
         barrierDismissible: true,
         cancelTitleColor: kcDarkGrey,
-        title: LocaleKeys.content.tr(),
+        title: LocaleKeys.notice.tr(),
         buttonTitleColor: kcPrimaryColor,
         buttonTitle: LocaleKeys.close.tr(),
         description: LocaleKeys.ios_purchase.tr(),
@@ -1782,7 +1793,7 @@ class CoursePracticeViewModel extends ReactiveViewModel
   // Update payment status
   Future<void> updatePaymentStatus() async =>
       await runBusyFuture(_updatePaymentStatus(),
-          busyObject: StateObjects.coursePractice);
+          busyObject: StateObjects.paymentStatus);
 
   Future<void> _updatePaymentStatus() async {
     Map<String, dynamic> response = {};
@@ -1809,6 +1820,42 @@ class CoursePracticeViewModel extends ReactiveViewModel
       await stopAudio();
       await _apiService.completePractice(data: data, id: practice.id ?? 0);
       await _courseService.getCourseProgress();
+    }
+  }
+
+  // Update  profile
+  Future<void> updateProfile(String phoneNumber) async =>
+      await runBusyFuture(_updateProfile(phoneNumber),
+          busyObject: StateObjects.profileUpdate);
+
+  Future<void> _updateProfile(String phoneNumber) async {
+    Map<String, dynamic> data = {
+      'gender': user?.gender,
+      'region': user?.region,
+      'country': user?.country,
+      'phone_number': phoneNumber,
+      'last_name': user?.lastName,
+      'first_name': user?.firstName,
+      'occupation': user?.occupation,
+      'birth_day': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+    };
+
+    if (await _statusChecker.checkConnection()) {
+      Map<String, dynamic> response = await _apiService.completeProfile(data);
+      if (response['status'] == ResponseStatus.success) {
+        await _authenticationService.updateUserData(data);
+        pop();
+        showSuccessToast(response['message']);
+      } else {
+        showErrorToast(response['message']);
+      }
+    }
+  }
+
+  // Ios checkout
+  Future<void> iosCheckout(Map<String, dynamic> data) async {
+    if (await _statusChecker.checkConnection()) {
+      await _apiService.iosCheckout(data);
     }
   }
 // Refresh url
