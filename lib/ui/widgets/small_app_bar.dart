@@ -39,8 +39,9 @@ class SmallAppBar extends StatelessWidget {
         title ?? '',
         style: const TextStyle(
           fontSize: 18,
-          color: kcPrimaryColor,
-          fontWeight: FontWeight.w600,
+          color: AppColors.magenta35,
+          fontWeight: FontWeight.w700,
+          fontFamily: 'Aeonik',
         ),
       );
 }

@@ -35,20 +35,18 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(LearnProgramViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
+        backgroundColor: AppColors.background,
         body: _buildScaffoldContainer(viewModel),
       );
 
-  Widget _buildScaffoldContainer(LearnProgramViewModel viewModel) => Container(
-        decoration: bgDecoration,
-        child: _buildScaffold(viewModel),
-      );
+  Widget _buildScaffoldContainer(LearnProgramViewModel viewModel) =>
+      _buildScaffold(viewModel);
 
   Widget _buildScaffold(LearnProgramViewModel viewModel) =>
       SafeArea(child: _buildBody(viewModel));
 
   Widget _buildBody(LearnProgramViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: _buildColumn(viewModel),
       );
 
@@ -56,8 +54,8 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
         children: [
           verticalSpaceMedium,
           _buildAppBarState(viewModel),
-          verticalSpaceMedium,
-          _buildProgramsColumnWrapper(viewModel)
+          const SizedBox(height: 24),
+          _buildProgramsColumnWrapper(viewModel),
         ],
       );
 
@@ -82,6 +80,7 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
 
   Widget _buildProgramsColumnScrollView(LearnProgramViewModel viewModel) =>
       SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 24),
         child: _buildListViewBuilder(viewModel),
       );
 
@@ -98,8 +97,9 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
         shrinkWrap: true,
         itemCount: viewModel.learnPrograms.length,
         physics: const NeverScrollableScrollPhysics(),
-        separatorBuilder: (context, index) => verticalSpaceSmall,
+        separatorBuilder: (context, index) => const SizedBox(height: 4),
         itemBuilder: (context, index) => _buildTile(
+          index: index,
           program: viewModel.learnPrograms[index],
           onTap: () async => await viewModel.navigateToLearnCourse(
               first: index == 0, id: viewModel.learnPrograms[index].id ?? 0),
@@ -107,8 +107,9 @@ class LearnProgramView extends StackedView<LearnProgramViewModel> {
       );
 
   Widget _buildTile({
+    required int index,
     required LearnProgram program,
     required GestureTapCallback onTap,
   }) =>
-      LearnProgramTile(onTap: onTap, program: program);
+      LearnProgramTile(index: index, onTap: onTap, program: program);
 }

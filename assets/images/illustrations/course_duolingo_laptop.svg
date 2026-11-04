@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Light lime green circular background -->
+  <circle cx="50" cy="50" r="42" fill="#D7FFB8"/>
+
+  <!-- Laptop Base -->
+  <path d="M22 67 L78 67 L74 72 L26 72 Z" fill="#BFBCBD"/>
+  <rect x="42" y="67" width="16" height="2" rx="1" fill="#CBD5E1"/>
+
+  <!-- Laptop Screen Frame (dark plum/black) -->
+  <rect x="25" y="33" width="46" height="34" rx="4" fill="#2A1830"/>
+
+  <!-- Laptop Screen (brand purple/magenta) -->
+  <rect x="28" y="36" width="40" height="27" rx="2" fill="#8E2483"/>
+
+  <!-- Screen Content Lines -->
+  <rect x="33" y="43" width="22" height="3" rx="1.5" fill="#FFFFFF"/>
+  <rect x="33" y="49" width="16" height="3" rx="1.5" fill="#FFFFFF" opacity="0.85"/>
+
+  <!-- Clock Badge at top right of laptop -->
+  <circle cx="68" cy="33" r="11" fill="#E8644A"/>
+  <circle cx="68" cy="33" r="8.5" fill="#FFFFFF"/>
+  <path d="M68 28.5 V33 H72" stroke="#E8644A" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="68" cy="33" r="1.2" fill="#E8644A"/>
+</svg>

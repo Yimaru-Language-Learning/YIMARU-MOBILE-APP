@@ -41,6 +41,14 @@ class LearnService with ListenableServiceMixin {
 
   List<LearnProgram> get programs => _programs;
 
+  LearnProgram? getLearnProgramById(int id) {
+    try {
+      return _programs.firstWhere((e) => e.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
   // Learn course
   List<LearnCourse> _courses = [];
 

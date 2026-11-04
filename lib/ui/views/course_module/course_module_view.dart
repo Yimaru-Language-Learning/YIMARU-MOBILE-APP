@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/app/app.locator.dart';
+import 'package:yimaru_app/services/course_service.dart';
 import 'package:yimaru_app/ui/widgets/course_module_tile_large.dart';
 
 import '../../../models/course_catalog.dart';
@@ -10,7 +12,6 @@ import '../../common/enmus.dart';
 import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
-import '../../widgets/small_app_bar.dart';
 import 'course_module_viewmodel.dart';
 
 class CourseModuleView extends StackedView<CourseModuleViewModel> {
@@ -19,13 +20,13 @@ class CourseModuleView extends StackedView<CourseModuleViewModel> {
   final CourseCatalog catalog;
   final SubscriptionType type;
 
-  const CourseModuleView(
-      {Key? key,
-      required this.type,
-      required this.first,
-      required this.module,
-      required this.catalog})
-      : super(key: key);
+  const CourseModuleView({
+    Key? key,
+    required this.type,
+    required this.first,
+    required this.module,
+    required this.catalog,
+  }) : super(key: key);
 
   @override
   void onViewModelReady(CourseModuleViewModel viewModel) async {
@@ -43,80 +44,114 @@ class CourseModuleView extends StackedView<CourseModuleViewModel> {
     CourseModuleViewModel viewModel,
     Widget? child,
   ) =>
-      _buildScaffoldWrapper(viewModel);
-
-  Widget _buildScaffoldWrapper(CourseModuleViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldContainer(viewModel),
+      Scaffold(
+        backgroundColor: const Color(0xFFF7F7F7),
+        body: SafeArea(child: _buildBody(context, viewModel)),
       );
 
-  Widget _buildScaffoldContainer(CourseModuleViewModel viewModel) => Container(
-        decoration: bgDecoration,
-        child: _buildScaffold(viewModel),
-      );
-
-  Widget _buildScaffold(CourseModuleViewModel viewModel) =>
-      SafeArea(child: _buildBody(viewModel));
-
-  Widget _buildBody(CourseModuleViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(viewModel),
-      );
-
-  Widget _buildColumn(CourseModuleViewModel viewModel) => Column(
+  Widget _buildBody(BuildContext context, CourseModuleViewModel viewModel) =>
+      Column(
         children: [
-          verticalSpaceMedium,
-          _buildAppBar(viewModel),
-          verticalSpaceMedium,
-          _buildModulesColumnWrapper(viewModel),
+          _buildTopBar(viewModel),
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Page title
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 14, 16, 0),
+                    child: Center(
+                      child: Text(
+                        catalog.name ?? '',
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: 'Aeonik',
+                          color: Color(0xFF1A1A2E),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Content
+                  _buildContentState(context, viewModel),
+                  const SizedBox(height: 32),
+                ],
+              ),
+            ),
+          ),
         ],
       );
 
-  Widget _buildAppBar(CourseModuleViewModel viewModel) => SmallAppBar(
-        onPop: viewModel.pop,
-        showBackButton: true,
-        title: LocaleKeys.module_detail.tr(),
+  // ── Top bar ───────────────────────────────────────────────────────────────
+  Widget _buildTopBar(CourseModuleViewModel viewModel) => Container(
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: viewModel.pop,
+              child: Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: const Color(0xFFEEEEF0)),
+                ),
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: 16,
+                  color: Color(0xFF1A1A2E),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  LocaleKeys.module_detail.tr(),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Aeonik',
+                    color: Color(0xFF1A1A2E),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 38), // Balance back button
+          ],
+        ),
       );
 
-  Widget _buildModulesColumnWrapper(CourseModuleViewModel viewModel) =>
-      Expanded(child: _buildLevelsColumnScrollView(viewModel));
+  // ── Content state ─────────────────────────────────────────────────────────
+  Widget _buildContentState(
+      BuildContext context, CourseModuleViewModel viewModel) {
+    // Resolve the unit's sortOrder from the in-memory list in CourseService.
+    // This is a read-only lookup — no structural change to viewmodel/service.
+    final courseService = locator<CourseService>();
+    final unitSortOrder = courseService.units
+            .where((u) => u.id == module?.unitId)
+            .map((u) => u.sortOrder ?? 1)
+            .firstOrNull ??
+        1;
 
-  Widget _buildLevelsColumnScrollView(CourseModuleViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildLevelsColumn(viewModel),
-      );
-
-  Widget _buildLevelsColumn(CourseModuleViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: _buildLevelsColumnChildren(viewModel),
-      );
-
-  List<Widget> _buildLevelsColumnChildren(CourseModuleViewModel viewModel) => [
-        verticalSpaceMedium,
-        _buildTitle(),
-        verticalSpaceMedium,
-        _buildListViewBuilder(viewModel)
-      ];
-
-  Widget _buildTitle() => Text(
-        catalog.name ?? '',
-        style: style25DG600,
-      );
-
-  Widget _buildListViewBuilder(CourseModuleViewModel viewModel) =>
-      viewModel.busy(StateObjects.courseLessons)
-          ? _buildProgressIndicator()
-          : _buildTile(viewModel);
-
-  Widget _buildProgressIndicator() => const Center(
-        child: CustomCircularProgressIndicator(color: kcPrimaryColor),
-      );
-
-  Widget _buildTile(CourseModuleViewModel viewModel) => CourseModuleTileLarge(
-        type: type,
-        first: first,
-        module: module,
-        lessons: viewModel.lessons,
-      );
+    return viewModel.busy(StateObjects.courseLessons)
+        ? const Padding(
+            padding: EdgeInsets.all(40),
+            child: Center(
+              child: CustomCircularProgressIndicator(color: kcPrimaryColor),
+            ),
+          )
+        : CourseModuleTileLarge(
+            type: type,
+            catalog: catalog,
+            first: first,
+            module: module,
+            lessons: viewModel.lessons,
+            unitSortOrder: unitSortOrder,
+          );
+  }
 }

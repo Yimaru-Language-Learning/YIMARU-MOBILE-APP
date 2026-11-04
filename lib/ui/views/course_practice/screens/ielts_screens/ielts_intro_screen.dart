@@ -1,16 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
-import 'package:yimaru_app/ui/widgets/course_practice_app_bar.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
+import 'package:yimaru_app/ui/widgets/cancel_practice_sheet.dart';
+import 'package:yimaru_app/ui/widgets/custom_circular_progress_indicator.dart';
+import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
-import '../../../../common/app_colors.dart';
-import '../../../../common/ui_helpers.dart';
-import '../../../../widgets/cancel_practice_sheet.dart';
-import '../../../../widgets/custom_circular_progress_indicator.dart';
-import '../../../../widgets/custom_elevated_button.dart';
-import '../../../../widgets/page_loading_indicator.dart';
 import '../../course_practice_viewmodel.dart';
 
 class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
@@ -96,84 +93,8 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
-        backgroundColor: kcTransparent,
+        backgroundColor: Colors.transparent,
         builder: (cxt) => _buildSheet(viewModel),
-      );
-
-  @override
-  Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(context: context, viewModel: viewModel);
-
-  Widget _buildScaffoldWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildScaffoldStack(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Stack(
-        children: [
-          _buildScaffold(context: context, viewModel: viewModel),
-          _buildBodyState(viewModel)
-        ],
-      );
-
-  Widget _buildScaffold(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
-
-  Widget _buildBodyColumnWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildBodyColumn(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children:
-            _buildBodyColumnChildren(context: context, viewModel: viewModel),
-      );
-
-  List<Widget> _buildBodyColumnChildren(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      [
-        _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildSpeakingIndicatorWrapper(viewModel),
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
-      ];
-
-  Widget _buildAppBarWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Column(
-        children: [
-          verticalSpaceMedium,
-          _buildAppBar(context: context, viewModel: viewModel),
-          verticalSpaceMedium,
-        ],
-      );
-
-  Widget _buildAppBar(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      CoursePracticeAppBar(
-        onClose: () async =>
-            await _showSheet(context: context, viewModel: viewModel),
-        title:
-            '${LocaleKeys.speaking_practice.tr()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
       );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
@@ -183,76 +104,206 @@ class IeltsIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
         onCancel: () async => await _cancel(viewModel),
       );
 
-  Widget _buildSpeakingIndicatorWrapper(CoursePracticeViewModel viewModel) =>
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildSpeakingIndicatorChildren(),
+  String _displayTitle(CoursePracticeViewModel viewModel) {
+    if (title.isNotEmpty) {
+      if (title.toLowerCase().contains('ielts')) return title;
+      return 'IELTS $title';
+    }
+    return 'IELTS Listening';
+  }
+
+  @override
+  Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
+      Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildTopBar(context, viewModel),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 12),
+                          // IELTS Heading
+                          const Center(
+                            child: Text(
+                              'IELTS',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w800,
+                                fontFamily: 'Aeonik',
+                                color: Color(0xFF1A1A2E),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          // Practice Card
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(18),
+                                border:
+                                    Border.all(color: const Color(0xFFEEEEF0)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.04),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Soft pink banner with illustration
+                                  Container(
+                                    width: double.infinity,
+                                    height: 180,
+                                    color: const Color(0xFFFFEEF0),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/images/08-ielts/8.1-ielts-course-01.svg',
+                                        height: 110,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          _displayTitle(viewModel),
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: 'Aeonik',
+                                            color: Color(0xFF1A1A2E),
+                                          ),
+                                        ),
+                                        if (subtitle.isNotEmpty) ...[
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            subtitle,
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              fontFamily: 'Aeonik',
+                                              color: Color(0xFF888899),
+                                            ),
+                                          ),
+                                        ],
+                                        const SizedBox(height: 16),
+                                        _buildStartButton(context, viewModel),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              _buildBodyState(viewModel),
+            ],
+          ),
+        ),
       );
 
-  List<Widget> _buildSpeakingIndicatorChildren() => [
-        _buildTitle(),
-        _buildSubtitle(),
-        verticalSpaceMedium,
-        _buildInstructionTitle(),
-        _buildInstructionSubtitle()
-      ];
-
-  Widget _buildTitle() => Text(
-        title,
-        style: style18DG700,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildSubtitle() => Text(
-        subtitle,
-        style: style14DG400,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildInstructionTitle() => Text(
-        instructionTitle,
-        style: style16DG600,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildInstructionSubtitle() => Text(
-        instructionSubtitle,
-        style: style14DG400,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildContinueButtonWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
+  Widget _buildTopBar(
+          BuildContext context, CoursePracticeViewModel viewModel) =>
       Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child:
-            _buildContinueButtonState(context: context, viewModel: viewModel),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: () async =>
+                  await _showSheet(context: context, viewModel: viewModel),
+              child: Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: const Color(0xFFEEEEF0)),
+                ),
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  size: 16,
+                  color: Color(0xFF1A1A2E),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  LocaleKeys.practice_test.tr(),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Aeonik',
+                    color: Color(0xFF1A1A2E),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 38), // Balance back button
+          ],
+        ),
       );
 
-  Widget _buildContinueButtonState(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      viewModel.busy(StateObjects.cacheImage)
-          ? const CustomCircularProgressIndicator(color: kcPrimaryColor)
-          : _buildContinueButton(context: context, viewModel: viewModel);
-
-  Widget _buildContinueButton(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      CustomElevatedButton(
-        height: 55,
-        text: LocaleKeys.cont.tr(),
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
-        onTap: () async =>
-            await _nextScreen(context: context, viewModel: viewModel),
-      );
+  Widget _buildStartButton(
+          BuildContext context, CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.cacheImage) ||
+              viewModel.busy(StateObjects.coursePracticePrompt)
+          ? const Center(
+              child: CustomCircularProgressIndicator(
+                  color: Color(0xFFE4002B)),
+            )
+          : GestureDetector(
+              onTap: () async =>
+                  await _nextScreen(context: context, viewModel: viewModel),
+              child: Container(
+                width: double.infinity,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE4002B),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Text(
+                    LocaleKeys.start_assessment.tr(),
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Aeonik',
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            );
 
   Widget _buildBodyState(CoursePracticeViewModel viewModel) =>
       viewModel.busy(StateObjects.coursePracticePrompt)
           ? const PageLoadingIndicator()
-          : Container();
+          : const SizedBox.shrink();
 }

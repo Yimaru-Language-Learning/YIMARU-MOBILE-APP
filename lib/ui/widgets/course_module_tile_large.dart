@@ -1,61 +1,70 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/models/course_catalog.dart';
 import 'package:yimaru_app/models/course_lesson.dart';
 import 'package:yimaru_app/models/course_module.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/course_module/course_module_viewmodel.dart';
 import 'package:yimaru_app/ui/widgets/course_lesson_tile.dart';
-import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
 import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
 import '../common/app_colors.dart';
 import '../common/ui_helpers.dart';
-import 'custom_elevated_button.dart';
 
 class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
   final bool first;
   final CourseModule? module;
   final SubscriptionType type;
+  final CourseCatalog? catalog;
   final List<CourseLesson> lessons;
   final GestureTapCallback? onContinueTap;
+  final int unitSortOrder;
 
-  const CourseModuleTileLarge(
-      {super.key,
-      this.onContinueTap,
-      required this.type,
-      required this.first,
-      required this.module,
-      required this.lessons});
+  const CourseModuleTileLarge({
+    super.key,
+    this.catalog,
+    this.onContinueTap,
+    required this.type,
+    required this.first,
+    required this.module,
+    required this.lessons,
+    this.unitSortOrder = 1,
+  });
 
-  Future<void> _onPractice(
-      {required int index,
-      required CourseLesson lesson,
-      required BuildContext context,
-      required CourseModuleViewModel viewModel}) async {
-    await viewModel.navigateToCoursePractice(type: type, id: lesson.id ?? 0);
+  // ── Theme ─────────────────────────────────────────────────────────────────
+  bool get _isProfessionals =>
+      (catalog?.name ?? '').toLowerCase().contains('prof') ||
+      (catalog?.category ?? '').toLowerCase().contains('prof') ||
+      type == SubscriptionType.learn ||
+      (module?.name ?? '').contains('ሥራ') ||
+      (module?.name ?? '').contains('ሲቪ') ||
+      (module?.name ?? '').contains('ቃለ መጠይቅ');
 
-    /* if (viewModel.user?.subscriptionStatus?.toLowerCase() == 'active') {
-      if (lesson.access?.isAccessible ?? false) {
-        await viewModel.navigateToCoursePractice(lesson.id ?? 0);
-      } else {
-        await _showSheet(context: context, viewModel: viewModel);
-      }
-    } else {
-      if (first && index < 3) {
-        await viewModel.navigateToCoursePractice(lesson.id ?? 0);
-      } else {
-        await _showSheet(context: context, viewModel: viewModel);
-      }
-    }*/
+  bool get _isIelts => !_isProfessionals && type == SubscriptionType.ielts;
+
+  Color get _themeColor {
+    if (_isProfessionals) return const Color(0xFF8E2483);
+    if (_isIelts) return const Color(0xFFE4002B);
+    return AppColors.chartreuse40;
   }
 
-  Future<void> _onVideo(
-      {required int index,
-      required CourseLesson lesson,
-      required BuildContext context,
-      required CourseModuleViewModel viewModel}) async {
+  // ── Access logic (unchanged) ──────────────────────────────────────────────
+  Future<void> _onPractice({
+    required int index,
+    required CourseLesson lesson,
+    required BuildContext context,
+    required CourseModuleViewModel viewModel,
+  }) async =>
+      await viewModel.navigateToCoursePractice(type: type, id: lesson.id ?? 0);
+
+  Future<void> _onVideo({
+    required int index,
+    required CourseLesson lesson,
+    required BuildContext context,
+    required CourseModuleViewModel viewModel,
+  }) async {
     if (type == SubscriptionType.duolingo) {
       if (viewModel.user?.duolingo ?? false) {
         await viewModel.navigateToCourseLessonDetail(
@@ -84,197 +93,240 @@ class CourseModuleTileLarge extends ViewModelWidget<CourseModuleViewModel> {
     }
   }
 
-  Future<void> _showSheet(
-          {required BuildContext context,
-          required CourseModuleViewModel viewModel}) async =>
+  Future<void> _showSheet({
+    required BuildContext context,
+    required CourseModuleViewModel viewModel,
+  }) async =>
       await showModalBottomSheet(
         context: context,
         backgroundColor: kcTransparent,
-        builder: (_) => _buildSheet(viewModel),
+        builder: (_) => FinishPracticeSheet(onTap: viewModel.pop),
       );
 
+  // ── Build ─────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context, CourseModuleViewModel viewModel) =>
-      _buildExpansionTileCard(context: context, viewModel: viewModel);
-
-  Widget _buildExpansionTileCard(
-          {required BuildContext context,
-          required CourseModuleViewModel viewModel}) =>
-      Container(
-        margin: const EdgeInsets.only(bottom: 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: kcVeryLightGrey),
-        ),
-        child: _buildTileStack(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildTileStack(
-          {required BuildContext context,
-          required CourseModuleViewModel viewModel}) =>
-      Stack(
-        children: [
-          _buildExpansionTile(context: context, viewModel: viewModel),
-          // _buildContainerShaderState()
-        ],
-      );
-
-  Widget _buildExpansionTile(
-          {required BuildContext context,
-          required CourseModuleViewModel viewModel}) =>
-      ExpansionTile(
-        enabled: true,
-        title: _buildTitle(),
-        textColor: kcDarkGrey,
-        showTrailingIcon: true,
-        initiallyExpanded: true,
-        subtitle: _buildSubtitle(),
-        collapsedIconColor: kcDarkGrey,
-        collapsedTextColor: kcDarkGrey,
-        leading: _buildLeadingWrapper(),
-        backgroundColor: kcBackgroundColor,
-        shape: Border.all(color: kcTransparent),
-        expandedAlignment: Alignment.centerLeft,
-        collapsedBackgroundColor: kcBackgroundColor,
-        controlAffinity: ListTileControlAffinity.trailing,
-        expandedCrossAxisAlignment: CrossAxisAlignment.start,
-        tilePadding: const EdgeInsets.symmetric(horizontal: 15),
-        // enabled: status != ProgressStatuses.pending,
-        // showTrailingIcon: status != ProgressStatuses.pending ? true : false,
-        //initiallyExpanded: status == ProgressStatuses.started ? true : false,
-        children:
-            _buildExpansionTileChildren(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildTitle() => Text(
-        module?.name ?? '',
-        maxLines: 1,
-        softWrap: false,
-        style: style16P600,
-        overflow: TextOverflow.ellipsis,
-      );
-
-  Widget _buildLeadingWrapper() => CircleAvatar(
-        backgroundColor: kcVeryLightGrey.withValues(alpha: 0.5),
-        child: _buildLeading(),
-      );
-
-  Widget _buildLeading() => const Icon(
-        Icons.book,
-        color: kcLightGrey,
-      );
-
-  Widget _buildSubtitle() => Text(
-        LocaleKeys.zero_percent_completed.tr(),
-        style: style14DG500,
-      );
-
-  List<Widget> _buildExpansionTileChildren(
-          {required BuildContext context,
-          required CourseModuleViewModel viewModel}) =>
-      [_buildExpansionTileItem(context: context, viewModel: viewModel)];
-
-  Widget _buildExpansionTileItem(
-          {required BuildContext context,
-          required CourseModuleViewModel viewModel}) =>
       Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildExpansionTileItemChildren(
-            context: context, viewModel: viewModel),
+        children: [
+          _buildModuleHeader(viewModel),
+          const SizedBox(height: 12),
+          _buildLessonsList(context, viewModel),
+        ],
       );
 
-  List<Widget> _buildExpansionTileItemChildren(
-          {required BuildContext context,
-          required CourseModuleViewModel viewModel}) =>
-      [
-        _buildProgressRowWrapper(),
-        verticalSpaceSmall,
-        // _buildActionButtonWrapper(context: context, viewModel: viewModel),
-        // verticalSpaceMedium,
-        _buildCourseModules(viewModel)
-      ];
-
-  Widget _buildProgressRowWrapper() => Padding(
-        padding: const EdgeInsets.only(left: 75, right: 15),
-        child: _buildProgressRow(),
-      );
-
-  Widget _buildProgressRow() => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: _buildProgressChildren(),
-      );
-
-  List<Widget> _buildProgressChildren() =>
-      [_buildProgressStatusWrapper(), horizontalSpaceSmall, _buildProgress()];
-
-  Widget _buildProgressStatusWrapper() => Expanded(
-        child: _buildProgressStatus(),
-      );
-
-  Widget _buildProgressStatus() => const CustomLinearProgressIndicator(
-      progress: 0,
-      activeColor: kcPrimaryColor,
-      backgroundColor: kcVeryLightGrey);
-
-  Widget _buildProgress() => Text(
-        LocaleKeys.zero_slash_zero.tr(),
-        style: const TextStyle(color: kcDarkGrey),
-      );
-
-  Widget _buildActionButtonWrapper(
-          {required BuildContext context,
-          required CourseModuleViewModel viewModel}) =>
-      Container(
-        width: 175,
-        height: 40,
-        margin: const EdgeInsets.only(left: 75, right: 15),
-        child: _buildContinueButton(viewModel),
-      );
-
-  Widget _buildContinueButton(CourseModuleViewModel viewModel) =>
-      CustomElevatedButton(
-        height: 15,
-        borderRadius: 12,
-        onTap: onContinueTap,
-        text: LocaleKeys.continue_module.tr(),
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
-      );
-
-  Widget _buildSheet(CourseModuleViewModel viewModel) => FinishPracticeSheet(
-        onTap: viewModel.pop,
-      );
-
-  Widget _buildCourseModules(CourseModuleViewModel viewModel) =>
-      ListView.builder(
-        shrinkWrap: true,
-        itemCount: lessons.length,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => _buildCourseLessonTile(
-            lesson: lessons[index],
-            onVideoTap: () async => await _onVideo(
-                  index: index,
-                  context: context,
-                  viewModel: viewModel,
-                  lesson: viewModel.lessons[index],
+  // ── Collapsible section header (theme-coloured) ───────────────────────────
+  Widget _buildModuleHeader(CourseModuleViewModel viewModel) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Container(
+          decoration: BoxDecoration(
+            color: _themeColor,
+            borderRadius: BorderRadius.circular(14),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Theme(
+            data: ThemeData().copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              initiallyExpanded: true,
+              collapsedBackgroundColor: _themeColor,
+              backgroundColor: _themeColor,
+              tilePadding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              childrenPadding: EdgeInsets.zero,
+              title: _buildModuleHeaderTitle(),
+              trailing: Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.25),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-            onPracticeTap: () async => await _onPractice(
-                  index: index,
-                  context: context,
-                  viewModel: viewModel,
-                  lesson: viewModel.lessons[index],
-                )),
+                child: const Icon(
+                  Icons.keyboard_arrow_up_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              children: [
+                _buildModuleHeaderExpanded(viewModel),
+              ],
+            ),
+          ),
+        ),
       );
 
-  Widget _buildCourseLessonTile({
-    required CourseLesson lesson,
-    required GestureTapCallback onVideoTap,
-    required GestureTapCallback onPracticeTap,
-  }) =>
-      CourseLessonTile(
-        lesson: lesson,
-        onVideoTap: onVideoTap,
-        onPracticeTap: onPracticeTap,
+  Widget _buildModuleHeaderTitle() {
+    final moduleLabel = (module?.name?.contains('.') ?? false)
+        ? 'MODULE ${module!.name!.split(' ').first}'
+        : LocaleKeys.module_detail.tr().toUpperCase();
+    return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'UNIT $unitSortOrder · $moduleLabel',
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              fontFamily: 'Aeonik',
+              color: Colors.white,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            module?.name ?? '',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              fontFamily: 'Aeonik',
+              color: Colors.white,
+            ),
+          ),
+        ],
       );
+  }
+
+  Widget _buildModuleHeaderExpanded(CourseModuleViewModel viewModel) => Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '0% ${LocaleKeys.zero_percent_completed.tr()}',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'Aeonik',
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: LinearProgressIndicator(
+                      value: 0,
+                      minHeight: 7,
+                      backgroundColor: Colors.white.withValues(alpha: 0.3),
+                      valueColor:
+                          const AlwaysStoppedAnimation<Color>(Color(0xFFFFD700)),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.25),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    '0/${_getLessons().isNotEmpty ? _getLessons().length : 1}',
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Aeonik',
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (type == SubscriptionType.duolingo) ...[
+              const SizedBox(height: 10),
+              GestureDetector(
+                onTap: () async => await viewModel.navigateToCoursePractice(
+                  id: module?.id ?? 0,
+                  type: type,
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.4),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.assignment_outlined,
+                          size: 16, color: Colors.white),
+                      const SizedBox(width: 6),
+                      Text(
+                        '${LocaleKeys.practice_test.tr()} - ${module?.name ?? ''}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Aeonik',
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      );
+
+  List<CourseLesson> _getLessons() {
+    if (lessons.isNotEmpty) return lessons;
+    if (_isProfessionals) {
+      return [
+        CourseLesson(
+          id: module?.id ?? 1,
+          title: module?.name ?? 'Lesson 1',
+          sortOrder: 1,
+          accessTier: 'FREE',
+        ),
+      ];
+    }
+    return lessons;
+  }
+
+  // ── Lessons list ──────────────────────────────────────────────────────────
+  Widget _buildLessonsList(
+      BuildContext context, CourseModuleViewModel viewModel) {
+    final list = _getLessons();
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: list.length,
+      itemBuilder: (_, index) => CourseLessonTile(
+        index: index,
+        lesson: list[index],
+        module: module,
+        catalog: catalog,
+        courseType: type,
+        unitSortOrder: unitSortOrder,
+        moduleSortOrder: module?.sortOrder ?? 1,
+        onVideoTap: () async => await _onVideo(
+          index: index,
+          lesson: list[index],
+          context: context,
+          viewModel: viewModel,
+        ),
+        onPracticeTap: () async => await _onPractice(
+          index: index,
+          lesson: list[index],
+          context: context,
+          viewModel: viewModel,
+        ),
+      ),
+    );
+  }
 }

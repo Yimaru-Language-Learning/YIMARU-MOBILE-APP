@@ -41,45 +41,105 @@ class HomeView extends StackedView<HomeViewModel> {
       );
 
   Widget _buildScaffold(HomeViewModel viewModel) => Scaffold(
+        backgroundColor: AppColors.background,
         body: getViewForIndex(viewModel.currentPage),
         bottomNavigationBar: _buildBottomNav(viewModel),
       );
 
-  Widget _buildBottomNav(HomeViewModel viewModel) => BottomNavigationBar(
-        items: _buildNavBarItems(),
-        onTap: viewModel.setCurrentIndex,
-        selectedItemColor: kcPrimaryColor,
-        backgroundColor: kcBackgroundColor,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: viewModel.currentPage,
+  Widget _buildBottomNav(HomeViewModel viewModel) => SafeArea(
+        top: false,
+        child: Container(
+          margin: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: kcWhite,
+            borderRadius: BorderRadius.circular(32),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.neutral14.withValues(alpha: 0.08),
+                blurRadius: 24,
+                spreadRadius: 0,
+                offset: const Offset(0, 8),
+              ),
+            ],
+            border: Border.all(
+              color: AppColors.neutral84.withValues(alpha: 0.5),
+              width: 1,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(
+                index: 0,
+                label: LocaleKeys.learn.tr(),
+                icon: Icons.school_rounded,
+                unselectedIcon: Icons.school_outlined,
+                viewModel: viewModel,
+              ),
+              _buildNavItem(
+                index: 1,
+                label: LocaleKeys.course.tr(),
+                icon: Icons.menu_book_rounded,
+                unselectedIcon: Icons.menu_book_outlined,
+                viewModel: viewModel,
+              ),
+              _buildNavItem(
+                index: 2,
+                label: LocaleKeys.profile.tr(),
+                icon: Icons.person_rounded,
+                unselectedIcon: Icons.person_outline_rounded,
+                viewModel: viewModel,
+              ),
+            ],
+          ),
+        ),
       );
 
-  List<BottomNavigationBarItem> _buildNavBarItems() => [
-        _buildLearnItem(),
-        _buildCourseItem(),
-        _buildProfileItem(),
-      ];
-
-  BottomNavigationBarItem _buildLearnItem() => BottomNavigationBarItem(
-        icon: _buildLearnIcon(),
-        label: LocaleKeys.learn.tr(),
-      );
-
-  BottomNavigationBarItem _buildCourseItem() => BottomNavigationBarItem(
-        icon: _buildCourseIcon(),
-        label: LocaleKeys.course.tr(),
-      );
-
-  BottomNavigationBarItem _buildProfileItem() => BottomNavigationBarItem(
-        icon: _buildProfileIcon(),
-        label: LocaleKeys.profile.tr(),
-      );
-
-  Widget _buildLearnIcon() => const Icon(Icons.school);
-
-  Widget _buildCourseIcon() => const Icon(Icons.book);
-
-  Widget _buildProfileIcon() => const Icon(Icons.person);
+  Widget _buildNavItem({
+    required int index,
+    required String label,
+    required IconData icon,
+    required IconData unselectedIcon,
+    required HomeViewModel viewModel,
+  }) {
+    final bool isSelected = viewModel.currentPage == index;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () => viewModel.setCurrentIndex(index),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeInOut,
+        padding: isSelected
+            ? const EdgeInsets.symmetric(horizontal: 18, vertical: 8)
+            : const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.neutral93 : Colors.transparent,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isSelected ? icon : unselectedIcon,
+              size: 24,
+              color: isSelected ? AppColors.magenta38 : AppColors.neutral40,
+            ),
+            const SizedBox(height: 3),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                color: isSelected ? AppColors.magenta38 : AppColors.neutral40,
+                fontFamily: 'Aeonik',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget getViewForIndex(int index) {
     switch (index) {

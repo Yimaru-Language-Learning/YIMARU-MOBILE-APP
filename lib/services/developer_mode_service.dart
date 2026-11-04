@@ -43,6 +43,11 @@ class DeveloperModeService with ListenableServiceMixin {
 
   Future<void> _check() async {
     if (_isDisposed) return;
+    if (kDebugMode) {
+      // Allow engineers to test and debug on their devices without being blocked
+      _developerModeEnabled.value = false;
+      return;
+    }
     try {
       final currentlyEnabled = await SafeDevice.isDevelopmentModeEnable;
 

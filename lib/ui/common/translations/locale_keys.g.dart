@@ -2,7 +2,7 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const male = 'male';
   static const female = 'female';
   static const loading = 'loading';
@@ -166,12 +166,14 @@ abstract class  LocaleKeys {
   static const educational_background = 'educational_background';
   static const education_for_personalization = 'education_for_personalization';
   static const your_occupation = 'your_occupation';
-  static const occupation_for_personalization = 'occupation_for_personalization';
+  static const occupation_for_personalization =
+      'occupation_for_personalization';
   static const location = 'location';
   static const select_country_region = 'select_country_region';
   static const select_country = 'select_country';
   static const know_some_english_want_learn = 'know_some_english_want_learn';
-  static const already_speak_english_want_practice = 'already_speak_english_want_practice';
+  static const already_speak_english_want_practice =
+      'already_speak_english_want_practice';
   static const want_courses_ielts_toefl = 'want_courses_ielts_toefl';
   static const learning_goal = 'learning_goal';
   static const language_goal = 'language_goal';
@@ -197,9 +199,12 @@ abstract class  LocaleKeys {
   static const finish_all_practice_lesson = 'finish_all_practice_lesson';
   static const finish_all_practice_module = 'finish_all_practice_module';
   static const finish_all_practice_course = 'finish_all_practice_course';
-  static const finish_all_practice_previous_unit = 'finish_all_practice_previous_unit';
-  static const finish_all_practice_previous_module = 'finish_all_practice_previous_module';
-  static const finish_all_practice_previous_course = 'finish_all_practice_previous_course';
+  static const finish_all_practice_previous_unit =
+      'finish_all_practice_previous_unit';
+  static const finish_all_practice_previous_module =
+      'finish_all_practice_previous_module';
+  static const finish_all_practice_previous_course =
+      'finish_all_practice_previous_course';
   static const track_journey = 'track_journey';
   static const learn_english = 'learn_english';
   static const keep_momentum = 'keep_momentum';
@@ -331,11 +336,16 @@ abstract class  LocaleKeys {
   static const interactive_listening_part3 = 'interactive_listening_part3';
   static const read_and_select = 'read_and_select';
   static const fill_in_blank = 'fill_in_blank';
-  static const interactive_reading_complete_sentence = 'interactive_reading_complete_sentence';
-  static const interactive_reading_complete_passage = 'interactive_reading_complete_passage';
-  static const interactive_reading_identify_idea = 'interactive_reading_identify_idea';
-  static const interactive_reading_title_passage = 'interactive_reading_title_passage';
-  static const interactive_reading_highlight_answer = 'interactive_reading_highlight_answer';
+  static const interactive_reading_complete_sentence =
+      'interactive_reading_complete_sentence';
+  static const interactive_reading_complete_passage =
+      'interactive_reading_complete_passage';
+  static const interactive_reading_identify_idea =
+      'interactive_reading_identify_idea';
+  static const interactive_reading_title_passage =
+      'interactive_reading_title_passage';
+  static const interactive_reading_highlight_answer =
+      'interactive_reading_highlight_answer';
   static const read_and_complete = 'read_and_complete';
   static const ielts_speaking_interview = 'ielts_speaking_interview';
   static const ielts_speaking_cue_card_part1 = 'ielts_speaking_cue_card_part1';
@@ -370,7 +380,8 @@ abstract class  LocaleKeys {
   static const write_summary_conversation = 'write_summary_conversation';
   static const read_select_correct = 'read_select_correct';
   static const complete_sentences_filling = 'complete_sentences_filling';
-  static const read_passage_complete_interactive = 'read_passage_complete_interactive';
+  static const read_passage_complete_interactive =
+      'read_passage_complete_interactive';
   static const part_completed = 'part_completed';
   static const finished_part_click_next = 'finished_part_click_next';
   static const write_issue_briefly = 'write_issue_briefly';
@@ -392,8 +403,10 @@ abstract class  LocaleKeys {
   static const issue_type_label = 'issue_type_label';
   static const describe_issue_hint = 'describe_issue_hint';
   static const ready_to_listen_status = 'ready_to_listen_status';
-  static const cannot_stop_restart_audio_info = 'cannot_stop_restart_audio_info';
-  static const complete_audio_to_proceed_warning = 'complete_audio_to_proceed_warning';
+  static const cannot_stop_restart_audio_info =
+      'cannot_stop_restart_audio_info';
+  static const complete_audio_to_proceed_warning =
+      'complete_audio_to_proceed_warning';
   static const instructions_title = 'instructions_title';
   static const list_of_headings_label = 'list_of_headings_label';
   static const drag_heading_here_hint = 'drag_heading_here_hint';
@@ -407,7 +420,8 @@ abstract class  LocaleKeys {
   static const discussion = 'discussion';
   static const thank_you_for_response = 'thank_you_for_response';
   static const you_are_speaking_status = 'you_are_speaking_status';
-  static const label_map_write_correct_letter = 'label_map_write_correct_letter';
+  static const label_map_write_correct_letter =
+      'label_map_write_correct_letter';
   static const label_diagram_write_letter = 'label_diagram_write_letter';
   static const examiner_is_speaking = 'examiner_is_speaking';
   static const sentence_ending_matching = 'sentence_ending_matching';
@@ -424,15 +438,19 @@ abstract class  LocaleKeys {
   static const list_of_features = 'list_of_features';
   static const heading_matching_title = 'heading_matching_title';
   static const what_should_we_call_you_title = 'what_should_we_call_you_title';
-  static const everyone_has_struggles_subtitle = 'everyone_has_struggles_subtitle';
+  static const everyone_has_struggles_subtitle =
+      'everyone_has_struggles_subtitle';
   static const hello_user = 'hello_user';
   static const almost_there_user = 'almost_there_user';
   static const reset_password_title = 'reset_password_title';
-  static const enter_email_reset_code_subtitle = 'enter_email_reset_code_subtitle';
+  static const enter_email_reset_code_subtitle =
+      'enter_email_reset_code_subtitle';
   static const speak_about_photo_below = 'speak_about_photo_below';
   static const speak_about_topic_below = 'speak_about_topic_below';
-  static const write_about_topic_below_seconds = 'write_about_topic_below_seconds';
-  static const write_description_image_seconds = 'write_description_image_seconds';
+  static const write_about_topic_below_seconds =
+      'write_about_topic_below_seconds';
+  static const write_description_image_seconds =
+      'write_description_image_seconds';
   static const speak_topic_below_seconds = 'speak_topic_below_seconds';
   static const listen_audio_type_response = 'listen_audio_type_response';
   static const listen_closely_once = 'listen_closely_once';
@@ -440,9 +458,11 @@ abstract class  LocaleKeys {
   static const correct_answer_label = 'correct_answer_label';
   static const select_best_sentence_passage = 'select_best_sentence_passage';
   static const prepare_conversation = 'prepare_conversation';
-  static const listen_questions_answer_seconds = 'listen_questions_answer_seconds';
+  static const listen_questions_answer_seconds =
+      'listen_questions_answer_seconds';
   static const complete_passage = 'complete_passage';
-  static const complete_sentence_correct_word = 'complete_sentence_correct_word';
+  static const complete_sentence_correct_word =
+      'complete_sentence_correct_word';
   static const read_passage_answer_questions = 'read_passage_answer_questions';
   static const select_idea_described_passage = 'select_idea_described_passage';
   static const select_best_title_passage = 'select_best_title_passage';
@@ -464,4 +484,24 @@ abstract class  LocaleKeys {
   static const apply_clipboard_code = 'apply_clipboard_code';
   static const profile_completion = 'profile_completion';
   static const complete_profile = 'complete_profile';
+  static const your_english_path = 'your_english_path';
+  static const beginner = 'beginner';
+  static const intermediate = 'intermediate';
+  static const advanced = 'advanced';
+  static const starter = 'starter';
+  static const elementary = 'elementary';
+  static const pre_intermediate = 'pre_intermediate';
+  static const upper_intermediate = 'upper_intermediate';
+  static const proficiency = 'proficiency';
+  static const where_level_sits_scale = 'where_level_sits_scale';
+  static const finish_beginner_stage_motivation =
+      'finish_beginner_stage_motivation';
+  static const finish_intermediate_stage_motivation =
+      'finish_intermediate_stage_motivation';
+  static const finish_advanced_stage_motivation =
+      'finish_advanced_stage_motivation';
+  static const module_complete_motivation = 'module_complete_motivation';
+  static const module_halfway_motivation = 'module_halfway_motivation';
+  static const module_start_motivation = 'module_start_motivation';
+  static const lessons_count = 'lessons_count';
 }
