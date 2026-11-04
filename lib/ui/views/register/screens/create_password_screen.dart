@@ -9,6 +9,7 @@ import 'package:yimaru_app/ui/views/register/register_viewmodel.dart';
 import '../register_view.form.dart';
 import 'package:yimaru_app/ui/widgets/auth_header.dart';
 import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
+import 'package:yimaru_app/ui/widgets/referral_code_input.dart';
 
 class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
   final TextEditingController passwordController;
@@ -106,6 +107,18 @@ class CreatePasswordScreen extends ViewModelWidget<RegisterViewModel> {
                         _buildValidationItem(
                           isValid: viewModel.passwordMatch,
                           label: LocaleKeys.password_match.tr(),
+                        ),
+                        const SizedBox(height: 18),
+
+                        // Referral Code Input
+                        ReferralCodeInputWidget(
+                          controller: viewModel.referralCodeController,
+                          isVerifying: viewModel.isVerifyingReferral,
+                          isValid: viewModel.isReferralValid,
+                          influencerName: viewModel.verifiedInfluencerName,
+                          errorMessage: viewModel.referralErrorMessage,
+                          onCodeChanged: viewModel.onReferralCodeChanged,
+                          onClear: viewModel.clearReferral,
                         ),
                         const SizedBox(height: 18),
 
