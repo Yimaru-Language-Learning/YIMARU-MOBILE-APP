@@ -2,55 +2,41 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/models/course_catalog.dart';
+import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
+import 'package:yimaru_app/ui/widgets/course_catalog_tile.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/enmus.dart';
-import '../../common/translations/locale_keys.g.dart';
 import '../../common/ui_helpers.dart';
-import '../../widgets/course_catalog_tile.dart';
 import '../../widgets/custom_circular_progress_indicator.dart';
 import '../../widgets/finish_practice_sheet.dart';
-import '../../widgets/small_app_bar.dart';
 import 'course_catalog_viewmodel.dart';
 
 class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
   const CourseCatalogView({Key? key}) : super(key: key);
 
-  Future<void> _onPractice(
-      {required BuildContext context,
-      required CourseCatalog course,
-      required CourseCatalogViewModel viewModel}) async {
+  Future<void> _onPractice({
+    required BuildContext context,
+    required CourseCatalog course,
+    required CourseCatalogViewModel viewModel,
+  }) async {
     await viewModel.navigateToCoursePractice(
         id: course.id ?? 0,
         type: course.category == 'IELTS'
             ? SubscriptionType.ielts
             : SubscriptionType.duolingo);
-
-    /*   if (course.access?.isCompleted ?? false) {
-      await viewModel.navigateToCoursePractice(course.id ?? 0);
-    } else {
-      if (course.access?.isAccessible ?? false) {
-        await _showSheet(
-            context: context,
-            viewModel: viewModel,
-            practice: PracticeReason.course);
-      } else {
-        await _showSheet(
-            context: context,
-            viewModel: viewModel,
-            practice: PracticeReason.previousCourse);
-      }
-    }*/
   }
 
-  Future<void> _showSheet(
-          {required BuildContext context,
-          required PracticeReason practice,
-          required CourseCatalogViewModel viewModel}) async =>
+  Future<void> _showSheet({
+    required BuildContext context,
+    required PracticeReason practice,
+    required CourseCatalogViewModel viewModel,
+  }) async =>
       await showModalBottomSheet(
         context: context,
         backgroundColor: kcTransparent,
-        builder: (_) => _buildSheet(viewModel: viewModel, practice: practice),
+        builder: (_) =>
+            FinishPracticeSheet(practice: practice, onTap: viewModel.pop),
       );
 
   @override
@@ -69,116 +55,155 @@ class CourseCatalogView extends StackedView<CourseCatalogViewModel> {
     CourseCatalogViewModel viewModel,
     Widget? child,
   ) =>
-      _buildScaffoldWrapper(viewModel);
+      _buildScaffold(context, viewModel);
 
-  Widget _buildScaffoldWrapper(CourseCatalogViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldContainer(viewModel),
+  Widget _buildScaffold(
+          BuildContext context, CourseCatalogViewModel viewModel) =>
+      Scaffold(
+        backgroundColor: AppColors.background,
+        body: SafeArea(child: _buildBody(context, viewModel)),
       );
 
-  Widget _buildScaffoldContainer(CourseCatalogViewModel viewModel) => Container(
-        decoration: bgDecoration,
-        child: _buildScaffold(viewModel),
-      );
-
-  Widget _buildScaffold(CourseCatalogViewModel viewModel) =>
-      SafeArea(child: _buildBody(viewModel));
-
-  Widget _buildBody(CourseCatalogViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(viewModel),
-      );
-
-  Widget _buildColumn(CourseCatalogViewModel viewModel) => Column(
+  Widget _buildBody(BuildContext context, CourseCatalogViewModel viewModel) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          verticalSpaceMedium,
-          _buildAppBar(viewModel),
-          verticalSpaceMedium,
-          _buildCoursesColumnWrapper(viewModel),
+          _buildTopBar(viewModel),
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
+                  _buildTitle(),
+                  const SizedBox(height: 6),
+                  _buildSubtitle(),
+                  const SizedBox(height: 24),
+                  _buildListState(context, viewModel),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+          ),
         ],
       );
 
-  Widget _buildAppBar(CourseCatalogViewModel viewModel) => SmallAppBar(
-        onPop: viewModel.pop,
-        showBackButton: true,
+  // ── Top bar ───────────────────────────────────────────────────────────────
+  Widget _buildTopBar(CourseCatalogViewModel viewModel) => Padding(
+        padding: const EdgeInsets.only(left: 16, top: 12, bottom: 4),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: GestureDetector(
+            onTap: viewModel.pop,
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: const Color(0xFFEEEEF0)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.arrow_back_rounded,
+                size: 20,
+                color: Color(0xFF9A288D),
+              ),
+            ),
+          ),
+        ),
       );
-
-  Widget _buildCoursesColumnWrapper(CourseCatalogViewModel viewModel) =>
-      Expanded(child: _buildCoursesColumnScrollView(viewModel));
-
-  Widget _buildCoursesColumnScrollView(CourseCatalogViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildCoursesColumn(viewModel),
-      );
-
-  Widget _buildCoursesColumn(CourseCatalogViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildCoursesColumnChildren(viewModel),
-      );
-
-  List<Widget> _buildCoursesColumnChildren(CourseCatalogViewModel viewModel) =>
-      [
-        _buildTitle(),
-        _buildSubtitle(),
-        verticalSpaceMedium,
-        _buildListViewBuilder(viewModel)
-      ];
 
   Widget _buildTitle() => Text(
         LocaleKeys.english_proficiency.tr(),
-        style: style18DG700,
+        style: const TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w800,
+          fontFamily: 'Aeonik',
+          color: Color(0xFF1E132D),
+        ),
       );
 
   Widget _buildSubtitle() => Text(
         LocaleKeys.select_your_target_exam.tr(),
-        style: style14DG400,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w400,
+          fontFamily: 'Aeonik',
+          color: Color(0xFF888899),
+        ),
       );
 
-  Widget _buildListViewBuilder(CourseCatalogViewModel viewModel) =>
+  // ── List ──────────────────────────────────────────────────────────────────
+  Widget _buildListState(
+          BuildContext context, CourseCatalogViewModel viewModel) =>
       viewModel.busy(StateObjects.courseCatalogs)
-          ? _buildProgressIndicator()
-          : _buildListView(viewModel);
+          ? const Center(
+              child: CustomCircularProgressIndicator(color: kcPrimaryColor),
+            )
+          : _buildList(context, viewModel);
 
-  Widget _buildProgressIndicator() => const Center(
-        child: CustomCircularProgressIndicator(color: kcPrimaryColor),
-      );
+  Widget _buildList(BuildContext context, CourseCatalogViewModel viewModel) {
+    final catalogs = List<CourseCatalog>.from(viewModel.catalogs);
+    final hasProfessionals = catalogs.any((c) =>
+        (c.name ?? '').toLowerCase().contains('prof') ||
+        (c.category ?? '').toLowerCase().contains('prof'));
 
-  Widget _buildListView(CourseCatalogViewModel viewModel) => ListView.separated(
-        shrinkWrap: true,
-        itemCount: viewModel.catalogs.length,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => _buildTile(
-          onPracticeTap: () async => await _onPractice(
+    if (!hasProfessionals) {
+      catalogs.add(const CourseCatalog(
+        id: 0,
+        name: 'English For Professionals',
+        category: 'PROFESSIONAL',
+      ));
+    }
+
+    return ListView.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: catalogs.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 16),
+      itemBuilder: (_, index) {
+        final catalog = catalogs[index];
+        return CourseCatalogTile(
+          catalog: catalog,
+          onCourseTap: () async {
+            if (catalog.id == null) return;
+            final isProf = (catalog.name ?? '').toLowerCase().contains('prof') ||
+                (catalog.category ?? '').toLowerCase().contains('prof');
+            await viewModel.navigateToCourseUnit(
+              catalog: catalog,
+              type: catalog.category == 'IELTS'
+                  ? SubscriptionType.ielts
+                  : (isProf ? SubscriptionType.learn : SubscriptionType.duolingo),
+            );
+          },
+          onPracticeTap: () async {
+            if (catalog.id == null) return;
+            final isProf = (catalog.name ?? '').toLowerCase().contains('prof') ||
+                (catalog.category ?? '').toLowerCase().contains('prof');
+            if (isProf) {
+              await viewModel.navigateToCourseUnit(
+                catalog: catalog,
+                type: SubscriptionType.learn,
+              );
+              return;
+            }
+            await _onPractice(
               context: context,
               viewModel: viewModel,
-              course: viewModel.catalogs[index]),
-          catalog: viewModel.catalogs[index],
-          onCourseTap: () async => await viewModel.navigateToCourseUnit(
-              catalog: viewModel.catalogs[index],
-              type: viewModel.catalogs[index].category == 'IELTS'
-                  ? SubscriptionType.ielts
-                  : SubscriptionType.duolingo),
-        ),
-        separatorBuilder: (context, index) => verticalSpaceSmall,
-      );
-
-  Widget _buildTile({
-    required CourseCatalog catalog,
-    required GestureTapCallback onCourseTap,
-    required GestureTapCallback onPracticeTap,
-  }) =>
-      CourseCatalogTile(
-        catalog: catalog,
-        onCourseTap: onCourseTap,
-        onPracticeTap: onPracticeTap,
-      );
-
-  Widget _buildSheet(
-          {required PracticeReason practice,
-          required CourseCatalogViewModel viewModel}) =>
-      FinishPracticeSheet(
-        practice: practice,
-        onTap: viewModel.pop,
-      );
+              course: catalog,
+            );
+          },
+        );
+      },
+    );
+  }
 }

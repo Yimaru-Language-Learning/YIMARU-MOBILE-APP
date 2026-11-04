@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Soft lavender/lilac circular background -->
+  <circle cx="50" cy="50" r="42" fill="#EBCDE8"/>
+
+  <!-- Briefcase Handle -->
+  <path d="M42 41 V34 C42 31.5 43.8 29.5 46 29.5 H54 C56.2 29.5 58 31.5 58 34 V41" fill="none" stroke="#6A1A62" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- Briefcase Body (rich purple) -->
+  <rect x="21" y="39" width="58" height="38" rx="8" fill="#6A1A62"/>
+
+  <!-- Briefcase Flap -->
+  <path d="M21 39 H79 V53 C79 53 65 57 50 57 C35 57 21 53 21 53 Z" fill="#8E2483"/>
+
+  <!-- Gold Buckle / Clasp -->
+  <rect x="46" y="52" width="8" height="9" rx="2" fill="#FFC23D"/>
+  <rect x="48" y="55" width="4" height="3" rx="1" fill="#6A1A62"/>
+
+  <!-- Orange/Coral Speech Bubble (at top right) -->
+  <g transform="translate(56, 19)">
+    <rect x="0" y="0" width="28" height="18" rx="7" fill="#FF8A65"/>
+    <polygon points="5,16 11,16 3,22" fill="#FF8A65"/>
+    <circle cx="7" cy="9" r="2" fill="#FFFFFF"/>
+    <circle cx="14" cy="9" r="2" fill="#FFFFFF"/>
+    <circle cx="21" cy="9" r="2" fill="#FFFFFF"/>
+  </g>
+</svg>

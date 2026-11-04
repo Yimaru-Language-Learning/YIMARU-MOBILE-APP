@@ -22,6 +22,31 @@ subprojects {
     }
 }
 
+subprojects {
+    val updateAndroid = {
+        if (project.name == "syncfusion_flutter_pdfviewer") {
+            val android = project.extensions.findByName("android")
+            if (android != null) {
+                try {
+                    val method = android.javaClass.getMethod("compileSdkVersion", Int::class.javaPrimitiveType)
+                    method.invoke(android, 34)
+                } catch (e: Exception) {
+                    try {
+                        val method = android.javaClass.getMethod("setCompileSdkVersion", Int::class.javaPrimitiveType)
+                        method.invoke(android, 34)
+                    } catch (ignored: Exception) {}
+                }
+            }
+        }
+    }
+
+    if (project.state.executed) {
+        updateAndroid()
+    } else {
+        project.afterEvaluate { updateAndroid() }
+    }
+}
+
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }

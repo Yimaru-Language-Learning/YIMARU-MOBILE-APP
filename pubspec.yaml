@@ -1,4 +1,4 @@
-name: yimaru_app
+﻿name: yimaru_app
 publish_to: 'none'
 version: 0.1.124+126
 description: A new Flutter project.
@@ -82,6 +82,20 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/images/mascot/
+    - assets/images/illustrations/
+    - assets/images/illustrations/lessons/
+    - assets/images/illustrations/modules/
+    - assets/images/illustrations/levels/
+    - assets/images/06-course-tab-and-exam-prep/
+    - assets/images/07-duolingo-english-test/
+    - assets/images/07-duolingo-english-test/lessons/
+    - assets/images/10-profile-and-settings/
+    - assets/images/08-ielts/
+    - assets/images/08-ielts/lessons/
+    - assets/images/09-english-for-professionals/
+    - assets/images/09-english-for-professionals/lessons/
+    - assets/images/subscription and progress/
     - assets/translations/
   fonts:
     - family: Aeonik

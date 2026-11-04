@@ -460,9 +460,22 @@
   "enter_referral_code": "ኮድ ያስገቡ (ለምሳሌ፦ BEZA20)",
   "referred_by": "በ{} የተጋበዙ",
   "invalid_referral_code": "ልክ ያልሆነ ወይም የማይሰራ የሪፈራል ኮድ",
-  "apply_clipboard_code": "የተገኘ የሪፈራል ኮድ '{}' — ለመጠቀም ይጫኑ"
+  "apply_clipboard_code": "የተገኘ የሪፈራል ኮድ '{}' — ለመጠቀም ይጫኑ",
+  "your_english_path": "የእርስዎ የእንግሊዝኛ መንገድ",
+  "beginner": "ጀማሪ",
+  "starter": "መነሻ",
+  "elementary": "መሰረታዊ",
+  "where_level_sits_scale": "{} በእንግሊዝኛ መለኪያ ላይ ያለበት ደረጃ",
+  "finish_beginner_stage_motivation": "የጀማሪውን ደረጃ ለማጠናቀቅ A1 እና A2ን ያጠናቅቁ።",
+  "intermediate": "መካከለኛ",
+  "advanced": "ከፍተኛ",
+  "pre_intermediate": "ቅድመ-መካከለኛ",
+  "upper_intermediate": "ከፍተኛ-መካከለኛ",
+  "proficiency": "የላቀ ብቃት",
+  "finish_intermediate_stage_motivation": "የመካከለኛውን ደረጃ ለማጠናቀቅ B1 እና B2ን ያጠናቅቁ።",
+  "finish_advanced_stage_motivation": "የከፍተኛውን ደረጃ ለማጠናቀቅ C1 እና C2ን ያጠናቅቁ።",
+  "module_complete_motivation": "ሞጁሉ ተጠናቋል! ድንቅ ስራ፣ እንደዚሁ ይቀጥሉ::",
+  "module_halfway_motivation": "እንቀጥል - ከግማሽ በላይ ደርሰዋል",
+  "module_start_motivation": "ጠንክረው ይቀጥሉ! ድንቅ ስራ እየሰሩ ነው::",
+  "lessons_count": "{} ትምህርቶች"
 }
-
-
-
-

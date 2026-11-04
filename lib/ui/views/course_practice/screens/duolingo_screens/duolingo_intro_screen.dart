@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/enmus.dart';
@@ -169,151 +170,215 @@ class DuolingoIntroScreen extends ViewModelWidget<CoursePracticeViewModel> {
 
   @override
   Widget build(BuildContext context, CoursePracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(context: context, viewModel: viewModel);
-
-  Widget _buildScaffoldWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
       Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(context: context, viewModel: viewModel),
+        backgroundColor: AppColors.background,
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildTopBar(context, viewModel),
+              Expanded(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 12),
+                      // Heading
+                      const Text(
+                        'Duolingo English Test',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w800,
+                          fontFamily: 'Aeonik',
+                          color: Color(0xFF1A1A2E),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      // Main card containing illustration banner, title, and start button
+                      _buildPracticeCard(context, viewModel),
+                      const SizedBox(height: 24),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       );
 
-  Widget _buildScaffold(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
-
-  Widget _buildBodyColumnWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
+  Widget _buildTopBar(
+          BuildContext context, CoursePracticeViewModel viewModel) =>
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(context: context, viewModel: viewModel),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
+          children: [
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () async =>
+                  await _showSheet(context: context, viewModel: viewModel),
+              child: Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: const Color(0xFFEEEEF0),
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.arrow_back_rounded,
+                    size: 20,
+                    color: Color(0xFF1A1A2E),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  LocaleKeys.practice_test.tr(),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    fontFamily: 'Aeonik',
+                    color: Color(0xFF1A1A2E),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 42), // Balance back button
+          ],
+        ),
       );
 
-  Widget _buildBodyColumn(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children:
-            _buildBodyColumnChildren(context: context, viewModel: viewModel),
+  Widget _buildPracticeCard(
+          BuildContext context, CoursePracticeViewModel viewModel) =>
+      Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: const Color(0xFFEEEEF0)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Top Banner Illustration
+            Container(
+              width: double.infinity,
+              height: 160,
+              decoration: BoxDecoration(
+                color: const Color(0xFFE2F8DA),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/images/07-duolingo-english-test/7.20-det-practice-test-start-01.svg',
+                  width: double.infinity,
+                  height: 160,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Practice Title
+            Text(
+              title.isNotEmpty ? title : 'Listen and Type',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                fontFamily: 'Aeonik',
+                color: Color(0xFF1A1A2E),
+              ),
+            ),
+            if (subtitle.isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'Aeonik',
+                  color: Color(0xFF888899),
+                ),
+              ),
+            ],
+            const SizedBox(height: 18),
+            // Start Button inside card
+            _buildStartButton(context, viewModel),
+          ],
+        ),
       );
 
-  List<Widget> _buildBodyColumnChildren(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      [
-        _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildSpeakingIndicatorWrapper(viewModel),
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
-      ];
-
-  Widget _buildAppBarWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Column(
-        children: [
-          verticalSpaceMedium,
-          _buildAppBar(context: context, viewModel: viewModel),
-          verticalSpaceMedium,
-        ],
-      );
-
-  Widget _buildAppBar(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      CoursePracticeAppBar(
-        onClose: () async =>
-            await _showSheet(context: context, viewModel: viewModel),
-        title:
-            '${_getTitle()} (${viewModel.currentQuestion + 1}/${viewModel.questions.length})',
-      );
-
-  String _getTitle() {
-    if (type == CoursePracticeType.speaking) {
-      return LocaleKeys.speaking_practice.tr();
-    } else if (type == CoursePracticeType.writing) {
-      return LocaleKeys.writing_practice.tr();
-    } else if (type == CoursePracticeType.listening) {
-      return LocaleKeys.listening_practice.tr();
-    } else {
-      return LocaleKeys.reading_practice.tr();
-    }
-  }
+  Widget _buildStartButton(
+          BuildContext context, CoursePracticeViewModel viewModel) =>
+      viewModel.busy(StateObjects.cacheImage) ||
+              viewModel.busy(StateObjects.coursePracticePrompt)
+          ? const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: CustomCircularProgressIndicator(
+                    color: AppColors.chartreuse40),
+              ),
+            )
+          : GestureDetector(
+              onTap: () async =>
+                  await _nextScreen(context: context, viewModel: viewModel),
+              child: Container(
+                width: double.infinity,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF58CC02),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0xFF46A302),
+                      offset: Offset(0, 3),
+                      blurRadius: 0,
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    LocaleKeys.start_assessment.tr(),
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'Aeonik',
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            );
 
   Widget _buildSheet(CoursePracticeViewModel viewModel) => CancelPracticeSheet(
         onClose: viewModel.pop,
         onContinue: viewModel.pop,
         user: viewModel.user?.firstName ?? '',
         onCancel: () async => await _cancel(viewModel),
-      );
-
-  Widget _buildSpeakingIndicatorWrapper(CoursePracticeViewModel viewModel) =>
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildSpeakingIndicatorChildren(),
-      );
-
-  List<Widget> _buildSpeakingIndicatorChildren() => [
-        _buildSpeakingIconWrapper(),
-        verticalSpaceMedium,
-        _buildTitle(),
-        _buildSubtitle(),
-      ];
-
-  Widget _buildTitle() => Text(
-        title,
-        style: style18DG700,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildSubtitle() => Text(
-        subtitle,
-        style: style14DG400,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildSpeakingIconWrapper() =>
-      WaveWrapper(height: 125, child: _buildSpeakingIcon());
-
-  Widget _buildSpeakingIcon() => Icon(
-        _getIcon(),
-        size: 30,
-        color: kcPrimaryColor,
-      );
-
-  Widget _buildContinueButtonWrapper(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child:
-            _buildContinueButtonState(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildContinueButtonState(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      viewModel.busy(StateObjects.cacheImage) ||
-              viewModel.busy(StateObjects.coursePracticePrompt)
-          ? const CustomCircularProgressIndicator(color: kcPrimaryColor)
-          : _buildContinueButton(context: context, viewModel: viewModel);
-
-  Widget _buildContinueButton(
-          {required BuildContext context,
-          required CoursePracticeViewModel viewModel}) =>
-      CustomElevatedButton(
-        height: 55,
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        text: LocaleKeys.start_preparation.tr(),
-        backgroundColor: kcPrimaryColor,
-        onTap: () async =>
-            await _nextScreen(context: context, viewModel: viewModel),
       );
 }

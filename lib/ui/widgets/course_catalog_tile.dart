@@ -1,16 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
-import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../models/course_catalog.dart';
-import '../common/app_colors.dart';
-import '../common/ui_helpers.dart';
-import '../views/course_catalog/course_catalog_viewmodel.dart';
-import 'custom_elevated_button.dart';
 
-class CourseCatalogTile extends ViewModelWidget<CourseCatalogViewModel> {
+class CourseCatalogTile extends StatelessWidget {
   final CourseCatalog catalog;
   final GestureTapCallback? onCourseTap;
   final GestureTapCallback? onPracticeTap;
@@ -22,116 +15,131 @@ class CourseCatalogTile extends ViewModelWidget<CourseCatalogViewModel> {
     required this.catalog,
   });
 
+  bool get _isProfessionals {
+    final cat = (catalog.category ?? '').toLowerCase();
+    final nm = (catalog.name ?? '').toLowerCase();
+    return cat.contains('prof') || nm.contains('prof');
+  }
+
+  bool get _isDuolingo {
+    if (_isProfessionals) return false;
+    final cat = (catalog.category ?? '').toUpperCase();
+    final nm = (catalog.name ?? '').toLowerCase();
+    return cat.contains('DUOLINGO') || nm.contains('duolingo');
+  }
+
+  bool get _isIelts {
+    if (_isProfessionals) return false;
+    final cat = (catalog.category ?? '').toUpperCase();
+    final nm = (catalog.name ?? '').toLowerCase();
+    return cat.contains('IELTS') || nm.contains('ielts');
+  }
+
+  Color get _cardBg {
+    if (_isDuolingo) return const Color(0xFF58CC02);
+    if (_isIelts) return const Color(0xFFE4002B);
+    return const Color(0xFFF4E3F2);
+  }
+
+  Color get _bottomBevelColor {
+    if (_isDuolingo) return const Color(0xFF46A302);
+    if (_isIelts) return const Color(0xFFA8001F);
+    return const Color(0xFFE3C6DF);
+  }
+
+  Color get _textColor {
+    if (_isDuolingo || _isIelts) return Colors.white;
+    return const Color(0xFF2A1830);
+  }
+
+  Color get _chevronColor {
+    if (_isDuolingo || _isIelts) return Colors.white;
+    return const Color(0xFF2A1830);
+  }
+
+  String get _illustrationPath {
+    if (_isDuolingo) {
+      return 'assets/images/06-course-tab-and-exam-prep/6.2-proficiency-exams-01.svg';
+    }
+    if (_isIelts) {
+      return 'assets/images/06-course-tab-and-exam-prep/6.2-proficiency-exams-02.svg';
+    }
+    return 'assets/images/06-course-tab-and-exam-prep/6.2-proficiency-exams-03.svg';
+  }
+
+  String get _displayName {
+    final raw = (catalog.name ?? '').trim();
+    if (raw.toLowerCase() == 'duolingo english test') {
+      return 'Duolingo English\nTest';
+    }
+    if (raw.toLowerCase() == 'english for professionals') {
+      return 'English For\nProfessionals';
+    }
+    return raw;
+  }
+
   @override
-  Widget build(BuildContext context, CourseCatalogViewModel viewModel) =>
-      _buildExpansionTileCardWrapper(viewModel);
-
-  Widget _buildExpansionTileCardWrapper(CourseCatalogViewModel viewModel) =>
-      GestureDetector(
-        onTap: !(catalog.access?.isAccessible ?? false) ? onPracticeTap : null,
-        child: _buildExpansionTileCard(),
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: (catalog.access?.isAccessible ?? false) || _isProfessionals
+            ? onCourseTap
+            : onPracticeTap,
+        child: _buildCard(),
       );
 
-  Widget _buildExpansionTileCard() => Container(
+  Widget _buildCard() => Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(
-            color: kcPrimaryColor.withValues(alpha: 0.2),
-          ),
+          color: _cardBg,
+          borderRadius: BorderRadius.circular(22),
+          boxShadow: [
+            BoxShadow(
+              color: _bottomBevelColor,
+              offset: const Offset(0, 3),
+              blurRadius: 0,
+            ),
+          ],
         ),
-        child: _buildExpansionTile(),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        child: Row(
+          children: [
+            _buildIllustrationBox(),
+            const SizedBox(width: 16),
+            Expanded(child: _buildTitle()),
+            _buildChevron(),
+          ],
+        ),
       );
 
-  Widget _buildExpansionTile() => ExpansionTile(
-        enabled: true,
-        title: _buildTitle(),
-        textColor: kcDarkGrey,
-        showTrailingIcon: false,
-        initiallyExpanded: false,
-        collapsedIconColor: kcDarkGrey,
-        collapsedTextColor: kcDarkGrey,
-        shape: Border.all(color: kcTransparent),
-        expandedAlignment: Alignment.centerLeft,
-        backgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
-        controlAffinity: ListTileControlAffinity.trailing,
-        expandedCrossAxisAlignment: CrossAxisAlignment.start,
-        collapsedBackgroundColor: kcPrimaryColor.withValues(alpha: 0.1),
-        childrenPadding: const EdgeInsets.symmetric(horizontal: 15),
-        children: _buildExpansionTileChildren(),
+  Widget _buildIllustrationBox() => Container(
+        width: 68,
+        height: 68,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        padding: const EdgeInsets.all(4),
+        child: SvgPicture.asset(
+          _illustrationPath,
+          fit: BoxFit.contain,
+        ),
       );
-
-  List<Widget> _buildExpansionTileChildren() => [
-        _buildProgressRow(),
-        verticalSpaceSmall,
-        _buildActionButtonWrapper(),
-        verticalSpaceSmall
-      ];
 
   Widget _buildTitle() => Text(
-        catalog.name ?? '',
-        style: style16P600,
+        _displayName,
+        style: TextStyle(
+          fontSize: _isIelts ? 20 : 17,
+          fontWeight: FontWeight.w800,
+          fontFamily: 'Aeonik',
+          color: _textColor,
+          height: 1.15,
+        ),
       );
 
-  Widget _buildProgressRow() => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: _buildProgressChildren(),
-      );
-
-  List<Widget> _buildProgressChildren() =>
-      [_buildProgressStatusWrapper(), horizontalSpaceSmall, _buildProgress()];
-
-  Widget _buildProgressStatusWrapper() => Expanded(
-        child: _buildProgressStatus(),
-      );
-
-  Widget _buildProgressStatus() => const CustomLinearProgressIndicator(
-      progress: 0,
-      activeColor: kcPrimaryColor,
-      backgroundColor: kcVeryLightGrey);
-
-  Widget _buildProgress() => const Text(
-        '0%',
-        style: TextStyle(color: kcDarkGrey),
-      );
-
-  Widget _buildActionButtonWrapper() => SizedBox(
-        height: 40,
-        width: 300,
-        child: _buildActionButtons(),
-      );
-
-  Widget _buildActionButtons() => Row(
-        children: [
-          _buildStartButtonWrapper(),
-          horizontalSpaceSmall,
-          _buildExamButtonWrapper()
-        ],
-      );
-
-  Widget _buildStartButtonWrapper() => Expanded(
-        child: _buildStartButton(),
-      );
-
-  Widget _buildStartButton() => CustomElevatedButton(
-        height: 15,
-        borderRadius: 8,
-        onTap: onCourseTap,
-        text: LocaleKeys.start_course.tr(),
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
-      );
-
-  Widget _buildExamButtonWrapper() => Expanded(
-        child: _buildExamButton(),
-      );
-
-  Widget _buildExamButton() => CustomElevatedButton(
-        height: 15,
-        borderRadius: 8,
-        onTap: onPracticeTap,
-        text: LocaleKeys.take_mock_exam.tr(),
-        backgroundColor: kcWhite,
-        borderColor: kcPrimaryColor,
-        foregroundColor: kcPrimaryColor,
+  Widget _buildChevron() => Padding(
+        padding: const EdgeInsets.only(right: 4),
+        child: Icon(
+          Icons.chevron_right_rounded,
+          color: _chevronColor,
+          size: 28,
+        ),
       );
 }

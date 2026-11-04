@@ -6,7 +6,6 @@ import 'package:yimaru_app/models/course_unit.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/widgets/course_module_tile_small.dart';
 import 'package:yimaru_app/ui/widgets/custom_linear_progress_indicator.dart';
-import 'package:yimaru_app/ui/widgets/finish_practice_sheet.dart';
 
 import '../../models/course_catalog.dart';
 import '../common/app_colors.dart';
@@ -14,7 +13,7 @@ import '../common/enmus.dart';
 import '../common/ui_helpers.dart';
 import '../views/course_unit/course_unit_viewmodel.dart';
 import 'custom_circular_progress_indicator.dart';
-import 'custom_elevated_button.dart';
+import 'finish_practice_sheet.dart';
 
 class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
   final int index;
@@ -25,277 +24,286 @@ class CourseUnitTile extends ViewModelWidget<CourseUnitViewModel> {
   final GestureTapCallback? onLessonTap;
   final GestureTapCallback? onPracticeTap;
 
-  const CourseUnitTile(
-      {super.key,
-      this.onLessonTap,
-      this.onPracticeTap,
-      required this.unit,
-      required this.type,
-      required this.index,
-      required this.first,
-      required this.catalog});
+  const CourseUnitTile({
+    super.key,
+    this.onLessonTap,
+    this.onPracticeTap,
+    required this.unit,
+    required this.type,
+    required this.index,
+    required this.first,
+    required this.catalog,
+  });
 
+  // ── Icon config per unit index ────────────────────────────────────────────
+  static const List<_UnitStyle> _styles = [
+    _UnitStyle(color: Color(0xFF58CC02), icon: Icons.flag_rounded),        // green  – flag
+    _UnitStyle(color: Color(0xFF1CB0F6), icon: Icons.bar_chart_rounded),   // blue   – chart
+    _UnitStyle(color: Color(0xFF9C27B0), icon: Icons.headphones_rounded),  // purple – listen
+    _UnitStyle(color: Color(0xFFFF9600), icon: Icons.menu_book_rounded),   // orange – read
+    _UnitStyle(color: Color(0xFFFF4B4B), icon: Icons.edit_rounded),        // red    – write
+    _UnitStyle(color: Color(0xFFFFD700), icon: Icons.mic_rounded),         // yellow – speak
+    _UnitStyle(color: Color(0xFF58CC02), icon: Icons.play_arrow_rounded),  // green  – demo
+  ];
+
+  static const List<_UnitStyle> _ieltsStyles = [
+    _UnitStyle(color: Color(0xFFE4002B), icon: Icons.flag_rounded),
+    _UnitStyle(color: Color(0xFF2B2A4A), icon: Icons.mic_rounded),
+    _UnitStyle(color: Color(0xFFE4002B), icon: Icons.headphones_rounded),
+    _UnitStyle(color: Color(0xFF2B2A4A), icon: Icons.menu_book_rounded),
+    _UnitStyle(color: Color(0xFFE4002B), icon: Icons.edit_rounded),
+    _UnitStyle(color: Color(0xFF2B2A4A), icon: Icons.fact_check_rounded),
+  ];
+
+  static const List<_UnitStyle> _professionalsStyles = [
+    _UnitStyle(color: Color(0xFF8E2483), icon: Icons.search_rounded),
+    _UnitStyle(color: Color(0xFFFF7A50), icon: Icons.work_rounded),
+  ];
+
+  bool get _isProfessionals =>
+      (catalog.name ?? '').toLowerCase().contains('prof') ||
+      (catalog.category ?? '').toLowerCase().contains('prof') ||
+      type == SubscriptionType.learn;
+
+  _UnitStyle get _style {
+    if (_isProfessionals) {
+      return _professionalsStyles[index % _professionalsStyles.length];
+    }
+    if (type == SubscriptionType.ielts) {
+      return _ieltsStyles[index % _ieltsStyles.length];
+    }
+    return _styles[index % _styles.length];
+  }
+
+  // ── Fetch modules (unchanged logic) ──────────────────────────────────────
   Future<void> _getCourseModules({
     required bool expanded,
     required CourseUnitViewModel viewModel,
   }) async {
     if (!expanded) return;
-
-    // Prevent duplicate API calls
     if ((unit.modules?.isNotEmpty ?? false)) return;
-
     await viewModel.getCourseModules(index: index, id: unit.id ?? 0);
   }
 
-  Future<void> _showSheet(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) async =>
-      await showModalBottomSheet(
-        context: context,
-        backgroundColor: kcTransparent,
-        builder: (_) => _buildSheet(viewModel),
-      );
-
   @override
   Widget build(BuildContext context, CourseUnitViewModel viewModel) =>
-      _buildExpansionTileCardWrapper(context: context, viewModel: viewModel);
-
-  Widget _buildExpansionTileCardWrapper(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
       GestureDetector(
         onTap: !(unit.access?.isAccessible ?? false) ? onPracticeTap : null,
-        child: _buildExpansionTileCard(context: context, viewModel: viewModel),
+        child: _buildCard(context, viewModel),
       );
 
-  Widget _buildExpansionTileCard(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      Container(
-        margin: const EdgeInsets.only(bottom: 15),
+  // ── Card ──────────────────────────────────────────────────────────────────
+  Widget _buildCard(BuildContext context, CourseUnitViewModel viewModel) =>
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFEEEEF0)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Theme(
+            data: ThemeData().copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              tilePadding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+              childrenPadding: EdgeInsets.zero,
+              collapsedBackgroundColor: Colors.white,
+              backgroundColor: Colors.white,
+              leading: _buildUnitIcon(),
+              title: _buildTitleSection(),
+              trailing: const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: Color(0xFFBBBBCC),
+                size: 22,
+              ),
+              onExpansionChanged: (expanded) async => await _getCourseModules(
+                  expanded: expanded, viewModel: viewModel),
+              children: [
+                const Divider(height: 1, color: Color(0xFFEEEEF5)),
+                _buildExpandedContent(context, viewModel),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  // ── Leading icon ──────────────────────────────────────────────────────────
+  Widget _buildUnitIcon() => Container(
+        width: 42,
+        height: 42,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: kcVeryLightGrey),
+          color: _style.color,
+          shape: BoxShape.circle,
         ),
-        child: _buildTileStack(context: context, viewModel: viewModel),
+        child: Icon(_style.icon, color: Colors.white, size: 22),
       );
 
-  Widget _buildTileStack(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      Stack(
-        children: [
-          _buildExpansionTile(context: context, viewModel: viewModel),
-          // _buildContainerShaderState()
-        ],
-      );
-
-  Widget _buildExpansionTile(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      ExpansionTile(
-        enabled: true,
-        title: _buildTitle(),
-        textColor: kcDarkGrey,
-        showTrailingIcon: true,
-        initiallyExpanded: false,
-        subtitle: _buildSubtitle(),
-        collapsedIconColor: kcDarkGrey,
-        collapsedTextColor: kcDarkGrey,
-        backgroundColor: kcBackgroundColor,
-        shape: Border.all(color: kcTransparent),
-        expandedAlignment: Alignment.centerLeft,
-        collapsedBackgroundColor: kcBackgroundColor,
-        controlAffinity: ListTileControlAffinity.trailing,
-        expandedCrossAxisAlignment: CrossAxisAlignment.start,
-        tilePadding: const EdgeInsets.symmetric(horizontal: 15),
-        onExpansionChanged: (bool expanded) async => await _getCourseModules(
-          expanded: expanded,
-          viewModel: viewModel,
-        ),
-        // enabled: status != ProgressStatuses.pending,
-        // showTrailingIcon: status != ProgressStatuses.pending ? true : false,
-        //initiallyExpanded: status == ProgressStatuses.started ? true : false,
-        children:
-            _buildExpansionTileChildren(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildTitle() => Text(
-        unit.name ?? '',
-        maxLines: 1,
-        softWrap: false,
-        style: style16P600,
-        overflow: TextOverflow.ellipsis,
-      );
-
-  Widget _buildSubtitle() => Text(
-        LocaleKeys.zero_percent_completed.tr(),
-        style: style14DG500,
-      );
-
-  List<Widget> _buildExpansionTileChildren(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      [_buildExpansionTileItem(context: context, viewModel: viewModel)];
-
-  Widget _buildExpansionTileItem(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      Column(
+  // ── Title + label + progress ──────────────────────────────────────────────
+  Widget _buildTitleSection() => Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildExpansionTileItemChildren(
-            context: context, viewModel: viewModel),
-      );
-
-  List<Widget> _buildExpansionTileItemChildren(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      [
-        _buildProgressRowWrapper(),
-        verticalSpaceMedium,
-        if (unit.hasPractice ?? false)
-          _buildActionButtonState(context: context, viewModel: viewModel),
-        if (unit.hasPractice ?? false) verticalSpaceMedium,
-        _buildCourseModulesState(viewModel)
-      ];
-
-  Widget _buildProgressRowWrapper() => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildProgressRow(),
-      );
-
-  Widget _buildProgressRow() => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: _buildProgressChildren(),
-      );
-
-  List<Widget> _buildProgressChildren() =>
-      [_buildProgressStatusWrapper(), horizontalSpaceSmall, _buildProgress()];
-
-  Widget _buildProgressStatusWrapper() => Expanded(
-        child: _buildProgressStatus(),
-      );
-
-  Widget _buildProgressStatus() => const CustomLinearProgressIndicator(
-      progress: 0,
-      activeColor: kcPrimaryColor,
-      backgroundColor: kcVeryLightGrey);
-
-  Widget _buildProgress() => Text(
-        LocaleKeys.zero_slash_zero.tr(),
-        style: const TextStyle(color: kcDarkGrey),
-      );
-
-  Widget _buildActionButtonState(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      viewModel.busy(index)
-          ? Container()
-          : _buildActionButtonWrapper(context: context, viewModel: viewModel);
-
-  Widget _buildActionButtonWrapper(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      Container(
-        height: 50,
-        margin: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildPracticeButton(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildActionButtons(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      Row(
         children: [
-          _buildLessonButtonWrapper(viewModel),
-          horizontalSpaceSmall,
-          _buildPracticeButtonWrapper(context: context, viewModel: viewModel),
+          // "UNIT X" label in the unit color
+          Text(
+            'UNIT ${index + 1}',
+            style: TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              fontFamily: 'Aeonik',
+              color: _style.color,
+              letterSpacing: 0.5,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            unit.name ?? '',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              fontFamily: 'Aeonik',
+              color: Color(0xFF1A1A2E),
+            ),
+          ),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              Expanded(
+                child: CustomLinearProgressIndicator(
+                  progress: 0,
+                  activeColor: _style.color,
+                  backgroundColor: const Color(0xFFE8E8F0),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                LocaleKeys.zero_percent_completed.tr(),
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Aeonik',
+                  color: Color(0xFF888899),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
         ],
       );
 
-  Widget _buildLessonButtonWrapper(CourseUnitViewModel viewModel) => Expanded(
-        child: Container(),
-      );
+  List<CourseModule> _getModules() {
+    if (unit.modules != null && unit.modules!.isNotEmpty) {
+      return unit.modules!;
+    }
+    if (_isProfessionals) {
+      if (index == 0) {
+        return const [
+          CourseModule(id: 101, sortOrder: 1, name: 'እርስዎ የሚፈልጉትን ትክክለኛ ሥራ ማግኘት', lessonsCount: 1),
+          CourseModule(id: 102, sortOrder: 2, name: 'የራስ ግምገማዎች እና የሥራ ማስታወቂያዎችን መረዳት', lessonsCount: 1),
+          CourseModule(id: 103, sortOrder: 3, name: 'ሲቪ (CV) ወይም የሥራ ከንቲብ ማዘጋጀት', lessonsCount: 1),
+          CourseModule(id: 104, sortOrder: 4, name: 'የሥራ ደብዳቤ (Cover Letter) እንዴት እንደሚጻፍ', lessonsCount: 1),
+          CourseModule(id: 105, sortOrder: 5, name: 'ቃለ መጠይቅ (አለባበስ እና አመለካከት)', lessonsCount: 1),
+          CourseModule(id: 106, sortOrder: 6, name: 'ስለ ራስዎ ማውራት (የግል መረጃ እና የክህሎቶች እና የብቃት ማጠቃለያ)', lessonsCount: 1),
+        ];
+      } else {
+        return const [
+          CourseModule(id: 107, sortOrder: 7, name: 'ስለ ራስዎ ማውራት (ጥንካሬዎች እና ድክመቶች)', lessonsCount: 1),
+          CourseModule(id: 108, sortOrder: 8, name: 'ለምን እርስዎን ልንቀጥርዎ ይገባል እና ማንኛውም ጥያቄ አለዎት?', lessonsCount: 1),
+          CourseModule(id: 109, sortOrder: 9, name: 'ደሞዝዎን እንዴት እንደሚደራደሩ', lessonsCount: 1),
+          CourseModule(id: 110, sortOrder: 10, name: 'ከሥራ ባልደረቦችዎ ጋር በአካል መግባባት', lessonsCount: 1),
+          CourseModule(id: 111, sortOrder: 11, name: 'ከአለቃዎ ጋር በአካል መግባባት', lessonsCount: 1),
+          CourseModule(id: 112, sortOrder: 12, name: 'የበይነመረብ ግንኙነት (ስልክ፣ ኢሜይል እና ቪዲዮ ኮንፈረንስ)', lessonsCount: 1),
+        ];
+      }
+    }
+    return const [];
+  }
 
-  Widget _buildLessonButton(CourseUnitViewModel viewModel) =>
-      CustomElevatedButton(
-        height: 15,
-        borderRadius: 12,
-        onTap: onLessonTap,
-        text: LocaleKeys.view_module.tr(),
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
-      );
-
-  Widget _buildPracticeButtonWrapper(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      Expanded(
-        child: _buildPracticeButton(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildPracticeButton(
-          {required BuildContext context,
-          required CourseUnitViewModel viewModel}) =>
-      CustomElevatedButton(
-        height: 15,
-        borderRadius: 12,
-        onTap: onPracticeTap,
-        text: LocaleKeys.view_practices.tr(),
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
-      );
-
-  Widget _buildSheet(CourseUnitViewModel viewModel) => FinishPracticeSheet(
-        onTap: viewModel.pop,
-        practice: PracticeReason.course,
-      );
-
-  Widget _buildCourseModulesState(CourseUnitViewModel viewModel) =>
-      viewModel.busy(index)
-          ? _buildProgressIndicatorWrapper()
-          : _buildCourseModules(viewModel);
-
-  Widget _buildProgressIndicatorWrapper() => SizedBox(
-        height: 50,
-        width: double.maxFinite,
-        child: _buildProgressIndicator(),
-      );
-
-  Widget _buildProgressIndicator() => const Center(
-        child: CustomCircularProgressIndicator(color: kcPrimaryColor),
-      );
-
-  Widget _buildCourseModules(CourseUnitViewModel viewModel) => ListView.builder(
-        shrinkWrap: true,
-        itemCount: unit.modules?.length,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => _buildCourseModuleCard(
-            module: unit.modules?[index],
-            onTap: () async => await viewModel.navigateToCourseModule(
-                first: first && index == 0,
-                type: type,
-                catalog: catalog,
-                module: unit.modules?[index])),
-      );
-
-  Widget _buildCourseModuleCard(
-          {required CourseModule? module, required GestureTapCallback onTap}) =>
-      CourseModuleTileSmall(onTap: onTap, module: module);
-
-  // Widget _buildContainerShaderState() => status == ProgressStatuses.pending
-  //     ? _buildContainerShaderWrapper()
-  //     : Container();
-
-  Widget _buildContainerShaderWrapper() => Positioned.fill(
-        child: _buildContainerShader(),
-      );
-
-  Widget _buildContainerShader() => Container(
-        decoration: BoxDecoration(
-          color: kcWhite.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(5),
+  // ── Expanded: modules list ────────────────────────────────────────────────
+  Widget _buildExpandedContent(
+          BuildContext context, CourseUnitViewModel viewModel) {
+    if (viewModel.busy(index)) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Center(
+          child: CustomCircularProgressIndicator(color: kcPrimaryColor),
         ),
       );
+    }
+    final modules = _getModules();
+    final bool showUnitPractice = type == SubscriptionType.duolingo &&
+        ((unit.hasPractice ?? false) || index >= 1);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (showUnitPractice)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(14, 0, 14, 10),
+            child: GestureDetector(
+              onTap: onPracticeTap,
+              child: Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF0FDF4),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: const Color(0xFF86EFAC)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.assignment_turned_in_rounded,
+                      color: Color(0xFF16A34A),
+                      size: 18,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '${LocaleKeys.view_practices.tr()} (Unit ${index + 1})',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Aeonik',
+                        color: Color(0xFF16A34A),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: modules.length,
+          itemBuilder: (_, i) => CourseModuleTileSmall(
+            module: modules[i],
+            onTap: () async => await viewModel.navigateToCourseModule(
+              first: first && i == 0,
+              type: type,
+              catalog: catalog,
+              module: modules[i],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _UnitStyle {
+  final Color color;
+  final IconData icon;
+  const _UnitStyle({required this.color, required this.icon});
 }

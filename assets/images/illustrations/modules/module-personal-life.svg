@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <circle cx="60" cy="56" r="50" fill="#F2D9EE"/>
+  <ellipse cx="60" cy="109" rx="42" ry="5" fill="#2A1830" opacity="0.13"/>
+  <rect x="20" y="24" width="80" height="82" rx="9" fill="#5E1557"/>
+  <rect x="24" y="20" width="76" height="82" rx="8" fill="#FFFFFF"/>
+  <rect x="88" y="20" width="12" height="82" rx="6" fill="#F1E3EE"/>
+  <rect x="24" y="90" width="76" height="12" fill="#8E2483"/>
+  <path d="M32 96l3-3 3 3-3 3zM44 96l3-3 3 3-3 3zM56 96l3-3 3 3-3 3zM68 96l3-3 3 3-3 3zM80 96l3-3 3 3-3 3z" fill="#FFC23D"/>
+  <g fill="#2A1830"><rect x="20" y="30" width="8" height="5" rx="2.5"/><rect x="20" y="44" width="8" height="5" rx="2.5"/><rect x="20" y="58" width="8" height="5" rx="2.5"/><rect x="20" y="72" width="8" height="5" rx="2.5"/></g>
+  <rect x="70" y="36" width="20" height="4" rx="2" fill="#E3D6EA"/>
+  <rect x="70" y="46" width="15" height="4" rx="2" fill="#E3D6EA"/>
+  <rect x="70" y="56" width="20" height="4" rx="2" fill="#E3D6EA"/>
+  <rect x="70" y="66" width="11" height="4" rx="2" fill="#E3D6EA"/>
+  <g transform="rotate(-9 50 54)">
+    <rect x="32" y="32" width="38" height="46" rx="3" fill="#2A1830" opacity="0.15" transform="translate(2 3)"/>
+    <rect x="32" y="32" width="38" height="46" rx="3" fill="#FFFFFF" stroke="#E3D6EA" stroke-width="1.5"/>
+    <rect x="36" y="36" width="30" height="30" rx="2" fill="#9FC3F0"/>
+    <circle cx="58" cy="43" r="4.5" fill="#FFC23D"/>
+    <path d="M36 66l10-12 7 7 5-5 8 10z" fill="#4CC38A"/>
+    <path d="M46 54l7 7-3 5H36z" fill="#3BAF7A"/>
+    <circle cx="44" cy="56" r="3.4" fill="#2A1830"/>
+    <path d="M39.5 66c0-4.5 2-6.5 4.5-6.5s4.5 2 4.5 6.5z" fill="#E8644A"/>
+    <rect x="36" y="69" width="16" height="3" rx="1.5" fill="#E3D6EA"/>
+  </g>
+  <rect x="62" y="74" width="26" height="9" rx="2" fill="#FFC23D" opacity="0.85" transform="rotate(-6 75 78)"/>
+  <path d="M102 14c-3-4-9-1-6 4l6 5 6-5c3-5-3-8-6-4z" fill="#FF8A65"/>
+  <path d="M12 46l1.6 4.6 4.6 1.6-4.6 1.6-1.6 4.6-1.6-4.6-4.6-1.6 4.6-1.6z" fill="#FFC23D"/>
+</svg>

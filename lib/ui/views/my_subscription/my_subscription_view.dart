@@ -34,7 +34,7 @@ class MySubscriptionView extends StackedView<MySubscriptionViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(MySubscriptionViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
+        backgroundColor: AppColors.background,
         body: _buildScaffoldStack(viewModel),
       );
 
@@ -63,8 +63,8 @@ class MySubscriptionView extends StackedView<MySubscriptionViewModel> {
       SliverAppBar(
         pinned: true,
         automaticallyImplyLeading: false,
-        backgroundColor: kcBackgroundColor,
-        surfaceTintColor: kcBackgroundColor,
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         title: _buildAppbar(viewModel),
       );
 
@@ -99,7 +99,7 @@ class MySubscriptionView extends StackedView<MySubscriptionViewModel> {
 
   Widget _buildText() => Text(
         LocaleKeys.continue_learning_favorite.tr(),
-        style: style14DG400,
+        style: const TextStyle(fontSize: 13, color: Color(0xFF666680), fontFamily: 'Aeonik'),
       );
 
   Widget _buildSubscriptions(MySubscriptionViewModel viewModel) =>

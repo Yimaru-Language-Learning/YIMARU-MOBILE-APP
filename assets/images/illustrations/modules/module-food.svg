@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <circle cx="60" cy="56" r="50" fill="#F2D9EE"/>
+  <ellipse cx="60" cy="109" rx="44" ry="5" fill="#2A1830" opacity="0.13"/>
+  <path d="M40 107h40l-5-18H45z" fill="#C9773F"/>
+  <path d="M68 107h12l-5-18h-9z" fill="#A86A3E"/>
+  <path d="M44 89h32l7-15H37z" fill="#E8B53F"/>
+  <path d="M68 89h8l7-15h-9z" fill="#D49A2A"/>
+  <path d="M47 99l4.3-5 4.3 5 4.3-5 4.3 5 4.3-5 4.3 5" stroke="#8E2483" stroke-width="2.6" stroke-linejoin="round" fill="none"/>
+  <rect x="28" y="67" width="64" height="9" rx="4.5" fill="#8E2483"/>
+  <rect x="64" y="67" width="28" height="9" rx="4.5" fill="#6A1A62"/>
+  <path d="M30 67c0-21 13-34 30-34s30 13 30 34z" fill="#E8644A"/>
+  <path d="M60 33c17 0 30 13 30 34H75c0-19-6-32-15-34z" fill="#C94F37"/>
+  <path d="M36 59l5-7 5 7 5-7 5 7 5-7 5 7 5-7 5 7 5-7 5 7 5-7 5 7" stroke="#FFC23D" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+  <path d="M42 45l4-4 4 4-4 4zM56 40l4-4 4 4-4 4zM70 45l4-4 4 4-4 4z" fill="#FFF1CC"/>
+  <path d="M38 52c3-10 9-15 15-17" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <rect x="57" y="25" width="6" height="9" rx="2" fill="#6A1A62"/>
+  <circle cx="60" cy="24" r="5.5" fill="#8E2483"/>
+  <circle cx="18" cy="96" r="10" fill="#E5484D"/>
+  <path d="M18 96a10 10 0 0 0 9 6 10 10 0 0 1-15 0" fill="#C23238" opacity="0.6"/>
+  <path d="M13 92a5 5 0 0 1 4-3" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="2" stroke-linecap="round"/>
+  <path d="M18 86l-3-4M18 86l4-3" stroke="#2E9E6A" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M102 106c-7.5 0-12-5-12-10.5 0-6.5 6.5-9.5 12-16 5.5 6.5 12 9.5 12 16 0 5.5-4.5 10.5-12 10.5z" fill="#9B3A72"/>
+  <path d="M102 106c-3 0-5-5-5-10.5 0-6.5 2-9.5 5-16" stroke="#C866A0" stroke-width="1.8" fill="none"/>
+  <path d="M102 79.5v-6M102 74l-3-3M102 74l3-3" stroke="#2E9E6A" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M104 14l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#FFC23D"/>
+</svg>

@@ -3,35 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:pinput/pinput.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/app/app.locator.dart';
+import 'package:yimaru_app/services/smart_auth_service.dart';
+import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/register/register_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/custom_cursor.dart';
-
-import '../../../../app/app.locator.dart';
-import '../../../../services/smart_auth_service.dart';
-import '../../../common/app_colors.dart';
-import '../../../common/enmus.dart';
-import '../../../common/ui_helpers.dart';
-import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/large_app_bar.dart';
-import '../../../widgets/page_loading_indicator.dart';
 import '../register_view.form.dart';
+import 'package:yimaru_app/ui/widgets/auth_header.dart';
+import 'package:yimaru_app/ui/widgets/custom_cursor.dart';
+import 'package:yimaru_app/ui/widgets/page_loading_indicator.dart';
 
 class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
   final TextEditingController otpController;
   final TextEditingController emailController;
   final TextEditingController phoneNumberController;
 
-  const RegistrationOtpScreen(
-      {super.key,
-      required this.otpController,
-      required this.emailController,
-      required this.phoneNumberController});
-
-  Widget getPadding(context) {
-    double half = screenHeight(context) / 2;
-    return SizedBox(height: half + 325 - half);
-  }
+  const RegistrationOtpScreen({
+    super.key,
+    required this.otpController,
+    required this.emailController,
+    required this.phoneNumberController,
+  });
 
   Future<void> _verifyOtp(RegisterViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -54,240 +47,366 @@ class RegistrationOtpScreen extends ViewModelWidget<RegisterViewModel> {
   }
 
   @override
-  Widget build(BuildContext context, RegisterViewModel viewModel) =>
-      _buildScaffoldWrapper(context: context, viewModel: viewModel);
+  Widget build(BuildContext context, RegisterViewModel viewModel) {
+    final bool canSubmit = otpController.text.length == 6 &&
+        !viewModel.hasOtpValidationMessage;
 
-  Widget _buildScaffoldWrapper(
-          {required BuildContext context,
-          required RegisterViewModel viewModel}) =>
-      Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildScaffoldContainer(
-          {required BuildContext context,
-          required RegisterViewModel viewModel}) =>
-      Container(
-        decoration: bgDecoration,
-        child: _buildScaffoldStack(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildScaffoldStack(
-          {required BuildContext context,
-          required RegisterViewModel viewModel}) =>
-      Stack(
+    return Scaffold(
+      backgroundColor: const Color(0xFF6E1665),
+      body: Stack(
         children: [
-          _buildScaffold(context: context, viewModel: viewModel),
-          _buildVerifyOtpState(viewModel)
+          Column(
+            children: [
+              AuthHeader(
+                showBackButton: true,
+                onBack: viewModel.goBack,
+                onLanguage: () async => await viewModel.navigateToLanguage(),
+                languageCode: viewModel.selectedLanguage['code'],
+                toastMessage: 'Code sent successfully',
+                customIllustration: _buildEnvelopeIllustration(),
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(28)),
+                  ),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(22, 26, 22, 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Title
+                        Text(
+                          LocaleKeys.verification_code.tr(),
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.neutral14,
+                            fontFamily: 'Aeonik',
+                            letterSpacing: -0.3,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+
+                        // Subtitle
+                        _buildSubtitle(viewModel),
+                        const SizedBox(height: 26),
+
+                        // Pinput 6-digit Code Boxes
+                        Center(
+                          child: Pinput(
+                            length: 6,
+                            controller: otpController,
+                            cursor: const CustomCursor(),
+                            focusNode: viewModel.focusNode,
+                            onTap: viewModel.setOtpFocus,
+                            onCompleted: (_) async => await _verifyOtp(viewModel),
+                            smsRetriever: locator<SmartAuthService>(),
+                            defaultPinTheme: PinTheme(
+                              width: 48,
+                              height: 52,
+                              textStyle: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.neutral14,
+                                fontFamily: 'Aeonik',
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFAFAFA),
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: AppColors.neutral84.withValues(alpha: 0.8),
+                                  width: 1.2,
+                                ),
+                              ),
+                            ),
+                            focusedPinTheme: PinTheme(
+                              width: 48,
+                              height: 52,
+                              textStyle: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.magenta38,
+                                fontFamily: 'Aeonik',
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: AppColors.magenta38,
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                            errorPinTheme: PinTheme(
+                              width: 48,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFF0F0),
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: const Color(0xFFE53935),
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                            separatorBuilder: (_) => const SizedBox(width: 8),
+                          ),
+                        ),
+                        if (viewModel.hasOtpValidationMessage &&
+                            viewModel.focusOtp) ...[
+                          const SizedBox(height: 8),
+                          Center(
+                            child: Text(
+                              viewModel.otpValidationMessage!,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFFE53935),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                        const SizedBox(height: 22),
+
+                        // Countdown / Resend Section
+                        _buildTimerSection(viewModel),
+                        const SizedBox(height: 32),
+
+                        // Continue Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 48,
+                          child: ElevatedButton(
+                            onPressed: canSubmit
+                                ? () async => await _verifyOtp(viewModel)
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.magenta38,
+                              disabledBackgroundColor:
+                                  const Color(0xFFF3E8FF),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                            child: Text(
+                              LocaleKeys.cont.tr(),
+                              style: TextStyle(
+                                fontSize: 14.5,
+                                fontWeight: FontWeight.w700,
+                                color: canSubmit
+                                    ? Colors.white
+                                    : AppColors.magenta38
+                                        .withValues(alpha: 0.45),
+                                fontFamily: 'Aeonik',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          // Loading Overlay
+          if (viewModel.busy(StateObjects.verifyOtp))
+            const PageLoadingIndicator(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSubtitle(RegisterViewModel viewModel) {
+    final String text;
+    if (viewModel.signUpMethod == SignUpMethod.email &&
+        emailController.text.isNotEmpty) {
+      final parts = emailController.text.split('@');
+      final prefix = emailController.text.length > 2
+          ? emailController.text.substring(0, 2)
+          : emailController.text;
+      text = 'We sent a 6-digit code to $prefix******@${parts.length > 1 ? parts.last : ""}';
+    } else if (phoneNumberController.text.length == 9) {
+      final prefix = phoneNumberController.text.substring(0, 3);
+      text = 'We sent a 6-digit code to +251 $prefix******';
+    } else {
+      text = 'We sent a 6-digit code to your account.';
+    }
+
+    return Text(
+      text,
+      style: const TextStyle(
+        fontSize: 13,
+        fontWeight: FontWeight.w500,
+        color: AppColors.neutral40,
+        fontFamily: 'Aeonik',
+      ),
+    );
+  }
+
+  Widget _buildTimerSection(RegisterViewModel viewModel) {
+    if (viewModel.buttonActive) {
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () async => await viewModel.resendOtp(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.refresh_rounded,
+              size: 16,
+              color: AppColors.magenta38,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              LocaleKeys.resend_code.tr(),
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: AppColors.magenta38,
+                fontFamily: 'Aeonik',
+              ),
+            ),
+          ],
+        ),
       );
+    }
 
-  Widget _buildScaffold(
-          {required BuildContext context,
-          required RegisterViewModel viewModel}) =>
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children:
-            _buildScaffoldChildren(context: context, viewModel: viewModel),
-      );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(
+          Icons.schedule_rounded,
+          size: 16,
+          color: AppColors.neutral40,
+        ),
+        const SizedBox(width: 6),
+        Text(
+          '${LocaleKeys.resend_code_in.tr()} ',
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: AppColors.neutral40,
+            fontFamily: 'Aeonik',
+          ),
+        ),
+        TimerCountdown(
+          enableDescriptions: false,
+          timeTextStyle: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: AppColors.magenta38,
+            fontFamily: 'Aeonik',
+          ),
+          colonsTextStyle: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: AppColors.magenta38,
+            fontFamily: 'Aeonik',
+          ),
+          endTime: viewModel.resendTime,
+          onEnd: viewModel.setResendButton,
+          format: CountDownTimerFormat.minutesSeconds,
+        ),
+      ],
+    );
+  }
 
-  List<Widget> _buildScaffoldChildren(
-          {required BuildContext context,
-          required RegisterViewModel viewModel}) =>
-      [
-        _buildAppBar(viewModel),
-        _buildExpandedBody(context: context, viewModel: viewModel)
-      ];
+  Widget _buildEnvelopeIllustration() {
+    return SizedBox(
+      height: 110,
+      child: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            // White envelope
+            Container(
+              width: 120,
+              height: 74,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.14),
+                    blurRadius: 14,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Stack(
+                children: [
+                  // Envelope Flap
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: CustomPaint(
+                      size: const Size(120, 36),
+                      painter: _EnvelopeFlapPainter(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
-  Widget _buildAppBar(RegisterViewModel viewModel) => LargeAppBar(
-        showBackButton: true,
-        onPop: viewModel.goBack,
-        showLanguageSelection: true,
-        onLanguage: () async => await viewModel.navigateToLanguage(),
-        language: viewModel.selectedLanguage['code'] == 'am'
-            ? 'አማ'
-            : viewModel.selectedLanguage['code'],
-      );
+            // Top Right Checkmark Badge
+            Positioned(
+              top: -6,
+              right: -6,
+              child: Container(
+                width: 28,
+                height: 28,
+                decoration: const BoxDecoration(
+                  color: Color(0xFF22C55E),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0x3322C55E),
+                      blurRadius: 6,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.check_rounded,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-  Widget _buildExpandedBody(
-          {required BuildContext context,
-          required RegisterViewModel viewModel}) =>
-      Expanded(
-          child: _buildColumnScroller(context: context, viewModel: viewModel));
+class _EnvelopeFlapPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = const Color(0xFFE5E7EB)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
 
-  Widget _buildColumnScroller(
-          {required BuildContext context,
-          required RegisterViewModel viewModel}) =>
-      SingleChildScrollView(
-        child: _buildBodyWrapper(context: context, viewModel: viewModel),
-      );
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width / 2, size.height)
+      ..lineTo(size.width, 0);
 
-  Widget _buildBodyWrapper(
-          {required BuildContext context,
-          required RegisterViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBody(context: context, viewModel: viewModel),
-      );
+    canvas.drawPath(path, paint);
+  }
 
-  Widget _buildBody(
-          {required BuildContext context,
-          required RegisterViewModel viewModel}) =>
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyChildren(context: context, viewModel: viewModel),
-      );
-
-  List<Widget> _buildBodyChildren(
-          {required BuildContext context,
-          required RegisterViewModel viewModel}) =>
-      [
-        verticalSpaceMedium,
-        _buildUpperColumn(viewModel),
-        getPadding(context),
-        _buildContinueButtonWrapper(viewModel)
-      ];
-
-  Widget _buildUpperColumn(RegisterViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildUpperColumnChildren(viewModel),
-      );
-
-  List<Widget> _buildUpperColumnChildren(RegisterViewModel viewModel) => [
-        verticalSpaceMedium,
-        _buildTitle(),
-        verticalSpaceMedium,
-        _buildSubtitleWrapper(viewModel),
-        verticalSpaceMedium,
-        _buildPinPutWrapper(viewModel),
-        if (viewModel.hasOtpValidationMessage && viewModel.focusOtp)
-          verticalSpaceTiny,
-        if (viewModel.hasOtpValidationMessage && viewModel.focusOtp)
-          _buildOtpValidatorWrapper(viewModel),
-        verticalSpaceSmall,
-        _buildTimerWrapper(viewModel)
-      ];
-
-  Widget _buildTitle() => Text(
-        LocaleKeys.verification_code.tr(),
-        style: style25DG600,
-      );
-
-  Widget _buildSubtitleWrapper(RegisterViewModel viewModel) =>
-      viewModel.signUpMethod == SignUpMethod.email
-          ? _buildEmailSubtitleWrapper()
-          : _buildPhoneSubtitleWrapper();
-
-  Widget _buildPhoneSubtitleWrapper() => phoneNumberController.text.length == 9
-      ? _buildPhoneSubtitle()
-      : Container();
-
-  Widget _buildPhoneSubtitle() => Text(
-        '${LocaleKeys.code_sent_to_phone.tr()} +251${phoneNumberController.text.substring(0, 3)}******',
-        softWrap: false,
-        style: style14DG400,
-      );
-
-  Widget _buildEmailSubtitleWrapper() =>
-      emailController.text.isNotEmpty ? _buildEmailSubtitle() : Container();
-
-  Widget _buildEmailSubtitle() => Text(
-        '${LocaleKeys.code_sent_to_email.tr()} ${emailController.text.substring(0, 2)}******${emailController.text.split('@').last}',
-        softWrap: false,
-        style: style14DG400,
-      );
-
-  Widget _buildPinPutWrapper(RegisterViewModel viewModel) => Center(
-        child: _buildPinPut(viewModel),
-      );
-
-  Widget _buildPinPut(RegisterViewModel viewModel) => Pinput(
-        length: 6,
-        controller: otpController,
-        defaultPinTheme: defaultPin,
-        cursor: const CustomCursor(),
-        errorPinTheme: errorPinTheme,
-        onTap: viewModel.setOtpFocus,
-        focusNode: viewModel.focusNode,
-        errorTextStyle: validationStyle,
-        focusedPinTheme: focusedThemePin,
-        submittedPinTheme: submittedThemePin,
-        smsRetriever: locator<SmartAuthService>(),
-        separatorBuilder: (index) => horizontalSpaceSmall,
-        hapticFeedbackType: HapticFeedbackType.heavyImpact,
-        onCompleted: (otp) async => await _verifyOtp(viewModel),
-      );
-
-  Widget _buildOtpValidatorWrapper(RegisterViewModel viewModel) =>
-      viewModel.hasOtpValidationMessage
-          ? _buildOtpValidator(viewModel)
-          : Container();
-
-  Widget _buildOtpValidator(RegisterViewModel viewModel) => Text(
-        viewModel.otpValidationMessage!,
-        style: style12R700,
-      );
-
-  Widget _buildTimerWrapper(RegisterViewModel viewModel) =>
-      !viewModel.buttonActive
-          ? _buildTimerSection(viewModel)
-          : _buildResendButton(viewModel);
-
-  Widget _buildResendButton(RegisterViewModel viewModel) => GestureDetector(
-      onTap: () async => await viewModel.resendOtp(),
-      child: _buildResendText());
-
-  Widget _buildResendText() => Text(
-        LocaleKeys.resend_code.tr(),
-        style: style14P600.copyWith(fontStyle: FontStyle.italic),
-      );
-
-  Widget _buildTimerSection(RegisterViewModel viewModel) => Row(
-        children: [
-          _buildCountdownText(),
-          horizontalSpaceSmall,
-          _buildTimer(viewModel)
-        ],
-      );
-
-  Widget _buildCountdownText() =>
-      Text('${LocaleKeys.resend_code_in.tr()} ', style: style14DG400);
-
-  Widget _buildTimer(RegisterViewModel viewModel) => TimerCountdown(
-        enableDescriptions: false,
-        timeTextStyle: style14P600,
-        colonsTextStyle: style14P400,
-        endTime: viewModel.resendTime,
-        onEnd: viewModel.setResendButton,
-        format: CountDownTimerFormat.minutesSeconds,
-      );
-
-  Widget _buildContinueButtonWrapper(RegisterViewModel viewModel) => Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
-      );
-
-  Widget _buildContinueButton(RegisterViewModel viewModel) =>
-      CustomElevatedButton(
-        height: 55,
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        text: LocaleKeys.cont.tr(),
-        backgroundColor:
-            otpController.text.length == 6 && !viewModel.hasOtpValidationMessage
-                ? kcPrimaryColor
-                : kcPrimaryColor.withValues(alpha: 0.1),
-        onTap:
-            otpController.text.length == 6 && !viewModel.hasOtpValidationMessage
-                ? () async => await _verifyOtp(viewModel)
-                : null,
-      );
-
-  Widget _buildVerifyOtpState(RegisterViewModel viewModel) =>
-      viewModel.busy(StateObjects.verifyOtp)
-          ? const PageLoadingIndicator()
-          : Container();
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

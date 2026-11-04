@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters, constant_identifier_names
+// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters
 
 import 'dart:ui';
 
@@ -465,12 +465,37 @@ class CodegenLoader extends AssetLoader{
   "prepare_speak_photo": "Prepare to speak about the photo",
   "prepare_speak_topic": "Prepare to speak about the topic below",
   "sentence_completion": "Sentence completion",
+  "content": "Content",
   "notice": "Notice",
   "ios_purchase": "This content is coming soon. Thank you for your patience while we prepare it for you.",
   "profile_completion": "Profile completion",
-  "complete_profile": "Please complete your profile to continue"
+  "complete_profile": "Please complete your profile to continue",
+  "referral_code": "Referral code (optional)",
+  "have_referral_code": "Have a referral code? Add it here",
+  "hide_referral_code": "Hide",
+  "enter_referral_code": "Enter code (e.g. BEZA20)",
+  "referred_by": "Referred by {}",
+  "invalid_referral_code": "Invalid or inactive referral code",
+  "apply_clipboard_code": "Found referral code '{}' — Tap to apply",
+  "your_english_path": "Your English path",
+  "beginner": "BEGINNER",
+  "starter": "STARTER",
+  "elementary": "ELEMENTARY",
+  "where_level_sits_scale": "Where {} sits on the English scale",
+  "finish_beginner_stage_motivation": "Finish A1 and A2 to complete the Beginner stage.",
+  "intermediate": "INTERMEDIATE",
+  "advanced": "ADVANCED",
+  "pre_intermediate": "PRE-INTERMEDIATE",
+  "upper_intermediate": "UPPER-INTERMEDIATE",
+  "proficiency": "PROFICIENCY",
+  "finish_intermediate_stage_motivation": "Finish B1 and B2 to complete the Intermediate stage.",
+  "finish_advanced_stage_motivation": "Finish C1 and C2 to complete the Advanced stage.",
+  "module_complete_motivation": "Module complete! Amazing work, keep it up.",
+  "module_halfway_motivation": "Let's keep going - you're more than half there",
+  "module_start_motivation": "Keep up the great work! You're doing amazing.",
+  "lessons_count": "{} lessons"
 };
-static const Map<String,dynamic> _am = {
+  static const Map<String,dynamic> _am = {
   "loading": "በመጫን ላይ",
   "welcome_back": "እንኳን ደህና መጡ",
   "checking_user_info": "የተጠቃሚ መረጃ በመፈተሽ ላይ",
@@ -921,10 +946,35 @@ static const Map<String,dynamic> _am = {
   "prepare_speak_photo": "ስለ ፎቶው ለመናገር ይዘጋጁ",
   "prepare_speak_topic": "ስለ ተሰጠው ርዕስ ለመናገር ይዘጋጁ",
   "sentence_completion": "የዓረፍተ ነገር ማጠናቀቅ",
+  "content": "ይዘት",
   "notice": "ማስታወቂያ",
   "ios_purchase": "ይህ ይዘት በቅርቡ ይገኛል። ለእርስዎ እንዲገኝ እየሰራን ስለሆነ እባክዎ ትንሽ ይቆዩ።",
   "profile_completion": "የመገለጫ ማጠናቀቂያ",
-  "complete_profile": "እባክዎ ለመቀጠል መገለጫዎን ያጠናቅቁ"
+  "complete_profile": "እባክዎ ለመቀጠል መገለጫዎን ያጠናቅቁ",
+  "referral_code": "የሪፈራል ኮድ (አማራጭ)",
+  "have_referral_code": "የሪፈራል ኮድ አለዎት? እዚህ ያስገቡ",
+  "hide_referral_code": "ደብቅ",
+  "enter_referral_code": "ኮድ ያስገቡ (ለምሳሌ፦ BEZA20)",
+  "referred_by": "በ{} የተጋበዙ",
+  "invalid_referral_code": "ልክ ያልሆነ ወይም የማይሰራ የሪፈራል ኮድ",
+  "apply_clipboard_code": "የተገኘ የሪፈራል ኮድ '{}' — ለመጠቀም ይጫኑ",
+  "your_english_path": "የእርስዎ የእንግሊዝኛ መንገድ",
+  "beginner": "ጀማሪ",
+  "starter": "መነሻ",
+  "elementary": "መሰረታዊ",
+  "where_level_sits_scale": "{} በእንግሊዝኛ መለኪያ ላይ ያለበት ደረጃ",
+  "finish_beginner_stage_motivation": "የጀማሪውን ደረጃ ለማጠናቀቅ A1 እና A2ን ያጠናቅቁ።",
+  "intermediate": "መካከለኛ",
+  "advanced": "ከፍተኛ",
+  "pre_intermediate": "ቅድመ-መካከለኛ",
+  "upper_intermediate": "ከፍተኛ-መካከለኛ",
+  "proficiency": "የላቀ ብቃት",
+  "finish_intermediate_stage_motivation": "የመካከለኛውን ደረጃ ለማጠናቀቅ B1 እና B2ን ያጠናቅቁ።",
+  "finish_advanced_stage_motivation": "የከፍተኛውን ደረጃ ለማጠናቀቅ C1 እና C2ን ያጠናቅቁ።",
+  "module_complete_motivation": "ሞጁሉ ተጠናቋል! ድንቅ ስራ፣ እንደዚሁ ይቀጥሉ::",
+  "module_halfway_motivation": "እንቀጥል - ከግማሽ በላይ ደርሰዋል",
+  "module_start_motivation": "ጠንክረው ይቀጥሉ! ድንቅ ስራ እየሰሩ ነው::",
+  "lessons_count": "{} ትምህርቶች"
 };
-static const Map<String, Map<String,dynamic>> mapLocales = {"en": _en, "am": _am};
+  static const Map<String, Map<String,dynamic>> mapLocales = {"en": _en, "am": _am};
 }

@@ -31,7 +31,7 @@ class MyProgressView extends StackedView<MyProgressViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(MyProgressViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
+        backgroundColor: AppColors.background,
         body: _buildScaffold(viewModel),
       );
 
@@ -56,8 +56,8 @@ class MyProgressView extends StackedView<MyProgressViewModel> {
       SliverAppBar(
         pinned: true,
         automaticallyImplyLeading: false,
-        backgroundColor: kcBackgroundColor,
-        surfaceTintColor: kcBackgroundColor,
+        backgroundColor: AppColors.background,
+        surfaceTintColor: AppColors.background,
         title: _buildAppbar(viewModel),
       );
 

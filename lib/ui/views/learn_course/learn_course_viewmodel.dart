@@ -5,6 +5,7 @@ import 'package:yimaru_app/app/app.router.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../models/learn_course.dart';
+import '../../../models/learn_program.dart';
 import '../../../models/user.dart';
 import '../../../services/authentication_service.dart';
 import '../../../services/learn_service.dart';
@@ -60,10 +61,95 @@ class LearnCourseViewModel extends ReactiveViewModel {
 
   // Remote api call
 
+  // Program and stage detection
+  int? _programId;
+  int? get programId => _programId;
+
+  void setProgramId(int id) {
+    _programId = id;
+  }
+
+  LearnProgram? get currentProgram =>
+      _learnService.getLearnProgramById(_programId ?? 0);
+
+  int getStageIndex([int? programId]) {
+    final pId = programId ?? _programId;
+    final program =
+        pId != null ? _learnService.getLearnProgramById(pId) : currentProgram;
+    if (program != null) {
+      final name = (program.name ?? '').toLowerCase();
+      if (name.contains('intermediate') ||
+          name.contains('b1') ||
+          name.contains('b2')) {
+        return 1;
+      }
+      if (name.contains('advanced') ||
+          name.contains('c1') ||
+          name.contains('c2')) {
+        return 2;
+      }
+      if (name.contains('beginner') ||
+          name.contains('a1') ||
+          name.contains('a2')) {
+        return 0;
+      }
+      if (program.sortOrder != null) {
+        return (program.sortOrder! % 3);
+      }
+    }
+
+    if (pId != null) {
+      final idx = _learnService.programs.indexWhere((p) => p.id == pId);
+      if (idx != -1) {
+        return idx % 3;
+      }
+    }
+
+    // Fallback to checking loaded courses
+    for (final c in courses) {
+      final cName = (c.name ?? '').toUpperCase();
+      if (cName.contains('B1') || cName.contains('B2')) return 1;
+      if (cName.contains('C1') || cName.contains('C2')) return 2;
+      if (cName.contains('A1') || cName.contains('A2')) return 0;
+    }
+
+    return 0;
+  }
+
+  int get stageIndex => getStageIndex();
+
+  String getStageTitle([int? programId]) {
+    switch (getStageIndex(programId)) {
+      case 1:
+        return LocaleKeys.intermediate.tr();
+      case 2:
+        return LocaleKeys.advanced.tr();
+      default:
+        return LocaleKeys.beginner.tr();
+    }
+  }
+
+  String get stageTitle => getStageTitle();
+
+  String getMotivationMessage([int? programId]) {
+    switch (getStageIndex(programId)) {
+      case 1:
+        return LocaleKeys.finish_intermediate_stage_motivation.tr();
+      case 2:
+        return LocaleKeys.finish_advanced_stage_motivation.tr();
+      default:
+        return LocaleKeys.finish_beginner_stage_motivation.tr();
+    }
+  }
+
+  String get motivationMessage => getMotivationMessage();
+
   // Learn courses
-  Future<void> getLearnCourses(int id) async =>
-      await runBusyFuture(_getLearnCourses(id),
-          busyObject: StateObjects.learnCourses);
+  Future<void> getLearnCourses(int id) async {
+    _programId = id;
+    await runBusyFuture(_getLearnCourses(id),
+        busyObject: StateObjects.learnCourses);
+  }
 
   Future<void> _getLearnCourses(int id) async {
     if (await _statusChecker.checkConnection()) {

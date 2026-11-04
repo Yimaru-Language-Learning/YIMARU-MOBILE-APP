@@ -4,7 +4,6 @@ import 'package:stacked/stacked.dart';
 
 import '../../common/app_colors.dart';
 import '../../common/translations/locale_keys.g.dart';
-import '../../common/ui_helpers.dart';
 import '../../widgets/course_category_card.dart';
 import '../../widgets/profile_app_bar.dart';
 import 'course_viewmodel.dart';
@@ -24,30 +23,25 @@ class CourseView extends StackedView<CourseViewModel> {
       _buildScaffoldWrapper(viewModel);
 
   Widget _buildScaffoldWrapper(CourseViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldContainer(viewModel),
+        backgroundColor: const Color(0xFFF8F8FC),
+        body: SafeArea(child: _buildBody(viewModel)),
       );
-
-  Widget _buildScaffoldContainer(CourseViewModel viewModel) => Container(
-        decoration: bgDecoration,
-        child: _buildScaffold(viewModel),
-      );
-
-  Widget _buildScaffold(CourseViewModel viewModel) =>
-      SafeArea(child: _buildBody(viewModel));
 
   Widget _buildBody(CourseViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(viewModel),
-      );
-
-  Widget _buildColumn(CourseViewModel viewModel) => Column(
-        children: [
-          verticalSpaceMedium,
-          _buildAppBar(viewModel),
-          verticalSpaceMedium,
-          _buildCategoryColumnWrapper(viewModel)
-        ],
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            _buildAppBar(viewModel),
+            const SizedBox(height: 20),
+            _buildTitle(),
+            const SizedBox(height: 4),
+            _buildSubtitle(),
+            const SizedBox(height: 20),
+            Expanded(child: _buildCourseList(viewModel)),
+          ],
+        ),
       );
 
   Widget _buildAppBar(CourseViewModel viewModel) => ProfileAppBar(
@@ -57,54 +51,34 @@ class CourseView extends StackedView<CourseViewModel> {
         onTap: () async => await viewModel.navigateToNotification(),
       );
 
-  Widget _buildCategoryColumnWrapper(CourseViewModel viewModel) =>
-      Expanded(child: _buildCourseColumnScrollView(viewModel));
-
-  Widget _buildCourseColumnScrollView(CourseViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildCourseColumn(viewModel),
-      );
-
-  Widget _buildCourseColumn(CourseViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildLevelsColumnChildren(viewModel),
-      );
-
-  List<Widget> _buildLevelsColumnChildren(CourseViewModel viewModel) => [
-        _buildTitle(),
-        _buildSubtitle(),
-        verticalSpaceMedium,
-        _buildListView(viewModel)
-      ];
-
   Widget _buildTitle() => Text(
         LocaleKeys.courses.tr(),
-        style: style18DG700,
+        style: const TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+          fontFamily: 'Aeonik',
+          color: Color(0xFF1A1A2E),
+        ),
       );
 
   Widget _buildSubtitle() => Text(
         LocaleKeys.choose_course_to_improve.tr(),
-        style: style14DG400,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          fontFamily: 'Aeonik',
+          color: Color(0xFF666677),
+        ),
       );
 
-  Widget _buildListView(CourseViewModel viewModel) => ListView.separated(
+  Widget _buildCourseList(CourseViewModel viewModel) => ListView.separated(
         shrinkWrap: true,
         itemCount: viewModel.courses.length,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => _buildTile(
-            course: viewModel.courses[index],
-            onTap: () async => await viewModel.navigateToCourseCatalog()),
-        separatorBuilder: (context, index) => verticalSpaceSmall,
-      );
-
-  //
-  Widget _buildTile({
-    required GestureTapCallback onTap,
-    required Map<String, dynamic> course,
-  }) =>
-      CourseCard(
-        onTap: onTap,
-        course: course,
+        physics: const BouncingScrollPhysics(),
+        separatorBuilder: (_, __) => const SizedBox(height: 14),
+        itemBuilder: (context, index) => CourseCard(
+          course: viewModel.courses[index],
+          onTap: () async => await viewModel.navigateToCourseCatalog(),
+        ),
       );
 }
