@@ -52,7 +52,7 @@ class SecondLandingScreen extends ViewModelWidget<LandingViewModel> {
 
   Widget _buildIcon() => SvgPicture.asset(
         'assets/icons/logo_purple.svg',
-        color: kcPrimaryColor,
+        colorFilter: const ColorFilter.mode(kcPrimaryColor, BlendMode.srcIn),
         height: 25,
       );
 

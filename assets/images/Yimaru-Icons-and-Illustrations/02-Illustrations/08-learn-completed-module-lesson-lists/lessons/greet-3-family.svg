@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 84" width="112" height="84">
+  <rect width="112" height="84" fill="#F4E3F2"/>
+  <circle cx="56" cy="42" r="34" fill="#EBCDE8"/>
+  <path d="M56 9c-3-4-9-1-6 4l6 5 6-5c3-5-3-8-6-4z" fill="#E8644A"/>
+  <path d="M6 84c0-18 9-28 22-28s22 10 22 28z" fill="#FFFFFF"/>
+  <path d="M28 56c13 0 22 10 22 28H38c0-15-4-24-10-28z" fill="#F1E3EE"/>
+  <path d="M11 84c1-14 7-22 14-25" stroke="#1F8A70" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M15 84c1-11 5-17 10-20" stroke="#FFC23D" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <rect x="25" y="46" width="6" height="8" rx="3" fill="#7A4E32"/>
+  <circle cx="28" cy="38" r="10" fill="#8A5A3B"/>
+  <path d="M17 42c0-12.5 5-18.5 11-18.5s11 6 11 18.5c-2-6-5.5-9-11-9s-9 3-11 9z" fill="#FFFFFF"/>
+  <path d="M18 39c1.5-8.5 5-13 10-13" stroke="#1F8A70" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <circle cx="24.8" cy="39" r="1.2" fill="#2A1830"/><circle cx="31.2" cy="39" r="1.2" fill="#2A1830"/>
+  <path d="M25.3 43c1.7 1.3 3.7 1.3 5.4 0" stroke="#2A1830" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+  <path d="M62 84c0-18 9-28 22-28s22 10 22 28z" fill="#E8644A"/>
+  <path d="M84 56c13 0 22 10 22 28H94c0-15-4-24-10-28z" fill="#C94F37"/>
+  <rect x="81" y="46" width="6" height="8" rx="3" fill="#5A3520"/>
+  <circle cx="84" cy="38" r="10" fill="#6B4128"/>
+  <path d="M74 36c0-6.5 4.2-10.5 10-10.5s10 4 10 10.5c-2.4-3.4-5.6-4.8-10-4.8s-7.6 1.4-10 4.8z" fill="#2A1830"/>
+  <circle cx="80.8" cy="39" r="1.2" fill="#2A1830"/><circle cx="87.2" cy="39" r="1.2" fill="#2A1830"/>
+  <path d="M81.3 43c1.7 1.3 3.7 1.3 5.4 0" stroke="#2A1830" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+  <path d="M40 84c0-13 7-21 16-21s16 8 16 21z" fill="#FFC23D"/>
+  <path d="M56 63c9 0 16 8 16 21h-8c0-11-3-18-8-21z" fill="#E8A92A"/>
+  <circle cx="56" cy="52" r="8.5" fill="#A86A3E"/>
+  <circle cx="56" cy="44.5" r="5" fill="#2A1830"/>
+  <path d="M47.8 50c.5-5 3.8-8 8.2-8s7.7 3 8.2 8c-2-2.4-4.8-3.4-8.2-3.4s-6.2 1-8.2 3.4z" fill="#2A1830"/>
+  <circle cx="53.3" cy="53" r="1.1" fill="#2A1830"/><circle cx="58.7" cy="53" r="1.1" fill="#2A1830"/>
+  <path d="M53.8 56.4c1.4 1.1 3 1.1 4.4 0" stroke="#2A1830" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  <circle cx="51" cy="55.5" r="1.5" fill="#E8644A" opacity="0.4"/><circle cx="61" cy="55.5" r="1.5" fill="#E8644A" opacity="0.4"/>
+  <path d="M100 12l1.6 4.6 4.6 1.6-4.6 1.6-1.6 4.6-1.6-4.6-4.6-1.6 4.6-1.6z" fill="#FFC23D"/>
+</svg>

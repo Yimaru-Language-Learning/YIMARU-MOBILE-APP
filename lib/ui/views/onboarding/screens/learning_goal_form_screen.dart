@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
-import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/custom_small_trailing_radio_button.dart';
-import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
+import 'package:yimaru_app/ui/views/onboarding/widgets/onboarding_layout.dart';
+import 'package:yimaru_app/ui/views/onboarding/widgets/onboarding_option_tile.dart';
 
 class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
   const LearningGoalFormScreen({super.key});
@@ -20,128 +18,111 @@ class LearningGoalFormScreen extends ViewModelWidget<OnboardingViewModel> {
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
+    if (viewModel.selectedLearningGoal == null) return;
+
     Map<String, dynamic> data = {
       'learning_goal': viewModel.selectedLearningGoal?.code,
     };
     viewModel.addUserData(data);
-
     viewModel.next();
   }
 
   @override
-  Widget build(BuildContext context, OnboardingViewModel viewModel) =>
-      _buildScaffoldWrapper(viewModel);
+  Widget build(BuildContext context, OnboardingViewModel viewModel) {
+    final selected = viewModel.selectedLearningGoal;
+    final bool isOtherSelected =
+        selected != null && (selected.label?.toLowerCase().contains('other') ?? false);
 
-  Widget _buildScaffoldWrapper(OnboardingViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
-      );
+    final bool canContinue = selected != null;
 
-  Widget _buildScaffold(OnboardingViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildScaffoldChildren(viewModel),
-      );
+    final String mascot = isOtherSelected
+        ? 'assets/images/mascot/yimi-thinking.svg'
+        : 'assets/images/mascot/yimi-speaking.svg';
 
-  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
+    final String speech = isOtherSelected
+        ? "Tell me more!"
+        : "We'll make it happen!";
 
-  Widget _buildExpandedBody(OnboardingViewModel viewModel) =>
-      Expanded(child: _buildBodyScroller(viewModel));
+    return OnboardingLayout(
+      showBackButton: true,
+      onBack: () => _pop(viewModel),
+      onLanguage: () async => await viewModel.navigateToLanguage(),
+      languageCode: viewModel.selectedLanguage['code'],
+      title: LocaleKeys.learning_goal.tr(),
+      subtitle: "This helps us focus your learning priorities.",
+      mascotAsset: mascot,
+      speechText: speech,
+      continueText: LocaleKeys.cont.tr(),
+      canContinue: canContinue,
+      onContinue: () async => await _next(viewModel),
+      child: Column(
+        children: viewModel.learningGoals.map((option) {
+          final bool isSelected = viewModel.isSelectedLearningGoal(option);
+          final bool isThisOther =
+              option.label?.toLowerCase().contains('other') ?? false;
 
-  Widget _buildBodyScroller(OnboardingViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildBodyWrapper(viewModel),
-      );
-
-  Widget _buildBodyWrapper(OnboardingViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBody(viewModel),
-      );
-
-  Widget _buildBody(OnboardingViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyChildren(viewModel),
-      );
-
-  List<Widget> _buildBodyChildren(OnboardingViewModel viewModel) =>
-      [_buildUpperColumn(viewModel), _buildContinueButtonWrapper(viewModel)];
-
-  Widget _buildUpperColumn(OnboardingViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildUpperColumnChildren(viewModel),
-      );
-
-  List<Widget> _buildUpperColumnChildren(OnboardingViewModel viewModel) => [
-        verticalSpaceLarge,
-        _buildTitle(),
-        verticalSpaceSmall,
-        _buildSubtitle(),
-        verticalSpaceMedium,
-        _buildGoals(viewModel),
-        verticalSpaceMedium,
-      ];
-
-  Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
-        showBackButton: true,
-        showLanguageSelection: true,
-        onPop: () => _pop(viewModel),
-        onLanguage: () async => await viewModel.navigateToLanguage(),
-        language: viewModel.selectedLanguage['code'] == 'am'
-            ? 'አማ'
-            : viewModel.selectedLanguage['code'],
-      );
-
-  Widget _buildTitle() => Text(
-        LocaleKeys.learning_goal.tr(),
-        style: style25DG600,
-      );
-
-  Widget _buildSubtitle() => Text(
-        LocaleKeys.your_goal.tr(),
-        style: style14MG400,
-      );
-
-  Widget _buildGoals(OnboardingViewModel viewModel) => ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        itemCount: viewModel.learningGoals.length,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) => _buildLearningGoal(
-          title: viewModel.learningGoals[index].label ?? '',
-          selected:
-              viewModel.isSelectedLearningGoal(viewModel.learningGoals[index]),
-          onTap: () =>
-              viewModel.setSelectedLearningGoal(viewModel.learningGoals[index]),
-        ),
-      );
-
-  Widget _buildLearningGoal(
-          {required String title,
-          required bool selected,
-          required GestureTapCallback onTap}) =>
-      CustomSmallTrailingRadioButton(
-        title: title,
-        onTap: onTap,
-        selected: selected,
-      );
-
-  Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
-      );
-
-  Widget _buildContinueButton(OnboardingViewModel viewModel) =>
-      CustomElevatedButton(
-          height: 55,
-          borderRadius: 12,
-          foregroundColor: kcWhite,
-          text: LocaleKeys.cont.tr(),
-          onTap: viewModel.selectedLearningGoal != null
-              ? () => _next(viewModel)
-              : null,
-          backgroundColor: viewModel.selectedLearningGoal != null
-              ? kcPrimaryColor
-              : kcPrimaryColor.withValues(alpha: 0.1));
+          return Column(
+            children: [
+              OnboardingOptionTile(
+                title: option.label ?? '',
+                isSelected: isSelected,
+                onTap: () => viewModel.setSelectedLearningGoal(option),
+              ),
+              if (isThisOther && isSelected) ...[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: TextFormField(
+                    onChanged: (val) {
+                      viewModel.userData['custom_learning_goal'] = val;
+                    },
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.neutral14,
+                      fontFamily: 'Aeonik',
+                    ),
+                    decoration: InputDecoration(
+                      hintText: LocaleKeys.write_your_goal.tr(),
+                      hintStyle: TextStyle(
+                        fontSize: 13.5,
+                        color: AppColors.neutral40.withValues(alpha: 0.6),
+                        fontFamily: 'Aeonik',
+                      ),
+                      filled: true,
+                      fillColor: const Color(0xFFFAF0F8),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: const BorderSide(
+                          color: AppColors.magenta38,
+                          width: 1,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide(
+                          color: AppColors.magenta38.withValues(alpha: 0.6),
+                          width: 1,
+                        ),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(14)),
+                        borderSide: BorderSide(
+                          color: AppColors.magenta38,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
 }

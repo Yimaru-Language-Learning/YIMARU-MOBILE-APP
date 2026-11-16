@@ -1,15 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
-import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
-import 'package:yimaru_app/ui/widgets/custom_small_trailing_radio_button.dart';
-import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
 
 import '../../../common/enmus.dart';
-import '../../../widgets/page_loading_indicator.dart';
 import '../assessment_viewmodel.dart';
 
 class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
@@ -20,150 +16,466 @@ class AssessmentQuestionsScreen extends ViewModelWidget<AssessmentViewModel> {
   }
 
   @override
-  Widget build(BuildContext context, AssessmentViewModel viewModel) =>
-      _buildAssessmentScreensWrapper(viewModel);
+  Widget build(BuildContext context, AssessmentViewModel viewModel) {
+    final bool isLoading = viewModel.busy(StateObjects.finishAssessment);
 
-  Widget _buildAssessmentScreensWrapper(AssessmentViewModel viewModel) =>
-      PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (value, data) => viewModel.previousQuestion(),
-          child: _buildScaffoldWrapper(viewModel));
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (_, __) => viewModel.previousQuestion(),
+      child: Scaffold(
+        backgroundColor: const Color(0xFF6E1665),
+        body: SafeArea(
+          bottom: false,
+          child: Column(
+            children: [
+              // Top purple bar with question counter & close
+              _buildTopBar(viewModel),
 
-  Widget _buildScaffoldWrapper(AssessmentViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldStack(viewModel),
-      );
+              // White card body
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(28)),
+                  ),
+                  child: Stack(
+                    children: [
+                      Column(
+                        children: [
+                          // Progress bar
+                          _buildProgressBar(viewModel),
 
-  Widget _buildScaffoldStack(AssessmentViewModel viewModel) => Stack(
-        children: [_buildScaffold(viewModel), _buildBodyState(viewModel)],
-      );
+                          // Scrollable question + answers
+                          Expanded(
+                            child: PageView.builder(
+                              controller: viewModel.pageController,
+                              itemCount: viewModel.questions.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (_, __) =>
+                                  _buildQuestionPage(viewModel),
+                            ),
+                          ),
 
-  Widget _buildScaffold(AssessmentViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildScaffoldChildren(viewModel),
-      );
+                          // Bottom mascot + continue button
+                          _buildBottomSection(viewModel),
+                        ],
+                      ),
 
-  List<Widget> _buildScaffoldChildren(AssessmentViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
-
-  Widget _buildAppBar(AssessmentViewModel viewModel) => LargeAppBar(
-        onClose: viewModel.abort,
-        showLanguageSelection: false,
-        onPop: viewModel.previousQuestion,
-        showBackButton: viewModel.currentQuestionIndex == 0 ? false : true,
-      );
-
-  Widget _buildExpandedBody(AssessmentViewModel viewModel) =>
-      Expanded(child: _buildBodyWrapper(viewModel));
-
-  Widget _buildBodyWrapper(AssessmentViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildAssessment(viewModel),
-      );
-
-  Widget _buildAssessment(AssessmentViewModel viewModel) => PageView.builder(
-        controller: viewModel.pageController,
-        itemCount: viewModel.questions.length,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (cotext, index) => _buildBodyScroller(viewModel),
-      );
-
-  Widget _buildBodyScroller(AssessmentViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildBody(viewModel),
-      );
-
-  Widget _buildBody(AssessmentViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildBodyChildren(viewModel),
-      );
-
-  List<Widget> _buildBodyChildren(AssessmentViewModel viewModel) => [
-        verticalSpaceMedium,
-        _buildTitleState(viewModel),
-        verticalSpaceMedium,
-        _buildAnswersState(viewModel),
-        _buildContinueButtonWrapper(viewModel)
-      ];
-
-  Widget _buildTitleState(AssessmentViewModel viewModel) =>
-      viewModel.currentQuestionIndex == viewModel.questions.length
-          ? Container()
-          : _buildTitle(viewModel);
-
-  Widget _buildTitle(AssessmentViewModel viewModel) => Text(
-        'Q${viewModel.currentQuestionIndex + 1}. ${viewModel.questions[viewModel.currentQuestionIndex].dynamicPayload?.stimulus?.first.value} ',
-        style: style16DG600,
-      );
-
-  Widget _buildAnswersState(AssessmentViewModel viewModel) =>
-      viewModel.currentQuestionIndex == viewModel.questions.length
-          ? Container()
-          : _buildAnswers(viewModel);
-
-  Widget _buildAnswers(AssessmentViewModel viewModel) => ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: viewModel.questions[viewModel.currentQuestionIndex]
-            .dynamicPayload?.response?.first.value?.length,
-        itemBuilder: (context, inner) => _buildAnswer(
-          onTap: () => viewModel.setSelectedAnswer(
-              question: viewModel.currentQuestionIndex + 1,
-              option: viewModel.questions[viewModel.currentQuestionIndex]
-                  .dynamicPayload?.response?.first.value?[inner]),
-          title: viewModel.questions[viewModel.currentQuestionIndex]
-              .dynamicPayload?.response?.first.value?[inner]['option_text'],
-          selected: viewModel.isSelectedAnswer(
-              question: viewModel.currentQuestionIndex + 1,
-              answer: viewModel
-                  .questions[viewModel.currentQuestionIndex]
-                  .dynamicPayload
-                  ?.response
-                  ?.first
-                  .value?[inner]['option_text']),
+                      // Loading overlay
+                      if (isLoading) _buildLoadingOverlay(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTopBar(AssessmentViewModel viewModel) {
+    final int total = viewModel.questions.length;
+    final int current = viewModel.currentQuestionIndex + 1;
+
+    return Container(
+      height: 62,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Sparkles
+          Positioned(
+              left: 80, top: 14, child: _sparkle(12)),
+          Positioned(
+              right: 90, top: 24, child: _sparkle(8)),
+          Positioned(
+              left: 170, bottom: 8, child: _sparkle(6)),
+
+          // Back button (left) — only after Q1
+          if (viewModel.currentQuestionIndex > 0)
+            Positioned(
+              left: 0,
+              child: GestureDetector(
+                onTap: viewModel.previousQuestion,
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Center(
+                    child: Icon(Icons.arrow_back_ios_new_rounded,
+                        size: 16, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+
+          // Question counter (center)
+          Text(
+            '$current / $total',
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+              fontFamily: 'Aeonik',
+            ),
+          ),
+
+          // Close button (right)
+          Positioned(
+            right: 0,
+            child: GestureDetector(
+              onTap: viewModel.abort,
+              child: Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: const Center(
+                  child: Icon(Icons.close_rounded, size: 18, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProgressBar(AssessmentViewModel viewModel) {
+    final double progress = viewModel.questions.isEmpty
+        ? 0
+        : (viewModel.currentQuestionIndex + 1) / viewModel.questions.length;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(22, 18, 22, 0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(100),
+        child: LinearProgressIndicator(
+          value: progress,
+          minHeight: 6,
+          backgroundColor: AppColors.neutral84.withValues(alpha: 0.5),
+          valueColor:
+              const AlwaysStoppedAnimation<Color>(AppColors.magenta38),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuestionPage(AssessmentViewModel viewModel) {
+    final int idx = viewModel.currentQuestionIndex;
+    if (idx >= viewModel.questions.length) return const SizedBox.shrink();
+
+    final question = viewModel.questions[idx];
+    final String questionText =
+        'Q${idx + 1}. ${question.dynamicPayload?.stimulus?.first.value ?? ''}';
+    final List<dynamic> options =
+        question.dynamicPayload?.response?.first.value ?? [];
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(22, 20, 22, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Question text
+          Text(
+            questionText,
+            style: const TextStyle(
+              fontSize: 17,
+              fontWeight: FontWeight.w700,
+              color: AppColors.neutral14,
+              fontFamily: 'Aeonik',
+              height: 1.4,
+              letterSpacing: -0.2,
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Answer options
+          ...options.asMap().entries.map((entry) {
+            final option = entry.value;
+            final String text = option['option_text'] ?? '';
+            final bool isSelected = viewModel.isSelectedAnswer(
+              question: idx + 1,
+              answer: text,
+            );
+
+            return _buildOptionTile(
+              text: text,
+              isSelected: isSelected,
+              onTap: () => viewModel.setSelectedAnswer(
+                question: idx + 1,
+                option: option,
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOptionTile({
+    required String text,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color:
+              isSelected ? const Color(0xFFFAF0F8) : const Color(0xFFFAFAFA),
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isSelected
+                ? AppColors.magenta38
+                : AppColors.neutral84.withValues(alpha: 0.65),
+            width: isSelected ? 1.5 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: 14.5,
+                  fontWeight:
+                      isSelected ? FontWeight.w700 : FontWeight.w500,
+                  color: isSelected
+                      ? AppColors.magenta38
+                      : AppColors.neutral14,
+                  fontFamily: 'Aeonik',
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 180),
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? AppColors.magenta38
+                    : Colors.transparent,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected
+                      ? AppColors.magenta38
+                      : AppColors.neutral84.withValues(alpha: 0.9),
+                  width: 1.5,
+                ),
+              ),
+              child: isSelected
+                  ? const Center(
+                      child: Icon(Icons.check_rounded,
+                          size: 14, color: Colors.white),
+                    )
+                  : null,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomSection(AssessmentViewModel viewModel) {
+    final int idx = viewModel.currentQuestionIndex;
+    final bool hasAnswered =
+        viewModel.selectedAnswers.containsKey('${idx + 1}');
+    final bool isLastQuestion =
+        idx == viewModel.questions.length - 1;
+    final bool sessionCompleted =
+        viewModel.session?.completed ?? false;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(22, 6, 22, 24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Mascot row with speech bubble
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(right: 8, bottom: 6),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 14, vertical: 11),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: AppColors.neutral84.withValues(alpha: 0.7),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.04),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    _getSpeechText(
+                      currentIndex: idx,
+                      total: viewModel.questions.length,
+                      hasAnswered: hasAnswered,
+                    ),
+                    style: const TextStyle(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.neutral14,
+                      fontFamily: 'Aeonik',
+                      height: 1.3,
+                    ),
+                  ),
+                ),
+              ),
+              SvgPicture.asset(
+                hasAnswered
+                    ? 'assets/images/mascot/yimi-yay.svg'
+                    : 'assets/images/mascot/yimi-thinking.svg',
+                height: 80,
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // Continue / Finish button
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton(
+              onPressed: hasAnswered
+                  ? isLastQuestion
+                      ? (sessionCompleted
+                          ? () async => await _finish(viewModel)
+                          : () async => await _finish(viewModel))
+                      : () => viewModel.nextQuestion()
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.magenta38,
+                disabledBackgroundColor: const Color(0xFFDCBEDA),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: Text(
+                isLastQuestion
+                    ? LocaleKeys.finish_assessment.tr()
+                    : LocaleKeys.cont.tr(),
+                style: const TextStyle(
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  fontFamily: 'Aeonik',
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _getSpeechText({
+    required int currentIndex,
+    required int total,
+    required bool hasAnswered,
+  }) {
+    final int currentQuestion = currentIndex + 1;
+    if (currentQuestion == total) {
+      return "Last one!";
+    } else if (currentQuestion == 1) {
+      return hasAnswered ? "Great start!" : "Take your time!";
+    } else if (currentQuestion == 2) {
+      return "You've got this!";
+    } else if (currentQuestion == 3 || currentQuestion == total - 1) {
+      return "Almost there!";
+    } else {
+      return hasAnswered ? "Great! Keep it up!" : "Take your time!";
+    }
+  }
+
+  Widget _buildLoadingOverlay() {
+    return Container(
+      color: Colors.white.withValues(alpha: 0.85),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Sparkle dots
+            _buildSparkleRow(),
+            const SizedBox(height: 28),
+            const SizedBox(
+              width: 56,
+              height: 56,
+              child: CircularProgressIndicator(
+                strokeWidth: 3.5,
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.magenta38),
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              'Analyzing your results...',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: AppColors.neutral14,
+                fontFamily: 'Aeonik',
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'This might take a moment.',
+              style: TextStyle(
+                fontSize: 13,
+                color: AppColors.neutral40,
+                fontFamily: 'Aeonik',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSparkleRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _sparkleDot(10),
+        const SizedBox(width: 10),
+        _sparkleDot(14),
+        const SizedBox(width: 10),
+        _sparkleDot(10),
+      ],
+    );
+  }
+
+  Widget _sparkleDot(double size) => Icon(
+        Icons.star_rounded,
+        size: size,
+        color: AppColors.magenta38.withValues(alpha: 0.4),
       );
 
-  Widget _buildAnswer(
-          {required String title,
-          required bool selected,
-          required GestureTapCallback onTap}) =>
-      CustomSmallTrailingRadioButton(
-        title: title,
-        onTap: onTap,
-        selected: selected,
+  Widget _sparkle(double size) => Icon(
+        Icons.star_rounded,
+        size: size,
+        color: Colors.white.withValues(alpha: 0.35),
       );
-
-  Widget _buildContinueButtonWrapper(AssessmentViewModel viewModel) => Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
-      );
-
-  Widget _buildContinueButton(AssessmentViewModel viewModel) =>
-      CustomElevatedButton(
-        height: 55,
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        text:
-            viewModel.currentQuestionIndex == viewModel.questions.length - 1 &&
-                    (viewModel.session?.completed ?? false)
-                ? LocaleKeys.finish_assessment.tr()
-                : LocaleKeys.cont.tr(),
-        backgroundColor: viewModel.selectedAnswers
-                .containsKey('${viewModel.currentQuestionIndex + 1}')
-            ? kcPrimaryColor
-            : kcPrimaryColor.withValues(alpha: 0.1),
-        onTap: viewModel.selectedAnswers
-                .containsKey('${viewModel.currentQuestionIndex + 1}')
-            ? viewModel.currentQuestionIndex == viewModel.questions.length - 1
-                ? () async => await _finish(viewModel)
-                : () => viewModel.nextQuestion()
-            : null,
-      );
-
-  Widget _buildBodyState(AssessmentViewModel viewModel) =>
-      viewModel.busy(StateObjects.finishAssessment)
-          ? const PageLoadingIndicator()
-          : Container();
 }

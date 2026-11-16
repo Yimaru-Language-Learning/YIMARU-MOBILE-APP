@@ -1,13 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
-import 'package:yimaru_app/ui/common/ui_helpers.dart';
-import 'package:yimaru_app/ui/widgets/custom_elevated_button.dart';
 import 'package:yimaru_app/ui/views/onboarding/onboarding_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/custom_small_trailing_radio_button.dart';
-import 'package:yimaru_app/ui/widgets/large_app_bar.dart';
+import 'package:yimaru_app/ui/views/onboarding/widgets/onboarding_layout.dart';
+import 'package:yimaru_app/ui/views/onboarding/widgets/onboarding_option_tile.dart';
 
 class EducationalBackgroundFormScreen
     extends ViewModelWidget<OnboardingViewModel> {
@@ -21,128 +18,41 @@ class EducationalBackgroundFormScreen
   Future<void> _next(OnboardingViewModel viewModel) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
+    if (viewModel.selectedEducationalBackground == null) return;
+
     Map<String, dynamic> data = {
       'education_level': viewModel.selectedEducationalBackground?.code
     };
     viewModel.addUserData(data);
-
     viewModel.next();
   }
 
   @override
-  Widget build(BuildContext context, OnboardingViewModel viewModel) =>
-      _buildScaffoldWrapper(viewModel);
+  Widget build(BuildContext context, OnboardingViewModel viewModel) {
+    final bool canContinue = viewModel.selectedEducationalBackground != null;
 
-  Widget _buildScaffoldWrapper(OnboardingViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffold(viewModel),
-      );
-
-  Widget _buildScaffold(OnboardingViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildScaffoldChildren(viewModel),
-      );
-
-  List<Widget> _buildScaffoldChildren(OnboardingViewModel viewModel) =>
-      [_buildAppBar(viewModel), _buildExpandedBody(viewModel)];
-
-  Widget _buildExpandedBody(OnboardingViewModel viewModel) =>
-      Expanded(child: _buildColumnScroller(viewModel));
-
-  Widget _buildColumnScroller(OnboardingViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildBodyWrapper(viewModel),
-      );
-
-  Widget _buildBodyWrapper(OnboardingViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBody(viewModel),
-      );
-
-  Widget _buildBody(OnboardingViewModel viewModel) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyChildren(viewModel),
-      );
-
-  List<Widget> _buildBodyChildren(OnboardingViewModel viewModel) =>
-      [_buildUpperColumn(viewModel), _buildContinueButtonWrapper(viewModel)];
-
-  Widget _buildUpperColumn(OnboardingViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: _buildUpperColumnChildren(viewModel),
-      );
-
-  List<Widget> _buildUpperColumnChildren(OnboardingViewModel viewModel) => [
-        verticalSpaceLarge,
-        _buildTitle(),
-        verticalSpaceSmall,
-        _buildSubtitle(),
-        verticalSpaceMedium,
-        _buildEducationalLevels(viewModel)
-      ];
-
-  Widget _buildAppBar(OnboardingViewModel viewModel) => LargeAppBar(
-        showBackButton: true,
-        showLanguageSelection: true,
-        onPop: () => _pop(viewModel),
-        onLanguage: () async => await viewModel.navigateToLanguage(),
-        language: viewModel.selectedLanguage['code'] == 'am'
-            ? 'አማ'
-            : viewModel.selectedLanguage['code'],
-      );
-
-  Widget _buildTitle() => Text(
-        LocaleKeys.educational_background.tr(),
-        style: style25DG600,
-      );
-
-  Widget _buildSubtitle() => Text(
-        LocaleKeys.education_for_personalization.tr(),
-        style: style14MG400,
-      );
-
-  Widget _buildEducationalLevels(OnboardingViewModel viewModel) =>
-      ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: viewModel.educationalBackgrounds.length,
-        itemBuilder: (context, index) => _buildEducationalLevel(
-          title: viewModel.educationalBackgrounds[index].label ?? '',
-          selected: viewModel.isSelectedEducationalBackground(
-              viewModel.educationalBackgrounds[index]),
-          onTap: () => viewModel.setSelectedEducationalBackground(
-              viewModel.educationalBackgrounds[index]),
-        ),
-      );
-
-  Widget _buildEducationalLevel(
-          {required String title,
-          required bool selected,
-          required GestureTapCallback onTap}) =>
-      CustomSmallTrailingRadioButton(
-        title: title,
-        onTap: onTap,
-        selected: selected,
-      );
-
-  Widget _buildContinueButtonWrapper(OnboardingViewModel viewModel) => Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(viewModel),
-      );
-
-  Widget _buildContinueButton(OnboardingViewModel viewModel) =>
-      CustomElevatedButton(
-        height: 55,
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        text: LocaleKeys.cont.tr(),
-        onTap: viewModel.selectedEducationalBackground != null
-            ? () => _next(viewModel)
-            : null,
-        backgroundColor: viewModel.selectedEducationalBackground != null
-            ? kcPrimaryColor
-            : kcPrimaryColor.withValues(alpha: 0.1),
-      );
+    return OnboardingLayout(
+      showBackButton: true,
+      onBack: () => _pop(viewModel),
+      onLanguage: () async => await viewModel.navigateToLanguage(),
+      languageCode: viewModel.selectedLanguage['code'],
+      title: LocaleKeys.educational_background.tr(),
+      subtitle: LocaleKeys.education_for_personalization.tr(),
+      mascotAsset: 'assets/images/mascot/yimi-thinking.svg',
+      speechText: "No wrong answers here!",
+      continueText: LocaleKeys.cont.tr(),
+      canContinue: canContinue,
+      onContinue: () async => await _next(viewModel),
+      child: Column(
+        children: viewModel.educationalBackgrounds.map((option) {
+          final bool isSelected = viewModel.isSelectedEducationalBackground(option);
+          return OnboardingOptionTile(
+            title: option.label ?? '',
+            isSelected: isSelected,
+            onTap: () => viewModel.setSelectedEducationalBackground(option),
+          );
+        }).toList(),
+      ),
+    );
+  }
 }

@@ -2,13 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
-
-import '../../../common/app_colors.dart';
-import '../../../common/ui_helpers.dart';
-import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/small_app_bar.dart';
+import 'package:yimaru_app/ui/widgets/practice_app_bar.dart';
 
 class LearnPracticeFinishScreen
     extends ViewModelWidget<LearnPracticeViewModel> {
@@ -18,119 +15,123 @@ class LearnPracticeFinishScreen
       await viewModel.reset();
 
   @override
-  Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(viewModel);
+  Widget build(BuildContext context, LearnPracticeViewModel viewModel) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFFAF7FC),
+      body: SafeArea(
+        child: Column(
+          children: [
+            PracticeAppBar(
+              title: LocaleKeys.practice_speaking.tr(),
+              onPop: viewModel.goBack,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    // Celebratory Mascot
+                    SvgPicture.asset(
+                      'assets/images/mascot/yimi-yay.svg',
+                      width: 170,
+                      height: 170,
+                    ),
+                    const SizedBox(height: 28),
 
-  Widget _buildScaffoldWrapper(LearnPracticeViewModel viewModel) => Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldContainer(viewModel),
-      );
+                    // Title
+                    Text(
+                      LocaleKeys.practice_completed.tr(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: 'Aeonik',
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF2A1830),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
 
-  Widget _buildScaffoldContainer(LearnPracticeViewModel viewModel) => Container(
-        decoration: bgDecoration,
-        child: _buildScaffold(viewModel),
-      );
+                    // Subtitle
+                    Text(
+                      LocaleKeys.sound_confident.tr(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: 'Aeonik',
+                        fontSize: 14,
+                        color: Color(0xFF6B7280),
+                      ),
+                    ),
+                    const Spacer(),
 
-  Widget _buildScaffold(LearnPracticeViewModel viewModel) =>
-      SafeArea(child: _buildBodyColumnWrapper(viewModel));
-
-  Widget _buildBodyColumnWrapper(LearnPracticeViewModel viewModel) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(viewModel),
-      );
-
-  Widget _buildBodyColumn(viewModel) => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyColumnChildren(viewModel),
-      );
-
-  List<Widget> _buildBodyColumnChildren(LearnPracticeViewModel viewModel) => [
-        _buildAppBarWrapper(viewModel),
-        _buildSpeakingIndicatorWrapper(viewModel),
-        _buildLowerButtonsSectionWrapper(viewModel)
-      ];
-
-  Widget _buildAppBarWrapper(LearnPracticeViewModel viewModel) => Column(
-        children: [
-          verticalSpaceMedium,
-          _buildAppBar(viewModel),
-          verticalSpaceMedium,
-        ],
-      );
-
-  Widget _buildAppBar(LearnPracticeViewModel viewModel) => SmallAppBar(
-        showBackButton: true,
-        onPop: viewModel.goBack,
-        title: LocaleKeys.practice_speaking.tr(),
-      );
-
-  Widget _buildSpeakingIndicatorWrapper(LearnPracticeViewModel viewModel) =>
-      Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: _buildSpeakingIndicatorChildren(),
-      );
-
-  List<Widget> _buildSpeakingIndicatorChildren() => [
-        _buildIcon(),
-        verticalSpaceMedium,
-        _buildTitle(),
-        _buildSubtitle(),
-      ];
-
-  Widget _buildIcon() => SvgPicture.asset('assets/icons/success.svg');
-
-  Widget _buildTitle() => Text(
-        LocaleKeys.practice_completed.tr(),
-        style: style25DG600,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildSubtitle() => Text(
-        LocaleKeys.sound_confident.tr(),
-        style: style14DG400,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildLowerButtonsSectionWrapper(LearnPracticeViewModel viewModel) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: _buildLowerButtonsSection(viewModel),
-      );
-
-  Widget _buildLowerButtonsSection(LearnPracticeViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: _buildLowerButtonsSectionChildren(viewModel),
-      );
-
-  List<Widget> _buildLowerButtonsSectionChildren(
-          LearnPracticeViewModel viewModel) =>
-      [
-        _buildContinueButton(viewModel),
-        verticalSpaceSmall,
-        _buildPracticeAgainButton(viewModel),
-        verticalSpaceMedium,
-      ];
-
-  Widget _buildContinueButton(LearnPracticeViewModel viewModel) =>
-      CustomElevatedButton(
-        height: 55,
-        borderRadius: 12,
-        onTap: viewModel.pop,
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
-        text: LocaleKeys.continue_practice.tr(),
-      );
-
-  Widget _buildPracticeAgainButton(LearnPracticeViewModel viewModel) =>
-      CustomElevatedButton(
-        height: 55,
-        borderRadius: 12,
-        backgroundColor: kcWhite,
-        borderColor: kcPrimaryColor,
-        foregroundColor: kcPrimaryColor,
-        text: LocaleKeys.practice_again.tr(),
-        onTap: () async => await _reset(viewModel),
-      );
+                    // Buttons
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            height: 54,
+                            child: ElevatedButton(
+                              onPressed: viewModel.pop,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.magenta38,
+                                foregroundColor: kcWhite,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child: Text(
+                                LocaleKeys.continue_practice.tr(),
+                                style: const TextStyle(
+                                  fontFamily: 'Aeonik',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: kcWhite,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 54,
+                            child: OutlinedButton(
+                              onPressed: () async => await _reset(viewModel),
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: kcWhite,
+                                foregroundColor: AppColors.magenta38,
+                                side: const BorderSide(
+                                  color: AppColors.magenta38,
+                                  width: 1.5,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child: Text(
+                                LocaleKeys.practice_again.tr(),
+                                style: const TextStyle(
+                                  fontFamily: 'Aeonik',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.magenta38,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
