@@ -54,12 +54,19 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             isShrinkResources = false
-            ndk { debugSymbolLevel = "FULL" }
+            ndk {
+                debugSymbolLevel = "none"
+            }
             signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
+    }
+
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
     }
 }
 

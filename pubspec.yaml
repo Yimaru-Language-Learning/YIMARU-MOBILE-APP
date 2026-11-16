@@ -1,6 +1,6 @@
-﻿name: yimaru_app
+name: yimaru_app
 publish_to: 'none'
-version: 0.1.124+126
+version: 0.1.129+132
 description: A new Flutter project.
 
 environment:
@@ -97,6 +97,17 @@ flutter:
     - assets/images/09-english-for-professionals/lessons/
     - assets/images/subscription and progress/
     - assets/translations/
+    - assets/images/Yimaru-Icons-and-Illustrations/01-Icons/svg/
+    - assets/images/Yimaru-Icons-and-Illustrations/01-Icons/svg/actions/
+    - assets/images/Yimaru-Icons-and-Illustrations/01-Icons/svg/audio-and-media/
+    - assets/images/Yimaru-Icons-and-Illustrations/01-Icons/svg/learning-content/
+    - assets/images/Yimaru-Icons-and-Illustrations/01-Icons/svg/navigation/
+    - assets/images/Yimaru-Icons-and-Illustrations/01-Icons/svg/profile-and-settings/
+    - assets/images/Yimaru-Icons-and-Illustrations/01-Icons/svg/status-and-progress/
+    - assets/images/Yimaru-Icons-and-Illustrations/01-Icons/svg/tab-bar/
+    - assets/images/Yimaru-Icons-and-Illustrations/02-Illustrations/01-landing-page/
+    - assets/images/Yimaru-Icons-and-Illustrations/02-Illustrations/07-learn-level-speaking-practice/
+    - assets/images/Yimaru-Icons-and-Illustrations/02-Illustrations/14-brand-yimi-mascot/
   fonts:
     - family: Aeonik
       fonts:

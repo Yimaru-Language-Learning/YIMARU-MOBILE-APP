@@ -1,22 +1,23 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/models/practice_question.dart';
+import 'package:yimaru_app/ui/common/app_colors.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/custom_column_button.dart';
-
-import '../../../../models/practice_question.dart';
-import '../../../common/app_colors.dart';
-import '../../../common/ui_helpers.dart';
-import '../../../widgets/cancel_practice_sheet.dart';
-import '../../../widgets/small_app_bar.dart';
+import 'package:yimaru_app/ui/widgets/cancel_practice_sheet.dart';
+import 'package:yimaru_app/ui/widgets/practice_app_bar.dart';
 
 class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
   final int index;
   final PracticeQuestion question;
 
-  const StartLearnPracticeScreen(
-      {super.key, required this.index, required this.question});
+  const StartLearnPracticeScreen({
+    super.key,
+    required this.index,
+    required this.question,
+  });
 
   Future<void> _cancel(LearnPracticeViewModel viewModel) async {
     await viewModel.stopRecording();
@@ -27,215 +28,136 @@ class StartLearnPracticeScreen extends ViewModelWidget<LearnPracticeViewModel> {
   Future<void> _start(LearnPracticeViewModel viewModel) async =>
       await viewModel.playVoicePrompt(question);
 
-  Future<void> _showSheet(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) async =>
+  Future<void> _showSheet({
+    required BuildContext context,
+    required LearnPracticeViewModel viewModel,
+  }) async =>
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: kcTransparent,
-        builder: (cxt) => _buildSheet(viewModel),
+        builder: (cxt) => CancelPracticeSheet(
+          onClose: viewModel.pop,
+          onContinue: viewModel.pop,
+          user: viewModel.user?.firstName ?? '',
+          onCancel: () async => await _cancel(viewModel),
+        ),
       );
 
   @override
-  Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(context: context, viewModel: viewModel);
+  Widget build(BuildContext context, LearnPracticeViewModel viewModel) {
+    final totalQuestions =
+        viewModel.questions.isEmpty ? 1 : viewModel.questions.length;
+    final currentProgress = (index - 0.7) / totalQuestions;
 
-  Widget _buildScaffoldWrapper(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildScaffoldContainer(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      Container(
-        decoration: bgDecoration,
-        child: _buildScaffold(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildScaffold(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      SafeArea(
-          child:
-              _buildBodyColumnWrapper(context: context, viewModel: viewModel));
-
-  Widget _buildBodyColumnWrapper(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildBodyColumn(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildBodyColumn(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children:
-            _buildBodyColumnChildren(context: context, viewModel: viewModel),
-      );
-
-  List<Widget> _buildBodyColumnChildren(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      [
-        _buildAppBarWrapper(context: context, viewModel: viewModel),
-        _buildStartButtonWrapper(viewModel),
-        _buildLowerButtonsSectionWrapper(viewModel)
-      ];
-
-  Widget _buildAppBarWrapper(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      Column(
-        children: [
-          verticalSpaceMedium,
-          _buildAppBar(context: context, viewModel: viewModel),
-          verticalSpaceMedium,
-        ],
-      );
-
-  Widget _buildAppBar(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      SmallAppBar(
-          showBackButton: true,
-          onPop: () async =>
-              await _showSheet(context: context, viewModel: viewModel),
-          title:
-              '${LocaleKeys.practice_speaking.tr()} ($index/${viewModel.questions.length})');
-
-  Widget _buildSheet(LearnPracticeViewModel viewModel) => CancelPracticeSheet(
-        onClose: viewModel.pop,
-        onContinue: viewModel.pop,
-        user: viewModel.user?.firstName ?? '',
-        onCancel: () async => await _cancel(viewModel),
-      );
-
-  Widget _buildStartButtonWrapper(LearnPracticeViewModel viewModel) => Expanded(
-        child: _buildStartButtonContainer(viewModel),
-      );
-
-  Widget _buildStartButtonContainer(LearnPracticeViewModel viewModel) =>
-      GestureDetector(
-        onTap: () async => await _start(viewModel),
-        child: _buildStartButton(),
-      );
-
-  Widget _buildStartButton() => Container(
-        width: 150,
-        height: 150,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: SweepGradient(
-            stops: const [
-              0.0,
-              0.1,
-              0.2,
-              0.3,
-              0.4,
-              0.5,
-              0.6,
-              0.8,
-              0.9,
-              1,
-            ],
-            endAngle: 8,
-            startAngle: 0.0,
-            center: Alignment.center,
-            colors: [
-              kcPrimaryColor.withValues(alpha: 0.3),
-              kcIndigo.withValues(alpha: 0.2),
-              kcIndigo.withValues(alpha: 0.3),
-              kcIndigo.withValues(alpha: 0.4),
-              kcIndigo.withValues(alpha: 0.5),
-              kcPrimaryColor.withValues(alpha: 0.5),
-              kcPrimaryColor.withValues(alpha: 0.4),
-              kcPrimaryColor.withValues(alpha: 0.3),
-              kcPrimaryColor.withValues(alpha: 0.2),
-              kcPrimaryColor.withValues(alpha: 0.5),
-            ],
-            // quarterly spread
-          ),
+    return Scaffold(
+      backgroundColor: const Color(0xFFFAF7FC),
+      body: SafeArea(
+        child: Column(
+          children: [
+            PracticeAppBar(
+              title: LocaleKeys.practice_speaking.tr(),
+              progress: currentProgress,
+              onPop: () async =>
+                  await _showSheet(context: context, viewModel: viewModel),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    // Start audio prompt button with concentric rings
+                    GestureDetector(
+                      onTap: () async => await _start(viewModel),
+                      child: SizedBox(
+                        width: 240,
+                        height: 240,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/images/Yimaru-Icons-and-Illustrations/02-Illustrations/07-learn-level-speaking-practice/7.3-level-practice-start-01.svg',
+                              width: 240,
+                              height: 240,
+                            ),
+                            Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.magenta38,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.magenta38
+                                        .withValues(alpha: 0.35),
+                                    blurRadius: 18,
+                                    offset: const Offset(0, 6),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.volume_up_rounded,
+                                    size: 34,
+                                    color: kcWhite,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    LocaleKeys.start.tr(),
+                                    style: const TextStyle(
+                                      fontFamily: 'Aeonik',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: kcWhite,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 36),
+                    // Action label
+                    Text(
+                      LocaleKeys.tap_start_to_listen.tr(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontFamily: 'Aeonik',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF2A1830),
+                      ),
+                    ),
+                    const Spacer(),
+                    // Disabled Mic Button at the bottom
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 24),
+                      child: Container(
+                        width: 64,
+                        height: 64,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFFF3E8F5),
+                        ),
+                        child: const Icon(
+                          Icons.mic_rounded,
+                          size: 32,
+                          color: Color(0xFFB0A4B8),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-        child: _buildStartText(),
-      );
-
-  Widget _buildStartText() => Text(
-        LocaleKeys.start.tr(),
-        style: style25W600,
-      );
-
-  Widget _buildLowerButtonsSectionWrapper(LearnPracticeViewModel viewMode) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: _buildLowerButtonsSection(viewMode),
-      );
-
-  Widget _buildLowerButtonsSection(LearnPracticeViewModel viewModel) => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: _buildLowerButtonsSectionChildren(viewModel),
-      );
-
-  List<Widget> _buildLowerButtonsSectionChildren(
-          LearnPracticeViewModel viewModel) =>
-      [
-        _buildActionLabel(),
-        verticalSpaceMedium,
-        _buildButtonsRowWrapper(viewModel),
-        verticalSpaceMedium,
-      ];
-
-  Widget _buildActionLabel() => Text(
-        LocaleKeys.tap_start_to_listen.tr(),
-        style: style14DG400,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildButtonsRowWrapper(LearnPracticeViewModel viewModel) => Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildButtonsRowChildren(viewModel),
-      );
-
-  List<Widget> _buildButtonsRowChildren(LearnPracticeViewModel viewModel) => [
-        _buildReplyButtonWrapper(),
-        _buildMicButtonWrapper(viewModel),
-        _buildEmptySpace()
-      ];
-
-  Widget _buildReplyButtonWrapper() => Expanded(child: _buildReplyButton());
-
-  Widget _buildReplyButton() => CustomColumnButton(
-      icon: Icons.replay, label: LocaleKeys.reply.tr(), color: kcLightGrey);
-
-  Widget _buildMicButtonWrapper(LearnPracticeViewModel viewModel) =>
-      Expanded(child: _buildMicButton(viewModel));
-
-  Widget _buildMicButton(LearnPracticeViewModel viewModel) => ElevatedButton(
-        onPressed: null,
-        style: const ButtonStyle(
-          shape: WidgetStatePropertyAll(CircleBorder()),
-          padding: WidgetStatePropertyAll(EdgeInsets.all(15)),
-          shadowColor: WidgetStatePropertyAll(kcPrimaryColor),
-          backgroundColor: WidgetStatePropertyAll(kcVeryLightGrey),
-        ),
-        child: _buildMicIcon(),
-      );
-
-  Widget _buildMicIcon() => const Icon(
-        Icons.mic,
-        size: 35,
-        color: kcWhite,
-      );
-
-  Widget _buildEmptySpace() => Expanded(child: Container());
+      ),
+    );
+  }
 }

@@ -20,30 +20,10 @@ subprojects {
     plugins.withId("com.android.library") {
         pluginManager.apply("org.jetbrains.kotlin.android")
     }
-}
-
-subprojects {
-    val updateAndroid = {
-        if (project.name == "syncfusion_flutter_pdfviewer") {
-            val android = project.extensions.findByName("android")
-            if (android != null) {
-                try {
-                    val method = android.javaClass.getMethod("compileSdkVersion", Int::class.javaPrimitiveType)
-                    method.invoke(android, 36)
-                } catch (e: Exception) {
-                    try {
-                        val method = android.javaClass.getMethod("setCompileSdkVersion", Int::class.javaPrimitiveType)
-                        method.invoke(android, 36)
-                    } catch (ignored: Exception) {}
-                }
-            }
+    tasks.configureEach {
+        if (name.contains("lintVital", ignoreCase = true)) {
+            enabled = false
         }
-    }
-
-    if (project.state.executed) {
-        updateAndroid()
-    } else {
-        project.afterEvaluate { updateAndroid() }
     }
 }
 

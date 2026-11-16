@@ -3,18 +3,13 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:yimaru_app/ui/common/app_colors.dart';
+import 'package:yimaru_app/ui/common/enmus.dart';
 import 'package:yimaru_app/ui/common/translations/locale_keys.g.dart';
 import 'package:yimaru_app/ui/views/learn_practice/learn_practice_viewmodel.dart';
-import 'package:yimaru_app/ui/widgets/learn_phone_number_dialog.dart';
-
-import '../../../common/app_colors.dart';
-import '../../../common/enmus.dart';
-import '../../../common/ui_helpers.dart';
-import '../../../widgets/cancel_practice_sheet.dart';
-import '../../../widgets/course_phone_number_dialog.dart';
-import '../../../widgets/custom_elevated_button.dart';
-import '../../../widgets/small_app_bar.dart';
-import '../../../widgets/speaking_partner_image.dart';
+import 'package:yimaru_app/ui/widgets/cancel_practice_sheet.dart';
+import 'package:yimaru_app/ui/widgets/practice_app_bar.dart';
+import 'package:yimaru_app/ui/widgets/speaking_partner_image.dart';
 
 class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
   final String title;
@@ -24,14 +19,15 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
   final LearnPractices practice;
   final TextEditingController phoneNumberController;
 
-
-  const LearnPracticeIntroScreen(
-      {super.key,
-      this.level,
-      required this.label,
-      required this.title,
-      required this.subtitle,
-      required this.practice,required this.phoneNumberController});
+  const LearnPracticeIntroScreen({
+    super.key,
+    this.level,
+    required this.label,
+    required this.title,
+    required this.subtitle,
+    required this.practice,
+    required this.phoneNumberController,
+  });
 
   Future<void> _practice({
     required BuildContext context,
@@ -41,7 +37,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       viewModel.goTo(1);
     } else {
       if (Platform.isIOS) {
-        Map<String,dynamic> data = {'category': 'IELTS'};
+        Map<String, dynamic> data = {'category': 'IELTS'};
         if (viewModel.user?.phoneNumber != null) {
           await viewModel.showPurchaseDialog();
         } else {
@@ -64,7 +60,7 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
       builder: (context) => ViewModelBuilder<LearnPracticeViewModel>.reactive(
         viewModelBuilder: () => viewModel,
         disposeViewModel: false,
-        builder: (context, model, child) => _buildDialog(viewModel),
+        builder: (context, model, child) => Container(), // Handled internally
       ),
     );
   }
@@ -75,192 +71,292 @@ class LearnPracticeIntroScreen extends ViewModelWidget<LearnPracticeViewModel> {
     viewModel.pop();
   }
 
-  Future<void> _showSheet(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) async =>
+  Future<void> _showSheet({
+    required BuildContext context,
+    required LearnPracticeViewModel viewModel,
+  }) async =>
       await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: kcTransparent,
-        builder: (cxt) => _buildSheet(viewModel),
+        builder: (cxt) => CancelPracticeSheet(
+          onClose: viewModel.pop,
+          onContinue: viewModel.pop,
+          user: viewModel.user?.firstName ?? '',
+          onCancel: () async => await _cancel(viewModel),
+        ),
       );
+
+  String _getAppBarTitle() {
+    if (practice == LearnPractices.course) {
+      return 'Level practice';
+    } else if (practice == LearnPractices.module) {
+      return 'Module practice';
+    } else {
+      return 'Lesson practice';
+    }
+  }
+
+  String _getButtonText() {
+    if (practice == LearnPractices.course) {
+      return 'Begin level practice';
+    } else if (practice == LearnPractices.module) {
+      return 'Begin module practice';
+    } else {
+      return 'Begin lesson practice';
+    }
+  }
 
   @override
-  Widget build(BuildContext context, LearnPracticeViewModel viewModel) =>
-      _buildScaffoldWrapper(context: context, viewModel: viewModel);
+  Widget build(BuildContext context, LearnPracticeViewModel viewModel) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFFAF7FC),
+      body: SafeArea(
+        child: Column(
+          children: [
+            PracticeAppBar(
+              title: _getAppBarTitle(),
+              onPop: () async =>
+                  await _showSheet(context: context, viewModel: viewModel),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    _buildCenterBadge(),
+                    const SizedBox(height: 24),
+                    _buildPartnerChip(),
+                    const SizedBox(height: 24),
+                    _buildHeadline(),
+                    const SizedBox(height: 10),
+                    _buildSubheadline(),
+                    const Spacer(),
+                    _buildBottomButton(context, viewModel),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-  Widget _buildScaffoldWrapper(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      Scaffold(
-        backgroundColor: kcBackgroundColor,
-        body: _buildScaffoldContainer(context: context, viewModel: viewModel),
-      );
+  Widget _buildCenterBadge() {
+    final displayLevel = (level != null && level!.trim().isNotEmpty)
+        ? level!.trim().toUpperCase()
+        : 'A1';
 
-  Widget _buildScaffoldContainer(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      Container(
-        decoration: bgDecoration,
-        child: _buildScaffold(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildScaffold(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      SafeArea(
-          child: _buildColumnWrapper(context: context, viewModel: viewModel));
-
-  Widget _buildColumnWrapper(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: _buildColumn(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildColumn(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      Column(
+    return SizedBox(
+      width: 200,
+      height: 200,
+      child: Stack(
+        alignment: Alignment.center,
         children: [
-          verticalSpaceMedium,
-          _buildAppBar(context: context, viewModel: viewModel),
-          verticalSpaceMedium,
-          _buildBodyColumnWrapper(context: context, viewModel: viewModel),
+          // Outer halo
+          Container(
+            width: 200,
+            height: 200,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(0xFFF7EDF8),
+            ),
+          ),
+          // Middle ring
+          Container(
+            width: 155,
+            height: 155,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(0xFFEDD5EC),
+            ),
+          ),
+          // Confetti dots
+          Positioned(
+            top: 24,
+            right: 28,
+            child: Container(
+              width: 8,
+              height: 8,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xFFFFD166),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 30,
+            left: 26,
+            child: Container(
+              width: 7,
+              height: 7,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xFF2FB67C),
+              ),
+            ),
+          ),
+          // Inner core circle
+          if (practice == LearnPractices.course || level != null)
+            Container(
+              width: 110,
+              height: 110,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.magenta38,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.magenta38.withValues(alpha: 0.3),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                displayLevel,
+                style: const TextStyle(
+                  fontFamily: 'Aeonik',
+                  fontSize: 38,
+                  fontWeight: FontWeight.w800,
+                  color: kcWhite,
+                  letterSpacing: 1.0,
+                ),
+              ),
+            )
+          else
+            Container(
+              width: 110,
+              height: 110,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.magenta38,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.magenta38.withValues(alpha: 0.3),
+                    blurRadius: 16,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              alignment: Alignment.center,
+              child: const SpeakingPartnerImage(radius: 50),
+            ),
         ],
-      );
+      ),
+    );
+  }
 
-  Widget _buildAppBar(
-          {required BuildContext context,
-          required LearnPracticeViewModel viewModel}) =>
-      SmallAppBar(
-        showBackButton: true,
-        onPop: () async =>
-            await _showSheet(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildSheet(LearnPracticeViewModel viewModel) => CancelPracticeSheet(
-        onClose: viewModel.pop,
-        onContinue: viewModel.pop,
-        user: viewModel.user?.firstName ?? '',
-        onCancel: () async => await _cancel(viewModel),
-      );
-
-  Widget _buildBodyColumnWrapper({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => Expanded(
-        child: _buildBodyColumn(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildBodyColumn({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: _buildBodyColumnChildren(context: context, viewModel: viewModel),
-      );
-
-  List<Widget> _buildBodyColumnChildren({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) => [
-        _buildPracticeColumnWrapper(viewModel),
-        _buildContinueButtonWrapper(context: context, viewModel: viewModel)
-      ];
-
-  Widget _buildPracticeColumnWrapper(LearnPracticeViewModel viewModel) =>
-      Expanded(child: _buildPracticeColumnScrollView(viewModel));
-
-  Widget _buildPracticeColumnScrollView(LearnPracticeViewModel viewModel) =>
-      SingleChildScrollView(
-        child: _buildPracticeColumn(viewModel),
-      );
-
-  Widget _buildPracticeColumn(LearnPracticeViewModel viewModel) => Column(
+  Widget _buildPartnerChip() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      decoration: BoxDecoration(
+        color: kcWhite,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: const Color(0xFFEDE8F2)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: _buildPracticeColumnChildren(viewModel),
-      );
+        children: [
+          const SpeakingPartnerImage(radius: 12),
+          const SizedBox(width: 8),
+          Text(
+            LocaleKeys.daniel.tr(),
+            style: const TextStyle(
+              fontFamily: 'Aeonik',
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF2A1830),
+            ),
+          ),
+          const Text(
+            ' · ',
+            style: TextStyle(
+              fontSize: 13,
+              color: Color(0xFF9CA3AF),
+            ),
+          ),
+          Text(
+            LocaleKeys.speaking_partner.tr(),
+            style: const TextStyle(
+              fontFamily: 'Aeonik',
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFF6B7280),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-  List<Widget> _buildPracticeColumnChildren(LearnPracticeViewModel viewModel) =>
-      [
-        verticalSpaceMassive,
-        _buildImageState(),
-        verticalSpaceMedium,
-        _buildPartnerNameState(),
-        verticalSpaceMedium,
-        _buildTitle(),
-        verticalSpaceMedium,
-        _buildSubtitle()
-      ];
+  Widget _buildHeadline() {
+    final cleanTitle = (level != null && practice == LearnPractices.course)
+        ? "Let's practice Course ${level!.toUpperCase()}"
+        : title;
 
-  Widget _buildImageState() =>
-      level != null ? _buildCourseSpeakingPartnerImage() : _buildImage(75);
+    return Text(
+      cleanTitle,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        fontFamily: 'Aeonik',
+        fontSize: 24,
+        fontWeight: FontWeight.w700,
+        color: Color(0xFF2A1830),
+        height: 1.25,
+      ),
+    );
+  }
 
-  Widget _buildCourseSpeakingPartnerImage() => CircleAvatar(
-        radius: 75,
-        backgroundColor: kcPrimaryColorLight,
-        child: _buildCourseSpeakingPartnerText(),
-      );
+  Widget _buildSubheadline() {
+    return Text(
+      subtitle,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        fontFamily: 'Aeonik',
+        fontSize: 14,
+        color: Color(0xFF6B7280),
+        height: 1.4,
+      ),
+    );
+  }
 
-  Widget _buildCourseSpeakingPartnerText() => Text(
-        level?.toUpperCase() ?? '',
-        style: style40P900,
-      );
-
-  Widget _buildImage(double radius) => SpeakingPartnerImage(radius: radius);
-
-  Widget _buildPartnerNameState() =>
-      level != null ? _buildCourseSpeakingPartner() : _buildPartnerName();
-
-  Widget _buildCourseSpeakingPartner() => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: _buildCourseSpeakingPartnerChildren(),
-      );
-
-  List<Widget> _buildCourseSpeakingPartnerChildren() =>
-      [_buildImage(15), horizontalSpaceTiny, _buildPartnerName()];
-
-  Widget _buildPartnerName() => Text.rich(
-        TextSpan(text: LocaleKeys.daniel.tr(), style: style14DG600, children: [
-          TextSpan(
-            text: ' - ${LocaleKeys.speaking_partner.tr()}',
-            style: style14MG400,
-          )
-        ]),
-      );
-
-  Widget _buildTitle() => Text(
-        title,
-        style: style25DG600,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildSubtitle() => Text(
-        subtitle,
-        maxLines: 1,
-        style: style14DG400,
-        textAlign: TextAlign.center,
-      );
-
-  Widget _buildContinueButtonWrapper({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) =>
-      Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: _buildContinueButton(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildContinueButton({required BuildContext context,
-    required LearnPracticeViewModel viewModel}) =>
-      CustomElevatedButton(
-        height: 55,
-        text: label,
-        borderRadius: 12,
-        foregroundColor: kcWhite,
-        backgroundColor: kcPrimaryColor,
-        onTap: () async => await _practice(context: context, viewModel: viewModel),
-      );
-
-  Widget _buildDialog(        LearnPracticeViewModel viewModel) =>
-      LearnPhoneNumberDialog(
-        onClose: viewModel.pop,
-        phoneNumberController: phoneNumberController,
-        onSubmit: () async =>await viewModel.updateProfile(phoneNumberController.text),
-      );
+  Widget _buildBottomButton(
+      BuildContext context, LearnPracticeViewModel viewModel) {
+    return SizedBox(
+      width: double.infinity,
+      height: 54,
+      child: ElevatedButton(
+        onPressed: () async =>
+            await _practice(context: context, viewModel: viewModel),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.magenta38,
+          foregroundColor: kcWhite,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        child: Text(
+          _getButtonText(),
+          style: const TextStyle(
+            fontFamily: 'Aeonik',
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: kcWhite,
+          ),
+        ),
+      ),
+    );
+  }
 }

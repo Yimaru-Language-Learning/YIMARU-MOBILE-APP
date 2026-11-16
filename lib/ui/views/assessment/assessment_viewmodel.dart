@@ -51,6 +51,15 @@ class AssessmentViewModel extends ReactiveViewModel {
 
   ProficiencyLevel? get proficiencyLevel => _proficiencyLevel;
 
+  bool _showLevelResult = false;
+
+  bool get showLevelResult => _showLevelResult;
+
+  void setShowLevelResult(bool value) {
+    _showLevelResult = value;
+    rebuildUi();
+  }
+
   List<PracticeQuestion> _questions = [];
 
   List<PracticeQuestion> get questions => _questions;
@@ -130,6 +139,7 @@ class AssessmentViewModel extends ReactiveViewModel {
     _answers.clear();
     _proficiencyLevel = null;
     _selectedAnswers.clear();
+    _showLevelResult = false;
     _currentQuestionIndex = 0;
     _pageController.jumpToPage(0);
   }
@@ -157,8 +167,13 @@ class AssessmentViewModel extends ReactiveViewModel {
     if (_currentPage == 0) {
       _navigationService.back();
     } else if (_currentPage == 2) {
-      _currentPage = 0;
-      rebuildUi();
+      if (_showLevelResult) {
+        _showLevelResult = false;
+        rebuildUi();
+      } else {
+        _currentPage = 0;
+        rebuildUi();
+      }
     } else if (_currentPage == 3) {
       if (_proficiencyLevel != null) {
         _currentPage--;
